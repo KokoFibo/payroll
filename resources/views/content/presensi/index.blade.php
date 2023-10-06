@@ -3,19 +3,28 @@
 @section('title', 'Data - Presensi')
 
 @section('content')
-    <h4 class="p-4">
-        Presensi Karyawan
-    </h4>
-    <a href="/presensiupload"><button class="btn btn-success mx-4">Import Presensi</button></a>
+    <div class="row px-4 mt-4">
+
+        <h4 class="col-6">
+            Presensi Karyawan
+        </h4>
+        <div class="col-6 text-end">
+            <a href="/presensiupload"><button class="btn btn-success mx-4">Import Presensi</button></a>
+        </div>
+    </div>
+
     <div class="row p-4">
         <div class="col-xl">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Search</h5>
-                    <div class="float-end"><span class="p-2 bg-warning bg-gradient text-dark ">No Scan =
-                            {{ $noScanCount }}</span>
-                        <span class="p-2 bg-danger bg-gradient text-white">Late = {{ $lateCount }}</span> dari
-                        {{ $totalDataPerHari }} data
+            <div class="card">
+                <div class="card-header ">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Search</h5>
+                        <div>
+                            <span class="p-2 bg-warning bg-gradient text-dark ">No Scan =
+                                {{ $noScanCount }}</span>
+                            <span class="p-2 bg-danger bg-gradient text-white">Late = {{ $lateCount }}</span> dari
+                            {{ $totalDataPerHari }} data
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -78,7 +87,7 @@
         </div>
 
     </div>
-    <div class="row p-4 mb-5">
+    <div class="row px-4">
         <div class="col-md-12 col-lg-12 mb-3">
             <div class="card h-100">
                 <div class="card-body">
@@ -327,34 +336,3 @@
 
 
 @endsection
-{{-- @section('page-script')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" language="javascript"
-        src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // $('#presensi').DataTable();
-            new DataTable('#presensi', {
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel'
-                ]
-            });
-        });
-    </script>
-@endsection --}}
