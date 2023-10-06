@@ -23,7 +23,7 @@ with font-awesome or any other icon font library -->
 
         <li class="nav-item">
             <a href="/presensi" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-clipboard-check"></i>
                 <p>
                     Presensi
                 </p>
@@ -32,13 +32,12 @@ with font-awesome or any other icon font library -->
 
         <li class="nav-item">
             <a href="/test" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-dollar-sign"></i>
                 <p>
                     Payroll
                 </p>
             </a>
         </li>
-
         <li class="nav-item ">
             <a href="#" class="nav-link">
                 <i class="nav-icon fa-solid fa-gear"></i>
