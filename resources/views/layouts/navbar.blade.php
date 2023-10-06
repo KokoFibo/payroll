@@ -7,7 +7,7 @@
         </li>
     </ul>
 
-    <h4 class="ml-auto">Yifang Investment Group Payroll System</h4>
+    <h4 class="ml-auto">Yifang Investment Group Payroll System 1</h4>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav
