@@ -15,19 +15,19 @@ return new class extends Migration
         DB::statement("
         CREATE VIEW vtotalcheck AS
         select
-        `p`.`user_id` as `user_id`,
-        `p`.`name` as `name`,
-        `p`.`department` as `department`,
-        `p`.`date` as `date`,
-        count(`p`.`time`) as `jml_fp`,
-        min(`p`.`id`) as `first_id`
+        p.user_id as user_id,
+        p.name as name,
+        p.department as department,
+        p.date as date,
+        count(p.time) as jml_fp,
+        min(p.id) as first_id
     from
-        `payroll`.`presensis` `p`
+        presensis p
     group by
-        `p`.`user_id`,
-        `p`.`name`,
-        `p`.`department`,
-        `p`.`date`;
+        p.user_id,
+        p.name,
+        p.department,
+        p.date;
         ");
     }
 
