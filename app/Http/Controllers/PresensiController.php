@@ -50,10 +50,36 @@ class PresensiController extends Controller
         ->where('no_scan',1)
         ->count();
 
+        $noScanCountPagi = DB::table('rekap_presensis')
+        ->where('date',$request->date)
+        ->where('shift','Shift pagi')
+        ->where('no_scan',1)
+        ->count();
+
+
+
         $lateCount = DB::table('rekap_presensis')
         ->where('date',$request->date)
         ->where('late',1)
         ->count();
+        $totalDataPerHari = DB::table('rekap_presensis')
+        ->where('date',$request->date)
+        ->count();
+
+        $lateCountPagi = DB::table('rekap_presensis')
+        ->where('date',$request->date)
+        ->where('shift','Shift pagi')
+        ->where('late',1)
+        ->count();
+        $totalDataPerHari = DB::table('rekap_presensis')
+        ->where('date',$request->date)
+        ->count();
+
+        $totalShiftPagi = DB::table('rekap_presensis')
+        ->where('date',$request->date)
+        ->where('shift','Shift pagi')
+        ->count();
+
         $totalDataPerHari = DB::table('rekap_presensis')
         ->where('date',$request->date)
         ->count();
@@ -71,7 +97,7 @@ class PresensiController extends Controller
                 $query2->where('date', 'like', '%' . $date . '%');
             })->orderBy($short, $order)->paginate(10);
         }
-        return view('content.presensi.index', compact('data', 'date', 'search', 'short', 'order', 'lateCount', 'noScanCount','totalDataPerHari'));
+        return view('content.presensi.index', compact('data', 'date', 'search', 'short', 'order', 'lateCount', 'noScanCount','lateCountPagi', 'noScanCountPagi','totalDataPerHari', 'totalShiftPagi'));
     }
 
 
@@ -168,6 +194,7 @@ class PresensiController extends Controller
 
                 ]);
             }
+
         }
 
 
@@ -191,10 +218,51 @@ class PresensiController extends Controller
             ]);
         }
 
+
+
         DB::select("CALL spRecalPresensi()");
+        if(is_saturday($tgl)) {
+            $datas = DB::table('rekap_presensis')
+            ->where('date', $tgl)
+            ->where('shift', 'Shift pagi')
+            ->where('first_in','>', '15:00')
+            ->get();
+            foreach($datas as $data){
+                DB::table('rekap_presensis')->where('user_id', $data->user_id)
+                        ->whereDate('date', '=', $data->date)
+                        ->update(['shift' => 'Shift malam']);
+            }
+        }
+        if (is_saturday($tgl)){
+            $datas = DB::table('rekap_presensis')
+            ->where('date', $tgl)
+            ->where('shift', 'Shift malam')
+            ->get();
+            foreach($datas as $data){
+                if($data->first_in != '' || $data->first_out != '' || $data->second_in != '' || $data->second_out != '' || $data->overtime_in != '' || $data->overtime_out != '' ){
+                    $late = 0;
+                    if($data->first_in != '' && $data->first_in > '17:03') {
+                        $late = 1;
+                    }
+                    if($data->first_out != '' && $data->first_out < '21:00') {
+                        $late = 1;
+                    }
+                    if($data->second_in != '' && $data->second_in > '22:03') {
+                        $late = 1;
+                    }
+                    if($data->second_out != '' && $data->second_out < '00:00') {
+                        $late = 1;
+                    }
+                    if($late == 0) {
+                        DB::table('rekap_presensis')->where('user_id', $data->user_id)
+                        ->whereDate('date', '=', $data->date)
+                        ->update(['late' => null]);
+                    }
+                }
+            }
+        }
 
-
-        return back()->with('success', 'File upload succesfully.');
+        return back()->with('success', 'Data absensi telah berhasil di import');
     }
 
     /**

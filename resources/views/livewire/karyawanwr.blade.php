@@ -2,7 +2,12 @@
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary">
-                <h5>Data Karyawan</h5>
+                <h5>Data Karyawan
+                    <button wire:click="clear" class="btn btn-success float-end">Create New</button>
+                </h5>
+
+
+
             </div>
             <div class="card-body">
                 <nav>
@@ -38,13 +43,16 @@
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
+
                 </div>
+                <button wire:click="save" class="btn btn-primary mx-3">Save</button>
+                <button wire:click="exit" class="btn btn-dark mx-3">Exit</button>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $(".date").datepicker({
             format: "dd-mm-yyyy",
         });
-    </script>
+    </script> --}}
 </div>
