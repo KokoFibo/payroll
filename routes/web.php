@@ -39,6 +39,12 @@ Route::middleware(['guest'])->group(function() {
 
 });
 
+Route::get('/testok', function() {
+    return view('test');
+});
+
+
+
 Route::get('/presensiupload', function() {
     return view('content.presensi.import');
 });
