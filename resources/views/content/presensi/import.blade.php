@@ -3,14 +3,14 @@
 @section('title', 'Import - Presensi')
 
 @section('content')
-    hello
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Presensi /</span> Import</h4>
 
-    <div class="row mb-5">
+    <h4 class="px-4 mt-4">Import Presensi</h4>
+
+    <div class="row mb-5 p-4">
         <div class="col-md-12 col-lg-12 mb-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Import file presensi harian</h5>
+                    <h5>Import file presensi harian</h5>
                     <form action="{{ route('presensi.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
@@ -24,7 +24,7 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
-                            <label for="formFile" class="form-label">Upload data</label>
+                            <label for="formFile" class="form-label mt-2 mb-3">Upload data</label>
                             <input class="form-control" type="file" name="file" id="formFile" accept="xlsx"
                                 required>
                         </div>
@@ -43,15 +43,15 @@
                         <button type="submit" class="btn btn-outline-primary" id="import-btn">Import</button>
                         <a href="/presensi" wire:navigate><button type="button" class="btn btn-primary" ">Exit</button></a>
 
-                                            <div class="spinner-grow text-success" role="status" id="loading">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
+                                                                                    <div class="spinner-grow text-success" role="status" id="loading">
+                                                                                        <span class="visually-hidden">Loading...</span>
+                                                                                    </div>
 
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
 
 @endsection

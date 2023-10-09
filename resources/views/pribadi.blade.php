@@ -1,28 +1,28 @@
 <div class="card">
     <div class="card-body">
         <div class="mb-3">
-            <label class="form-label">ID Karyawan</label>
-            <input type="number" class="form-control">
+            <label class="form-label">ID Karyawan <span class="text-danger">*</span></label>
+            <input wire:model="id_karyawan" type="number" class="form-control">
         </div>
         <div class="mb-3">
-            <label class="form-label">Nama Karyawan</label>
-            <input type="text" class="form-control">
+            <label class="form-label">Nama Karyawan <span class="text-danger">*</span></label>
+            <input wire:model="nama" type="text" class="form-control">
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control">
+            <input wire:model="email" type="email" class="form-control">
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Handphone</label>
-                    <input type="number" class="form-control">
+                    <input wire:model="hp" type="number" class="form-control">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Telepon</label>
-                    <input type="text" class="form-control">
+                    <input wire:model="telepon" type="number" class="form-control">
                 </div>
             </div>
         </div>
@@ -30,13 +30,13 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Tempat Lahir</label>
-                    <input type="text" class="form-control">
+                    <input wire:model="tempat_lahir" type="text" class="form-control">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3 form-group">
                     <label class="form-label">Tanggal Lahir</label>
-                    <input type="text" class="date form-control" placeholder="dd-mm-yyyy">
+                    <input wire:model="tanggal_lahir" type="date" class="date form-control">
                 </div>
             </div>
         </div>
@@ -49,8 +49,8 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1">
+                                <input wire:model="gender" class="form-check-input" type="radio" value="Laki-laki"
+                                    name="flexRadioDefault" id="flexRadioDefault1">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Laki-laki
                                 </label>
@@ -58,8 +58,8 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault2" checked>
+                                <input wire:model="gender" class="form-check-input" type="radio" value="Perempuan"
+                                    name="flexRadioDefault" id="flexRadioDefault2" checked>
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     Perempuan
                                 </label>
@@ -71,12 +71,12 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Status Pernikahan</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Pilih status pernikahan</option>
-                        <option value="0">Belum Kawin</option>
-                        <option value="1">Kawin</option>
-                        <option value="2">Cerai Hidup</option>
-                        <option value="3">Cerai Mati</option>
+                    <select wire:model="status_pernikahan" class="form-select" aria-label="Default select example">
+                        <option>Pilih status pernikahan</option>
+                        <option value="Belum Kawin">Belum Kawin</option>
+                        <option value="Kawin">Kawin</option>
+                        <option value="Cerai Hidup">Cerai Hidup</option>
+                        <option value="Cerai Mati">Cerai Mati</option>
                     </select>
                 </div>
             </div>
@@ -85,30 +85,30 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Golongan Darah</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Pilih golongan darah</option>
-                        <option value="0">A+</option>
-                        <option value="1">B+</option>
-                        <option value="2">AB+</option>
-                        <option value="3">O+</option>
-                        <option value="4">A-</option>
-                        <option value="5">B-</option>
-                        <option value="6">AB-</option>
-                        <option value="7">O-</option>
+                    <select wire:model="golongan_darah" class="form-select" aria-label="Default select example">
+                        <option>Pilih golongan darah</option>
+                        <option value="A+">A+</option>
+                        <option value="B+">B+</option>
+                        <option value="AB+">AB+</option>
+                        <option value="O+">O+</option>
+                        <option value="A-">A-</option>
+                        <option value="B-">B-</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O-">O-</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Agama</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Pilih agama</option>
-                        <option value="0">Islam</option>
-                        <option value="1">Kristen Protestan</option>
-                        <option value="2">Hindu</option>
-                        <option value="3">Budha</option>
-                        <option value="4">Katolik</option>
-                        <option value="5">Konghucu</option>
+                    <select wire:model="agama" class="form-select" aria-label="Default select example">
+                        <option>Pilih agama</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen Protestan">Kristen Protestan</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Budha">Budha</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Konghucu">Konghucu</option>
                     </select>
                 </div>
             </div>
@@ -118,7 +118,6 @@
 
 
 
-        <button class="btn btn-primary">Save</button>
 
     </div>
 

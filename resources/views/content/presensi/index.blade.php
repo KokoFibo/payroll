@@ -20,10 +20,15 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5>Search</h5>
                         <div>
-                            <span class="p-2 bg-warning bg-gradient text-dark ">No Scan =
-                                {{ $noScanCount }}</span>
-                            <span class="p-2 bg-danger bg-gradient text-white">Late = {{ $lateCount }}</span> dari
-                            {{ $totalDataPerHari }} data
+                            <span class="p-2 bg-info bg-gradient text-light ">Total Hadir = {{ $totalDataPerHari }},
+                                Shift Pagi = {{ $totalShiftPagi }},
+                                Shift Malam = {{ $totalDataPerHari - $totalShiftPagi }}</span>
+                            <span class="p-2 bg-warning bg-gradient text-dark ">Total No Scan =
+                                {{ $noScanCount }}, No Scan Shift Pagi = {{ $noScanCountPagi }}, No Scan Shift Malam =
+                                {{ $noScanCount - $noScanCountPagi }}</span>
+                            <span class="p-2 bg-danger bg-gradient text-white">Total Late = {{ $lateCount }}, Late Shift
+                                Pagi = {{ $lateCountPagi }}, Late Shift Malam = {{ $lateCount - $lateCountPagi }}</span>
+
                         </div>
                     </div>
                 </div>
@@ -51,7 +56,8 @@
                                     <select name="short" id="short_by" class="form-control">
                                         <option value="name" {{ $short == 'name' ? 'selected=true' : '' }}>Name
                                         </option>
-                                        <option value="user_id" {{ $short == 'user_id' ? 'selected=true' : '' }}>ID</option>
+                                        <option value="user_id" {{ $short == 'user_id' ? 'selected=true' : '' }}>ID
+                                        </option>
                                         <option value="late" {{ $short == 'late' ? 'selected=true' : '' }}>late
                                         </option>
                                         <option value="no_scan" {{ $short == 'no_scan' ? 'selected=true' : '' }}>No scan
@@ -91,7 +97,7 @@
         <div class="col-md-12 col-lg-12 mb-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-header">Data presensi tanggal {{ format_tgl($date) }}</h5>
+                    <h5 class="card-header">Data presensi tanggal {{ format_tgl($date) }} {{ is_saturday($date) }}</h5>
                     <div class="table-responsive text-nowrap pb-4">
                         <table class="table" id="presensi">
                             <thead>
@@ -109,6 +115,7 @@
                                     <th>Overtime out</th>
                                     <th>First in late</th>
                                     <th>Second in late</th>
+                                    <th>Second out late</th>
                                     <th>Overtime in late</th>
                                     <th>Late</th>
                                     <th>No scan</th>
@@ -123,14 +130,26 @@
                                         $no_scan = '';
                                         $first_in_late = '';
                                         $second_in_late = '';
+                                        $second_out_late = '';
                                         $overtime_in_late = '';
                                         $overtime_in = '';
                                         $overtime_out = '';
+                                        
+                                        if ($item->shift == 'Shift pagi') {
+                                            $second_out_late = floor((strtotime($item->second_out) - strtotime('17:00')) / 60);
+                                        } elseif ($item->shift == 'Shift malam') {
+                                            if (is_saturday($item->date)) {
+                                                $second_out_late = floor((strtotime($item->second_out) - strtotime('00:00')) / 60);
+                                            } else {
+                                                $second_out_late = floor((strtotime($item->second_out) - strtotime('05:00')) / 60);
+                                            }
+                                        }
+                                        
                                         if ($item->shift == 'Shift pagi') {
                                             $first_in_late = floor((strtotime($item->first_in) - strtotime('8:03')) / 60);
                                             $overtime_in_late = floor((strtotime($item->overtime_in) - strtotime('18:33')) / 60);
                                         } elseif ($item->shift == 'Shift malam') {
-                                            $first_in_late = floor((strtotime($item->first_in) - strtotime('20:33')) / 60);
+                                            $first_in_late = floor((strtotime($item->first_in) - strtotime('20:03')) / 60);
                                         }
                                         
                                         if (strtotime($item->first_out) < strtotime('12:00')) {
@@ -141,13 +160,16 @@
                                             $second_in_late = floor((strtotime($item->second_in) - strtotime('1:00')) / 60);
                                         }
                                         
-                                        if ($first_in_late < 0) {
+                                        if ($second_out_late >= 0) {
+                                            $second_out_late = '';
+                                        }
+                                        if ($first_in_late <= 0) {
                                             $first_in_late = '';
                                         }
-                                        if ($second_in_late < 0) {
+                                        if ($second_in_late <= 0) {
                                             $second_in_late = '';
                                         }
-                                        if ($overtime_in_late < 0) {
+                                        if ($overtime_in_late <= 0) {
                                             $overtime_in_late = '';
                                         }
                                         if ($item->first_in == '') {
@@ -188,17 +210,21 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->department }}</td>
                                         <td>{{ format_tgl($item->date) }}</td>
-                                        <td>{{ $item->first_in }}</td>
+                                        <td class="{{ $first_in_late > 0 ? 'text-danger' : '' }}">{{ $item->first_in }}
+                                        </td>
                                         <td>
                                             {{ $item->first_out }}
                                         </td>
-                                        <td>
+                                        <td class="{{ $second_in_late > 0 ? 'text-danger' : '' }}">
                                             @if ($item->first_out != $item->second_in)
                                                 {{ $item->second_in }}
                                             @endif
+
                                         </td>
-                                        <td>{{ $item->second_out }}</td>
-                                        <td>
+                                        <td class="{{ $second_out_late != null ? 'text-danger' : '' }}">
+                                            {{ $item->second_out }}
+                                        </td>
+                                        <td class="{{ $overtime_in_late > 0 ? 'text-danger' : '' }}">
                                             {{ $overtime_in }}
                                         </td>
                                         <td>
@@ -208,10 +234,8 @@
                                             {{ $first_in_late }}
 
                                         </td>
-                                        <td>
-                                            {{ $second_in_late }}
-
-                                        </td>
+                                        <td>{{ $second_in_late }}</td>
+                                        <td>{{ $second_out_late }}</td>
                                         <td>{{ $overtime_in_late }}</td>
                                         <td>{{ $item->late }}</td>
                                         <td>

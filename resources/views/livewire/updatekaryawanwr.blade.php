@@ -2,7 +2,7 @@
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary">
-                <h5>Data Karyawan</h5>
+                <h5 class="text-light py-2">Data Karyawan</h5>
             </div>
             <div class="card-body">
                 <nav>
@@ -38,13 +38,12 @@
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
+
                 </div>
+                <button wire:click="update" class="btn btn-primary mx-3">Update</button>
+                <button wire:click="exit" class="btn btn-dark mx-3">Exit</button>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(".date").datepicker({
-            format: "dd-mm-yyyy",
-        });
-    </script>
+
 </div>

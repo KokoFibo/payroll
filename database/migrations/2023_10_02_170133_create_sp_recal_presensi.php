@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         $procedure = "
         CREATE PROCEDURE spRecalPresensi()
         begin
         update temp_rekap_presensi rp set rp.shift ='Shift pagi' where (rp.first_in between '5:00' and '08:00' or rp.second_out<'20:00')  and rp.shift is null;
-update temp_rekap_presensi rp set rp.shift ='Shift malam' where (rp.first_in> '16:00' or rp.first_out>'21:00' or rp.second_out between '05:00' and '07:00') and rp.shift is null;
+update temp_rekap_presensi rp set rp.shift ='Shift malam' where (rp.first_in> '15:00' or rp.first_out>'21:00' or rp.second_out between '05:00' and '07:00') and rp.shift is null;
 
 update temp_rekap_presensi set overtime_in=null,overtime_out=null where shift='Shift malam' and (overtime_in is not null or overtime_out is not null);
 
@@ -40,7 +41,7 @@ update temp_rekap_presensi rp set
 
 update temp_rekap_presensi rp set
         rp.late=1
-        where rp.first_in between '08:03' and '11:00' and rp.shift ='Shift pagi';
+        where rp.first_in between '08:04' and '11:00' and rp.shift ='Shift pagi';
 
 update temp_rekap_presensi rp set
         rp.late=1
@@ -58,7 +59,7 @@ update temp_rekap_presensi rp set
 
 update temp_rekap_presensi rp set
         rp.late=1
-        where rp.first_in between '20:33' and '23:00'  and rp.shift ='Shift malam';
+        where rp.first_in between '20:04' and '23:00'  and rp.shift ='Shift malam';
 
 update temp_rekap_presensi rp set
         rp.late=1

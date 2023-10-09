@@ -1,9 +1,11 @@
 <?php
 
 use App\Livewire\Test;
-use App\Livewire\Karyawan;
+use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
+use App\Livewire\Updatekaryawanwr;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardController;
 
@@ -18,16 +20,20 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/test', Test::class)->name('test');
-// Route::get('/karyawan', Karyawan::class)->name('karyawan');  data lama
+Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
+Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
+// Route::get('/karyawanupdate', Updatekaryawanwr::class)->name('karyawanupdate');
+Route::get('/karyawan', [KaryawanController::class,'index'])->name('karyawan');
 Route::get('/testaja', [Testaja::class,'index']);
 Route::middleware(['guest'])->group(function() {
 
@@ -37,7 +43,6 @@ Route::get('/presensiupload', function() {
     return view('content.presensi.import');
 });
 
-Route::get('/karyawan', Karyawan::class);
 Route::get('/dashboard', [DashboardController::class,'index']);
 Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
 Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');

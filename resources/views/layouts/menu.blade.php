@@ -5,7 +5,7 @@
 with font-awesome or any other icon font library -->
 
         <li class="nav-item">
-            <a href="/dashboard" class="nav-link">
+            <a href="/dashboard" class="nav-link" wire:navigate>
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     Dashboard
@@ -13,7 +13,7 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
         <li class="nav-item">
-            <a href="/karyawan" class="nav-link">
+            <a href="/karyawan" class="nav-link" wire:navigate>
                 <i class="nav-icon fa-solid fa-people-group"></i>
                 <p>
                     Data Karyawan
@@ -22,7 +22,7 @@ with font-awesome or any other icon font library -->
         </li>
 
         <li class="nav-item">
-            <a href="/presensi" class="nav-link">
+            <a href="/presensi" class="nav-link" wire:navigate>
                 <i class="nav-icon fas fa-clipboard-check"></i>
                 <p>
                     Presensi
@@ -31,7 +31,7 @@ with font-awesome or any other icon font library -->
         </li>
 
         <li class="nav-item">
-            <a href="/test" class="nav-link">
+            <a href="/test" class="nav-link" wire:navigate>
                 <i class="nav-icon fas fa-dollar-sign"></i>
                 <p>
                     Payroll
@@ -39,7 +39,7 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
         <li class="nav-item ">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" wire:navigate>
                 <i class="nav-icon fa-solid fa-gear"></i>
                 <p>
                     User Setting
@@ -48,13 +48,13 @@ with font-awesome or any other icon font library -->
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" wire:navigate>
                         <i class="far fa-circle nav-icon"></i>
                         <p>Change Password</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" wire:navigate>
                         <i class="far fa-circle nav-icon"></i>
                         <p>Language Setting</p>
                     </a>
