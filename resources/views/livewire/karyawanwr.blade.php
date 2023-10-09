@@ -1,9 +1,9 @@
 <div>
     <div class="container ">
         <div class="card mt-3 ">
-            <div class="card-header bg-secondary">
-                <h5>Data Karyawan
-                    <button wire:click="clear" class="btn btn-success float-end">Create New</button>
+            <div class="card-header bg-secondary text-light">
+                <h5 class="py-2">Data Karyawan
+                    <button wire:click="clear" class="btn btn-primary float-end">Create New</button>
                 </h5>
 
 

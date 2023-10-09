@@ -4,7 +4,12 @@
 
 @section('content')
 
-    <div class="card p-2">
+    {{-- <style>
+        #all {
+            font-family: 'inter';
+        }
+    </style> --}}
+    <div id="all" class="card p-2">
         <div class="card-head">
             <h3 class="mx-4">Data Karyawan
                 <a href="/karyawancreate" class="float-end"><button class="btn btn-primary">Create New</button></a>
@@ -46,7 +51,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $datas->links() }}
+            <span>{{ $datas->links() }}</span>
         </div>
     </div>
 @endsection
