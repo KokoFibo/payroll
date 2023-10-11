@@ -1,4 +1,5 @@
 <div>
+
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">
@@ -50,9 +51,5 @@
             </div>
         </div>
     </div>
-    {{-- <script type="text/javascript">
-        $(".date").datepicker({
-            format: "dd-mm-yyyy",
-        });
-    </script> --}}
+
 </div>

@@ -15,11 +15,14 @@ class Karyawanwr extends Component
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja, $hutang, $potongan_hutang, $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
 
+    public function mount () {
+        $this->id_karyawan = getNextIdKaryawan();
+    }
+
     public function save () {
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();
 
         if($ada) {
-
             $this->id = $ada->id ;
             $this->update();
         } else {
@@ -69,9 +72,14 @@ class Karyawanwr extends Component
             $data->denda = $this->denda;
             $data->potongan_pph21 = $this->potongan_pph21;
             $data->potongan_bpjs = $this->potongan_bpjs;
+            try {
+                $data->save();
+                $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
+            } catch (\Exception $e) {
+                $this->dispatch('error', message: $e->getMessage());
+                return $e->getMessage();
+            }
 
-            $data->save();
-            $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
 
 
             // $this->reset();
@@ -80,6 +88,7 @@ class Karyawanwr extends Component
 
     }
     public function update () {
+        try {
         $data = Karyawan::find($this->id);
 
         $data->id_karyawan = $this->id_karyawan;
@@ -125,16 +134,18 @@ class Karyawanwr extends Component
         $data->potongan_bpjs = $this->potongan_bpjs;
 
         $data->save();
-        // $this->dispatch('success', ['message' => 'Data Karyawan Sudah di Update']);
         $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
-
-
+    } catch (\Exception $e) {
+            $this->dispatch('error', message: $e->getMessage());
+            return $e->getMessage();
+        }
 
     }
 
     public function clear () {
 
         $this->reset();
+        $this->id_karyawan = getNextIdKaryawan();
     }
     public function exit () {
         $this->reset();

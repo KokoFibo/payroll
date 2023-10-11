@@ -1,16 +1,19 @@
-@extends('layouts.app2')
+@extends('layouts.app')
 
 @section('title', 'Import - Presensi')
 
 @section('content')
 
-    <h4 class="px-4 mt-4">Import Presensi</h4>
 
-    <div class="row mb-5 p-4">
-        <div class="col-md-12 col-lg-12 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
+
+    <div class="row mb-5 p-4 ">
+        <div class="col-md-3 col-lg-3 mb-3 mx-auto">
+            <div class="card h-100 ">
+                <div class="card-header bg-success text-light">
                     <h5>Import file presensi harian</h5>
+                </div>
+                <div class="card-body">
+
                     <form action="{{ route('presensi.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
@@ -43,15 +46,15 @@
                         <button type="submit" class="btn btn-outline-primary" id="import-btn">Import</button>
                         <a href="/presensi" wire:navigate><button type="button" class="btn btn-primary" ">Exit</button></a>
 
-                                                                                    <div class="spinner-grow text-success" role="status" id="loading">
-                                                                                        <span class="visually-hidden">Loading...</span>
-                                                                                    </div>
+                                                                                                                                <div class="spinner-grow text-success" role="status" id="loading">
+                                                                                                                                    <span class="visually-hidden">Loading...</span>
+                                                                                                                                </div>
 
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                                                                            </form>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
 
 
 @endsection

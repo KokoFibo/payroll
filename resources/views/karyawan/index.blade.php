@@ -4,54 +4,93 @@
 
 @section('content')
 
-    {{-- <style>
+    <div>
+        {{-- <style>
         #all {
             font-family: 'inter';
         }
     </style> --}}
-    <div id="all" class="card p-2">
-        <div class="card-head">
-            <h3 class="mx-4">Data Karyawan
-                <a href="/karyawancreate" class="float-end"><button class="btn btn-primary">Create New</button></a>
-            </h3>
-        </div>
-        <div class="card-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama</th>
-                        <th>ID Karyawan</th>
-                        <th>Branch</th>
-                        <th>Department</th>
-                        <th>Jabatan</th>
-                        <th>Level Jabatan</th>
-                        <th></th>
+        <div id="all" class="card p-2">
+            <div class="card-head">
+                <h3 class="mx-4">Data Karyawan
+                    <a href="/karyawancreate" class="float-end"><button class="btn btn-primary">Create New</button></a>
+                </h3>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($datas as $data)
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td>{{ $data->id }}</td>
-                            <td>{{ $data->nama }}</td>
-                            <td>{{ $data->id_karyawan }}</td>
-                            <td>{{ $data->branch }}</td>
-                            <td>{{ $data->departemen }}</td>
-                            <td>{{ $data->jabatan }}</td>
-                            <td>{{ $data->level_jabatan }}</td>
-                            <td>
-                                <a href="/karyawanupdate/{{ $data->id }}"><button class="btn btn-warning btn-sm"><i
-                                            class="fa-regular fa-pen-to-square"></i></button></a>
-                                <a href="#"><button class="btn btn-danger btn-sm"><i
-                                            class="fa-solid fa-trash-can"></i></button></a>
-                            </td>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>ID Karyawan</th>
+                            <th>Branch</th>
+                            <th>Department</th>
+                            <th>Jabatan</th>
+                            <th>Level Jabatan</th>
+                            <th></th>
 
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <span>{{ $datas->links() }}</span>
+                    </thead>
+                    <tbody x-data="{}">
+                        @foreach ($datas as $data)
+                            <tr>
+                                <input type="hidden" class="delete_id" value="{{ $data->id }}">
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->id }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->nama }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->id_karyawan }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->branch }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->departemen }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->jabatan }}</td>
+                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    {{ $data->level_jabatan }}</td>
+                                <td class="btn-group gap-2"
+                                    @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                    <a href="/karyawanupdate/{{ $data->id }}"><button class="btn btn-warning btn-sm"><i
+                                                class="fa-regular fa-pen-to-square"></i></button></a>
+                                    {{-- <a href="/karyawandelete/{{ $data->id }}" onclick="confirmation(event)"
+                                        class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a> --}}
+
+                                    <form method="post" action="{{ route('karyawan.destroy', ['id' => $data->id]) }}">
+                                        @csrf
+                                        @method('delete')
+
+
+
+                                        <a href="{{ route('karyawan.destroy', ['id' => $data->id]) }}"><button
+                                                type="submit" class="btn btn-danger btn-sm confirm-delete"><i
+                                                    class="fa-solid fa-trash-can"></i></button></a>
+                                    </form>
+
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <span>{{ $datas->links() }}</span>
+            </div>
         </div>
     </div>
+    <script>
+        @if (Session::has('message'))
+
+            toastr.options = {
+
+                "progressBar": true,
+                "timeOut": "1500",
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "closeButton": true,
+            }
+            toastr.success("{{ session('message') }}");
+        @endif
+    </script>
+
 @endsection
