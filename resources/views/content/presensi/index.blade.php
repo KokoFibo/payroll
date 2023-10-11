@@ -3,12 +3,13 @@
 @section('title', 'Data - Presensi')
 
 @section('content')
-    <div class="row px-4 mt-4">
+    <div class="row px-4 ">
 
-        <h4 class="col-6">
+        <h4 class="col-6 mt-4">
             Presensi Karyawan
         </h4>
-        <div class="col-6 text-end">
+        <div class="col-6 text-end mt-4">
+            <a href="/presensidelete"><button class="btn btn-danger mx-4">Delete Presensi</button></a>
             <a href="/presensiupload"><button class="btn btn-success mx-4">Import Presensi</button></a>
         </div>
     </div>
@@ -95,7 +96,7 @@
 
     <div class="card mx-4">
         <div class="card-header">
-            <h5>Data presensi tanggal {{ format_tgl($date) }} {{ is_saturday($date) }}</h5>
+            <h5>Data presensi {{ format_tgl($date) }} {{ is_saturday($date) ? 'Sabtu' : '' }}</h5>
         </div>
         <div class="card-body" x-data>
 
@@ -134,7 +135,7 @@
                             $overtime_in_late = '';
                             $overtime_in = '';
                             $overtime_out = '';
-                            
+
                             if ($item->shift == 'Shift pagi') {
                                 $second_out_late = floor((strtotime($item->second_out) - strtotime('17:00')) / 60);
                             } elseif ($item->shift == 'Shift malam') {
@@ -144,14 +145,14 @@
                                     $second_out_late = floor((strtotime($item->second_out) - strtotime('05:00')) / 60);
                                 }
                             }
-                            
+
                             if ($item->shift == 'Shift pagi') {
                                 $first_in_late = floor((strtotime($item->first_in) - strtotime('8:03')) / 60);
                                 $overtime_in_late = floor((strtotime($item->overtime_in) - strtotime('18:33')) / 60);
                             } elseif ($item->shift == 'Shift malam') {
                                 $first_in_late = floor((strtotime($item->first_in) - strtotime('20:03')) / 60);
                             }
-                            
+
                             if (strtotime($item->first_out) < strtotime('12:00')) {
                                 $second_in_late = floor((strtotime($item->second_in) - strtotime('12:30')) / 60);
                             } elseif (strtotime($item->first_out) >= strtotime('12:00')) {
@@ -159,7 +160,7 @@
                             } elseif (strtotime($item->first_out) > strtotime('00:00')) {
                                 $second_in_late = floor((strtotime($item->second_in) - strtotime('1:00')) / 60);
                             }
-                            
+
                             if ($second_out_late >= 0) {
                                 $second_out_late = '';
                             }
@@ -175,11 +176,11 @@
                             if ($item->first_in == '') {
                                 $no_scan = 'No First In, ' . $no_scan;
                             }
-                            
+
                             if ($item->second_out == '') {
                                 $no_scan = 'No Second Out, ' . $no_scan;
                             }
-                            
+
                             if ($item->first_out != '' || $item->second_in != '') {
                                 if ($item->first_out == '') {
                                     $no_scan = 'No First Out, ' . $no_scan;
@@ -188,25 +189,25 @@
                                     $no_scan = 'No Second In, ' . $no_scan;
                                 }
                             }
-                            
+
                             if ($item->overtime_out != '' && $item->overtime_in == '' && $item->shift == 'Shift pagi') {
                                 $no_scan = 'No overtime In, ' . $no_scan;
                             }
-                            
+
                             if ($item->overtime_out == '' && $item->overtime_in != '' && $item->shift == 'Shift pagi') {
                                 $no_scan = 'No overtime Out, ' . $no_scan;
                             }
-                            
+
                             if ($item->shift == 'Shift pagi') {
                                 $overtime_in = $item->overtime_in;
                                 $overtime_out = $item->overtime_out;
                             }
-                            
+
                         @endphp
                         <tr
                             class="@if ($item->no_scan == 1) table-warning table-gradient text-dark @elseif ($item->late == 1) table-danger table-gradient text-white @endif">
                             <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                                <div class="btn-group gap-2" role="group" aria-label="Basic example">
                                     <button id="diupdate" type="button" class="btn btn-success btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#edit{{ $loop->iteration }}"><i
                                             class="fa-regular fa-pen-to-square"></i></button>
@@ -216,7 +217,7 @@
                                         @csrf
                                         @method('delete')
                                         <button type="submit" class="btn btn-danger btn-sm"><i
-                                                class="fa-solid fa-trash-can"></i></button>
+                                                class="fa-solid fa-trash-can confirm-delete"></i></button>
                                     </form>
                                 </div>
 
@@ -342,6 +343,19 @@
         </div>
     </div>
 
+    <script>
+        @if (Session::has('message'))
 
+            toastr.options = {
+
+                "progressBar": true,
+                "timeOut": "1500",
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "closeButton": true,
+            }
+            toastr.success("{{ session('message') }}");
+        @endif
+    </script>
 
 @endsection

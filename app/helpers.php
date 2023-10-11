@@ -2,6 +2,13 @@
 
 use Carbon\Carbon;
 
+function getLastIdKaryawan() {
+    return DB::table('karyawans')->max('id_karyawan');
+}
+
+function getNextIdKaryawan() {
+    return getLastIdKaryawan() + 1;
+}
 function format_tgl($tgl) {
     return date('d-M-Y', strtotime($tgl));
 }

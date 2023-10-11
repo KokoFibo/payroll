@@ -344,7 +344,7 @@ class PresensiController extends Controller
     {
         DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $date)->delete();
         Presensi::where('user_id', $user_id)->where('date', $date)->delete();
-        return back()->with('success', 'Presensi deleted.');
+        return back()->with('message', 'Presensi deleted.');
     }
 
     /**

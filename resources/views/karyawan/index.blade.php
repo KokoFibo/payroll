@@ -3,6 +3,7 @@
 @section('title', 'Karyawan')
 
 @section('content')
+
     <div>
         {{-- <style>
         #all {
@@ -34,6 +35,7 @@
                     <tbody x-data="{}">
                         @foreach ($datas as $data)
                             <tr>
+                                <input type="hidden" class="delete_id" value="{{ $data->id }}">
                                 <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
                                     {{ $data->id }}</td>
                                 <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
@@ -48,13 +50,26 @@
                                     {{ $data->jabatan }}</td>
                                 <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
                                     {{ $data->level_jabatan }}</td>
-                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
+                                <td class="btn-group gap-2"
+                                    @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
                                     <a href="/karyawanupdate/{{ $data->id }}"><button class="btn btn-warning btn-sm"><i
                                                 class="fa-regular fa-pen-to-square"></i></button></a>
-                                    <a href="#"><button class="btn btn-danger btn-sm"><i
-                                                class="fa-solid fa-trash-can"></i></button></a>
-                                </td>
+                                    {{-- <a href="/karyawandelete/{{ $data->id }}" onclick="confirmation(event)"
+                                        class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a> --}}
 
+                                    <form method="post" action="{{ route('karyawan.destroy', ['id' => $data->id]) }}">
+                                        @csrf
+                                        @method('delete')
+
+
+
+                                        <a href="{{ route('karyawan.destroy', ['id' => $data->id]) }}"><button
+                                                type="submit" class="btn btn-danger btn-sm confirm-delete"><i
+                                                    class="fa-solid fa-trash-can"></i></button></a>
+                                    </form>
+
+
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -63,4 +78,19 @@
             </div>
         </div>
     </div>
+    <script>
+        @if (Session::has('message'))
+
+            toastr.options = {
+
+                "progressBar": true,
+                "timeOut": "1500",
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "closeButton": true,
+            }
+            toastr.success("{{ session('message') }}");
+        @endif
+    </script>
+
 @endsection
