@@ -45,11 +45,11 @@ update temp_rekap_presensi rp set
 
 update temp_rekap_presensi rp set
         rp.late=1
-        where rp.first_out<'12:00' and rp.second_in > '12:33'  and rp.shift ='Shift pagi';
+        where rp.first_out<'11:30' and rp.second_in > '12:33'  and rp.shift ='Shift pagi';
 
 update temp_rekap_presensi rp set
         rp.late=1
-        where rp.first_out>='12:00' and rp.second_in > '13:00'  and rp.shift ='Shift pagi';
+        where rp.first_out>='11:30' and rp.second_in > '13:00'  and rp.shift ='Shift pagi';
 
 
 update temp_rekap_presensi rp set

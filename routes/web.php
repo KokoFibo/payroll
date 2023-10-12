@@ -46,6 +46,7 @@ Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
 
 
 
+
 Route::get('/testaja', [Testaja::class,'index']);
 Route::middleware(['guest'])->group(function() {
 
@@ -65,3 +66,6 @@ Route::get('/dashboard', [DashboardController::class,'index']);
 Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
 Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');
 Route::resource('/presensi', PresensiController::class);
+
+Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
+
