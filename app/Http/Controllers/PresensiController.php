@@ -22,6 +22,12 @@ class PresensiController extends Controller
         $this->middleware('auth');
     }
 
+    public function normalize () {
+        $data = DB::table('rekap_presensis')->whereColumn('first_out','=', 'second_in')->update(['second_in' => null, 'no_scan' => 1]);
+
+        return back()->with('message', 'Data Presensi Normalized');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -221,6 +227,7 @@ class PresensiController extends Controller
 
 
         DB::select("CALL spRecalPresensi()");
+
         if(is_saturday($tgl)) {
             $datas = DB::table('rekap_presensis')
             ->where('date', $tgl)
@@ -261,25 +268,14 @@ class PresensiController extends Controller
                 }
             }
         }
+        $data = DB::table('rekap_presensis')->whereColumn('first_out','=', 'second_in')->update(['second_in' => null, 'no_scan' => 1]);
 
         return back()->with('success', 'Data absensi telah berhasil di import');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Presensi $presensi)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Presensi $presensi)
-    {
-        //
-    }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -313,31 +309,62 @@ class PresensiController extends Controller
             'overtime_out' => $request->overtime_out
         ]);
         $data = DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $request->date)->get();
-
+        $oke = 1;
         if(($data[0]->first_in=='' && $data[0]->first_out=='') || ($data[0]->first_in!='' && $data[0]->first_out!='')){
-            $ok1 = 1; //data masuk dan keluar lengkap
+            $oke = 1;//data masuk dan keluar lengkap
         } else {
-            $ok1 = 0; //data masuk dan keluar TIDAK LENGKAP
+            $oke = 0;//data masuk dan keluar TIDAK LENGKAP
         }
 
         if(($data[0]->second_in=='' && $data[0]->second_out=='') || ($data[0]->second_in!='' && $data[0]->second_out!='')){
-            $ok2 = 1; //data masuk dan keluar lengkap
+            $oke = 1;//data masuk dan keluar lengkap
         } else {
-            $ok2 = 0; //data masuk dan keluar TIDAK LENGKAP
+            $oke = 0;//data masuk dan keluar TIDAK LENGKAP
         }
         if(($data[0]->overtime_in=='' && $data[0]->overtime_out=='') || ($data[0]->overtime_in!='' && $data[0]->overtime_out!='')){
-            $ok3 = 1; //data masuk dan keluar lengkap
+            $oke = 1; //data masuk dan keluar lengkap
         } else {
-            $ok3 = 0; //data masuk dan keluar TIDAK LENGKAP
+            $oke =0; //data masuk dan keluar TIDAK LENGKAP
         }
-        if($ok1 == 1 && $ok2 == 1 && $ok3 ) {
+
+        if (!$oke){
+            if(
+                ($data[0]->first_in!='' && $data[0]->second_out!='') &&  ($data[0]->first_out=='' && $data[0]->second_in=='') && $ok3 == 1
+            ){
+
+                $oke = 1;
+            }
+            else {
+                $oke = 0;
+
+            }
+        }
+        if($oke) {
             DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $request->date)->update([
                 'no_scan' => '',
             ]);
         }
+        $data = DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $request->date)->get();
+        $late = lateCheck($data);
+
+        // dd($late);
 
 
-        return back()->with('success', 'Presensi updated.');
+        DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $request->date)->update([
+            'late' => $late,
+        ]);
+
+
+
+
+
+        // DB::table('rekap_presensis')->where('user_id', $user_id)->where('date', $request->date)->update([
+        //     'no_scan' => lateCheck($data),
+        // ]);
+
+
+
+        return back()->with('message', 'Presensi updated.');
     }
 
     public function delete_presensi($user_id, $date)
