@@ -31,9 +31,9 @@ class HomeController extends Controller
 
         if($desktop) {
 
-            return view('dashboard', compact(['device']));
+            return view('dashboard');
         } else {
-            return view('dashboardMobile', compact(['device']));
+            return view('dashboardMobile');
 
         }
     }
