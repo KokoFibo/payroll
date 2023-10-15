@@ -4,15 +4,31 @@
 
 @section('content')
 
-    <div>
-        {{-- <style>
-        #all {
-            font-family: 'inter';
-        }
-    </style> --}}
-        <div id="all" class="card p-2">
-            <div class="card-head">
-                <h3 class="mx-4">Data Karyawan
+    <div class="p-4">
+        <div class="row ">
+            <div class="col-4 mb-3">
+
+                <form action="/cari" method="post">
+                    @csrf
+                    <div class="input-group">
+
+                        <input type="text" class="form-control" placeholder="Cari ..." aria-label="Recipient's username"
+                            aria-describedby="button-addon2" name="cari">
+                        <button class="btn btn-primary" type="submit" id="button-addon2">Cari</button>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-2 input-group mb-3">
+                <a href="/resettable"><button class="btn btn-primary" type="button" id="button-addon2">Reset</button></a>
+            </div>
+
+        </div>
+
+        <div class="card p-2">
+            <div class="card-header bg-secondary text-light">
+                <h3>Data Karyawan
                     <a href="/karyawancreate" class="float-end"><button class="btn btn-primary">Create New</button></a>
                 </h3>
 
@@ -21,7 +37,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Nama</th>
                             <th>ID Karyawan</th>
                             <th>Branch</th>
@@ -36,8 +51,7 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <input type="hidden" class="delete_id" value="{{ $data->id }}">
-                                <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
-                                    {{ $data->id }}</td>
+
                                 <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">
                                     {{ $data->nama }}</td>
                                 <td @dblclick="window.location.href = '/karyawanupdate/'+{{ $data->id }}">

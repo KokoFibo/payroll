@@ -162,7 +162,7 @@ class PresensiController extends Controller
         $department = "";
         // random check
 
-        for ($i = 5; $i < $row_limit; $i++) {
+        for ($i = 5; $i <= $row_limit; $i++) {
             if ($importedData->getCell('A' . $i)->getValue() != "") {
 
                 $user_id = $importedData->getCell('A' . $i)->getValue();

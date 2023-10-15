@@ -1,6 +1,12 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+
+function titleCase($data) {
+    // $data1 =  Str::of($data)->trim('/');
+    return Str::of($data)->trim('/')->title();
+}
 
 function lateCheck($data) {
 
@@ -45,7 +51,7 @@ function format_tgl($tgl) {
 
 function format_jam($jam) {
     if($jam) {
-        return Carbon::createFromFormat('H:i:s',$jam)->format('h:i');
+        return Carbon::createFromFormat('H:i:s',$jam)->format('H:i');
     }
 }
 

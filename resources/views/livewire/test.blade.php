@@ -1,3 +1,4 @@
 <div>
-    test LW
+    <input type="text" wire:model.live="search">
+    <h5>Search : {{ $search }}</h5>
 </div>

@@ -3,11 +3,9 @@
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">
-                <h5 class="py-2">Data Karyawan
+                <h5>Data Karyawan
                     <button wire:click="clear" class="btn btn-primary float-end">Create New</button>
                 </h5>
-
-
 
             </div>
             <div class="card-body">

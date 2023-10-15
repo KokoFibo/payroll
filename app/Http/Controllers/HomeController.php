@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
+
+$agent = new Agent();
 
 class HomeController extends Controller
 {
@@ -23,6 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $agent = new Agent();
+        $device = $agent->isMobile();
+        if($device) {
+
+            return view('dashboardMobile', compact(['device']));
+        } else {
+
+            return view('dashboard', compact(['device']));
+        }
     }
 }

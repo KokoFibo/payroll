@@ -3,7 +3,9 @@
 use App\Livewire\Test;
 use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
+use App\Livewire\Karyawanindexwr;
 use App\Livewire\Deletepresensiwr;
+use App\Livewire\Importkaryawanwr;
 use App\Livewire\Updatekaryawanwr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KaryawanController;
@@ -34,6 +36,8 @@ Route::get('/test', Test::class)->name('test');
 Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
 Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
 // Route::get('/karyawanupdate', Updatekaryawanwr::class)->name('karyawanupdate');
+
+Route::get('/karyawanindex', Karyawanindexwr::class)->name('karyawanindex');
 
 // Route::resource('karyawan', KaryawanController::class);
 Route::get('/karyawan', [KaryawanController::class,'index'])->name('karyawan.index');
@@ -68,4 +72,22 @@ Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, '
 Route::resource('/presensi', PresensiController::class);
 
 Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
+Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');
+Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
+
+// menu khusus developer
+
+
+Route::post('/karyawanimport', [KaryawanController::class,'import'])->name('karyawan.import');
+Route::get('/karyawanviewimport', function() {
+    return view('karyawan.importview');
+});
+Route::get('/erasedatakarayawan', [KaryawanController::class,'erase'])->name('karyawan.erase');
+
+
+
+
+
+
+
 

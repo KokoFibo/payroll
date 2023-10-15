@@ -1,7 +1,7 @@
 {{-- Gaji --}}
-<div class="card">
+<div class="card mt-2">
     <div class="card-header bg-secondary ">
-        <h5>Gaji</h5>
+        <h5 class="text-light">Gaji</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -11,7 +11,6 @@
                     <select class="form-select" aria-label="Default select example" wire:model="metode_penggajian">
                         <option>Pilih metode penggajian</option>
                         <option value="Perjam">Perjam</option>
-                        <option value="Perhari">Perhari</option>
                         <option value="Perbulan">Perbulan</option>
                     </select>
                 </div>
@@ -38,9 +37,9 @@
 
 {{-- Tunjangan --}}
 
-<div class="card">
+<div class="card mt-2">
     <div class="card-header bg-secondary">
-        <h5>Tunjangan</h5>
+        <h5 class="text-light">Tunjangan</h5>
     </div>
     <div class="card-body">
 
@@ -97,24 +96,12 @@
 </div>
 
 {{-- Potongan --}}
-<div class="card">
+<div class="card mt-2">
     <div class="card-header bg-secondary">
-        <h5>Potongan</h5>
+        <h5 class="text-light">Potongan</h5>
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-3">
-                <div class="mb-3">
-                    <label class="form-label">Hutang</label>
-                    <input wire:model="hutang" type="number" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="mb-3">
-                    <label class="form-label">Potongan hutang</label>
-                    <input wire:model="potongan_hutang" type="number" class="form-control">
-                </div>
-            </div>
             <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">Iuran air minum</label>
@@ -127,10 +114,6 @@
                     <input wire:model="denda" type="number" class="form-control">
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-
             <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">Potongan seragam</label>
@@ -143,6 +126,11 @@
                     <input wire:model="potongan_pph21" type="number" class="form-control">
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+
+
 
             <div class="col-md-3">
                 <div class="mb-3">

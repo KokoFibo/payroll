@@ -8,6 +8,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title') | Yifang </title>
+
 
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
         rel="stylesheet"> --}}
@@ -34,7 +36,7 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 
-
+    @livewireStyles
 </head>
 <style>
     body {
@@ -43,6 +45,7 @@
 </style>
 
 <body class="hold-transition sidebar-mini">
+
     <div class="wrapper">
 
 
@@ -69,6 +72,7 @@
                 orientation: "auto",
             });
         </script> --}}
+        @livewireScripts
 </body>
 
 </html>

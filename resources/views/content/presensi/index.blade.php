@@ -241,8 +241,12 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit presensi
-                                                    {{ $item->name }} tgl {{ $item->date }}</h5>
+                                                <div class="modal-title" id="exampleModalLabel">
+                                                    <h4 style="font-weight: 700">Edit Presensi</h4>
+
+                                                    <h5 class="mt-2">{{ $item->name }} </h5>
+                                                    <h5 class="mt-2">{{ format_tgl($item->date) }}</h5>
+                                                </div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>

@@ -51,8 +51,6 @@ return new class extends Migration
             $table->integer('tunjangan_lembur_sabtu')->nullable();
             $table->integer('tunjangan_lama_kerja')->nullable();
 
-            $table->integer('hutang')->nullable();
-            $table->integer('potongan_hutang')->nullable();
             $table->integer('iuran_air')->nullable();
             $table->integer('potongan_seragam')->nullable();
             $table->integer('denda')->nullable();
