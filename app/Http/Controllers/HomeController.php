@@ -27,13 +27,14 @@ class HomeController extends Controller
     public function index()
     {
         $agent = new Agent();
-        $device = $agent->isMobile();
-        if($device) {
+        $desktop = $agent->isDesktop();
 
-            return view('dashboardMobile', compact(['device']));
-        } else {
+        if($desktop) {
 
             return view('dashboard', compact(['device']));
+        } else {
+            return view('dashboardMobile', compact(['device']));
+
         }
     }
 }
