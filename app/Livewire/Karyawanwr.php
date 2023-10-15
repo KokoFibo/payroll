@@ -12,7 +12,7 @@ class Karyawanwr extends Component
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
     public $gaji_pokok, $gaji_perjam, $gaji_overtime, $gaji_harian, $gaji_bulanan, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja, $hutang, $potongan_hutang, $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
 
     public function mount () {
@@ -32,11 +32,11 @@ class Karyawanwr extends Component
             $data = new Karyawan();
             // Data Pribadi
             $data->id_karyawan = $this->id_karyawan;
-            $data->nama = $this->nama;
+            $data->nama = titleCase($this->nama);
             $data->email = trim($this->email,' ');
             $data->hp = $this->hp;
             $data->telepon = $this->telepon;
-            $data->tempat_lahir = $this->tempat_lahir;
+            $data->tempat_lahir = titleCase($this->tempat_lahir);
             $data->tanggal_lahir = $this->tanggal_lahir;
             $data->gender = $this->gender;
             $data->status_pernikahan = $this->status_pernikahan;
@@ -45,8 +45,8 @@ class Karyawanwr extends Component
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
             $data->no_identitas = $this->no_identitas;
-            $data->alamat_identitas = $this->alamat_identitas;
-            $data->alamat_tinggal = $this->alamat_tinggal;
+            $data->alamat_identitas = titleCase($this->alamat_identitas);
+            $data->alamat_tinggal = titleCase($this->alamat_tinggal);
             // Data Kepegawaian
             $data->status_karyawan = $this->status_karyawan;
             $data->tanggal_bergabung = $this->tanggal_bergabung;
@@ -65,8 +65,6 @@ class Karyawanwr extends Component
             $data->tunjangan_skill = $this->tunjangan_skill;
             $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
-            $data->hutang = $this->hutang;
-            $data->potongan_hutang = $this->potongan_hutang;
             $data->iuran_air = $this->iuran_air;
             $data->potongan_seragam = $this->potongan_seragam;
             $data->denda = $this->denda;
@@ -92,11 +90,11 @@ class Karyawanwr extends Component
         $data = Karyawan::find($this->id);
 
         $data->id_karyawan = $this->id_karyawan;
-        $data->nama = $this->nama;
+        $data->nama = titleCase($this->nama);
         $data->email = trim($this->email,' ');
         $data->hp = $this->hp;
         $data->telepon = $this->telepon;
-        $data->tempat_lahir = $this->tempat_lahir;
+        $data->tempat_lahir = titleCase($this->tempat_lahir);
         $data->tanggal_lahir = $this->tanggal_lahir;
         $data->gender = $this->gender;
         $data->status_pernikahan = $this->status_pernikahan;
@@ -105,8 +103,8 @@ class Karyawanwr extends Component
         // Identitas
         $data->jenis_identitas = $this->jenis_identitas;
         $data->no_identitas = $this->no_identitas;
-        $data->alamat_identitas = $this->alamat_identitas;
-        $data->alamat_tinggal = $this->alamat_tinggal;
+        $data->alamat_identitas = titleCase($this->alamat_identitas);
+        $data->alamat_tinggal = titleCase($this->alamat_tinggal);
         // Data Kepegawaian
         $data->status_karyawan = $this->status_karyawan;
         $data->tanggal_bergabung = $this->tanggal_bergabung;
@@ -125,8 +123,6 @@ class Karyawanwr extends Component
         $data->tunjangan_skill = $this->tunjangan_skill;
         $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
-        $data->hutang = $this->hutang;
-        $data->potongan_hutang = $this->potongan_hutang;
         $data->iuran_air = $this->iuran_air;
         $data->potongan_seragam = $this->potongan_seragam;
         $data->denda = $this->denda;
@@ -149,7 +145,7 @@ class Karyawanwr extends Component
     }
     public function exit () {
         $this->reset();
-        return redirect()->to('/karyawan');
+        return redirect()->to('/karyawanindex');
     }
 
     public function render()

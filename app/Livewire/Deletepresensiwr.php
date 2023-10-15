@@ -26,6 +26,9 @@ class Deletepresensiwr extends Component
     public function exit () {
         $this->reset();
         return redirect()->to('/presensi');
+        // or sepertoi dibawah juga bisa
+        // return redirect('/presensi');
+
     }
     public function render()
     {

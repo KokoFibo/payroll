@@ -30,5 +30,14 @@ class DatabaseSeeder extends Seeder
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),
         ]);
+        User::create([
+            'name' => 'Yifang User',
+            'email' => 'user@yifang.com',
+            'role' => '1',
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
     }
 }

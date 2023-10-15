@@ -124,7 +124,7 @@ class Updatekaryawanwr extends Component
     }
     public function exit () {
         $this->reset();
-        return redirect()->to('/karyawan');
+        return redirect()->to('/karyawanindex');
     }
 
     public function render()
