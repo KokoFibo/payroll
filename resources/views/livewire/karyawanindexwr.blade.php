@@ -37,7 +37,7 @@
                             <th wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
                                     class="fa-solid fa-sort"></i>
                             </th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,17 +56,20 @@
                                                 class="fa-regular fa-pen-to-square"></i></button></a>
                                     {{-- <a href="/karyawandelete/{{ $data->id }}" onclick="confirmation(event)"
                                         class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a> --}}
+                                    @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                        <form method="post"
+                                            action="{{ route('karyawan.destroy', ['id' => $data->id]) }}">
+                                            @csrf
+                                            @method('delete')
 
-                                    <form method="post" action="{{ route('karyawan.destroy', ['id' => $data->id]) }}">
-                                        @csrf
-                                        @method('delete')
 
 
+                                            <a href="{{ route('karyawan.destroy', ['id' => $data->id]) }}"><button
+                                                    type="submit" class="btn btn-danger btn-sm confirm-delete"><i
+                                                        class="fa-solid fa-trash-can"></i></button></a>
+                                        </form>
+                                    @endif
 
-                                        <a href="{{ route('karyawan.destroy', ['id' => $data->id]) }}"><button
-                                                type="submit" class="btn btn-danger btn-sm confirm-delete"><i
-                                                    class="fa-solid fa-trash-can"></i></button></a>
-                                    </form>
 
 
                                 </td>

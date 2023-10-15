@@ -13,7 +13,7 @@ class Updatekaryawanwr extends Component
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
     public $gaji_pokok, $gaji_perjam, $gaji_overtime, $gaji_harian, $gaji_bulanan, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja, $hutang, $potongan_hutang, $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
 
     public function mount ($id) {
@@ -58,8 +58,6 @@ class Updatekaryawanwr extends Component
         $this->tunjangan_skill = $data->tunjangan_skill;
         $this->tunjangan_lembur_sabtu = $data->tunjangan_lembur_sabtu;
         $this->tunjangan_lama_kerja = $data->tunjangan_lama_kerja;
-        $this->hutang = $data->hutang;
-        $this->potongan_hutang = $data->potongan_hutang;
         $this->iuran_air = $data->iuran_air;
         $this->denda = $data->denda;
         $this->potongan_seragam = $data->potongan_seragam;
@@ -108,8 +106,6 @@ class Updatekaryawanwr extends Component
         $data->tunjangan_skill = $this->tunjangan_skill;
         $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
-        $data->hutang = $this->hutang;
-        $data->potongan_hutang = $this->potongan_hutang;
         $data->iuran_air = $this->iuran_air;
         $data->potongan_seragam = $this->potongan_seragam;
         $data->denda = $this->denda;
