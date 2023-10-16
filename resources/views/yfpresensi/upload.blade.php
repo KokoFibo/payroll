@@ -29,22 +29,26 @@
                             <input class="form-control" type="file" name="file" id="formFile" accept="xlsx"
                                 required>
                         </div>
+                        <div class="d-flex flex-row gap-2">
 
-                        <button type="submit" class="btn btn-outline-primary" id="import-btn">Import</button>
-                        <a href="/yfdeletepresensi"><button type="button" class="btn btn-danger">Delete YF
-                                Presensi</button></a>
+                            <button type="submit" class="btn btn-outline-primary" id="import-btn">Import</button>
+                            <a href="/yfdeletepresensi"><button type="button" class="btn btn-danger">Delete YF
+                                    Presensi</button></a>
+                            <a href="/deletepresensirekap"><button type="button" class="btn btn-warning">Delete YF
+                                    Presensi Rekap</button></a>
 
-                        <a href="/presensi" wire:navigate><button type="button" class="btn btn-primary" ">Exit</button></a>
+                            <a href="/yfpresensiindexwr" wire:navigate><button type="button" class="btn btn-primary" ">Exit</button></a>
 
-                                            <div class=" spinner-grow text-success" role="status" id="loading">
-                                                                  <span class="visually-hidden">Loading...</span>
-                                            </div>
+                                        <div class=" spinner-grow text-success" role="status" id="loading">
+                                            <span class="visually-hidden">Loading...</span>
+                                </div>
 
-                                          </form>
-                                    </div>
-                              </div>
+                            </form>
                         </div>
-                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
 
 
 @endsection

@@ -85,11 +85,17 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/yfindex" class="nav-link" wire:navigate>
+                <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
                     <i class="far fa-circle nav-icon"></i>
                     <p>YF Presensi</p>
                 </a>
             </li>
+            {{-- <li class="nav-item">
+                <a href="/yfindex" class="nav-link" wire:navigate>
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>YF Presensi</p>
+                </a>
+            </li> --}}
             <li class="nav-item ">
                 <a href="#" class="nav-link" wire:navigate>
                     <i class="nav-icon fa-solid fa-gear"></i>
