@@ -22,12 +22,7 @@ class Karyawanwr extends Component
     public function save () {
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();
 
-        if($ada) {
-            $this->id = $ada->id ;
-            $this->update();
-        } else {
-
-
+        if(!$ada) {
             $this->id='';
             $data = new Karyawan();
             // Data Pribadi
@@ -82,6 +77,15 @@ class Karyawanwr extends Component
 
             // $this->reset();
             // $this->dispatchBrowserEvent('success', ['message' => 'Data Saved']);
+
+        } else {
+            // $this->id = $ada->id ;
+            $this->dispatch('error', message: 'ID Karyawan Sudah Pernah Terdaftar');
+
+            // $this->update();
+
+
+
         }
 
     }

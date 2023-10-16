@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="mb-3">
             <label class="form-label">ID Karyawan <span class="text-danger">*</span></label>
-            <input wire:model="id_karyawan" type="number" class="form-control">
+            <input wire:model="id_karyawan" type="number" class="form-control" disabled>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Karyawan <span class="text-danger">*</span></label>
