@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\YfpresensiController;
 
 
 
@@ -62,6 +63,16 @@ Route::get('/testaja', [Testaja::class,'index']);
 Route::get('/testok', function() {
     return view('test');
 });
+
+// YF PRESENSI
+Route::get('/yfupload', function(){
+    return view ('yfpresensi.upload');
+});
+Route::get('/yfindex', [YfpresensiController::class, 'index']);
+Route::post('/yfstore', [YfpresensiController::class, 'store']);
+Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
+
+
 
 
 

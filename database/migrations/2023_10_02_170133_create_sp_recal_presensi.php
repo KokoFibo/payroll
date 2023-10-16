@@ -69,9 +69,7 @@ insert into rekap_presensis
 select * from temp_rekap_presensi;
 
 
-truncate table temp_rekap_presensi;
 
-truncate table presensis;
         END
         ";
 
