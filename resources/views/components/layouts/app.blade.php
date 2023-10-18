@@ -48,68 +48,76 @@
     }
 </style>
 
-<body class="hold-transition sidebar-mini">
-
-    <div class="wrapper">
+<body style="font-family: 'nunito';">
 
 
-        @include('layouts.navbar')
+    <body class="hold-transition sidebar-mini">
 
-        @include('layouts.aside')
+        <div class="wrapper">
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper ">
 
-            {{ $slot }}
+            @include('layouts.navbar')
 
-        </div>
-        <!-- /.content-wrapper -->
+            @include('layouts.aside')
 
-        @include('layouts.footer')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper ">
 
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> --}}
+                {{ $slot }}
 
-        {{-- <script>
+            </div>
+            <!-- /.content-wrapper -->
+
+            @include('layouts.footer')
+            {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+            {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> --}}
+
+            {{-- <script>
             $(".date").datepicker({
                 format: "dd-mm-yyyy",
                 todayHighlight: true,
                 orientation: "auto",
             });
         </script> --}}
-        @livewireScripts
+            @livewireScripts
 
-        <script>
-            window.addEventListener('hide-form', event => {
-                $('#update-form-modal').modal('hide');
-            });
-            window.addEventListener('update-form', event => {
-                $('#update-form-modal').modal('show');
-            });
-        </script>
+            <script>
+                $(document).ready(function() {
+                    toastr.options = {
+                        "progressBar": true,
+                        "timeOut": "1500",
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "closeButton": true,
+                        "preventDuplicates": true,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    window.addEventListener('success', event => {
+                        toastr.success(event.detail.message);
+                    });
+                    window.addEventListener('warning', event => {
+                        toastr.warning(event.detail.message);
+                    });
+                    window.addEventListener('error', event => {
+                        toastr.error(event.detail.message);
+                    });
+                });
+
+                window.addEventListener('hide-form', event => {
+                    $('#update-form-modal').modal('hide');
+                });
+                window.addEventListener('update-form', event => {
+                    $('#update-form-modal').modal('show');
+                });
+            </script>
 
 
-        <script>
-            $(document).ready(function() {
-                toastr.options = {
-                    "progressBar": true,
-                    "timeOut": "1500",
-                    "progressBar": true,
-                    "positionClass": "toast-top-right",
-                    "closeButton": true,
-                }
-                window.addEventListener('success', event => {
-                    toastr.success(event.detail.message);
-                });
-                window.addEventListener('warning', event => {
-                    toastr.warning(event.detail.message);
-                });
-                window.addEventListener('error', event => {
-                    toastr.error(event.detail.message);
-                });
-            });
-        </script>
-</body>
+
+    </body>
 
 </html>

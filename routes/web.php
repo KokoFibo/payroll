@@ -40,15 +40,15 @@ Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari')
 Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
 
 // PRESENSI
-Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
-Route::get('/presensiupload', function() {
-    return view('content.presensi.import');
-});
-Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
-Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');
-Route::resource('/presensi', PresensiController::class);
+// Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
+// Route::get('/presensiupload', function() {
+//     return view('content.presensi.import');
+// });
+// Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
+// Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');
+// Route::resource('/presensi', PresensiController::class);
 
-Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
+// Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
 
 
 // KHUSUS DEVELOPER

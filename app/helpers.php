@@ -246,6 +246,14 @@ function format_tgl($tgl)
     }
 }
 
+function format_tgl_hari($tgl)
+{
+    if ($tgl) {
+        return date('D, d-M-Y', strtotime($tgl));
+    }
+}
+
+
 function format_jam($jam)
 {
     if ($jam) {

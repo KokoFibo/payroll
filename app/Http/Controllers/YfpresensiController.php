@@ -78,18 +78,24 @@ class YfpresensiController extends Controller
         $no_scan = null;
         // random check
         // checkformat tgl
+        // check Tanggal apakah ada yang sama
+        $tgl_sama = DB::table('yfrekappresensis')
+            ->where('date', $tgl)
+            ->first();
 
         for ($i = 5; $i <= $row_limit; $i++) {
             if ($importedData->getCell('A' . $i)->getValue() != '') {
                 $user_id = $importedData->getCell('A' . $i)->getValue();
                 $name = $importedData->getCell('B' . $i)->getValue();
 
-                $check_data = DB::table('yfrekappresensis')
-                    ->where('user_id', $user_id)
-                    ->where('date', $tgl)
-                    ->get();
-                if ($check_data->isNotEmpty()) {
-                    return back()->with('error', 'The file has been uploaded.');
+                if ($tgl_sama != null) {
+                    $check_data = DB::table('yfrekappresensis')
+                        ->where('user_id', $user_id)
+                        ->where('date', $tgl)
+                        ->get();
+                    if ($check_data->isNotEmpty()) {
+                        return back()->with('error', 'The file has been uploaded.');
+                    }
                 }
 
                 $department = $importedData->getCell('C' . $i)->getValue();
@@ -125,14 +131,13 @@ class YfpresensiController extends Controller
             }
         }
         try {
-            foreach(array_chunk($Yfpresensidata, 1000) as $item) {
+            foreach (array_chunk($Yfpresensidata, 1000) as $item) {
                 Yfpresensi::insert($item);
             }
         } catch (\Exception $e) {
-
-             return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
-}
-
+            return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        }
+        // dd('ok');
         // mulai rekap data dari tabel Yfpresensi
 
         $jumlahKaryawanHadir = DB::table('yfpresensis')
@@ -159,13 +164,12 @@ class YfpresensiController extends Controller
             $no_scan = null;
             $shift = '';
             $tablePresensi = DB::table('yfpresensis')
-            ->where('user_id', $kh->user_id)
-            ->get();
+                ->where('user_id', $kh->user_id)
+                ->get();
 
             $is_saturday = is_saturday($kh->date);
 
             if ($is_saturday) {
-
                 // JIKA HARI SABTU kkk
                 if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '12:00')) {
                     $shift = 'Pagi';
@@ -204,32 +208,26 @@ class YfpresensiController extends Controller
                 if ($shift == 'Malam') {
                     // SHIFT MALAM
 
-
                     foreach ($tablePresensi as $tp) {
-
                         switch ($tp->time) {
-                            case (Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00')) :
+                            case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
                                 $first_in = $tp->time;
                                 break;
-                            case (Carbon::parse($tp->time)->betweenIncluded('20:01', '21:30')) :
-                                if($first_out == null ) {
+                            case Carbon::parse($tp->time)->betweenIncluded('20:01', '21:30'):
+                                if ($first_out == null) {
                                     $first_out = $tp->time;
-
                                 } else {
-                                $second_in = $tp->time;
-
+                                    $second_in = $tp->time;
                                 }
                                 break;
-                            case (Carbon::parse($tp->time)->betweenIncluded('21:31', '23:59')) :
+                            case Carbon::parse($tp->time)->betweenIncluded('21:31', '23:59'):
                                 $second_in = $tp->time;
                                 break;
 
-                            default :
-                            $second_out = $tp->time;
-                            break;
-
+                            default:
+                                $second_out = $tp->time;
+                                break;
                         }
-
                     }
                 }
                 if ($shift == 'Pagi') {
@@ -242,7 +240,6 @@ class YfpresensiController extends Controller
                         $overtime_out = null;
                     }
                 }
-
             } else {
                 // JIKA BUKAN HARI SABTU
                 if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
@@ -306,14 +303,11 @@ class YfpresensiController extends Controller
                         $overtime_out = null;
                     }
                 }
-
             }
 
-
-
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
-            $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in,  $shift, $tgl );
-// ook
+            $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl);
+            // ook
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'name' => $name,
@@ -328,21 +322,12 @@ class YfpresensiController extends Controller
                 'shift' => $shift,
                 'late' => $late,
                 'no_scan' => $no_scan,
-                'no_scan_history' =>  $no_scan,
-                'late_history' =>  $late
-
+                'no_scan_history' => $no_scan,
+                'late_history' => $late,
             ]);
-
-
-
-
-
-
         }
 
         Yfpresensi::query()->truncate();
-
-
 
         return back()->with('success', 'Data absensi telah berhasil di import, jumlah karyawan hadir = ' . $jumlahKaryawanHadir);
     }

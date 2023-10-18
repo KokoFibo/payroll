@@ -1,7 +1,5 @@
 <div>
 
-
-    <h3>Tanggal = {{ is_saturday($tanggal) }} {{ $tanggal }}</h3>
     <div class="d-flex flex-row gap-5 px-4 pt-4">
         <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
             Malam =
@@ -14,14 +12,14 @@
             Malam
             = {{ $totalLate - $totalLatePagi }}</button>
     </div>
-    <div class="row">
+    <div class="row col-12">
         <div class="col-4 p-4">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
         </div>
-        <div class="col-4 p-4">
+        <div class="col-3 p-4">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
                 <input type="date" wire:model.live="tanggal" class="form-control">
@@ -48,9 +46,9 @@
     <div class="px-4">
         <div class="card">
             <div class="card-header">
-                <h3>Data Presensi
+                <h4>Data Presensi {{ format_tgl_hari($tanggal) }}
                     <a href="/yfupload"><button class="btn btn-primary float-end">Upload YF Presensi</button></a>
-                </h3>
+                </h4>
             </div>
             <div class="card-body">
                 <table class="table table-hover mb-4">
@@ -84,7 +82,7 @@
                             @foreach ($datas as $data)
                                 <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
                                     <td><button wire:click="update({{ $data->id }})"
-                                            class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"
+                                            class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
                                                 data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button>
                                         <button class="btn btn-danger btn-sm"><i
                                                 class="fa-solid fa-trash-can confirm-delete"></i></button>

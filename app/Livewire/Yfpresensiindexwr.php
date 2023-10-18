@@ -47,6 +47,16 @@ class Yfpresensiindexwr extends Component
         $this->resetPage();
         $this->render();
     }
+
+    public function resetTanggal()
+    {
+        $this->tanggal = null;
+        $this->columnName = 'no_scan_history';
+        $this->direction = 'desc';
+        $this->search = null;
+        $this->resetPage();
+        $this->render();
+    }
     public function update($id)
     {
         $this->id = $id;
@@ -96,8 +106,8 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date);
 
         $data->save();
-        $this->dispatch('hide-form');
         $this->dispatch('success', message: 'Data sudah di update');
+        $this->dispatch('hide-form');
     }
 
     public function sortColumnName($namaKolom)
@@ -118,17 +128,16 @@ class Yfpresensiindexwr extends Component
     {
         $this->resetPage();
     }
-    public function resetTanggal()
-    {
-        $this->tanggal = null;
-        $this->render();
-    }
 
     public function render()
     {
         if ($this->tanggal == null) {
             $lastDate = Yfrekappresensi::orderBy('date', 'desc')->first();
-            $this->tanggal = Carbon::parse($lastDate->date)->format('Y-m-d');
+            if ($lastDate == null) {
+                $this->tanggal = null;
+            } else {
+                $this->tanggal = Carbon::parse($lastDate->date)->format('Y-m-d');
+            }
         }
         $totalHadir = Yfrekappresensi::query()
             ->where('date', '=', $this->tanggal)
@@ -155,8 +164,10 @@ class Yfpresensiindexwr extends Component
             ->orderBy($this->columnName, $this->direction)
             ->when($this->search, function ($query) {
                 $query
-                    ->where('user_id', 'LIKE', '%' . trim($this->search) . '%')
+                    ->where('name', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('user_id', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('user_id', trim($this->search))
                     ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('date', 'like', '%' . $this->tanggal . '%');
