@@ -31,6 +31,11 @@ class Yfpresensiindexwr extends Component
     public $no_scan = null;
     public $late = null;
 
+    public function delete ($id) {
+        $this->id = $id;
+        $data = Yfrekappresensi::find($id);
+        dd($data);
+    }
     public function filterNoScan()
     {
         $this->columnName = 'no_scan_history';

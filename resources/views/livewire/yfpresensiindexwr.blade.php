@@ -5,7 +5,8 @@
             Malam =
             {{ $totalHadir - $totalHadirPagi }}</button>
 
-        <button class="btn btn-warning">Total No scan : {{ $totalNoScan }}, Shift Pagi = {{ $totalNoScanPagi }},
+        <button id="okk" class="btn btn-warning">Total No scan : {{ $totalNoScan }}, Shift Pagi =
+            {{ $totalNoScanPagi }},
             shift
             Malam = {{ $totalNoScan - $totalNoScanPagi }}</button>
         <button class="btn btn-danger">Total Late : {{ $totalLate }}, Shift Pagi = {{ $totalLatePagi }}, Shift
@@ -84,7 +85,8 @@
                                     <td><button wire:click="update({{ $data->id }})"
                                             class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
                                                 data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i
+                                        <button wire:click="delete({{ $data->id }})"
+                                            class="btn btn-danger btn-sm"><i
                                                 class="fa-solid fa-trash-can confirm-delete"></i></button>
 
 
