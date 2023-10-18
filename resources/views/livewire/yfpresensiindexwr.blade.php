@@ -1,7 +1,7 @@
 <div>
 
 
-    <h3>Tanggal = {{ $tanggal }}</h3>
+    <h3>Tanggal = {{ is_saturday($tanggal) }} {{ $tanggal }}</h3>
     <div class="d-flex flex-row gap-5 px-4 pt-4">
         <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
             Malam =
@@ -27,9 +27,19 @@
                 <input type="date" wire:model.live="tanggal" class="form-control">
             </div>
         </div>
-        <div class="col-2 p-4">
+        <div class="col-1 p-4">
             <div class="input-group">
-                <button wire:click="resetTanggal" class="btn btn-info" type="button">Reset</button>
+                <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
+            </div>
+        </div>
+        <div class="col-1 p-4">
+            <div class="input-group">
+                <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
+            </div>
+        </div>
+        <div class="col-1 p-4">
+            <div class="input-group">
+                <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
             </div>
         </div>
     </div>
@@ -88,24 +98,43 @@
                                     <td>{{ $data->department }}</td>
                                     <td>{{ format_tgl($data->date) }}</td>
                                     <td
-                                        class="{{ checkFirstInLate($data->first_in, $data->shift) ? 'text-danger' : '' }}">
+                                        class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                         {{ format_jam($data->first_in) }} </td>
                                     <td
-                                        class="{{ checkFirstOutLate($data->first_out, $data->shift) ? 'text-danger' : '' }}">
+                                        class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                         {{ format_jam($data->first_out) }}</td>
                                     <td
-                                        class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out) ? 'text-danger' : '' }}">
+                                        class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
                                         {{ format_jam($data->second_in) }}</td>
                                     <td
-                                        class="{{ checkSecondOutLate($data->second_out, $data->shift) ? 'text-danger' : '' }}">
+                                        class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                         {{ format_jam($data->second_out) }}</td>
                                     <td
-                                        class="{{ checkOvertimeInLate($data->overtime_in, $data->shift) ? 'text-danger' : '' }}">
+                                        class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                         {{ format_jam($data->overtime_in) }}</td>
                                     <td>
                                         {{ format_jam($data->overtime_out) }}</td>
-                                    <td>{{ $data->late }}</td>
-                                    <td>{{ $data->no_scan }}</td>
+                                    <td>
+                                        @if ($data->late_history == 1 && $data->late == 1)
+                                            <h6><span class="badge bg-info">Late</span></h6>
+                                        @elseif ($data->late_history == 1 && $data->late == null)
+                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i></span>
+                                            </h6>
+                                        @else
+                                            {{ $data->late }}
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        @if ($data->no_scan_history == 'No Scan' && $data->no_scan == 'No Scan')
+                                            <h6><span class="badge bg-warning">No Scan</span></h6>
+                                        @elseif ($data->no_scan_history == 'No Scan' && $data->no_scan == null)
+                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i></span>
+                                            </h6>
+                                        @else
+                                            {{ $data->no_scan }}
+                                        @endif
+                                    </td>
                                     <td>{{ $data->shift }}</td>
                                 </tr>
                             @endforeach

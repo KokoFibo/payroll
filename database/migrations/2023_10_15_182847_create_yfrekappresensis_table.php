@@ -26,6 +26,9 @@ return new class extends Migration
             $table->integer('late')->nullable();
             $table->string('no_scan')->nullable();
             $table->string('shift')->nullable();
+            $table->string('no_scan_history')->nullable();
+            $table->string('late_history')->nullable();
+
             $table->timestamps();
         });
     }

@@ -13,31 +13,32 @@ function trimTime($data)
     return Str::substr($data, 0, 5);
 }
 
-function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift)
+function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl)
 {
     $late = null;
-    if (checkFirstInLate($first_in, $shift)) {
+    if (checkFirstInLate($first_in, $shift, $tgl)) {
         return $late = 1;
     }
-    if (checkFirstOutLate($first_out, $shift)) {
+    if (checkFirstOutLate($first_out, $shift, $tgl)) {
         return $late = 1;
     }
-    if (checkSecondOutLate($second_out, $shift)) {
+    if (checkSecondOutLate($second_out, $shift, $tgl)) {
         return $late = 1;
     }
-    if (checkOvertimeInLate($overtime_in, $shift)) {
+    if (checkOvertimeInLate($overtime_in, $shift, $tgl)) {
         return $late = 1;
     }
 
-    if (checkSecondInLate($second_in, $shift, $first_out)) {
+    if (checkSecondInLate($second_in, $shift, $first_out, $tgl)) {
         return $late = 1;
     }
 }
-function checkFirstInLate($data, $shift)
+
+function checkFirstInLate($data, $shift, $tgl)
 {
     $late = null;
     if ($data != null) {
-        if ($shift == 'Shift Pagi') {
+        if ($shift == 'Pagi') {
             // Shift Pagi
             if (Carbon::parse($data)->betweenIncluded('05:30', '08:03')) {
                 $late = 0;
@@ -45,43 +46,72 @@ function checkFirstInLate($data, $shift)
                 $late = 1;
             }
         } else {
-            if (Carbon::parse($data)->betweenIncluded('16:00', '20:03')) {
-                $late = 0;
+            if(is_saturday($tgl)) {
+                if (Carbon::parse($data)->betweenIncluded('14:00', '17:03')) {
+                    $late = 0;
+                } else {
+                    $late = 1;
+                }
             } else {
-                $late = 1;
+                if (Carbon::parse($data)->betweenIncluded('16:00', '20:03')) {
+                    $late = 0;
+                } else {
+                    $late = 1;
+                }
             }
+
+
         }
     }
     return $late;
 }
 
-function checkSecondOutLate($data, $shift)
+function checkSecondOutLate($data, $shift, $tgl )
 {
     $late = null;
     if ($data != null) {
-        if ($shift == 'Shift Pagi') {
+        if ($shift == 'Pagi') {
             // Shift Pagi
+            if(is_saturday($tgl)){
+                if (Carbon::parse($data)->betweenIncluded('12:00', '14:59')) {
+                    $late = 1;
+                } else {
+                    $late = 0;
+                }
+
+            } else {
             if (Carbon::parse($data)->betweenIncluded('12:00', '16:59')) {
                 $late = 1;
             } else {
                 $late = 0;
             }
+        }
         } else {
-            if (Carbon::parse($data)->betweenIncluded('00:00', '04:59')) {
-                $late = 1;
-            } else {
-                $late = 0;
+            if(is_saturday($tgl)){
+                if (Carbon::parse($data)->betweenIncluded('19:00', '22:03')) {
+                    $late = 1;
+                } else {
+                    $late = 0;
+                }
+
+            }else {
+                if (Carbon::parse($data)->betweenIncluded('00:00', '04:59')) {
+                    $late = 1;
+                } else {
+                    $late = 0;
+                }
             }
+
         }
     }
     return $late;
 }
 
-function checkOvertimeInLate($data, $shift)
+function checkOvertimeInLate($data, $shift, $tgl)
 {
     $late = null;
     if ($data != null) {
-        if ($shift == 'Shift Pagi') {
+        if ($shift == 'Pagi') {
             // Shift Pagi
             if (Carbon::parse($data)->betweenIncluded('12:00', '18:33')) {
                 $late = 0;
@@ -93,11 +123,11 @@ function checkOvertimeInLate($data, $shift)
     return $late;
 }
 
-function checkFirstOutLate($data, $shift)
+function checkFirstOutLate($data, $shift, $tgl )
 {
     $late = null;
     if ($data != null) {
-        if ($shift == 'Shift Pagi') {
+        if ($shift == 'Pagi') {
             // Shift Pagi
             if (Carbon::parse($data)->betweenIncluded('08:00', '11:29')) {
                 $late = 1;
@@ -105,23 +135,33 @@ function checkFirstOutLate($data, $shift)
                 $late = 0;
             }
         } else {
-            if (Carbon::parse($data)->betweenIncluded('20:00', '23:59')) {
-                $late = 1;
-            } else {
-                $late = 0;
+            if(is_saturday($tgl)) {
+                if (Carbon::parse($data)->betweenIncluded('17:01', '20:59')) {
+                    $late = 1;
+                } else {
+                    $late = 0;
+                }
+
+            }else {
+                if (Carbon::parse($data)->betweenIncluded('20:00', '23:59')) {
+                    $late = 1;
+                } else {
+                    $late = 0;
+                }
             }
+
         }
     }
     return $late;
 }
 
-function checkSecondInLate($data, $shift, $firstOut)
+function checkSecondInLate($data, $shift, $firstOut, $tgl)
 {
     $late = null;
     $groupIstirahat;
 
     if ($data != null) {
-        if ($shift = 'Shift Pagi') {
+        if ($shift = 'Pagi') {
             if ($firstOut != null) {
                 if (Carbon::parse($firstOut)->betweenIncluded('08:00', '11:59')) {
                     $groupIstirahat = 1;
@@ -149,6 +189,13 @@ function checkSecondInLate($data, $shift, $firstOut)
                 }
             }
         } else {
+            if(is_saturday($tgl)) {
+                if (Carbon::parse($data)->betweenIncluded('20:01', '22:03')) {
+                    $late = null;
+                } else {
+                    $late = 1;
+                }
+            } else {}
             if (Carbon::parse($data)->betweenIncluded('00:00', '01:03')) {
                 $late = null;
             } else {
@@ -208,13 +255,13 @@ function format_jam($jam)
 
 function is_saturday($tgl)
 {
-    // true
     if ($tgl) {
-        if (Carbon::parse($tgl)->isSaturday()) {
-            return true;
-        } else {
-            return false;
-        }
+        // if (Carbon::parse($tgl)->isSaturday()) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return Carbon::parse($tgl)->isSaturday();
     }
 }
 
@@ -225,96 +272,4 @@ function sp_recal_presensi()
     }
 }
 
-// ===================================================================
-// function lateCheck2($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out, $shift)
-// {
-//     $late = null;
 
-//     if ($shift == 'Shift Pagi') {
-//         if ($first_in > '08:04' && $first_in != '') {
-//             $late = 1;
-//         }
-//         if ($first_out < '11:30' && $first_out != '') {
-//             $late = 1;
-//         }
-
-//         if ($first_out >= '11:30' && $first_out < '12:00' && $first_out != '') {
-//             if ($second_in > '12:31' && $second_in != '') {
-//                 $late = 1;
-//             }
-//         }
-//         if ($first_out >= '12:00' && $first_out < '12:30' && $first_out != '') {
-//             if ($second_in > '13:01' && $second_in != '') {
-//                 $late = 1;
-//             }
-//         }
-//         if ($second_out < '17:00' && $second_out != '') {
-//             $late = 1;
-//         }
-
-//         if ($overtime_in > '18:30' && $overtime_in != '') {
-//             $late = 1;
-//         }
-//     } elseif ($shift == 'Shift Malam') {
-//         if ($first_in > '20:04' && $first_in != '') {
-//             $late = 1;
-//         }
-//         if ($first_out < '24:00' && $first_out > '20:04' && $first_out != '') {
-//             $late = 1;
-//         }
-//         if ($second_in > '01:04' && $second_in != '') {
-//             $late = 1;
-//         }
-//         if ($second_out < '05:00' && $second_out != '') {
-//             $late = 1;
-//         }
-//     }
-
-//     return $late;
-// }
-
-// function lateCheck($data)
-// {
-//     $late = null;
-//     if ($data[0]->shift == 'Shift Pagi') {
-//         if ($data[0]->first_in > '08:04' && $data[0]->first_in != '') {
-//             $late = 1;
-//         }
-//         if ($data[0]->first_out < '11:30' && $data[0]->first_out != '') {
-//             $late = 1;
-//         }
-
-//         if ($data[0]->first_out >= '11:30' && $data[0]->first_out < '12:00' && $data[0]->first_out != '') {
-//             if ($data[0]->second_in > '12:31' && $data[0]->second_in != '') {
-//                 $late = 1;
-//             }
-//         }
-//         if ($data[0]->first_out >= '12:00' && $data[0]->first_out < '12:30' && $data[0]->first_out != '') {
-//             if ($data[0]->second_in > '13:01' && $data[0]->second_in != '') {
-//                 $late = 1;
-//             }
-//         }
-//         if ($data[0]->second_out < '17:00' && $data[0]->second_out != '') {
-//             $late = 1;
-//         }
-
-//         if ($data[0]->overtime_in > '18:30' && $data[0]->overtime_in != '') {
-//             $late = 1;
-//         }
-//     } elseif ($data[0]->shift == 'Shift Malam') {
-//         if ($data[0]->first_in > '20:04' && $data[0]->first_in != '') {
-//             $late = 1;
-//         }
-//         if ($data[0]->first_out < '24:00' && $data[0]->first_out > '20:04' && $data[0]->first_out != '') {
-//             $late = 1;
-//         }
-//         if ($data[0]->second_in > '01:04' && $data[0]->second_in != '') {
-//             $late = 1;
-//         }
-//         if ($data[0]->second_out < '05:00' && $data[0]->second_out != '') {
-//             $late = 1;
-//         }
-//     }
-
-//     return $late;
-// }
