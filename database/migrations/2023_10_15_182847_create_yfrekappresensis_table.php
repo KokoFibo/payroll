@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('department');
             $table->date('date');
-            $table->integer('jml_fp');
             $table->time('first_in')->nullable();
             $table->time('first_out')->nullable();
             $table->time('second_in')->nullable();

@@ -77,6 +77,7 @@ class YfpresensiController extends Controller
         $late = null;
         $no_scan = null;
         // random check
+        // checkformat tgl
 
         for ($i = 5; $i <= $row_limit; $i++) {
             if ($importedData->getCell('A' . $i)->getValue() != '') {
@@ -103,16 +104,35 @@ class YfpresensiController extends Controller
                     $time = date('H:i', strtotime($str));
                 }
 
-                Yfpresensi::create([
+                // Yfpresensi::create([
+                //     'user_id' => $user_id,
+                //     'name' => $name,
+                //     'department' => $department,
+                //     'date' => $tgl,
+                //     'time' => $time,
+                //     'day_number' => date('w', strtotime($tgl)),
+                // ]);
+
+                //  pakai Chunk
+                $Yfpresensidata[] = [
                     'user_id' => $user_id,
                     'name' => $name,
                     'department' => $department,
                     'date' => $tgl,
                     'time' => $time,
                     'day_number' => date('w', strtotime($tgl)),
-                ]);
+                ];
             }
         }
+        try {
+            foreach(array_chunk($Yfpresensidata, 1000) as $item) {
+                Yfpresensi::insert($item);
+            }
+        } catch (\Exception $e) {
+
+             return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+}
+
         // mulai rekap data dari tabel Yfpresensi
 
         $jumlahKaryawanHadir = DB::table('yfpresensis')
@@ -128,8 +148,7 @@ class YfpresensiController extends Controller
             $user_id = $kh->user_id;
             $name = $kh->name;
             $department = $kh->department;
-            $tgl = '2023-10-12';
-            $jml_fp = 1;
+            $tgl = $kh->date;
             $first_in = null;
             $first_out = null;
             $second_in = null;
@@ -198,17 +217,20 @@ class YfpresensiController extends Controller
                     $second_out = $overtime_in;
                     $overtime_in = null;
                 }
+                if ($second_out == null && $overtime_in == null && $overtime_out != null) {
+                    $second_out = $overtime_out;
+                    $overtime_out = null;
+                }
             }
 
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
-            $late = lateCheck2($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out, $shift);
-
+            $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in,  $shift);
+// ook
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'name' => $name,
                 'department' => $department,
                 'date' => $tgl,
-                'jml_fp' => $jml_fp,
                 'first_in' => $first_in,
                 'first_out' => $first_out,
                 'second_in' => $second_in,
@@ -219,7 +241,18 @@ class YfpresensiController extends Controller
                 'late' => $late,
                 'no_scan' => $no_scan,
             ]);
+
+
+
+
+
+
         }
+
+        Yfpresensi::query()->truncate();
+
+
+
         return back()->with('success', 'Data absensi telah berhasil di import, jumlah karyawan hadir = ' . $jumlahKaryawanHadir);
     }
 }

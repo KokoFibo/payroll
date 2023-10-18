@@ -1,15 +1,40 @@
 <div>
 
-    <div class="col-4 p-4">
 
-        <div class="input-group">
-            <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
-        </div>
-        Total No scan : {{ $totalNoScan }}
-        Total Late : {{ $totalLate }}
+    <h3>Tanggal = {{ $tanggal }}</h3>
+    <div class="d-flex flex-row gap-5 px-4 pt-4">
+        <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
+            Malam =
+            {{ $totalHadir - $totalHadirPagi }}</button>
 
+        <button class="btn btn-warning">Total No scan : {{ $totalNoScan }}, Shift Pagi = {{ $totalNoScanPagi }},
+            shift
+            Malam = {{ $totalNoScan - $totalNoScanPagi }}</button>
+        <button class="btn btn-danger">Total Late : {{ $totalLate }}, Shift Pagi = {{ $totalLatePagi }}, Shift
+            Malam
+            = {{ $totalLate - $totalLatePagi }}</button>
     </div>
+    <div class="row">
+        <div class="col-4 p-4">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+            </div>
+        </div>
+        <div class="col-4 p-4">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
+                <input type="date" wire:model.live="tanggal" class="form-control">
+            </div>
+        </div>
+        <div class="col-2 p-4">
+            <div class="input-group">
+                <button wire:click="resetTanggal" class="btn btn-info" type="button">Reset</button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="px-4">
         <div class="card">
             <div class="card-header">
@@ -22,7 +47,7 @@
                     <thead>
                         <tr>
                             <td>Action</td>
-                            <td wire:click="sortColumnName('user_id')">Karyawan Id <i class="fa-solid fa-sort"></i></td>
+                            <td wire:click="sortColumnName('user_id')">Id <i class=" fa-solid fa-sort"></i></td>
                             <td wire:click="sortColumnName('name')">Nama <i class="fa-solid fa-sort"></i></td>
                             <td wire:click="sortColumnName('department')">Department <i class="fa-solid fa-sort"></i>
                             </td>
@@ -43,125 +68,157 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($datas as $data)
-                            @php
-                                $no_scan = '';
-                                $first_in_late = '';
-                                $first_out_late = '';
-                                $second_in_late = '';
-                                $second_out_late = '';
-                                $overtime_in_late = '';
-                                $overtime_in = '';
-                                $overtime_out = '';
-
-                                if ($data->shift == 'Shift pagi') {
-                                    $second_out_late = floor((strtotime($data->second_out) - strtotime('17:00')) / 60);
-                                } elseif ($data->shift == 'Shift malam') {
-                                    if (is_saturday($data->date)) {
-                                        $second_out_late = floor((strtotime($data->second_out) - strtotime('00:00')) / 60);
-                                    } else {
-                                        $second_out_late = floor((strtotime($data->second_out) - strtotime('05:00')) / 60);
-                                    }
-                                }
-
-                                if ($data->shift == 'Shift pagi') {
-                                    $first_in_late = floor((strtotime($data->first_in) - strtotime('8:03')) / 60);
-                                    $overtime_in_late = floor((strtotime($data->overtime_in) - strtotime('18:33')) / 60);
-                                    $first_out_late = floor((strtotime($data->first_out) - strtotime('11:30')) / 60);
-                                } elseif ($data->shift == 'Shift malam') {
-                                    $first_in_late = floor((strtotime($data->first_in) - strtotime('20:03')) / 60);
-                                    if ($data->first_out < '24:00' && $data->first_out > '20:04') {
-                                        $first_out_late = floor((strtotime($data->first_out) - strtotime('24:00')) / 60);
-                                    } else {
-                                        $first_out_late = floor((strtotime($data->first_out) - strtotime('00:00')) / 60);
-                                    }
-
-                                    if ($data[0]->first_out < '24:00' && $data[0]->first_out > '20:04' && $data[0]->first_out != '') {
-                                        $late = 1;
-                                    }
-                                }
-
-                                if (strtotime($data->first_out) < strtotime('12:00')) {
-                                    $second_in_late = floor((strtotime($data->second_in) - strtotime('12:30')) / 60);
-                                } elseif (strtotime($data->first_out) >= strtotime('12:00')) {
-                                    $second_in_late = floor((strtotime($data->second_in) - strtotime('13:00')) / 60);
-                                } elseif (strtotime($data->first_out) > strtotime('00:00')) {
-                                    $second_in_late = floor((strtotime($data->second_in) - strtotime('1:00')) / 60);
-                                }
-
-                                if ($second_out_late >= 0) {
-                                    $second_out_late = '';
-                                }
-                                if ($first_in_late <= 0) {
-                                    $first_in_late = '';
-                                }
-                                if ($second_in_late <= 0) {
-                                    $second_in_late = '';
-                                }
-                                if ($overtime_in_late <= 0) {
-                                    $overtime_in_late = '';
-                                }
-                                if ($data->first_in == '') {
-                                    $no_scan = 'No First In, ' . $no_scan;
-                                }
-
-                                if ($data->second_out == '') {
-                                    $no_scan = 'No Second Out, ' . $no_scan;
-                                }
-
-                                if ($data->first_out != '' || $data->second_in != '') {
-                                    if ($data->first_out == '') {
-                                        $no_scan = 'No First Out, ' . $no_scan;
-                                    }
-                                    if ($data->second_in == '' || $data->first_out == $data->second_in) {
-                                        $no_scan = 'No Second In, ' . $no_scan;
-                                    }
-                                }
-
-                                if ($data->overtime_out != '' && $data->overtime_in == '' && $data->shift == 'Shift pagi') {
-                                    $no_scan = 'No overtime In, ' . $no_scan;
-                                }
-
-                                if ($data->overtime_out == '' && $data->overtime_in != '' && $data->shift == 'Shift pagi') {
-                                    $no_scan = 'No overtime Out, ' . $no_scan;
-                                }
-
-                                if ($data->shift == 'Shift pagi') {
-                                    $overtime_in = $data->overtime_in;
-                                    $overtime_out = $data->overtime_out;
-                                }
-
-                            @endphp
+                        @if ($datas->isNotEmpty())
 
 
-                            <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
-                                <td>edit/del</td>
-                                <td>{{ $data->user_id }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->department }}</td>
-                                <td>{{ format_tgl($data->date) }}</td>
-                                <td class="{{ $first_in_late > 0 ? 'text-danger' : '' }}">
-                                    {{ format_jam($data->first_in) }} </td>
-                                <td class="{{ $first_out_late > 0 ? 'text-danger' : '' }}">
-                                    {{ format_jam($data->first_out) }}</td>
-                                <td class="{{ $second_in_late > 0 ? 'text-danger' : '' }}">
-                                    {{ format_jam($data->second_in) }}</td>
-                                <td class="{{ $second_out_late > 0 ? 'text-danger' : '' }}">
-                                    {{ format_jam($data->second_out) }}</td>
-                                <td class="{{ $overtime_in_late > 0 ? 'text-danger' : '' }}">
-                                    {{ format_jam($data->overtime_in) }}</td>
-                                <td>
-                                    {{ format_jam($data->overtime_out) }}</td>
-                                <td>{{ $data->late }}</td>
-                                <td>{{ $data->no_scan }}</td>
-                                <td>{{ $data->shift }}</td>
-                            </tr>
-                        @endforeach
+                            @foreach ($datas as $data)
+                                <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
+                                    <td><button wire:click="update({{ $data->id }})"
+                                            class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"
+                                                data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i
+                                                class="fa-solid fa-trash-can confirm-delete"></i></button>
+
+
+
+
+                                    </td>
+                                    <td>{{ $data->user_id }}</td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>{{ $data->department }}</td>
+                                    <td>{{ format_tgl($data->date) }}</td>
+                                    <td
+                                        class="{{ checkFirstInLate($data->first_in, $data->shift) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->first_in) }} </td>
+                                    <td
+                                        class="{{ checkFirstOutLate($data->first_out, $data->shift) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->first_out) }}</td>
+                                    <td
+                                        class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->second_in) }}</td>
+                                    <td
+                                        class="{{ checkSecondOutLate($data->second_out, $data->shift) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->second_out) }}</td>
+                                    <td
+                                        class="{{ checkOvertimeInLate($data->overtime_in, $data->shift) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->overtime_in) }}</td>
+                                    <td>
+                                        {{ format_jam($data->overtime_out) }}</td>
+                                    <td>{{ $data->late }}</td>
+                                    <td>{{ $data->no_scan }}</td>
+                                    <td>{{ $data->shift }}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <h4>Tidak ada data yang ditemukan</h4>
+                        @endif
                     </tbody>
                 </table>
                 {{ $datas->links() }}
             </div>
         </div>
     </div>
+    {{-- Modal --}}
+    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Presensi {{ $user_id }} &
+                        {{ $name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
 
+                        <div class="mb-3 col-6">
+                            <label for="first_in" class="form-label">First
+                                In</label>
+                            <input class="form-control @error('first_in') is-invalid @enderror" id="first_in"
+                                type="text" wire:model="first_in">
+                            @error('first_in')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="first_out" class="form-label">First
+                                Out</label>
+                            <input class="form-control @error('first_out') is-invalid @enderror" id="first_out"
+                                type="text" wire:model="first_out">
+                            @error('first_out')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="mb-3 col-6">
+                            <label for="second_in" class="form-label">Second
+                                In</label>
+                            <input class="form-control @error('second_in') is-invalid @enderror" id="second_in"
+                                type="text" wire:model="second_in">
+                            @error('second_in')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="second_out" class="form-label">Second
+                                Out</label>
+                            <input class="form-control @error('second_out') is-invalid @enderror" id="second_out"
+                                type="text" wire:model="second_out">
+                            @error('second_out')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="mb-3 col-6">
+                            <label for="overtime_in" class="form-label">Overtime
+                                In</label>
+                            <input class="form-control @error('overtime_in') is-invalid @enderror" id="overtime_in"
+                                type="text" wire:model="overtime_in">
+                            @error('overtime_in')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="overtime_out" class="form-label">Overtime
+                                Out</label>
+                            <input class="form-control @error('overtime_out') is-invalid @enderror" id="overtime_out"
+                                type="text" wire:model="overtime_out">
+                            @error('overtime_out')
+                                <div class="invalid-feedback">
+                                    Format jam harus sesuai HH:MM
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    @if ($datas->isNotEmpty())
+                        <button wire:click="save({{ $data->id }})" type="button"
+                            class="btn btn-primary">Update</button>
+                    @endif
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End  --}}
 </div>
