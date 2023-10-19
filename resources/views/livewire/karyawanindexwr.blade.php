@@ -60,7 +60,7 @@
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
 
                                             @if (Auth::user()->role == 3 || Auth::user()->role == 4)
-                                                <button wire:click="confirmDelete({{ $data->id }})"
+                                                <button wire:click="confirmDelete(`{{ $data->id }}`)"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif

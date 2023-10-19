@@ -14,7 +14,7 @@ class Karyawanindexwr extends Component
     public $columnName="id_karyawan";
     public $direction = 'desc';
     public $id;
-    // protected $listeners = ['delete'];
+
     #[On('delete')]
 
     public function delete () {
