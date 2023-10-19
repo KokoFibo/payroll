@@ -38,7 +38,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Data Presensi {{ format_tgl_hari($tanggal) }}
-                    <a href="/yfupload"><button class="btn btn-primary float-end">Upload YF Presensi</button></a>
+                    <a href="/yfupload"><button class="btn btn-primary float-end">Upload Presensi</button></a>
                 </h4>
             </div>
             <div class="card-body">
