@@ -2,15 +2,27 @@
     <div class="card-body">
         <div class="mb-3">
             <label class="form-label">ID Karyawan <span class="text-danger">*</span></label>
-            <input wire:model="id_karyawan" type="number" class="form-control">
+            <input wire:model="id_karyawan" type="number" class="form-control" disabled>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Karyawan <span class="text-danger">*</span></label>
-            <input wire:model="nama" type="text" class="form-control">
+            <input wire:model="nama" type="text" class="form-control @error('nama') is-invalid @enderror">
+            @error('nama')
+                <div class="invalid-feedback">
+                    Nama karyawan harus diisi
+                </div>
+            @enderror
+
+
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input wire:model="email" type="email" class="form-control">
+            <input wire:model="email" type="email" class="form-control @error('email') is-invalid @enderror">
+            @error('email')
+                <div class="invalid-feedback">
+                    Format email salah.
+                </div>
+            @enderror
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -37,6 +49,7 @@
                 <div class="mb-3 form-group">
                     <label class="form-label">Tanggal Lahir (mm/dd/yyyy)</label>
                     <input wire:model="tanggal_lahir" type="date" class="date form-control">
+
                 </div>
             </div>
         </div>
