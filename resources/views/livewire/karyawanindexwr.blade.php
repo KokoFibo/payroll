@@ -94,7 +94,7 @@
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Delete",
             }).then((willDelete) => {
-                if (willDelete) {
+                if (willDelete.isConfirmed) {
                     @this.dispatch("delete", event.detail.id);
                 }
             });
