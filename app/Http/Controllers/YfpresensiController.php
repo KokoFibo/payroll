@@ -22,17 +22,12 @@ class YfpresensiController extends Controller
     {
         Yfpresensi::query()->truncate();
         Yfrekappresensi::query()->truncate();
-        Presensi::query()->truncate();
+        // Presensi::query()->truncate();
         Employee::query()->truncate();
-        DB::table('temp_rekap_presensi')->truncate();
         return back()->with('success', 'Data Presensi telah berhasil di delete');
     }
 
-    public function deletepresensirekap()
-    {
-        DB::table('rekap_presensis')->truncate();
-        return back()->with('success', 'Data Presensi telah berhasil di delete');
-    }
+
     public function index()
     {
         return view('yfpresensi.index');
@@ -46,29 +41,9 @@ class YfpresensiController extends Controller
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
 
-        // $properties = $spreadsheet->getProperties();
-
-        // $author = $properties->getCreator();
-        // $lastModifiedBy = $properties->getLastModifiedBy();
-        // $createdDate = $properties->getCreated();
-        // $modifiedDate = $properties->getModified();
-        // $data = [
-        //     'author' => date('h:i', strtotime($createdDate)),
-        //     'lastModifiedBy' => date('h:i', strtotime($modifiedDate))
-        // ];
-
-        // dd($data);
-
-        // if ($createdDate != $modifiedDate) {
-        //     // dd("File has been modified");
-        //     return back()->with('error', 'File has been modified.');
-        // }
 
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
-        // $column_limit = $importedData->getHighestDataColumn();
-        // $row_range    = range(2, $row_limit);
-        // $column_range = range('F', $column_limit);
 
         $tgl = explode('~', $importedData->getCell('A2')->getValue())[1];
         $user_id = '';
@@ -76,26 +51,32 @@ class YfpresensiController extends Controller
         $department = '';
         $late = null;
         $no_scan = null;
-        // random check
-        // checkformat tgl
+
         // check Tanggal apakah ada yang sama
         $tgl_sama = DB::table('yfrekappresensis')
             ->where('date', $tgl)
-            ->first();
+            ->get('user_id');
 
         for ($i = 5; $i <= $row_limit; $i++) {
             if ($importedData->getCell('A' . $i)->getValue() != '') {
                 $user_id = $importedData->getCell('A' . $i)->getValue();
                 $name = $importedData->getCell('B' . $i)->getValue();
 
-                if ($tgl_sama != null) {
-                    $check_data = DB::table('yfrekappresensis')
-                        ->where('user_id', $user_id)
-                        ->where('date', $tgl)
-                        ->get();
-                    if ($check_data->isNotEmpty()) {
-                        return back()->with('error', 'The file has been uploaded.');
+                if ($tgl_sama->isNotEmpty()) {
+
+                    foreach($tgl_sama as $data) {
+                        if($user_id == $data->user_id){
+                            return back()->with('error', 'The file has been uploaded.');
+                        }
                     }
+
+                    // $check_data = DB::table('yfrekappresensis')
+                    //     ->where('user_id', $user_id)
+                    //     ->where('date', $tgl)
+                    //     ->get();
+                    // if ($check_data->isNotEmpty()) {
+                    //     return back()->with('error', 'The file has been uploaded.');
+                    // }
                 }
 
                 $department = $importedData->getCell('C' . $i)->getValue();
@@ -131,7 +112,7 @@ class YfpresensiController extends Controller
             }
         }
         try {
-            foreach (array_chunk($Yfpresensidata, 1000) as $item) {
+            foreach (array_chunk($Yfpresensidata, 200) as $item) {
                 Yfpresensi::insert($item);
             }
         } catch (\Exception $e) {
@@ -254,7 +235,7 @@ class YfpresensiController extends Controller
                     foreach ($tablePresensi as $tp) {
                         if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
                             $first_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:15')) {
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
                             if ($flag == 0) {
                                 $first_out = $tp->time;
                                 if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
@@ -266,7 +247,7 @@ class YfpresensiController extends Controller
                             if ($flag == 1) {
                                 $second_in = $tp->time;
                             }
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('12:16', '15:00')) {
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
                             $second_in = $tp->time;
                         } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:30')) {
                             $second_out = $tp->time;
@@ -329,6 +310,6 @@ class YfpresensiController extends Controller
 
         Yfpresensi::query()->truncate();
 
-        return back()->with('success', 'Data absensi telah berhasil di import, jumlah karyawan hadir = ' . $jumlahKaryawanHadir);
+        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
 }

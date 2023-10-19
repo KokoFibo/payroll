@@ -21,15 +21,13 @@ with font-awesome or any other icon font library -->
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
+                <i class="nav-icon fas fa-clipboard-check"></i>
+                <p>Presensi</p>
+            </a>
+        </li>
         @if (Auth::user()->role != 1)
-            <li class="nav-item">
-                <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
-                    <i class="nav-icon fas fa-clipboard-check"></i>
-                    <p>Presensi</p>
-                </a>
-            </li>
-
-
             <li class="nav-item">
                 <a href="/test" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-dollar-sign"></i>
@@ -60,6 +58,18 @@ with font-awesome or any other icon font library -->
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="/yfdeletetanggalpresensiwr" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Delete Tgl Presensi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p class="text-danger">Truncate Table Presensi</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>

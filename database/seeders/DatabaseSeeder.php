@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Anton',
             'email' => 'kokonacci@gmail.com',
             'email_verified_at' => now(),
+            'role' => '4',
             'password' => Hash::make('Anton888'), // 123456789
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),

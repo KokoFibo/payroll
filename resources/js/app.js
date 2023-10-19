@@ -19,6 +19,11 @@ $(document).ready(function () {
     window.addEventListener("warning", (event) => {
         toastr.warning(event.detail.message);
     });
+
+    window.addEventListener("info", (event) => {
+        toastr.info(event.detail.message);
+    });
+
     window.addEventListener("error", (event) => {
         toastr.error(event.detail.message);
     });

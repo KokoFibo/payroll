@@ -13,33 +13,23 @@
             Malam
             = {{ $totalLate - $totalLatePagi }}</button>
     </div>
-    <div class="row col-12">
-        <div class="col-4 p-4">
+    <div class="row col-12 p-4">
+        <div class="col-4">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
         </div>
-        <div class="col-3 p-4">
+        <div class="col-4">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
                 <input type="date" wire:model.live="tanggal" class="form-control">
             </div>
         </div>
-        <div class="col-1 p-4">
-            <div class="input-group">
-                <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
-            </div>
-        </div>
-        <div class="col-1 p-4">
-            <div class="input-group">
-                <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
-            </div>
-        </div>
-        <div class="col-1 p-4">
-            <div class="input-group">
-                <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
-            </div>
+        <div class="col-4  d-flex gap-3">
+            <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
+            <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
+            <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
         </div>
     </div>
 
@@ -85,9 +75,12 @@
                                     <td><button wire:click="update({{ $data->id }})"
                                             class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
                                                 data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button>
-                                        <button wire:click="delete({{ $data->id }})"
-                                            class="btn btn-danger btn-sm"><i
-                                                class="fa-solid fa-trash-can confirm-delete"></i></button>
+                                        @if (Auth::user()->role != 1)
+                                            <button wire:click="delete({{ $data->id }})"
+                                                class="btn btn-danger btn-sm"><i
+                                                    class="fa-solid fa-trash-can confirm-delete"></i></button>
+                                        @endif
+
 
 
 

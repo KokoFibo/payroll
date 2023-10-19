@@ -88,14 +88,14 @@ function checkSecondOutLate($data, $shift, $tgl )
         }
         } else {
             if(is_saturday($tgl)){
-                if (Carbon::parse($data)->betweenIncluded('19:00', '22:03')) {
+                if (Carbon::parse($data)->betweenIncluded('19:00', '23:56')) {
                     $late = 1;
                 } else {
                     $late = 0;
                 }
 
             }else {
-                if (Carbon::parse($data)->betweenIncluded('00:00', '04:59')) {
+                if (Carbon::parse($data)->betweenIncluded('00:00', '04:56')) {
                     $late = 1;
                 } else {
                     $late = 0;

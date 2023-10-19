@@ -9,6 +9,7 @@ use App\Livewire\Importkaryawanwr;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Yfpresensiindexwr;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Yfdeletetanggalpresensiwr;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardController;
@@ -72,8 +73,8 @@ Route::get('/yfupload', function(){
 Route::get('/yfindex', [YfpresensiController::class, 'index']);
 Route::post('/yfstore', [YfpresensiController::class, 'store']);
 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
-Route::get('/deletepresensirekap', [YfpresensiController::class, 'deletepresensirekap']);
 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
+Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
 
 
 
