@@ -15,6 +15,7 @@
                     </select>
                 </div>
             </div>
+            {{-- ====================================================== --}}
             <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Gaji pokok</label>
@@ -54,6 +55,7 @@
                 <div class="mb-3">
                     <label class="form-label">Bonus</label>
                     <input wire:model="bonus" type="number" class="form-control">
+
                 </div>
             </div>
             <div class="col-md-3">
@@ -66,6 +68,7 @@
                 <div class="mb-3">
                     <label class="form-label">Tunjangan Bahasa</label>
                     <input wire:model="tunjangan_bahasa" type="number" class="form-control">
+
                 </div>
             </div>
         </div>
@@ -112,6 +115,7 @@
                 <div class="mb-3">
                     <label class="form-label">Denda</label>
                     <input wire:model="denda" type="number" class="form-control">
+
                 </div>
             </div>
             <div class="col-md-3">
@@ -129,9 +133,6 @@
         </div>
 
         <div class="row">
-
-
-
             <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">Potongan BPJS</label>

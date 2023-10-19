@@ -49,7 +49,6 @@
                 <div class="mb-3 form-group">
                     <label class="form-label">Tanggal Lahir (mm/dd/yyyy)</label>
                     <input wire:model="tanggal_lahir" type="date" class="date form-control">
-
                 </div>
             </div>
         </div>
