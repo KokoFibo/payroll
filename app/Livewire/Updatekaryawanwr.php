@@ -12,7 +12,7 @@ class Updatekaryawanwr extends Component
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
-    public $gaji_pokok, $gaji_perjam, $gaji_overtime, $gaji_harian, $gaji_bulanan, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
+    public $gaji_pokok, $gaji_overtime, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
 
@@ -63,15 +63,17 @@ class Updatekaryawanwr extends Component
         $this->potongan_seragam = $data->potongan_seragam;
         $this->potongan_pph21 = $data->potongan_pph21;
         $this->potongan_bpjs = $data->potongan_bpjs;
-
-
-
-
-
     }
-    public function update() {
-        $data = Karyawan::find($this->id);
 
+    public function update() {
+
+        $this->validate([
+            'id_karyawan' => 'required',
+            'nama' => 'required',
+            'email' => 'email|nullable',
+        ]);
+
+        $data = Karyawan::find($this->id);
         $data->id_karyawan = $this->id_karyawan;
         $data->nama = $this->nama;
         $data->email = trim($this->email,' ');
