@@ -41,108 +41,136 @@
                     <a href="/yfupload"><button class="btn btn-primary float-end">Upload Presensi</button></a>
                 </h4>
             </div>
-            <div class="card-body">
-                <table class="table table-hover mb-4">
-                    <thead>
-                        <tr>
-                            <td>Action</td>
-                            <td wire:click="sortColumnName('user_id')">Id <i class=" fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('name')">Nama <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('department')">Department <i class="fa-solid fa-sort"></i>
-                            </td>
-                            <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('first_out')">First out <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('second_in')">Second in <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('second_out')">Second out <i class="fa-solid fa-sort"></i>
-                            </td>
-                            <td wire:click="sortColumnName('overtime_in')">Overtime in <i class="fa-solid fa-sort"></i>
-                            </td>
-                            <td wire:click="sortColumnName('overtime_out')">Overtime out <i
-                                    class="fa-solid fa-sort"></i>
-                            </td>
-                            <td wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i></td>
-                            <td wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($datas->isNotEmpty())
+            <style>
+                td {
+                    white-space: nowrap;
+                }
+            </style>
+            <div class="card-body ">
+                <div class="table-responsive">
+
+                    <table class="table table-xl table-hover mb-4">
+                        <thead>
+                            <tr>
+                                <td scope="col">Action</td>
+                                <td scope="col" wire:click="sortColumnName('user_id')">ID <i
+                                        class=" fa-solid fa-sort"></i></td>
+                                <td scope="col" wire:click="sortColumnName('name')">Nama <i
+                                        class="fa-solid fa-sort"></i></td>
+                                <td scope="col" wire:click="sortColumnName('department')">Department <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('date')">Working Date <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('first_in')">First in <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('first_out')">First out <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('second_in')">Second in <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('second_out')">Second out <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('overtime_in')">Overtime in <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('overtime_out')">Overtime out <i
+                                        class="fa-solid fa-sort"></i>
+                                </td>
+                                <td scope="col" wire:click="sortColumnName('late')">Late <i
+                                        class="fa-solid fa-sort"></i></td>
+                                <td scope="col" wire:click="sortColumnName('no_scan')">No scan <i
+                                        class="fa-solid fa-sort"></i></td>
+                                <td scope="col" wire:click="sortColumnName('shift')">Shift <i
+                                        class="fa-solid fa-sort"></i></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($datas->isNotEmpty())
 
 
-                            @foreach ($datas as $data)
-                                <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
-                                    <td><button wire:click="update({{ $data->id }})"
-                                            class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
-                                                data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button>
-                                        @if (Auth::user()->role != 1)
-                                            <button wire:click="delete({{ $data->id }})"
-                                                class="btn btn-danger btn-sm"><i
-                                                    class="fa-solid fa-trash-can confirm-delete"></i></button>
-                                        @endif
+                                @foreach ($datas as $data)
+                                    <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
+                                        <td><button wire:click="update({{ $data->id }})"
+                                                class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#update-form-modal"></i></button>
+                                            @if (Auth::user()->role != 1)
+                                                <button wire:click="delete({{ $data->id }})"
+                                                    class="btn btn-danger btn-sm"><i
+                                                        class="fa-solid fa-trash-can confirm-delete"></i></button>
+                                            @endif
 
 
 
 
 
-                                    </td>
-                                    <td>{{ $data->user_id }}</td>
-                                    <td>{{ $data->name }}</td>
-                                    <td>{{ $data->department }}</td>
-                                    <td>{{ format_tgl($data->date) }}</td>
-                                    <td
-                                        class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                        {{ format_jam($data->first_in) }} </td>
-                                    <td
-                                        class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                        {{ format_jam($data->first_out) }}</td>
-                                    <td
-                                        class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
-                                        {{ format_jam($data->second_in) }}</td>
-                                    <td
-                                        class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                        {{ format_jam($data->second_out) }}</td>
-                                    <td
-                                        class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                        {{ format_jam($data->overtime_in) }}</td>
-                                    <td>
-                                        {{ format_jam($data->overtime_out) }}</td>
-                                    <td>
-                                        @if ($data->late_history == 1 && $data->late == 1)
-                                            <h6><span class="badge bg-info">Late</span></h6>
-                                        @elseif ($data->late_history == 1 && $data->late == null)
-                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i></span>
-                                            </h6>
-                                        @else
-                                            {{ $data->late }}
-                                        @endif
+                                        </td>
+                                        <td>{{ $data->user_id }}</td>
+                                        <td>{{ $data->name }}</td>
+                                        <td>{{ $data->department }}</td>
+                                        <td>{{ format_tgl($data->date) }}</td>
+                                        <td
+                                            class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->first_in) }} </td>
+                                        <td
+                                            class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->first_out) }}</td>
+                                        <td
+                                            class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->second_in) }}</td>
+                                        <td
+                                            class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->second_out) }}</td>
+                                        <td
+                                            class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->overtime_in) }}</td>
+                                        <td>
+                                            {{ format_jam($data->overtime_out) }}</td>
+                                        <td>
+                                            @if ($data->late_history == 1 && $data->late == 1)
+                                                <h6><span class="badge bg-info">Late</span></h6>
+                                            @elseif ($data->late_history == 1 && $data->late == null)
+                                                <h6><span class="badge bg-success"><i
+                                                            class="fa-solid fa-check"></i></span>
+                                                </h6>
+                                            @else
+                                                {{ $data->late }}
+                                            @endif
 
-                                    </td>
-                                    <td>
-                                        @if ($data->no_scan_history == 'No Scan' && $data->no_scan == 'No Scan')
-                                            <h6><span class="badge bg-warning">No Scan</span></h6>
-                                        @elseif ($data->no_scan_history == 'No Scan' && $data->no_scan == null)
-                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i></span>
-                                            </h6>
-                                        @else
-                                            {{ $data->no_scan }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $data->shift }}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <h4>Tidak ada data yang ditemukan</h4>
-                        @endif
-                    </tbody>
-                </table>
+                                        </td>
+                                        <td>
+                                            @if ($data->no_scan_history == 'No Scan' && $data->no_scan == 'No Scan')
+                                                <h6><span class="badge bg-warning">No Scan</span></h6>
+                                            @elseif ($data->no_scan_history == 'No Scan' && $data->no_scan == null)
+                                                <h6><span class="badge bg-success"><i
+                                                            class="fa-solid fa-check"></i></span>
+                                                </h6>
+                                            @else
+                                                {{ $data->no_scan }}
+                                            @endif
+                                            </i>
+                                        <td>{{ $data->shift }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <h4>Tidak ada data yang ditemukan</h4>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
                 {{ $datas->links() }}
             </div>
         </div>
     </div>
     {{-- Modal --}}
-    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
