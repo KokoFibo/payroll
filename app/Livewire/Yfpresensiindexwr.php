@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
 use App\Models\Yfrekappresensi;
@@ -31,11 +32,20 @@ class Yfpresensiindexwr extends Component
     public $no_scan = null;
     public $late = null;
 
-    public function delete ($id) {
-        $this->id = $id;
-        $data = Yfrekappresensi::find($id);
-        dd($data);
+    #[On('delete')]
+
+    public function delete() {
+
+        Yfrekappresensi::find($this->id)->delete();
+        $this->dispatch('success', message: 'Data Presensi Sudah di Update');
     }
+
+    public function deleteConfirmation ($id) {
+        $this->id = $id;
+       $this->dispatch('swal:confirm');
+    }
+
+
     public function filterNoScan()
     {
         $this->columnName = 'no_scan_history';
@@ -157,10 +167,10 @@ class Yfpresensiindexwr extends Component
             ->where('shift', 'Pagi')
             ->where('date', '=', $this->tanggal)
             ->count();
-        $totalLate = Yfrekappresensi::where('late', '1')
+        $totalLate = Yfrekappresensi::where('late','>', '0')
             ->where('date', '=', $this->tanggal)
             ->count();
-        $totalLatePagi = Yfrekappresensi::where('late', '1')
+        $totalLatePagi = Yfrekappresensi::where('late','>', '0')
             ->where('shift', 'Pagi')
             ->where('date', '=', $this->tanggal)
             ->count();

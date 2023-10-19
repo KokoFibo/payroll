@@ -16,22 +16,40 @@ function trimTime($data)
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl)
 {
     $late = null;
+    $late1 = null;
+    $late2 = null;
+    $late3 = null;
+    $late4 = null;
+    $late5 = null;
+
     if (checkFirstInLate($first_in, $shift, $tgl)) {
-        return $late = 1;
+        //  return $late = $late + 1;
+        //  return $late = 1;
+        $late1 = 1;
     }
     if (checkFirstOutLate($first_out, $shift, $tgl)) {
-        return $late = 1;
+        //  return $late = $late + 1;
+        //  return $late = 1;
+        $late2 = 1;
     }
     if (checkSecondOutLate($second_out, $shift, $tgl)) {
-        return $late = 1;
+        //  return $late = $late + 1;
+        //  return $late = 1;
+        $late3 = 1;
     }
     if (checkOvertimeInLate($overtime_in, $shift, $tgl)) {
-        return $late = 1;
+        //  return $late = $late + 1 ;
+        //  return $late = 1;
+        $late4 = 1;
     }
-
     if (checkSecondInLate($second_in, $shift, $first_out, $tgl)) {
-        return $late = 1;
+        // return $late = $late + 1 ;
+        // return $late = 1;
+        $late5 = 1;
     }
+    $late = $late1 + $late2 + $late3+ $late4 + $late5 ;
+    return $late;
+
 }
 
 function checkFirstInLate($data, $shift, $tgl)

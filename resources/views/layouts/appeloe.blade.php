@@ -2,8 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer" />
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <head>
     <meta charset="utf-8">
@@ -97,32 +96,9 @@
     </div>
     @livewireScripts
 
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     @stack('script')
-
-
-    <script>
-        $(document).ready(function() {
-            toastr.options = {
-                "progressBar": true,
-                "timeOut": "1500",
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "closeButton": true,
-            }
-            window.addEventListener('success', event => {
-                toastr.success(event.detail.message);
-            });
-            window.addEventListener('warning', event => {
-                toastr.warning(event.detail.message);
-            });
-            window.addEventListener('error', event => {
-                toastr.error(event.detail.message);
-            });
-        });
-    </script>
 
 </body>
 

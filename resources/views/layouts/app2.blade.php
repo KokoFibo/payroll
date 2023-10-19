@@ -67,24 +67,7 @@
 
             @include('layouts.footer')
 
-            <script type="text/javascript">
-                $('.confirm-delete').click(function(event) {
-                    let form = $(this).closest("form");
-                    event.preventDefault();
-                    swal({
-                            title: `Apakah anda yakin untuk delete data ini ?`,
-                            text: "Data akan di delete secara permanen",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                form.submit();
-                            }
-                        });
-                });
-            </script>
+
     </body>
 
 </html>

@@ -14,10 +14,10 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
-        rel="stylesheet"> --}}
+
 
     <!-- Scripts -->
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -69,26 +69,11 @@
             <!-- /.content-wrapper -->
 
             @include('layouts.footer')
-            {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-            {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> --}}
-
-            {{-- <script>
-            $(".date").datepicker({
-                format: "dd-mm-yyyy",
-                todayHighlight: true,
-                orientation: "auto",
-            });
-        </script> --}}
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             @livewireScripts
 
-            <script>
-                // script pindah ke app.js
-            </script>
-
-
-
-    </body>
+            < </body>
 
 </html>

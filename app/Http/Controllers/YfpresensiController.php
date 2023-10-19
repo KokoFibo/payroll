@@ -128,8 +128,7 @@ class YfpresensiController extends Controller
             ->select('user_id', 'name', 'date', 'department')
             ->distinct()
             ->get();
-        // $tablePresensi =  DB::table('yfpresensis')->get();
-        // dd($karyawanHadir);
+
         foreach ($karyawanHadir as $kh) {
             $user_id = $kh->user_id;
             $name = $kh->name;

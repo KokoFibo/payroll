@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Karyawan;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
 class Karyawanindexwr extends Component
@@ -12,6 +13,23 @@ class Karyawanindexwr extends Component
     public $search='';
     public $columnName="id_karyawan";
     public $direction = 'desc';
+    public $id;
+    // protected $listeners = ['delete'];
+    #[On('delete')]
+
+    public function delete () {
+        Karyawan::find($this->id)->delete();
+        $this->dispatch('success', message:'Data Berhasil di delete');
+    }
+
+    public function confirmDelete ($id) {
+       $this->id = $id;
+       $this->dispatch('swal:confirm', [
+            'title' => 'Apakah Anda Yakin',
+            'text' => 'isi text dengan apa?',
+            'id' => $id,
+       ]);
+    }
 
     public function sortColumnName ($namaKolom) {
         $this->columnName = $namaKolom;
