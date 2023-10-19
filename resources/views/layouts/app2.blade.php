@@ -14,8 +14,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
@@ -50,40 +50,41 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer" />
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
-    <div class="wrapper">
-        @include('layouts.navbar')
-        @include('layouts.aside')
+<body style="font-family: 'nunito';">
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            @yield('content')
-        </div>
-        <!-- /.content-wrapper -->
+    <body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
+        <div class="wrapper">
+            @include('layouts.navbar')
+            @include('layouts.aside')
 
-        @include('layouts.footer')
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
+            <!-- /.content-wrapper -->
 
-        <script type="text/javascript">
-            $('.confirm-delete').click(function(event) {
-                let form = $(this).closest("form");
-                event.preventDefault();
-                swal({
-                        title: `Apakah anda yakin untuk delete data ini ?`,
-                        text: "Data akan di delete secara permanen",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            form.submit();
-                        }
-                    });
-            });
-        </script>
-</body>
+            @include('layouts.footer')
+
+            <script type="text/javascript">
+                $('.confirm-delete').click(function(event) {
+                    let form = $(this).closest("form");
+                    event.preventDefault();
+                    swal({
+                            title: `Apakah anda yakin untuk delete data ini ?`,
+                            text: "Data akan di delete secara permanen",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                form.submit();
+                            }
+                        });
+                });
+            </script>
+    </body>
 
 </html>

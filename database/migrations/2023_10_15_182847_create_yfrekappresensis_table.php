@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('temp_rekap_presensi', function (Blueprint $table) {
+        Schema::create('yfrekappresensis', function (Blueprint $table) {
+            $table->id();
             $table->integer('user_id');
             $table->string('name');
             $table->string('department');
             $table->date('date');
-            $table->integer('jml_fp');
             $table->time('first_in')->nullable();
             $table->time('first_out')->nullable();
             $table->time('second_in')->nullable();
@@ -26,6 +26,10 @@ return new class extends Migration
             $table->integer('late')->nullable();
             $table->string('no_scan')->nullable();
             $table->string('shift')->nullable();
+            $table->string('no_scan_history')->nullable();
+            $table->string('late_history')->nullable();
+
+            $table->timestamps();
         });
     }
 
@@ -34,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('temp_rekap_presensi');
+        Schema::dropIfExists('yfrekappresensis');
     }
 };

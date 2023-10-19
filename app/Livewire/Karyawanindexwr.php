@@ -31,6 +31,7 @@ class Karyawanindexwr extends Component
 
         $datas = Karyawan::where('nama','LIKE','%'.trim($this->search).'%')
         ->orWhere('branch','LIKE','%'.trim($this->search).'%')
+        ->orWhere('id_karyawan','LIKE','%'.trim($this->search).'%')
         ->orWhere('departemen','LIKE','%'.trim($this->search).'%')
         ->orderBy($this->columnName, $this->direction)->paginate(10);
         return view('livewire.karyawanindexwr', compact(['datas']));

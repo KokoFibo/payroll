@@ -2,14 +2,24 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Yfrekappresensi;
 
 class Test extends Component
 {
-    public $search;
+    // public $saturday;
     public function render()
     {
 
-        return view('livewire.test');
+        $data = Yfrekappresensi::find(1);
+
+        $saturday = Carbon::parse($data->date)->isSaturday();
+
+
+
+
+
+        return view('livewire.test', compact(['saturday']));
     }
 }
