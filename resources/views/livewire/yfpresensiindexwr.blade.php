@@ -91,7 +91,8 @@
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#update-form-modal"></i></button>
                                             @if (Auth::user()->role != 1)
-                                                <button wire:click="deleteConfirmation({{ $data->id }})"
+                                                <button
+                                                    wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
@@ -267,6 +268,7 @@
     {{-- End  --}}
     <script>
         window.addEventListener("swal:confirm", (event) => {
+            console.log(event);
             Swal.fire({
                 title: "Apakah yakin mau di delete",
                 text: "Data yang sudah di delete tidak dapat dikembalikan",
@@ -277,7 +279,9 @@
                 confirmButtonText: "Delete",
             }).then((willDelete) => {
                 if (willDelete.isConfirmed) {
-                    @this.dispatch("delete");
+                    @this.dispatch("delete", {
+                        id: event.detail.id
+                    });
                 }
             });
         });

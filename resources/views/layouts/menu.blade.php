@@ -29,7 +29,7 @@ with font-awesome or any other icon font library -->
         </li>
         @if (Auth::user()->role != 1)
             <li class="nav-item">
-                <a href="/test" class="nav-link" wire:navigate>
+                <a href="/payrollindex" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-dollar-sign"></i>
                     <p>
                         Payroll
@@ -68,6 +68,12 @@ with font-awesome or any other icon font library -->
                         <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
                             <p class="text-danger">Truncate Table Presensi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/deletenoscan" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Delete No Scan</p>
                         </a>
                     </li>
                     <li class="nav-item">

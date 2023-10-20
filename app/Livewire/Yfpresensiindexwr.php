@@ -33,17 +33,11 @@ class Yfpresensiindexwr extends Component
     public $late = null;
 
     #[On('delete')]
-
-    public function delete() {
-
-        Yfrekappresensi::find($this->id)->delete();
+    public function delete($id) {
+        Yfrekappresensi::find($id)->delete();
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-    public function deleteConfirmation ($id) {
-        $this->id = $id;
-       $this->dispatch('swal:confirm');
-    }
 
 
     public function filterNoScan()

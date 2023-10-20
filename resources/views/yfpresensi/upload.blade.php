@@ -14,6 +14,7 @@
                 <form action="/yfstore" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
+
                         @if (session('error'))
                             <div class="alert alert-danger">
                                 {{ session('error') }}
@@ -29,6 +30,7 @@
                                 {{ session('info') }}
                             </div>
                         @endif
+
                         <label for="formFile" class="form-label mt-2 mb-3">Upload data</label>
                         <input class="form-control" type="file" name="file" id="formFile" accept="xlsx" required>
                     </div>

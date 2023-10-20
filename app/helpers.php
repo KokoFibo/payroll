@@ -3,6 +3,69 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function pembulatanJamOvertimeIn( $jam) {
+    $arrJam = explode(':', $jam );
+    if((int)$arrJam[1]<=30 ) {
+        if((int)$arrJam[0]<10) {
+            return $menit = '0'.$arrJam[0]. ':30:00';
+        } else {
+            return $menit = $arrJam[0]. ':30:00';
+        }
+
+    } else {
+        $tambahJam = (int)$arrJam[0] + 1;
+        if($tambahJam<10) {
+            $strJam = '0'.strval($tambahJam).':';
+        } else {
+            $strJam = strval($tambahJam).':';
+        }
+        return $strJam.'00:00';
+    }
+
+}
+function pembulatanJamOvertimeOut( $jam) {
+    $arrJam = explode(':', $jam );
+    if((int)$arrJam[1]>=30 ) {
+        if((int)$arrJam[0]<10) {
+            return $menit = '0'.(int)$arrJam[0]. ':30:00';
+        } else {
+            return $menit = $arrJam[0]. ':30:00';
+        }
+
+    } else {
+        if((int)$arrJam[0]<10) {
+            return $menit = '0'.(int)$arrJam[0]. ':00:00';
+        } else {
+            return $menit = $arrJam[0]. ':00:00';
+        }
+    }
+
+}
+
+function hitungLembur($overtime_in, $overtime_out) {
+    if($overtime_in != '' || $overtime_out != ''){
+        $t1 = strtotime(pembulatanJamOvertimeIn( $overtime_in));
+        $t2 = strtotime(pembulatanJamOvertimeOut($overtime_out));
+
+        $diff = gmdate('H:i:s', $t2 - $t1);
+        $diff = explode(':', $diff );
+        $jam = (int)$diff[0];
+        $menit = (int)$diff[1];
+        // if($menit<30) {
+        //     $menit = 0;
+        // } else {
+        //     $menit = 30;
+        // }
+        $totalMenit = $jam * 60 + $menit;
+
+        return $totalMenit ;
+
+    } else {
+        return 0;
+    }
+
+}
+
 function fixTrimTime($data)
 {
     return $data . ':00';

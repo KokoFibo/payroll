@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Test;
+use App\Livewire\Prindexwr;
 use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\Karyawanindexwr;
@@ -75,6 +76,11 @@ Route::post('/yfstore', [YfpresensiController::class, 'store']);
 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
+Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
+
+// PAYROLL
+
+Route::get('/payrollindex', Prindexwr::class);
 
 
 
