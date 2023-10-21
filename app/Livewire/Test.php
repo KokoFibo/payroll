@@ -11,15 +11,10 @@ class Test extends Component
     // public $saturday;
     public function render()
     {
-
-        $data = Yfrekappresensi::find(1);
-
-        $saturday = Carbon::parse($data->date)->isSaturday();
+        // checkSecondOutLate($second_out, $shift, $tgl)
+        $late = checkSecondOutLate('00:00:00', 'Malam', '2023-08-05');
 
 
-
-
-
-        return view('livewire.test', compact(['saturday']));
+        return view('livewire.test', compact('late'));
     }
 }
