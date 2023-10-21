@@ -77,6 +77,12 @@ with font-awesome or any other icon font library -->
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="/deletejamkerja" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Delete Jam Kerja</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
                             <p>Reserved</p>

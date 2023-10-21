@@ -22,7 +22,9 @@ class Prindexwr extends Component
         $getTglTerakhir = Jamkerjaid::select('date')
             ->orderBy('date', 'desc')
             ->first();
-        $this->periode = $getTglTerakhir->date;
+        if($getTglTerakhir != null) {
+            $this->periode = $getTglTerakhir->date;
+        }
     }
 
     public function rubah()
@@ -51,6 +53,7 @@ class Prindexwr extends Component
     {
         $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
         if ($checkIfJamKerjaExist) {
+            dd($checkIfJamKerjaExist);
             $this->dispatch('error', message: 'Masih ada data no scan');
             return back();
         }
@@ -59,6 +62,7 @@ class Prindexwr extends Component
             ->whereYear('date', getTahun($this->periode))
             ->whereMonth('date', getBulan($this->periode))
             ->count();
+            dd($tglsementara);
 
         if ($tglsementara) {
             $this->dispatch('error', message: 'Masih ada data no scan');

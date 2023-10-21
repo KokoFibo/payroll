@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Employee;
 use App\Models\Presensi;
 use App\Models\Department;
+use App\Models\Jamkerjaid;
 use App\Models\Yfpresensi;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
@@ -19,8 +20,14 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 class YfpresensiController extends Controller
 {
 
+    public function deleteJamKerja () {
+        Jamkerjaid::query()->truncate();
+        return back()->with('success', 'Data Jam Kerja telah berhasil di delete');
+    }
     public function deleteNoScan () {
         Yfrekappresensi::where('no_scan', 'No Scan')->delete();
+        return back()->with('success', 'Data No scan telah berhasil di delete');
+
 
         return back();
 

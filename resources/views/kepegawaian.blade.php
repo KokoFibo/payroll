@@ -6,7 +6,7 @@
             <select class="form-select" aria-label="Default select example" wire:model="status_karyawan">
                 <option>Pilih status karyawan</option>
                 <option value="Karyawan Tetap">Karyawan Tetap</option>
-                <option value="Karyawan Kontrak">Karyawan Kontrak</option>
+                <option value="PKWT">PKWT</option>
                 <option value="Dirumahkan">Dirumahkan</option>
                 <option value="Resign">Resign</option>
                 <option value="Kabur">Kabur</option>
@@ -33,17 +33,26 @@
             <label class="form-label">Departemen</label>
             <select class="form-select" aria-label="Default select example" wire:model="departemen">
                 <option>Pilih departemen</option>
-                <option value="Finance Accounting">Finance Accounting</option>
-                <option value="Quality Control">Quality Control</option>
-                <option value="Human Resources Department">Human Resources Department</option>
-                <option value="Procurement">Procurement</option>
-                <option value="Business and Development">Business and Development</option>
-                <option value="PMC">PMC</option>
-                <option value="EXIM">EXIM</option>
+                <option value="BD">BD</option>
                 <option value="Engineering">Engineering</option>
-                <option value="Production">Production</option>
+                <option value="EXIM">EXIM</option>
+                <option value="Finance Accounting">Finance Accounting</option>
+                <option value="GA">GA</option>
+                <option value="GD">GD</option>
+                <option value="Gudang">Gudang</option>
+                <option value="HR">HR</option>
                 <option value="Legal">Legal</option>
+                <option value="Pabrik">Pabrik</option>
+                <option value="PMC">PMC</option>
+                <option value="PMC">PMC</option>
+                <option value="Procurement">Procurement</option>
+                <option value="Production">Production</option>
+                <option value="Produksi Packing">Produksi Packing</option>
+                <option value="Produksi">Produksi</option>
+                <option value="QC">QC</option>
+                <option value="Repair">Repair</option>
                 <option value="STW">STW</option>
+                <option value="Yifang">Yifang</option>
             </select>
         </div>
         <div class="mb-3">

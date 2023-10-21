@@ -38,10 +38,6 @@ return new class extends Migration
             $table->string('level_jabatan')->nullable();
 
             $table->integer('gaji_pokok')->nullable();
-            $table->integer('gaji_perjam')->nullable();
-            $table->integer('gaji_overtime')->nullable();
-            $table->integer('gaji_harian')->nullable();
-            $table->integer('gaji_bulanan')->nullable();
             $table->string('metode_penggajian')->nullable();
             $table->integer('uang_makan')->nullable();
             $table->integer('bonus')->nullable();
@@ -56,7 +52,6 @@ return new class extends Migration
             $table->integer('denda')->nullable();
             $table->integer('potongan_pph21')->nullable();
             $table->integer('potongan_bpjs')->nullable();
-            $table->integer('potongan_ijin_alpa')->nullable();
 
             $table->timestamps();
         });

@@ -77,6 +77,7 @@ Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi'])
 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
 Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
+Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
 
 // PAYROLL
 
