@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name')->nullable();
+            $table->string('date')->nullable();
             $table->integer('jumlah_jam_kerja')->nullable();
             $table->integer('jumlah_menit_lembur')->nullable();
             $table->integer('jumlah_jam_terlambat')->nullable();

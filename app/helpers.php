@@ -3,6 +3,21 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function getBulan($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[1];
+}
+function getTahun($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[0];
+}
+function buatTanggal($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[0] . '-' . $arrJam[1] . '-01';
+}
 function pembulatanJamOvertimeIn($jam)
 {
     $arrJam = explode(':', $jam);
