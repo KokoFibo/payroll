@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 
 class Updatekaryawanwr extends Component
 {
@@ -15,6 +16,8 @@ class Updatekaryawanwr extends Component
     public $gaji_pokok, $gaji_overtime, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
+
+
 
     public function mount ($id) {
         $this->id = $id;
@@ -63,6 +66,7 @@ class Updatekaryawanwr extends Component
         $this->potongan_seragam = $data->potongan_seragam;
         $this->potongan_pph21 = $data->potongan_pph21;
         $this->potongan_bpjs = $data->potongan_bpjs;
+
     }
 
     public function update() {

@@ -54,7 +54,7 @@ with font-awesome or any other icon font library -->
                     <li class="nav-item">
                         <a href="/karyawanviewimport" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Karyawan Excel Uploader</p>
+                            <p>Karyawan Uploader</p>
                         </a>
                     </li>
 
@@ -67,7 +67,7 @@ with font-awesome or any other icon font library -->
                     <li class="nav-item">
                         <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p class="text-danger">Truncate Table Presensi</p>
+                            <p class="text-danger">Truncate Table</p>
                         </a>
                     </li>
                     <li class="nav-item">

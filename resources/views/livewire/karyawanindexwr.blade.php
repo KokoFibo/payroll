@@ -39,14 +39,32 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('branch')">Branch <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('departemen')">Departemen <i
+                                <th class="text-center" wire:click="sortColumnName('branch')">Branch <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('departemen')">Departemen <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
+                                <th class="text-center" wire:click="sortColumnName('jabatan')">Jabatan <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
+                                    Penggajian <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_overtime')">Overtime <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('uang_makan')">Uang Makan <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('bonus')">Bonus <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+
 
                             </tr>
                         </thead>
@@ -68,10 +86,15 @@
                                     </td>
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
-                                    <td>{{ $data->branch }}</td>
-                                    <td>{{ $data->departemen }}</td>
-                                    <td>{{ $data->jabatan }}</td>
-                                    <td>{{ $data->level_jabatan }}</td>
+                                    <td class="text-center">{{ $data->branch }}</td>
+                                    <td class="text-center">{{ $data->departemen }}</td>
+                                    <td class="text-center">{{ $data->jabatan }}</td>
+                                    <td class="text-center">{{ $data->level_jabatan }}</td>
+                                    <td class="text-center">{{ $data->metode_penggajian }}</td>
+                                    <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
+                                    <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
+                                    <td class="text-center">{{ number_format($data->uang_makan) }}</td>
+                                    <td class="text-center">{{ number_format($data->bonus) }}</td>
 
 
                                 </tr>
