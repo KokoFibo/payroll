@@ -54,7 +54,7 @@ with font-awesome or any other icon font library -->
                     <li class="nav-item">
                         <a href="/karyawanviewimport" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Import Data Karyawan</p>
+                            <p>Karyawan Excel Uploader</p>
                         </a>
                     </li>
 

@@ -3,11 +3,28 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function monthYear($tgl)
+{
+    $month = Carbon::parse($tgl)->format('F');
+    $year = Carbon::parse($tgl)->format('Y');
+    return $month . ' ' . $year;
+}
 function getBulan($tgl)
 {
     $arrJam = explode('-', $tgl);
     return $arrJam[1];
 }
+function addZeroToMonth($tgl)
+{
+    if ($tgl != null) {
+        if ($tgl < 10) {
+            return '0' . $tgl;
+        } else {
+            return $tgl;
+        }
+    }
+}
+
 function getTahun($tgl)
 {
     $arrJam = explode('-', $tgl);

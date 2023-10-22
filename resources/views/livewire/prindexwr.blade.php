@@ -9,6 +9,7 @@
 
     <div class="d-flex justify-content-between">
         <div class="col-4 p-4">
+            CX = {{ $cx }}
             Periode: {{ $periode }}
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -19,7 +20,9 @@
         </div>
         <div class="col-3 p-4 d-flex justify-content-end gap-3  align-items-center">
 
-
+            <div wire:loading>
+                Building Payroll...
+            </div>
             <div>
                 <button wire:click="getPayrollConfirmation" class="btn btn-primary">Get Payroll</button>
             </div>
@@ -31,14 +34,15 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h3>Detail Jam kerja karyawan
+                    <h3>Detail Jam kerja karyawan per {{ monthYear($periode) }}
                     </h3>
                     <div>
 
-                        <select wire:change="rubah" class="form-select" wire:model.live="periode">
+                        <select wire:change="periode" class="form-select" wire:model.live="periode">
                             {{-- <option selected>{{ $p->month_name }} {{ $p->year }}</option> --}}
                             @foreach ($periodePayroll as $p)
-                                < <option value="{{ $p->year }}-{{ $p->month }}-01">{{ $p->month_name }}
+                                < <option value="{{ $p->year }}-{{ addZeroToMonth($p->month) }}-01">
+                                    {{ $p->month_name }}
                                     {{ $p->year }}</option>
                             @endforeach
 
@@ -52,6 +56,7 @@
                         <tr>
                             <th>User ID</th>
                             <th>Name</th>
+                            <th>Date</th>
                             <th class="text-center">Jumlah Jam Kerja</th>
                             <th class="text-center">Jumlah Menit Overtime</th>
                             <th class="text-center">Jumlah Jam Late</th>
@@ -67,6 +72,7 @@
                             <tr>
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ $item->date }}</td>
                                 <td class="text-center">{{ $item->jumlah_jam_kerja }}</td>
                                 <td class="text-center">{{ $item->jumlah_menit_lembur }}</td>
                                 <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
@@ -92,7 +98,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Delete",
+                confirmButtonText: "Ya",
             }).then((willDelete) => {
                 if (willDelete.isConfirmed) {
                     @this.dispatch("getPayroll");
