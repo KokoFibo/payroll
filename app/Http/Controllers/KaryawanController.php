@@ -78,6 +78,7 @@ class KaryawanController extends Controller
                 $jabatan = $importedData->getCell('T' . $i)->getValue();
                 $level_jabatan = $importedData->getCell('U' . $i)->getValue();
                 $gaji_pokok = $importedData->getCell('V' . $i)->getValue();
+                $gaji_overtime = $importedData->getCell('X' . $i)->getValue();
                 $metode_penggajian = $importedData->getCell('AA' . $i)->getValue();
                 $uang_makan = $importedData->getCell('AB' . $i)->getValue();
                 $bonus = $importedData->getCell('AC' . $i)->getValue();
@@ -120,6 +121,7 @@ class KaryawanController extends Controller
                 'jabatan' => $jabatan,
                 'level_jabatan' => $level_jabatan,
                 'gaji_pokok' => $gaji_pokok,
+                'gaji_overtime' => $gaji_overtime,
                 'metode_penggajian' => $metode_penggajian,
                 'uang_makan' => $uang_makan,
                 'bonus' => $bonus,

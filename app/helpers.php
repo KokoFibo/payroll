@@ -385,6 +385,10 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl)
 
 function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out)
 {
+
+    if (($first_in != null && $second_out != null && $first_out == null && $second_in == null ) && (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null))) {
+        return 'No Scan';
+    }
     if ($first_in != null && $second_out != null && $first_out == null && $second_in == null) {
         return null;
     }
@@ -397,6 +401,10 @@ function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $o
     if (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null)) {
         return 'No Scan';
     }
+
+
+
+
 }
 function titleCase($data)
 {

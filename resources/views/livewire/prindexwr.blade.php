@@ -9,8 +9,7 @@
 
     <div class="d-flex justify-content-between">
         <div class="col-4 p-4">
-            CX = {{ $cx }}
-            Periode: {{ $periode }}
+
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
@@ -18,14 +17,23 @@
 
 
         </div>
-        <div class="col-3 p-4 d-flex justify-content-end gap-3  align-items-center">
+        <div class="col-5 p-4 d-flex justify-content-end gap-3  align-items-center">
 
             <div wire:loading>
-                Building Payroll...
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
+                </button>
             </div>
+
+
             <div>
-                <button wire:click="getPayrollConfirmation" class="btn btn-primary">Get Payroll</button>
+                {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
+                <button wire:click.prevent="getPayroll()" class="btn btn-primary" wire:loading.remove>Build
+                    Jam
+                    Kerja</button>
             </div>
+
         </div>
 
     </div>
@@ -34,7 +42,8 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h3>Detail Jam kerja karyawan per {{ monthYear($periode) }}
+                    <h3>Detail Jam kerja karyawan per {{ monthYear($periode) }}, Data Terakhir Tanggal
+                        {{ format_tgl($lastData) }}
                     </h3>
                     <div>
 
@@ -54,17 +63,26 @@
                 <table class="table mb-3">
                     <thead>
                         <tr>
-                            <th>User ID</th>
-                            <th>Name</th>
-                            <th>Date</th>
-                            <th class="text-center">Jumlah Jam Kerja</th>
-                            <th class="text-center">Jumlah Menit Overtime</th>
-                            <th class="text-center">Jumlah Jam Late</th>
-                            <th class="text-center">First In Late</th>
-                            <th class="text-center">First Out Late</th>
-                            <th class="text-center">Second In Late</th>
-                            <th class="text-center">Second Out Late</th>
-                            <th class="text-center">Overtime In Late</th>
+                            <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('name')">Name <i class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
+                                Overtime <i class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam Late
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="text-center" wire:click="sortColumnName('first_in_late')">First In Late <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('first_out_late')">First Out Late <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('second_in_late')">Second In Late <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('second_out_late')">Second Out Late <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i
+                                    class="fa-solid fa-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,9 +90,8 @@
                             <tr>
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->date }}</td>
                                 <td class="text-center">{{ $item->jumlah_jam_kerja }}</td>
-                                <td class="text-center">{{ $item->jumlah_menit_lembur }}</td>
+                                <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
                                 <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
                                 <td class="text-center">{{ $item->first_in_late }}</td>
                                 <td class="text-center">{{ $item->first_out_late }}</td>
@@ -104,6 +121,15 @@
                     @this.dispatch("getPayroll");
                 }
             });
+        });
+        window.addEventListener("foundError", (event) => {
+            console.log(event);
+            Swal.fire({
+                icon: 'error',
+                title: event.detail.title,
+                text: 'Ada Kesalahan',
+
+            })
         });
     </script>
 </div>

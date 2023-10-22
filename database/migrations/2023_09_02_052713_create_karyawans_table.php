@@ -37,8 +37,9 @@ return new class extends Migration
             $table->string('jabatan')->nullable();
             $table->string('level_jabatan')->nullable();
 
-            $table->integer('gaji_pokok')->nullable();
             $table->string('metode_penggajian')->nullable();
+            $table->integer('gaji_pokok')->nullable();
+            $table->integer('gaji_overtime')->nullable();
             $table->integer('uang_makan')->nullable();
             $table->integer('bonus')->nullable();
             $table->integer('tunjangan_jabatan')->nullable();
