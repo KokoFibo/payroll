@@ -7,13 +7,25 @@
     </style>
     @section('title', 'Karyawan')
 
-    <div class="col-4 p-4">
-
-        <div class="input-group">
-            <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+    <div class="d-flex  p-4">
+        <div class="col-4 ">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+            </div>
         </div>
-
+        <div class="col-4 ">
+        </div>
+        @if (Auth::user()->role == 4 || Auth::user()->role == 3)
+            <div class="col-4 text-end">
+                <div wire:loading class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div>
+                    <button wire:loading.remove wire:click="excel" class="btn btn-success">Excel</button>
+                </div>
+            </div>
+        @endif
     </div>
 
 
