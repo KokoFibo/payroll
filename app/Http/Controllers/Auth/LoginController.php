@@ -28,11 +28,18 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    // public function username () {
+    //     $login = request()->input('username');
+    //     $field = filter_var($login, FILTER_VALIDATE_EMAIL)? 'email' :  'id_karyawan';
+    //     request()->merge([$field => $login]);
+    //     return $field;
+    // }
+
     public function username () {
-        $login = request()->input('username');
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL)? 'email' :  'id_karyawan';
-        request()->merge([$field => $login]);
-        return $field;
+        $loginValue = request('username');
+        $this->username = filter_var($loginValue, FILTER_VALIDATE_EMAIL)? 'email' :  'username';
+        request()->merge([$this->username => $loginValue]);
+        return property_exists($this, 'username') ? $this->username : 'email';
     }
     /**
      * Create a new controller instance.
@@ -43,4 +50,5 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
 }

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Anton',
             'email' => 'kokonacci@gmail.com',
             'email_verified_at' => now(),
-            'id_karyawan' => 4,
+            'username' => 40000,
             'role' => 4,
             'password' => Hash::make('Anton888'), // 123456789
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Yifang User',
             'email' => 'user@yifang.com',
             'role' => 1,
-            'id_karyawan' => 1,
+            'username' => 10000,
 
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'), // 123456789
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin',
             'email' => 'admin@yifang.com',
-            'id_karyawan' =>2,
+            'username' => 20000,
 
             'role' => 2,
             'email_verified_at' => now(),
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@yifang.com',
-            'id_karyawan' => 3,
+            'username' => 30000,
 
             'role' => 3,
             'email_verified_at' => now(),
