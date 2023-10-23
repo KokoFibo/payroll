@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Employee;
+use App\Models\Karyawan;
 use App\Models\Presensi;
 use App\Models\Department;
 use App\Models\Jamkerjaid;
 use App\Models\Yfpresensi;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -19,18 +23,83 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class YfpresensiController extends Controller
 {
+    public function generateUsers()
+    {
+        User::query()->truncate();
+        // generate user dafault
+        User::create([
+            'name' => 'Anton',
+            'email' => 'kokonacci@gmail.com',
+            'email_verified_at' => now(),
+            'id_karyawan' => 4,
+            'role' => 4,
+            'password' => Hash::make('Anton888'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
+        User::create([
+            'name' => 'Yifang User',
+            'email' => 'user@yifang.com',
+            'role' => 1,
+            'id_karyawan' => 1,
 
-    public function deleteJamKerja () {
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@yifang.com',
+            'id_karyawan' => 1,
+
+            'role' => 2,
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@yifang.com',
+            'id_karyawan' => 3,
+
+            'role' => 3,
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
+
+        // mulai generate user dari table karyawan
+        $karyawan = Karyawan::all();
+        foreach ($karyawan as $item) {
+            //    $users = User::where('id_karyawan',$item->id_karyawan);
+            User::create([
+                'name' => $item->nama,
+                'email' => $item->email,
+                'id_karyawan' => $item->id_karyawan,
+            'email_verified_at' => now(),
+
+                'role' => 1,
+                'password' => Hash::make(generatePassword($item->tanggal_lahir)),
+                'remember_token' => Str::random(10),
+            ]);
+        }
+        dd('Done');
+    }
+
+    public function deleteJamKerja()
+    {
         Jamkerjaid::query()->truncate();
         return back()->with('success', 'Data Jam Kerja telah berhasil di delete');
     }
-    public function deleteNoScan () {
+    public function deleteNoScan()
+    {
         Yfrekappresensi::where('no_scan', 'No Scan')->delete();
         return back()->with('success', 'Data No scan telah berhasil di delete');
 
-
         return back();
-
     }
     public function deletepresensi()
     {
@@ -40,7 +109,6 @@ class YfpresensiController extends Controller
         Employee::query()->truncate();
         return back()->with('success', 'Data Presensi telah berhasil di delete');
     }
-
 
     public function index()
     {
@@ -54,7 +122,6 @@ class YfpresensiController extends Controller
 
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
-
 
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
@@ -77,9 +144,8 @@ class YfpresensiController extends Controller
                 $name = $importedData->getCell('B' . $i)->getValue();
 
                 if ($tgl_sama->isNotEmpty()) {
-
-                    foreach($tgl_sama as $data) {
-                        if($user_id == $data->user_id){
+                    foreach ($tgl_sama as $data) {
+                        if ($user_id == $data->user_id) {
                             return back()->with('error', 'The file has been uploaded.');
                         }
                     }

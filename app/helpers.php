@@ -3,6 +3,34 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function generatePassword($tgl)
+{
+    if ($tgl != null) {
+        $arrJam = explode('-', fixTanggal($tgl));
+        $year = substr($arrJam[0], 2);
+        return $arrJam[2] . $arrJam[1] . $year;
+    }
+}
+
+function fixTanggal($tgl)
+{
+    if ($tgl != null) {
+        $arrJam = explode('-', $tgl);
+        if ((int) $arrJam[1] < 10) {
+            $month = '0' . (int) $arrJam[1];
+        } else {
+            $month = $arrJam[1];
+        }
+        if ((int) $arrJam[2] < 10) {
+            $date = '0' . (int) $arrJam[2];
+        } else {
+            $date = $arrJam[2];
+        }
+
+        return $arrJam[0] . '-' . $month . '-' . $date;
+    }
+}
+
 function monthYear($tgl)
 {
     $month = Carbon::parse($tgl)->format('F');
@@ -385,8 +413,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl)
 
 function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out)
 {
-
-    if (($first_in != null && $second_out != null && $first_out == null && $second_in == null ) && (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null))) {
+    if ($first_in != null && $second_out != null && $first_out == null && $second_in == null && (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null))) {
         return 'No Scan';
     }
     if ($first_in != null && $second_out != null && $first_out == null && $second_in == null) {
@@ -401,10 +428,6 @@ function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $o
     if (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null)) {
         return 'No Scan';
     }
-
-
-
-
 }
 function titleCase($data)
 {

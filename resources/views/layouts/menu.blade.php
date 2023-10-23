@@ -57,6 +57,12 @@ with font-awesome or any other icon font library -->
                             <p>Karyawan Uploader</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/generateusers" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Generate Users</p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="/yfdeletetanggalpresensiwr" class="nav-link" wire:navigate>

@@ -59,6 +59,9 @@ Route::get('/karyawanviewimport', function() {
     return view('karyawan.importview');
 });
 Route::get('/erasedatakarayawan', [KaryawanController::class,'erase'])->name('karyawan.erase');
+Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
+Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
+Route::get('/generateusers', [YfpresensiController::class,'generateUsers']);
 
 // TEST
 Route::get('/test', Test::class)->name('test');
@@ -76,8 +79,7 @@ Route::post('/yfstore', [YfpresensiController::class, 'store']);
 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
-Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
-Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
+
 
 // PAYROLL
 
