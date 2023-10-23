@@ -61,21 +61,23 @@
                                 <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
-                                    Penggajian <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('gaji_overtime')">Overtime <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('uang_makan')">Uang Makan <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('bonus')">Bonus <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
+                                @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                    <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
+                                        Penggajian <i class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th class="text-center" wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th class="text-center" wire:click="sortColumnName('gaji_overtime')">Overtime <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th class="text-center" wire:click="sortColumnName('uang_makan')">Uang Makan <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th class="text-center" wire:click="sortColumnName('bonus')">Bonus <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                @endif
 
 
                             </tr>
@@ -102,11 +104,13 @@
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     <td class="text-center">{{ $data->level_jabatan }}</td>
-                                    <td class="text-center">{{ $data->metode_penggajian }}</td>
-                                    <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
-                                    <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
-                                    <td class="text-center">{{ number_format($data->uang_makan) }}</td>
-                                    <td class="text-center">{{ number_format($data->bonus) }}</td>
+                                    @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                        <td class="text-center">{{ $data->metode_penggajian }}</td>
+                                        <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
+                                        <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
+                                        <td class="text-center">{{ number_format($data->uang_makan) }}</td>
+                                        <td class="text-center">{{ number_format($data->bonus) }}</td>
+                                    @endif
 
 
                                 </tr>

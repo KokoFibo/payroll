@@ -125,7 +125,7 @@
                                             {{ format_jam($data->overtime_out) }}</td>
                                         <td>
                                             @if ($data->late_history >= 1 && $data->late >= 1)
-                                                <h6><span class="badge bg-info">Late {{ $data->late }}</span>
+                                                <h6><span class="badge bg-info">Late</span>
                                                 </h6>
                                             @elseif ($data->late_history >= 1 && $data->late == null)
                                                 <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
