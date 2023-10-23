@@ -25,7 +25,7 @@ class YfpresensiController extends Controller
 {
     public function generateUsers()
     {
-        User::query()->truncate();
+        // User::query()->truncate();
         // generate user dafault
         User::create([
             'name' => 'Anton',
@@ -79,11 +79,9 @@ class YfpresensiController extends Controller
                 'name' => $item->nama,
                 'email' => $item->email,
                 'username' => $item->id_karyawan,
-            'email_verified_at' => now(),
 
                 'role' => 1,
                 'password' => Hash::make(generatePassword($item->tanggal_lahir)),
-                'remember_token' => Str::random(10),
             ]);
         }
         dd('Done');
