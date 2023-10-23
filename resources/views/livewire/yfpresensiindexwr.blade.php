@@ -49,7 +49,7 @@
             <div class="card-body ">
                 <div class="table-responsive">
 
-                    <table class="table table-xl table-hover mb-4">
+                    <table class="table table-sm table-hover mb-4">
                         <thead>
                             <tr>
                                 <td>Action</td>

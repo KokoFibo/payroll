@@ -60,29 +60,30 @@ class Karyawanindexwr extends Component
 
     public function render()
     {
+        // $datas1 = Karyawan::where('nama', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orWhere('branch', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orderBy($this->columnName, $this->direction);
+        // $this->selectedAll = $datas1->pluck('id');
+        // $datas = $datas1->paginate(10);
+
         //Query ini untuk ikut filter status karyawan (buat chat GPT)
-        // $datasQuery = Karyawan::whereIn('status_karyawan', ['PKWT', 'Karyawan Tetap']);
-        // if ($this->search) {
-        //     $search = '%' . trim($this->search) . '%';
-        //     $datasQuery->where(function ($query) use ($search) {
-        //         $query->where('nama', 'LIKE', $search)
-        //             ->orWhere('branch', 'LIKE', $search)
-        //             ->orWhere('id_karyawan', 'LIKE', $search)
-        //             ->orWhere('departemen', 'LIKE', $search);
-        //     });
-        // }
-        // $datasQuery->orderBy($this->columnName, $this->direction);
-        // $perPage = 10;
-        // $datas = $datasQuery->paginate($perPage);
-
-        $datas1 = Karyawan::where('nama', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('branch', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-            ->orderBy($this->columnName, $this->direction);
-        $this->selectedAll = $datas1->pluck('id');
-
-        $datas = $datas1->paginate(10);
+        $datasQuery = Karyawan::whereIn('status_karyawan', ['PKWT', 'Karyawan Tetap']);
+        if ($this->search) {
+            $search = '%' . trim($this->search) . '%';
+            $datasQuery->where(function ($query) use ($search) {
+                $query
+                    ->where('nama', 'LIKE', $search)
+                    ->orWhere('branch', 'LIKE', $search)
+                    ->orWhere('id_karyawan', 'LIKE', $search)
+                    ->orWhere('departemen', 'LIKE', $search);
+            });
+        }
+        $datasQuery->orderBy($this->columnName, $this->direction);
+        $perPage = 10;
+        $this->selectedAll = $datasQuery->pluck('id');
+        $datas = $datasQuery->paginate($perPage);
 
         return view('livewire.karyawanindexwr', compact(['datas']));
     }

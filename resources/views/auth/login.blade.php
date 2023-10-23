@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center py-5 ">
 
-            <img src="{{ asset('images/yifang_logo.png') }}" alt="Yifang Logo" style="opacity: .8; width:350px">
+            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo" style="opacity: .8; width:350px">
         </div>
         <div class="row justify-content-center ">
             <div class="col-xl-6 ">

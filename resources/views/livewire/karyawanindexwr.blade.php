@@ -18,11 +18,12 @@
         </div>
         @if (Auth::user()->role == 4 || Auth::user()->role == 3)
             <div class="col-4 text-end">
-                <div wire:loading class="spinner-border text-success" role="status">
+                {{-- wire loading mengganggu saat query --}}
+                {{-- <div wire:loading class="spinner-border text-success" role="status">
                     <span class="visually-hidden">Loading...</span>
-                </div>
+                </div> --}}
                 <div>
-                    <button wire:loading.remove wire:click="excel" class="btn btn-success">Excel</button>
+                    <button wire:click="excel" class="btn btn-success">Excel</button>
                 </div>
             </div>
         @endif
