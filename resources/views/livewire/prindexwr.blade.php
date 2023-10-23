@@ -83,6 +83,8 @@
                                     class="fa-solid fa-sort"></i></th>
                             <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i
                                     class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
+                                    class="fa-solid fa-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,6 +100,7 @@
                                 <td class="text-center">{{ $item->second_in_late }}</td>
                                 <td class="text-center">{{ $item->second_out_late }}</td>
                                 <td class="text-center">{{ $item->overtime_in_late }}</td>
+                                <td class="text-center">{{ $item->total_noscan }}</td>
                             </tr>
                         @endforeach
                     </tbody>

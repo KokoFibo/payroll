@@ -12,8 +12,6 @@
                     Nama karyawan harus diisi
                 </div>
             @enderror
-
-
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
@@ -47,8 +45,14 @@
             </div>
             <div class="col-md-6">
                 <div class="mb-3 form-group">
-                    <label class="form-label">Tanggal Lahir (mm/dd/yyyy)</label>
-                    <input wire:model="tanggal_lahir" type="date" class="date form-control">
+                    <label class="form-label">Tanggal Lahir (mm/dd/yyyy) </label><span class="text-danger">*</span>
+                    <input wire:model="tanggal_lahir" type="date"
+                        class="date form-control @error('tanggal_lahir') is-invalid @enderror">
+                    @error('tanggal_lahir')
+                        <div class="invalid-feedback">
+                            Tanggal lahir harus diisi.
+                        </div>
+                    @enderror
                 </div>
             </div>
         </div>

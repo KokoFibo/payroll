@@ -120,6 +120,9 @@ class Prindexwr extends Component
             $jumlah_menit_lembur = null;
             $jumlah_hari_kerja = null;
 
+            $total_noscan = null;
+            $n_noscan = null;
+
             $total_late_1 = null;
             $total_late_2 = null;
             $total_late_3 = null;
@@ -137,6 +140,8 @@ class Prindexwr extends Component
             } else {
                 foreach ($dataId as $dt) {
                     if ($dt->late == null) {
+                        $n_noscan = $dt->no_scan_history;
+
                         // khusus NO Late
                         $jumlah_hari_kerja = $dataId->count();
                         if ($dt->overtime_in != null) {
@@ -158,6 +163,7 @@ class Prindexwr extends Component
                     } else {
                         // khusus yang late
                         $jumlah_hari_kerja = $dataId->count();
+                        $n_noscan = $dt->no_scan_history;
 
                         // check keterlambatan di hari kerja non overtime
                         $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
@@ -176,6 +182,8 @@ class Prindexwr extends Component
                             $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
                         }
                     }
+                    $total_noscan = $total_noscan + $n_noscan;
+
                 }
                 $dt_name = $dt->name;
                 $dt_date = $dt->date;
@@ -183,7 +191,7 @@ class Prindexwr extends Component
                 $jumlah_jam_terlambat = $jumlah_jam_terlambat + $late;
             }
             // DATA TOTAL
-
+            if($total_noscan == 0) $total_noscan=null;
             $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - ($total_late + $total_late_5);
 
             $data = Jamkerjaid::find($data->id);
@@ -194,7 +202,9 @@ class Prindexwr extends Component
             $data->last_data_date = $last_data_date->date;
             $data->jumlah_jam_kerja = $jumlah_jam_kerja;
             $data->jumlah_menit_lembur = $jumlah_menit_lembur;
+            $data->total_noscan = $total_noscan;
             $data->jumlah_jam_terlambat = $total_late;
+
             $data->first_in_late = $total_late_1 == 0 ? null : $total_late_1;
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;

@@ -27,6 +27,8 @@ class Karyawanwr extends Component
             'id_karyawan' => 'required',
             'nama' => 'required',
             'email' => 'email|nullable',
+            'email' => 'email|nullable',
+            'tanggal_lahir' => 'date|required',
         ]);
 
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();

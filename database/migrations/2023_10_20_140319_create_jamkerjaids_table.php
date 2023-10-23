@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('second_in_late')->nullable();
             $table->integer('second_out_late')->nullable();
             $table->integer('overtime_in_late')->nullable();
+            $table->integer('total_late')->nullable();
+            $table->integer('total_noscan')->nullable();
             $table->date('last_data_date')->nullable();
             $table->timestamps();
         });

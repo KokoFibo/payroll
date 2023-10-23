@@ -43,7 +43,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive-md">
-                    <table class="table table-xl   table-hover mb-2">
+                    <table class="table  table-sm  table-hover mb-2">
                         <thead>
                             <tr>
                                 <th></th>
@@ -59,6 +59,9 @@
                                 <th class="text-center" wire:click="sortColumnName('jabatan')">Jabatan <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('status_karyawan')">Status <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 @if (Auth::user()->role == 3 || Auth::user()->role == 4)
@@ -104,6 +107,7 @@
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     <td class="text-center">{{ $data->level_jabatan }}</td>
+                                    <td class="text-center">{{ $data->status_karyawan }}</td>
                                     @if (Auth::user()->role == 3 || Auth::user()->role == 4)
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>

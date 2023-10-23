@@ -75,6 +75,7 @@ class Updatekaryawanwr extends Component
             'id_karyawan' => 'required',
             'nama' => 'required',
             'email' => 'email|nullable',
+            'tanggal_lahir' => 'date|required',
         ]);
 
         $data = Karyawan::find($this->id);

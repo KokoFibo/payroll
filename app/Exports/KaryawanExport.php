@@ -13,11 +13,17 @@ class KaryawanExport implements FromCollection, FromQuery, WithHeadings, ShouldA
     /**
      * @return \Illuminate\Support\Collection
      */
+    protected $selectedAll;
+     public function __construct($selectedAll)
+    {
+        $this->selectedAll = $selectedAll;
+    }
     public function collection()
     {
         // return Karyawan::all();
 
-        return Karyawan::get(['id_karyawan', 'nama', 'email', 'hp', 'telepon', 'tempat_lahir', 'tanggal_lahir', 'gender', 'status_pernikahan', 'golongan_darah', 'agama', 'jenis_identitas', 'no_identitas', 'alamat_identitas', 'alamat_tinggal', 'status_karyawan', 'tanggal_bergabung', 'branch', 'departemen', 'jabatan', 'level_jabatan', 'metode_penggajian', 'gaji_pokok', 'gaji_overtime', 'uang_makan', 'bonus', 'tunjangan_jabatan', 'tunjangan_bahasa', 'tunjangan_skill', 'tunjangan_lembur_sabtu', 'tunjangan_lama_kerja', 'iuran_air', 'potongan_seragam', 'denda', 'potongan_pph21', 'potongan_bpjs']);
+        // return Karyawan::where('status_karyawan', 'Karyawan Tetap')->get(['id_karyawan', 'nama', 'email', 'hp', 'telepon', 'tempat_lahir', 'tanggal_lahir', 'gender', 'status_pernikahan', 'golongan_darah', 'agama', 'jenis_identitas', 'no_identitas', 'alamat_identitas', 'alamat_tinggal', 'status_karyawan', 'tanggal_bergabung', 'branch', 'departemen', 'jabatan', 'level_jabatan', 'metode_penggajian', 'gaji_pokok', 'gaji_overtime', 'uang_makan', 'bonus', 'tunjangan_jabatan', 'tunjangan_bahasa', 'tunjangan_skill', 'tunjangan_lembur_sabtu', 'tunjangan_lama_kerja', 'iuran_air', 'potongan_seragam', 'denda', 'potongan_pph21', 'potongan_bpjs']);
+        return Karyawan::whereIn('id', $this->selectedAll)->get(['id_karyawan', 'nama', 'email', 'hp', 'telepon', 'tempat_lahir', 'tanggal_lahir', 'gender', 'status_pernikahan', 'golongan_darah', 'agama', 'jenis_identitas', 'no_identitas', 'alamat_identitas', 'alamat_tinggal', 'status_karyawan', 'tanggal_bergabung', 'branch', 'departemen', 'jabatan', 'level_jabatan', 'metode_penggajian', 'gaji_pokok', 'gaji_overtime', 'uang_makan', 'bonus', 'tunjangan_jabatan', 'tunjangan_bahasa', 'tunjangan_skill', 'tunjangan_lembur_sabtu', 'tunjangan_lama_kerja', 'iuran_air', 'potongan_seragam', 'denda', 'potongan_pph21', 'potongan_bpjs']);
     }
     public function headings(): array
     {
@@ -26,5 +32,8 @@ class KaryawanExport implements FromCollection, FromQuery, WithHeadings, ShouldA
     public function query()
     {
         return Karyawan::all();
+        // return Karyawan::where('status_karyawan', 'Karyawan Tetap')->get();
+        // return Karyawan::whereIn('id', $this->selectedId);
+        // return Karyawan::whereIn('id', $this->selectedAll);
     }
 }
