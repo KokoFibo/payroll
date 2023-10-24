@@ -3,8 +3,25 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function namaDiAside($nama) {
+    if($nama != null){
+        $arrJam = explode(' ', $nama);
+        if(count($arrJam)==1) {
+            return $arrJam[0];
+        } else {
+            return $arrJam[0].' '.$arrJam[1];
+        }
+    } else {
+        return "No Name";
+    }
+
+
+
+
+}
 function generatePassword($tgl)
 {
+
     if ($tgl != null) {
         $arrJam = explode('-', fixTanggal($tgl));
         $year = substr($arrJam[0], 2);

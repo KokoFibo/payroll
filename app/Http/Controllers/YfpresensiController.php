@@ -25,65 +25,56 @@ class YfpresensiController extends Controller
 {
     public function generateUsers()
     {
-        // User::query()->truncate();
+
         // generate user dafault
-        User::create([
-            'name' => 'Anton',
-            'email' => 'kokonacci@gmail.com',
-            'email_verified_at' => now(),
-            'username' => 40000,
-            'role' => 4,
-            'password' => Hash::make('Anton888'), // 123456789
-            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
-            'remember_token' => Str::random(10),
-        ]);
-        User::create([
-            'name' => 'Yifang User',
-            'email' => 'user@yifang.com',
-            'role' => 1,
-            'username' => 10000,
+        // User::create([
+        //     'name' => 'Anton',
+        //     'email' => 'kokonacci@gmail.com',
+        //     'username' => 40000,
+        //     'role' => 4,
+        //     'password' => Hash::make('Anton888'), // 123456789
 
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'), // 123456789
-            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
-            'remember_token' => Str::random(10),
-        ]);
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@yifang.com',
-            'username' => 20000,
+        // ]);
+        // User::create([
+        //     'name' => 'Yifang User',
+        //     'email' => 'user@yifang.com',
+        //     'role' => 1,
+        //     'username' => 10000,
 
-            'role' => 2,
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'), // 123456789
-            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
-            'remember_token' => Str::random(10),
-        ]);
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@yifang.com',
-            'username' => 30000,
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
+        // User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@yifang.com',
+        //     'username' => 20000,
 
-            'role' => 3,
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'), // 123456789
-            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
-            'remember_token' => Str::random(10),
-        ]);
+        //     'role' => 2,
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
+        // User::create([
+        //     'name' => 'Super Admin',
+        //     'email' => 'superadmin@yifang.com',
+        //     'username' => 30000,
+
+        //     'role' => 3,
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
 
         // mulai generate user dari table karyawan
         $karyawan = Karyawan::all();
         foreach ($karyawan as $item) {
             //    $users = User::where('id_karyawan',$item->id_karyawan);
             User::create([
-                'name' => $item->nama,
-                'email' => $item->email,
-                'username' => $item->id_karyawan,
+                'name' => titleCase($item->nama),
+                'email' => trim($item->email),
+                'username' => trim($item->id_karyawan),
 
                 'role' => 1,
                 'password' => Hash::make(generatePassword($item->tanggal_lahir)),
             ]);
         }
+
+
         dd('Done');
     }
 
@@ -97,7 +88,6 @@ class YfpresensiController extends Controller
         Yfrekappresensi::where('no_scan', 'No Scan')->delete();
         return back()->with('success', 'Data No scan telah berhasil di delete');
 
-        return back();
     }
     public function deletepresensi()
     {

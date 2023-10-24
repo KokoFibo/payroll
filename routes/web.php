@@ -4,6 +4,7 @@ use App\Livewire\Test;
 use App\Livewire\Prindexwr;
 use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
+use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
@@ -82,8 +83,11 @@ Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
 
 
 // PAYROLL
-
 Route::get('/payrollindex', Prindexwr::class);
+
+// USER SETTING
+
+Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
 
 
 

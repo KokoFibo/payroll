@@ -18,8 +18,8 @@ class Test extends Component
     public function render()
     {
 
-        phpinfo();
 
+        dd(namaDiAside(''));
 
 
 

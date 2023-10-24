@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Illuminate\Support\Facades\Hash;
 
 class Karyawanwr extends Component
 {
@@ -83,6 +85,14 @@ class Karyawanwr extends Component
             $data->potongan_bpjs = $this->potongan_bpjs;
             try {
                 $data->save();
+                // create user
+                User::create([
+                    'name' => titleCase($this->nama),
+                    'email' => trim($this->email,' '),
+                    'username' => $this->id_karyawan,
+                    'role' => 1,
+                    'password' => Hash::make(generatePassword($this->tanggal_lahir)),
+                ]);
                 $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
             } catch (\Exception $e) {
                 $this->dispatch('error', message: $e->getMessage());

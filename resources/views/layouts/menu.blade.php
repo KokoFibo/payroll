@@ -103,27 +103,32 @@ with font-awesome or any other icon font library -->
                     <p>test livewire</p>
                 </a>
             </li>
+
             <li class="nav-item ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fa-solid fa-gear"></i>
-                    <p>
-                        User Setting
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
+                    <p>Settings<i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
+                        <a href="/changeprofilewr" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Change Password</p>
+                            <p>Change Profile</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Language Setting</p>
+                            <p>Karyawan Settings</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" wire:navigate>
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Change User Role</p>
+                        </a>
+                    </li>
+
                 </ul>
             </li>
         @endif
