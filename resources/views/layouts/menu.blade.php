@@ -88,12 +88,7 @@ with font-awesome or any other icon font library -->
                             <p>Delete Jam Kerja</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Reserved</p>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
 
@@ -103,6 +98,7 @@ with font-awesome or any other icon font library -->
                     <p>test livewire</p>
                 </a>
             </li>
+
 
             <li class="nav-item ">
                 <a href="#" class="nav-link">
@@ -117,7 +113,7 @@ with font-awesome or any other icon font library -->
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
+                        <a href="/karyawansettingwr" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
                             <p>Karyawan Settings</p>
                         </a>

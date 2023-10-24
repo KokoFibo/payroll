@@ -9,6 +9,7 @@ use App\Livewire\Karyawanindexwr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\Updatekaryawanwr;
+use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Yfdeletetanggalpresensiwr;
@@ -88,6 +89,7 @@ Route::get('/payrollindex', Prindexwr::class);
 // USER SETTING
 
 Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
+Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
 
 
 
