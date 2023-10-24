@@ -1,9 +1,10 @@
 <div>
+    @section('title', 'Update Karyawan')
     <div class="container ">
 
         <div class="card mt-3 ">
             <div class="card-header bg-secondary">
-                <h5 class="text-light py-2">Data Karyawan</h5>
+                <h5 class="text-light py-2">Update Data Karyawan</h5>
             </div>
             <div class="card-body">
                 <nav>

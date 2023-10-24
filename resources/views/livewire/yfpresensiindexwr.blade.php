@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Presensi')
 
     <div class="d-flex flex-row gap-5 px-4 pt-4">
         <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
