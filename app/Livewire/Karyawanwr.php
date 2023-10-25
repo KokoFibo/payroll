@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Illuminate\Support\Facades\Hash;
 
 class Karyawanwr extends Component
 {
@@ -11,15 +13,26 @@ class Karyawanwr extends Component
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
-    public $gaji_pokok, $gaji_perjam, $gaji_overtime, $gaji_harian, $gaji_bulanan, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
-    public $potongan_bpjs, $potongan_ijin_alpa;
+
+    public $metode_penggajian, $gaji_pokok, $gaji_overtime;
+    public $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
+    public $iuran_air, $denda, $potongan_seragam, $potongan_pph21;
+    public $potongan_bpjs;
 
     public function mount () {
         $this->id_karyawan = getNextIdKaryawan();
     }
 
     public function save () {
+        $this->validate([
+            'id_karyawan' => 'required',
+            'nama' => 'required',
+            'email' => 'email|nullable',
+            'email' => 'email|nullable',
+            'tanggal_lahir' => 'date|required',
+        ]);
+
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();
 
         if(!$ada) {
@@ -67,6 +80,14 @@ class Karyawanwr extends Component
             $data->potongan_bpjs = $this->potongan_bpjs;
             try {
                 $data->save();
+                // create user
+                User::create([
+                    'name' => titleCase($this->nama),
+                    'email' => trim($this->email,' '),
+                    'username' => $this->id_karyawan,
+                    'role' => 1,
+                    'password' => Hash::make(generatePassword($this->tanggal_lahir)),
+                ]);
                 $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
             } catch (\Exception $e) {
                 $this->dispatch('error', message: $e->getMessage());

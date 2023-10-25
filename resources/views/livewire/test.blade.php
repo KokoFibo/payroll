@@ -1,3 +1,3 @@
 <div>
-    {{ $saturday }}
+    test
 </div>

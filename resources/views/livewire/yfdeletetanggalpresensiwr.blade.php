@@ -1,4 +1,5 @@
 <div>
+
     <div class="card col-3 mx-auto">
         <div class="card-header bg-danger text-light">
             <h3>Delete Tanggal Presensi</h3>
@@ -13,5 +14,6 @@
             <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
         </div>
     </div>
+    @include('toastr')
 
 </div>

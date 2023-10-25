@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Employee;
+use App\Models\Karyawan;
 use App\Models\Presensi;
 use App\Models\Department;
+use App\Models\Jamkerjaid;
 use App\Models\Yfpresensi;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -18,6 +23,72 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class YfpresensiController extends Controller
 {
+    public function generateUsers()
+    {
+
+        // generate user dafault
+        // User::create([
+        //     'name' => 'Anton',
+        //     'email' => 'kokonacci@gmail.com',
+        //     'username' => 40000,
+        //     'role' => 4,
+        //     'password' => Hash::make('Anton888'), // 123456789
+
+        // ]);
+        // User::create([
+        //     'name' => 'Yifang User',
+        //     'email' => 'user@yifang.com',
+        //     'role' => 1,
+        //     'username' => 10000,
+
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
+        // User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@yifang.com',
+        //     'username' => 20000,
+
+        //     'role' => 2,
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
+        // User::create([
+        //     'name' => 'Super Admin',
+        //     'email' => 'superadmin@yifang.com',
+        //     'username' => 30000,
+
+        //     'role' => 3,
+        //     'password' => Hash::make('12345678'), // 123456789
+        // ]);
+
+        // mulai generate user dari table karyawan
+        $karyawan = Karyawan::all();
+        foreach ($karyawan as $item) {
+            //    $users = User::where('id_karyawan',$item->id_karyawan);
+            User::create([
+                'name' => titleCase($item->nama),
+                'email' => trim($item->email),
+                'username' => trim($item->id_karyawan),
+
+                'role' => 1,
+                'password' => Hash::make(generatePassword($item->tanggal_lahir)),
+            ]);
+        }
+
+
+        dd('Done');
+    }
+
+    public function deleteJamKerja()
+    {
+        Jamkerjaid::query()->truncate();
+        return back()->with('success', 'Data Jam Kerja telah berhasil di delete');
+    }
+    public function deleteNoScan()
+    {
+        Yfrekappresensi::where('no_scan', 'No Scan')->delete();
+        return back()->with('success', 'Data No scan telah berhasil di delete');
+
+    }
     public function deletepresensi()
     {
         Yfpresensi::query()->truncate();
@@ -26,7 +97,6 @@ class YfpresensiController extends Controller
         Employee::query()->truncate();
         return back()->with('success', 'Data Presensi telah berhasil di delete');
     }
-
 
     public function index()
     {
@@ -40,7 +110,6 @@ class YfpresensiController extends Controller
 
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
-
 
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
@@ -63,9 +132,8 @@ class YfpresensiController extends Controller
                 $name = $importedData->getCell('B' . $i)->getValue();
 
                 if ($tgl_sama->isNotEmpty()) {
-
-                    foreach($tgl_sama as $data) {
-                        if($user_id == $data->user_id){
+                    foreach ($tgl_sama as $data) {
+                        if ($user_id == $data->user_id) {
                             return back()->with('error', 'The file has been uploaded.');
                         }
                     }
@@ -128,8 +196,7 @@ class YfpresensiController extends Controller
             ->select('user_id', 'name', 'date', 'department')
             ->distinct()
             ->get();
-        // $tablePresensi =  DB::table('yfpresensis')->get();
-        // dd($karyawanHadir);
+
         foreach ($karyawanHadir as $kh) {
             $user_id = $kh->user_id;
             $name = $kh->name;

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('karyawans', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->integer('id_karyawan')->unique();
             $table->string('nama');
             $table->string('email')->nullable();
@@ -37,12 +37,9 @@ return new class extends Migration
             $table->string('jabatan')->nullable();
             $table->string('level_jabatan')->nullable();
 
-            $table->integer('gaji_pokok')->nullable();
-            $table->integer('gaji_perjam')->nullable();
-            $table->integer('gaji_overtime')->nullable();
-            $table->integer('gaji_harian')->nullable();
-            $table->integer('gaji_bulanan')->nullable();
             $table->string('metode_penggajian')->nullable();
+            $table->integer('gaji_pokok')->nullable();
+            $table->integer('gaji_overtime')->nullable();
             $table->integer('uang_makan')->nullable();
             $table->integer('bonus')->nullable();
             $table->integer('tunjangan_jabatan')->nullable();
@@ -56,7 +53,6 @@ return new class extends Migration
             $table->integer('denda')->nullable();
             $table->integer('potongan_pph21')->nullable();
             $table->integer('potongan_bpjs')->nullable();
-            $table->integer('potongan_ijin_alpa')->nullable();
 
             $table->timestamps();
         });

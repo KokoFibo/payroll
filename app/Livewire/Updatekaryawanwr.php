@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 
 class Updatekaryawanwr extends Component
 {
@@ -12,9 +14,11 @@ class Updatekaryawanwr extends Component
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
-    public $gaji_pokok, $gaji_perjam, $gaji_overtime, $gaji_harian, $gaji_bulanan, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
+    public $gaji_pokok, $gaji_overtime, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
     public $potongan_bpjs, $potongan_ijin_alpa;
+
+
 
     public function mount ($id) {
         $this->id = $id;
@@ -64,14 +68,18 @@ class Updatekaryawanwr extends Component
         $this->potongan_pph21 = $data->potongan_pph21;
         $this->potongan_bpjs = $data->potongan_bpjs;
 
-
-
-
-
     }
-    public function update() {
-        $data = Karyawan::find($this->id);
 
+    public function update() {
+
+        $this->validate([
+            'id_karyawan' => 'required',
+            'nama' => 'required',
+            'email' => 'email|nullable',
+            'tanggal_lahir' => 'date|required',
+        ]);
+
+        $data = Karyawan::find($this->id);
         $data->id_karyawan = $this->id_karyawan;
         $data->nama = titleCase($this->nama);
         $data->email = trim($this->email,' ');
@@ -112,7 +120,12 @@ class Updatekaryawanwr extends Component
         $data->potongan_pph21 = $this->potongan_pph21;
         $data->potongan_bpjs = $this->potongan_bpjs;
 
+        $dataUser = User::where('username', $data->id_karyawan)->first();
+        $user = User::find($dataUser->id);
+        $user->name = titleCase($this->nama);
+        $user->email = trim($this->email,' ');
         $data->save();
+        $user->save();
 
         $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
 

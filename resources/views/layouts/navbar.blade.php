@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light py-3">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -7,7 +7,7 @@
         </li>
     </ul>
 
-    <h4 class="ml-auto">Yifang Investment Group Payroll System</h4>
+    <h2 class="ml-auto text-bold">Yifang Investment Group Payroll System</h2>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav

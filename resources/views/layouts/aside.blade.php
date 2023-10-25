@@ -2,7 +2,7 @@
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
      <!-- Brand Logo -->
      <a href="index3.html" class="brand-link text-center">
-         <img src="{{ asset('images/yifang_logo.png') }}" alt="Yifang Logo" style="opacity: .8">
+         <img src="{{ asset('images/Yifang-transparant-logo.png') }}" width="200px" alt="Yifang Logo" style="opacity: .8">
          {{-- class="brand-image img-circle elevation-3" --}}
          {{-- <span class="brand-text font-weight-light">Yifang CME</span> --}}
      </a>
@@ -18,7 +18,9 @@
                      class="img-circle elevation-2" alt="User Image">
              </div>
              <div class="info">
-                 <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+
+                 {{-- <a href="#" class="d-block">{{ Auth::user()->name }}</a> --}}
+                 <a href="#" class="d-block">{{ namaDiAside(Auth::user()->name) }}</a>
              </div>
 
 

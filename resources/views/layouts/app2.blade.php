@@ -27,6 +27,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ url('favicon/favicon-32x32.png') }}">
+
 
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
     <title>@yield('title') | Yifang </title>
@@ -67,24 +69,7 @@
 
             @include('layouts.footer')
 
-            <script type="text/javascript">
-                $('.confirm-delete').click(function(event) {
-                    let form = $(this).closest("form");
-                    event.preventDefault();
-                    swal({
-                            title: `Apakah anda yakin untuk delete data ini ?`,
-                            text: "Data akan di delete secara permanen",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                form.submit();
-                            }
-                        });
-                });
-            </script>
+
     </body>
 
 </html>

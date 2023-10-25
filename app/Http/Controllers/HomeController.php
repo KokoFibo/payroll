@@ -33,6 +33,9 @@ class HomeController extends Controller
 
             return view('dashboard');
         } else {
+            if(Auth::user()->role == 4) {
+                return view('dashboard');
+            }
             return view('dashboardMobile');
 
         }

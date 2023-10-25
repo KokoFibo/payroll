@@ -3,23 +3,28 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Livewire\Component;
+use App\Models\Karyawan;
+use App\Models\Jamkerjaid;
+use Livewire\WithPagination;
 use App\Models\Yfrekappresensi;
 
 class Test extends Component
 {
     // public $saturday;
+    use WithPagination;
+
     public function render()
     {
 
-        $data = Yfrekappresensi::find(1);
 
-        $saturday = Carbon::parse($data->date)->isSaturday();
-
+        dd(namaDiAside(''));
 
 
 
 
-        return view('livewire.test', compact(['saturday']));
+
+        return view('livewire.test');
     }
 }

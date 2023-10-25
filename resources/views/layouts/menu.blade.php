@@ -13,23 +13,23 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="/karyawanindex" class="nav-link" wire:navigate>
-                <i class="nav-icon fa-solid fa-people-group"></i>
-                <p>
-                    Data Karyawan
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
-                <i class="nav-icon fas fa-clipboard-check"></i>
-                <p>Presensi</p>
-            </a>
-        </li>
-        @if (Auth::user()->role != 1)
+        @if (Auth::user()->role > 1)
             <li class="nav-item">
-                <a href="/test" class="nav-link" wire:navigate>
+                <a href="/karyawanindex" class="nav-link" wire:navigate>
+                    <i class="nav-icon fa-solid fa-people-group"></i>
+                    <p>
+                        Data Karyawan
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
+                    <i class="nav-icon fas fa-clipboard-check"></i>
+                    <p>Presensi</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/payrollindex" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-dollar-sign"></i>
                     <p>
                         Payroll
@@ -40,72 +40,92 @@ with font-awesome or any other icon font library -->
 
 
 
+            @if (Auth::user()->role > 3)
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
+                        <p>
+                            Developer Tools
+                            <i class="right fas fa-angle-left"></i>
 
-            <li class="nav-item ">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
-                    <p>
-                        Developer Tools
-                        <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/karyawanviewimport" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Karyawan Uploader</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/generateusers" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Generate Users</p>
+                            </a>
+                        </li>
 
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="/karyawanviewimport" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Import Data Karyawan</p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/yfdeletetanggalpresensiwr" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Delete Tgl Presensi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p class="text-danger">Truncate Table</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/deletenoscan" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Delete No Scan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/deletejamkerja" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Delete Jam Kerja</p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/yfdeletetanggalpresensiwr" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Delete Tgl Presensi</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
-                            <p class="text-danger">Truncate Table Presensi</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Reserved</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                    </ul>
+                </li>
 
-            <li class="nav-item">
-                <a href="/test" class="nav-link" wire:navigate>
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>test livewire</p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="/test" class="nav-link" wire:navigate>
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>test livewire</p>
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fa-solid fa-gear"></i>
-                    <p>
-                        User Setting
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
+                    <p>Settings<i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
+                        <a href="/changeprofilewr" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Change Password</p>
+                            <p>Change Profile</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" wire:navigate>
+                        <a href="/karyawansettingwr" class="nav-link" wire:navigate>
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Language Setting</p>
+                            <p>Karyawan Settings</p>
                         </a>
                     </li>
+                    @if (Auth::user()->role > 2)
+                        <li class="nav-item">
+                            <a href="/changeuserrolewr" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Change User Role</p>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
         @endif

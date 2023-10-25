@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Presensi')
 
     <div class="d-flex flex-row gap-5 px-4 pt-4">
         <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
@@ -49,44 +50,35 @@
             <div class="card-body ">
                 <div class="table-responsive">
 
-                    <table class="table table-xl table-hover mb-4">
+                    <table class="table table-sm table-hover mb-4">
                         <thead>
                             <tr>
-                                <td scope="col">Action</td>
-                                <td scope="col" wire:click="sortColumnName('user_id')">ID <i
-                                        class=" fa-solid fa-sort"></i></td>
-                                <td scope="col" wire:click="sortColumnName('name')">Nama <i
-                                        class="fa-solid fa-sort"></i></td>
-                                <td scope="col" wire:click="sortColumnName('department')">Department <i
+                                <td>Action</td>
+                                <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('name')">Nama <i class="fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('department')">Department <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
-                                <td scope="col" wire:click="sortColumnName('date')">Working Date <i
+                                <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
+                                </td>
+                                <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
+                                </td>
+                                <td wire:click="sortColumnName('first_out')">First out <i class="fa-solid fa-sort"></i>
+                                </td>
+                                <td wire:click="sortColumnName('second_in')">Second in <i class="fa-solid fa-sort"></i>
+                                </td>
+                                <td wire:click="sortColumnName('second_out')">Second out <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
-                                <td scope="col" wire:click="sortColumnName('first_in')">First in <i
+                                <td wire:click="sortColumnName('overtime_in')">Overtime in <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
-                                <td scope="col" wire:click="sortColumnName('first_out')">First out <i
+                                <td wire:click="sortColumnName('overtime_out')">Overtime out <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
-                                <td scope="col" wire:click="sortColumnName('second_in')">Second in <i
-                                        class="fa-solid fa-sort"></i>
-                                </td>
-                                <td scope="col" wire:click="sortColumnName('second_out')">Second out <i
-                                        class="fa-solid fa-sort"></i>
-                                </td>
-                                <td scope="col" wire:click="sortColumnName('overtime_in')">Overtime in <i
-                                        class="fa-solid fa-sort"></i>
-                                </td>
-                                <td scope="col" wire:click="sortColumnName('overtime_out')">Overtime out <i
-                                        class="fa-solid fa-sort"></i>
-                                </td>
-                                <td scope="col" wire:click="sortColumnName('late')">Late <i
-                                        class="fa-solid fa-sort"></i></td>
-                                <td scope="col" wire:click="sortColumnName('no_scan')">No scan <i
-                                        class="fa-solid fa-sort"></i></td>
-                                <td scope="col" wire:click="sortColumnName('shift')">Shift <i
-                                        class="fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,7 +92,8 @@
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#update-form-modal"></i></button>
                                             @if (Auth::user()->role != 1)
-                                                <button wire:click="delete({{ $data->id }})"
+                                                <button
+                                                    wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
@@ -132,14 +125,17 @@
                                         <td>
                                             {{ format_jam($data->overtime_out) }}</td>
                                         <td>
-                                            @if ($data->late_history == 1 && $data->late == 1)
-                                                <h6><span class="badge bg-info">Late</span></h6>
-                                            @elseif ($data->late_history == 1 && $data->late == null)
-                                                <h6><span class="badge bg-success"><i
-                                                            class="fa-solid fa-check"></i></span>
+                                            @if ($data->late_history >= 1 && $data->late >= 1)
+                                                <h6><span class="badge bg-info">Late</span>
+                                                </h6>
+                                            @elseif ($data->late_history >= 1 && $data->late == null)
+                                                <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
+                                                        {{ $data->late_history }}
+                                                    </span>
                                                 </h6>
                                             @else
-                                                {{ $data->late }}
+                                                {{-- {{ $data->late }} --}}
+                                                <span></span>
                                             @endif
 
                                         </td>
@@ -169,8 +165,8 @@
         </div>
     </div>
     {{-- Modal --}}
-    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -271,4 +267,24 @@
         </div>
     </div>
     {{-- End  --}}
+    <script>
+        window.addEventListener("swal:confirm", (event) => {
+            console.log(event);
+            Swal.fire({
+                title: "Apakah yakin mau di delete",
+                text: "Data yang sudah di delete tidak dapat dikembalikan",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Delete",
+            }).then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    @this.dispatch("delete", {
+                        id: event.detail.id
+                    });
+                }
+            });
+        });
+    </script>
 </div>
