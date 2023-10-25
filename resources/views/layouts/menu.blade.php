@@ -13,6 +13,10 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
 
+        {{-- USER --}}
+
+
+
         <li class="nav-item">
             <a href="/karyawanindex" class="nav-link" wire:navigate>
                 <i class="nav-icon fa-solid fa-people-group"></i>
@@ -21,13 +25,18 @@ with font-awesome or any other icon font library -->
                 </p>
             </a>
         </li>
-        @if (Auth::user()->role != 1)
+
+
+        {{-- ADMIN --}}
+
+        @if (Auth::user()->role > 1)
             <li class="nav-item">
                 <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>Presensi</p>
                 </a>
             </li>
+
             <li class="nav-item">
                 <a href="/payrollindex" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-dollar-sign"></i>
@@ -37,10 +46,7 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
 
-
-
-
-
+            @if (Auth::user()->role > 3)
             <li class="nav-item ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -99,7 +105,6 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
 
-
             <li class="nav-item ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fa-solid fa-gear"></i>
@@ -127,7 +132,8 @@ with font-awesome or any other icon font library -->
 
                 </ul>
             </li>
-        @endif
+
+
 
 
         <li class="nav-item">

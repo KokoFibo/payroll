@@ -21,7 +21,8 @@ class Admin
             return $next($request);
         } else
         {
-            return redirect()->back();
+            // return redirect()->back();
+            abort(403);
         }
     }
 }
