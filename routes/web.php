@@ -6,6 +6,7 @@ use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
+use App\Livewire\Changeuserrolewr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\Updatekaryawanwr;
@@ -23,7 +24,7 @@ Auth::routes();
 Route::middleware(['guest'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::middleware(['User'])->group(function () {
         // DASHBOARD
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
@@ -62,6 +63,8 @@ Route::middleware(['auth'])->group(function () {
 
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
+                Route::get('/changeuserrolewr', Changeuserrolewr::class);
+
 
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER

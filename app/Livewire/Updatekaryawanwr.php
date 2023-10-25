@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
@@ -80,7 +81,7 @@ class Updatekaryawanwr extends Component
 
         $data = Karyawan::find($this->id);
         $data->id_karyawan = $this->id_karyawan;
-        $data->nama = $this->nama;
+        $data->nama = titleCase($this->nama);
         $data->email = trim($this->email,' ');
         $data->hp = $this->hp;
         $data->telepon = $this->telepon;
@@ -119,7 +120,12 @@ class Updatekaryawanwr extends Component
         $data->potongan_pph21 = $this->potongan_pph21;
         $data->potongan_bpjs = $this->potongan_bpjs;
 
+        $dataUser = User::where('username', $data->id_karyawan)->first();
+        $user = User::find($dataUser->id);
+        $user->name = titleCase($this->nama);
+        $user->email = trim($this->email,' ');
         $data->save();
+        $user->save();
 
         $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
 

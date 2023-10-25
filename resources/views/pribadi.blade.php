@@ -75,7 +75,7 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 <input wire:model="gender" class="form-check-input" type="radio" value="Perempuan"
-                                    name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    name="flexRadioDefault" id="flexRadioDefault2">
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     Perempuan
                                 </label>

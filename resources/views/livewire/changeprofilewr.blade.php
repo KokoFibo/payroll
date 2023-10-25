@@ -21,6 +21,25 @@
                 <button wire:click="SaveName" class="btn btn-outline-success">Simpan</button>
             </div>
         </div>
+
+        <div class="card mt-5 col-8 mx-auto">
+            <div class="card-header">
+                <h5>Rubah Email</h5>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input wire:model="email" type="email" class="form-control @error('email') is-invalid @enderror">
+
+                    @error('email')
+                        <div class="invalid-feedback">
+                            Format email salah.
+                        </div>
+                    @enderror
+                </div>
+
+                <button wire:click="changeEmail" class="btn btn-outline-success">Simpan</button>
+            </div>
+        </div>
         <div class="card mt-5 col-8 mx-auto">
             <div class="card-header">
                 <h5>Rubah Password</h5>
