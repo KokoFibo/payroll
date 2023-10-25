@@ -19,7 +19,7 @@ class Test extends Component
     {
 
 
-        dd(namaDiAside('a'));
+        dd(namaDiAside(''));
 
 
 

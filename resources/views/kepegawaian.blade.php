@@ -7,8 +7,9 @@
                 <option>Pilih status karyawan</option>
                 <option value="Karyawan Tetap">Karyawan Tetap</option>
                 <option value="PKWT">PKWT</option>
+                <option value="PKWTT">PKWTT</option>
                 <option value="Dirumahkan">Dirumahkan</option>
-                <option value="Resign">Resign</option>
+                <option value="Resigned">Resigned</option>
                 <option value="Kabur">Kabur</option>
             </select>
         </div>
@@ -20,13 +21,12 @@
             <label class="form-label">Branch</label>
             <select class="form-select" aria-label="Default select example" wire:model="branch">
                 <option>Pilih branch</option>
-                <option value="All">All</option>
+                <option value="ASB">ASB</option>
+                <option value="DPA">DPA</option>
                 <option value="YCME">YCME</option>
                 <option value="YIG">YIG</option>
                 <option value="YSM">YSM</option>
-                <option value="YNE">YNE</option>
-                <option value="DPA">DPA</option>
-                <option value="ASB">ASB</option>
+
             </select>
         </div>
         <div class="mb-3">
@@ -38,20 +38,12 @@
                 <option value="EXIM">EXIM</option>
                 <option value="Finance Accounting">Finance Accounting</option>
                 <option value="GA">GA</option>
-                <option value="GD">GD</option>
                 <option value="Gudang">Gudang</option>
                 <option value="HR">HR</option>
                 <option value="Legal">Legal</option>
-                <option value="Pabrik">Pabrik</option>
-                <option value="PMC">PMC</option>
-                <option value="PMC">PMC</option>
                 <option value="Procurement">Procurement</option>
-                <option value="Production">Production</option>
-                <option value="Produksi Packing">Produksi Packing</option>
                 <option value="Produksi">Produksi</option>
-                <option value="QC">QC</option>
-                <option value="Repair">Repair</option>
-                <option value="STW">STW</option>
+                <option value="Quality Control">Quality Control</option>
                 <option value="Yifang">Yifang</option>
             </select>
         </div>
@@ -59,9 +51,23 @@
             <label class="form-label">Jabatan</label>
             <select class="form-select" aria-label="Default select example" wire:model="jabatan">
                 <option>Pilih jabatan</option>
+                <option value="Admin">Admin</option>
+                <option value="Asisten Direktur">Asisten Direktur</option>
+                <option value="Asisten Kepala">Asisten Kepala</option>
+                <option value="Asisten Manager">Asisten Manager</option>
+                <option value="Asisten Pengawas">Asisten Pengawas</option>
+                <option value="Asisten Wakil Presiden">Asisten Wakil Presiden</option>
+                <option value="Design Grafis">Design Grafis</option>
+                <option value="Director">Director</option>
+                <option value="Kepala">Kepala</option>
                 <option value="Manager">Manager</option>
-                <option value="Direktur">Direktur</option>
-                <option value="Presiden direktur">Presiden direktur</option>
+                <option value="Pengawas">Pengawas</option>
+                <option value="President">President</option>
+                <option value="Senior Staff">Senior Staff</option>
+                <option value="Staff">Staff</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Vice President">Vice President</option>
+
             </select>
         </div>
         <div class="mb-3">
