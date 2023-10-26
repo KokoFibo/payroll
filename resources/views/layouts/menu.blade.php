@@ -52,6 +52,12 @@ with font-awesome or any other icon font library -->
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="/developer" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Developer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/karyawanviewimport" class="nav-link" wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Karyawan Uploader</p>

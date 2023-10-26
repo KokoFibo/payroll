@@ -8,35 +8,31 @@ use App\Models\Karyawan;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 
-class Updatekaryawanwr extends Component
-{
+class Updatekaryawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
-    public $gaji_pokok, $gaji_overtime, $metode_penggajian, $uang_makan, $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_pph21;
-    public $potongan_bpjs, $potongan_ijin_alpa;
+    public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda;
 
-
-
-    public function mount ($id) {
+    public function mount ( $id ) {
         $this->id = $id;
-        $data = Karyawan::find($id);
+        $data = Karyawan::find( $id );
         // Data Pribadi
-       $this->id_karyawan = $data->id_karyawan;
-       $this->nama = $data->nama;
-       $this->email = $data->email;
-       $this->hp = $data->hp;
-       $this->telepon = $data->telepon;
-       $this->tempat_lahir = $data->tempat_lahir;
-       $this->tanggal_lahir = $data->tanggal_lahir;
-       $this->gender = $data->gender;
-       $this->status_pernikahan = $data->status_pernikahan;
-       $this->golongan_darah = $data->golongan_darah;
-       $this->agama = $data->agama;
+        $this->id_karyawan = $data->id_karyawan;
+        $this->nama = $data->nama;
+        $this->email = $data->email;
+        $this->hp = $data->hp;
+        $this->telepon = $data->telepon;
+        $this->tempat_lahir = $data->tempat_lahir;
+        $this->tanggal_lahir = $data->tanggal_lahir;
+        $this->gender = $data->gender;
+        $this->status_pernikahan = $data->status_pernikahan;
+        $this->golongan_darah = $data->golongan_darah;
+        $this->agama = $data->agama;
 
-       // Identitas
+        // Identitas
         $this->jenis_identitas = $data->jenis_identitas;
         $this->no_identitas = $data->no_identitas;
         $this->alamat_identitas = $data->alamat_identitas;
@@ -50,12 +46,10 @@ class Updatekaryawanwr extends Component
         $this->jabatan = $data->jabatan;
         $this->level_jabatan = $data->level_jabatan;
 
-
         //Payroll
         $this->metode_penggajian = $data->metode_penggajian;
         $this->gaji_pokok = $data->gaji_pokok;
         $this->gaji_overtime = $data->gaji_overtime;
-        $this->uang_makan = $data->uang_makan;
         $this->bonus = $data->bonus;
         $this->tunjangan_jabatan = $data->tunjangan_jabatan;
         $this->tunjangan_bahasa = $data->tunjangan_bahasa;
@@ -65,24 +59,21 @@ class Updatekaryawanwr extends Component
         $this->iuran_air = $data->iuran_air;
         $this->denda = $data->denda;
         $this->potongan_seragam = $data->potongan_seragam;
-        $this->potongan_pph21 = $data->potongan_pph21;
-        $this->potongan_bpjs = $data->potongan_bpjs;
-
     }
 
     public function update() {
 
-        $this->validate([
+        $this->validate( [
             'id_karyawan' => 'required',
             'nama' => 'required',
             'email' => 'email|nullable',
             'tanggal_lahir' => 'date|required',
-        ]);
+        ] );
 
-        $data = Karyawan::find($this->id);
+        $data = Karyawan::find( $this->id );
         $data->id_karyawan = $this->id_karyawan;
-        $data->nama = titleCase($this->nama);
-        $data->email = trim($this->email,' ');
+        $data->nama = titleCase( $this->nama );
+        $data->email = trim( $this->email, ' ' );
         $data->hp = $this->hp;
         $data->telepon = $this->telepon;
         $data->tempat_lahir = $this->tempat_lahir;
@@ -107,7 +98,6 @@ class Updatekaryawanwr extends Component
         $data->gaji_pokok = $this->gaji_pokok;
         $data->gaji_overtime = $this->gaji_overtime;
         $data->metode_penggajian = $this->metode_penggajian;
-        $data->uang_makan = $this->uang_makan;
         $data->bonus = $this->bonus;
         $data->tunjangan_jabatan = $this->tunjangan_jabatan;
         $data->tunjangan_bahasa = $this->tunjangan_bahasa;
@@ -117,28 +107,26 @@ class Updatekaryawanwr extends Component
         $data->iuran_air = $this->iuran_air;
         $data->potongan_seragam = $this->potongan_seragam;
         $data->denda = $this->denda;
-        $data->potongan_pph21 = $this->potongan_pph21;
-        $data->potongan_bpjs = $this->potongan_bpjs;
-
-        $dataUser = User::where('username', $data->id_karyawan)->first();
-        $user = User::find($dataUser->id);
-        $user->name = titleCase($this->nama);
-        $user->email = trim($this->email,' ');
         $data->save();
-        $user->save();
 
-        $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
-
-
+        $dataUser = User::where( 'username', $data->id_karyawan )->first();
+        if ( $dataUser != null ) {
+            $user = User::find( $dataUser->id );
+            $user->name = titleCase( $this->nama );
+            $user->email = trim( $this->email, ' ' );
+            $user->save();
+            $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
+        }
+        $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate' );
     }
+
     public function exit () {
         $this->reset();
-        return redirect()->to('/karyawanindex');
+        return redirect()->to( '/karyawanindex' );
     }
 
-    public function render()
-    {
-        return view('livewire.updatekaryawanwr')
-        ->layout('layouts.appeloe');
+    public function render() {
+        return view( 'livewire.updatekaryawanwr' )
+        ->layout( 'layouts.appeloe' );
     }
 }

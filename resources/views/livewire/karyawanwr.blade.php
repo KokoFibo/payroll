@@ -1,6 +1,6 @@
 <div>
     @section('title', 'Create Karyawan')
-
+    {{-- <h4>Status Karyawan : {{ $status_karyawan }}</h4> --}}
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">

@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Metode Penggajian</label>
                     <select class="form-select" aria-label="Default select example" wire:model="metode_penggajian">
@@ -16,24 +16,19 @@
                 </div>
             </div>
             {{-- ====================================================== --}}
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Gaji pokok</label>
                     <input wire:model="gaji_pokok" type="number" class="form-control">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Gaji Overtime</label>
                     <input wire:model="gaji_overtime" type="number" class="form-control">
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="mb-3">
-                    <label class="form-label">Uang makan</label>
-                    <input wire:model="uang_makan" type="number" class="form-control">
-                </div>
-            </div>
+
 
 
         </div>
@@ -127,19 +122,6 @@
 
         </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label class="form-label">Potongan PPh21</label>
-                    <input wire:model="potongan_pph21" type="number" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label class="form-label">Potongan BPJS</label>
-                    <input wire:model="potongan_bpjs" type="number" class="form-control">
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>

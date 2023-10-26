@@ -3,7 +3,7 @@
         <div class="container">
             <div class="mx-auto  mt-4">
                 <button class="mx-auto col-12 btn btn-info btn-large">
-                    <h3 class="px-3">Karyawan Settings</h3>
+                    <h3 class="px-3">Rubah Role Karyawan</h3>
                 </button>
                 <div class="card mt-5  mx-auto">
                     <div class="card-header">
@@ -36,7 +36,7 @@
                                         <td>{{ $data->nama }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->hp }}</td>
-                                        <td>{{ $data->tanggal_lahir }}</td>
+                                        <td>{{ format_tgl($data->tanggal_lahir) }}</td>
                                         <td>{{ $data->branch }}</td>
                                         <td>{{ $data->departemen }}</td>
                                         <td>{{ $data->jabatan }}</td>
@@ -53,6 +53,7 @@
                                                 <h5>User</h5>
                                             </label>
                                         </div>
+
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input" type="radio"
                                                 value="2">

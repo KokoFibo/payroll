@@ -103,14 +103,14 @@
                     <label class="form-label">Golongan Darah</label>
                     <select wire:model="golongan_darah" class="form-select" aria-label="Default select example">
                         <option>Pilih golongan darah</option>
-                        <option value="A+">A+</option>
-                        <option value="B+">B+</option>
-                        <option value="AB+">AB+</option>
-                        <option value="O+">O+</option>
                         <option value="A-">A-</option>
-                        <option value="B-">B-</option>
+                        <option value="A+">A+</option>
                         <option value="AB-">AB-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="B-">B-</option>
+                        <option value="B+">B+</option>
                         <option value="O-">O-</option>
+                        <option value="O+">O+</option>
                     </select>
                 </div>
             </div>

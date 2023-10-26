@@ -16,31 +16,41 @@
         </div>
         <div class="col-4 ">
         </div>
-        @if (Auth::user()->role == 4 || Auth::user()->role == 3)
-            <div class="col-4 text-end">
-                {{-- wire loading mengganggu saat query --}}
-                {{-- <div wire:loading class="spinner-border text-success" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div> --}}
-                <div>
-                    <button wire:click="excel" class="btn btn-success">Excel</button>
+        <div class="col-4 text-end">
+            {{-- wire loading mengganggu saat query --}}
+            {{-- <div wire:loading class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div> --}}
+            <div class="d-flex gap-2 justify-content-end">
+                <div class="col-3">
+                    <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
+                        <option value="All">All</option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Non Aktif">Non Aktif</option>
+                    </select>
                 </div>
+                @if (Auth::user()->role > 2)
+                    <div>
+                        <button wire:click="excel" class="btn btn-success">Excel</button>
+                    </div>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
-
-
-
 
     <div class="px-4">
 
 
         <div class="card">
             <div class="card-header">
-                <h3>Data Karyawan
-                    <a href="/karyawancreate"><button class="btn btn-primary float-end"><i class="fa-solid fa-plus"></i>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h3>Data Karyawan</h3>
+                    </div>
+                    <a href="/karyawancreate"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
                             Karyawan baru</button></a>
-                </h3>
+                </div>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive-md">
@@ -59,8 +69,10 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jabatan')">Jabatan <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan <i
-                                        class="fa-solid fa-sort"></i>
+                                @if (Auth::user()->role > 2)
+                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan
+                                        <i class="fa-solid fa-sort"></i>
+                                @endif
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">Status <i
                                         class="fa-solid fa-sort"></i>
@@ -73,9 +85,6 @@
                                             class="fa-solid fa-sort"></i>
                                     </th>
                                     <th class="text-center" wire:click="sortColumnName('gaji_overtime')">Overtime <i
-                                            class="fa-solid fa-sort"></i>
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('uang_makan')">Uang Makan <i
                                             class="fa-solid fa-sort"></i>
                                     </th>
                                     <th class="text-center" wire:click="sortColumnName('bonus')">Bonus <i
@@ -107,13 +116,14 @@
                                     <td class="text-center">{{ $data->branch }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
-                                    <td class="text-center">{{ $data->level_jabatan }}</td>
+                                    @if (Auth::user()->role > 2)
+                                        <td class="text-center">{{ $data->level_jabatan }}</td>
+                                    @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                    @if (Auth::user()->role > 2)
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
-                                        <td class="text-center">{{ number_format($data->uang_makan) }}</td>
                                         <td class="text-center">{{ number_format($data->bonus) }}</td>
                                     @endif
 

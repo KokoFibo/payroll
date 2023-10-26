@@ -1,9 +1,11 @@
 <?php
 
 use App\Livewire\Test;
+use App\Livewire\Developer;
 use App\Livewire\Prindexwr;
 use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
+use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
 use App\Livewire\Changeuserrolewr;
@@ -76,6 +78,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
                     Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
                     Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
+                    Route::get('/testto', [YfpresensiController::class, 'testto']);
+                    Route::get('/developer', Developer::class);
+                    Route::get('/ChangeFieldData', ChangeFieldData::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');

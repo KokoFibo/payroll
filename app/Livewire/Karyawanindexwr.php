@@ -22,6 +22,7 @@ class Karyawanindexwr extends Component
     public $direction = 'desc';
     public $id;
     public $selectedAll = [];
+    public $selectStatus = 'Aktif';
 
     #[On('delete')]
     public function delete()
@@ -68,8 +69,14 @@ class Karyawanindexwr extends Component
         // $this->selectedAll = $datas1->pluck('id');
         // $datas = $datas1->paginate(10);
 
-        //Query ini untuk ikut filter status karyawan (buat chat GPT)
-        $datasQuery = Karyawan::whereIn('status_karyawan', ['PKWT', 'Karyawan Tetap']);
+        //Query ini untuk ikut filter status karyawan ( yang buat chat GPT)
+        switch($this->selectStatus) {
+            case 'All' : $datasQuery = Karyawan::query(); break;
+            case 'Aktif' : $datasQuery = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT']); break;
+            case 'Non Aktif':  $datasQuery = Karyawan::whereNotIn('status_karyawan', ['PKWT', 'PKWTT']); break;
+        }
+        // $datasQuery = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT']);
+        // $datasQuery = Karyawan::query();
         if ($this->search) {
             $search = '%' . trim($this->search) . '%';
             $datasQuery->where(function ($query) use ($search) {

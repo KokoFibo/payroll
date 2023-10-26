@@ -10,21 +10,12 @@ use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Models\Yfrekappresensi;
 
-class Test extends Component
-{
+class Test extends Component {
     // public $saturday;
     use WithPagination;
 
-    public function render()
-    {
+    public function render() {
 
-
-        dd(namaDiAside(''));
-
-
-
-
-
-        return view('livewire.test');
+        return view( 'livewire.test' );
     }
 }

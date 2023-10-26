@@ -36,7 +36,7 @@
                                         <td>{{ $data->nama }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->hp }}</td>
-                                        <td>{{ $data->tanggal_lahir }}</td>
+                                        <td>{{ format_tgl($data->tanggal_lahir) }}</td>
                                         <td>{{ $data->branch }}</td>
                                         <td>{{ $data->departemen }}</td>
                                         <td>{{ $data->jabatan }}</td>
