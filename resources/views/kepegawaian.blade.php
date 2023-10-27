@@ -5,12 +5,11 @@
             <label class="form-label">Status Karyawan</label>
             <select class="form-select" aria-label="Default select example" wire:model="status_karyawan">
                 <option>Pilih status karyawan</option>
-                <option value="Karyawan Tetap">Karyawan Tetap</option>
                 <option value="PKWT">PKWT</option>
                 <option value="PKWTT">PKWTT</option>
                 <option value="Dirumahkan">Dirumahkan</option>
                 <option value="Resigned">Resigned</option>
-                <option value="Kabur">Kabur</option>
+                <option value="Blacklist">Blacklist</option>
             </select>
         </div>
         <div class="mb-3">

@@ -3,7 +3,7 @@ import "./bootstrap";
 $(document).ready(function () {
     toastr.options = {
         progressBar: true,
-        timeOut: "1500",
+        timeOut: "2000",
         progressBar: true,
         positionClass: "toast-top-right",
         closeButton: true,

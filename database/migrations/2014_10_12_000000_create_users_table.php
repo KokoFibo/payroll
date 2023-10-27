@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('role')->nullable();
             $table->string('language')->required()->default('Id');
+            $table->integer('device')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

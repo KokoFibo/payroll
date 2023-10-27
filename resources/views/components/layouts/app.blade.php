@@ -29,6 +29,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 
 
 
@@ -47,35 +49,38 @@
 <style>
     body {
         background-color: #F4F6F9;
+        /* background-color: #f7f7f7;
+        background-image: url("https://www.transparenttextures.com/patterns/dimension.png"); */
+
     }
 </style>
 
-<body style="font-family: 'nunito';">
+<body style="font-family: 'nunito'; >
 
 
     <body class="hold-transition sidebar-mini">
 
-        <div class="wrapper">
+    <div class="wrapper">
 
 
-            @include('layouts.navbar')
+        @include('layouts.navbar')
 
-            @include('layouts.aside')
+        @include('layouts.aside')
 
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper ">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper ">
 
-                {{ $slot }}
+            {{ $slot }}
 
-            </div>
-            <!-- /.content-wrapper -->
+        </div>
+        <!-- /.content-wrapper -->
 
-            @include('layouts.footer')
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        @include('layouts.footer')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            @livewireScripts
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @livewireScripts
 
-            < </body>
+</body>
 
 </html>
