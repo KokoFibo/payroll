@@ -6,116 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Dashboard</title>
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
-    <style>
-        /* Reset some default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Set a background color and font styles */
-        body {
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Sticky header section with the logo and menu */
-        header {
-            background-color: #282828;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-        }
-
-        /* Dashboard container */
-        .dashboard {
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        /* Individual dashboard items (you can add more as needed) */
-        .dashboard-item {
-            padding: 20px;
-            border-bottom: 1px solid #e5e5e5;
-            text-align: center;
-        }
-
-        /* Style for dashboard item icons */
-        .dashboard-item i {
-            font-size: 24px;
-            color: #C62A27;
-        }
-
-        /* Style for dashboard item labels */
-        .dashboard-item span {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        /* Icon menu at the bottom */
-        .icon-menu {
-            background-color: #C62A27;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: sticky;
-            bottom: 0;
-            z-index: 100;
-        }
-
-        .icon-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 20px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <header>
-        <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-            style="opacity: .8; width:150px; height: 90px">
-        {{-- <h1>Yifang Presensi</h1> --}}
+<body class="bg-gray-300 font-sans">
+    <header class="bg-gray-800 text-white py-2 text-center sticky top-0 z-50">
+        <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo" class="w-32 h-20 opacity-80">
     </header>
 
-    <div class="dashboard">
-        <div class="dashboard-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Analytics</span>
+    <div class="dashboard p-4 m-4 bg-white rounded shadow-md">
+        <div class="dashboard-item border-b-2 border-gray-300 py-4 text-center">
+            <i class="fas fa-chart-bar text-red-600 text-3xl"></i>
+            <span class="font-bold text-lg mt-2">Analytics</span>
         </div>
 
-        <div class="dashboard-item">
-            <i class="fas fa-envelope"></i>
-            <span>Messages</span>
+        <div class="dashboard-item border-b-2 border-gray-300 py-4 text-center">
+            <i class="fas fa-envelope text-red-600 text-3xl"></i>
+            <span class="font-bold text-lg mt-2">Messages</span>
         </div>
 
-        <div class="dashboard-item">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
+        <div class="dashboard-item border-b-2 border-gray-300 py-4 text-center">
+            <i class="fas fa-cog text-red-600 text-3xl"></i>
+            <span class="font-bold text-lg mt-2">Settings</span>
         </div>
     </div>
 
-    <div class="icon-menu">
-        <a href="#"><i class="fas fa-home"></i></a>
-        <a href="#"><i class="fas fa-search"></i></a>
-        <a href="#"><i class="fas fa-plus"></i></a>
-        <a href="#"><i class="fas fa-bell"></i></a>
-        <a href="#"><i class="fas fa-user"></i></a>
+    <div class="icon-menu fixed bottom-0 bg-red-600 w-full flex justify-around items-center z-50">
+        <a href="#"><i class="fas fa-home text-white text-2xl"></i></a>
+        <a href="#"><i class="fas fa-search text-white text-2xl"></i></a>
+        <a href="#"><i class="fas fa-plus text-white text-2xl"></i></a>
+        <a href="#"><i class="fas fa-bell text-white text-2xl"></i></a>
+        <a href="#"><i class="fas fa-user text-white text-2xl"></i></a>
     </div>
 </body>
 
