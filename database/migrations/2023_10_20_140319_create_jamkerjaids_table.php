@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('jamkerjaids', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            // $table->integer('user_id');
+            $table->integer('id_karyawan');
             $table->string('name')->nullable();
             $table->string('date')->nullable();
             $table->integer('jumlah_jam_kerja')->nullable();

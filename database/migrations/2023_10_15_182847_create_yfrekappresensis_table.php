@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('yfrekappresensis', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('id_karyawan');
+            // $table->integer('user_id');
             $table->string('name');
             $table->string('department');
             $table->date('date');
