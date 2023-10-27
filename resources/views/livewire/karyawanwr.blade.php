@@ -22,9 +22,11 @@
                             data-bs-target="#nav-kepegawaian" type="button" role="tab"
                             aria-controls="nav-kepegawaian" aria-selected="false"><span class="fs-5">Data
                                 Kepegawaian</span></button>
-                        <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
-                            data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
-                            aria-selected="false"><span class="fs-5">Payroll</span></button>
+                        @if (Auth::user()->role != 1)
+                            <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
+                                aria-selected="false"><span class="fs-5">Payroll</span></button>
+                        @endif
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -40,9 +42,11 @@
                         aria-labelledby="nav-kepegawaian-tab">
                         @include('kepegawaian')
                     </div>
+
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
+
 
                 </div>
                 <button wire:click="save" class="btn btn-primary mx-3">Save</button>
