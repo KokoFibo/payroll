@@ -5,5 +5,6 @@
 @section('content')
 
     Dashboard
+    device = {{ isDesktop() }}
     {{-- device {{ $device }} --}}
 @endsection

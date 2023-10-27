@@ -67,7 +67,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
 
-
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');

@@ -2,41 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
 
 $agent = new Agent();
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    * Create a new controller instance.
+    *
+    * @return void
+    */
+
+    public function __construct() {
+        $this->middleware( 'auth' );
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
+    * Show the application dashboard.
+    *
+    * @return \Illuminate\Contracts\Support\Renderable
+    */
+
+    public function index() {
         $agent = new Agent();
         $desktop = $agent->isDesktop();
-
-        if($desktop) {
-
-            return view('dashboard');
+        $user = User::find( auth()->user()->id );
+        if ( $desktop ) {
+            $user->device = 1;
+            $user->save();
+            return view( 'dashboard' );
         } else {
-            if(Auth::user()->role == 4) {
-                return view('dashboard');
+            $user->device = 1;
+            $user->save();
+            if ( auth()->user()->role == 4 ) {
+                $user->device = 1;
+                $user->save();
+                return view( 'dashboard' );
             }
-            return view('dashboardMobile');
+            $user->device = 0;
+            $user->save();
+            return view( 'dashboardMobile' );
 
         }
     }
