@@ -40,6 +40,7 @@ class Karyawanwr extends Component {
         } else {
 
             $this->id = '';
+
             $data = new Karyawan();
             // Data Pribadi
             $data->id_karyawan = $this->id_karyawan;
@@ -96,7 +97,7 @@ class Karyawanwr extends Component {
             }
 
             // $this->reset();
-            // $this->dispatchBrowserEvent( 'success', [ 'message' => 'Data Saved' ] );
+
         }
 
     }

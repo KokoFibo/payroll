@@ -76,7 +76,7 @@ class Updatekaryawanwr extends Component {
         $data->email = trim( $this->email, ' ' );
         $data->hp = $this->hp;
         $data->telepon = $this->telepon;
-        $data->tempat_lahir = $this->tempat_lahir;
+        $data->tempat_lahir = titleCase($this->tempat_lahir);
         $data->tanggal_lahir = $this->tanggal_lahir;
         $data->gender = $this->gender;
         $data->status_pernikahan = $this->status_pernikahan;
@@ -85,8 +85,8 @@ class Updatekaryawanwr extends Component {
         // Identitas
         $data->jenis_identitas = $this->jenis_identitas;
         $data->no_identitas = $this->no_identitas;
-        $data->alamat_identitas = $this->alamat_identitas;
-        $data->alamat_tinggal = $this->alamat_tinggal;
+        $data->alamat_identitas = titleCase($this->alamat_identitas);
+        $data->alamat_tinggal = titleCase($this->alamat_tinggal);
         // Data Kepegawaian
         $data->status_karyawan = $this->status_karyawan;
         $data->tanggal_bergabung = $this->tanggal_bergabung;
