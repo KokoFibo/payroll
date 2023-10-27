@@ -6,7 +6,7 @@
         }
     </style>
     @section('title', 'Karyawan')
-
+    <input type="text">
     <div class="d-flex  p-4">
         <div class="col-4 ">
             <div class="input-group">

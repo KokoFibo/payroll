@@ -87,57 +87,146 @@
 
 
                                 @foreach ($datas as $data)
-                                    <tr class="{{ $data->no_scan ? 'table-warning' : '' }}">
-                                        <td><button wire:click="update({{ $data->id }})"
+                                    <tr x-data="{ edit: false }" class="{{ $data->no_scan ? 'table-warning' : '' }}">
+                                        <td>
+
+                                            @if ($btnEdit == true)
+                                                <button @click="edit = !edit"
+                                                    wire:click="update({{ $data->id }})"class="btn btn-success btn-sm"><i
+                                                        class="fa-regular fa-pen-to-square"></i></button>
+                                            @else
+                                                @if ($data->id == $selectedId)
+                                                    <button @click="edit = !edit" wire:click="save"
+                                                        class="btn btn-primary btn-sm"><i
+                                                            class="fa-solid fa-floppy-disk"></i></button>
+                                                @else
+                                                    <button @click="edit = !edit" disabled wire:click="save"
+                                                        class="btn btn-success btn-sm"><i
+                                                            class="fa-regular fa-pen-to-square"></i></button>
+                                                @endif
+                                            @endif
+
+
+                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
+                                                class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square">
+                                                </i></button> --}}
+
+
+                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
                                                 class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#update-form-modal"></i></button>
+                                                    data-bs-target="#update-form-modal"></i></button> --}}
                                             @if (Auth::user()->role != 1)
                                                 <button
                                                     wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
-
-
-
-
-
                                         </td>
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>
                                         <td>{{ $data->karyawan->departemen }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
-                                        <td
+                                        <td x-show="!edit"
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                             {{ format_jam($data->first_in) }} </td>
-                                        <td
+                                        <td x-show="edit"><input
+                                                style="width:100px; background-color: #ffeeba;; background-color: #ffeeba"
+                                                class="form-control @error('first_in') is-invalid @enderror"
+                                                id="first_in" type="text" wire:model="first_in">
+                                            @error('first_in')
+                                                <span>Format jam harus sesuai HH:MM</span>
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        <td x-show="!edit"
                                             class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                            {{ format_jam($data->first_out) }}</td>
-                                        <td
+                                            {{ format_jam($data->first_out) }} </td>
+                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                                class="form-control @error('first_out') is-invalid @enderror"
+                                                id="first_out" type="text" wire:model="first_out">
+                                            @error('first_out')
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        <td x-show="!edit"
                                             class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
-                                            {{ format_jam($data->second_in) }}</td>
-                                        <td
+                                            {{ format_jam($data->second_in) }} </td>
+                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                                class="form-control @error('second_in') is-invalid @enderror"
+                                                id="second_in" type="text" wire:model="second_in">
+                                            @error('second_in')
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        <td x-show="!edit"
                                             class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                            {{ format_jam($data->second_out) }}</td>
-                                        <td
+                                            {{ format_jam($data->second_out) }} </td>
+                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                                class="form-control @error('second_out') is-invalid @enderror"
+                                                id="second_out" type="text" wire:model="second_out">
+                                            @error('second_out')
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        <td x-show="!edit"
                                             class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                            {{ format_jam($data->overtime_in) }}</td>
-                                        <td>
+                                            {{ format_jam($data->overtime_in) }} </td>
+                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                                class="form-control @error('overtime_in') is-invalid @enderror"
+                                                id="overtime_in" type="text" wire:model="overtime_in">
+                                            @error('overtime_in')
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        <td x-show="!edit">
+                                            {{ format_jam($data->overtime_out) }} </td>
+                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                                class="form-control @error('overtime_out') is-invalid @enderror"
+                                                id="overtime_out" type="text" wire:model="overtime_out">
+                                            @error('overtime_out')
+                                                <div class="invalid-feedback">
+                                                    Format jam harus sesuai HH:MM
+                                                </div>
+                                            @enderror
+                                        </td>
+                                        {{-- <td
+                                            class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->first_out) }}</td> --}}
+                                        {{-- <td
+                                        class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
+                                        {{ format_jam($data->second_in) }}</td> --}}
+                                        {{-- <td
+                                            class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->second_out) }}</td> --}}
+                                        {{-- <td
+                                            class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            {{ format_jam($data->overtime_in) }}</td> --}}
+                                        {{-- <td>
                                             {{ format_jam($data->overtime_out) }}</td>
-                                        <td>
-                                            @if ($data->late_history >= 1 && $data->late >= 1)
-                                                <h6><span class="badge bg-info">Late</span>
-                                                </h6>
-                                            @elseif ($data->late_history >= 1 && $data->late == null)
-                                                <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
-                                                        {{ $data->late_history }}
-                                                    </span>
-                                                </h6>
-                                            @else
-                                                {{-- {{ $data->late }} --}}
-                                                <span></span>
-                                            @endif
+                                        <td> --}}
+                                        @if ($data->late_history >= 1 && $data->late >= 1)
+                                            <h6><span class="badge bg-info">Late</span>
+                                            </h6>
+                                        @elseif ($data->late_history >= 1 && $data->late == null)
+                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
+                                                    {{ $data->late_history }}
+                                                </span>
+                                            </h6>
+                                        @else
+                                            {{-- {{ $data->late }} --}}
+                                            <span></span>
+                                        @endif
 
                                         </td>
                                         <td>
@@ -166,8 +255,8 @@
         </div>
     </div>
     {{-- Modal --}}
-    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

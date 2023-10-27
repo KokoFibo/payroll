@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
 use App\Models\Yfrekappresensi;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 
 class Yfpresensiindexwr extends Component
@@ -31,12 +32,18 @@ class Yfpresensiindexwr extends Component
     public $id;
     public $no_scan = null;
     public $late = null;
+    public $btnEdit = true;
+    public $selectedId;
 
     #[On('delete')]
     public function delete($id) {
         Yfrekappresensi::find($id)->delete();
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
+
+
+
+
 
 
 
@@ -70,30 +77,35 @@ class Yfpresensiindexwr extends Component
     {
         $this->id = $id;
         $data = Yfrekappresensi::find($id);
-
         $this->first_in = trimTime($data->first_in);
+        $this->first_in1 = trimTime($data->first_in);
         $this->first_out = trimTime($data->first_out);
         $this->second_in = trimTime($data->second_in);
         $this->second_out = trimTime($data->second_out);
         $this->overtime_in = trimTime($data->overtime_in);
         $this->overtime_out = trimTime($data->overtime_out);
         $this->user_id = $data->user_id;
-        $this->name = $data->name;
+        // $this->name = $data->name;
         $this->shift = $data->shift;
         $this->date = $data->date;
+        $this->btnEdit = false;
+        $this->selectedId = $this->id;
+
 
         // $this->dispatch('update-form');
     }
 
     public function save()
     {
+
+
         $this->validate([
-            'first_in' => 'date_format:H:i',
-            'first_out' => 'date_format:H:i',
-            'second_in' => 'date_format:H:i',
-            'second_out' => 'date_format:H:i',
-            'overtime_in' => 'date_format:H:i',
-            'overtime_out' => 'date_format:H:i',
+            'first_in' => 'date_format:H:i|nullable',
+            'first_out' => 'date_format:H:i|nullable',
+            'second_in' => 'date_format:H:i|nullable',
+            'second_out' => 'date_format:H:i|nullable',
+            'overtime_in' => 'date_format:H:i|nullable',
+            'overtime_out' => 'date_format:H:i|nullable',
         ]);
         // proses penambahan  00 untuk data yg ada isi dan null utk data kosong
         $this->first_in != null ? ($this->first_in = $this->first_in . ':00') : ($this->first_in = null);
@@ -115,8 +127,11 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date);
 
         $data->save();
+        $this->btnEdit = true;
+
         $this->dispatch('success', message: 'Data sudah di update');
-        $this->dispatch('hide-form');
+        // $this->dispatch('hide-form');
+
     }
 
     public function sortColumnName($namaKolom)
