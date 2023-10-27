@@ -154,6 +154,7 @@ class Yfpresensiindexwr extends Component
         $totalHadirPagi = Yfrekappresensi::where('shift', 'Pagi')
             ->where('date', '=', $this->tanggal)
             ->count();
+        $overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
         $totalNoScan = Yfrekappresensi::where('no_scan', 'No Scan')
             ->where('date', '=', $this->tanggal)
             ->count();
@@ -183,6 +184,8 @@ class Yfpresensiindexwr extends Component
             })
             ->paginate(10);
 
-        return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi', 'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi']));
+        return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
+        'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan'
+    ]));
     }
 }

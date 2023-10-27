@@ -318,11 +318,19 @@ class YfpresensiController extends Controller {
 
             $no_scan = noScan( $first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out );
             $late = late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl );
+            $dataKaryawan = Karyawan::where( 'id_karyawan', $user_id )->first();
+            if ( $dataKaryawan == null ) {
+                $id_karyawan = null;
+            } else {
+                $id_karyawan = $dataKaryawan->id;
+            }
+
             // ook
             Yfrekappresensi::create( [
                 'user_id' => $user_id,
-                'name' => $name,
-                'department' => $department,
+                'karyawan_id' => $id_karyawan,
+                // 'name' => $name,
+                // 'department' => $department,
                 'date' => $tgl,
                 'first_in' => $first_in,
                 'first_out' => $first_out,
@@ -336,6 +344,7 @@ class YfpresensiController extends Controller {
                 'no_scan_history' => $no_scan,
                 'late_history' => $late,
             ] );
+
         }
 
         Yfpresensi::query()->truncate();

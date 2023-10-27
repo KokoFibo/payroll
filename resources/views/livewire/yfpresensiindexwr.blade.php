@@ -2,17 +2,18 @@
     @section('title', 'Presensi')
 
     <div class="d-flex flex-row gap-5 px-4 pt-4">
-        <button class="btn btn-info">Total Hadir = {{ $totalHadir }}, Shift Pagi = {{ $totalHadirPagi }}, Shift
-            Malam =
+        <button class="btn btn-info">Total Hadir : {{ $totalHadir }}, Shift Pagi : {{ $totalHadirPagi }}, Shift
+            Malam :
             {{ $totalHadir - $totalHadirPagi }}</button>
 
-        <button id="okk" class="btn btn-warning">Total No scan : {{ $totalNoScan }}, Shift Pagi =
+        <button id="okk" class="btn btn-warning">Total No scan : {{ $totalNoScan }} / {{ $overallNoScan }}, Shift
+            Pagi :
             {{ $totalNoScanPagi }},
-            shift
-            Malam = {{ $totalNoScan - $totalNoScanPagi }}</button>
-        <button class="btn btn-danger">Total Late : {{ $totalLate }}, Shift Pagi = {{ $totalLatePagi }}, Shift
+            Shift
+            Malam : {{ $totalNoScan - $totalNoScanPagi }}</button>
+        <button class="btn btn-danger">Total Late : {{ $totalLate }}, Shift Pagi : {{ $totalLatePagi }}, Shift
             Malam
-            = {{ $totalLate - $totalLatePagi }}</button>
+            : {{ $totalLate - $totalLatePagi }}</button>
     </div>
     <div class="row col-12 p-4">
         <div class="col-4">
@@ -104,8 +105,8 @@
 
                                         </td>
                                         <td>{{ $data->user_id }}</td>
-                                        <td>{{ $data->name }}</td>
-                                        <td>{{ $data->department }}</td>
+                                        <td>{{ $data->karyawan->nama }}</td>
+                                        <td>{{ $data->karyawan->departemen }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
                                         <td
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
