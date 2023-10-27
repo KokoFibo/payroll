@@ -23,7 +23,7 @@
 
         /* Sticky header section with the logo and menu */
         header {
-            background-color: #3498db;
+            background-color: #282828;
             color: #fff;
             padding: 10px;
             text-align: center;
@@ -57,7 +57,7 @@
         /* Style for dashboard item icons */
         .dashboard-item i {
             font-size: 24px;
-            color: #3498db;
+            color: #C62A27;
         }
 
         /* Style for dashboard item labels */
@@ -69,7 +69,7 @@
 
         /* Icon menu at the bottom */
         .icon-menu {
-            background-color: #3498db;
+            background-color: #C62A27;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -88,8 +88,9 @@
 
 <body>
     <header>
-        <img src="your-logo.png" alt="Logo">
-        <h1>Mobile Dashboard</h1>
+        <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
+            style="opacity: .8; width:150px; height: 90px">
+        {{-- <h1>Yifang Presensi</h1> --}}
     </header>
 
     <div class="dashboard">
