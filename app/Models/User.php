@@ -23,6 +23,8 @@ class User extends Authenticatable {
         'password',
         'username',
         'role',
+        'device',
+        'language',
     ];
 
     public function setEmailAttribute( $value ) {

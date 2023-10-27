@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->integer('username')->unique()->nullable();
-            // $table->integer('id_karyawan')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role')->nullable();
             $table->string('language')->required()->default('Id');
+            $table->integer('device')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
