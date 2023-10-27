@@ -116,7 +116,7 @@
                                                 class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#update-form-modal"></i></button> --}}
-                                            @if (Auth::user()->role != 1)
+                                            @if (Auth::user()->role > 3)
                                                 <button
                                                     wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
                                                     class="btn btn-danger btn-sm"><i
@@ -213,20 +213,20 @@
                                             class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                             {{ format_jam($data->overtime_in) }}</td> --}}
                                         {{-- <td>
-                                            {{ format_jam($data->overtime_out) }}</td>
-                                        <td> --}}
-                                        @if ($data->late_history >= 1 && $data->late >= 1)
-                                            <h6><span class="badge bg-info">Late</span>
-                                            </h6>
-                                        @elseif ($data->late_history >= 1 && $data->late == null)
-                                            <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
-                                                    {{ $data->late_history }}
-                                                </span>
-                                            </h6>
-                                        @else
-                                            {{-- {{ $data->late }} --}}
-                                            <span></span>
-                                        @endif
+                                            {{ format_jam($data->overtime_out) }}</td> --}}
+                                        <td>
+                                            @if ($data->late_history >= 1 && $data->late >= 1)
+                                                <h6><span class="badge bg-info">Late</span>
+                                                </h6>
+                                            @elseif ($data->late_history >= 1 && $data->late == null)
+                                                <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
+                                                        {{ $data->late_history }}
+                                                    </span>
+                                                </h6>
+                                            @else
+                                                {{-- {{ $data->late }} --}}
+                                                <span></span>
+                                            @endif
 
                                         </td>
                                         <td>
