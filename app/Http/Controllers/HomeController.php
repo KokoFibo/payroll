@@ -26,6 +26,8 @@ class HomeController extends Controller {
     */
 
     public function index() {
+        return view( 'dashboardMobile' );
+
         $agent = new Agent();
         $desktop = $agent->isDesktop();
         $user = User::find( auth()->user()->id );

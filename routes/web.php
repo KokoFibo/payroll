@@ -31,9 +31,10 @@ Route::middleware(['auth'])->group(function () {
         // DASHBOARD
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-        Route::get('/dashboard', [DashboardController::class, 'index']);
 
         Route::middleware(['Admin'])->group(function () {
+            //Dashboard
+            Route::get('/dashboard', [DashboardController::class, 'index']);
             // KARYAWAN
             Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
             Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
