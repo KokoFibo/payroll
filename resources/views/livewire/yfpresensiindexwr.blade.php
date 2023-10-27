@@ -124,6 +124,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $data->user_id }}</td>
+
                                         <td>{{ $data->karyawan->nama }}</td>
                                         <td>{{ $data->karyawan->departemen }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>

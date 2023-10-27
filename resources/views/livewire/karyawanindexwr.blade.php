@@ -6,7 +6,6 @@
         }
     </style>
     @section('title', 'Karyawan')
-    <input type="text">
     <div class="d-flex  p-4">
         <div class="col-4 ">
             <div class="input-group">
@@ -77,6 +76,9 @@
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">Status <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">Lama
+                                    Bekerja <i class="fa-solid fa-sort"></i>
+                                </th>
                                 @if (Auth::user()->role == 3 || Auth::user()->role == 4)
                                     <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
                                         Penggajian <i class="fa-solid fa-sort"></i>
@@ -120,11 +122,13 @@
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
+                                    <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
                                     @if (Auth::user()->role > 2)
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
                                         <td class="text-center">{{ number_format($data->bonus) }}</td>
+                                        {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
                                     @endif
 
 
