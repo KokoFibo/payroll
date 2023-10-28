@@ -7,12 +7,13 @@ use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
+use Illuminate\Support\Facades\Hash;
 
 class Updatekaryawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
+    public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda;
 
@@ -45,6 +46,8 @@ class Updatekaryawanwr extends Component {
         $this->departemen = $data->departemen;
         $this->jabatan = $data->jabatan;
         $this->level_jabatan = $data->level_jabatan;
+        $this->nama_bank = $data->nama_bank;
+        $this->no_rekening = $data->no_rekening;
 
         //Payroll
         $this->metode_penggajian = $data->metode_penggajian;
@@ -94,6 +97,9 @@ class Updatekaryawanwr extends Component {
         $data->departemen = $this->departemen;
         $data->jabatan = $this->jabatan;
         $data->level_jabatan = $this->level_jabatan;
+        $data->nama_bank = $this->nama_bank;
+        $data->no_rekening = $this->no_rekening;
+
         // Payroll
         $data->gaji_pokok = $this->gaji_pokok;
         $data->gaji_overtime = $this->gaji_overtime;
@@ -110,14 +116,18 @@ class Updatekaryawanwr extends Component {
         $data->save();
 
         $dataUser = User::where( 'username', $data->id_karyawan )->first();
-        if ( $dataUser != null ) {
+        // if ( $dataUser->id != null ) {
+        if ( $dataUser->id ) {
             $user = User::find( $dataUser->id );
             $user->name = titleCase( $this->nama );
             $user->email = trim( $this->email, ' ' );
+            $user->password = Hash::make( generatePassword( $this->tanggal_lahir ) );
             $user->save();
             $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
+        }else
+        {
+            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate' );
         }
-        $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate' );
     }
 
     public function exit () {

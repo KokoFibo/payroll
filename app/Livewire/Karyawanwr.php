@@ -11,7 +11,8 @@ class Karyawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan;
+    public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
+
 
     public $metode_penggajian, $gaji_pokok, $gaji_overtime;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
@@ -66,6 +67,9 @@ class Karyawanwr extends Component {
             $data->departemen = $this->departemen;
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
+            $data->nama_bank = $this->nama_bank;
+            $data->no_rekening = $this->no_rekening;
+
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
             $data->gaji_overtime = $this->gaji_overtime;
@@ -130,6 +134,9 @@ class Karyawanwr extends Component {
             $data->departemen = $this->departemen;
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
+            $data->nama_bank = $this->nama_bank;
+            $data->no_rekening = $this->no_rekening;
+
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
             $data->gaji_overtime = $this->gaji_overtime;
