@@ -121,12 +121,11 @@ class Updatekaryawanwr extends Component {
             $user = User::find( $dataUser->id );
             $user->name = titleCase( $this->nama );
             $user->email = trim( $this->email, ' ' );
-            $user->password = Hash::make( generatePassword( $this->tanggal_lahir ) );
             $user->save();
             $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
         }else
         {
-            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate' );
+            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate hallo' );
         }
     }
 
