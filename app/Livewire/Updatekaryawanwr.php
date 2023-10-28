@@ -125,9 +125,10 @@ class Updatekaryawanwr extends Component {
             $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
         }else
         {
-            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate hallo' );
+            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Update, User tidak terupdate' );
         }
     }
+
 
     public function exit () {
         $this->reset();
