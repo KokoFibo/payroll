@@ -26,6 +26,8 @@ Auth::routes([
     'register' => false, // Register Routes...
   'verify' => false, // Email Verification Routes...
 ]);
+
+
 Route::middleware(['guest'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
