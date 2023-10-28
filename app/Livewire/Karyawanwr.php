@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class Karyawanwr extends Component {
@@ -92,6 +93,7 @@ class Karyawanwr extends Component {
                     'email' => trim( $this->email, ' ' ),
                     'username' => $this->id_karyawan,
                     'role' => 1,
+                    'remember_token' => Str::random(10),
                     'password' => Hash::make( generatePassword( $this->tanggal_lahir ) ),
                 ] );
                 $this->dispatch( 'success', message: 'Data Karyawan Sudah di Save' );

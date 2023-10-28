@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
-use App\Exports\KaryawanExport;
 // use Illuminate\Support\Facades\DB;
+use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,8 +28,19 @@ class Karyawanindexwr extends Component
     #[On('delete')]
     public function delete()
     {
-        Karyawan::find($this->id)->delete();
-        $this->dispatch('success', message: 'Data Berhasil di delete');
+
+        $Data_Karyawan = Karyawan::find($this->id);
+        $dataUser = User::where( 'username', $Data_Karyawan->id_karyawan )->first();
+        if ( $dataUser->id ) {
+            $user = User::find( $dataUser->id );
+            $user->delete();
+            $Data_Karyawan->delete();
+            $this->dispatch( 'success', message: 'Data Karyawan Sudah di delete' );
+        }else
+        {
+            $this->dispatch( 'info', message: 'Data Karyawan Sudah di Delete, User tidak terdelete' );
+        }
+
     }
 
     public function confirmDelete($id)
