@@ -9,7 +9,7 @@
       <div class="row justify-content-center ">
             <div class="col-xl-6 ">
                   <div class="card">
-                        <div class="card-header text-light text-center" style="background-color: #EF4444;">
+                        <div class="card-header text-light text-center" style="background-color: #EF4444; ">
                               <h5>{{ __('Login') }}</h5>
                         </div>
                         <div class="card-body pt-4" style="background-color: #E5E7EB;">
