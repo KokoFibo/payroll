@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Karyawan extends Model
-{
+class Karyawan extends Model {
     use HasFactory, HasUuids;
     protected $guarded = [];
 
     public function branch () {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo( Branch::class );
+    }
+
+    public function yfrekappresensi () {
+        return $this->hasMany( Yfrekappresensi::class );
     }
 }

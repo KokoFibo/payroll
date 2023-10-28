@@ -15,7 +15,7 @@ class Test extends Component {
     use WithPagination;
 
     public function render() {
-
+        dd( lamaBekerja( '2020/05/01' ) );
         return view( 'livewire.test' );
     }
 }

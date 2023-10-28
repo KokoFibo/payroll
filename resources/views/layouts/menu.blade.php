@@ -114,20 +114,20 @@ with font-awesome or any other icon font library -->
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="/changeprofilewr" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fa-solid fa-address-card"></i>
                             <p>Change Profile</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/karyawansettingwr" class="nav-link" wire:navigate>
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fa-solid fa-users-gear"></i>
                             <p>Karyawan Settings</p>
                         </a>
                     </li>
                     @if (Auth::user()->role > 2)
                         <li class="nav-item">
                             <a href="/changeuserrolewr" class="nav-link" wire:navigate>
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="fa-solid fa-user-check"></i>
                                 <p>Change User Role</p>
                             </a>
                         </li>

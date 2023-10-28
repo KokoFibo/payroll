@@ -3,6 +3,23 @@
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+function lamaBekerja( $tgl ) {
+    $date = Carbon::parse( $tgl );
+    $now = Carbon::now();
+    $diff = $date->diffIndays( $now );
+    $tahun = floor( $diff /365 );
+    if ( $diff<30 ) {
+        return $diff .' Hari';
+
+    }
+    if ( $tahun < 1 ) {
+        $month = floor( $diff /30 );
+        return ( int )$month .' Bulan';
+    }
+    $month = floor( ( $diff % ( $tahun *365 ) )/30 );
+    return ( int )$tahun .' Tahun '. ( int )$month .' Bulan';
+}
+
 function isDesktop() {
     if ( auth()->user()->device == 1 ) {
         return 1;

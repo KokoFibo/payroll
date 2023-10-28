@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('yfrekappresensis', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid('karyawan_id')->nullable();
             $table->integer('user_id');
-            $table->string('name');
-            $table->string('department');
+            // $table->string('name');
+            // $table->string('department');
             $table->date('date');
             $table->time('first_in')->nullable();
             $table->time('first_out')->nullable();
