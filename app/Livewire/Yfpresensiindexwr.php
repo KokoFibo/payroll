@@ -75,6 +75,8 @@ class Yfpresensiindexwr extends Component
     }
     public function update($id)
     {
+
+        // dd('ok');
         $this->id = $id;
         $data = Yfrekappresensi::find($id);
         $this->first_in = trimTime($data->first_in);
@@ -191,13 +193,19 @@ class Yfpresensiindexwr extends Component
                 $query
                     ->where('name', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('user_id', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('user_id', trim($this->search))
                     ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('date', 'like', '%' . $this->tanggal . '%');
             })
             ->paginate(10);
+
+
+
+
 
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
         'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan'

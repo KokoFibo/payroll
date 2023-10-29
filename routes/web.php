@@ -2,6 +2,7 @@
 
 use App\Livewire\Test;
 use App\Livewire\Developer;
+use App\Livewire\MissingId;
 use App\Livewire\Prindexwr;
 use App\Livewire\Karyawanwr;
 use App\Http\Controllers\Testaja;
@@ -86,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/testto', [YfpresensiController::class, 'testto']);
                     Route::get('/developer', Developer::class);
                     Route::get('/ChangeFieldData', ChangeFieldData::class);
+                    Route::get('/MissingId', MissingId::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');

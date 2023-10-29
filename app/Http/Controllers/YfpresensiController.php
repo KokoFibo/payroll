@@ -83,6 +83,7 @@ class YfpresensiController extends Controller {
         $department = '';
         $late = null;
         $no_scan = null;
+        $tgl_delete = null;
 
         // check Tanggal apakah ada yang sama
         $tgl_sama = DB::table( 'yfrekappresensis' )
@@ -161,6 +162,7 @@ class YfpresensiController extends Controller {
         ->get();
 
         foreach ( $karyawanHadir as $kh ) {
+            $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
             $name = $kh->name;
             $department = $kh->department;
@@ -329,8 +331,8 @@ class YfpresensiController extends Controller {
             Yfrekappresensi::create( [
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
-                // 'name' => $name,
-                // 'department' => $department,
+                'name' => $name,
+                'department' => $department,
                 'date' => $tgl,
                 'first_in' => $first_in,
                 'first_out' => $first_out,
@@ -348,7 +350,24 @@ class YfpresensiController extends Controller {
         }
 
         Yfpresensi::query()->truncate();
+        $missingArray = [];
+        $missingArray = checkNonRegisterUser();
+        if($missingArray == null) {
 
-        return back()->with( 'info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data' );
+            return back()->with( 'info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data' );
+        } else {
+            Yfrekappresensi::where('date', $tgl_delete)->truncate();
+            $missingUserId = null;
+            foreach($missingArray as $arr) {
+                $missingUserId = $missingUserId.$arr['Karyawan_id'].', ';
+
+
+            }
+
+            return back()->with( 'error', 'Ada data ' . count($missingArray) . ' User ID yang tdk terdapat di Database Karyawan ('.$missingUserId.')'  );
+
+        }
+
+
     }
 }

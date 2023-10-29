@@ -14,7 +14,7 @@ class Karyawan extends Model {
         return $this->belongsTo( Branch::class );
     }
 
-    public function yfrekappresensi () {
-        return $this->hasMany( Yfrekappresensi::class );
-    }
+    // public function yfrekappresensi () {
+    //     return $this->hasMany( Yfrekappresensi::class );
+    // }
 }

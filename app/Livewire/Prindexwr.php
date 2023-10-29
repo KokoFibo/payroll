@@ -94,6 +94,7 @@ class Prindexwr extends Component
         $jumlah_menit_lembur = null;
         $dt_name = null;
         $dt_date = null;
+        $dt_karyawan_id = null;
         $late = null;
         $late1 = null;
         $late2 = null;
@@ -187,6 +188,7 @@ class Prindexwr extends Component
                 }
                 $dt_name = $dt->name;
                 $dt_date = $dt->date;
+                $dt_karyawan_id = $dt->karyawan_id;
 
                 $jumlah_jam_terlambat = $jumlah_jam_terlambat + $late;
             }
@@ -197,6 +199,7 @@ class Prindexwr extends Component
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);
             $data->name = $dt_name;
+            $data->karyawan_id = $dt_karyawan_id;
             $data->date = buatTanggal($dt_date);
             // $data->last_data_date = $last_data_date;
             $data->last_data_date = $last_data_date->date;
