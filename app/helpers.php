@@ -1,7 +1,26 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Karyawan;
 use Illuminate\Support\Str;
+use App\Models\Yfrekappresensi;
+
+
+
+function checkNonRegisterUser() {
+    $rekap = Yfrekappresensi::distinct('user_id')->get('user_id');
+    $array = [] ;
+            foreach ($rekap as $r) {
+                $karyawan = Karyawan::where('id_karyawan' , $r->user_id)->first();
+                if ($karyawan === null) {
+            $array[] = [
+                'Karyawan_id' => $r->user_id,
+            ];
+        }
+    }
+    return $array;
+
+}
 
 function lamaBekerja( $tgl ) {
     $date = Carbon::parse( $tgl );

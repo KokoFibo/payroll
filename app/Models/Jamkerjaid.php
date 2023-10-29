@@ -9,4 +9,8 @@ class Jamkerjaid extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function karyawan () {
+        return $this->belongsTo(Karyawan::class);
+    }
 }
