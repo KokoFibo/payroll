@@ -42,7 +42,7 @@
                               </div>
 
 
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                     <div class="mb-3">
                                           <label class="form-label">Departemen</label>
                                           <select class="form-select" aria-label="Default select example" wire:model="departemen">
@@ -62,7 +62,7 @@
                                           </select>
                                     </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                     <div class="mb-3">
                                           <label class="form-label">Jabatan</label>
                                           <select class="form-select" aria-label="Default select example" wire:model="jabatan">
@@ -87,7 +87,7 @@
                                           </select>
                                     </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                     <div class="mb-3">
                                           <label class="form-label">Level Jabatan</label>
                                           <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
@@ -104,6 +104,20 @@
                                                 <option value="M10">M10</option>
                                                 <option value="M11">M11</option>
                                                 <option value="M12">M12</option>
+                                          </select>
+                                    </div>
+                              </div>
+                              <div class="col-md-3">
+                                    <div class="mb-3">
+                                          <label class="form-label">Placement</label>
+                                          <select class="form-select" aria-label="Default select example" wire:model="placement">
+                                                <option>Pilih placement</option>
+                                                <option value="ASB">ASB</option>
+                                                <option value="DPA">DPA</option>
+                                                <option value="YCME">YCME</option>
+                                                <option value="YIG">YIG</option>
+                                                <option value="YSM">YSM</option>
+
                                           </select>
                                     </div>
                               </div>

@@ -24,6 +24,7 @@ class Karyawanindexwr extends Component
     public $id;
     public $selectedAll = [];
     public $selectStatus = 'Aktif';
+    public $perpage = 10;
 
     #[On('delete')]
     public function delete()
@@ -100,9 +101,8 @@ class Karyawanindexwr extends Component
             });
         }
         $datasQuery->orderBy($this->columnName, $this->direction);
-        $perPage = 10;
         $this->selectedAll = $datasQuery->pluck('id');
-        $datas = $datasQuery->paginate($perPage);
+        $datas = $datasQuery->paginate($this->perpage);
 
         return view('livewire.karyawanindexwr', compact(['datas']));
     }

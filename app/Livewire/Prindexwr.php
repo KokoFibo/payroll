@@ -18,6 +18,7 @@ class Prindexwr extends Component
     public $cx = 0;
     public $columnName = 'user_id';
     public $direction = 'desc';
+    public $perpage = 10;
 
     public function sortColumnName($namaKolom)
     {
@@ -248,7 +249,7 @@ class Prindexwr extends Component
                     ->where('date', 'like', '%' . $this->periode . '%');
             })
             ->orderBy('user_id', 'asc')
-            ->paginate(10);
+            ->paginate($this->perpage);
         if ($filteredData->isNotEmpty()) {
             $lastData = $filteredData[0]->last_data_date;
         } else {

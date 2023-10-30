@@ -29,9 +29,21 @@
                   </div>
             </div>
             <div class="col-4  d-flex gap-3">
+                  {{-- <div class="col-6"> --}}
                   <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
                   <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
                   <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
+                  {{-- </div> --}}
+                  <div class="col-4 d-flex align-items-center gap-3">
+                        <select class="form-select" wire:model.live="perpage">
+                              {{-- <option selected>Open this select menu</option> --}}
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="20">20</option>
+                              <option value="25">25</option>
+                        </select>
+                        Perpage
+                  </div>
             </div>
       </div>
 

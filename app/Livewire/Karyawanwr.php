@@ -12,17 +12,19 @@ class Karyawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $branch, $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
+    public $status_karyawan, $tanggal_bergabung, $branch, $placement, $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
 
 
     public $metode_penggajian, $gaji_pokok, $gaji_overtime;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
-    public $iuran_air, $denda, $potongan_seragam;
+    public $iuran_air, $denda, $potongan_seragam, $potongan_BPJS;
 
     public function mount () {
         $this->id_karyawan = getNextIdKaryawan();
         $this->status_karyawan = 'PKWT';
+        $this->tanggal_bergabung = now()->toDateString();
+        $this->potongan_BPJS = 1;
     }
 
     public function save () {
@@ -65,6 +67,7 @@ class Karyawanwr extends Component {
             $data->status_karyawan = $this->status_karyawan;
             $data->tanggal_bergabung = $this->tanggal_bergabung;
             $data->branch = $this->branch;
+            $data->placement = $this->placement;
             $data->departemen = $this->departemen;
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
@@ -83,6 +86,7 @@ class Karyawanwr extends Component {
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
             $data->potongan_seragam = $this->potongan_seragam;
+            $data->potongan_BPJS = $this->potongan_BPJS;
             $data->denda = $this->denda;
 
             try {
@@ -133,6 +137,7 @@ class Karyawanwr extends Component {
             $data->status_karyawan = $this->status_karyawan;
             $data->tanggal_bergabung = $this->tanggal_bergabung;
             $data->branch = $this->branch;
+            $data->placement = $this->placement;
             $data->departemen = $this->departemen;
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
@@ -151,6 +156,7 @@ class Karyawanwr extends Component {
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
             $data->potongan_seragam = $this->potongan_seragam;
+            $data->potongan_BPJS = $this->potongan_BPJS;
             $data->denda = $this->denda;
 
             $data->save();

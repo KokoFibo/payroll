@@ -34,6 +34,7 @@ class Yfpresensiindexwr extends Component
     public $late = null;
     public $btnEdit = true;
     public $selectedId;
+    public $perpage = 10;
 
     #[On('delete')]
     public function delete($id) {
@@ -41,7 +42,7 @@ class Yfpresensiindexwr extends Component
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-
+    
 
 
 
@@ -219,7 +220,7 @@ class Yfpresensiindexwr extends Component
                     ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('date', 'like', '%' . $this->tanggal . '%');
             })
-            ->paginate(10);
+            ->paginate($this->perpage);
 
 
 

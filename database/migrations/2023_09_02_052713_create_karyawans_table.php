@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('status_karyawan')->nullable();
             $table->date('tanggal_bergabung')->nullable();
             $table->string('branch')->nullable();
+            $table->string('placement')->nullable();
             $table->string('departemen')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('level_jabatan')->nullable();
@@ -53,6 +54,7 @@ return new class extends Migration
 
             $table->integer('iuran_air')->nullable();
             $table->integer('potongan_seragam')->nullable();
+            $table->integer('potongan_BPJS')->nullable();
             $table->integer('denda')->nullable();
 
 
