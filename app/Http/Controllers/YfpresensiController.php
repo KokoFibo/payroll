@@ -331,8 +331,8 @@ class YfpresensiController extends Controller {
             Yfrekappresensi::create( [
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
-                'name' => $name,
-                'department' => $department,
+                // 'name' => $name,
+                // 'department' => $department,
                 'date' => $tgl,
                 'first_in' => $first_in,
                 'first_out' => $first_out,

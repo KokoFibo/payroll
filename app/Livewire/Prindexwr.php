@@ -198,7 +198,7 @@ class Prindexwr extends Component
 
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);
-            $data->name = $dt_name;
+            // $data->name = $dt_name;
             $data->karyawan_id = $dt_karyawan_id;
             $data->date = buatTanggal($dt_date);
             // $data->last_data_date = $last_data_date;
@@ -231,12 +231,16 @@ class Prindexwr extends Component
             ->get();
         $this->cx++;
 
-        $filteredData = Jamkerjaid::whereDate('date', 'like', '%' . $this->periode . '%')
+        $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
+        ->join('karyawans', 'jamkerjaids.karyawan_id','=', 'karyawans.id')
+        ->whereDate('date', 'like', '%' . $this->periode . '%')
             ->orderBy($this->columnName, $this->direction)
             ->when($this->search, function ($query) {
                 $query
-                    ->where('name', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->where('name', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
+                    ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     // ->orWhere('user_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('user_id', trim($this->search))
                     // ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')

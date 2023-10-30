@@ -65,7 +65,7 @@
                               <thead>
                                     <tr>
                                           <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
-                                          <th wire:click="sortColumnName('name')">Name <i class="fa-solid fa-sort"></i></th>
+                                          <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
                                           <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
                                                 <i class="fa-solid fa-sort"></i>
                                           </th>

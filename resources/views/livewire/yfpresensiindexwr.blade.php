@@ -57,8 +57,8 @@
                                           <tr>
                                                 <td>Action</td>
                                                 <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
-                                                <td wire:click="sortColumnName('name')">Nama <i class="fa-solid fa-sort"></i></td>
-                                                <td wire:click="sortColumnName('department')">Department <i class="fa-solid fa-sort"></i>
+                                                <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
+                                                <td wire:click="sortColumnName('departemen')">Department <i class="fa-solid fa-sort"></i>
                                                 </td>
                                                 <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
                                                 </td>
