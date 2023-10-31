@@ -195,7 +195,7 @@ class Prindexwr extends Component
             }
             // DATA TOTAL
             if($total_noscan == 0) $total_noscan=null;
-            $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - ($total_late + $total_late_5);
+            $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - ($total_late - $total_late_5);
 
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);

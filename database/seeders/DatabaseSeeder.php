@@ -66,20 +66,21 @@ class DatabaseSeeder extends Seeder
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),
         ]);
-        Branch::create([
-            'branch' => 'ASB',
-        ]);
-        Branch::create([
-            'branch' => 'DPA',
-        ]);
-        Branch::create([
-            'branch' => 'YCME',
-        ]);
-        Branch::create([
-            'branch' => 'YIG',
-        ]);
-        Branch::create([
-            'branch' => 'YSM',
-        ]);
+
+        // Branch::create([
+        //     'branch' => 'ASB',
+        // ]);
+        // Branch::create([
+        //     'branch' => 'DPA',
+        // ]);
+        // Branch::create([
+        //     'branch' => 'YCME',
+        // ]);
+        // Branch::create([
+        //     'branch' => 'YIG',
+        // ]);
+        // Branch::create([
+        //     'branch' => 'YSM',
+        // ]);
     }
 }

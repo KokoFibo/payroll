@@ -97,13 +97,14 @@
                                           <td>{{ $item->user_id }}</td>
                                           <td>{{ $item->karyawan->nama }}</td>
                                           <td class="text-center">{{ $item->jumlah_jam_kerja }}</td>
-                                          <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
+                                          {{-- <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td> --}}
+                                          <td class="text-center">{{ $item->jumlah_menit_lembur }}</td>
                                           <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
                                           <td class="text-center">{{ $item->first_in_late }}</td>
                                           <td class="text-center">{{ $item->first_out_late }}</td>
                                           <td class="text-center">{{ $item->second_in_late }}</td>
                                           <td class="text-center">{{ $item->second_out_late }}</td>
-                                          <td class="text-center">{{ $item->overtime_in_late }}</td>
+                                          <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td>
                                           <td class="text-center">{{ $item->total_noscan }}</td>
                                     </tr>
                                     @endforeach

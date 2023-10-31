@@ -185,6 +185,26 @@ function trimTime( $data ) {
     return Str::substr( $data, 0, 5 );
 }
 
+function late_check_jam_kerja_only ($first_in, $first_out, $second_in, $second_out, $shift, $tgl) {
+    $late_1 = 0;
+    $late_2 = 0;
+    $late_3 = 0;
+    $late_4 = 0;
+    $late1 = checkFirstInLate($first_in, $shift, $tgl);
+    $late2 = checkFirstOutLate($first_out, $shift, $tgl);
+    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl);
+    $late4 = checkSecondOutLate($second_out, $shift, $tgl);
+    // $total_late_1 = $total_late_1 + $late1;
+    // $total_late_2 = $total_late_2 + $late2;
+    // $total_late_3 = $total_late_3 + $late3;
+    // $total_late_4 = $total_late_4 + $late4;
+    return  ($late1 + $late2 + $late3 + $late4);
+}
+function late_check_jam_lembur_only ($overtime_in, $shift, $date) {
+    return checkOvertimeInLate($overtime_in, $shift, $date);
+
+}
+
 function late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl ) {
     // $late = null;
     // $late1 = null;
@@ -328,7 +348,7 @@ function checkSecondOutLate( $second_out, $shift, $tgl ) {
 }
 
 function checkOvertimeInLate( $overtime_in, $shift, $tgl ) {
-    $perJam = 60;
+    $persetengahJam = 30;
     $late = null;
     if ( $overtime_in != null ) {
         if ( $shift == 'Pagi' ) {
@@ -340,7 +360,7 @@ function checkOvertimeInLate( $overtime_in, $shift, $tgl ) {
                 $t2 = strtotime( $overtime_in );
 
                 $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                $late = ceil( hoursToMinutes( $diff ) / $persetengahJam );
             }
         }
     }
