@@ -7,20 +7,20 @@ use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
+use App\Livewire\Karyawanindexwr;
 use Illuminate\Support\Facades\Hash;
 
 class Updatekaryawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
+    public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_JHT, $potongan_JP;
-    public  $potongan_kesehatan;
+    public  $potongan_kesehatan ;
 
     public function mount ( $id ) {
          $this->id = $id;
-         $data = Karyawan::find( $this->id );
          // Data Pribadi
          $this->id_karyawan = $data->id_karyawan;
          $this->nama = $data->nama;
@@ -49,7 +49,7 @@ class Updatekaryawanwr extends Component {
          $this->jabatan = $data->jabatan;
          $this->level_jabatan = $data->level_jabatan;
          $this->nama_bank = $data->nama_bank;
-         $this->no_rekening = $data->no_rekening;
+         $this->nomor_rekening = $data->nomor_rekening;
 
          //Payroll
          $this->metode_penggajian = $data->metode_penggajian;
@@ -97,7 +97,7 @@ class Updatekaryawanwr extends Component {
         'jabatan' => 'required',
         'level_jabatan' => 'nullable',
         'nama_bank' => 'nullable',
-        'no_rekening' => 'nullable',
+        'nomor_rekening' => 'nullable',
         // PAYROLL
         'metode_penggajian' => 'required',
         'gaji_pokok' => 'numeric|required',
@@ -118,15 +118,7 @@ class Updatekaryawanwr extends Component {
 
     public function update() {
 
-        // $this->validate( [
-        //     'id_karyawan' => 'required',
-        //     'nama' => 'required',
-        //     'email' => 'email|nullable',
-        //     'tanggal_lahir' => 'date|required',
-        // ] );
-
         $this->validate();
-
 
         $data = Karyawan::find( $this->id );
         $data->id_karyawan = $this->id_karyawan;
@@ -154,7 +146,7 @@ class Updatekaryawanwr extends Component {
         $data->jabatan = $this->jabatan;
         $data->level_jabatan = $this->level_jabatan;
         $data->nama_bank = $this->nama_bank;
-        $data->no_rekening = $this->no_rekening;
+        $data->nomor_rekening = $this->nomor_rekening;
 
         // Payroll
         $data->gaji_pokok = $this->gaji_pokok;
@@ -183,6 +175,7 @@ class Updatekaryawanwr extends Component {
             $user = User::find( $dataUser->id );
             $user->name = titleCase( $this->nama );
             $user->email = trim( $this->email, ' ' );
+            $user->password = Hash::make($this->tanggal_lahir);
             $user->save();
             $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
         }else

@@ -44,6 +44,10 @@ class Karyawanindexwr extends Component
 
     }
 
+    public function no_edit () {
+        $this->dispatch( 'error', message: 'Data Karyawan ini Tidak dapat di Update' );
+    }
+
     public function confirmDelete($id)
     {
         $this->id = $id;

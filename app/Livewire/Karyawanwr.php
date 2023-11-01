@@ -13,7 +13,7 @@ class Karyawanwr extends Component
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $company, $placement, $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
+    public $status_karyawan, $tanggal_bergabung, $company, $placement, $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
 
     public $metode_penggajian, $gaji_pokok, $gaji_overtime;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
@@ -55,7 +55,7 @@ class Karyawanwr extends Component
             'jabatan' => 'required',
             'level_jabatan' => 'nullable',
             'nama_bank' => 'nullable',
-            'no_rekening' => 'nullable',
+            'nomor_rekening' => 'nullable',
             // PAYROLL
             'metode_penggajian' => 'required',
             'gaji_pokok' => 'numeric|required',
@@ -113,7 +113,7 @@ class Karyawanwr extends Component
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
             $data->nama_bank = $this->nama_bank;
-            $data->no_rekening = $this->no_rekening;
+            $data->nomor_rekening = $this->nomor_rekening;
 
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
@@ -141,8 +141,10 @@ class Karyawanwr extends Component
                     'email' => trim($this->email, ' '),
                     'username' => $this->id_karyawan,
                     'role' => 1,
-                    'remember_token' => Str::random(10),
+                    // 'email_verified_at' => now(),
+
                     'password' => Hash::make(generatePassword($this->tanggal_lahir)),
+                    // 'remember_token' => Str::random(10),
                 ]);
                 $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
             } catch (\Exception $e) {
@@ -186,7 +188,7 @@ class Karyawanwr extends Component
             $data->jabatan = $this->jabatan;
             $data->level_jabatan = $this->level_jabatan;
             $data->nama_bank = $this->nama_bank;
-            $data->no_rekening = $this->no_rekening;
+            $data->nomor_rekening = $this->nomor_rekening;
 
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
@@ -205,6 +207,15 @@ class Karyawanwr extends Component
             $data->potongan_kesehatan = $this->potongan_kesehatan;
             $data->denda = $this->denda;
             $data->save();
+
+            $user = User::where('username',$this->id_karyawan )->first();
+            $data_user = User::find($user->id);
+            $data_user->name = titleCase($this->nama);
+            $data_user->email = trim($this->email, ' ');
+            $data_user->password  = Hash::make($this->tanggal_lahir);
+            $data_user->save();
+
+
             $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
         } catch (\Exception $e) {
             $this->dispatch('error', message: $e->getMessage());

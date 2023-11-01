@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('jabatan')->nullable();
             $table->string('level_jabatan')->nullable();
             $table->string('nama_bank')->nullable();
-            $table->string('no_rekening')->nullable();
+            $table->string('nomor_rekening')->nullable();
 
 
             $table->string('metode_penggajian')->nullable();

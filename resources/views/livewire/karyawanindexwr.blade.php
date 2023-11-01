@@ -112,9 +112,14 @@
                                 <tr>
                                     <td>
                                         <div class="text-start">
-                                            <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm"><i
-                                                        class="fa-regular fa-pen-to-square"></i></button></a>
+                                            @if (karyawan_allow_edit($data->id, Auth::user()->role))
+                                                <a href="/karyawanupdate/{{ $data->id }}"><button
+                                                        class="btn btn-success btn-sm"><i
+                                                            class="fa-regular fa-pen-to-square"></i></button></a>
+                                            @else
+                                                <button wire:click="no_edit" class="btn btn-success btn-sm"><i
+                                                        class="fa-regular fa-pen-to-square"></i></button>
+                                            @endif
 
                                             @if (Auth::user()->role == 3 || Auth::user()->role == 4)
                                                 <button wire:click="confirmDelete(`{{ $data->id }}`)"
@@ -168,4 +173,5 @@
             });
         });
     </script>
+
 </div>

@@ -74,12 +74,13 @@ class KaryawanController extends Controller {
                 $status_karyawan = $importedData->getCell( 'P' . $i )->getValue();
                 $tanggal_bergabung = $importedData->getCell( 'Q' . $i )->getValue();
                 $company = $importedData->getCell( 'R' . $i )->getValue();
-                $departemen = $importedData->getCell( 'S' . $i )->getValue();
-                $jabatan = $importedData->getCell( 'T' . $i )->getValue();
-                $level_jabatan = $importedData->getCell( 'U' . $i )->getValue();
-                $gaji_pokok = $importedData->getCell( 'V' . $i )->getValue();
-                $gaji_overtime = $importedData->getCell( 'X' . $i )->getValue();
-                $metode_penggajian = $importedData->getCell( 'AA' . $i )->getValue();
+                $placement = $importedData->getCell( 'S' . $i )->getValue();
+                $departemen = $importedData->getCell( 'T' . $i )->getValue();
+                $jabatan = $importedData->getCell( 'U' . $i )->getValue();
+                $level_jabatan = $importedData->getCell( 'V' . $i )->getValue();
+                $gaji_pokok = $importedData->getCell( 'W' . $i )->getValue();
+                $gaji_overtime = $importedData->getCell( 'Y' . $i )->getValue();
+                $metode_penggajian = $importedData->getCell( 'AB' . $i )->getValue();
                 $bonus = $importedData->getCell( 'AC' . $i )->getValue();
                 $tunjangan_jabatan = $importedData->getCell( 'AD' . $i )->getValue();
                 $tunjangan_bahasa = $importedData->getCell( 'AE' . $i )->getValue();
@@ -89,6 +90,12 @@ class KaryawanController extends Controller {
                 $iuran_air = $importedData->getCell( 'AI' . $i )->getValue();
                 $potongan_seragam = $importedData->getCell( 'AJ' . $i )->getValue();
                 $denda = $importedData->getCell( 'AK' . $i )->getValue();
+                $potongan_jht = $importedData->getCell( 'AM' . $i )->getValue();
+                $potongan_jp = $importedData->getCell( 'AN' . $i )->getValue();
+                $potongan_kesehatan = $importedData->getCell( 'AO' . $i )->getValue();
+                $nomor_rekening = $importedData->getCell( 'AP' . $i )->getValue();
+                $nama_bank = $importedData->getCell( 'AQ' . $i )->getValue();
+
 
                 $data = Karyawan::where( 'id_karyawan', $id_karyawan )->get();
                 if ( $data->isEmpty() ) {
@@ -114,6 +121,7 @@ class KaryawanController extends Controller {
                         'status_karyawan' => $status_karyawan,
                         'tanggal_bergabung' => $tanggal_bergabung,
                         'company' => $company,
+                        'placement' => $placement,
                         'departemen' => $departemen,
                         'jabatan' => $jabatan,
                         'level_jabatan' => $level_jabatan,
@@ -129,6 +137,11 @@ class KaryawanController extends Controller {
                         'iuran_air' => $iuran_air,
                         'potongan_seragam' => $potongan_seragam,
                         'denda' => $denda,
+                        'potongan_jht' => $potongan_jht,
+                        'potongan_jp' => $potongan_jp,
+                        'potongan_kesehatan' => $potongan_kesehatan,
+                        'nomor_rekening' => $nomor_rekening,
+                        'nama_bank' => $nama_bank,
 
                     ] );
 

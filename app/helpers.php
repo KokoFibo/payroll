@@ -5,7 +5,14 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
-
+function karyawan_allow_edit($id, $role) {
+    $data = Karyawan::find($id);
+    if ($role < 3 && $data->gaji_pokok > 4500000){
+        return 0;
+} else {
+    return 1;
+}
+}
 
 function checkNonRegisterUser() {
     $rekap = Yfrekappresensi::distinct('user_id')->get('user_id');

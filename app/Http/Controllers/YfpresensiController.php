@@ -58,7 +58,6 @@ class YfpresensiController extends Controller {
         Yfpresensi::query()->truncate();
         Yfrekappresensi::query()->truncate();
         // Presensi::query()->truncate();
-        Employee::query()->truncate();
         return back()->with( 'success', 'Data Presensi telah berhasil di delete' );
     }
 
