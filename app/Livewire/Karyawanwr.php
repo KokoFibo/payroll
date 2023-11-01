@@ -18,13 +18,14 @@ class Karyawanwr extends Component {
     public $metode_penggajian, $gaji_pokok, $gaji_overtime;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
-    public $iuran_air, $denda, $potongan_seragam, $potongan_BPJS;
+    public $iuran_air, $denda, $potongan_seragam, $potongan_JHT, $potongan_JP, $potongan_kesehatan;
+
+    // public $BPJS = [];
 
     public function mount () {
         $this->id_karyawan = getNextIdKaryawan();
         $this->status_karyawan = 'PKWT';
         $this->tanggal_bergabung = now()->toDateString();
-        $this->potongan_BPJS = 1;
     }
 
     public function save () {
@@ -86,7 +87,11 @@ class Karyawanwr extends Component {
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
             $data->potongan_seragam = $this->potongan_seragam;
-            $data->potongan_BPJS = $this->potongan_BPJS;
+            $data->potongan_JHT = $this->potongan_JHT;
+            $data->potongan_JP = $this->potongan_JP;
+            $data->potongan_kesehatan = $this->potongan_kesehatan;
+
+
             $data->denda = $this->denda;
 
             try {
@@ -156,9 +161,10 @@ class Karyawanwr extends Component {
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
             $data->potongan_seragam = $this->potongan_seragam;
-            $data->potongan_BPJS = $this->potongan_BPJS;
+            $data->potongan_JHT = $this->potongan_JHT;
+            $data->potongan_JP = $this->potongan_JP;
+            $data->potongan_kesehatan = $this->potongan_kesehatan;
             $data->denda = $this->denda;
-
             $data->save();
             $this->dispatch( 'success', message: 'Data Karyawan Sudah di Update' );
         } catch ( \Exception $e ) {

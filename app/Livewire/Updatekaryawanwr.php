@@ -15,55 +15,58 @@ class Updatekaryawanwr extends Component {
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $branch, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_BPJS;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_JHT, $potongan_JP;
+    public  $potongan_kesehatan;
 
     public function mount ( $id ) {
-        $this->id = $id;
-        $data = Karyawan::find( $id );
-        // Data Pribadi
-        $this->id_karyawan = $data->id_karyawan;
-        $this->nama = $data->nama;
-        $this->email = $data->email;
-        $this->hp = $data->hp;
-        $this->telepon = $data->telepon;
-        $this->tempat_lahir = $data->tempat_lahir;
-        $this->tanggal_lahir = $data->tanggal_lahir;
-        $this->gender = $data->gender;
-        $this->status_pernikahan = $data->status_pernikahan;
-        $this->golongan_darah = $data->golongan_darah;
-        $this->agama = $data->agama;
+         $this->id = $id;
+         $data = Karyawan::find( $this->id );
+         // Data Pribadi
+         $this->id_karyawan = $data->id_karyawan;
+         $this->nama = $data->nama;
+         $this->email = $data->email;
+         $this->hp = $data->hp;
+         $this->telepon = $data->telepon;
+         $this->tempat_lahir = $data->tempat_lahir;
+         $this->tanggal_lahir = $data->tanggal_lahir;
+         $this->gender = $data->gender;
+         $this->status_pernikahan = $data->status_pernikahan;
+         $this->golongan_darah = $data->golongan_darah;
+         $this->agama = $data->agama;
 
-        // Identitas
-        $this->jenis_identitas = $data->jenis_identitas;
-        $this->no_identitas = $data->no_identitas;
-        $this->alamat_identitas = $data->alamat_identitas;
-        $this->alamat_tinggal = $data->alamat_tinggal;
+         // Identitas
+         $this->jenis_identitas = $data->jenis_identitas;
+         $this->no_identitas = $data->no_identitas;
+         $this->alamat_identitas = $data->alamat_identitas;
+         $this->alamat_tinggal = $data->alamat_tinggal;
 
-        //Data Kepegawaian
-        $this->status_karyawan = $data->status_karyawan;
-        $this->tanggal_bergabung = $data->tanggal_bergabung;
-        $this->branch = $data->branch;
-        $this->placement = $data->placement;
-        $this->departemen = $data->departemen;
-        $this->jabatan = $data->jabatan;
-        $this->level_jabatan = $data->level_jabatan;
-        $this->nama_bank = $data->nama_bank;
-        $this->no_rekening = $data->no_rekening;
+         //Data Kepegawaian
+         $this->status_karyawan = $data->status_karyawan;
+         $this->tanggal_bergabung = $data->tanggal_bergabung;
+         $this->branch = $data->branch;
+         $this->placement = $data->placement;
+         $this->departemen = $data->departemen;
+         $this->jabatan = $data->jabatan;
+         $this->level_jabatan = $data->level_jabatan;
+         $this->nama_bank = $data->nama_bank;
+         $this->no_rekening = $data->no_rekening;
 
-        //Payroll
-        $this->metode_penggajian = $data->metode_penggajian;
-        $this->gaji_pokok = $data->gaji_pokok;
-        $this->gaji_overtime = $data->gaji_overtime;
-        $this->bonus = $data->bonus;
-        $this->tunjangan_jabatan = $data->tunjangan_jabatan;
-        $this->tunjangan_bahasa = $data->tunjangan_bahasa;
-        $this->tunjangan_skill = $data->tunjangan_skill;
-        $this->tunjangan_lembur_sabtu = $data->tunjangan_lembur_sabtu;
-        $this->tunjangan_lama_kerja = $data->tunjangan_lama_kerja;
-        $this->iuran_air = $data->iuran_air;
-        $this->denda = $data->denda;
-        $this->potongan_seragam = $data->potongan_seragam;
-        $this->potongan_BPJS = $data->potongan_BPJS;
+         //Payroll
+         $this->metode_penggajian = $data->metode_penggajian;
+         $this->gaji_pokok = $data->gaji_pokok;
+         $this->gaji_overtime = $data->gaji_overtime;
+         $this->bonus = $data->bonus;
+         $this->tunjangan_jabatan = $data->tunjangan_jabatan;
+         $this->tunjangan_bahasa = $data->tunjangan_bahasa;
+         $this->tunjangan_skill = $data->tunjangan_skill;
+         $this->tunjangan_lembur_sabtu = $data->tunjangan_lembur_sabtu;
+         $this->tunjangan_lama_kerja = $data->tunjangan_lama_kerja;
+         $this->iuran_air = $data->iuran_air;
+         $this->denda = $data->denda;
+         $this->potongan_seragam = $data->potongan_seragam;
+         $this->potongan_JHT = $data->potongan_JHT;
+         $this->potongan_JP = $data->potongan_JP;
+         $this->potongan_kesehatan = $data->potongan_kesehatan;
     }
 
     public function update() {
@@ -115,7 +118,12 @@ class Updatekaryawanwr extends Component {
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
         $data->iuran_air = $this->iuran_air;
         $data->potongan_seragam = $this->potongan_seragam;
-        $data->potongan_BPJS = $this->potongan_BPJS;
+        $data->potongan_JHT = $this->potongan_JHT;
+        $data->potongan_JP = $this->potongan_JP;
+        $data->potongan_kesehatan = $this->potongan_kesehatan;
+
+
+
         $data->denda = $this->denda;
         $data->save();
 
@@ -140,6 +148,7 @@ class Updatekaryawanwr extends Component {
     }
 
     public function render() {
+
         return view( 'livewire.updatekaryawanwr' )
         ->layout( 'layouts.appeloe' );
     }

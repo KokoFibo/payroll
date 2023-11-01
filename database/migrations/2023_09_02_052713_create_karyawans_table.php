@@ -54,7 +54,9 @@ return new class extends Migration
 
             $table->integer('iuran_air')->nullable();
             $table->integer('potongan_seragam')->nullable();
-            $table->integer('potongan_BPJS')->nullable();
+            $table->boolean('potongan_JHT')->nullable();
+            $table->boolean('potongan_JP')->nullable();
+            $table->boolean('potongan_kesehatan')->nullable();
             $table->integer('denda')->nullable();
 
 

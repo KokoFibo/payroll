@@ -178,7 +178,8 @@ class Prindexwr extends Component
                         $total_late_3 = $total_late_3 + $late3;
                         $total_late_4 = $total_late_4 + $late4;
                         $total_late_5 = $total_late_5 + $late5;
-                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
+                        // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
+                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 ;
                         if ($dt->overtime_in != null) {
                             $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
                             $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
@@ -195,7 +196,7 @@ class Prindexwr extends Component
             }
             // DATA TOTAL
             if($total_noscan == 0) $total_noscan=null;
-            $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - ($total_late - $total_late_5);
+            $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - $total_late ;
 
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);
@@ -207,8 +208,7 @@ class Prindexwr extends Component
             $data->jumlah_jam_kerja = $jumlah_jam_kerja;
             $data->jumlah_menit_lembur = $jumlah_menit_lembur;
             $data->total_noscan = $total_noscan;
-            $data->jumlah_jam_terlambat = $total_late;
-
+            $data->jumlah_jam_terlambat = $total_late == 0 ? null : $total_late;
             $data->first_in_late = $total_late_1 == 0 ? null : $total_late_1;
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;

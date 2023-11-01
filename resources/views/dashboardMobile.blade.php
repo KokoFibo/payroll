@@ -30,15 +30,16 @@
             <a href="#"><i class="fas fa-bell text-white text-2xl"></i></a>
             <a href="#"><i class="fas fa-user text-white text-2xl"></i></a>
       </div>
-      <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <h3 class="text-xl p-3">Presensi karyawan</h3>
+      <div class="relative overflow-x-auto p-3">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                               <th scope="col" class="px-6 py-3">Tanggal</th>
                               <th scope="col" class="px-6 py-3">Jam Kerja</th>
-                              <th scope="col" class="px-6 py-3">Jam Kerja Telat</th>
+                              <th scope="col" class="px-6 py-3">Terlambat Kerja</th>
                               <th scope="col" class="px-6 py-3">Jam Lembur</th>
-                              <th scope="col" class="px-6 py-3">Jam Lembur Telat</th>
+                              <th scope="col" class="px-6 py-3">Terlambat Lembur</th>
                               <th scope="col" class="px-6 py-3"></th>
                         </tr>
                   </thead>
@@ -48,7 +49,7 @@
                               <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ format_tgl($d->date) }}</td>
                               <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ 8-late_check_jam_kerja_only ($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date) }} Jam</td>
                               <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ late_check_jam_kerja_only ($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date) }} Jam</td>
-                              <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ hitungLembur($d->overtime_in, $d->overtime_out)/60 }} jam</td>
+                              <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ hitungLembur($d->overtime_in, $d->overtime_out)/60 }} Jam</td>
                               <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ checkOvertimeInLate ($d->overtime_in, $d->shift, $d->date) * 30/60}} Jam</td>
                               <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><button class="bg-teal-500 text-white py-2 px-3 rounded">Detail</button></td>
 

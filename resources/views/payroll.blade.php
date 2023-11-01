@@ -1,5 +1,5 @@
 {{-- Gaji --}}
-<div class="card mt-2">
+<div wire:ignore.self class="card mt-2">
       <div class="card-header bg-secondary ">
             <h5 class="text-light">Gaji</h5>
       </div>
@@ -119,20 +119,38 @@
                               <input wire:model="potongan_seragam" type="number" class="form-control">
                         </div>
                   </div>
+
                   <div class="col-md-3">
-                        <div class="mb-3">
-                              <label class="form-label">Potongan BPJS</label>
-                              <select class="form-select" wire:model="potongan_BPJS">
-                                    <option value="1">Tidak dipotong</option>
-                                    <option value="2">JHT</option>
-                                    <option value="3">JP</option>
-                                    <option value="4">JHT & JP</option>
-                              </select>
+                        <label class="form-label">Potongan BPJS</label>
+                        <div class="mb-3 d-flex gap-4">
+
+
+                              <div class="form-check">
+                                    <input type="checkbox" wire:model="potongan_JHT" class="form-check-input" {{ $potongan_JHT == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label">
+                                          JHT
+                                    </label>
+                              </div>
+                              <div class="form-check">
+                                    <input type="checkbox" wire:model="potongan_JP" class="form-check-input" {{ $potongan_JP == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label">
+                                          JP
+                                    </label>
+                              </div>
+
+                              <div class="form-check">
+                                    <input type="checkbox" wire:model="potongan_kesehatan" class="form-check-input" {{ $potongan_kesehatan == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label">
+                                          Kesehatan
+                                    </label>
+                              </div>
+
                         </div>
                   </div>
-
             </div>
 
-
       </div>
+
+
+</div>
 </div>
