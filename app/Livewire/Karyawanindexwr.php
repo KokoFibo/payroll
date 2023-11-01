@@ -75,7 +75,7 @@ class Karyawanindexwr extends Component
     public function render()
     {
         // $datas1 = Karyawan::where('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //     ->orWhere('branch', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orderBy($this->columnName, $this->direction);
@@ -95,7 +95,7 @@ class Karyawanindexwr extends Component
             $datasQuery->where(function ($query) use ($search) {
                 $query
                     ->where('nama', 'LIKE', $search)
-                    ->orWhere('branch', 'LIKE', $search)
+                    ->orWhere('company', 'LIKE', $search)
                     ->orWhere('id_karyawan', 'LIKE', $search)
                     ->orWhere('departemen', 'LIKE', $search);
             });

@@ -13,7 +13,7 @@ class Updatekaryawanwr extends Component {
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $branch, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
+    public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $no_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_JHT, $potongan_JP;
     public  $potongan_kesehatan;
@@ -43,7 +43,7 @@ class Updatekaryawanwr extends Component {
          //Data Kepegawaian
          $this->status_karyawan = $data->status_karyawan;
          $this->tanggal_bergabung = $data->tanggal_bergabung;
-         $this->branch = $data->branch;
+         $this->company = $data->company;
          $this->placement = $data->placement;
          $this->departemen = $data->departemen;
          $this->jabatan = $data->jabatan;
@@ -69,14 +69,64 @@ class Updatekaryawanwr extends Component {
          $this->potongan_kesehatan = $data->potongan_kesehatan;
     }
 
+    protected $rules = [
+
+        'id_karyawan' => 'required',
+        'nama' => 'required',
+        'email' => 'email|required',
+        'tanggal_lahir' => 'date|before:today|required',
+        // PRIBADI
+        'hp' => 'required',
+        'telepon' => 'nullable',
+        'tempat_lahir' => 'required',
+        'gender' => 'required',
+        'status_pernikahan' => 'nullable',
+        'golongan_darah' => 'nullable',
+        'agama' => 'nullable',
+        // IDENTITAS
+        'jenis_identitas' => 'required',
+        'no_identitas' => 'required',
+        'alamat_identitas' => 'required',
+        'alamat_tinggal' => 'required',
+        // KEPEGAWAIAN
+        'status_karyawan' => 'required',
+        'tanggal_bergabung' => 'required',
+        'company' => 'required',
+        'placement' => 'required',
+        'departemen' => 'required',
+        'jabatan' => 'required',
+        'level_jabatan' => 'nullable',
+        'nama_bank' => 'nullable',
+        'no_rekening' => 'nullable',
+        // PAYROLL
+        'metode_penggajian' => 'required',
+        'gaji_pokok' => 'numeric|required',
+        'gaji_overtime' => 'numeric|required',
+        'bonus' => 'numeric|nullable',
+        'tunjangan_jabatan' => 'numeric|nullable',
+        'tunjangan_bahasa' => 'numeric|nullable',
+        'tunjangan_skill' => 'numeric|nullable',
+        'tunjangan_lembur_sabtu' => 'numeric|nullable',
+        'tunjangan_lama_kerja' => 'numeric|nullable',
+        'iuran_air' => 'numeric|required',
+        'denda' => 'numeric|nullable',
+        'potongan_seragam' => 'numeric|nullable',
+        'potongan_JHT' => 'nullable',
+        'potongan_JP' => 'nullable',
+        'potongan_kesehatan' => 'nullable',
+];
+
     public function update() {
 
-        $this->validate( [
-            'id_karyawan' => 'required',
-            'nama' => 'required',
-            'email' => 'email|nullable',
-            'tanggal_lahir' => 'date|required',
-        ] );
+        // $this->validate( [
+        //     'id_karyawan' => 'required',
+        //     'nama' => 'required',
+        //     'email' => 'email|nullable',
+        //     'tanggal_lahir' => 'date|required',
+        // ] );
+
+        $this->validate();
+
 
         $data = Karyawan::find( $this->id );
         $data->id_karyawan = $this->id_karyawan;
@@ -98,7 +148,7 @@ class Updatekaryawanwr extends Component {
         // Data Kepegawaian
         $data->status_karyawan = $this->status_karyawan;
         $data->tanggal_bergabung = $this->tanggal_bergabung;
-        $data->branch = $this->branch;
+        $data->company = $this->company;
         $data->placement = $this->placement;
         $data->departemen = $this->departemen;
         $data->jabatan = $this->jabatan;

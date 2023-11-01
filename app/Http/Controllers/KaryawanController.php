@@ -18,7 +18,7 @@ class KaryawanController extends Controller {
     public function cari ( Request $request ) {
         // dd( $request->cari );
         $datas = Karyawan::where( 'nama', 'LIKE', '%'.$request->cari.'%' )
-        ->orWhere( 'branch', 'LIKE', '%'.$request->cari.'%' )
+        ->orWhere( 'company', 'LIKE', '%'.$request->cari.'%' )
         ->orWhere( 'departemen', 'LIKE', '%'.$request->cari.'%' )
         ->orderBy( 'id_karyawan', 'desc' )->paginate( 10 );
         // return back()->compact( 'datas' );
@@ -73,7 +73,7 @@ class KaryawanController extends Controller {
                 $alamat_tinggal = $importedData->getCell( 'O' . $i )->getValue();
                 $status_karyawan = $importedData->getCell( 'P' . $i )->getValue();
                 $tanggal_bergabung = $importedData->getCell( 'Q' . $i )->getValue();
-                $branch = $importedData->getCell( 'R' . $i )->getValue();
+                $company = $importedData->getCell( 'R' . $i )->getValue();
                 $departemen = $importedData->getCell( 'S' . $i )->getValue();
                 $jabatan = $importedData->getCell( 'T' . $i )->getValue();
                 $level_jabatan = $importedData->getCell( 'U' . $i )->getValue();
@@ -92,7 +92,6 @@ class KaryawanController extends Controller {
 
                 $data = Karyawan::where( 'id_karyawan', $id_karyawan )->get();
                 if ( $data->isEmpty() ) {
-                    // $getBranch = Branch::where( 'branch', $branch )->first();
 
                     $total_data++;
 
@@ -114,7 +113,7 @@ class KaryawanController extends Controller {
                         'alamat_tinggal' => titleCase( $alamat_tinggal ),
                         'status_karyawan' => $status_karyawan,
                         'tanggal_bergabung' => $tanggal_bergabung,
-                        'branch' => $branch,
+                        'company' => $company,
                         'departemen' => $departemen,
                         'jabatan' => $jabatan,
                         'level_jabatan' => $level_jabatan,

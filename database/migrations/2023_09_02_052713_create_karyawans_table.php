@@ -33,7 +33,7 @@ return new class extends Migration
 
             $table->string('status_karyawan')->nullable();
             $table->date('tanggal_bergabung')->nullable();
-            $table->string('branch')->nullable();
+            $table->string('company')->nullable();
             $table->string('placement')->nullable();
             $table->string('departemen')->nullable();
             $table->string('jabatan')->nullable();
