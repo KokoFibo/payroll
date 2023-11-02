@@ -15,7 +15,7 @@ class Developer {
     */
 
     public function handle( Request $request, Closure $next ): Response {
-        if ( ( Auth::user()->role >3 && Auth::user()->device == 1 ) || Auth::user()->role >3 ) {
+        if ( ( Auth::user()->role >4 && Auth::user()->device == 1 ) || Auth::user()->role >4 ) {
 
             return $next( $request );
         } else {

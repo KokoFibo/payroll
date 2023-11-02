@@ -40,7 +40,7 @@
                         aria-labelledby="nav-kepegawaian-tab">
                         @include('kepegawaian')
                     </div>
-                    @if (!(auth()->user()->role > 2 && $gaji_pokok > 4500000))
+                    @if (!((auth()->user()->role < 4 && $gaji_pokok > 4500000) || auth()->user()->role < 3))
                         <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel"
                             aria-labelledby="nav-payroll-tab">
                             @include('payroll')
