@@ -38,7 +38,7 @@
                         <option value="Non Aktif">Non Aktif</option>
                     </select>
                 </div>
-                @if (Auth::user()->role > 2)
+                @if (Auth::user()->role > 3)
                     <div>
                         <button wire:click="excel" class="btn btn-success">Excel</button>
                     </div>
