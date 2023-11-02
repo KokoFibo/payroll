@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'User Settings')
+
     <div class="container">
 
         <div class="mx-auto col-8 pt-4">
