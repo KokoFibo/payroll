@@ -1,5 +1,5 @@
 <!-- Main Footer -->
-<footer class="main-footer text-center">
+<footer class="main-footer text-center" style="background-image: url({{ asset('images/texture.png') }});">
     <!-- To the right -->
     {{-- <div class="float-right d-none d-sm-inline">
         Anything you want

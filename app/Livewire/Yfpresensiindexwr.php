@@ -42,7 +42,7 @@ class Yfpresensiindexwr extends Component
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-    
+
 
 
 
@@ -67,6 +67,7 @@ class Yfpresensiindexwr extends Component
 
     public function resetTanggal()
     {
+        // ini harus di reset ke tanggal terakhir ver d M Y
         $this->tanggal = null;
         $this->columnName = 'no_scan_history';
         $this->direction = 'desc';

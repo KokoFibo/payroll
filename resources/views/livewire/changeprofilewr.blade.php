@@ -1,7 +1,7 @@
 <div>
     <div class="container">
 
-        <div class="mx-auto col-8 mt-4">
+        <div class="mx-auto col-8 pt-4">
             {{-- <h5>
                 Hello, {{ namaDiAside($name) }} selamat datang di menu User Setting.
             </h5> --}}
@@ -121,5 +121,4 @@
 
         </div>
     </div>
-</div>
 </div>

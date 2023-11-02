@@ -17,6 +17,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Scripts -->
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
@@ -68,7 +69,7 @@
         @include('layouts.aside')
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper ">
+        <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
 
             {{ $slot }}
 
@@ -80,7 +81,18 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @livewireScripts
-
+        {{-- falt picker bagus --}}
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        {{-- <script>
+        flatpickr("input[type=datetime:local]", {
+            dateFormat: "d M Y",
+        });
+    </script> --}}
+        <script>
+            flatpickr("#tanggal", {
+                dateFormat: "d M Y",
+            });
+        </script>
 </body>
 
 </html>
