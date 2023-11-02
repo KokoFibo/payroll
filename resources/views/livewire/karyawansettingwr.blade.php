@@ -1,4 +1,6 @@
 <div>
+    @section('title', ' Karyawan Setting')
+
     <div>
         <div class="container">
             <div class="mx-auto  pt-4">
