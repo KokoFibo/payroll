@@ -69,13 +69,15 @@
                                                 <h5>Senior Admin</h5>
                                             </label>
                                         </div>
-                                        <div class="form-check">
-                                            <input wire:model="role" class="form-check-input" type="radio"
-                                                value="4">
-                                            <label class="form-check-label">
-                                                <h5>Super Admin</h5>
-                                            </label>
-                                        </div>
+                                        @if (auth()->user()->role > 3)
+                                            <div class="form-check">
+                                                <input wire:model="role" class="form-check-input" type="radio"
+                                                    value="4">
+                                                <label class="form-check-label">
+                                                    <h5>Super Admin</h5>
+                                                </label>
+                                            </div>
+                                        @endif
 
                                     </div>
 
