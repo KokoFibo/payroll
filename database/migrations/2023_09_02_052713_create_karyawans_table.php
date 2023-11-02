@@ -33,12 +33,13 @@ return new class extends Migration
 
             $table->string('status_karyawan')->nullable();
             $table->date('tanggal_bergabung')->nullable();
-            $table->string('branch')->nullable();
+            $table->string('company')->nullable();
+            $table->string('placement')->nullable();
             $table->string('departemen')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('level_jabatan')->nullable();
             $table->string('nama_bank')->nullable();
-            $table->string('no_rekening')->nullable();
+            $table->string('nomor_rekening')->nullable();
 
 
             $table->string('metode_penggajian')->nullable();
@@ -53,6 +54,9 @@ return new class extends Migration
 
             $table->integer('iuran_air')->nullable();
             $table->integer('potongan_seragam')->nullable();
+            $table->boolean('potongan_JHT')->nullable();
+            $table->boolean('potongan_JP')->nullable();
+            $table->boolean('potongan_kesehatan')->nullable();
             $table->integer('denda')->nullable();
 
 

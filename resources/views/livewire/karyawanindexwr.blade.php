@@ -7,10 +7,20 @@
     </style>
     @section('title', 'Karyawan')
     <div class="d-flex  p-4">
-        <div class="col-4 ">
+        <div class="col-4 d-flex gap-3">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+            </div>
+            <div class="col-4 d-flex align-items-center gap-3">
+                <select class="form-select" wire:model.live="perpage">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                </select>
+                Perpage
             </div>
         </div>
         <div class="col-4 ">
@@ -61,7 +71,7 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('branch')">Branch <i
+                                <th class="text-center" wire:click="sortColumnName('company')">Branch <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('departemen')">Departemen <i
                                         class="fa-solid fa-sort"></i>
@@ -102,9 +112,14 @@
                                 <tr>
                                     <td>
                                         <div class="text-start">
-                                            <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm"><i
-                                                        class="fa-regular fa-pen-to-square"></i></button></a>
+                                            @if (karyawan_allow_edit($data->id, Auth::user()->role))
+                                                <a href="/karyawanupdate/{{ $data->id }}"><button
+                                                        class="btn btn-success btn-sm"><i
+                                                            class="fa-regular fa-pen-to-square"></i></button></a>
+                                            @else
+                                                <button wire:click="no_edit" class="btn btn-success btn-sm"><i
+                                                        class="fa-regular fa-pen-to-square"></i></button>
+                                            @endif
 
                                             @if (Auth::user()->role == 3 || Auth::user()->role == 4)
                                                 <button wire:click="confirmDelete(`{{ $data->id }}`)"
@@ -115,7 +130,7 @@
                                     </td>
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
-                                    <td class="text-center">{{ $data->branch }}</td>
+                                    <td class="text-center">{{ $data->company }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     @if (Auth::user()->role > 2)
@@ -158,4 +173,5 @@
             });
         });
     </script>
+
 </div>

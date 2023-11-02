@@ -24,6 +24,7 @@ class Karyawanindexwr extends Component
     public $id;
     public $selectedAll = [];
     public $selectStatus = 'Aktif';
+    public $perpage = 10;
 
     #[On('delete')]
     public function delete()
@@ -41,6 +42,10 @@ class Karyawanindexwr extends Component
             $this->dispatch( 'info', message: 'Data Karyawan Sudah di Delete, User tidak terdelete' );
         }
 
+    }
+
+    public function no_edit () {
+        $this->dispatch( 'error', message: 'Data Karyawan ini Tidak dapat di Update' );
     }
 
     public function confirmDelete($id)
@@ -74,7 +79,7 @@ class Karyawanindexwr extends Component
     public function render()
     {
         // $datas1 = Karyawan::where('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //     ->orWhere('branch', 'LIKE', '%' . trim($this->search) . '%')
+        //     ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
         //     ->orderBy($this->columnName, $this->direction);
@@ -94,15 +99,14 @@ class Karyawanindexwr extends Component
             $datasQuery->where(function ($query) use ($search) {
                 $query
                     ->where('nama', 'LIKE', $search)
-                    ->orWhere('branch', 'LIKE', $search)
+                    ->orWhere('company', 'LIKE', $search)
                     ->orWhere('id_karyawan', 'LIKE', $search)
                     ->orWhere('departemen', 'LIKE', $search);
             });
         }
         $datasQuery->orderBy($this->columnName, $this->direction);
-        $perPage = 10;
         $this->selectedAll = $datasQuery->pluck('id');
-        $datas = $datasQuery->paginate($perPage);
+        $datas = $datasQuery->paginate($this->perpage);
 
         return view('livewire.karyawanindexwr', compact(['datas']));
     }

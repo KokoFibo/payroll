@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('yfpresensis', function (Blueprint $table) {
             $table->id();
             $table->integer("user_id");
-            $table->string("name");
-            $table->string("department");
+            // $table->string("name");
+            // $table->string("department");
             $table->date("date");
             $table->time("time");
             $table->integer("day_number");

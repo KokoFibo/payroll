@@ -27,6 +27,11 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
         crossorigin="anonymous"></script>
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> --}}
+
+
+
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     @livewireStyles
@@ -47,6 +52,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     @stack('script')
+    {{-- falt picker bagus --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> --}}
+    {{-- <script>
+        flatpickr("input[type=text]", {
+            dateFormat: "d M Y",
+        });
+    </script> --}}
 
 </body>
 

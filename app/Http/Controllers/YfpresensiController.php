@@ -58,7 +58,6 @@ class YfpresensiController extends Controller {
         Yfpresensi::query()->truncate();
         Yfrekappresensi::query()->truncate();
         // Presensi::query()->truncate();
-        Employee::query()->truncate();
         return back()->with( 'success', 'Data Presensi telah berhasil di delete' );
     }
 
@@ -77,7 +76,12 @@ class YfpresensiController extends Controller {
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
 
-        $tgl = explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 1 ];
+        $tgl = trim(explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 1 ]);
+        $tgl1 = trim(explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 0 ]);
+        $tgl2 = trim(explode( ':', $tgl1 )[ 1 ]);
+        if($tgl != $tgl2) {
+            return back()->with( 'error', 'Gagal Upload Tanggal harus dihari yang sama' );
+        }
         $user_id = '';
         $name = '';
         $department = '';
@@ -111,9 +115,9 @@ class YfpresensiController extends Controller {
                     // }
                 }
 
-                $department = $importedData->getCell( 'C' . $i )->getValue();
-                $dept = Department::updateOrCreate( [ 'name' => $department ], [ 'name' => $department ] );
-                Employee::updateOrCreate( [ 'user_id' => $user_id, 'name' => $name ], [ 'user_id' => $user_id, 'name' => $name, 'department_id' => $dept->id ] );
+                // $department = $importedData->getCell( 'C' . $i )->getValue();
+                // $dept = Department::updateOrCreate( [ 'name' => $department ], [ 'name' => $department ] );
+                // Employee::updateOrCreate( [ 'user_id' => $user_id, 'name' => $name ], [ 'user_id' => $user_id, 'name' => $name, 'department_id' => $dept->id ] );
             }
 
             if ( $importedData->getCell( 'D' . $i )->getValue() != '' ) {
@@ -135,8 +139,8 @@ class YfpresensiController extends Controller {
                 //  pakai Chunk
                 $Yfpresensidata[] = [
                     'user_id' => $user_id,
-                    'name' => $name,
-                    'department' => $department,
+                    // 'name' => $name,
+                    // 'department' => $department,
                     'date' => $tgl,
                     'time' => $time,
                     'day_number' => date( 'w', strtotime( $tgl ) ),
@@ -157,15 +161,16 @@ class YfpresensiController extends Controller {
         ->distinct( 'user_id' )
         ->count( 'user_id' );
         $karyawanHadir = DB::table( 'yfpresensis' )
-        ->select( 'user_id', 'name', 'date', 'department' )
+        // ->select( 'user_id', 'name', 'date', 'department' )
+        ->select( 'user_id', 'date' )
         ->distinct()
         ->get();
 
         foreach ( $karyawanHadir as $kh ) {
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
-            $name = $kh->name;
-            $department = $kh->department;
+            // $name = $kh->name;
+            // $department = $kh->department;
             $tgl = $kh->date;
             $first_in = null;
             $first_out = null;
@@ -331,8 +336,8 @@ class YfpresensiController extends Controller {
             Yfrekappresensi::create( [
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
-                'name' => $name,
-                'department' => $department,
+                // 'name' => $name,
+                // 'department' => $department,
                 'date' => $tgl,
                 'first_in' => $first_in,
                 'first_out' => $first_out,

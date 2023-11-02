@@ -18,7 +18,7 @@ class KaryawanController extends Controller {
     public function cari ( Request $request ) {
         // dd( $request->cari );
         $datas = Karyawan::where( 'nama', 'LIKE', '%'.$request->cari.'%' )
-        ->orWhere( 'branch', 'LIKE', '%'.$request->cari.'%' )
+        ->orWhere( 'company', 'LIKE', '%'.$request->cari.'%' )
         ->orWhere( 'departemen', 'LIKE', '%'.$request->cari.'%' )
         ->orderBy( 'id_karyawan', 'desc' )->paginate( 10 );
         // return back()->compact( 'datas' );
@@ -73,13 +73,14 @@ class KaryawanController extends Controller {
                 $alamat_tinggal = $importedData->getCell( 'O' . $i )->getValue();
                 $status_karyawan = $importedData->getCell( 'P' . $i )->getValue();
                 $tanggal_bergabung = $importedData->getCell( 'Q' . $i )->getValue();
-                $branch = $importedData->getCell( 'R' . $i )->getValue();
-                $departemen = $importedData->getCell( 'S' . $i )->getValue();
-                $jabatan = $importedData->getCell( 'T' . $i )->getValue();
-                $level_jabatan = $importedData->getCell( 'U' . $i )->getValue();
-                $gaji_pokok = $importedData->getCell( 'V' . $i )->getValue();
-                $gaji_overtime = $importedData->getCell( 'X' . $i )->getValue();
-                $metode_penggajian = $importedData->getCell( 'AA' . $i )->getValue();
+                $company = $importedData->getCell( 'R' . $i )->getValue();
+                $placement = $importedData->getCell( 'S' . $i )->getValue();
+                $departemen = $importedData->getCell( 'T' . $i )->getValue();
+                $jabatan = $importedData->getCell( 'U' . $i )->getValue();
+                $level_jabatan = $importedData->getCell( 'V' . $i )->getValue();
+                $gaji_pokok = $importedData->getCell( 'W' . $i )->getValue();
+                $gaji_overtime = $importedData->getCell( 'Y' . $i )->getValue();
+                $metode_penggajian = $importedData->getCell( 'AB' . $i )->getValue();
                 $bonus = $importedData->getCell( 'AC' . $i )->getValue();
                 $tunjangan_jabatan = $importedData->getCell( 'AD' . $i )->getValue();
                 $tunjangan_bahasa = $importedData->getCell( 'AE' . $i )->getValue();
@@ -89,10 +90,15 @@ class KaryawanController extends Controller {
                 $iuran_air = $importedData->getCell( 'AI' . $i )->getValue();
                 $potongan_seragam = $importedData->getCell( 'AJ' . $i )->getValue();
                 $denda = $importedData->getCell( 'AK' . $i )->getValue();
+                $potongan_jht = $importedData->getCell( 'AM' . $i )->getValue();
+                $potongan_jp = $importedData->getCell( 'AN' . $i )->getValue();
+                $potongan_kesehatan = $importedData->getCell( 'AO' . $i )->getValue();
+                $nomor_rekening = $importedData->getCell( 'AP' . $i )->getValue();
+                $nama_bank = $importedData->getCell( 'AQ' . $i )->getValue();
+
 
                 $data = Karyawan::where( 'id_karyawan', $id_karyawan )->get();
                 if ( $data->isEmpty() ) {
-                    // $getBranch = Branch::where( 'branch', $branch )->first();
 
                     $total_data++;
 
@@ -114,7 +120,8 @@ class KaryawanController extends Controller {
                         'alamat_tinggal' => titleCase( $alamat_tinggal ),
                         'status_karyawan' => $status_karyawan,
                         'tanggal_bergabung' => $tanggal_bergabung,
-                        'branch' => $branch,
+                        'company' => $company,
+                        'placement' => $placement,
                         'departemen' => $departemen,
                         'jabatan' => $jabatan,
                         'level_jabatan' => $level_jabatan,
@@ -130,6 +137,11 @@ class KaryawanController extends Controller {
                         'iuran_air' => $iuran_air,
                         'potongan_seragam' => $potongan_seragam,
                         'denda' => $denda,
+                        'potongan_jht' => $potongan_jht,
+                        'potongan_jp' => $potongan_jp,
+                        'potongan_kesehatan' => $potongan_kesehatan,
+                        'nomor_rekening' => $nomor_rekening,
+                        'nama_bank' => $nama_bank,
 
                     ] );
 

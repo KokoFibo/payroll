@@ -9,14 +9,23 @@
       @section('title', 'Payroll')
 
       <div class="d-flex justify-content-between">
-            <div class="col-4 p-4">
-
-                  <div class="input-group">
-                        <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+            <div class="col-6 p-4 d-flex gap-3 ">
+                  <div class="col-6">
+                        <div class="input-group">
+                              <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                              <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+                        </div>
                   </div>
-
-
+                  <div class="col-3 d-flex gap-3 align-items-center">
+                        <select class="form-select" wire:model.live="perpage">
+                              {{-- <option selected>Open this select menu</option> --}}
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="20">20</option>
+                              <option value="25">25</option>
+                        </select>
+                        Perpage
+                  </div>
             </div>
             <div class="col-5 p-4 d-flex justify-content-end gap-3  align-items-center">
 
@@ -65,7 +74,7 @@
                               <thead>
                                     <tr>
                                           <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
-                                          <th wire:click="sortColumnName('name')">Name <i class="fa-solid fa-sort"></i></th>
+                                          <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
                                           <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
                                                 <i class="fa-solid fa-sort"></i>
                                           </th>
@@ -88,13 +97,14 @@
                                           <td>{{ $item->user_id }}</td>
                                           <td>{{ $item->karyawan->nama }}</td>
                                           <td class="text-center">{{ $item->jumlah_jam_kerja }}</td>
-                                          <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
+                                          {{-- <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td> --}}
+                                          <td class="text-center">{{ $item->jumlah_menit_lembur }}</td>
                                           <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
                                           <td class="text-center">{{ $item->first_in_late }}</td>
                                           <td class="text-center">{{ $item->first_out_late }}</td>
                                           <td class="text-center">{{ $item->second_in_late }}</td>
                                           <td class="text-center">{{ $item->second_out_late }}</td>
-                                          <td class="text-center">{{ $item->overtime_in_late }}</td>
+                                          <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td>
                                           <td class="text-center">{{ $item->total_noscan }}</td>
                                     </tr>
                                     @endforeach

@@ -34,6 +34,7 @@ class Yfpresensiindexwr extends Component
     public $late = null;
     public $btnEdit = true;
     public $selectedId;
+    public $perpage = 10;
 
     #[On('delete')]
     public function delete($id) {
@@ -41,7 +42,7 @@ class Yfpresensiindexwr extends Component
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-
+    
 
 
 
@@ -80,7 +81,6 @@ class Yfpresensiindexwr extends Component
         $this->id = $id;
         $data = Yfrekappresensi::find($id);
         $this->first_in = trimTime($data->first_in);
-        $this->first_in1 = trimTime($data->first_in);
         $this->first_out = trimTime($data->first_out);
         $this->second_in = trimTime($data->second_in);
         $this->second_out = trimTime($data->second_out);
@@ -187,21 +187,40 @@ class Yfpresensiindexwr extends Component
             ->where('date', '=', $this->tanggal)
             ->count();
 
-        $datas = Yfrekappresensi::whereDate('date', 'like', '%' . $this->tanggal . '%')
+        // $datas = Yfrekappresensi::whereDate('date', 'like', '%' . $this->tanggal . '%')
+        //     ->orderBy($this->columnName, $this->direction)
+        //     ->when($this->search, function ($query) {
+        //         $query
+        //             ->where('name', 'LIKE', '%' . trim($this->search) . '%')
+        //             ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
+        //             // ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+        //             // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+        //             ->orWhere('user_id', trim($this->search))
+        //             ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
+        //             // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+        //             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
+        //             ->where('date', 'like', '%' . $this->tanggal . '%');
+        //     })
+        //     ->paginate(10);
+
+
+        $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+        ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+        ->whereDate('date', 'like', '%' . $this->tanggal . '%')
             ->orderBy($this->columnName, $this->direction)
             ->when($this->search, function ($query) {
                 $query
-                    ->where('name', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->where('name', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
+                    ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('user_id', trim($this->search))
-                    ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('date', 'like', '%' . $this->tanggal . '%');
             })
-            ->paginate(10);
+            ->paginate($this->perpage);
 
 
 

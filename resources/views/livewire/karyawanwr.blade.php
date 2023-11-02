@@ -7,7 +7,6 @@
                 <h5>Tambah Data Karyawan
                     <button wire:click="clear" class="btn btn-primary float-end">Create New</button>
                 </h5>
-
             </div>
             <div class="card-body">
                 <nav>
@@ -49,8 +48,10 @@
 
 
                 </div>
-                <button wire:click="save" class="btn btn-primary mx-3">Save</button>
-                <button wire:click="exit" class="btn btn-dark mx-3">Exit</button>
+                <div class="d-flex gap-3 pb-3 px-3">
+                    <button wire:click="save" class="btn btn-primary mx-3">Save</button>
+                    <button wire:click="exit" class="btn btn-dark mx-3">Exit</button>
+                </div>
             </div>
         </div>
     </div>
