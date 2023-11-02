@@ -76,7 +76,12 @@ class YfpresensiController extends Controller {
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
 
-        $tgl = explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 1 ];
+        $tgl = trim(explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 1 ]);
+        $tgl1 = trim(explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 0 ]);
+        $tgl2 = trim(explode( ':', $tgl1 )[ 1 ]);
+        if($tgl != $tgl2) {
+            return back()->with( 'error', 'Gagal Upload Tanggal harus dihari yang sama' );
+        }
         $user_id = '';
         $name = '';
         $department = '';

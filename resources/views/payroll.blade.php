@@ -10,7 +10,7 @@
                     <label class="form-label">Metode Penggajian <span class="text-danger">*</span></label>
                     <select class="form-select @error('metode_penggajian') is-invalid @enderror"
                         aria-label="Default select example" wire:model="metode_penggajian">
-                        <option>Pilih metode penggajian</option>
+                        <option value=" ">Pilih metode penggajian</option>
                         <option value="Perjam">Perjam</option>
                         <option value="Perbulan">Perbulan</option>
                     </select>

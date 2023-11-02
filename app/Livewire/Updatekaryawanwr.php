@@ -21,7 +21,7 @@ class Updatekaryawanwr extends Component {
 
     public function mount ( $id ) {
          $this->id = $id;
-         // Data Pribadi
+         $data = Karyawan::find($id);
          $this->id_karyawan = $data->id_karyawan;
          $this->nama = $data->nama;
          $this->email = $data->email;

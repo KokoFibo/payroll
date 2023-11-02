@@ -10,22 +10,33 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Status Karyawan <span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example"
-                                wire:model="status_karyawan">
-                                <option>Pilih status karyawan</option>
+                            <select class="form-select @error('status_karyawan') is-invalid @enderror""
+                                aria-label="Default select example" wire:model="status_karyawan">
+                                <option value=" ">Pilih status karyawan</option>
                                 <option value="PKWT">PKWT</option>
                                 <option value="PKWTT">PKWTT</option>
                                 <option value="Dirumahkan">Dirumahkan</option>
                                 <option value="Resigned">Resigned</option>
                                 <option value="Blacklist">Blacklist</option>
                             </select>
+                            @error('status_karyawan')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Tanggal Bergabung <span class="text-danger">*</span></label>
-                            <input type="date" class="date form-control" placeholder="mm-dd-yyyy"
-                                wire:model="tanggal_bergabung">
+                            <input type="date"
+                                class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
+                                placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                            @error('tanggal_bergabung')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -33,7 +44,7 @@
                             <label class="form-label">Company <span class="text-danger">*</span></label>
                             <select class="form-select @error('company') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="company">
-                                <option>Pilih company</option>
+                                <option value=" ">Pilih company</option>
                                 <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
@@ -56,7 +67,7 @@
                             <label class="form-label">Departemen <span class="text-danger">*</span></label>
                             <select class="form-select @error('departemen') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="departemen">
-                                <option>Pilih departemen</option>
+                                <option value=" ">Pilih departemen</option>
                                 <option value="BD">BD</option>
                                 <option value="Engineering">Engineering</option>
                                 <option value="EXIM">EXIM</option>
@@ -82,7 +93,7 @@
                             <label class="form-label">Jabatan <span class="text-danger">*</span></label>
                             <select class="form-select @error('jabatan') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="jabatan">
-                                <option>Pilih jabatan</option>
+                                <option value=" ">Pilih jabatan</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Asisten Direktur">Asisten Direktur</option>
                                 <option value="Asisten Kepala">Asisten Kepala</option>
@@ -112,7 +123,7 @@
                         <div class="mb-3">
                             <label class="form-label">Level Jabatan</label>
                             <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
-                                <option>Pilih level jabatan</option>
+                                <option value=" ">Pilih level jabatan</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
                                 <option value="M3">M3</option>
@@ -131,9 +142,9 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label class="form-label">placement <span class="text-danger">*</span></label>
-                            <select class="form-select @error('tanggal_lahir') is-invalid @enderror"
+                            <select class="form-select @error('placement') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="placement">
-                                <option>Pilih placement</option>
+                                <option value=" ">Pilih placement</option>
                                 <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
@@ -161,7 +172,7 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Bank</label>
                             <select class="form-select" aria-label="Default select example" wire:model="nama_bank">
-                                <option>Pilih nama bank</option>
+                                <option value=" ">Pilih nama bank</option>
                                 <option value="BRI">BRI</option>
                                 <option value="BCA">BCA</option>
                                 <option value="Mandiri">Mandiri</option>

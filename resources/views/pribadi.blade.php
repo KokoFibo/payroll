@@ -111,7 +111,7 @@
                 <div class="mb-3">
                     <label class="form-label">Status Pernikahan</label>
                     <select wire:model="status_pernikahan" class="form-select" aria-label="Default select example">
-                        <option>Pilih status pernikahan</option>
+                        <option value=" ">Pilih status pernikahan</option>
                         <option value="Belum Kawin">Belum Kawin</option>
                         <option value="Kawin">Kawin</option>
                         <option value="Cerai Hidup">Cerai Hidup</option>
@@ -125,15 +125,11 @@
                 <div class="mb-3">
                     <label class="form-label">Golongan Darah</label>
                     <select wire:model="golongan_darah" class="form-select" aria-label="Default select example">
-                        <option>Pilih golongan darah</option>
-                        <option value="A-">A-</option>
-                        <option value="A+">A+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="B-">B-</option>
-                        <option value="B+">B+</option>
-                        <option value="O-">O-</option>
-                        <option value="O+">O+</option>
+                        <option value=" ">Pilih golongan darah</option>
+                        <option value="O">O</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="AB">AB</option>
                     </select>
                 </div>
             </div>
@@ -141,7 +137,7 @@
                 <div class="mb-3">
                     <label class="form-label">Agama</label>
                     <select wire:model="agama" class="form-select" aria-label="Default select example">
-                        <option>Pilih agama</option>
+                        <option value=" ">Pilih agama</option>
                         <option value="Islam">Islam</option>
                         <option value="Kristen">Kristen Protestan</option>
                         <option value="Hindu">Hindu</option>

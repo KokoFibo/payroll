@@ -5,7 +5,7 @@
             <label class="form-label">Jenis Identitas <span class="text-danger">*</span></label>
             <select class="form-select @error('jenis_identitas') is-invalid @enderror" aria-label="Default select example"
                 wire:model="jenis_identitas">
-                <option>Pilih jenis Identitas</option>
+                <option value=" ">Pilih jenis Identitas</option>
                 <option value="KTP">KTP</option>
                 <option value="Passport">Passport</option>
             </select>
