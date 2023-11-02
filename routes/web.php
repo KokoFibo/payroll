@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['User'])->group(function () {
         // DASHBOARD
-        // Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
         Route::middleware(['Admin'])->group(function () {
