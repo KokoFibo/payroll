@@ -20,11 +20,11 @@
                             data-bs-target="#nav-kepegawaian" type="button" role="tab"
                             aria-controls="nav-kepegawaian" aria-selected="false"><span class="fs-5">Data
                                 Kepegawaian</span></button>
-                        {{-- @if (!(auth()->user()->role < 3 && $gaji_pokok > 4500000)) --}}
-                        <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
-                            data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
-                            aria-selected="false"><span class="fs-5">Payroll</span></button>
-                        {{-- @endif --}}
+                        @if (!((auth()->user()->role < 4 && $gaji_pokok > 4500000) || auth()->user()->role < 3))
+                            <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
+                                aria-selected="false"><span class="fs-5">Payroll</span></button>
+                        @endif
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -40,11 +40,12 @@
                         aria-labelledby="nav-kepegawaian-tab">
                         @include('kepegawaian')
                     </div>
-                    {{-- @if (!(auth()->user()->role < 3 && $gaji_pokok > 4500000)) --}}
-                    <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
-                        @include('payroll')
-                    </div>
-                    {{-- @endif --}}
+                    @if (!(auth()->user()->role > 2 && $gaji_pokok > 4500000))
+                        <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel"
+                            aria-labelledby="nav-payroll-tab">
+                            @include('payroll')
+                        </div>
+                    @endif
 
                 </div>
                 <div class="d-flex gap-3 pb-3 px-3">

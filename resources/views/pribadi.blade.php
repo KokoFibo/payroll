@@ -141,7 +141,7 @@
                     <select wire:model="agama" class="form-select" aria-label="Default select example">
                         <option value=" ">Pilih agama</option>
                         <option value="Islam">Islam</option>
-                        <option value="Kristen">Kristen Protestan</option>
+                        <option value="Kristen">Kristen</option>
                         <option value="Hindu">Hindu</option>
                         <option value="Budha">Budha</option>
                         <option value="Katolik">Katolik</option>
