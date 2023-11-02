@@ -28,7 +28,9 @@ class Updatekaryawanwr extends Component {
          $this->hp = $data->hp;
          $this->telepon = $data->telepon;
          $this->tempat_lahir = $data->tempat_lahir;
-         $this->tanggal_lahir = $data->tanggal_lahir;
+        //  $this->tanggal_lahir = $data->tanggal_lahir;
+        $this->tanggal_lahir =  date( 'd M Y', strtotime( $data->tanggal_lahir) );
+
          $this->gender = $data->gender;
          $this->status_pernikahan = $data->status_pernikahan;
          $this->golongan_darah = $data->golongan_darah;
@@ -42,7 +44,9 @@ class Updatekaryawanwr extends Component {
 
          //Data Kepegawaian
          $this->status_karyawan = $data->status_karyawan;
-         $this->tanggal_bergabung = $data->tanggal_bergabung;
+        //  $this->tanggal_bergabung = $data->tanggal_bergabung;
+        $this->tanggal_bergabung =  date( 'd M Y', strtotime( $data->tanggal_bergabung) );
+
          $this->company = $data->company;
          $this->placement = $data->placement;
          $this->departemen = $data->departemen;
@@ -90,7 +94,7 @@ class Updatekaryawanwr extends Component {
         'alamat_tinggal' => 'required',
         // KEPEGAWAIAN
         'status_karyawan' => 'required',
-        'tanggal_bergabung' => 'required',
+        'tanggal_bergabung' => 'date|before:tomorrow|required',
         'company' => 'required',
         'placement' => 'required',
         'departemen' => 'required',
@@ -119,7 +123,8 @@ class Updatekaryawanwr extends Component {
     public function update() {
 
         $this->validate();
-
+        $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
         $data = Karyawan::find( $this->id );
         $data->id_karyawan = $this->id_karyawan;
         $data->nama = titleCase( $this->nama );

@@ -29,14 +29,16 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Tanggal Bergabung <span class="text-danger">*</span></label>
-                            <input type="date"
-                                class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
-                                placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
-                            @error('tanggal_bergabung')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            <div>
+                                <input type="datetime:local" id="tanggal"
+                                    class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
+                                    placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                                @error('tanggal_bergabung')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
