@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('yfrekappresensis', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('karyawan_id')->nullable();
+            $table->foreignUuid('karyawan_id');
             $table->integer('user_id');
             // $table->string('name');
             // $table->string('department');

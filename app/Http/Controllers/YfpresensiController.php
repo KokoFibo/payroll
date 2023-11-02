@@ -369,7 +369,7 @@ class YfpresensiController extends Controller {
 
             }
 
-            return back()->with( 'error', 'Ada data ' . count($missingArray) . ' User ID yang tdk terdapat di Database Karyawan ('.$missingUserId.')'  );
+            return back()->with( 'error', 'Ada data ' . count($missingArray) . ' User ID yang tidak terdaftar di Database Karyawan ('.$missingUserId.')'  );
 
         }
 

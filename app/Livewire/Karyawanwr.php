@@ -24,7 +24,7 @@ class Karyawanwr extends Component
     {
         $this->id_karyawan = getNextIdKaryawan();
         $this->status_karyawan = 'PKWT';
-        $this->tanggal_bergabung = now()->toDateString();
+        $this->tanggal_bergabung =  date( 'd M Y', strtotime( now()->toDateString() ) );
     }
 
     protected $rules = [
@@ -48,7 +48,7 @@ class Karyawanwr extends Component
             'alamat_tinggal' => 'required',
             // KEPEGAWAIAN
             'status_karyawan' => 'required',
-            'tanggal_bergabung' => 'required',
+            'tanggal_bergabung' => 'date|before:tomorrow|required',
             'company' => 'required',
             'placement' => 'required',
             'departemen' => 'required',
@@ -77,6 +77,9 @@ class Karyawanwr extends Component
     public function save()
     {
         $this->validate();
+        $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
+        // dd($this->tanggal_lahir);
 
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();
 
