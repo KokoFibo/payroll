@@ -78,7 +78,7 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jabatan')">Jabatan <i
                                         class="fa-solid fa-sort"></i></th>
-                                @if (Auth::user()->role > 2)
+                                @if (Auth::user()->role > 3)
                                     <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan
                                         <i class="fa-solid fa-sort"></i>
                                 @endif
@@ -89,7 +89,7 @@
                                 <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">Lama
                                     Bekerja <i class="fa-solid fa-sort"></i>
                                 </th>
-                                @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                @if (Auth::user()->role > 3)
                                     <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
                                         Penggajian <i class="fa-solid fa-sort"></i>
                                     </th>
@@ -112,16 +112,16 @@
                                 <tr>
                                     <td>
                                         <div class="text-start">
-                                            @if (karyawan_allow_edit($data->id, Auth::user()->role))
-                                                <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                        class="btn btn-success btn-sm"><i
-                                                            class="fa-regular fa-pen-to-square"></i></button></a>
-                                            @else
-                                                <button wire:click="no_edit" class="btn btn-success btn-sm"><i
-                                                        class="fa-regular fa-pen-to-square"></i></button>
-                                            @endif
+                                            {{-- @if (karyawan_allow_edit($data->id, Auth::user()->role)) --}}
+                                            <a href="/karyawanupdate/{{ $data->id }}"><button
+                                                    class="btn btn-success btn-sm"><i
+                                                        class="fa-regular fa-pen-to-square"></i></button></a>
+                                            {{-- @else --}}
+                                            {{-- <button wire:click="no_edit" class="btn btn-success btn-sm"><i --}}
+                                            {{-- class="fa-regular fa-pen-to-square"></i></button> --}}
+                                            {{-- @endif --}}
 
-                                            @if (Auth::user()->role == 3 || Auth::user()->role == 4)
+                                            @if (Auth::user()->role > 4)
                                                 <button wire:click="confirmDelete(`{{ $data->id }}`)"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can"></i></button>
@@ -133,12 +133,12 @@
                                     <td class="text-center">{{ $data->company }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
-                                    @if (Auth::user()->role > 2)
+                                    @if (Auth::user()->role > 3)
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
                                     <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
-                                    @if (Auth::user()->role > 2)
+                                    @if (Auth::user()->role > 3)
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>

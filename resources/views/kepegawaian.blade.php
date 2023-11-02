@@ -186,7 +186,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Nomor Rekening</label>
-                            <input wire:model="no_rekening" type="number" class="form-control">
+                            <input wire:model="nomor_rekening" type="number" class="form-control">
                         </div>
                     </div>
                 </div>

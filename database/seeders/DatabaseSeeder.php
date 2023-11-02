@@ -27,15 +27,15 @@ class DatabaseSeeder extends Seeder
             'name' => 'Anton',
             'email' => 'kokonacci@gmail.com',
             'email_verified_at' => now(),
-            'username' => 40000,
-            'role' => 4,
+            'username' => 50000,
+            'role' => 5,
             'password' => Hash::make('Anton888'), // 123456789
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),
         ]);
         User::create([
             'name' => 'Yifang User',
-            'email' => 'user@yifang.com',
+            'email' => 'user1@yifang.com',
             'role' => 1,
             'username' => 10000,
 
@@ -44,9 +44,10 @@ class DatabaseSeeder extends Seeder
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),
         ]);
+
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@yifang.com',
+            'email' => 'admin1@yifang.com',
             'username' => 20000,
 
             'role' => 2,
@@ -55,12 +56,24 @@ class DatabaseSeeder extends Seeder
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
             'remember_token' => Str::random(10),
         ]);
+
         User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@yifang.com',
+            'name' => 'Senior Admin',
+            'email' => 'senioradmin1@yifang.com',
             'username' => 30000,
 
             'role' => 3,
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'), // 123456789
+            // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
+            'remember_token' => Str::random(10),
+        ]);
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin1@yifang.com',
+            'username' => 40000,
+
+            'role' => 4,
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'), // 123456789
             // 'password' => '$2y$10$7crdZF/aXQJ2bh.QIR/7CO9FhtAz7DrsdIn3w24CTJNxbY6BX/8j2', // 123456789
