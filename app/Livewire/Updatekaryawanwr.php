@@ -24,7 +24,7 @@ class Updatekaryawanwr extends Component {
          $data = Karyawan::find($id);
          $this->id_karyawan = $data->id_karyawan;
          $this->nama = $data->nama;
-         $this->email = $data->email;
+         $this->email = trim($data->email);
          $this->hp = $data->hp;
          $this->telepon = $data->telepon;
          $this->tempat_lahir = $data->tempat_lahir;
