@@ -149,8 +149,12 @@ class Karyawanwr extends Component
                     'password' => Hash::make(generatePassword($this->tanggal_lahir)),
                     // 'remember_token' => Str::random(10),
                 ]);
+                $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
                 $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
             } catch (\Exception $e) {
+                $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
                 $this->dispatch('error', message: $e->getMessage());
                 return $e->getMessage();
             }
@@ -210,17 +214,19 @@ class Karyawanwr extends Component
             $data->potongan_kesehatan = $this->potongan_kesehatan;
             $data->denda = $this->denda;
             $data->save();
-
             $user = User::where('username',$this->id_karyawan )->first();
             $data_user = User::find($user->id);
             $data_user->name = titleCase($this->nama);
             $data_user->email = trim($this->email, ' ');
-            $data_user->password  = Hash::make($this->tanggal_lahir);
+            $data_user->password  = Hash::make(generatePassword($this->tanggal_lahir));
             $data_user->save();
 
-
+            $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
             $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
         } catch (\Exception $e) {
+            $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
+        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
             $this->dispatch('error', message: $e->getMessage());
             return $e->getMessage();
         }
