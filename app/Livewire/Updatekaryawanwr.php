@@ -180,7 +180,6 @@ class Updatekaryawanwr extends Component {
             $user = User::find( $dataUser->id );
             $user->name = titleCase( $this->nama );
             $user->email = trim( $this->email, ' ' );
-            $user->password = Hash::make(generatePassword($this->tanggal_lahir));
             $user->save();
             $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
             $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );

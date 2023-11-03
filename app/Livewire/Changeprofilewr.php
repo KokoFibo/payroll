@@ -55,6 +55,7 @@ class Changeprofilewr extends Component {
         $user = User::find( Auth::user()->id );
         if ( Hash::check( $this->old_password, Auth::user()->password ) ) {
             $user->password = Hash::make( $this->new_password );
+
             $user->save();
             $this->dispatch( 'success', message: 'Password berhasil di rubah' );
         } else {
