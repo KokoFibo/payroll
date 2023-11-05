@@ -42,12 +42,6 @@ class Yfpresensiindexwr extends Component
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-
-
-
-
-
-
     public function filterNoScan()
     {
         $this->columnName = 'no_scan_history';
@@ -100,8 +94,6 @@ class Yfpresensiindexwr extends Component
 
     public function save()
     {
-
-
         $this->validate([
             'first_in' => 'date_format:H:i|nullable',
             'first_out' => 'date_format:H:i|nullable',
