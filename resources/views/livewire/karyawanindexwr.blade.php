@@ -73,7 +73,7 @@
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('company')">Company <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('company')">Placement <i
+                                <th class="text-center" wire:click="sortColumnName('placement')">Placement <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('departemen')">Departemen <i
                                         class="fa-solid fa-sort"></i>
