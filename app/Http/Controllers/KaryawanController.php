@@ -169,8 +169,6 @@ class KaryawanController extends Controller {
         return back()->with( 'message', 'Data Sudah di Delete' );
     }
 
-    // public function show ( $id ) {
-    //    $this->destroy( $id );
-    // }
+
 
 }

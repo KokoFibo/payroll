@@ -20,11 +20,15 @@ class Karyawanwr extends Component
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
     public $iuran_air, $denda, $potongan_seragam, $potongan_JHT, $potongan_JP, $potongan_kesehatan;
 
+    public $id_karyawan_ini;
+
     public function mount()
     {
-        $this->id_karyawan = getNextIdKaryawan();
+        // $this->id_karyawan = getNextIdKaryawan();
+        $this->id_karyawan = '000000';
         $this->status_karyawan = 'PKWT';
         $this->tanggal_bergabung =  date( 'd M Y', strtotime( now()->toDateString() ) );
+        $this->id_karyawan_ini = '';
     }
 
     protected $rules = [
@@ -79,16 +83,16 @@ class Karyawanwr extends Component
         $this->validate();
         $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
         $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
-        // dd($this->tanggal_lahir);
 
-        $ada = Karyawan::where('id_karyawan', $this->id_karyawan)->first();
+        $ada = Karyawan::where('id_karyawan', $this->id_karyawan_ini)->first();
 
         if ($ada) {
             $this->id = $ada->id;
             $this->update();
         } else {
             $this->id = '';
-
+            $this->id_karyawan = getNextIdKaryawan();
+            $this->id_karyawan_ini = $this->id_karyawan;
             $data = new Karyawan();
             // Data Pribadi
             $data->id_karyawan = $this->id_karyawan;

@@ -52,51 +52,53 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+
                         <li class="nav-item">
-                            <a href="/developer" class="nav-link" wire:navigate>
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Developer</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/karyawanviewimport" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau upload karyawan?')" href="/karyawanviewimport"
+                                class="nav-link" wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Karyawan Uploader</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/generateusers" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau generate user?')" href="/generateusers" class="nav-link"
+                                wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Generate Users</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="/yfdeletetanggalpresensiwr" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"
+                                class="nav-link" wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Delete Tgl Presensi</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/yfdeletepresensi" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau Truncate table Rekappresensi dan presensi?')"
+                                href="/yfdeletepresensi" class="nav-link" wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p class="text-danger">Truncate Table</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/deletenoscan" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau delete No Scan?')" href="/deletenoscan" class="nav-link"
+                                wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Delete No Scan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/deletejamkerja" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau delete jam kerja?')" href="/deletejamkerja" class="nav-link"
+                                wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Delete Jam Kerja</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/MissingId" class="nav-link" wire:navigate>
+                            <a onclick="return confirm('Mau check missing ID?')" href="/MissingId" class="nav-link"
+                                wire:navigate>
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Missing ID</p>
                             </a>
