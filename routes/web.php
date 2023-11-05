@@ -85,8 +85,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
                     Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
                     Route::get('/testto', [YfpresensiController::class, 'testto']);
-                    Route::get('/developer', Developer::class);
-                    Route::get('/ChangeFieldData', ChangeFieldData::class);
+
                     Route::get('/MissingId', MissingId::class);
 
                     // TEST
