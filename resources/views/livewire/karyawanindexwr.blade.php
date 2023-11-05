@@ -71,7 +71,9 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('company')">Branch <i
+                                <th class="text-center" wire:click="sortColumnName('company')">Company <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('company')">Placement <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('departemen')">Departemen <i
                                         class="fa-solid fa-sort"></i>
@@ -131,6 +133,7 @@
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td class="text-center">{{ $data->company }}</td>
+                                    <td class="text-center">{{ $data->placement }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     @if (Auth::user()->role > 3)
