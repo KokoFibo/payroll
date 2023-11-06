@@ -29,7 +29,7 @@ with font-awesome or any other icon font library -->
                     <p>Presensi</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 4)
+            @if (Auth::user()->role > 2)
                 <li class="nav-item">
                     <a href="/payrollindex" class="nav-link" wire:navigate>
                         <i class="nav-icon fas fa-dollar-sign"></i>
