@@ -112,6 +112,7 @@ class Prindexwr extends Component
         foreach ($filterArray as $item) {
             $filteredData = new Jamkerjaid();
             $filteredData->user_id = $item;
+            $filteredData->karyawan_id = 1;
             $filteredData->date = $this->periode;
             $filteredData->save();
         }
@@ -172,12 +173,12 @@ class Prindexwr extends Component
                         $late2 = checkFirstOutLate($dt->first_out, $dt->shift, $dt->date);
                         $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date);
                         $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date);
-                        $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
+                        // $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
                         $total_late_1 = $total_late_1 + $late1;
                         $total_late_2 = $total_late_2 + $late2;
                         $total_late_3 = $total_late_3 + $late3;
                         $total_late_4 = $total_late_4 + $late4;
-                        $total_late_5 = $total_late_5 + $late5;
+                        // $total_late_5 = $total_late_5 + $late5;
                         // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
                         $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 ;
                         if ($dt->overtime_in != null) {
@@ -202,6 +203,8 @@ class Prindexwr extends Component
             // dd($dt_name, $dt_date);
             // $data->name = $dt_name;
             $data->karyawan_id = $dt_karyawan_id;
+            // $data->user_id = $dt_user_id;
+            // dd($dt_karyawan_id, $dt_user_id );
             $data->date = buatTanggal($dt_date);
             // $data->last_data_date = $last_data_date;
             $data->last_data_date = $last_data_date->date;
@@ -213,13 +216,13 @@ class Prindexwr extends Component
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;
             $data->second_out_late = $total_late_4 == 0 ? null : $total_late_4;
-            $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
+            // $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
             $data->save();
         }
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
         $this->periode = $current_date->date;
 
-        $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
+        $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
     }
 
     public function render()

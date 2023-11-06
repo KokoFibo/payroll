@@ -201,7 +201,7 @@ class YfpresensiController extends Controller {
                     foreach ( $tablePresensi as $tp ) {
                         if ( Carbon::parse( $tp->time )->betweenIncluded( '05:30', '10:00' ) ) {
                             $first_in = $tp->time;
-                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '10:01', '12:15' ) ) {
+                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '10:01', '12:30' ) ) {
                             if ( $flag == 0 ) {
                                 $first_out = $tp->time;
                                 if ( Carbon::parse( $tp->time )->betweenIncluded( '10:01', '11:59' ) ) {
@@ -210,10 +210,11 @@ class YfpresensiController extends Controller {
                                     $flag = 2;
                                 }
                             }
+                            // ook
                             if ( $flag == 1 ) {
                                 $second_in = $tp->time;
                             }
-                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '12:16', '14:00' ) ) {
+                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '12:31', '14:00' ) ) {
                             $second_in = $tp->time;
                         } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '14:01', '17:30' ) ) {
                             $second_out = $tp->time;
@@ -286,9 +287,9 @@ class YfpresensiController extends Controller {
                             }
                         } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '12:31', '15:00' ) ) {
                             $second_in = $tp->time;
-                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '15:01', '17:30' ) ) {
+                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '15:01', '17:29' ) ) {
                             $second_out = $tp->time;
-                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '17:31', '19:15' ) ) {
+                        } elseif ( Carbon::parse( $tp->time )->betweenIncluded( '17:30', '18:59' ) ) {
                             $overtime_in = $tp->time;
                         } else {
                             // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
@@ -365,12 +366,8 @@ class YfpresensiController extends Controller {
             $missingUserId = null;
             foreach($missingArray as $arr) {
                 $missingUserId = $missingUserId.$arr['Karyawan_id'].', ';
-
-
             }
-
             return back()->with( 'error', 'Ada data ' . count($missingArray) . ' User ID yang tidak terdaftar di Database Karyawan ('.$missingUserId.')'  );
-
         }
 
 

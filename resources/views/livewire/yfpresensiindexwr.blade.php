@@ -17,9 +17,9 @@
             Malam
             : {{ $totalLate - $totalLatePagi }}
         </button>
-        <button class="btn btn-primary">Total Overtime : {{ $totalLate }}, Shift Pagi : {{ $totalLatePagi }}, Shift
+        <button class="btn btn-primary">Total Overtime : {{ $overtime }}, Shift Pagi : {{ $overtimePagi }}, Shift
             Malam
-            : {{ $totalLate - $totalLatePagi }}
+            : {{ $overtime - $overtimePagi }}
         </button>
     </div>
     <div class="row col-12 p-4">
@@ -33,7 +33,7 @@
             <div>
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
-                    <input type="datetime:local" id="tanggal" wire:model.live="tanggal" class="form-control">
+                    <input type="date" wire:model.live="tanggal" class="form-control">
                 </div>
             </div>
         </div>
@@ -200,9 +200,7 @@
                                                 </div>
                                             @enderror
                                         </td>
-                                        <td x-show="!edit"
-                                            class="{{ checkOvertimeInLate($data->overtime_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
-                                            {{ format_jam($data->overtime_in) }} </td>
+                                        <td x-show="!edit">{{ format_jam($data->overtime_in) }} </td>
                                         <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('overtime_in') is-invalid @enderror"
                                                 id="overtime_in" type="text" wire:model="overtime_in">

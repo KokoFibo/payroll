@@ -150,6 +150,8 @@ class Yfpresensiindexwr extends Component
 
     public function render()
     {
+        // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
+
         if ($this->tanggal == null) {
             $lastDate = Yfrekappresensi::orderBy('date', 'desc')->first();
             if ($lastDate == null) {
@@ -179,6 +181,13 @@ class Yfpresensiindexwr extends Component
             ->where('shift', 'Pagi')
             ->where('date', '=', $this->tanggal)
             ->count();
+        $overtime = Yfrekappresensi::where('overtime_in','!=', null)
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $overtimePagi = Yfrekappresensi::where('overtime_in','!=', null)
+            ->where('shift', 'Pagi')
+            ->where('date', '=', $this->tanggal)
+            ->count();
 
         // $datas = Yfrekappresensi::whereDate('date', 'like', '%' . $this->tanggal . '%')
         //     ->orderBy($this->columnName, $this->direction)
@@ -203,24 +212,16 @@ class Yfpresensiindexwr extends Component
             ->orderBy($this->columnName, $this->direction)
             ->when($this->search, function ($query) {
                 $query
-                    // ->where('name', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('user_id', trim($this->search))
-                    // ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
-                    ->where('date', 'like', '%' . $this->tanggal . '%');
+                    ->orWhere('user_id', trim($this->search));
+                    // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%');
+                    // ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
+                    // ->where('date', 'like', '%' . $this->tanggal . '%');
             })
             ->paginate($this->perpage);
-
-
-
-
-
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
-        'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan'
+        'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi'
     ]));
     }
 }

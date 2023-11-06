@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignUuid('karyawan_id');
             $table->integer('user_id');
-            // $table->index(['karyawan_id','user_id']);
+            $table->index(['user_id']);
 
             // $table->string('name');
             // $table->string('department');
