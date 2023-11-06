@@ -132,6 +132,7 @@ class Prindexwr extends Component
             $total_late_4 = null;
             $total_late_5 = null;
             $total_late = null;
+            $jam_kerja = null;
 
             $dataId = Yfrekappresensi::where('user_id', $data->user_id)
                 ->whereMonth('date', getBulan($this->periode))
@@ -142,12 +143,7 @@ class Prindexwr extends Component
                 dd('data kosong from Prindex.php', $dataId);
             } else {
                 foreach ($dataId as $dt) {
-                    if ($dt->late == null) {
-                        $n_noscan = $dt->no_scan_history;
-
-                        // khusus NO Late
-                        $jumlah_hari_kerja = $dataId->count();
-                        $jam_kerja = 0;
+                    $jam_kerja = 0;
                         foreach ($dataId as $jk) {
                             if (is_saturday($jk->date)) {
                                 $jam_kerja += 6;
@@ -156,6 +152,12 @@ class Prindexwr extends Component
                             }
 
                         }
+                    if ($dt->late == null) {
+                        $n_noscan = $dt->no_scan_history;
+
+                        // khusus NO Late
+                        $jumlah_hari_kerja = $dataId->count();
+
                         if ($dt->overtime_in != null) {
                             // $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
                             // $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
@@ -174,6 +176,7 @@ class Prindexwr extends Component
                         }
                     } else {
                         // khusus yang late
+
                         $jumlah_hari_kerja = $dataId->count();
                         $n_noscan = $dt->no_scan_history;
 
@@ -189,8 +192,7 @@ class Prindexwr extends Component
                         $total_late_4 = $total_late_4 + $late4;
                         // $total_late_5 = $total_late_5 + $late5;
                         // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
-                        if($dt->second_in == null && $dt->second_in == null) {
-
+                        if($dt->second_in == null && $dt->second_out == null) {
                             if(is_saturday( $dt->date )) {
 
                                 $total_late_5 = 2;

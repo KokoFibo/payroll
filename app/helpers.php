@@ -317,9 +317,10 @@ function checkSecondOutLate( $second_out, $shift, $tgl ) {
                 if ( Carbon::parse( $second_out )->betweenIncluded( '12:00', '14:59' ) ) {
                     $t1 = strtotime( '15:00:00' );
                     $t2 = strtotime( $second_out );
-
+//kkk
                     $diff = gmdate( 'H:i:s', $t1 - $t2 );
                     $late = ceil( hoursToMinutes( $diff ) / $perJam );
+
                 } else {
                     $late = null;
                 }
