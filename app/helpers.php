@@ -128,7 +128,7 @@ function buatTanggal( $tgl ) {
 
 function pembulatanJamOvertimeIn( $jam ) {
     $arrJam = explode( ':', $jam );
-    if ( ( int ) $arrJam[ 1 ] <= 30 ) {
+    if ( ( int ) $arrJam[ 1 ] <= 33 ) {
         if ( ( int ) $arrJam[ 0 ] < 10 ) {
             return $menit = '0' . $arrJam[ 0 ] . ':30:00';
         } else {
@@ -235,15 +235,22 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
         return $late = 1;
         // $late3 = 1;
     }
-    if ( checkOvertimeInLate( $overtime_in, $shift, $tgl ) ) {
-        //  return $late = $late + 1 ;
-        return $late = 1;
-        // $late4 = 1;
-    }
+
+    // if ( checkOvertimeInLate( $overtime_in, $shift, $tgl ) ) {
+    //     return $late = 1;
+    // }
+
     if ( checkSecondInLate( $second_in, $shift, $first_out, $tgl ) ) {
         // return $late = $late + 1 ;
         return $late = 1;
         // $late5 = 1;
+    }
+
+    if ($second_in == null && $second_out==null){
+        return $late = 1;
+    }
+    if ($first_in == null && $first_out==null){
+        return $late = 1;
     }
     // $late = $late1 + $late2 + $late3+ $late4 + $late5 ;
     // return $late;
@@ -310,9 +317,10 @@ function checkSecondOutLate( $second_out, $shift, $tgl ) {
                 if ( Carbon::parse( $second_out )->betweenIncluded( '12:00', '14:59' ) ) {
                     $t1 = strtotime( '15:00:00' );
                     $t2 = strtotime( $second_out );
-
+//kkk
                     $diff = gmdate( 'H:i:s', $t1 - $t2 );
                     $late = ceil( hoursToMinutes( $diff ) / $perJam );
+
                 } else {
                     $late = null;
                 }
@@ -498,6 +506,13 @@ function noScan( $first_in, $first_out, $second_in, $second_out, $overtime_in, $
     if ( ( $second_in == null ) & ( $second_out != null ) || ( $second_in != null ) & ( $second_out == null ) ) {
         return 'No Scan';
     }
+    // if (( $second_in == null ) && ( $second_out == null )) {
+    //     return 'No Scan';
+    // }
+    // if ( ( $first_in == null ) && ( $first_out == null ) ) {
+    //     return 'No Scan';
+    // }
+
     if ( ( $overtime_in == null ) & ( $overtime_out != null ) || ( $overtime_in != null ) & ( $overtime_out == null ) ) {
         return 'No Scan';
     }
