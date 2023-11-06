@@ -328,7 +328,8 @@ class YfpresensiController extends Controller {
             $late = late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl );
             $dataKaryawan = Karyawan::where( 'id_karyawan', $user_id )->first();
             if ( $dataKaryawan == null ) {
-                $id_karyawan = null;
+                $id_karyawan = 'kosong';
+
             } else {
                 $id_karyawan = $dataKaryawan->id;
             }

@@ -245,6 +245,13 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
         return $late = 1;
         // $late5 = 1;
     }
+
+    if ($second_in == null && $second_out==null){
+        return $late = 1;
+    }
+    if ($first_in == null && $first_out==null){
+        return $late = 1;
+    }
     // $late = $late1 + $late2 + $late3+ $late4 + $late5 ;
     // return $late;
 }
@@ -498,12 +505,12 @@ function noScan( $first_in, $first_out, $second_in, $second_out, $overtime_in, $
     if ( ( $second_in == null ) & ( $second_out != null ) || ( $second_in != null ) & ( $second_out == null ) ) {
         return 'No Scan';
     }
-    if (( $second_in == null ) && ( $second_out == null )) {
-        return 'No Scan';
-    }
-    if ( ( $first_in == null ) && ( $first_out == null ) ) {
-        return 'No Scan';
-    }
+    // if (( $second_in == null ) && ( $second_out == null )) {
+    //     return 'No Scan';
+    // }
+    // if ( ( $first_in == null ) && ( $first_out == null ) ) {
+    //     return 'No Scan';
+    // }
 
     if ( ( $overtime_in == null ) & ( $overtime_out != null ) || ( $overtime_in != null ) & ( $overtime_out == null ) ) {
         return 'No Scan';

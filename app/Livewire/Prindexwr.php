@@ -147,6 +147,15 @@ class Prindexwr extends Component
 
                         // khusus NO Late
                         $jumlah_hari_kerja = $dataId->count();
+                        $jam_kerja = 0;
+                        foreach ($dataId as $jk) {
+                            if (is_saturday($jk->date)) {
+                                $jam_kerja += 6;
+                            } else {
+                                $jam_kerja += 8;
+                            }
+
+                        }
                         if ($dt->overtime_in != null) {
                             // $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
                             // $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
@@ -180,7 +189,17 @@ class Prindexwr extends Component
                         $total_late_4 = $total_late_4 + $late4;
                         // $total_late_5 = $total_late_5 + $late5;
                         // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
-                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 ;
+                        if($dt->second_in == null && $dt->second_in == null) {
+
+                            if(is_saturday( $dt->date )) {
+
+                                $total_late_5 = 2;
+                            } else {
+                                $total_late_5 = 4;
+
+                            }
+                        }
+                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
                         if ($dt->overtime_in != null) {
                             $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
                             $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
@@ -197,7 +216,8 @@ class Prindexwr extends Component
             }
             // DATA TOTAL
             if($total_noscan == 0) $total_noscan=null;
-            $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - $total_late ;
+            $jumlah_jam_kerja = $jam_kerja  - $total_late ;
+            // $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - $total_late ;
 
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);
