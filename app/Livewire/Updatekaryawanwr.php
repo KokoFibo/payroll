@@ -16,10 +16,11 @@ class Updatekaryawanwr extends Component {
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $potongan_JHT, $potongan_JP;
-    public  $potongan_kesehatan ;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
+    public  $potongan_kesehatan, $update ;
 
     public function mount ( $id ) {
+        $this->update = true;
          $this->id = $id;
          $data = Karyawan::find($id);
          $this->id_karyawan = $data->id_karyawan;
@@ -68,8 +69,12 @@ class Updatekaryawanwr extends Component {
          $this->iuran_air = $data->iuran_air;
          $this->denda = $data->denda;
          $this->potongan_seragam = $data->potongan_seragam;
+         $this->gaji_bpjs = $data->gaji_bpjs;
          $this->potongan_JHT = $data->potongan_JHT;
          $this->potongan_JP = $data->potongan_JP;
+         $this->potongan_JKK = $data->potongan_JKK;
+         $this->potongan_JKM = $data->potongan_JKM;
+
          $this->potongan_kesehatan = $data->potongan_kesehatan;
     }
 
@@ -115,8 +120,12 @@ class Updatekaryawanwr extends Component {
         'iuran_air' => 'numeric|required',
         'denda' => 'numeric|nullable',
         'potongan_seragam' => 'numeric|nullable',
+        'gaji_bpjs' => 'nullable',
         'potongan_JHT' => 'nullable',
         'potongan_JP' => 'nullable',
+        'potongan_JKK' => 'nullable',
+        'potongan_JKM' => 'nullable',
+
         'potongan_kesehatan' => 'nullable',
 ];
 
@@ -165,8 +174,11 @@ class Updatekaryawanwr extends Component {
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
         $data->iuran_air = $this->iuran_air;
         $data->potongan_seragam = $this->potongan_seragam;
+        $data->gaji_bpjs = $this->gaji_bpjs;
         $data->potongan_JHT = $this->potongan_JHT;
         $data->potongan_JP = $this->potongan_JP;
+        $data->potongan_JKK = $this->potongan_JKK;
+        $data->potongan_JKM = $this->potongan_JKM;
         $data->potongan_kesehatan = $this->potongan_kesehatan;
 
 
