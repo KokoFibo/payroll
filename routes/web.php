@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
+                    Route::get('/importKaryawanExcel', [KaryawanController::class, 'importKaryawanExcel']);
                     Route::get('/karyawanviewimport', function () {
                         return view('karyawan.importview');
                     });
