@@ -5,6 +5,7 @@ use App\Livewire\Developer;
 use App\Livewire\MissingId;
 use App\Livewire\Prindexwr;
 use App\Livewire\Karyawanwr;
+use App\Livewire\Informasiwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
@@ -52,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/karyawan/{id}/destroy', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
             Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');
             Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
+            Route::get('/informasi', Informasiwr::class);
 
             // YF PRESENSI
             Route::get('/yfupload', function () {
