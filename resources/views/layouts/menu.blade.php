@@ -103,6 +103,13 @@ with font-awesome or any other icon font library -->
                                 <p>Missing ID</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a onclick="return confirm('Mau import karyawan dari excel bersih?')"
+                                href="/importKaryawanExcel" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Import Karyawan dari excel bersih</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
