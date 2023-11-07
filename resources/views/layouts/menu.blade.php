@@ -40,6 +40,7 @@ with font-awesome or any other icon font library -->
                 </li>
             @endif
 
+
             @if (Auth::user()->role > 4)
                 <li class="nav-item ">
                     <a href="#" class="nav-link">
@@ -113,33 +114,40 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
+            <li class="nav-item">
+                <a href="/informasi" class="nav-link" wire:navigate>
+                    <i class="fa-solid fa-circle-info nav-icon"></i>
+                    <p> Informasi</p>
+                </a>
+            </li>
 
             <li class="nav-item ">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fa-solid fa-gear"></i>
+                    <i class="nav-icon fa-solid fa-gear nav-icon"></i>
                     <p>Settings<i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="/changeprofilewr" class="nav-link" wire:navigate>
-                            <i class="fa-solid fa-address-card"></i>
+                            <i class="fa-solid fa-address-card nav-icon"></i>
                             <p>Change Profile</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/karyawansettingwr" class="nav-link" wire:navigate>
-                            <i class="fa-solid fa-users-gear"></i>
+                            <i class="fa-solid fa-users-gear nav-icon"></i>
                             <p>Karyawan Settings</p>
                         </a>
                     </li>
                     @if (Auth::user()->role > 2)
                         <li class="nav-item">
                             <a href="/changeuserrolewr" class="nav-link" wire:navigate>
-                                <i class="fa-solid fa-user-check"></i>
+                                <i class="fa-solid fa-user-check nav-icon"></i>
                                 <p>Change User Role</p>
                             </a>
                         </li>
                     @endif
+
                 </ul>
             </li>
         @endif

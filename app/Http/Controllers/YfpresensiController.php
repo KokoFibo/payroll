@@ -189,7 +189,7 @@ class YfpresensiController extends Controller {
 
             if ( $is_saturday ) {
                 // JIKA HARI SABTU kkk
-                if ( Carbon::parse( $tablePresensi[ 0 ]->time )->betweenIncluded( '05:30', '12:00' ) ) {
+                if ( Carbon::parse( $tablePresensi[ 0 ]->time )->betweenIncluded( '05:30', '13:00' ) ) {
                     $shift = 'Pagi';
                 } else {
                     $shift = 'Malam';
