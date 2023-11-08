@@ -7,8 +7,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+// use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class KaryawanExport implements FromCollection, FromQuery, WithHeadings, ShouldAutoSize
+class KaryawanExport implements FromCollection, FromQuery,  ShouldAutoSize, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -18,6 +19,16 @@ class KaryawanExport implements FromCollection, FromQuery, WithHeadings, ShouldA
     {
         $this->selectedAll = $selectedAll;
     }
+
+    // public function columnFormats(): array
+    // {
+    //     return [
+    //         'M' => Text::make('No. Iden', 'no_identitas'),
+    //         'X' => Text::make('No. Rekening', 'nomor_rekening'),
+    //         // 'D' => Date::make('Date of Birth', 'dob'),
+    //     ];
+    // }
+
     public function collection()
     {
         // return Karyawan::all();
