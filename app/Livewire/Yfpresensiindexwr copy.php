@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class Yfpresensiindexwr extends Component
 {
     use WithPagination;
-    public $search = null;
+    public $search = '';
     public $columnName = 'no_scan_history';
     public $direction = 'desc';
     public $first_in;
@@ -35,7 +35,6 @@ class Yfpresensiindexwr extends Component
     public $btnEdit = true;
     public $selectedId;
     public $perpage = 10;
-    public $cx = 0;
 
     #[On('delete')]
     public function delete($id) {
@@ -88,7 +87,6 @@ class Yfpresensiindexwr extends Component
         $this->date = $data->date;
         $this->btnEdit = false;
         $this->selectedId = $id;
-
 
 
         // $this->dispatch('update-form');
@@ -147,12 +145,11 @@ class Yfpresensiindexwr extends Component
 
     public function updatingTanggal()
     {
-        // $this->resetPage();
+        $this->resetPage();
     }
 
     public function render()
     {
-        $this->cx++;
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -211,10 +208,8 @@ class Yfpresensiindexwr extends Component
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
         ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-        // ->whereDate('date', 'like', '%' . $this->tanggal . '%')
-        ->whereDate('date',  $this->tanggal)
-            // ->orderBy($this->columnName, $this->direction)
-            ->orderBy('no_scan_history', 'desc')
+        ->whereDate('date', 'like', '%' . $this->tanggal . '%')
+            ->orderBy($this->columnName, $this->direction)
             ->when($this->search, function ($query) {
                 $query
                     ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
@@ -225,7 +220,6 @@ class Yfpresensiindexwr extends Component
                     // ->where('date', 'like', '%' . $this->tanggal . '%');
             })
             ->paginate($this->perpage);
-            // dd($datas[0]->user_id);
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
         'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi'
     ]));

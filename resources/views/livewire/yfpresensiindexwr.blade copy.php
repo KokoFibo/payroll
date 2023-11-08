@@ -1,8 +1,6 @@
 <div>
     @section('title', 'Presensi')
     <h4>ID : {{ $id }}</h4>
-    <h4>CX : {{ $cx }}</h4>
-    <h4> {{ $columnName, $direction }}</h4>
     <div class="d-flex flex-row gap-5 px-4 pt-4">
         <button class="btn btn-info">Total Hadir : {{ $totalHadir }}, Shift Pagi : {{ $totalHadirPagi }}, Shift
             Malam :

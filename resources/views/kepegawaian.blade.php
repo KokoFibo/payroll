@@ -82,6 +82,7 @@
                                 <option value="Produksi">Produksi</option>
                                 <option value="Quality Control">Quality Control</option>
                                 <option value="Yifang">Yifang</option>
+
                             </select>
                             @error('departemen')
                                 <div class="invalid-feedback">
@@ -112,6 +113,10 @@
                                 <option value="Staff">Staff</option>
                                 <option value="Supervisor">Supervisor</option>
                                 <option value="Vice President">Vice President</option>
+                                <option value="Satpam">Satpam</option>
+                                <option value="Koki">Koki</option>
+                                <option value="Dapur Kantor">Dapur Kantor</option>
+                                <option value="Dapur Pabrik">Dapur Pabrik</option>
 
                             </select>
                             @error('jabatan')
@@ -124,7 +129,8 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label class="form-label">Level Jabatan</label>
-                            <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
+                            <select class="form-select" aria-label="Default select example"
+                                wire:model="level_jabatan">
                                 <option value=" ">Pilih level jabatan</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
