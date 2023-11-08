@@ -23,13 +23,13 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role > 3)
-                <li class="nav-item">
-                    <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
-                        <i class="nav-icon fas fa-clipboard-check"></i>
-                        <p>Presensi</p>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
+                    <i class="nav-icon fas fa-clipboard-check"></i>
+                    <p>Presensi</p>
+                </a>
+            </li>
+            @if (Auth::user()->role > 2)
                 <li class="nav-item">
                     <a href="/payrollindex" class="nav-link" wire:navigate>
                         <i class="nav-icon fas fa-dollar-sign"></i>
@@ -48,7 +48,6 @@ with font-awesome or any other icon font library -->
                         <p>
                             Developer Tools
                             <i class="right fas fa-angle-left"></i>
-
                         </p>
                     </a>
                     <ul class="nav nav-treeview">

@@ -1,5 +1,8 @@
 {{-- Gaji --}}
 <div wire:ignore.self class="card mt-2">
+
+
+
     @if (auth()->user()->role > 3 || $update == false)
         <div class="card-header bg-secondary ">
             <h5 class="text-light">Gaji</h5>
@@ -174,11 +177,17 @@
                             </label>
                         </div>
                         <div class="form-check mt-2">
-                            <input type="checkbox" wire:model="potongan_JKK" class="form-check-input"
+                            <input type="checkbox" wire:model="potongan_JKK"
+                                class="form-check-input @error('potongan_JKK') is-invalid @enderror""
                                 {{ $potongan_JKK == 1 ? 'checked' : '' }}>
                             <label class="form-check-label">
                                 JKK
                             </label>
+                            @error('potongan_JKK')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="form-check mt-2">
                             <input type="checkbox" wire:model="potongan_JKM" class="form-check-input"

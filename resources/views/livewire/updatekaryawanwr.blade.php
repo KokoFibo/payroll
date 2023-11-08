@@ -52,7 +52,7 @@
                 </div>
                 <div class="d-flex gap-3 pb-3 px-3">
 
-                    <button wire:click="update" class="btn btn-primary mx-3">Update</button>
+                    <button wire:click="update1" class="btn btn-primary mx-3">Update</button>
                     <button wire:click="exit" class="btn btn-dark mx-3">Exit</button>
                 </div>
             </div>

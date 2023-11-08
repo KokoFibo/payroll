@@ -129,7 +129,8 @@ class Updatekaryawanwr extends Component {
         'potongan_kesehatan' => 'nullable',
 ];
 
-    public function update() {
+
+    public function update1() {
 
         $this->validate();
         $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
