@@ -1,37 +1,66 @@
 <div>
     @section('title', 'Presensi')
-    <h4>ID : {{ $id }}</h4>
-    <h4>CX : {{ $cx }}</h4>
-    <h4> {{ $columnName, $direction }}</h4>
-    <div class="d-flex flex-row gap-5 px-4 pt-4">
-        <button class="btn btn-info">Total Hadir : {{ $totalHadir }}, Shift Pagi : {{ $totalHadirPagi }}, Shift
-            Malam :
-            {{ $totalHadir - $totalHadirPagi }}
-        </button>
 
-        <button id="okk" class="btn btn-warning">Total No scan : {{ $totalNoScan }} / {{ $overallNoScan }}, Shift
-            Pagi :
-            {{ $totalNoScanPagi }},
-            Shift
-            Malam : {{ $totalNoScan - $totalNoScanPagi }}
-        </button>
-        <button class="btn btn-danger">Total Late : {{ $totalLate }}, Shift Pagi : {{ $totalLatePagi }}, Shift
-            Malam
-            : {{ $totalLate - $totalLatePagi }}
-        </button>
-        <button class="btn btn-primary">Total Overtime : {{ $overtime }}, Shift Pagi : {{ $overtimePagi }}, Shift
-            Malam
-            : {{ $overtime - $overtimePagi }}
-        </button>
+
+    <div class="d-flex flex-row justify-content-center gap-5 px-4 pt-4">
+        <div class="col-2 bg-info p-2" style="background-color: black;">
+            <div class="d-flex flex-row">
+                <div class="col-4 text-center">Hadir</div>
+                <div class="col-4 text-center">Pagi</div>
+                <div class="col-4 text-center">Malam</div>
+            </div>
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">{{ $totalHadir }}</div>
+                <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
+                <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+            </div>
+        </div>
+
+        <div class="col-2 bg-warning p-2">
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">No scan</div>
+                <div class="col-4 text-center">Pagi</div>
+                <div class="col-4 text-center">Malam</div>
+            </div>
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
+                <div class="col-4 text-center">{{ $totalNoScanPagi }}</div>
+                <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
+            </div>
+        </div>
+        <div class="col-2 bg-danger p-2">
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">Late</div>
+                <div class="col-4 text-center">Pagi</div>
+                <div class="col-4 text-center">Malam</div>
+            </div>
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">{{ $totalLate }}</div>
+                <div class="col-4 text-center">{{ $totalLatePagi }}</div>
+                <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
+            </div>
+        </div>
+        <div class="col-2 bg-primary p-2">
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">Overtime</div>
+                <div class="col-4 text-center">Pagi</div>
+                <div class="col-4 text-center">Malam</div>
+            </div>
+            <div class="d-flex flex-row ">
+                <div class="col-4 text-center">{{ $overtime }}</div>
+                <div class="col-4 text-center">{{ $overtimePagi }}</div>
+                <div class="col-4 text-center">{{ $overtime - $overtimePagi }}</div>
+            </div>
+        </div>
     </div>
     <div class="row col-12 p-4">
-        <div class="col-4">
+        <div class="col-3">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div>
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
@@ -39,13 +68,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-4  d-flex gap-3">
+        <div class="col-6  d-flex gap-3">
             {{-- <div class="col-6"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
             {{-- </div> --}}
-            <div class="col-4 d-flex align-items-center gap-3">
+            <div class="col-3 d-flex align-items-center gap-3">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="10">10</option>
@@ -54,6 +83,15 @@
                     <option value="25">25</option>
                 </select>
                 Perpage
+            </div>
+            <div class="col-3 d-flex align-items-center gap-3">
+                <select class="form-select" wire:model.live="">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="All">All</option>
+                    <option value="Kantor">Kantor</option>
+                    <option value="Pabrik 1">Pabrik 1</option>
+                    <option value="Pabrik 2">Pabrik 2</option>
+                </select>
             </div>
         </div>
     </div>
@@ -90,9 +128,11 @@
                                 </td>
                                 <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
                                 </td>
-                                <td wire:click="sortColumnName('first_out')">First out <i class="fa-solid fa-sort"></i>
+                                <td wire:click="sortColumnName('first_out')">First out <i
+                                        class="fa-solid fa-sort"></i>
                                 </td>
-                                <td wire:click="sortColumnName('second_in')">Second in <i class="fa-solid fa-sort"></i>
+                                <td wire:click="sortColumnName('second_in')">Second in <i
+                                        class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('second_out')">Second out <i
                                         class="fa-solid fa-sort"></i>
@@ -104,7 +144,8 @@
                                         class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i></td>
+                                <td wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i>
+                                </td>
                                 <td wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></td>
                             </tr>
                         </thead>
@@ -120,7 +161,8 @@
                                         <td>
 
                                             @if ($btnEdit == true)
-                                                <button @click="edit = !edit" wire:click="update({{ $data->id }})"
+                                                <button @click="edit = !edit"
+                                                    wire:click="update({{ $data->id }})"
                                                     class="btn btn-success btn-sm"><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
                                             @else
