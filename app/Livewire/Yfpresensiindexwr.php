@@ -211,20 +211,20 @@ class Yfpresensiindexwr extends Component
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
         ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-        // ->whereDate('date', 'like', '%' . $this->tanggal . '%')
+        ->orderBy($this->columnName, $this->direction)
+        ->orderBy('user_id', 'asc')
         ->whereDate('date',  $this->tanggal)
-            // ->orderBy($this->columnName, $this->direction)
-            ->orderBy('no_scan_history', 'desc')
-            ->when($this->search, function ($query) {
-                $query
-                    ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('user_id', trim($this->search));
-                    // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%');
-                    // ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->where('date', 'like', '%' . $this->tanggal . '%');
-            })
-            ->paginate($this->perpage);
+        ->when($this->search, function ($query) {
+            $query
+            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('user_id', trim($this->search))
+            ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+            // ->where('date', 'like', '%' . $this->tanggal . '%');
+        })
+        ->paginate($this->perpage);
             // dd($datas[0]->user_id);
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
         'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi'

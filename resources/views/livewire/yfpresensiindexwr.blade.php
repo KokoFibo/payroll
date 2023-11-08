@@ -84,6 +84,8 @@
                                 <td wire:click="sortColumnName('departemen')">Department <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
+                                <td wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
+                                </td>
                                 <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
@@ -154,6 +156,7 @@
 
                                         {{-- <td>{{ $data->karyawan->departemen }}</td> --}}
                                         <td>{{ $data->karyawan->departemen }}</td>
+                                        <td>{{ $data->karyawan->jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
                                         <td x-show="!edit" x-cloak
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
