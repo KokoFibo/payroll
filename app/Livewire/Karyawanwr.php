@@ -79,7 +79,6 @@ class Karyawanwr extends Component
             'potongan_JP' => 'nullable',
             'potongan_JKK' => 'nullable',
             'potongan_JKM' => 'nullable',
-
             'potongan_kesehatan' => 'nullable',
     ];
 
