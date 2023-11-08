@@ -101,7 +101,10 @@ class Karyawanindexwr extends Component
                     ->where('nama', 'LIKE', $search)
                     ->orWhere('company', 'LIKE', $search)
                     ->orWhere('id_karyawan', 'LIKE', $search)
-                    ->orWhere('departemen', 'LIKE', $search);
+                    ->orWhere('departemen', 'LIKE', $search)
+                    ->orWhere('placement', 'LIKE', $search)
+                    ->orWhere('company', 'LIKE', $search)
+                    ->orWhere('jabatan', 'LIKE', $search);
             });
         }
         $datasQuery->orderBy($this->columnName, $this->direction);
