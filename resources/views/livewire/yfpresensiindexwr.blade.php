@@ -119,7 +119,6 @@
                         <thead>
                             <tr>
                                 <td>Action</td>
-                                <td wire:click="sortColumnName('id')"># <i class=" fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('departemen')">Department <i
@@ -195,7 +194,6 @@
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
                                         </td>
-                                        <td>{{ $data->id }}</td>
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>
 
