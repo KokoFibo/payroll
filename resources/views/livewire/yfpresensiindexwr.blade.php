@@ -3,7 +3,7 @@
 
 
     <div class="d-flex flex-row justify-content-center gap-5 px-4 pt-4">
-        <div class="col-2 bg-info p-2" style="background-color: black;">
+        <div class="col-2 bg-success p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
                 <div class="col-4 text-center">Hadir</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="col-2 bg-warning p-2">
+        <div class="col-2 bg-warning p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">No scan</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -28,7 +28,7 @@
                 <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
-        <div class="col-2 bg-danger p-2">
+        <div class="col-2 bg-info p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Late</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -40,7 +40,7 @@
                 <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
-        <div class="col-2 bg-primary p-2">
+        <div class="col-2 bg-primary p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Overtime</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="row col-12 p-4">
+    <div class="row col-12 p-4 d-flex align-items-center">
         <div class="col-3">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -74,7 +74,8 @@
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
             {{-- </div> --}}
-            <div class="col-3 d-flex align-items-center gap-3">
+            <div class="col-3 d-flex align-items-center gap-3"
+                style="border-radius: 10px; padding: 3px 10px 3px 10px; background-color: #9246FF; color: white">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="10">10</option>
@@ -84,8 +85,10 @@
                 </select>
                 Perpage
             </div>
-            <div class="col-3 d-flex align-items-center gap-3">
-                <select class="form-select" wire:model.live="">
+            <div class="col-3 d-flex align-items-center gap-3"
+                style="border-radius: 10px; padding: 3px 10px 3px 10px;
+                background-color: skyblue; color: white">
+                <select class="form-select" wire:model.live="location">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="All">All</option>
                     <option value="Kantor">Kantor</option>

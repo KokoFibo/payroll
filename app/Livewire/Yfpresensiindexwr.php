@@ -35,7 +35,7 @@ class Yfpresensiindexwr extends Component
     public $btnEdit = true;
     public $selectedId;
     public $perpage = 10;
-    public $cx = 0;
+    public $location = 'All';
 
     #[On('delete')]
     public function delete($id) {
@@ -152,7 +152,6 @@ class Yfpresensiindexwr extends Component
 
     public function render()
     {
-        $this->cx++;
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -211,6 +210,16 @@ class Yfpresensiindexwr extends Component
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
         ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+
+        ->when($this->location == 'Pabrik 1', function ($query) {
+            return $query->where('placement', 'YCME');
+        })
+        ->when($this->location == 'Pabrik 2', function ($query) {
+            return $query->where('placement', 'YEV');
+        })
+        ->when($this->location == 'Kantor', function ($query) {
+            return $query->whereIn('placement', ['YIG', 'YSM']);
+        })
         ->orderBy($this->columnName, $this->direction)
         ->orderBy('user_id', 'asc')
         ->whereDate('date',  $this->tanggal)
