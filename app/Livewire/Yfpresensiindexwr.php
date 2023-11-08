@@ -208,8 +208,9 @@ class Yfpresensiindexwr extends Component
         //     ->paginate(10);
 
 
-        $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
-        ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+        // $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+        // ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+        $datas = Yfrekappresensi::query()
 
         ->when($this->location == 'Pabrik 1', function ($query) {
             return $query->where('placement', 'YCME');
@@ -225,11 +226,12 @@ class Yfpresensiindexwr extends Component
         ->whereDate('date',  $this->tanggal)
         ->when($this->search, function ($query) {
             $query
-            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('user_id', trim($this->search))
-            ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            // ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('user_id', trim($this->search))
+            -> where('user_id', trim($this->search))
+            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
             // ->where('date', 'like', '%' . $this->tanggal . '%');
         })

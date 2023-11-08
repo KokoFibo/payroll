@@ -119,20 +119,18 @@
                         <thead>
                             <tr>
                                 <td>Action</td>
-                                <td wire:click="sortColumnName('id')"># <i class=" fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
+                                {{-- <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('departemen')">Department <i
                                         class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
-                                </td>
+                                </td> --}}
                                 <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
                                 </td>
-                                <td wire:click="sortColumnName('first_out')">First out <i
-                                        class="fa-solid fa-sort"></i>
+                                <td wire:click="sortColumnName('first_out')">First out <i class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('second_in')">Second in <i
                                         class="fa-solid fa-sort"></i>
@@ -195,13 +193,10 @@
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
                                         </td>
-                                        <td>{{ $data->id }}</td>
                                         <td>{{ $data->user_id }}</td>
-                                        <td>{{ $data->karyawan->nama }}</td>
-
+                                        {{-- <td>{{ $data->karyawan->nama }}</td> --}}
                                         {{-- <td>{{ $data->karyawan->departemen }}</td> --}}
-                                        <td>{{ $data->karyawan->departemen }}</td>
-                                        <td>{{ $data->karyawan->jabatan }}</td>
+                                        {{-- <td>{{ $data->karyawan->jabatan }}</td>? --}}
                                         <td>{{ format_tgl($data->date) }}</td>
                                         <td x-show="!edit" x-cloak
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
