@@ -72,7 +72,11 @@
         <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
 
             {{ $slot }}
-
+            <style>
+                [x-cloak] {
+                    display: none !important;
+                }
+            </style>
         </div>
         <!-- /.content-wrapper -->
 
