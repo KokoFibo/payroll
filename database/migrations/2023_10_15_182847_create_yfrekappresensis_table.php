@@ -19,6 +19,7 @@ return new class extends Migration
 
             // $table->string('name');
             // $table->string('department');
+            // $table->string('jabatan');
             $table->date('date');
             $table->time('first_in')->nullable();
             $table->time('first_out')->nullable();
