@@ -117,6 +117,7 @@
                                 <option value="Koki">Koki</option>
                                 <option value="Dapur Kantor">Dapur Kantor</option>
                                 <option value="Dapur Pabrik">Dapur Pabrik</option>
+                                <option value="QC Aging">QC Aging</option>
 
                             </select>
                             @error('jabatan')
