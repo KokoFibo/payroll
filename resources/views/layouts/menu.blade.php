@@ -109,6 +109,13 @@ with font-awesome or any other icon font library -->
                                 <p>Import Karyawan dari excel bersih</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a onclick="return confirm('Mau Rubah Id karyawan')" href="/rubahid" class="nav-link"
+                                wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Rubah ID</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

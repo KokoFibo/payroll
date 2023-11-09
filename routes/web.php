@@ -4,6 +4,7 @@ use App\Livewire\Test;
 use App\Livewire\Developer;
 use App\Livewire\MissingId;
 use App\Livewire\Prindexwr;
+use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Informasiwr;
 use App\Http\Controllers\Testaja;
@@ -88,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
                     Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
                     Route::get('/testto', [YfpresensiController::class, 'testto']);
+                    Route::get('/rubahid', Rubahidwr::class);
 
                     Route::get('/MissingId', MissingId::class);
 
