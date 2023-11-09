@@ -269,6 +269,7 @@ class Prindexwr extends Component
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     // ->orWhere('user_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('user_id', trim($this->search))
+                    ->orWhere('jabatan', trim($this->search))
                     // ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
                     // ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                     ->where('date', 'like', '%' . $this->periode . '%');

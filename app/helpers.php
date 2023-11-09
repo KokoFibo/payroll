@@ -21,7 +21,7 @@ function checkNonRegisterUser() {
                 $karyawan = Karyawan::where('id_karyawan' , $r->user_id)->first();
                 if ($karyawan === null) {
             $array[] = [
-                'Karyawan_id' => $r->user_id,
+                'Karyawan_id' => $r->user_id
             ];
         }
     }
@@ -212,13 +212,48 @@ function late_check_jam_lembur_only ($overtime_in, $shift, $date) {
 
 }
 
-function late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl ) {
+function is_jabatan_khusus($id) {
+    $jabatan = Karyawan::where('id_karyawan', $id)->first();
+    switch($jabatan->jabatan) {
+        case ('Satpam'):
+            $jabatan_khusus = 1;
+            break;
+        case ('Koki'):
+            $jabatan_khusus = 1;
+            break;
+        case ('Dapur Kantor'):
+            $jabatan_khusus = 1;
+            break;
+        case ('Dapur Pabrik'):
+            $jabatan_khusus = 1;
+            break;
+        case ('QC Aging'):
+            $jabatan_khusus = 1;
+            break;
+        case ('Driver'):
+            $jabatan_khusus = 1;
+            break;
+
+        default:
+        $jabatan_khusus = 0;
+    }
+    return  $jabatan_khusus;
+
+}
+
+function late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id ) {
     // $late = null;
     // $late1 = null;
     // $late2 = null;
     // $late3 = null;
     // $late4 = null;
+    $jabatan_khusus = is_jabatan_khusus($id);
+
+
+
     $late5 = null;
+
+
 
     if ( checkFirstInLate( $first_in, $shift, $tgl ) ) {
         //  return $late = $late + 1;
@@ -227,11 +262,15 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
     }
     if ( checkFirstOutLate( $first_out, $shift, $tgl ) ) {
         //  return $late = $late + 1;
-        return $late = 1;
+        if($jabatan_khusus != 1) {
+            return $late = 1;
+        }
+        // return $late = 1;
         // $late2 = 1;
     }
     if ( checkSecondOutLate( $second_out, $shift, $tgl ) ) {
         //  return $late = $late + 1;
+
         return $late = 1;
         // $late3 = 1;
     }
@@ -242,7 +281,9 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
 
     if ( checkSecondInLate( $second_in, $shift, $first_out, $tgl ) ) {
         // return $late = $late + 1 ;
-        return $late = 1;
+        if($jabatan_khusus != 1) {
+            return $late = 1;
+        }
         // $late5 = 1;
     }
 

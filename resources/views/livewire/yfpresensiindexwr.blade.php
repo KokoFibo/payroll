@@ -121,8 +121,7 @@
                                 <td>Action</td>
                                 <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
                                 <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('departemen')">Department <i
-                                        class="fa-solid fa-sort"></i>
+                                <td wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
                                 </td>
                                 <td wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
                                 </td>
@@ -198,7 +197,7 @@
                                         <td>{{ $data->karyawan->nama }}</td>
 
                                         {{-- <td>{{ $data->karyawan->departemen }}</td> --}}
-                                        <td>{{ $data->karyawan->departemen }}</td>
+                                        <td>{{ $data->karyawan->placement }}</td>
                                         <td>{{ $data->karyawan->jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
                                         <td x-show="!edit" x-cloak
@@ -216,7 +215,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->first_out) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"
@@ -227,9 +226,10 @@
                                                     Format jam harus sesuai HH:MM
                                                 </div>
                                             @enderror
+
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}">
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_in) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"
