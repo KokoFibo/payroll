@@ -36,6 +36,7 @@ class Yfpresensiindexwr extends Component
     public $selectedId;
     public $perpage = 10;
     public $location = 'All';
+    public $late_user_id;
 
     #[On('delete')]
     public function delete($id) {
@@ -82,6 +83,7 @@ class Yfpresensiindexwr extends Component
         $this->second_out = trimTime($data->second_out);
         $this->overtime_in = trimTime($data->overtime_in);
         $this->overtime_out = trimTime($data->overtime_out);
+        $this->late_user_id = $data->user_id;
         // $this->user_id = $data->user_id;
         // $this->name = $data->name;
         $this->shift = $data->shift;
@@ -121,7 +123,7 @@ class Yfpresensiindexwr extends Component
         $data->overtime_in = $this->overtime_in;
         $data->overtime_out = $this->overtime_out;
         $data->no_scan = noScan($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->overtime_out);
-        $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date);
+        $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
 
         $data->save();
         $this->btnEdit = true;
