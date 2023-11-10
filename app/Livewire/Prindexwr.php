@@ -186,22 +186,49 @@ class Prindexwr extends Component
                         $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date);
                         $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date);
                         // $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
+
+                        if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
+                            $late1 = 0;
+                            $late2 = 0;
+                            $late3 = 0;
+                            $late4 = 0;
+
+                        }
+                        // belum beres kkk
                         $total_late_1 = $total_late_1 + $late1;
                         $total_late_2 = $total_late_2 + $late2;
                         $total_late_3 = $total_late_3 + $late3;
                         $total_late_4 = $total_late_4 + $late4;
+                        // if($dt->user_id=4753) {
+                        //     dd($late3, $late4,$total_late_3, $total_late_4 ,  $dt->user_id);
+                        // }
                         // $total_late_5 = $total_late_5 + $late5;
                         // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
-                        if($dt->second_in == null && $dt->second_out == null) {
+                        // if($dt->second_in == null && $dt->second_out == null) {kkk
+                        //     if(is_saturday( $dt->date )) {
+
+                        //         $total_late_5 = 2;
+                        //     } else {
+                        //         $total_late_5 = 4;
+
+                        //     }
+                        // }
+                        // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
+
+                        if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
                             if(is_saturday( $dt->date )) {
-
-                                $total_late_5 = 2;
+                                if($dt->first_in === null && $dt->first_out === null) {
+                                    $jam_kerja = $jam_kerja - 4;
+                                } else {
+                                    $jam_kerja = $jam_kerja -2;
+                                }
                             } else {
-                                $total_late_5 = 4;
-
+                                $jam_kerja = $jam_kerja - 4;
                             }
+
+
                         }
-                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
+                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 ;
                         if ($dt->overtime_in != null) {
                             $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
                             $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;

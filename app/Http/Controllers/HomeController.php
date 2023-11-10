@@ -27,6 +27,8 @@ class HomeController extends Controller {
     * @return \Illuminate\Contracts\Support\Renderable
     */
 
+
+
     public function index() {
 
         // $data = Yfrekappresensi::where('user_id', 5222 )->where('no_scan',null)->get();

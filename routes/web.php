@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::middleware(['Admin'])->group(function () {
             //Dashboard
             Route::get('/dashboard', [DashboardController::class, 'index']);
+            Route::get('/mobile', [DashboardController::class, 'mobile']);
             // KARYAWAN
             Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
             Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
