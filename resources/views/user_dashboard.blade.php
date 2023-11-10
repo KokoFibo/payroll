@@ -4,5 +4,5 @@
 
 @section('content')
 
-    user dashboard
+    user dashboard desktop
 @endsection

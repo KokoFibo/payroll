@@ -47,6 +47,18 @@
             </div>
         @endif
     @endforeach
+    <button class="bg-purple-500 text-white px-3 py-2">Logout</button>
+
+    <a class="nav-link" href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+        <i class="nav-icon fa-solid fa-right-from-bracket"></i>
+        <button class="bg-purple-500 text-white px-3 py-2">Logout</button>
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+
 </body>
 
 </html>

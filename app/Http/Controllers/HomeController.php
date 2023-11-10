@@ -62,7 +62,8 @@ class HomeController extends Controller {
             }
             $user->device = 0;
             $user->save();
-            return view( 'dashboardMobile1' );
+            // return view( 'dashboardMobile1' );
+            return redirect()->to('/mobile');
 
         }
     }
