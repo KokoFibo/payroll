@@ -5,6 +5,87 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+// kkk
+
+function tgl_doang($tgl) {
+    $dt = Carbon::parse($tgl);
+    return $dt->day;
+}
+function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl) {
+    $perJam = 60;
+    if($late == null) {
+        if ($shift == 'Pagi') {
+            // $t1 = strtotime( '08:00:00' );
+            // $t2 = strtotime( $second_out );
+
+            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) -1;
+            if(is_saturday( $tgl )){
+                $jam_kerja = 6;
+            } else {
+                $jam_kerja = 8;
+            }
+
+        } else {
+            // $t1 = strtotime( '20:00:00' );
+            // $t2 = strtotime( $second_out );
+
+            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
+            $jam_kerja = 8;
+            if(is_saturday( $tgl )){
+                $jam_kerja = 6;
+            } else {
+                $jam_kerja = 8;
+            }
+        }
+
+
+    } else {
+        // check late kkk
+        $total_late = late_check_jam_kerja_only ($first_in, $first_out, $second_in, $second_out, $shift, $tgl);
+    //    dd($first_in, $first_out, $second_in, $second_out);
+        if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
+            if(is_saturday( $tgl )) {
+                if($first_in === null && $first_out === null) {
+                    $jam_kerja = 2 - $total_late;
+                } else {
+                    $jam_kerja = 4 - $total_late;
+                }
+            } else {
+                $jam_kerja = 4 - $total_late;
+            }
+
+        } else {
+        if($shift == 'Pagi') {
+            // $t1 = strtotime( '08:00:00' );
+            // $t2 = strtotime( $second_out );
+
+            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
+            if(is_saturday( $tgl )){
+                $jam_kerja = 6 - $total_late;
+            } else {
+                $jam_kerja = 8 - $total_late;
+            }
+
+        } else  {
+            // $t1 = strtotime( '20:00:00' );
+            // $t2 = strtotime( $second_out );
+            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
+            if(is_saturday( $tgl )){
+                $jam_kerja = 6 - $total_late;
+            } else {
+                $jam_kerja = 8 - $total_late;
+            }
+
+        }
+    }
+    }
+    return $jam_kerja;
+}
+
 function karyawan_allow_edit($id, $role) {
     $data = Karyawan::find($id);
     if ($role < 3 && $data->gaji_pokok > 4500000){
@@ -253,7 +334,12 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
 
     $late5 = null;
 
-
+    // if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
+    if(($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')){
+        $data->late = 1;
+        dd($data->late, $data->user_id);
+        return $late = 1;
+    }
 
     if ( checkFirstInLate( $first_in, $shift, $tgl ) ) {
         //  return $late = $late + 1;
