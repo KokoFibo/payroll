@@ -49,6 +49,7 @@ class HomeController extends Controller {
                 return view( 'dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']) );
             }else {
 
+
                 return view( 'user_dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']) );
             }
 
@@ -64,7 +65,11 @@ class HomeController extends Controller {
             $user->device = 0;
             $user->save();
             // return view( 'dashboardMobile1' );
-            return Redirect()->to('/mobile');
+            $user_id = 5221;
+        $data = Yfrekappresensi::where('user_id', $user_id)->orderBy('date', 'desc')->get();
+        return view('mobile')->with([
+            'data' => $data
+        ]);
 
         }
     }
