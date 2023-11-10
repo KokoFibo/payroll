@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    ok
+
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
         <div class="container pt-5">
