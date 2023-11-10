@@ -7,6 +7,7 @@ use App\Models\Karyawan;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\Redirect;
 
 $agent = new Agent();
 
@@ -63,7 +64,7 @@ class HomeController extends Controller {
             $user->device = 0;
             $user->save();
             // return view( 'dashboardMobile1' );
-            return redirect()->to('/mobile');
+            return Redirect()->to('/mobile');
 
         }
     }
