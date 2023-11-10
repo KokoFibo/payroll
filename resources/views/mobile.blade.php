@@ -23,10 +23,10 @@
     <div class="flex px-5 pt-2 justify-center relative bottom-10">
         <div
             class="w-screen h-32 bg-red-100 text-gray-600  px-3 flex flex-col rounded-lg shadow-lg text-center justify-center">
-            <h1 class="pb-3 font-bold text-2xl">Presensi Bulan Nopember 2023</h1>
+            <h1 class="pb-3 font-bold text-xl">Presensi Bulan Nopember 2023</h1>
             <div class="flex justify-around text-center">
                 <div>
-                    <p>Hari Kerja</p>
+                    <p>Hari</p>
                     <p class="font-bold text-green-500 text-xl">{{ $total_hari_kerja }}</p>
                 </div>
 
@@ -41,7 +41,7 @@
                 </div>
 
                 <div>
-                    <p>Keterlambatan</p>
+                    <p>Terlambat</p>
                     <p class="font-bold text-green-500 text-xl">{{ $total_keterlambatan }}</p>
                 </div>
 
@@ -66,17 +66,17 @@
                     </p>
                 </div>
                 <div class="text-center">
-                    <p class="text-gray-500">Terlambat </p>
-                    <p class="font-bold text-blue-500">
-                        {{ $d['terlambat'] }}
-                    </p>
-
-                </div>
-                <div class="text-center">
                     <p class="text-gray-500">Jam Lembur</p>
                     <p class="font-bold text-blue-500">{{ $d['jam_lembur'] }}
                     </p>
                 </div>
+                <div class="text-center">
+                    <p class="text-gray-500">Terlambat </p>
+                    <p class="font-bold text-blue-500">
+                        {{ $d['terlambat'] }}
+                    </p>
+                </div>
+
             </div>
         </div>
     @endforeach
