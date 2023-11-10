@@ -33,12 +33,12 @@ class Updatekaryawanwr extends Component {
         $this->tanggal_lahir =  date( 'd M Y', strtotime( $data->tanggal_lahir) );
 
          $this->gender = $data->gender;
-         $this->status_pernikahan = $data->status_pernikahan;
-         $this->golongan_darah = $data->golongan_darah;
-         $this->agama = $data->agama;
+         $this->status_pernikahan = trim($data->status_pernikahan);
+         $this->golongan_darah = trim($data->golongan_darah);
+         $this->agama = trim($data->agama);
 
          // Identitas
-         $this->jenis_identitas = $data->jenis_identitas;
+         $this->jenis_identitas = trim($data->jenis_identitas);
          $this->no_identitas = $data->no_identitas;
          $this->alamat_identitas = $data->alamat_identitas;
          $this->alamat_tinggal = $data->alamat_tinggal;
