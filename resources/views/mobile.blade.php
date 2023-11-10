@@ -34,7 +34,7 @@
         </div>
         <div class="flex px-5 pt-2 justify-center relative bottom-10">
             <div
-                class="w-screen h-32 bg-red-100 text-gray-600  px-3 flex flex-col rounded-lg shadow-lg text-center justify-center">
+                class="w-screen h-32 bg-red-200 text-gray-600  px-3 flex flex-col rounded-lg shadow-lg text-center justify-center">
                 <h1 class="pb-3 font-bold text-xl">Presensi Bulan Nopember 2023</h1>
                 <div class="flex justify-around text-center">
                     <div>

@@ -44,20 +44,20 @@ class Updatekaryawanwr extends Component {
          $this->alamat_tinggal = $data->alamat_tinggal;
 
          //Data Kepegawaian
-         $this->status_karyawan = $data->status_karyawan;
+         $this->status_karyawan = trim($data->status_karyawan);
         //  $this->tanggal_bergabung = $data->tanggal_bergabung;
         $this->tanggal_bergabung =  date( 'd M Y', strtotime( $data->tanggal_bergabung) );
 
-         $this->company = $data->company;
-         $this->placement = $data->placement;
-         $this->departemen = $data->departemen;
-         $this->jabatan = $data->jabatan;
-         $this->level_jabatan = $data->level_jabatan;
-         $this->nama_bank = $data->nama_bank;
+         $this->company = trim($data->company);
+         $this->placement = trim($data->placement);
+         $this->departemen = trim($data->departemen);
+         $this->jabatan = trim($data->jabatan);
+         $this->level_jabatan = trim($data->level_jabatan);
+         $this->nama_bank = trim($data->nama_bank);
          $this->nomor_rekening = $data->nomor_rekening;
 
          //Payroll
-         $this->metode_penggajian = $data->metode_penggajian;
+         $this->metode_penggajian = trim($data->metode_penggajian);
          $this->gaji_pokok = $data->gaji_pokok;
          $this->gaji_overtime = $data->gaji_overtime;
          $this->bonus = $data->bonus;
