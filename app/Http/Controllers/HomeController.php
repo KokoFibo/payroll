@@ -65,7 +65,7 @@ class HomeController extends Controller {
             $user->device = 0;
             $user->save();
             // return view( 'dashboardMobile1' );
-            $user_id = 5221;
+            $user_id = auth()->user()->username;
         $data = Yfrekappresensi::where('user_id', $user_id)->orderBy('date', 'desc')->get();
         return view('mobile')->with([
             'data' => $data

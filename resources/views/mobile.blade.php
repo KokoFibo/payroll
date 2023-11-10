@@ -47,7 +47,6 @@
             </div>
         @endif
     @endforeach
-    <button class="bg-purple-500 text-white px-3 py-2">Logout</button>
 
     <a class="nav-link" href="{{ route('logout') }}"
         onclick="event.preventDefault();
