@@ -7,6 +7,7 @@ use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Informasiwr;
+use App\Livewire\Editpresensiwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
@@ -91,6 +92,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
                     Route::get('/testto', [YfpresensiController::class, 'testto']);
                     Route::get('/rubahid', Rubahidwr::class);
+                    Route::get('/editpresensi', Editpresensiwr::class);
+
+
 
                     Route::get('/MissingId', MissingId::class);
 

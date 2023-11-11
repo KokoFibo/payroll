@@ -116,6 +116,13 @@ with font-awesome or any other icon font library -->
                                 <p>Rubah ID</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a onclick="return confirm('Mau Edit Presensi')" href="/editpresensi" class="nav-link"
+                                wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit Presensi</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
