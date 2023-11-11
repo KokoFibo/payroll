@@ -126,7 +126,31 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
         $data->late_history = $data->late;
 
+        // ================================
+        $is_saturday = is_saturday( $data->date );
 
+            if ( $is_saturday ) {
+                // JIKA HARI SABTU kkk
+                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '13:00' ) ) {
+                    $data->shift = 'Pagi';
+                    // dd($data->shift, $is_saturday );
+                } else {
+                    $data->shift = 'Malam';
+                    // dd($data->shift, $is_saturday );
+
+                }
+            } else {
+                // JIKA BUKAN HARI SABTU
+                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' ) ) {
+                    $data->shift = 'Pagi';
+                    // dd($data->shift, $is_saturday );
+
+                } else {
+                    $data->shift = 'Malam';
+                    // dd($data->shift, $is_saturday );
+
+                }
+            }
 
         $data->save();
         $this->btnEdit = true;
