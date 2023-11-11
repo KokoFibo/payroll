@@ -177,6 +177,10 @@
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 @endif
                                             @endif
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                wire:click="showDetail({{ $data->user_id }})" data-bs-toggle="modal"
+                                                data-bs-target="#update-form-modal"><i
+                                                    class="fa-solid fa-magnifying-glass"></i></button>
 
 
                                             {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
@@ -344,97 +348,50 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Presensi {{ $user_id }} &
-                        {{ $name }}</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Data Presensi Karyawan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <h4>November 2023</h4>
+                    <p>User ID : {{ $user_id }}</p>
+                    <p>Nama : {{ $name }}</p>
 
-                        <div class="mb-3 col-6">
-                            <label for="first_in" class="form-label">First
-                                In</label>
-                            <input class="form-control @error('first_in') is-invalid @enderror" id="first_in"
-                                type="text" wire:model="first_in">
-                            @error('first_in')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="first_out" class="form-label">First
-                                Out</label>
-                            <input class="form-control @error('first_out') is-invalid @enderror" id="first_out"
-                                type="text" wire:model="first_out">
-                            @error('first_out')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
+                    {{-- $this->dataArr=$dataArr;
+                    $this->total_hari_kerja = $total_hari_kerja;
+                    $this->total_jam_kerja $total_jam_kerja;
+                    $this->total_jam_lembur $total_jam_lembur;
+                    $this->total_keterlambatan $total_keterlambatan; --}}
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jam Kerja</th>
+                                <th>Jam Lembur</th>
+                                <th>Terlambat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach ($dataArr as $data)
+                                <tr>
+                                    <td class="text-center">{{ $data['tgl'] }}</td>
+                                    <td class="text-center">{{ $data['jam_kerja'] }}</td>
+                                    <td class="text-center">{{ $data['jam_lembur'] }}</td>
+                                    <td class="text-center">{{ $data['terlambat'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
 
 
-                        <div class="mb-3 col-6">
-                            <label for="second_in" class="form-label">Second
-                                In</label>
-                            <input class="form-control @error('second_in') is-invalid @enderror" id="second_in"
-                                type="text" wire:model="second_in">
-                            @error('second_in')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="second_out" class="form-label">Second
-                                Out</label>
-                            <input class="form-control @error('second_out') is-invalid @enderror" id="second_out"
-                                type="text" wire:model="second_out">
-                            @error('second_out')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="mb-3 col-6">
-                            <label for="overtime_in" class="form-label">Overtime
-                                In</label>
-                            <input class="form-control @error('overtime_in') is-invalid @enderror" id="overtime_in"
-                                type="text" wire:model="overtime_in">
-                            @error('overtime_in')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="overtime_out" class="form-label">Overtime
-                                Out</label>
-                            <input class="form-control @error('overtime_out') is-invalid @enderror" id="overtime_out"
-                                type="text" wire:model="overtime_out">
-                            @error('overtime_out')
-                                <div class="invalid-feedback">
-                                    Format jam harus sesuai HH:MM
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
+                    </table>
 
                 </div>
                 <div class="modal-footer">
 
 
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    @if ($datas->isNotEmpty())
-                        <button wire:click="save({{ $data->id }})" type="button"
-                            class="btn btn-primary">Update</button>
-                    @endif
+
 
                 </div>
             </div>

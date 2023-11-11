@@ -570,7 +570,18 @@ function checkSecondInLate( $second_in, $shift, $firstOut, $tgl ) {
                     $groupIstirahat = 0;
                 }
 
-                // Shift Pagi
+                // Shift Pagi ggg
+                if(is_friday($tgl)){
+                    if ( Carbon::parse( $second_in )->betweenIncluded( '11:30', '13:03' ) ) {
+                        $late = null;
+                    } else {
+                        $t1 = strtotime( '13:03:00' );
+                        $t2 = strtotime( $second_in );
+
+                        $diff = gmdate( 'H:i:s', $t2 - $t1 );
+                        $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    }
+                } else {
                 if ( $groupIstirahat == 1 ) {
                     if ( Carbon::parse( $second_in )->betweenIncluded( '08:00', '12:33' ) ) {
                         $late = null;
@@ -594,6 +605,7 @@ function checkSecondInLate( $second_in, $shift, $firstOut, $tgl ) {
                 } else {
                     $late = null;
                 }
+            }
             }
         } else {
             if ( is_saturday( $tgl ) ) {
@@ -679,6 +691,14 @@ function format_jam( $jam ) {
     if ( $jam ) {
         return Carbon::createFromFormat( 'H:i:s', $jam )->format( 'H:i' );
     }
+}
+
+function is_friday($tgl) {
+    if ( $tgl ) {
+
+        return Carbon::parse( $tgl )->isFriday();
+    }
+
 }
 
 function is_saturday( $tgl ) {
