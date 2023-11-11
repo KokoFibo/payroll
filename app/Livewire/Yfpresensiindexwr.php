@@ -37,11 +37,67 @@ class Yfpresensiindexwr extends Component
     public $perpage = 10;
     public $location = 'All';
     public $late_user_id;
+    // variable utk show detail data karyawan
+    public $dataArr=[];
+    public $total_hari_kerja;
+    public $total_jam_kerja;
+    public $total_jam_lembur;
+    public $total_keterlambatan;
 
     #[On('delete')]
     public function delete($id) {
         Yfrekappresensi::find($id)->delete();
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
+    }
+
+    public function showDetail ($user_id) {
+       $this->user_id = $user_id;
+       $name_karyawan = Karyawan::where('id_karyawan',$user_id )->select('nama')->first();
+       $this->name = $name_karyawan->nama;
+
+    //    $user_id = 4751;
+    $this->dataArr = [];
+        $month = 11;
+        $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
+            ->distinct('date')
+            ->count();
+
+        $total_jam_kerja = 0;
+        $total_jam_lembur = 0;
+        $total_keterlambatan = 0;
+
+        $dataArr = [];
+        $data = Yfrekappresensi::where('user_id', $user_id)
+            ->orderBy('date', 'desc')
+            ->get();
+
+        foreach ($data as $d) {
+            if ($d->no_scan == null) {
+                $tgl = tgl_doang($d->date);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date);
+                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date);
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60;
+                $total_jam_kerja = $total_jam_kerja + $jam_kerja;
+                $total_jam_lembur = $total_jam_lembur + $jam_lembur;
+                $total_keterlambatan = $total_keterlambatan + $terlambat;
+
+                $this->dataArr[] = [
+                    'tgl' => $tgl,
+                    'jam_kerja' => $jam_kerja,
+                    'terlambat' => $terlambat,
+                    'jam_lembur' => $jam_lembur,
+                ];
+            }
+        }
+
+        $this->total_hari_kerja = $total_hari_kerja;
+        $this->total_jam_kerja = $total_jam_kerja;
+        $this->total_jam_lembur = $total_jam_lembur;
+        $this->total_keterlambatan = $total_keterlambatan;
+
+
+
+
     }
 
     public function filterNoScan()
@@ -257,8 +313,9 @@ class Yfpresensiindexwr extends Component
             ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('user_id', trim($this->search))
-            ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
             // ->where('date', 'like', '%' . $this->tanggal . '%');
         })
