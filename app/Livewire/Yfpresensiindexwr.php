@@ -257,8 +257,9 @@ class Yfpresensiindexwr extends Component
             ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('user_id', trim($this->search))
-            ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
             // ->where('date', 'like', '%' . $this->tanggal . '%');
         })

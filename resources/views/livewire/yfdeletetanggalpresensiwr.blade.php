@@ -14,7 +14,7 @@
             <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
         </div>
     </div>
-    <div class="card col-6 mx-auto">
+    <div class="card col-4 mx-auto">
         <div class="card-header bg-danger text-light text-center">
             <h3>Delete Tanggal Presensi By Lokasi Pabrik</h3>
         </div>
