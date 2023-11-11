@@ -242,7 +242,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}">
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_out) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"

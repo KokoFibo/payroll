@@ -123,7 +123,7 @@ with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="/test" class="nav-link" wire:navigate>
                         <i class="far fa-circle nav-icon"></i>
-                        <p>test livewire</p>
+                        <p>test livewire aj</p>
                     </a>
                 </li>
             @endif

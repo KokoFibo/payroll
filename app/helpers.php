@@ -356,8 +356,11 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
     }
     if ( checkSecondOutLate( $second_out, $shift, $tgl ) ) {
         //  return $late = $late + 1;
+        if($jabatan_khusus != 1) {
+            return $late = 1;
+        }
 
-        return $late = 1;
+        // return $late = 1;
         // $late3 = 1;
     }
 
