@@ -76,6 +76,7 @@ class HomeController extends Controller {
         $total_jam_kerja = 0;
         $total_jam_lembur = 0;
         $total_keterlambatan = 0;
+        $langsungLembur = 0 ;
 
         $dataArr = [];
         $data = Yfrekappresensi::where('user_id', $user_id)
@@ -87,7 +88,10 @@ class HomeController extends Controller {
                 $tgl = tgl_doang($d->date);
                 $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date);
                 $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date);
-                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60;
+                if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
+                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift);
+                }
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_jam_lembur = $total_jam_lembur + $jam_lembur;
                 $total_keterlambatan = $total_keterlambatan + $terlambat;
