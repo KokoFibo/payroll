@@ -65,6 +65,7 @@ class Yfpresensiindexwr extends Component
         $total_jam_kerja = 0;
         $total_jam_lembur = 0;
         $total_keterlambatan = 0;
+        $langsungLembur = 0;
 
         $dataArr = [];
         $data = Yfrekappresensi::where('user_id', $user_id)

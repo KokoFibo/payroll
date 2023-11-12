@@ -41,6 +41,7 @@ class HomeController extends Controller {
         $agent = new Agent();
         $desktop = $agent->isDesktop();
         $user = User::find( auth()->user()->id );
+        // $user = 258;
         if ( $desktop ) {
             $user->device = 1;
             $user->save();
@@ -67,7 +68,7 @@ class HomeController extends Controller {
             // return view( 'dashboardMobile1' );
             $user_id = auth()->user()->username;
 
-            // $user_id = 4751;
+            // $user_id = 258;
         $month = 11;
         $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
             ->distinct('date')

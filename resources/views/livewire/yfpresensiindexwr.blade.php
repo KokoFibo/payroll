@@ -381,11 +381,15 @@
                                     <td class="text-center">{{ $data['terlambat'] }}</td>
                                 </tr>
                             @endforeach
+
+                            <tr>
+                                <th class="text-center">{{ $total_hari_kerja }}</th>
+                                <th class="text-center">{{ $total_jam_kerja }}</th>
+                                <th class="text-center">{{ $total_jam_lembur }}</th>
+                                <th class="text-center">{{ $total_keterlambatan }}</th>
+                            </tr>
                         </tbody>
-
-
                     </table>
-
                 </div>
                 <div class="modal-footer">
 

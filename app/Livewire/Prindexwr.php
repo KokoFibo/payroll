@@ -58,12 +58,11 @@ class Prindexwr extends Component
         //     $this->getPayroll();
         // }
     }
-
+// ok1
     #[On('getPayroll')]
     public function getPayroll()
     {
         $jamKerjaKosong = Jamkerjaid::count();
-
         $adaPresensi = Yfrekappresensi::count();
         if ($jamKerjaKosong == null && $adaPresensi == null) {
             $this->dispatch('error', message: 'Data Presensi Masih Kosong');
@@ -118,21 +117,23 @@ class Prindexwr extends Component
         }
         $filteredData = Jamkerjaid::whereDate('date', $this->periode)->get();
         foreach ($filteredData as $data) {
-            $jumlah_menit_lembur = null;
-            $jumlah_jam_terlambat = null;
-            $jumlah_menit_lembur = null;
-            $jumlah_hari_kerja = null;
+            $jumlah_menit_lembur = 0;
+            $jumlah_jam_terlambat = 0;
+            $jumlah_menit_lembur = 0;
+            $jumlah_hari_kerja = 0;
 
-            $total_noscan = null;
-            $n_noscan = null;
+            $total_noscan = 0;
+            $n_noscan = 0;
 
-            $total_late_1 = null;
-            $total_late_2 = null;
-            $total_late_3 = null;
-            $total_late_4 = null;
-            $total_late_5 = null;
-            $total_late = null;
-            $jam_kerja = null;
+            $total_late_1 = 0;
+            $total_late_2 = 0;
+            $total_late_3 = 0;
+            $total_late_4 = 0;
+            $total_late_5 = 0;
+            $total_late = 0;
+            $jam_kerja = 0;
+            $total_jam_kerja = 0;
+            $total_langsungLembur = 0;
 
             $dataId = Yfrekappresensi::where('user_id', $data->user_id)
                 ->whereMonth('date', getBulan($this->periode))
@@ -142,18 +143,35 @@ class Prindexwr extends Component
             if (!$dataId) {
                 dd('data kosong from Prindex.php', $dataId);
             } else {
+                // ambil data per user id ok3
                 foreach ($dataId as $dt) {
+                    $langsungLembur = 0 ;
                     $jam_kerja = 0;
-                        foreach ($dataId as $jk) {
-                            if (is_saturday($jk->date)) {
-                                $jam_kerja += 6;
-                            } else {
-                                $jam_kerja += 8;
-                            }
+                    // logic nya jam kerja ada pada loop dibawah ini
+                        // foreach ($dataId as $jk) {
+                        //     if (is_saturday($jk->date)) {
+                        //         $jam_kerja += 6;
+                        //     } else {
+                        //         $jam_kerja += 8;
+                        //     }
+                        // }
 
-                        }
+                $jam_kerja_harian = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date);
+                if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
+                    $langsungLembur = langsungLembur( $dt->second_out, $dt->date, $dt->shift);
+                }
+
+                $jam_kerja = $jam_kerja_harian;
+                $total_jam_kerja = $total_jam_kerja + $jam_kerja;
+                $total_langsungLembur = $total_langsungLembur + ($langsungLembur * 60 );
+
+
+
                     if ($dt->late == null) {
-                        $n_noscan = $dt->no_scan_history;
+                        if($dt->no_scan_history) {
+                            $n_noscan++;
+                        }
+                        // $n_noscan = $dt->no_scan_history;
 
                         // khusus NO Late
                         $jumlah_hari_kerja = $dataId->count();
@@ -178,7 +196,10 @@ class Prindexwr extends Component
                         // khusus yang late
 
                         $jumlah_hari_kerja = $dataId->count();
-                        $n_noscan = $dt->no_scan_history;
+                        if($dt->no_scan_history) {
+                            $n_noscan++;
+                        }
+                        // $n_noscan = $dt->no_scan_history;
 
                         // check keterlambatan di hari kerja non overtime
                         $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
@@ -192,8 +213,9 @@ class Prindexwr extends Component
                             $late2 = 0;
                             $late3 = 0;
                             $late4 = 0;
-
                         }
+
+
                         // belum beres kkk
                         $total_late_1 = $total_late_1 + $late1;
                         $total_late_2 = $total_late_2 + $late2;
@@ -243,10 +265,11 @@ class Prindexwr extends Component
 
                 $jumlah_jam_terlambat = $jumlah_jam_terlambat + $late;
             }
-            // DATA TOTAL
+            // DATA TOTAL per id yang sdh terkumpul ok4
+
             if($total_noscan == 0) $total_noscan=null;
-            $jumlah_jam_kerja = $jam_kerja  - $total_late ;
-            // $jumlah_jam_kerja = $jumlah_hari_kerja * 8 - $total_late ;
+            // $jumlah_jam_kerja = $jam_kerja  - $total_late ;
+            $jumlah_jam_kerja = $total_jam_kerja  - $total_late ;
 
             $data = Jamkerjaid::find($data->id);
             // dd($dt_name, $dt_date);
@@ -258,7 +281,7 @@ class Prindexwr extends Component
             // $data->last_data_date = $last_data_date;
             $data->last_data_date = $last_data_date->date;
             $data->jumlah_jam_kerja = $jumlah_jam_kerja;
-            $data->jumlah_menit_lembur = $jumlah_menit_lembur;
+            $data->jumlah_menit_lembur = $jumlah_menit_lembur + $total_langsungLembur;
             $data->total_noscan = $total_noscan;
             $data->jumlah_jam_terlambat = $total_late == 0 ? null : $total_late;
             $data->first_in_late = $total_late_1 == 0 ? null : $total_late_1;
@@ -273,6 +296,7 @@ class Prindexwr extends Component
 
         $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
     }
+    // ok2
 
     public function render()
     {

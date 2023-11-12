@@ -17,7 +17,7 @@ class DashboardController extends Controller
     }
     public function mobile()
     {
-        $user_id = 1079;
+        $user_id = 258;
         $month = 11;
         $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
             ->distinct('date')
