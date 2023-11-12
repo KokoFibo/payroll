@@ -7,25 +7,67 @@ use App\Models\Yfrekappresensi;
 
 // kkk
 
-function tgl_doang($tgl) {
+// $t1 = strtotime( '20:00:00' );
+            // $t2 = strtotime( $second_out );
+
+            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
+
+function langsungLembur( $second_out, $tgl, $shift) {
+    $lembur = 0;
+
+    $t2 = strtotime( $second_out );
+    if($shift == 'Pagi') {
+        // Shift Pagi
+        if(is_saturday($tgl)) {
+            if($t2<(strtotime('15:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00'))/60;
+        } else  {
+            if($t2<(strtotime('17:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
+        }
+
+    } else {
+        //Shift Malam
+        if(is_saturday($tgl)) {
+            if($t2<(strtotime('00:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00'))/60;
+        } else  {
+            if($t2<(strtotime('05:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
+        }
+    }
+    return  $diff ;
+}
+
+function tgl_doang($tgl)
+{
     $dt = Carbon::parse($tgl);
     return $dt->day;
 }
-function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl) {
+function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl)
+{
     $perJam = 60;
-    if($late == null) {
+    if ($late == null) {
         if ($shift == 'Pagi') {
             // $t1 = strtotime( '08:00:00' );
             // $t2 = strtotime( $second_out );
 
             // $diff = gmdate( 'H:i:s', $t2 - $t1 );
             // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) -1;
-            if(is_saturday( $tgl )){
+            if (is_saturday($tgl)) {
                 $jam_kerja = 6;
             } else {
                 $jam_kerja = 8;
             }
-
         } else {
             // $t1 = strtotime( '20:00:00' );
             // $t2 = strtotime( $second_out );
@@ -33,21 +75,19 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             // $diff = gmdate( 'H:i:s', $t2 - $t1 );
             // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
             $jam_kerja = 8;
-            if(is_saturday( $tgl )){
+            if (is_saturday($tgl)) {
                 $jam_kerja = 6;
             } else {
                 $jam_kerja = 8;
             }
         }
-
-
     } else {
         // check late kkk
-        $total_late = late_check_jam_kerja_only ($first_in, $first_out, $second_in, $second_out, $shift, $tgl);
-    //    dd($first_in, $first_out, $second_in, $second_out);
-        if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
-            if(is_saturday( $tgl )) {
-                if($first_in === null && $first_out === null) {
+        $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl);
+        //    dd($first_in, $first_out, $second_in, $second_out);
+        if (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
+            if (is_saturday($tgl)) {
+                if ($first_in === null && $first_out === null) {
                     $jam_kerja = 2 - $total_late;
                 } else {
                     $jam_kerja = 4 - $total_late;
@@ -55,141 +95,144 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             } else {
                 $jam_kerja = 4 - $total_late;
             }
-
         } else {
-        if($shift == 'Pagi') {
-            // $t1 = strtotime( '08:00:00' );
-            // $t2 = strtotime( $second_out );
+            if ($shift == 'Pagi') {
+                // $t1 = strtotime( '08:00:00' );
+                // $t2 = strtotime( $second_out );
 
-            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
-            if(is_saturday( $tgl )){
-                $jam_kerja = 6 - $total_late;
+                // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+                // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
+                if (is_saturday($tgl)) {
+                    $jam_kerja = 6 - $total_late;
+                } else {
+                    $jam_kerja = 8 - $total_late;
+                }
             } else {
-                $jam_kerja = 8 - $total_late;
+                // $t1 = strtotime( '20:00:00' );
+                // $t2 = strtotime( $second_out );
+                // $diff = gmdate( 'H:i:s', $t2 - $t1 );
+                // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
+                if (is_saturday($tgl)) {
+                    $jam_kerja = 6 - $total_late;
+                } else {
+                    $jam_kerja = 8 - $total_late;
+                }
             }
-
-        } else  {
-            // $t1 = strtotime( '20:00:00' );
-            // $t2 = strtotime( $second_out );
-            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
-            if(is_saturday( $tgl )){
-                $jam_kerja = 6 - $total_late;
-            } else {
-                $jam_kerja = 8 - $total_late;
-            }
-
         }
-    }
     }
     return $jam_kerja;
 }
 
-function karyawan_allow_edit($id, $role) {
+function karyawan_allow_edit($id, $role)
+{
     $data = Karyawan::find($id);
-    if ($role < 3 && $data->gaji_pokok > 4500000){
+    if ($role < 3 && $data->gaji_pokok > 4500000) {
         return 0;
-} else {
-    return 1;
-}
+    } else {
+        return 1;
+    }
 }
 
-function checkNonRegisterUser() {
+function checkNonRegisterUser()
+{
     $rekap = Yfrekappresensi::distinct('user_id')->get('user_id');
-    $array = [] ;
-            foreach ($rekap as $r) {
-                $karyawan = Karyawan::where('id_karyawan' , $r->user_id)->first();
-                if ($karyawan === null) {
+    $array = [];
+    foreach ($rekap as $r) {
+        $karyawan = Karyawan::where('id_karyawan', $r->user_id)->first();
+        if ($karyawan === null) {
             $array[] = [
-                'Karyawan_id' => $r->user_id
+                'Karyawan_id' => $r->user_id,
             ];
         }
     }
     return $array;
-
 }
 
-function lamaBekerja( $tgl ) {
-    $date = Carbon::parse( $tgl );
+function lamaBekerja($tgl)
+{
+    $date = Carbon::parse($tgl);
     $now = Carbon::now();
-    $diff = $date->diffIndays( $now );
-    $tahun = floor( $diff /365 );
-    if ( $diff<30 ) {
-        return $diff .' Hari';
-
+    $diff = $date->diffIndays($now);
+    $tahun = floor($diff / 365);
+    if ($diff < 30) {
+        return $diff . ' Hari';
     }
-    if ( $tahun < 1 ) {
-        $month = floor( $diff /30 );
-        return ( int )$month .' Bulan';
+    if ($tahun < 1) {
+        $month = floor($diff / 30);
+        return (int) $month . ' Bulan';
     }
-    $month = floor( ( $diff % ( $tahun *365 ) )/30 );
-    return ( int )$tahun .' Tahun '. ( int )$month .' Bulan';
+    $month = floor(($diff % ($tahun * 365)) / 30);
+    return (int) $tahun . ' Tahun ' . (int) $month . ' Bulan';
 }
 
-function isDesktop() {
-    if ( auth()->user()->device == 1 ) {
+function isDesktop()
+{
+    if (auth()->user()->device == 1) {
         return 1;
     } else {
         return 0;
     }
 }
 
-function namaDiAside( $nama ) {
-    if ( $nama != null ) {
-        $arrJam = explode( ' ', $nama );
-        if ( count( $arrJam ) == 1 ) {
-            return $arrJam[ 0 ];
+function namaDiAside($nama)
+{
+    if ($nama != null) {
+        $arrJam = explode(' ', $nama);
+        if (count($arrJam) == 1) {
+            return $arrJam[0];
         } else {
-            return $arrJam[ 0 ].' '.$arrJam[ 1 ];
+            return $arrJam[0] . ' ' . $arrJam[1];
         }
     } else {
         return 'No Name';
     }
-
 }
 
-function generatePassword( $tgl ) {
-
-    if ( $tgl != null ) {
-        $arrJam = explode( '-', fixTanggal( $tgl ) );
-        $year = substr( $arrJam[ 0 ], 2 );
-        return $arrJam[ 2 ] . $arrJam[ 1 ] . $year;
+function generatePassword($tgl)
+{
+    if ($tgl != null) {
+        $arrJam = explode('-', fixTanggal($tgl));
+        $year = substr($arrJam[0], 2);
+        return $arrJam[2] . $arrJam[1] . $year;
     }
 }
 
-function fixTanggal( $tgl ) {
-    if ( $tgl != null ) {
-        $arrJam = explode( '-', $tgl );
-        if ( ( int ) $arrJam[ 1 ] < 10 ) {
-            $month = '0' . ( int ) $arrJam[ 1 ];
+function fixTanggal($tgl)
+{
+    if ($tgl != null) {
+        $arrJam = explode('-', $tgl);
+        if ((int) $arrJam[1] < 10) {
+            $month = '0' . (int) $arrJam[1];
         } else {
-            $month = $arrJam[ 1 ];
+            $month = $arrJam[1];
         }
-        if ( ( int ) $arrJam[ 2 ] < 10 ) {
-            $date = '0' . ( int ) $arrJam[ 2 ];
+        if ((int) $arrJam[2] < 10) {
+            $date = '0' . (int) $arrJam[2];
         } else {
-            $date = $arrJam[ 2 ];
+            $date = $arrJam[2];
         }
 
-        return $arrJam[ 0 ] . '-' . $month . '-' . $date;
+        return $arrJam[0] . '-' . $month . '-' . $date;
     }
 }
 
-function monthYear( $tgl ) {
-    $month = Carbon::parse( $tgl )->format( 'F' );
-    $year = Carbon::parse( $tgl )->format( 'Y' );
+function monthYear($tgl)
+{
+    $month = Carbon::parse($tgl)->format('F');
+    $year = Carbon::parse($tgl)->format('Y');
     return $month . ' ' . $year;
 }
 
-function getBulan( $tgl ) {
-    $arrJam = explode( '-', $tgl );
-    return $arrJam[ 1 ];
+function getBulan($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[1];
 }
 
-function addZeroToMonth( $tgl ) {
-    if ( $tgl != null ) {
-        if ( $tgl < 10 ) {
+function addZeroToMonth($tgl)
+{
+    if ($tgl != null) {
+        if ($tgl < 10) {
             return '0' . $tgl;
         } else {
             return $tgl;
@@ -197,61 +240,66 @@ function addZeroToMonth( $tgl ) {
     }
 }
 
-function getTahun( $tgl ) {
-    $arrJam = explode( '-', $tgl );
-    return $arrJam[ 0 ];
+function getTahun($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[0];
 }
 
-function buatTanggal( $tgl ) {
-    $arrJam = explode( '-', $tgl );
-    return $arrJam[ 0 ] . '-' . $arrJam[ 1 ] . '-01';
+function buatTanggal($tgl)
+{
+    $arrJam = explode('-', $tgl);
+    return $arrJam[0] . '-' . $arrJam[1] . '-01';
 }
 
-function pembulatanJamOvertimeIn( $jam ) {
-    $arrJam = explode( ':', $jam );
-    if ( ( int ) $arrJam[ 1 ] <= 33 ) {
-        if ( ( int ) $arrJam[ 0 ] < 10 ) {
-            return $menit = '0' . $arrJam[ 0 ] . ':30:00';
+function pembulatanJamOvertimeIn($jam)
+{
+    $arrJam = explode(':', $jam);
+    if ((int) $arrJam[1] <= 33) {
+        if ((int) $arrJam[0] < 10) {
+            return $menit = '0' . $arrJam[0] . ':30:00';
         } else {
-            return $menit = $arrJam[ 0 ] . ':30:00';
+            return $menit = $arrJam[0] . ':30:00';
         }
     } else {
-        $tambahJam = ( int ) $arrJam[ 0 ] + 1;
-        if ( $tambahJam < 10 ) {
-            $strJam = '0' . strval( $tambahJam ) . ':';
+        $tambahJam = (int) $arrJam[0] + 1;
+        if ($tambahJam < 10) {
+            $strJam = '0' . strval($tambahJam) . ':';
         } else {
-            $strJam = strval( $tambahJam ) . ':';
+            $strJam = strval($tambahJam) . ':';
         }
         return $strJam . '00:00';
     }
 }
 
-function pembulatanJamOvertimeOut( $jam ) {
-    $arrJam = explode( ':', $jam );
-    if ( ( int ) $arrJam[ 1 ] >= 30 ) {
-        if ( ( int ) $arrJam[ 0 ] < 10 ) {
-            return $menit = '0' . ( int ) $arrJam[ 0 ] . ':30:00';
+function pembulatanJamOvertimeOut($jam)
+{
+    $arrJam = explode(':', $jam);
+    if ((int) $arrJam[1] >= 30) {
+        if ((int) $arrJam[0] < 10) {
+            return $menit = '0' . (int) $arrJam[0] . ':30:00';
         } else {
-            return $menit = $arrJam[ 0 ] . ':30:00';
+            return $menit = $arrJam[0] . ':30:00';
         }
     } else {
-        if ( ( int ) $arrJam[ 0 ] < 10 ) {
-            return $menit = '0' . ( int ) $arrJam[ 0 ] . ':00:00';
+        if ((int) $arrJam[0] < 10) {
+            return $menit = '0' . (int) $arrJam[0] . ':00:00';
         } else {
-            return $menit = $arrJam[ 0 ] . ':00:00';
+            return $menit = $arrJam[0] . ':00:00';
         }
     }
 }
 
-function hitungLembur( $overtime_in, $overtime_out ) {
-    if ( $overtime_in != '' || $overtime_out != '' ) {
-        $t1 = strtotime( pembulatanJamOvertimeIn( $overtime_in ) );
-        $t2 = strtotime( pembulatanJamOvertimeOut( $overtime_out ) );
+function hitungLembur($overtime_in, $overtime_out)
+{
+    if ($overtime_in != '' || $overtime_out != '') {
+        $t1 = strtotime(pembulatanJamOvertimeIn($overtime_in));
+        $t2 = strtotime(pembulatanJamOvertimeOut($overtime_out));
 
-        $diff = gmdate( 'H:i:s', $t2 - $t1 );
-        $diff = explode( ':', $diff );
-        $jam = ( int ) $diff[ 0 ];
-        $menit = ( int ) $diff[ 1 ];
+        $diff = gmdate('H:i:s', $t2 - $t1);
+        $diff = explode(':', $diff);
+        $jam = (int) $diff[0];
+        $menit = (int) $diff[1];
         // if ( $menit<30 ) {
         //     $menit = 0;
         // } else {
@@ -265,15 +313,18 @@ function hitungLembur( $overtime_in, $overtime_out ) {
     }
 }
 
-function fixTrimTime( $data ) {
+function fixTrimTime($data)
+{
     return $data . ':00';
 }
 
-function trimTime( $data ) {
-    return Str::substr( $data, 0, 5 );
+function trimTime($data)
+{
+    return Str::substr($data, 0, 5);
 }
 
-function late_check_jam_kerja_only ($first_in, $first_out, $second_in, $second_out, $shift, $tgl) {
+function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl)
+{
     $late_1 = 0;
     $late_2 = 0;
     $late_3 = 0;
@@ -286,43 +337,44 @@ function late_check_jam_kerja_only ($first_in, $first_out, $second_in, $second_o
     // $total_late_2 = $total_late_2 + $late2;
     // $total_late_3 = $total_late_3 + $late3;
     // $total_late_4 = $total_late_4 + $late4;
-    return  ($late1 + $late2 + $late3 + $late4);
+    return $late1 + $late2 + $late3 + $late4;
 }
-function late_check_jam_lembur_only ($overtime_in, $shift, $date) {
+function late_check_jam_lembur_only($overtime_in, $shift, $date)
+{
     return checkOvertimeInLate($overtime_in, $shift, $date);
-
 }
 
-function is_jabatan_khusus($id) {
+function is_jabatan_khusus($id)
+{
     $jabatan = Karyawan::where('id_karyawan', $id)->first();
-    switch($jabatan->jabatan) {
-        case ('Satpam'):
+    switch ($jabatan->jabatan) {
+        case 'Satpam':
             $jabatan_khusus = 1;
             break;
-        case ('Koki'):
+        case 'Koki':
             $jabatan_khusus = 1;
             break;
-        case ('Dapur Kantor'):
+        case 'Dapur Kantor':
             $jabatan_khusus = 1;
             break;
-        case ('Dapur Pabrik'):
+        case 'Dapur Pabrik':
             $jabatan_khusus = 1;
             break;
-        case ('QC Aging'):
+        case 'QC Aging':
             $jabatan_khusus = 1;
             break;
-        case ('Driver'):
+        case 'Driver':
             $jabatan_khusus = 1;
             break;
 
         default:
-        $jabatan_khusus = 0;
+            $jabatan_khusus = 0;
     }
-    return  $jabatan_khusus;
-
+    return $jabatan_khusus;
 }
 
-function late_check_detail( $first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id ) {
+function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
+{
     // $late = null;
     // $late1 = null;
     // $late2 = null;
@@ -330,33 +382,31 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
     // $late4 = null;
     $jabatan_khusus = is_jabatan_khusus($id);
 
-
-
     $late5 = null;
 
     // if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
-    if(($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')){
+    if (($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')) {
         $data->late = 1;
         dd($data->late, $data->user_id);
         return $late = 1;
     }
 
-    if ( checkFirstInLate( $first_in, $shift, $tgl ) ) {
+    if (checkFirstInLate($first_in, $shift, $tgl)) {
         //  return $late = $late + 1;
         return $late = 1;
         // $late1 = 1;
     }
-    if ( checkFirstOutLate( $first_out, $shift, $tgl ) ) {
+    if (checkFirstOutLate($first_out, $shift, $tgl)) {
         //  return $late = $late + 1;
-        if($jabatan_khusus != 1) {
+        if ($jabatan_khusus != 1) {
             return $late = 1;
         }
         // return $late = 1;
         // $late2 = 1;
     }
-    if ( checkSecondOutLate( $second_out, $shift, $tgl ) ) {
+    if (checkSecondOutLate($second_out, $shift, $tgl)) {
         //  return $late = $late + 1;
-        if($jabatan_khusus != 1) {
+        if ($jabatan_khusus != 1) {
             return $late = 1;
         }
 
@@ -368,18 +418,18 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
     //     return $late = 1;
     // }
 
-    if ( checkSecondInLate( $second_in, $shift, $first_out, $tgl ) ) {
+    if (checkSecondInLate($second_in, $shift, $first_out, $tgl)) {
         // return $late = $late + 1 ;
-        if($jabatan_khusus != 1) {
+        if ($jabatan_khusus != 1) {
             return $late = 1;
         }
         // $late5 = 1;
     }
 
-    if ($second_in == null && $second_out==null){
+    if ($second_in == null && $second_out == null) {
         return $late = 1;
     }
-    if ($first_in == null && $first_out==null){
+    if ($first_in == null && $first_out == null) {
         return $late = 1;
     }
     // $late = $late1 + $late2 + $late3+ $late4 + $late5 ;
@@ -388,48 +438,50 @@ function late_check_detail( $first_in, $first_out, $second_in, $second_out, $ove
 
 // ook
 
-function hoursToMinutes( $jam ) {
-    $arrJam = explode( ':', $jam );
-    $minJam = ( int ) $arrJam[ 0 ] * 60;
-    $min = ( int ) $arrJam[ 1 ];
+function hoursToMinutes($jam)
+{
+    $arrJam = explode(':', $jam);
+    $minJam = (int) $arrJam[0] * 60;
+    $min = (int) $arrJam[1];
     return $minJam + $min;
 }
 
-function checkFirstInLate( $check_in, $shift, $tgl ) {
+function checkFirstInLate($check_in, $shift, $tgl)
+{
     $perJam = 60;
     $late = null;
-    if ( $check_in != null ) {
-        if ( $shift == 'Pagi' ) {
+    if ($check_in != null) {
+        if ($shift == 'Pagi') {
             // Shift Pagi
-            if ( Carbon::parse( $check_in )->betweenIncluded( '05:30', '08:03' ) ) {
+            if (Carbon::parse($check_in)->betweenIncluded('05:30', '08:03')) {
                 $late = null;
             } else {
-                $t1 = strtotime( '08:03:00' );
-                $t2 = strtotime( $check_in );
+                $t1 = strtotime('08:03:00');
+                $t2 = strtotime($check_in);
 
-                $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                $diff = gmdate('H:i:s', $t2 - $t1);
+                $late = ceil(hoursToMinutes($diff) / $perJam);
             }
         } else {
-            if ( is_saturday( $tgl ) ) {
-                if ( Carbon::parse( $check_in )->betweenIncluded( '14:00', '17:03' ) ) {
+            if (is_saturday($tgl)) {
+                if (Carbon::parse($check_in)->betweenIncluded('14:00', '17:03')) {
                     $late = null;
                 } else {
-                    $t1 = strtotime( '17:03:00' );
-                    $t2 = strtotime( $check_in );
+                    $t1 = strtotime('17:03:00');
+                    $t2 = strtotime($check_in);
 
-                    $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t2 - $t1);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 }
             } else {
-                if ( Carbon::parse( $check_in )->betweenIncluded( '16:00', '20:03' ) ) {
+                if (Carbon::parse($check_in)->betweenIncluded('16:00', '20:03')) {
                     $late = null;
                 } else {
-                    $t1 = strtotime( '20:03:00' );
-                    $t2 = strtotime( $check_in );
+                    $t1 = strtotime('20:03:00');
+                    $t2 = strtotime($check_in);
 
-                    $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t2 - $t1);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 }
             }
         }
@@ -437,52 +489,52 @@ function checkFirstInLate( $check_in, $shift, $tgl ) {
     return $late;
 }
 
-function checkSecondOutLate( $second_out, $shift, $tgl ) {
+function checkSecondOutLate($second_out, $shift, $tgl)
+{
     $perJam = 60;
     $late = null;
-    if ( $second_out != null ) {
-        if ( $shift == 'Pagi' ) {
+    if ($second_out != null) {
+        if ($shift == 'Pagi') {
             // Shift Pagi
-            if ( is_saturday( $tgl ) ) {
-                if ( Carbon::parse( $second_out )->betweenIncluded( '12:00', '14:59' ) ) {
-                    $t1 = strtotime( '15:00:00' );
-                    $t2 = strtotime( $second_out );
-//kkk
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
-
+            if (is_saturday($tgl)) {
+                if (Carbon::parse($second_out)->betweenIncluded('12:00', '14:59')) {
+                    $t1 = strtotime('15:00:00');
+                    $t2 = strtotime($second_out);
+                    //kkk
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
             } else {
-                if ( Carbon::parse( $second_out )->betweenIncluded( '12:00', '16:59' ) ) {
-                    $t1 = strtotime( '17:00:00' );
-                    $t2 = strtotime( $second_out );
+                if (Carbon::parse($second_out)->betweenIncluded('12:00', '16:59')) {
+                    $t1 = strtotime('17:00:00');
+                    $t2 = strtotime($second_out);
 
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
             }
         } else {
-            if ( is_saturday( $tgl ) ) {
-                if ( Carbon::parse( $second_out )->betweenIncluded( '19:00', '23:59' ) ) {
-                    $t1 = strtotime( '00:00:00' );
-                    $t2 = strtotime( $second_out );
+            if (is_saturday($tgl)) {
+                if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+                    $t1 = strtotime('00:00:00');
+                    $t2 = strtotime($second_out);
 
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
             } else {
-                if ( Carbon::parse( $second_out )->betweenIncluded( '00:00', '04:59' ) ) {
-                    $t1 = strtotime( '05:00:00' );
-                    $t2 = strtotime( $second_out );
+                if (Carbon::parse($second_out)->betweenIncluded('00:00', '04:59')) {
+                    $t1 = strtotime('05:00:00');
+                    $t2 = strtotime($second_out);
 
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
@@ -492,59 +544,61 @@ function checkSecondOutLate( $second_out, $shift, $tgl ) {
     return $late;
 }
 
-function checkOvertimeInLate( $overtime_in, $shift, $tgl ) {
+function checkOvertimeInLate($overtime_in, $shift, $tgl)
+{
     $persetengahJam = 30;
     $late = null;
-    if ( $overtime_in != null ) {
-        if ( $shift == 'Pagi' ) {
+    if ($overtime_in != null) {
+        if ($shift == 'Pagi') {
             // Shift Pagi
-            if ( Carbon::parse( $overtime_in )->betweenIncluded( '12:00', '18:33' ) ) {
+            if (Carbon::parse($overtime_in)->betweenIncluded('12:00', '18:33')) {
                 $late = null;
             } else {
-                $t1 = strtotime( '18:33:00' );
-                $t2 = strtotime( $overtime_in );
+                $t1 = strtotime('18:33:00');
+                $t2 = strtotime($overtime_in);
 
-                $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                $late = ceil( hoursToMinutes( $diff ) / $persetengahJam );
+                $diff = gmdate('H:i:s', $t2 - $t1);
+                $late = ceil(hoursToMinutes($diff) / $persetengahJam);
             }
         }
     }
     return $late;
 }
 
-function checkFirstOutLate( $first_out, $shift, $tgl ) {
+function checkFirstOutLate($first_out, $shift, $tgl)
+{
     $perJam = 60;
     $late = null;
-    if ( $first_out != null ) {
-        if ( $shift == 'Pagi' ) {
+    if ($first_out != null) {
+        if ($shift == 'Pagi') {
             // Shift Pagi
-            if ( Carbon::parse( $first_out )->betweenIncluded( '08:00', '11:29' ) ) {
-                $t1 = strtotime( '11:30:00' );
-                $t2 = strtotime( $first_out );
+            if (Carbon::parse($first_out)->betweenIncluded('08:00', '11:29')) {
+                $t1 = strtotime('11:30:00');
+                $t2 = strtotime($first_out);
 
-                $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                $diff = gmdate('H:i:s', $t1 - $t2);
+                $late = ceil(hoursToMinutes($diff) / $perJam);
             } else {
                 $late = null;
             }
         } else {
-            if ( is_saturday( $tgl ) ) {
-                if ( Carbon::parse( $first_out )->betweenIncluded( '17:01', '20:59' ) ) {
-                    $t1 = strtotime( '21:00:00' );
-                    $t2 = strtotime( $first_out );
+            if (is_saturday($tgl)) {
+                if (Carbon::parse($first_out)->betweenIncluded('17:01', '20:59')) {
+                    $t1 = strtotime('21:00:00');
+                    $t2 = strtotime($first_out);
 
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
             } else {
-                if ( Carbon::parse( $first_out )->betweenIncluded( '20:00', '23:59' ) ) {
-                    $t1 = strtotime( '00:00:00' );
-                    $t2 = strtotime( $first_out );
+                if (Carbon::parse($first_out)->betweenIncluded('20:00', '23:59')) {
+                    $t1 = strtotime('00:00:00');
+                    $t2 = strtotime($first_out);
 
-                    $diff = gmdate( 'H:i:s', $t1 - $t2 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 } else {
                     $late = null;
                 }
@@ -554,80 +608,81 @@ function checkFirstOutLate( $first_out, $shift, $tgl ) {
     return $late;
 }
 
-function checkSecondInLate( $second_in, $shift, $firstOut, $tgl ) {
+function checkSecondInLate($second_in, $shift, $firstOut, $tgl)
+{
     $perJam = 60;
     $late = null;
     $groupIstirahat;
 
-    if ( $second_in != null ) {
-        if ( $shift = 'Pagi' ) {
-            if ( $firstOut != null ) {
-                if ( Carbon::parse( $firstOut )->betweenIncluded( '08:00', '11:59' ) ) {
+    if ($second_in != null) {
+        if ($shift == 'Pagi') {
+            if ($firstOut != null) {
+                if (Carbon::parse($firstOut)->betweenIncluded('08:00', '11:59')) {
                     $groupIstirahat = 1;
-                } elseif ( Carbon::parse( $firstOut )->betweenIncluded( '12:00', '12:59' ) ) {
+                } elseif (Carbon::parse($firstOut)->betweenIncluded('12:00', '12:59')) {
                     $groupIstirahat = 2;
                 } else {
                     $groupIstirahat = 0;
                 }
 
                 // Shift Pagi ggg
-                if(is_friday($tgl)){
-                    if ( Carbon::parse( $second_in )->betweenIncluded( '11:30', '13:03' ) ) {
+                if (is_friday($tgl)) {
+                    if (Carbon::parse($second_in)->betweenIncluded('11:30', '13:03')) {
                         $late = null;
                     } else {
-                        $t1 = strtotime( '13:03:00' );
-                        $t2 = strtotime( $second_in );
+                        $t1 = strtotime('13:03:00');
+                        $t2 = strtotime($second_in);
 
-                        $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                        $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                        $diff = gmdate('H:i:s', $t2 - $t1);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
                     }
                 } else {
-                if ( $groupIstirahat == 1 ) {
-                    if ( Carbon::parse( $second_in )->betweenIncluded( '08:00', '12:33' ) ) {
-                        $late = null;
-                    } else {
-                        $t1 = strtotime( '12:33:00' );
-                        $t2 = strtotime( $second_in );
+                    if ($groupIstirahat == 1) {
+                        if (Carbon::parse($second_in)->betweenIncluded('08:00', '12:33')) {
+                            $late = null;
+                        } else {
+                            $t1 = strtotime('12:33:00');
+                            $t2 = strtotime($second_in);
 
-                        $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                        $late = ceil( hoursToMinutes( $diff ) / $perJam );
-                    }
-                } elseif ( $groupIstirahat == 2 ) {
-                    if ( Carbon::parse( $second_in )->betweenIncluded( '11:00', '13:03' ) ) {
-                        $late = null;
-                    } else {
-                        $t1 = strtotime( '13:03:00' );
-                        $t2 = strtotime( $second_in );
+                            $diff = gmdate('H:i:s', $t2 - $t1);
+                            $late = ceil(hoursToMinutes($diff) / $perJam);
+                        }
+                    } elseif ($groupIstirahat == 2) {
+                        if (Carbon::parse($second_in)->betweenIncluded('11:00', '13:03')) {
+                            $late = null;
+                        } else {
+                            $t1 = strtotime('13:03:00');
+                            $t2 = strtotime($second_in);
 
-                        $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                        $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                            $diff = gmdate('H:i:s', $t2 - $t1);
+                            $late = ceil(hoursToMinutes($diff) / $perJam);
+                        }
+                    } else {
+                        $late = null;
                     }
-                } else {
-                    $late = null;
                 }
-            }
             }
         } else {
-            if ( is_saturday( $tgl ) ) {
-                if ( Carbon::parse( $second_in )->betweenIncluded( '20:01', '22:03' ) ) {
+            if (is_saturday($tgl)) {
+                if (Carbon::parse($second_in)->betweenIncluded('20:01', '22:03')) {
                     $late = null;
                 } else {
-                    $t1 = strtotime( '22:03:00' );
-                    $t2 = strtotime( $second_in );
+                    $t1 = strtotime('22:03:00');
+                    $t2 = strtotime($second_in);
 
-                    $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                    $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t2 - $t1);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
                 }
             } else {
-            }
-            if ( Carbon::parse( $second_in )->betweenIncluded( '00:00', '01:03' ) ) {
-                $late = null;
-            } else {
-                $t1 = strtotime( '01:03:00' );
-                $t2 = strtotime( $second_in );
+                if (Carbon::parse($second_in)->betweenIncluded('00:00', '01:03')) {
+                    $late = null;
+                } else {
+                    $t1 = strtotime('01:03:00');
+                    $t2 = strtotime($second_in);
 
-                $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                $late = ceil( hoursToMinutes( $diff ) / $perJam );
+                    $diff = gmdate('H:i:s', $t2 - $t1);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                }
             }
         }
     }
@@ -635,17 +690,18 @@ function checkSecondInLate( $second_in, $shift, $firstOut, $tgl ) {
     return $late;
 }
 
-function noScan( $first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out ) {
-    if ( $first_in != null && $second_out != null && $first_out == null && $second_in == null && ( ( $overtime_in == null ) & ( $overtime_out != null ) || ( $overtime_in != null ) & ( $overtime_out == null ) ) ) {
+function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out)
+{
+    if ($first_in != null && $second_out != null && $first_out == null && $second_in == null && (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null))) {
         return 'No Scan';
     }
-    if ( $first_in != null && $second_out != null && $first_out == null && $second_in == null ) {
+    if ($first_in != null && $second_out != null && $first_out == null && $second_in == null) {
         return null;
     }
-    if ( ( $first_in == null ) & ( $first_out != null ) || ( $first_in != null ) & ( $first_out == null ) ) {
+    if (($first_in == null) & ($first_out != null) || ($first_in != null) & ($first_out == null)) {
         return 'No Scan';
     }
-    if ( ( $second_in == null ) & ( $second_out != null ) || ( $second_in != null ) & ( $second_out == null ) ) {
+    if (($second_in == null) & ($second_out != null) || ($second_in != null) & ($second_out == null)) {
         return 'No Scan';
     }
     // if (( $second_in == null ) && ( $second_out == null )) {
@@ -655,65 +711,72 @@ function noScan( $first_in, $first_out, $second_in, $second_out, $overtime_in, $
     //     return 'No Scan';
     // }
 
-    if ( ( $overtime_in == null ) & ( $overtime_out != null ) || ( $overtime_in != null ) & ( $overtime_out == null ) ) {
+    if (($overtime_in == null) & ($overtime_out != null) || ($overtime_in != null) & ($overtime_out == null)) {
         return 'No Scan';
     }
 }
 
-function titleCase( $data ) {
+function titleCase($data)
+{
     // $data1 =  Str::of( $data )->trim( '/' );
-    return Str::of( $data )
-    ->trim( '/' )
-    ->title();
+    return Str::of($data)
+        ->trim('/')
+        ->title();
 }
 
-function getLastIdKaryawan() {
-    return DB::table( 'karyawans' )->max( 'id_karyawan' );
+function getLastIdKaryawan()
+{
+    return DB::table('karyawans')->max('id_karyawan');
 }
 
-function getNextIdKaryawan() {
+function getNextIdKaryawan()
+{
     return getLastIdKaryawan() + 1;
 }
 
-function format_tgl( $tgl ) {
-    if ( $tgl ) {
-        return date( 'd-M-Y', strtotime( $tgl ) );
+function format_tgl($tgl)
+{
+    if ($tgl) {
+        return date('d-M-Y', strtotime($tgl));
     }
 }
 
-function format_tgl_hari( $tgl ) {
-    if ( $tgl ) {
-        return date( 'D, d-M-Y', strtotime( $tgl ) );
+function format_tgl_hari($tgl)
+{
+    if ($tgl) {
+        return date('D, d-M-Y', strtotime($tgl));
     }
 }
 
-function format_jam( $jam ) {
-    if ( $jam ) {
-        return Carbon::createFromFormat( 'H:i:s', $jam )->format( 'H:i' );
+function format_jam($jam)
+{
+    if ($jam) {
+        return Carbon::createFromFormat('H:i:s', $jam)->format('H:i');
     }
 }
 
-function is_friday($tgl) {
-    if ( $tgl ) {
-
-        return Carbon::parse( $tgl )->isFriday();
+function is_friday($tgl)
+{
+    if ($tgl) {
+        return Carbon::parse($tgl)->isFriday();
     }
-
 }
 
-function is_saturday( $tgl ) {
-    if ( $tgl ) {
+function is_saturday($tgl)
+{
+    if ($tgl) {
         // if ( Carbon::parse( $tgl )->isSaturday() ) {
         //     return true;
         // } else {
         //     return false;
         // }
-        return Carbon::parse( $tgl )->isSaturday();
+        return Carbon::parse($tgl)->isSaturday();
     }
 }
 
-function sp_recal_presensi() {
-    if ( Schema::hasTable( 'table_name' ) ) {
+function sp_recal_presensi()
+{
+    if (Schema::hasTable('table_name')) {
         // Do something if exists
     }
 }

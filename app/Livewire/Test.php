@@ -17,8 +17,11 @@ class Test extends Component {
 
     public function render() {
 
+        $second_out = '06:01:00';
+        $tgl = '2023-11-03';
+        $shift = 'Malam';
+        $langsungLembur = langsungLembur( $second_out, $tgl, $shift);
 
-
-        return view( 'livewire.test' );
+        return view( 'livewire.test', compact('langsungLembur') );
     }
 }
