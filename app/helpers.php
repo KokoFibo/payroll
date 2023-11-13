@@ -5,14 +5,6 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
-// kkk
-
-// $t1 = strtotime( '20:00:00' );
-            // $t2 = strtotime( $second_out );
-
-            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
-
 function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     $lembur = 0;
 
@@ -73,11 +65,12 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
 
             if (is_saturday($tgl)) {
                 $jam_kerja = 6;
-            } else {
+            } elseif (is_friday($tgl)) {
+                $jam_kerja = 7.5;
+            }else {
                 $jam_kerja = 8;
             }
         } else {
-
             $jam_kerja = 8;
             if (is_saturday($tgl)) {
                 $jam_kerja = 6;
@@ -87,7 +80,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         }
     } else {
         // check late kkk
-        $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl);
+        $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan);
         //    dd($first_in, $first_out, $second_in, $second_out);
         if (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
             if (is_saturday($tgl)) {
@@ -262,7 +255,16 @@ function buatTanggal($tgl)
 function pembulatanJamOvertimeIn($jam)
 {
     $arrJam = explode(':', $jam);
-    if ((int) $arrJam[1] <= 33) {
+    if((int) $arrJam[1] <= 3) {
+        $tambahJam = (int) $arrJam[0] ;
+        if ($tambahJam < 10) {
+            $strJam = '0' . strval($tambahJam) . ':';
+        } else {
+            $strJam = strval($tambahJam) . ':';
+        }
+        return $strJam . '00:00';
+    }
+    elseif ((int) $arrJam[1] <= 33) {
         if ((int) $arrJam[0] < 10) {
             return $menit = '0' . $arrJam[0] . ':30:00';
         } else {
@@ -330,16 +332,16 @@ function trimTime($data)
     return Str::substr($data, 0, 5);
 }
 
-function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl)
+function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan)
 {
     $late_1 = 0;
     $late_2 = 0;
     $late_3 = 0;
     $late_4 = 0;
     $late1 = checkFirstInLate($first_in, $shift, $tgl);
-    $late2 = checkFirstOutLate($first_out, $shift, $tgl);
-    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl);
-    $late4 = checkSecondOutLate($second_out, $shift, $tgl);
+    $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan);
+    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan);
+    $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan);
     // $total_late_1 = $total_late_1 + $late1;
     // $total_late_2 = $total_late_2 + $late2;
     // $total_late_3 = $total_late_3 + $late3;
@@ -351,10 +353,10 @@ function late_check_jam_lembur_only($overtime_in, $shift, $date)
     return checkOvertimeInLate($overtime_in, $shift, $date);
 }
 
-function is_jabatan_khusus($id)
+function is_jabatan_khusus($jabatan)
 {
-    $jabatan = Karyawan::where('id_karyawan', $id)->first();
-    switch ($jabatan->jabatan) {
+    // $jabatan = Karyawan::where('id_karyawan', $id)->first();
+    switch ($jabatan) {
         case 'Satpam':
             $jabatan_khusus = 1;
             break;
@@ -387,14 +389,17 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late2 = null;
     // $late3 = null;
     // $late4 = null;
-    $jabatan_khusus = is_jabatan_khusus($id);
+    // ffff
+
+    $jabatan = Karyawan::where('id_karyawan', $id)->first();
+    $jabatan_khusus = is_jabatan_khusus($jabatan);
 
     $late5 = null;
 
     // if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
     if (($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')) {
         $data->late = 1;
-        dd($data->late, $data->user_id);
+        // dd($data->late, $data->user_id);
         return $late = 1;
     }
 
@@ -403,19 +408,21 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
         return $late = 1;
         // $late1 = 1;
     }
-    if (checkFirstOutLate($first_out, $shift, $tgl)) {
+    if (checkFirstOutLate($first_out, $shift, $tgl, $jabatan_khusus)) {
         //  return $late = $late + 1;
-        if ($jabatan_khusus != 1) {
+        if ($jabatan_khusus == '') {
             return $late = 1;
         }
         // return $late = 1;
         // $late2 = 1;
     }
-    if (checkSecondOutLate($second_out, $shift, $tgl)) {
+    if (checkSecondOutLate($second_out, $shift, $tgl, $jabatan->jabatan)) {
         //  return $late = $late + 1;
-        if ($jabatan_khusus != 1) {
-            return $late = 1;
-        }
+        // if ($jabatan_khusus != '1') {
+        //     return $late = 1;
+        // }
+        return $late = 1;
+
 
         // return $late = 1;
         // $late3 = 1;
@@ -425,9 +432,10 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     //     return $late = 1;
     // }
 
-    if (checkSecondInLate($second_in, $shift, $first_out, $tgl)) {
+    if (checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan_khusus)) {
         // return $late = $late + 1 ;
-        if ($jabatan_khusus != 1) {
+
+        if ($jabatan_khusus == '') {
             return $late = 1;
         }
         // $late5 = 1;
@@ -496,7 +504,7 @@ function checkFirstInLate($check_in, $shift, $tgl)
     return $late;
 }
 
-function checkSecondOutLate($second_out, $shift, $tgl)
+function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
 {
     $perJam = 60;
     $late = null;
@@ -547,6 +555,33 @@ function checkSecondOutLate($second_out, $shift, $tgl)
                 }
             }
         }
+        if($jabatan == 'Satpam') {
+            if ($shift == 'Pagi') {
+                if (Carbon::parse($second_out)->betweenIncluded('08:01', '19:00')) {
+                    $t1 = strtotime('20:00:00');
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                } else {
+                    $late = null;
+                }
+
+            } else {
+                if (Carbon::parse($second_out)->betweenIncluded('20:01', '07:00')) {
+                    $t1 = strtotime('08:00:00');
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                } else {
+                    $late = null;
+                }
+
+            }
+
+        }
+
     }
     return $late;
 }
@@ -572,11 +607,16 @@ function checkOvertimeInLate($overtime_in, $shift, $tgl)
     return $late;
 }
 
-function checkFirstOutLate($first_out, $shift, $tgl)
+function checkFirstOutLate($first_out, $shift, $tgl, $jabatan)
 {
     $perJam = 60;
     $late = null;
-    if ($first_out != null) {
+    if(is_jabatan_khusus( $jabatan) == 1) {
+        $late = null;
+    } else {
+
+
+        if ($first_out != null) {
         if ($shift == 'Pagi') {
             // Shift Pagi
             if (Carbon::parse($first_out)->betweenIncluded('08:00', '11:29')) {
@@ -612,13 +652,17 @@ function checkFirstOutLate($first_out, $shift, $tgl)
             }
         }
     }
+    }
     return $late;
 }
 
-function checkSecondInLate($second_in, $shift, $firstOut, $tgl)
+function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan)
 {
     $perJam = 60;
     $late = null;
+    if(is_jabatan_khusus( $jabatan) == 1) {
+        $late = null;
+    } else {
     $groupIstirahat;
 
     if ($second_in != null) {
@@ -693,7 +737,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl)
             }
         }
     }
-
+}
     return $late;
 }
 

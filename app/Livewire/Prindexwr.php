@@ -203,9 +203,9 @@ class Prindexwr extends Component
 
                         // check keterlambatan di hari kerja non overtime
                         $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
-                        $late2 = checkFirstOutLate($dt->first_out, $dt->shift, $dt->date);
-                        $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date);
-                        $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date);
+                        $late2 = checkFirstOutLate($dt->first_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                        $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date, $dt->karyawan->jabatan);
+                        $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
                         // $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
 
                         if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
