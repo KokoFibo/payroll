@@ -81,15 +81,19 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         // check late kkk
         $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan);
         //    dd($first_in, $first_out, $second_in, $second_out);
+        //jok
         if (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
             if (is_saturday($tgl)) {
                 if ($first_in === null && $first_out === null) {
                     $jam_kerja = 2 - $total_late;
+                    // $jam_kerja = 2 ;
                 } else {
                     $jam_kerja = 4 - $total_late;
+                    // $jam_kerja = 4 ;
                 }
             } else {
                 $jam_kerja = 4 - $total_late;
+                // $jam_kerja = 4 ;
             }
         } else {
             if ($shift == 'Pagi') {
@@ -338,12 +342,55 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan);
     $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan);
     $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan);
+
+    // if (($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')) {
+
+    //     dd('sini');
+    //     // jik
+    //     if ($first_in === null && $first_out === null) {
+    //             if($shift = 'Pagi'){
+    //                 if(Carbon::parse($second_in)->betweenIncluded('08:01', '13:03')) {
+    //                     $late3 = 0;
+    //                 }
+    //             } else {
+    //                 if (is_saturday($tgl)) {
+    //                     if(Carbon::parse($second_in)->betweenIncluded('17:01', '22:03')) {
+    //                         $late3 = 0;
+    //                     }
+    //                 } else {
+    //                     if(Carbon::parse($second_in)->betweenIncluded('20:01', '00:03')) {
+    //                         $late3 = 0;
+    //                     }
+    //                 }
+    //             }
+    //     } else {
+    //         if($shift = 'Pagi'){
+    //             if(Carbon::parse($second_in)->betweenIncluded('05:01', '07:03')) {
+    //                 $late1 = 0;
+    //             }
+    //         } else {
+    //             if (is_saturday($tgl)) {
+    //                 if(Carbon::parse($second_in)->betweenIncluded('15:01', '17:03')) {
+    //                     $late1 = 0;
+    //                 }
+    //             } else {
+    //                 if(Carbon::parse($second_in)->betweenIncluded('17:01', '20:03')) {
+    //                     $late1 = 0;
+    //             }
+    //         }
+
+    //     }
+    // }
+
     // $total_late_1 = $total_late_1 + $late1;
     // $total_late_2 = $total_late_2 + $late2;
     // $total_late_3 = $total_late_3 + $late3;
     // $total_late_4 = $total_late_4 + $late4;
     return $late1 + $late2 + $late3 + $late4;
 }
+
+
+
 function late_check_jam_lembur_only($overtime_in, $shift, $date)
 {
     return checkOvertimeInLate($overtime_in, $shift, $date);
@@ -605,6 +652,7 @@ function checkOvertimeInLate($overtime_in, $shift, $tgl)
 
 function checkFirstOutLate($first_out, $shift, $tgl, $jabatan)
 {
+    //ok
     $perJam = 60;
     $late = null;
     if(is_jabatan_khusus( $jabatan) == 1) {
@@ -679,7 +727,6 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan)
                     } else {
                         $t1 = strtotime('13:03:00');
                         $t2 = strtotime($second_in);
-
                         $diff = gmdate('H:i:s', $t2 - $t1);
                         $late = ceil(hoursToMinutes($diff) / $perJam);
                     }
@@ -708,7 +755,44 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan)
                         $late = null;
                     }
                 }
+            } else {
+                //jika first out null
+                if($shift == 'Pagi') {
+                    if (Carbon::parse($second_in)->betweenIncluded('08:00', '13:03')){
+                        $late = null;
+                    } else {
+                        $t1 = strtotime('13:03:00');
+                        $t2 = strtotime($second_in);
+
+                        $diff = gmdate('H:i:s', $t2 - $t1);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    }
+
+                } else {
+                    if (is_saturday($tgl)) {
+                        if (Carbon::parse($second_in)->betweenIncluded('20:01', '22:03')) {
+                            $late = null;
+                        } else {
+                            $t1 = strtotime('22:03:00');
+                            $t2 = strtotime($second_in);
+
+                            $diff = gmdate('H:i:s', $t2 - $t1);
+                            $late = ceil(hoursToMinutes($diff) / $perJam);
+                        }
+                    } else {
+                        if (Carbon::parse($second_in)->betweenIncluded('00:00', '01:03')) {
+                            $late = null;
+                        } else {
+                            $t1 = strtotime('01:03:00');
+                            $t2 = strtotime($second_in);
+
+                            $diff = gmdate('H:i:s', $t2 - $t1);
+                            $late = ceil(hoursToMinutes($diff) / $perJam);
+                        }
+                    }
+                }
             }
+
         } else {
             if (is_saturday($tgl)) {
                 if (Carbon::parse($second_in)->betweenIncluded('20:01', '22:03')) {
@@ -733,7 +817,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan)
             }
         }
     }
-}
+    }
     return $late;
 }
 
