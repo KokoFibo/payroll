@@ -219,7 +219,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->karyawan->jabatan) == 1) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->first_out) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"
@@ -233,7 +233,7 @@
 
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_in) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"
@@ -246,7 +246,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit" x-cloak
-                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_out) }} </td>
                                         <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;"
