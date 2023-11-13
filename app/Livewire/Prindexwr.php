@@ -157,9 +157,9 @@ class Prindexwr extends Component
                         // }
 
                 $jam_kerja_harian = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
-                if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
+                // if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
                     $langsungLembur = langsungLembur( $dt->second_out, $dt->date, $dt->shift, $dt->karyawan->jabatan);
-                }
+                // }
 
                 $jam_kerja = $jam_kerja_harian;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
