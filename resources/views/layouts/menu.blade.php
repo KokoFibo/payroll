@@ -123,6 +123,20 @@ with font-awesome or any other icon font library -->
                                 <p>Edit Presensi</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a onclick="return confirm('Mau Remove Presensi')" href="/removepresensi" class="nav-link"
+                                wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Remove Presensi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="return confirm('Mau Remove Duplikat Presensi')" href="/removepresensiduplikat"
+                                class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Remove Duplikat Presensi</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

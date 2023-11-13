@@ -342,7 +342,7 @@
     </style>
 
 
-    {{-- Modal --}}
+    {{-- Modal ook --}}
     <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -355,12 +355,6 @@
                     <h4>November 2023</h4>
                     <p>User ID : {{ $user_id }}</p>
                     <p>Nama : {{ $name }}</p>
-
-                    {{-- $this->dataArr=$dataArr;
-                    $this->total_hari_kerja = $total_hari_kerja;
-                    $this->total_jam_kerja $total_jam_kerja;
-                    $this->total_jam_lembur $total_jam_lembur;
-                    $this->total_keterlambatan $total_keterlambatan; --}}
 
                     <table class="table table-hover">
                         <thead>

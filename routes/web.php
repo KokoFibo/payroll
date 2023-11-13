@@ -15,10 +15,12 @@ use App\Livewire\Karyawanindexwr;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
+use App\Livewire\Removepresensiwr;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Removepresensiduplikatwr;
 use App\Livewire\Yfdeletetanggalpresensiwr;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
@@ -93,6 +95,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/testto', [YfpresensiController::class, 'testto']);
                     Route::get('/rubahid', Rubahidwr::class);
                     Route::get('/editpresensi', Editpresensiwr::class);
+                    Route::get('/removepresensi', Removepresensiwr::class);
+                    Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);
 
 
 
