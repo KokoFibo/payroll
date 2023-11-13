@@ -147,21 +147,12 @@ class Prindexwr extends Component
                 foreach ($dataId as $dt) {
                     $langsungLembur = 0 ;
                     $jam_kerja = 0;
-                    // logic nya jam kerja ada pada loop dibawah ini
-                        // foreach ($dataId as $jk) {
-                        //     if (is_saturday($jk->date)) {
-                        //         $jam_kerja += 6;
-                        //     } else {
-                        //         $jam_kerja += 8;
-                        //     }
-                        // }
-
-                $jam_kerja_harian = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                $jam_kerja = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
                 // if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
                     $langsungLembur = langsungLembur( $dt->second_out, $dt->date, $dt->shift, $dt->karyawan->jabatan);
                 // }
 
-                $jam_kerja = $jam_kerja_harian;
+                // $jam_kerja = $jam_kerja_harian;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_langsungLembur = $total_langsungLembur + ($langsungLembur * 60 );
 
@@ -199,7 +190,7 @@ class Prindexwr extends Component
                         if($dt->no_scan_history) {
                             $n_noscan++;
                         }
-                        // $n_noscan = $dt->no_scan_history;
+
 
                         // check keterlambatan di hari kerja non overtime
                         $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
@@ -216,26 +207,10 @@ class Prindexwr extends Component
                         }
 
 
-                        // belum beres kkk
                         $total_late_1 = $total_late_1 + $late1;
                         $total_late_2 = $total_late_2 + $late2;
                         $total_late_3 = $total_late_3 + $late3;
                         $total_late_4 = $total_late_4 + $late4;
-                        // if($dt->user_id=4753) {
-                        //     dd($late3, $late4,$total_late_3, $total_late_4 ,  $dt->user_id);
-                        // }
-                        // $total_late_5 = $total_late_5 + $late5;
-                        // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
-                        // if($dt->second_in == null && $dt->second_out == null) {kkk
-                        //     if(is_saturday( $dt->date )) {
-
-                        //         $total_late_5 = 2;
-                        //     } else {
-                        //         $total_late_5 = 4;
-
-                        //     }
-                        // }
-                        // $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 + $total_late_5;
 
                         if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
                             if(is_saturday( $dt->date )) {
@@ -272,11 +247,9 @@ class Prindexwr extends Component
             $jumlah_jam_kerja = $total_jam_kerja  - $total_late ;
 
             $data = Jamkerjaid::find($data->id);
-            // dd($dt_name, $dt_date);
-            // $data->name = $dt_name;
+
             $data->karyawan_id = $dt_karyawan_id;
-            // $data->user_id = $dt_user_id;
-            // dd($dt_karyawan_id, $dt_user_id );
+
             $data->date = buatTanggal($dt_date);
             // $data->last_data_date = $last_data_date;
             $data->last_data_date = $last_data_date->date;

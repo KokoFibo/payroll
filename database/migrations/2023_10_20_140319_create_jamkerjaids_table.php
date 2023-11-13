@@ -17,9 +17,8 @@ return new class extends Migration
             $table->index('user_id');
             $table->foreignUuid('karyawan_id');
             $table->index('karyawan_id');
-            // $table->string('name')->nullable();
             $table->string('date')->nullable();
-            $table->integer('jumlah_jam_kerja')->nullable();
+            $table->decimal('jumlah_jam_kerja')->nullable();
             $table->integer('jumlah_menit_lembur')->nullable();
             $table->integer('jumlah_jam_terlambat')->nullable();
             $table->integer('first_in_late')->nullable();

@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function mobile()
     {
         // ini hanya bisa di test di desktop tidak berlaku di user mobile
-        $user_id = 4063;
+        $user_id = 2148;
         $month = 11;
         // $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
         //     ->distinct('date')

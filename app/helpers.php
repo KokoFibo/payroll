@@ -62,7 +62,6 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     $perJam = 60;
     if ($late == null) {
         if ($shift == 'Pagi') {
-
             if (is_saturday($tgl)) {
                 $jam_kerja = 6;
             } elseif (is_friday($tgl)) {
@@ -94,24 +93,21 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         } else {
             if ($shift == 'Pagi') {
-                // $t1 = strtotime( '08:00:00' );
-                // $t2 = strtotime( $second_out );
 
-                // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
                 if (is_saturday($tgl)) {
                     $jam_kerja = 6 - $total_late;
-                } else {
+                } elseif (is_friday($tgl)) {
+                    $jam_kerja = 7.5 - $total_late;
+                }
+                else {
                     $jam_kerja = 8 - $total_late;
                 }
             } else {
-                // $t1 = strtotime( '20:00:00' );
-                // $t2 = strtotime( $second_out );
-                // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-                // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam )- 1 - $total_late;
+
                 if (is_saturday($tgl)) {
                     $jam_kerja = 6 - $total_late;
-                } else {
+                }
+                else {
                     $jam_kerja = 8 - $total_late;
                 }
             }
