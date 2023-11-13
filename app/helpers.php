@@ -85,15 +85,15 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         if (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
             if (is_saturday($tgl)) {
                 if ($first_in === null && $first_out === null) {
-                    // $jam_kerja = 2 - $total_late;
-                    $jam_kerja = 2 ;
+                    $jam_kerja = 2 - $total_late;
+                    // $jam_kerja = 2 ;
                 } else {
-                    // $jam_kerja = 4 - $total_late;
-                    $jam_kerja = 4 ;
+                    $jam_kerja = 4 - $total_late;
+                    // $jam_kerja = 4 ;
                 }
             } else {
-                // $jam_kerja = 4 - $total_late;
-                $jam_kerja = 4 ;
+                $jam_kerja = 4 - $total_late;
+                // $jam_kerja = 4 ;
             }
         } else {
             if ($shift == 'Pagi') {
