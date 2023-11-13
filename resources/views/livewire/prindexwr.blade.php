@@ -102,7 +102,7 @@
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->karyawan->nama }}</td>
                                 <td>{{ $item->karyawan->jabatan }}</td>
-                                <td class="text-center">{{ $item->jumlah_jam_kerja }}</td>
+                                <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
                                 <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
                                 {{-- <td class="text-center">{{ $item->jumlah_menit_lembur }}</td> --}}
                                 <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
