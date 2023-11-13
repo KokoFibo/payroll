@@ -13,7 +13,7 @@ use App\Models\Yfrekappresensi;
             // $diff = gmdate( 'H:i:s', $t2 - $t1 );
             // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
 
-function langsungLembur( $second_out, $tgl, $shift) {
+function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     $lembur = 0;
 
     $t2 = strtotime( $second_out );
@@ -30,6 +30,12 @@ function langsungLembur( $second_out, $tgl, $shift) {
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
         }
+        if($jabatan == 'Satpam') {
+            if($t2<(strtotime('20:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00'))/60;
+        }
 
     } else {
         //Shift Malam
@@ -44,6 +50,12 @@ function langsungLembur( $second_out, $tgl, $shift) {
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
         }
+        if($jabatan == 'Satpam') {
+            if($t2<(strtotime('08:30:00'))) {
+                return $lembur = 0;
+            }
+             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('08:00:00'))/60;
+        }
     }
     return  $diff ;
 }
@@ -53,27 +65,19 @@ function tgl_doang($tgl)
     $dt = Carbon::parse($tgl);
     return $dt->day;
 }
-function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl)
+function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan)
 {
     $perJam = 60;
     if ($late == null) {
         if ($shift == 'Pagi') {
-            // $t1 = strtotime( '08:00:00' );
-            // $t2 = strtotime( $second_out );
 
-            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) -1;
             if (is_saturday($tgl)) {
                 $jam_kerja = 6;
             } else {
                 $jam_kerja = 8;
             }
         } else {
-            // $t1 = strtotime( '20:00:00' );
-            // $t2 = strtotime( $second_out );
 
-            // $diff = gmdate( 'H:i:s', $t2 - $t1 );
-            // $jam_kerja = floor( hoursToMinutes( $diff ) / $perJam ) - 1;
             $jam_kerja = 8;
             if (is_saturday($tgl)) {
                 $jam_kerja = 6;
@@ -119,6 +123,9 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
                 }
             }
         }
+    }
+    if($jabatan == 'Satpam'){
+        $jam_kerja = 12;
     }
     return $jam_kerja;
 }

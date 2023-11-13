@@ -17,7 +17,8 @@ class DashboardController extends Controller
     }
     public function mobile()
     {
-        $user_id = 258;
+        // ini hanya bisa di test di desktop tidak berlaku di user mobile
+        $user_id = 3082;
         $month = 11;
         $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
             ->distinct('date')
@@ -36,10 +37,10 @@ class DashboardController extends Controller
         foreach ($data as $d) {
             if ($d->no_scan == null) {
                 $tgl = tgl_doang($d->date);
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                 $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date);
                 if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
-                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift);
+                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
                 }
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;

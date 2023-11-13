@@ -75,11 +75,11 @@ class Yfpresensiindexwr extends Component
         foreach ($data as $d) {
             if ($d->no_scan == null) {
                 $tgl = tgl_doang($d->date);
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                 $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date);
 
                 if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
-                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift);
+                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
                 }
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
@@ -312,6 +312,7 @@ class Yfpresensiindexwr extends Component
         })
         ->orderBy($this->columnName, $this->direction)
         ->orderBy('user_id', 'asc')
+        ->orderBy('date', 'asc')
         ->whereDate('date',  $this->tanggal)
         ->when($this->search, function ($query) {
             $query
@@ -324,6 +325,7 @@ class Yfpresensiindexwr extends Component
             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
             // ->where('date', 'like', '%' . $this->tanggal . '%');
         })
+
         ->paginate($this->perpage);
             // dd($datas[0]->user_id);
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
