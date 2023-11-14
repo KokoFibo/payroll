@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jamkerjaid extends Model
+class Payroll extends Model
 {
     use HasFactory;
     protected $guarded = [];
@@ -14,7 +14,7 @@ class Jamkerjaid extends Model
         return $this->belongsTo(Karyawan::class);
     }
 
-    // public function payroll () {
-    //     return $this->hasMany(Payroll::class);
-    // }
+    public function jamkerjaid () {
+        return $this->belongsTo(Jamkerjaid::class);
+    }
 }

@@ -34,6 +34,14 @@ with font-awesome or any other icon font library -->
                     <a href="/payrollindex" class="nav-link" wire:navigate>
                         <i class="nav-icon fas fa-dollar-sign"></i>
                         <p>
+                            Build Presensi Detail
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/payroll" class="nav-link" wire:navigate>
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
                             Payroll
                         </p>
                     </a>

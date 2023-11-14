@@ -277,6 +277,7 @@ class Prindexwr extends Component
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;
             $data->second_out_late = $total_late_4 == 0 ? null : $total_late_4;
+            $data->total_hari_kerja = $jumlah_hari_kerja;
             // $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
             $data->save();
         }

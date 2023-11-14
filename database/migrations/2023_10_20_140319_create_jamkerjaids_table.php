@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignUuid('karyawan_id');
             $table->index('karyawan_id');
             $table->string('date')->nullable();
-            $table->decimal('jumlah_jam_kerja')->nullable();
+            $table->double('jumlah_jam_kerja',4,1)->nullable();
             $table->integer('jumlah_menit_lembur')->nullable();
             $table->integer('jumlah_jam_terlambat')->nullable();
             $table->integer('first_in_late')->nullable();
@@ -28,6 +28,7 @@ return new class extends Migration
             // $table->integer('overtime_in_late')->nullable();
             $table->integer('total_late')->nullable();
             $table->integer('total_noscan')->nullable();
+            $table->integer('total_hari_kerja')->nullable();
             $table->date('last_data_date')->nullable();
             $table->timestamps();
         });

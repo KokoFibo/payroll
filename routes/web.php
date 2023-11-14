@@ -3,6 +3,7 @@
 use App\Livewire\Test;
 use App\Livewire\Developer;
 use App\Livewire\MissingId;
+use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
 
             // PAYROLL
             Route::get('/payrollindex', Prindexwr::class);
+            Route::get('/payroll', Payrollwr::class);
 
             // USER SETTING
 
