@@ -66,7 +66,6 @@ class Prindexwr extends Component
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if($lock->build) {
-dd($lock->build);
             return back()->with( 'error', 'Mohon dicoba sebentar lagi' );
         } else {
             $lock->build = 1;
