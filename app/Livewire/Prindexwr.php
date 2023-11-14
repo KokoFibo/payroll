@@ -3,12 +3,13 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use Livewire\Component;
 use App\Models\Jamkerjaid;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\On;
 
 class Prindexwr extends Component
 {
@@ -61,147 +62,229 @@ class Prindexwr extends Component
 // ok1
     #[On('getPayroll')]
     public function getPayroll()
-{
-    // Check if there is no data for both Jamkerjaid and Yfrekappresensi
-    $jamKerjaKosong = Jamkerjaid::count();
-    $adaPresensi = Yfrekappresensi::count();
-    if ($jamKerjaKosong == 0 && $adaPresensi == 0) {
-        $this->dispatch('error', message: 'Data Presensi Masih Kosong');
-        return back();
-    }
+    {
+        // supaya tidak dilakukan bersamaan
+        $lock = Lock::find(1);
+        if($lock->build) {
+dd($lock->build);
+            return back()->with( 'error', 'Mohon dicoba sebentar lagi' );
+        } else {
+            $lock->build = 1;
+            $lock->save();
+        }
 
-    // AMBIL DATA TERAKHIR DARI REKAP PRESENSI PADA BULAN YBS
-    $lastDataDate = Yfrekappresensi::whereMonth('date', getBulan($this->periode))
-        ->whereYear('date', getTahun($this->periode))
-        ->orderBy('date', 'desc')
-        ->first();
 
-    // Check if JamKerjaExist for the specified date
-    $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
+        $jamKerjaKosong = Jamkerjaid::count();
+        $adaPresensi = Yfrekappresensi::count();
+        if ($jamKerjaKosong == null && $adaPresensi == null) {
+            $this->dispatch('error', message: 'Data Presensi Masih Kosong');
+            return back();
+        }
 
-    // Check if there is data with 'No Scan'
-    $tglSementaraCount = Yfrekappresensi::where('no_scan', 'No Scan')
-        ->whereYear('date', getTahun($this->periode))
-        ->whereMonth('date', getBulan($this->periode))
-        ->count();
-
-    if ($tglSementaraCount > 0) {
-        $this->dispatch('error', message: 'Masih ada data no scan');
-        return back();
-    }
-
-    // Delete existing records for the specified date in Jamkerjaid
-    Jamkerjaid::where('date', $this->periode)->delete();
-
-    // Get unique user_ids for the specified month and year
-    $filterArray = Yfrekappresensi::whereMonth('date', getBulan($this->periode))
-        ->whereYear('date', getTahun($this->periode))
-        ->pluck('user_id')
-        ->unique();
-
-    // Create records in Jamkerjaid for each unique user_id
-    foreach ($filterArray as $item) {
-        Jamkerjaid::create([
-            'user_id' => $item,
-            'karyawan_id' => 1,
-            'date' => $this->periode,
-        ]);
-    }
-
-    // Process each record in Jamkerjaid
-    foreach (Jamkerjaid::whereDate('date', $this->periode)->get() as $data) {
-        $totalMenitLembur = 0;
-        $totalJamTerlambat = 0;
-        $totalNoscan = 0;
-        $totalLate = 0;
-        $totalLate_1 = 0;
-        $totalLate_2 = 0;
-        $totalLate_3 = 0;
-        $totalLate_4 = 0;
-
-        // Get data for the user_id and specified month-year
-        $dataId = Yfrekappresensi::where('user_id', $data->user_id)
+        // AMBIL DATA TERAKHIR DARI REKAP PRESENSI PADA BULAN YBS
+        $last_data_date = Yfrekappresensi::query()
             ->whereMonth('date', getBulan($this->periode))
             ->whereYear('date', getTahun($this->periode))
-            ->get();
+            ->orderBy('date', 'desc')
+            ->first();
 
-        if ($dataId->isEmpty()) {
-            dd('data kosong from Prindex.php', $dataId);
+        $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
+
+        $tglsementara = Yfrekappresensi::where('no_scan', 'No Scan')
+            ->whereYear('date', getTahun($this->periode))
+            ->whereMonth('date', getBulan($this->periode))
+            ->count();
+
+        if ($tglsementara) {
+            $this->dispatch('error', message: 'Masih ada data no scan');
+            return back();
         }
-        $totalJamKerja = 0;
-        $totalLangsungLembur = 0;
-        foreach ($dataId as $dt) {
-            // Process each data entry
-            $langsungLembur = 0;
-            $jamKerja = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
-            $langsungLembur = langsungLembur($dt->second_out, $dt->date, $dt->shift, $dt->karyawan->jabatan);
+        $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
 
-            $totalJamKerja += $jamKerja;
-            $totalLangsungLembur += ($langsungLembur * 60);
+        Jamkerjaid::where('date', $this->periode)->delete();
 
-            if ($dt->late == null) {
-                // Process for no late
-                if ($dt->overtime_in != null) {
-                    try {
-                        $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
-                        $totalMenitLembur += $menitLembur;
-                    } catch (\Exception $e) {
-                        $errorId = 'Error user ID: ' . $dt->user_id . ', Tanggal : ' . $dt->date;
-                        $this->dispatch('foundError', title: $errorId);
-                        return $e->getMessage();
-                    }
-                }
+        $jumlah_jam_terlambat = null;
+        $jumlah_menit_lembur = null;
+        $dt_name = null;
+        $dt_date = null;
+        $dt_karyawan_id = null;
+        $late = null;
+        $late1 = null;
+        $late2 = null;
+        $late3 = null;
+        $late4 = null;
+        $late5 = null;
+
+        $filterArray = Yfrekappresensi::whereMonth('date', getBulan($this->periode))
+            ->whereYear('date', getTahun($this->periode))
+            ->pluck('user_id')
+            ->unique();
+
+        // buat tabel user_id unique
+        foreach ($filterArray as $item) {
+            $filteredData = new Jamkerjaid();
+            $filteredData->user_id = $item;
+            $filteredData->karyawan_id = 1;
+            $filteredData->date = $this->periode;
+            $filteredData->save();
+        }
+        $filteredData = Jamkerjaid::with('karyawan')->whereDate('date', $this->periode)->get();
+        foreach ($filteredData as $data) {
+            $jumlah_menit_lembur = 0;
+            $jumlah_jam_terlambat = 0;
+            $jumlah_menit_lembur = 0;
+            $jumlah_hari_kerja = 0;
+
+            $total_noscan = 0;
+            $n_noscan = 0;
+
+            $total_late_1 = 0;
+            $total_late_2 = 0;
+            $total_late_3 = 0;
+            $total_late_4 = 0;
+            $total_late_5 = 0;
+            $total_late = 0;
+            $jam_kerja = 0;
+            $total_jam_kerja = 0;
+            $total_langsungLembur = 0;
+
+            $dataId = Yfrekappresensi::with('karyawan')->where('user_id', $data->user_id)
+                ->whereMonth('date', getBulan($this->periode))
+                ->whereYear('date', getTahun($this->periode))
+                ->get();
+
+            if (!$dataId) {
+                dd('data kosong from Prindex.php', $dataId);
             } else {
-                // Process for late
-                if($dt->no_scan_history != null) $noScan = 1;
-                $totalNoscan += $noScan ?? 0;
-                $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
-                $late2 = checkFirstOutLate($dt->first_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
-                $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date, $dt->karyawan->jabatan);
-                $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                // ambil data per user id ok3
+                foreach ($dataId as $dt) {
+                    $langsungLembur = 0 ;
+                    $jam_kerja = 0;
+                $jam_kerja = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                // if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
+                    $langsungLembur = langsungLembur( $dt->second_out, $dt->date, $dt->shift, $dt->karyawan->jabatan);
+                // }
 
-                if (($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)) {
-                    $late1 = $late2 = $late3 = $late4 = 0;
-                    if (is_saturday($dt->date)) {
-                        $jamKerja = $dt->first_in === null && $dt->first_out === null ? $jamKerja - 4 : $jamKerja - 2;
+                // $jam_kerja = $jam_kerja_harian;
+                $total_jam_kerja = $total_jam_kerja + $jam_kerja;
+                $total_langsungLembur = $total_langsungLembur + ($langsungLembur * 60 );
+
+
+
+                    if ($dt->late == null) {
+                        if($dt->no_scan_history) {
+                            $n_noscan++;
+                        }
+                        // $n_noscan = $dt->no_scan_history;
+
+                        // khusus NO Late
+                        $jumlah_hari_kerja = $dataId->count();
+
+                        if ($dt->overtime_in != null) {
+                            // $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
+                            // $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
+                            try {
+                                $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
+                                $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
+                            } catch (\Exception $e) {
+                                //  return $e->getMessage();ook
+                                // $this->dispatch('success', message: 'Error user ID:' . $dt->user_id . 'Tanggal :' . $dt->date);
+                                $errorId = 'Error user ID: ' . $dt->user_id . ', Tanggal : ' . $dt->date;
+                                $this->dispatch('foundError', title: $errorId);
+
+                                return $e->getMessage();
+                                //  dd($dt->user_id, $dt->date);
+                            }
+                        }
                     } else {
-                        $jamKerja = $jamKerja - 4;
+                        // khusus yang late
+
+                        $jumlah_hari_kerja = $dataId->count();
+                        if($dt->no_scan_history) {
+                            $n_noscan++;
+                        }
+
+
+                        // check keterlambatan di hari kerja non overtime
+                        $late1 = checkFirstInLate($dt->first_in, $dt->shift, $dt->date);
+                        $late2 = checkFirstOutLate($dt->first_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                        $late3 = checkSecondInLate($dt->second_in, $dt->shift, $dt->first_out, $dt->date, $dt->karyawan->jabatan);
+                        $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
+                        // $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
+
+                        if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
+                            $late1 = 0;
+                            $late2 = 0;
+                            $late3 = 0;
+                            $late4 = 0;
+                        }
+
+
+                        $total_late_1 = $total_late_1 + $late1;
+                        $total_late_2 = $total_late_2 + $late2;
+                        $total_late_3 = $total_late_3 + $late3;
+                        $total_late_4 = $total_late_4 + $late4;
+
+                        if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
+                            if(is_saturday( $dt->date )) {
+                                if($dt->first_in === null && $dt->first_out === null) {
+                                    $jam_kerja = $jam_kerja - 4;
+                                } else {
+                                    $jam_kerja = $jam_kerja -2;
+                                }
+                            } else {
+                                $jam_kerja = $jam_kerja - 4;
+                            }
+
+
+                        }
+                        $total_late = $total_late_1 + $total_late_2 + $total_late_3 + $total_late_4 ;
+                        if ($dt->overtime_in != null) {
+                            $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
+                            $jumlah_menit_lembur = $jumlah_menit_lembur + $menitLembur;
+                        }
                     }
-                }
+                    $total_noscan = $total_noscan + $n_noscan;
 
-                $totalLate += $late1 + $late2 + $late3 + $late4;
-
-                if ($dt->overtime_in != null) {
-                    $menitLembur = hitungLembur($dt->overtime_in, $dt->overtime_out);
-                    $totalMenitLembur += $menitLembur;
                 }
+                $dt_name = $dt->name;
+                $dt_date = $dt->date;
+                $dt_karyawan_id = $dt->karyawan_id;
+
+                $jumlah_jam_terlambat = $jumlah_jam_terlambat + $late;
             }
+            // DATA TOTAL per id yang sdh terkumpul ok4
+
+            if($total_noscan == 0) $total_noscan=null;
+            // $jumlah_jam_kerja = $jam_kerja  - $total_late ;
+            $jumlah_jam_kerja = $total_jam_kerja  - $total_late ;
+
+            $data = Jamkerjaid::find($data->id);
+
+            $data->karyawan_id = $dt_karyawan_id;
+
+            $data->date = buatTanggal($dt_date);
+            // $data->last_data_date = $last_data_date;
+            $data->last_data_date = $last_data_date->date;
+            $data->jumlah_jam_kerja = $jumlah_jam_kerja;
+            $data->jumlah_menit_lembur = $jumlah_menit_lembur + $total_langsungLembur;
+            $data->total_noscan = $total_noscan;
+            $data->jumlah_jam_terlambat = $total_late == 0 ? null : $total_late;
+            $data->first_in_late = $total_late_1 == 0 ? null : $total_late_1;
+            $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
+            $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;
+            $data->second_out_late = $total_late_4 == 0 ? null : $total_late_4;
+            // $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
+            $data->save();
         }
+        $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
+        $this->periode = $current_date->date;
 
-        // Update Jamkerjaid records with the calculated values
-        $data->update([
-            'karyawan_id' => $dt->karyawan_id,
-            'date' => buatTanggal($dt->date),
-            'last_data_date' => $lastDataDate->date,
-            'jumlah_jam_kerja' => $totalJamKerja - $totalLate,
-            'jumlah_menit_lembur' => $totalMenitLembur + $totalLangsungLembur,
-            'total_noscan' => $totalNoscan,
-            'jumlah_jam_terlambat' => $totalLate == 0 ? null : $totalLate,
-            'first_in_late' => $totalLate_1 == 0 ? null : $totalLate_1,
-            'first_out_late' => $totalLate_2 == 0 ? null : $totalLate_2,
-            'second_in_late' => $totalLate_3 == 0 ? null : $totalLate_3,
-            'second_out_late' => $totalLate_4 == 0 ? null : $totalLate_4,
-        ]);
+        $lock->build = false;
+        $lock->save();
+
+        $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
     }
-
-    // Get the current date from the latest Jamkerjaid record
-    $currentDate = Jamkerjaid::orderBy('date', 'desc')->first();
-    $this->periode = $currentDate->date;
-
-    // Dispatch success message
-    $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
-}
-
     // ok2
 
     public function render()
