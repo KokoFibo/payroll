@@ -374,7 +374,7 @@ class YfpresensiController extends Controller {
 
             return back()->with( 'info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data' );
         } else {
-            Yfrekappresensi::where('date', $tgl_delete)->truncate();
+            Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
             $missingUserId = null;
             foreach($missingArray as $arr) {
                 $missingUserId = $missingUserId.$arr['Karyawan_id'].', ';
