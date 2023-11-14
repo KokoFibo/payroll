@@ -66,6 +66,7 @@ class Prindexwr extends Component
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if($lock->build) {
+
             return back()->with( 'error', 'Mohon dicoba sebentar lagi' );
         } else {
             $lock->build = 1;
@@ -77,6 +78,7 @@ class Prindexwr extends Component
         $adaPresensi = Yfrekappresensi::count();
         if ($jamKerjaKosong == null && $adaPresensi == null) {
             $this->dispatch('error', message: 'Data Presensi Masih Kosong');
+            clear_locks();
             return back();
         }
 
@@ -96,6 +98,7 @@ class Prindexwr extends Component
 
         if ($tglsementara) {
             $this->dispatch('error', message: 'Masih ada data no scan');
+            clear_locks();
             return back();
         }
         $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
@@ -189,6 +192,7 @@ class Prindexwr extends Component
                                 //  return $e->getMessage();ook
                                 // $this->dispatch('success', message: 'Error user ID:' . $dt->user_id . 'Tanggal :' . $dt->date);
                                 $errorId = 'Error user ID: ' . $dt->user_id . ', Tanggal : ' . $dt->date;
+                                clear_locks();
                                 $this->dispatch('foundError', title: $errorId);
 
                                 return $e->getMessage();
