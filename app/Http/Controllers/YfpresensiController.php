@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Karyawan;
@@ -66,6 +67,14 @@ class YfpresensiController extends Controller {
     }
 
     public function store( Request $request ) {
+        $lock = Lock::find(1);
+        if($lock->upload == true) {
+            return back()->with( 'error', 'Mohon dicoba sebentar lagi' );
+        } else {
+            $lock->upload = true;
+            $lock->save();
+        }
+
         $request->validate( [
             'file' => 'required|mimes:xlsx|max:2048',
         ] );
@@ -359,6 +368,8 @@ class YfpresensiController extends Controller {
         Yfpresensi::query()->truncate();
         $missingArray = [];
         $missingArray = checkNonRegisterUser();
+        $lock->upload = false;
+        $lock->save();
         if($missingArray == null) {
 
             return back()->with( 'info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data' );
