@@ -68,7 +68,7 @@ class YfpresensiController extends Controller {
 
     public function store( Request $request ) {
         $lock = Lock::find(1);
-        if($lock->upload == true) {
+        if($lock->upload) {
             return back()->with( 'error', 'Mohon dicoba sebentar lagi' );
         } else {
             $lock->upload = true;

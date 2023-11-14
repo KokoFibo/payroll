@@ -253,6 +253,12 @@ class Yfpresensiindexwr extends Component
     public function render()
     {
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
+        $lock = Lock::find(1);
+        $lock->upload = 0;
+        $lock->build = 0;
+        $lock->payroll = 0;
+        $lock->save();
+
 
         if ($this->tanggal == null) {
             $lastDate = Yfrekappresensi::orderBy('date', 'desc')->first();
