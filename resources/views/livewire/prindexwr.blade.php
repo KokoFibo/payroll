@@ -94,6 +94,8 @@
                             {{-- <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i class="fa-solid fa-sort"></i></th> --}}
                             <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
                                     class="fa-solid fa-sort"></i></th>
+                            <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja <i
+                                    class="fa-solid fa-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,6 +114,7 @@
                                 <td class="text-center">{{ $item->second_out_late }}</td>
                                 {{-- <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td> --}}
                                 <td class="text-center">{{ $item->total_noscan }}</td>
+                                <td class="text-center">{{ $item->total_hari_kerja }}</td>
                             </tr>
                         @endforeach
                     </tbody>

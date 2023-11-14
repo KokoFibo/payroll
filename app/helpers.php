@@ -6,6 +6,13 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function is_sunday($tgl) {
+    if ($tgl) {
+        return Carbon::parse($tgl)->isSunday();
+    }
+
+}
+
 function clear_locks() {
     $lock = Lock::find(1);
     $lock->upload = 0;

@@ -99,12 +99,13 @@
         </div>
     </div>
 
-
     <div class="px-4">
         <div class="card">
-            <div class="card-header">
-                <h4>Data Presensi {{ format_tgl_hari($tanggal) }}
-                    <a href="/yfupload"><button class="btn btn-primary float-end">Upload Presensi</button></a>
+            <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
+                <h4>
+                    Data Presensi {{ format_tgl_hari($tanggal) }}
+                    <a href="/yfupload">
+                        <button class="btn btn-primary float-end">Upload Presensi</button></a>
                 </h4>
             </div>
             <style>

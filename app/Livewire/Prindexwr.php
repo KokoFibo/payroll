@@ -77,8 +77,8 @@ class Prindexwr extends Component
         $jamKerjaKosong = Jamkerjaid::count();
         $adaPresensi = Yfrekappresensi::count();
         if ($jamKerjaKosong == null && $adaPresensi == null) {
-            $this->dispatch('error', message: 'Data Presensi Masih Kosong');
             clear_locks();
+            $this->dispatch('error', message: 'Data Presensi Masih Kosong');
             return back();
         }
 
@@ -97,8 +97,8 @@ class Prindexwr extends Component
             ->count();
 
         if ($tglsementara) {
-            $this->dispatch('error', message: 'Masih ada data no scan');
             clear_locks();
+            $this->dispatch('error', message: 'Masih ada data no scan');
             return back();
         }
         $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
@@ -277,6 +277,7 @@ class Prindexwr extends Component
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;
             $data->second_out_late = $total_late_4 == 0 ? null : $total_late_4;
+            $data->total_hari_kerja = $jumlah_hari_kerja;
             // $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
             $data->save();
         }
