@@ -1,10 +1,18 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function clear_locks() {
+    $lock = Lock::find(1);
+    $lock->upload = 0;
+    $lock->build = 0;
+    $lock->payroll = 0;
+    $lock->save();
+}
 function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     $lembur = 0;
 

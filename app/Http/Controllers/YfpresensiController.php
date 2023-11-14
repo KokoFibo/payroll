@@ -89,6 +89,7 @@ class YfpresensiController extends Controller {
         $tgl1 = trim(explode( '~', $importedData->getCell( 'A2' )->getValue() )[ 0 ]);
         $tgl2 = trim(explode( ':', $tgl1 )[ 1 ]);
         if($tgl != $tgl2) {
+            clear_locks();
             return back()->with( 'error', 'Gagal Upload Tanggal harus dihari yang sama' );
         }
         $user_id = '';
@@ -111,6 +112,7 @@ class YfpresensiController extends Controller {
                 if ( $tgl_sama->isNotEmpty() ) {
                     foreach ( $tgl_sama as $data ) {
                         if ( $user_id == $data->user_id ) {
+                            clear_locks();
                             return back()->with( 'error', 'The file has been uploaded.' );
                         }
                     }
@@ -161,6 +163,7 @@ class YfpresensiController extends Controller {
                 Yfpresensi::insert( $item );
             }
         } catch ( \Exception $e ) {
+            clear_locks();
             return back()->with( 'error', 'Gagal Upload Format tanggal tidak sesuai' );
         }
         // dd( 'ok' );
@@ -368,8 +371,7 @@ class YfpresensiController extends Controller {
         Yfpresensi::query()->truncate();
         $missingArray = [];
         $missingArray = checkNonRegisterUser();
-        $lock->upload = false;
-        $lock->save();
+        clear_locks();
         if($missingArray == null) {
 
             return back()->with( 'info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data' );
@@ -379,6 +381,7 @@ class YfpresensiController extends Controller {
             foreach($missingArray as $arr) {
                 $missingUserId = $missingUserId.$arr['Karyawan_id'].', ';
             }
+            clear_locks();
             return back()->with( 'error', 'Ada data ' . count($missingArray) . ' User ID yang tidak terdaftar di Database Karyawan ('.$missingUserId.')'  );
         }
 
