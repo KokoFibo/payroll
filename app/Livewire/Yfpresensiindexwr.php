@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
