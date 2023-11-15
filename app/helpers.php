@@ -46,10 +46,34 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
         }
         if($jabatan == 'Satpam') {
-            if($t2<(strtotime('20:30:00'))) {
-                return $lembur = 0;
+            if($shift == 'Pagi') {
+                if(is_saturday($tgl)) {
+                    // rubah disini utk perubahan jam lembur satpam
+                    if($t2<(strtotime('17:30:00'))) {
+                        return $lembur = 0;
+                    }
+                    $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
+                } else {
+                    if($t2<(strtotime('20:30:00'))) {
+                        return $lembur = 0;
+                    }
+                    $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00'))/60;
+                }
+            } else {
+                if(is_saturday($tgl)) {
+                    // rubah disini utk perubahan jam lembur satpam malam
+                    if($t2<(strtotime('05:30:00'))) {
+                        return $lembur = 0;
+                    }
+                    $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
+                } else {
+                    if($t2<(strtotime('08:30:00'))) {
+                        return $lembur = 0;
+                    }
+                    $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('08:00:00'))/60;
+                }
+
             }
-             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00'))/60;
         }
 
     } else {
@@ -66,8 +90,15 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
         }
         if($jabatan == 'Satpam') {
+            if(is_saturday($tgl)) {
+                // rubah disini utk perubahan jam lembur satpam
+                if($t2<(strtotime('05:30:00'))) {
+                    return $lembur = 0;
+                }
+            } else {
             if($t2<(strtotime('08:30:00'))) {
                 return $lembur = 0;
+            }
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('08:00:00'))/60;
         }
@@ -625,26 +656,51 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
             }
         }
         if($jabatan == 'Satpam') {
-            if ($shift == 'Pagi') {
-                if (Carbon::parse($second_out)->betweenIncluded('08:01', '19:00')) {
-                    $t1 = strtotime('20:00:00');
-                    $t2 = strtotime($second_out);
 
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
+            if ($shift == 'Pagi') {
+                if(is_saturday($tgl) ) {
+                    if (Carbon::parse($second_out)->betweenIncluded('08:01', '16:00')) {
+                        $t1 = strtotime('17:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 } else {
-                    $late = null;
+                    if (Carbon::parse($second_out)->betweenIncluded('08:01', '19:00')) {
+                        $t1 = strtotime('20:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 }
 
             } else {
-                if (Carbon::parse($second_out)->betweenIncluded('20:01', '07:00')) {
-                    $t1 = strtotime('08:00:00');
-                    $t2 = strtotime($second_out);
+                if(is_saturday($tgl)) {
+                    if (Carbon::parse($second_out)->betweenIncluded('20:01', '04:00')) {
+                        $t1 = strtotime('05:00:00');
+                        $t2 = strtotime($second_out);
 
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 } else {
-                    $late = null;
+                    if (Carbon::parse($second_out)->betweenIncluded('20:01', '07:00')) {
+                        $t1 = strtotime('08:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 }
 
             }

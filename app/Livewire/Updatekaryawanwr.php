@@ -18,6 +18,8 @@ class Updatekaryawanwr extends Component {
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update ;
+    public  $no_npwp, $ptkp;
+
 
     public function mount ( $id ) {
         $this->update = true;
@@ -76,6 +78,9 @@ class Updatekaryawanwr extends Component {
          $this->potongan_JKM = $data->potongan_JKM;
 
          $this->potongan_kesehatan = $data->potongan_kesehatan;
+         $this->no_npwp = $data->no_npwp;
+         $this->ptkp = $data->ptkp;
+
     }
 
     protected $rules = [
@@ -127,6 +132,11 @@ class Updatekaryawanwr extends Component {
         'potongan_JKM' => 'nullable',
 
         'potongan_kesehatan' => 'nullable',
+        'no_npwp' => 'nullable',
+        'ptkp' => 'nullable',
+
+
+
 ];
 
 
@@ -181,6 +191,9 @@ class Updatekaryawanwr extends Component {
         $data->potongan_JKK = $this->potongan_JKK;
         $data->potongan_JKM = $this->potongan_JKM;
         $data->potongan_kesehatan = $this->potongan_kesehatan;
+        $data->no_npwp = $this->no_npwp;
+        $data->ptkp = $this->ptkp;
+
 
 
 

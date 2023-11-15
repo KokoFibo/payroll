@@ -19,6 +19,7 @@ class Karyawanwr extends Component
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
     public $iuran_air, $denda, $potongan_seragam, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
+    public $no_npwp, $ptkp;
 
     public $id_karyawan_ini, $update;
 
@@ -80,6 +81,9 @@ class Karyawanwr extends Component
             'potongan_JKK' => 'nullable',
             'potongan_JKM' => 'nullable',
             'potongan_kesehatan' => 'nullable',
+            'no_npwp' => 'nullable',
+            'ptkp' => 'nullable',
+
     ];
 
     public function save()
@@ -145,6 +149,9 @@ class Karyawanwr extends Component
             $data->potongan_JKM = $this->potongan_JKM;
 
             $data->potongan_kesehatan = $this->potongan_kesehatan;
+            $data->no_npwp = $this->no_npwp;
+            $data->ptkp = $this->ptkp;
+
 
             $data->denda = $this->denda;
 
@@ -228,6 +235,10 @@ class Karyawanwr extends Component
             $data->potongan_JKM = $this->potongan_JKM;
 
             $data->potongan_kesehatan = $this->potongan_kesehatan;
+            $data->no_npwp = $this->no_npwp;
+            $data->ptkp = $this->ptkp;
+
+
             $data->denda = $this->denda;
             $data->save();
             $user = User::where('username',$this->id_karyawan )->first();
