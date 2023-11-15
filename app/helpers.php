@@ -6,6 +6,14 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function absen_kosong($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out) {
+    if($first_in =='' && $first_out == '' && $second_in == '' && $second_out == '' && $overtime_in == '' && $overtime_out =='') {
+    // if($first_in == null && $first_out ==  null && $second_in ==  null && $second_out ==  null && $overtime_in ==  null && $overtime_out == null) {
+        return true;
+    } else
+    return false;
+}
+
 function is_sunday($tgl) {
     if ($tgl) {
         return Carbon::parse($tgl)->isSunday();
@@ -97,7 +105,10 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan);
         //    dd($first_in, $first_out, $second_in, $second_out);
         //jok
-        if (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
+        if(($second_in === null && $second_out === null) && ($first_in === null && $first_out === null)) {
+            $jam_kerja = 0;
+        }
+        elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
             if (is_saturday($tgl)) {
                 if ($first_in === null && $first_out === null) {
                     $jam_kerja = 2 - $total_late;

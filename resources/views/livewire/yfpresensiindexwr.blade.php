@@ -158,7 +158,8 @@
 
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
-                                    <tr x-data="{ edit: false }" class="{{ $data->no_scan ? 'table-warning' : '' }}"
+                                    <tr x-data="{ edit: false }"
+                                        class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}"
                                         x-cloak>
                                         <td>
 
