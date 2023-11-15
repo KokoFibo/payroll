@@ -192,7 +192,7 @@
 
                                             {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
                                                       class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button> --}}
-                                            @if (Auth::user()->role > 3)
+                                            @if (Auth::user()->role > 4)
                                                 <button
                                                     wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
                                                     class="btn btn-danger btn-sm"><i
