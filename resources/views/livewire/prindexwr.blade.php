@@ -6,8 +6,7 @@
         }
     </style>
     @section('title', 'Payroll')
-    <p>Month : {{ $month }}</p>
-    <p>Year : {{ $year }}</p>
+
     <div class="d-flex justify-content-between">
         <div class="col-6 p-4 d-flex gap-3 ">
             <div class="col-6">
