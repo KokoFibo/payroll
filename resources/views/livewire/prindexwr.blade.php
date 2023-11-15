@@ -25,6 +25,18 @@
                 </select>
                 Perpage
             </div>
+            <div class="col-2 d-flex align-items-center gap-3">
+                <select class="form-select" wire:model.live="year">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="{{ $year }}">{{ $year }}</option>
+                </select>
+            </div>
+            <div class="col-2 d-flex align-items-center gap-3">
+                <select class="form-select" wire:model.live="month">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="{{ $month }}">{{ monthName($month) }}</option>
+                </select>
+            </div>
         </div>
         <div class="col-5 p-4 d-flex justify-content-end gap-3  align-items-center">
 

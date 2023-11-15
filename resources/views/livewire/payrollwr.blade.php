@@ -1,10 +1,10 @@
 <div>
     <div class="pt-2">
         <div class="">
-            <h2 class="text-center">Yifang Payroll</h2>
+            <h2 class="text-center text-bold">Yifang Payroll</h2>
             <div class="d-flex align-items-center justify-content-between px-4">
                 <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
-                <button wire:click="rebuild" class="btn btn-primary text-end">Rebuild</button>
+                <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button>
             </div>
         </div>
         <div class="card">
@@ -41,6 +41,18 @@
                                 <option value="25">25</option>
                             </select>
                             Perpage
+                        </div>
+                        <div class="col-2 d-flex align-items-center gap-3">
+                            <select class="form-select" wire:model.live="year">
+                                {{-- <option selected>Open this select menu</option> --}}
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            </select>
+                        </div>
+                        <div class="col-2 d-flex align-items-center gap-3">
+                            <select class="form-select" wire:model.live="month">
+                                {{-- <option selected>Open this select menu</option> --}}
+                                <option value="{{ $month }}">{{ $month }}</option>
+                            </select>
                         </div>
                     </div>
 

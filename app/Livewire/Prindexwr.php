@@ -20,6 +20,11 @@ class Prindexwr extends Component
     public $columnName = 'user_id';
     public $direction = 'desc';
     public $perpage = 10;
+    public $year;
+    public $month;
+
+
+
 
     public function sortColumnName($namaKolom)
     {
@@ -33,6 +38,8 @@ class Prindexwr extends Component
 
     public function mount()
     {
+        $this->year =  now()->year;
+        $this->month =  now()->month;
         $getTglTerakhir = Yfrekappresensi::select('date')
             ->orderBy('date', 'desc')
             ->first();

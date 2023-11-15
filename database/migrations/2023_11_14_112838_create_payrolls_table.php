@@ -23,6 +23,7 @@ return new class extends Migration
             $table->double('jkm',8,1);
             $table->double('kesehatan',8,1);
             $table->double('total',12,1);
+            $table->date('date');
             $table->timestamps();
         });
     }

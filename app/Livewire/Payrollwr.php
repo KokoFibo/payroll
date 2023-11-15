@@ -15,6 +15,13 @@ class Payrollwr extends Component
     public $selected_company;
     public $search;
     public $perpage = 10;
+    public $month;
+    public $year;
+
+    public function mount () {
+        $this->month = Carbon::now()->format('M');
+        $this->year = Carbon::now()->format('Y');
+    }
 
     public function rebuild () {
         $datas = Jamkerjaid::with('karyawan')->get();
