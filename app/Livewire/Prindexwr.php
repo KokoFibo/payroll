@@ -40,6 +40,7 @@ class Prindexwr extends Component
     {
         $this->year =  now()->year;
         $this->month =  now()->month;
+
         $getTglTerakhir = Yfrekappresensi::select('date')
             ->orderBy('date', 'desc')
             ->first();
@@ -55,17 +56,7 @@ class Prindexwr extends Component
         $this->resetPage();
     }
 
-    public function getPayrollConfirmation()
-    {
-        // $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
-        // if ($checkIfJamKerjaExist) {
-        //     // $this->dispatch('error', message: 'Masih ada data no scan');
-        //     $this->dispatch('foundError');
-        //     return back();
-        // } else {
-        //     $this->getPayroll();
-        // }
-    }
+
 // ok1
     #[On('getPayroll')]
     public function getPayroll()
@@ -91,16 +82,16 @@ class Prindexwr extends Component
 
         // AMBIL DATA TERAKHIR DARI REKAP PRESENSI PADA BULAN YBS
         $last_data_date = Yfrekappresensi::query()
-            ->whereMonth('date', getBulan($this->periode))
-            ->whereYear('date', getTahun($this->periode))
+            ->whereMonth('date', $this->month)
+            ->whereYear('date', $this->year)
             ->orderBy('date', 'desc')
             ->first();
 
-        $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
+
 
         $tglsementara = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->whereYear('date', getTahun($this->periode))
-            ->whereMonth('date', getBulan($this->periode))
+            ->whereYear('date', $this->year)
+            ->whereMonth('date', $this->month)
             ->count();
 
         if ($tglsementara) {
@@ -108,9 +99,13 @@ class Prindexwr extends Component
             $this->dispatch('error', message: 'Masih ada data no scan');
             return back();
         }
-        $checkIfJamKerjaExist = Jamkerjaid::where('date', $this->periode)->first();
+        $checkIfJamKerjaExist = Jamkerjaid::whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)
+        ->first();
 
-        Jamkerjaid::where('date', $this->periode)->delete();
+        Jamkerjaid::whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)
+        ->delete();
 
         $jumlah_jam_terlambat = null;
         $jumlah_menit_lembur = null;
@@ -124,20 +119,21 @@ class Prindexwr extends Component
         $late4 = null;
         $late5 = null;
 
-        $filterArray = Yfrekappresensi::whereMonth('date', getBulan($this->periode))
-            ->whereYear('date', getTahun($this->periode))
+        $filterArray = Yfrekappresensi::whereMonth('date', $this->month)
+            ->whereYear('date', $this->year)
             ->pluck('user_id')
             ->unique();
 
-        // buat tabel user_id unique
+        // buat tabel user_id unique ook
         foreach ($filterArray as $item) {
             $filteredData = new Jamkerjaid();
             $filteredData->user_id = $item;
             $filteredData->karyawan_id = 1;
-            $filteredData->date = $this->periode;
+            $filteredData->date = $this->year.'-'.$this->month.'-01';
             $filteredData->save();
         }
-        $filteredData = Jamkerjaid::with('karyawan')->whereDate('date', $this->periode)->get();
+        $filteredData = Jamkerjaid::with('karyawan')->whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)->get();
         foreach ($filteredData as $data) {
             $jumlah_menit_lembur = 0;
             $jumlah_jam_terlambat = 0;
@@ -158,8 +154,8 @@ class Prindexwr extends Component
             $total_langsungLembur = 0;
 
             $dataId = Yfrekappresensi::with('karyawan')->where('user_id', $data->user_id)
-                ->whereMonth('date', getBulan($this->periode))
-                ->whereYear('date', getTahun($this->periode))
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                 ->get();
 
             if (!$dataId) {
@@ -289,7 +285,7 @@ class Prindexwr extends Component
             $data->save();
         }
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
-        $this->periode = $current_date->date;
+        // $this->periode = $current_date->date;
 
         $lock->build = false;
         $lock->save();
@@ -308,30 +304,37 @@ class Prindexwr extends Component
             ->get();
         $this->cx++;
 
-        $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
-        ->join('karyawans', 'jamkerjaids.karyawan_id','=', 'karyawans.id')
-        ->whereDate('date', 'like', '%' . $this->periode . '%')
-            ->orderBy($this->columnName, $this->direction)
-            ->when($this->search, function ($query) {
-                $query
-                    // ->where('name', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
-                    ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('user_id', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('user_id', trim($this->search))
-                    ->orWhere('jabatan', trim($this->search))
-                    // ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
-                    // ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
-                    ->where('date', 'like', '%' . $this->periode . '%');
-            })
-            ->orderBy('user_id', 'asc')
-            ->paginate($this->perpage);
+    //     $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
+    // ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
+    // ->where(function ($query) {
+    //     $query->whereMonth('date', 'like', '%' . $this->month . '%')
+    //         ->whereYear('date', 'like', '%' . $this->year . '%')
+    //         ->when($this->search, function ($subQuery) {
+    //             $subQuery->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+    //                 ->orWhere('user_id', trim($this->search))
+    //                 ->orWhere('jabatan', trim($this->search));
+    //         });
+    // })
+    // ->orderBy($this->columnName, $this->direction)
+    // ->orderBy('user_id', 'asc')
+    // ->paginate($this->perpage);
+
+    $filteredData = Jamkerjaid::with('karyawan')
+    ->whereMonth('date', 'like', '%' . $this->month . '%')
+    ->whereYear('date', 'like', '%' . $this->year . '%')
+    ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
+    ->orWhereRelation('karyawan', 'user_id', trim($this->search))
+    ->orWhereRelation('karyawan', 'jabatan', trim($this->search))
+    ->orderBy($this->columnName, $this->direction)
+    ->orderBy('user_id', 'asc')
+    ->paginate($this->perpage);
+
         if ($filteredData->isNotEmpty()) {
             $lastData = $filteredData[0]->last_data_date;
         } else {
             $lastData = null;
         }
+
 
         return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData']));
     }

@@ -6,7 +6,8 @@
         }
     </style>
     @section('title', 'Payroll')
-
+    <p>Month : {{ $month }}</p>
+    <p>Year : {{ $year }}</p>
     <div class="d-flex justify-content-between">
         <div class="col-6 p-4 d-flex gap-3 ">
             <div class="col-6">
@@ -66,18 +67,16 @@
                     <h3>Detail Jam kerja karyawan per {{ monthYear($periode) }}, Data Terakhir Tanggal
                         {{ format_tgl($lastData) }}
                     </h3>
-                    <div>
+                    {{-- <div>
 
                         <select wire:change="periode" class="form-select" wire:model.live="periode">
-                            {{-- <option selected>{{ $p->month_name }} {{ $p->year }}</option> --}}
                             @foreach ($periodePayroll as $p)
                                 < <option value="{{ $p->year }}-{{ addZeroToMonth($p->month) }}-01">
                                     {{ $p->month_name }}
                                     {{ $p->year }}</option>
                             @endforeach
-
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="card-body">
@@ -112,6 +111,7 @@
                     </thead>
                     <tbody>
                         @foreach ($filteredData as $item)
+                            {{-- {{ dd($item) }} --}}
                             <tr>
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->karyawan->nama }}</td>

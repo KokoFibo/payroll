@@ -33,6 +33,7 @@
                             </select>
                         </div>
                         <div class="col-2 d-flex align-items-center gap-3">
+                            Perpage
                             <select class="form-select" wire:model.live="perpage">
                                 {{-- <option selected>Open this select menu</option> --}}
                                 <option value="10">10</option>
@@ -40,9 +41,10 @@
                                 <option value="20">20</option>
                                 <option value="25">25</option>
                             </select>
-                            Perpage
+
                         </div>
                         <div class="col-2 d-flex align-items-center gap-3">
+                            Periode:
                             <select class="form-select" wire:model.live="year">
                                 {{-- <option selected>Open this select menu</option> --}}
                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -51,7 +53,7 @@
                         <div class="col-2 d-flex align-items-center gap-3">
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option> --}}
-                                <option value="{{ $month }}">{{ $month }}</option>
+                                <option value="{{ $month }}">{{ monthName($month) }}</option>
                             </select>
                         </div>
                     </div>
