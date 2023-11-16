@@ -124,29 +124,16 @@ class Payrollwr extends Component
     }
     public function render()
     {
-        $payrolls = Payroll::with('jamkerjaid')
-                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-               ->get();
-
-        // $payrolls = Payroll::select('payrolls.*', 'karyawans.nama', 'jamkerjaids.total_hari_kerja')
-        // $payrolls = Payroll::select('payrolls.*', 'karyawans.nama', 'jamkerjaids.jumlah_jam_kerja')
-        // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-        // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-
-
-        foreach($payrolls as $p) {
-
-            dd($p->jamkerjaid->date);
-        }
+       
         switch ($this->selected_company) {
             case 0:
                 $total = Payroll::sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->when($this->search, function ($query) {
                         $query
                             ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
@@ -165,12 +152,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'placement', 'YCME')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'placement', 'YCME')
                     ->when($this->search, function ($query) {
                         $query
@@ -190,12 +177,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'placement', 'YEV')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'placement', 'YEV')
                     ->when($this->search, function ($query) {
                         $query
@@ -216,12 +203,12 @@ class Payrollwr extends Component
                     ->whereRelation('karyawan', 'placement', 'YIG')
                     ->orWhereRelation('karyawan', 'placement', 'YSM')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'YIG')
                     ->orWhereRelation('karyawan', 'company', 'YSM')
                     ->when($this->search, function ($query) {
@@ -242,12 +229,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'ASB')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'ASB')
                     ->when($this->search, function ($query) {
                         $query
@@ -267,12 +254,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'DPA')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'DPA')
                     ->when($this->search, function ($query) {
                         $query
@@ -292,12 +279,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'YCME')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'YCME')
                     ->when($this->search, function ($query) {
                         $query
@@ -317,12 +304,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'YEV')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'YEV')
                     ->when($this->search, function ($query) {
                         $query
@@ -342,12 +329,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'YIG')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'YIG')
                     ->when($this->search, function ($query) {
                         $query
@@ -367,12 +354,12 @@ class Payrollwr extends Component
                 $total = Payroll::with('karyawan')
                     ->whereRelation('karyawan', 'company', 'YSM')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->whereRelation('karyawan', 'company', 'YSM')
                     ->when($this->search, function ($query) {
                         $query
@@ -390,12 +377,12 @@ class Payrollwr extends Component
 
             default:
                 $total = Payroll::sum('total');
-                // $payroll = Payroll::with('karyawan')
-                $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
-                    // ->whereMonth('payrolls.date', '11')
-                    // ->whereYear('payrolls.date', '2023')
+                $payroll = Payroll::with('karyawan')
+                // $payroll = Payroll::select(['payrolls.*', 'karyawans.*', 'jamkerjaids.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                    ->whereMonth('payrolls.date', '11')
+                    ->whereYear('payrolls.date', '2023')
                     ->when($this->search, function ($query) {
                         $query
                             ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
