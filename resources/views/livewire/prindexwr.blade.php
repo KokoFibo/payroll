@@ -85,7 +85,7 @@
                 }
             </style>
             <div class="card-body">
-                <table-responsive>
+                <div class="table-responsive">
                     <table class="table mb-3">
                         <thead>
                             <tr>
@@ -108,12 +108,14 @@
                                 <th class="text-center" wire:click="sortColumnName('second_in_late')">Second In Late <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('second_out_late')">Second Out Late
-                                    <i class="fa-solid fa-sort"></i></th>
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                                 {{-- <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i class="fa-solid fa-sort"></i></th> --}}
                                 <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja
-                                    <i class="fa-solid fa-sort"></i></th>
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -138,7 +140,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                </table-responsive>
+                </div>
                 {{ $filteredData->links() }}
             </div>
         </div>
