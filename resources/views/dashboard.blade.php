@@ -38,6 +38,13 @@
             </div>
         </div>
     </div>
+    <div style="display: none">
+        {{-- <div> --}}
+        <div class="w-1/5 h-40 bg-teal-500 rounded-xl shadow-xl">
+            <h2></h2>
+            1000
+        </div>
+    </div>
     <style>
         .c-dashboardInfo {
             margin-bottom: 15px;
