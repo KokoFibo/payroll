@@ -386,6 +386,7 @@
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
                 <div class="modal-footer">
 

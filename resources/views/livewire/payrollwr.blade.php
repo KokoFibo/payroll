@@ -72,24 +72,34 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Jabatan</th>
-                            <th>Company</th>
-                            <th>Metode Penggajian</th>
-                            <th>Hari Kerja</th>
-                            <th>Jam Kerja</th>
-                            <th>Jam Lembur</th>
-                            <th>Gaji Pokok</th>
-                            <th>Gaji Lembur</th>
-                            <th>Sub Gaji</th>
-                            <th>Pajak</th>
-                            <th>JHT</th>
-                            <th>JP</th>
-                            <th>JKK</th>
-                            <th>JKM</th>
-                            <th>Kesehatan</th>
-                            <th>Total</th>
+                            <th wire:click="sortColumnName('id_karyawan')">ID <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Nama <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Jabatan <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Company <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Metode Penggajian <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Hari Kerja <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Jam Kerja <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Jam Lembur <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Gaji Pokok <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Gaji Lembur <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Gaji BPJS <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Sub Gaji <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Pajak <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">JHT <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">JP <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">JKK <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">JKM <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('id_karyawan')">Kesehatan <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th wire:click="sortColumnName('id_karyawan')">Total <i class="fa-solid fa-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,14 +117,20 @@
                                     <td class="text-end">{{ number_format($p->jamkerjaid->jumlah_jam_kerja, 1) }}</td>
                                     <td class="text-end">{{ $p->jamkerjaid->jumlah_menit_lembur / 60 }}</td>
                                     <td class="text-end">{{ number_format($p->karyawan->gaji_pokok) }}</td>
-                                    <td class="text-end">{{ number_format($p->karyawan->gaji_overtime) }}</td>
+                                    <td class="text-end">
+                                        {{ $p->karyawan->gaji_overtime ? number_format($p->karyawan->gaji_overtime) : '' }}
+                                    </td>
+                                    <td class="text-end">
+                                        {{ $p->karyawan->gaji_bpjs ? number_format($p->karyawan->gaji_bpjs) : '' }}
+                                    </td>
                                     <td class="text-end">{{ number_format($p->subtotal) }}</td>
-                                    <td class="text-end">{{ number_format($p->pajak) }}</td>
-                                    <td class="text-end">0</td>
-                                    <td class="text-end">0</td>
-                                    <td class="text-end">0</td>
-                                    <td class="text-end">0</td>
-                                    <td class="text-end">0</td>
+                                    <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
+                                    <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
+                                    <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
+                                    <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
+                                    <td class="text-end">{{ $p->jkm ? 'Yes' : '' }}</td>
+                                    <td class="text-end">{{ $p->kesehatan ? number_format($p->kesehatan) : '' }}</td>
+
                                     <td class="text-end">{{ number_format($p->total) }}</td>
                                 </tr>
                             @endforeach

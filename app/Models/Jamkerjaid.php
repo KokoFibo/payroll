@@ -14,7 +14,7 @@ class Jamkerjaid extends Model
         return $this->belongsTo(Karyawan::class);
     }
 
-    // public function payroll () {
-    //     return $this->hasMany(Payroll::class);
-    // }
-}
+//     public function payroll () {
+//         return $this->hasMany(Payroll::class);
+//     }
+// }

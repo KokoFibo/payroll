@@ -10,12 +10,11 @@ class Karyawan extends Model {
     use HasFactory, HasUuids;
     protected $guarded = [];
 
-    // public function branch () {
-    //     return $this->belongsTo( Branch::class );
+    // public function payroll () {
+    //     return $this->hasMany(Payroll::class);
     // }
-
-    // public function yfrekappresensi () {
-    //     return $this->hasMany( Yfrekappresensi::class );
+    // public function jamkerjaid () {
+    //     return $this->hasMany(Jamkerjaid::class);
     // }
 
 }

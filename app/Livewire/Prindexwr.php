@@ -304,30 +304,33 @@ class Prindexwr extends Component
             ->get();
         $this->cx++;
 
-    //     $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
-    // ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
-    // ->where(function ($query) {
-    //     $query->whereMonth('date', 'like', '%' . $this->month . '%')
-    //         ->whereYear('date', 'like', '%' . $this->year . '%')
-    //         ->when($this->search, function ($subQuery) {
-    //             $subQuery->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-    //                 ->orWhere('user_id', trim($this->search))
-    //                 ->orWhere('jabatan', trim($this->search));
-    //         });
-    // })
-    // ->orderBy($this->columnName, $this->direction)
-    // ->orderBy('user_id', 'asc')
-    // ->paginate($this->perpage);
-
-    $filteredData = Jamkerjaid::with('karyawan')
-    ->whereMonth('date', 'like', '%' . $this->month . '%')
-    ->whereYear('date', 'like', '%' . $this->year . '%')
-    ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-    ->orWhereRelation('karyawan', 'user_id', trim($this->search))
-    ->orWhereRelation('karyawan', 'jabatan', trim($this->search))
+        $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
+    ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
+    ->where(function ($query) {
+        $query
+        ->whereMonth('date',  $this->month )
+            ->whereYear('date', $this->year )
+        // ->whereMonth('date', 'like', '%' . $this->month . '%')
+        //     ->whereYear('date', 'like', '%' . $this->year . '%')
+            ->when($this->search, function ($subQuery) {
+                $subQuery->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('user_id', trim($this->search))
+                    ->orWhere('jabatan', trim($this->search));
+            });
+    })
     ->orderBy($this->columnName, $this->direction)
     ->orderBy('user_id', 'asc')
     ->paginate($this->perpage);
+
+    // $filteredData = Jamkerjaid::with('karyawan')
+    // ->whereMonth('date', 'like', '%' . $this->month . '%')
+    // ->whereYear('date', 'like', '%' . $this->year . '%')
+    // ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
+    // ->orWhereRelation('karyawan', 'user_id', trim($this->search))
+    // ->orWhereRelation('karyawan', 'jabatan', trim($this->search))
+    // ->orderBy($this->columnName, $this->direction)
+    // ->sortBy('karyawan.id_karyawan')
+    // ->paginate($this->perpage);
 
         if ($filteredData->isNotEmpty()) {
             $lastData = $filteredData[0]->last_data_date;
