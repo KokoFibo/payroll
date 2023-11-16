@@ -2,8 +2,8 @@
     @section('title', 'Presensi')
 
 
-    <div class="d-flex flex-row justify-content-center gap-5 px-4 pt-4">
-        <div class="col-2 bg-success p-2" style=" border-radius: 10px;">
+    <div class="d-flex col-10  justify-content-between gap-5 px-4 pt-4">
+        <div class="col-3 bg-success p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
                 <div class="col-4 text-center">Hadir</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="col-2 bg-warning p-2" style=" border-radius: 10px;">
+        <div class="col-3 bg-warning p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">No scan</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -28,7 +28,7 @@
                 <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
-        <div class="col-2 bg-info p-2" style=" border-radius: 10px;">
+        <div class="col-3 bg-info p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Late</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -40,7 +40,7 @@
                 <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
-        <div class="col-2 bg-primary p-2" style=" border-radius: 10px;">
+        <div class="col-3 bg-primary p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Overtime</div>
                 <div class="col-4 text-center">Pagi</div>

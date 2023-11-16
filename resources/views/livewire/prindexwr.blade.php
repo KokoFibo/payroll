@@ -5,7 +5,7 @@
             white-space: nowrap;
         }
     </style>
-    @section('title', 'Payroll')
+    @section('title', 'Build Detail')
 
     <div class="d-flex justify-content-between">
         <div class="col-6 p-4 d-flex gap-3 ">

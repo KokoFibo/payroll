@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Payroll')
     <div class="pt-2">
         <div class="">
             <h2 class="text-center text-bold">Yifang Payroll</h2>
