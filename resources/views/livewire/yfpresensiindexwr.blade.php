@@ -53,14 +53,14 @@
             </div>
         </div>
     </div>
-    <div class="row col-12 p-4 d-flex align-items-center">
+    <div class="col-12 p-4 d-flex align-items-center">
         <div class="col-3">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <div>
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
@@ -68,8 +68,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-6  d-flex gap-3">
-            {{-- <div class="col-6"> --}}
+        <div class="col-7  d-flex gap-3">
+            {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
