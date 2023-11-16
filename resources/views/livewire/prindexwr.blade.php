@@ -78,58 +78,67 @@
                     </div> --}}
                 </div>
             </div>
+            <style>
+                td,
+                th {
+                    white-space: nowrap;
+                }
+            </style>
             <div class="card-body">
-                <table class="table mb-3">
-                    <thead>
-                        <tr>
-                            <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
-                                <i class="fa-solid fa-sort"></i>
-                            </th>
-                            <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
-                                Overtime <i class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam Late
-                                <i class="fa-solid fa-sort"></i>
-                            </th>
-                            <th class="text-center" wire:click="sortColumnName('first_in_late')">First In Late <i
-                                    class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('first_out_late')">First Out Late <i
-                                    class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('second_in_late')">Second In Late <i
-                                    class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('second_out_late')">Second Out Late <i
-                                    class="fa-solid fa-sort"></i></th>
-                            {{-- <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i class="fa-solid fa-sort"></i></th> --}}
-                            <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
-                                    class="fa-solid fa-sort"></i></th>
-                            <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja <i
-                                    class="fa-solid fa-sort"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($filteredData as $item)
-                            {{-- {{ dd($item) }} --}}
+                <table-responsive>
+                    <table class="table mb-3">
+                        <thead>
                             <tr>
-                                <td>{{ $item->user_id }}</td>
-                                <td>{{ $item->karyawan->nama }}</td>
-                                <td>{{ $item->karyawan->jabatan }}</td>
-                                <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
-                                <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
-                                {{-- <td class="text-center">{{ $item->jumlah_menit_lembur }}</td> --}}
-                                <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
-                                <td class="text-center">{{ $item->first_in_late }}</td>
-                                <td class="text-center">{{ $item->first_out_late }}</td>
-                                <td class="text-center">{{ $item->second_in_late }}</td>
-                                <td class="text-center">{{ $item->second_out_late }}</td>
-                                {{-- <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td> --}}
-                                <td class="text-center">{{ $item->total_noscan }}</td>
-                                <td class="text-center">{{ $item->total_hari_kerja }}</td>
+                                <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
+                                    Overtime <i class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam
+                                    Late
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('first_in_late')">First In Late <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('first_out_late')">First Out Late <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('second_in_late')">Second In Late <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('second_out_late')">Second Out Late
+                                    <i class="fa-solid fa-sort"></i></th>
+                                {{-- <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i class="fa-solid fa-sort"></i></th> --}}
+                                <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja
+                                    <i class="fa-solid fa-sort"></i></th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($filteredData as $item)
+                                {{-- {{ dd($item) }} --}}
+                                <tr>
+                                    <td>{{ $item->user_id }}</td>
+                                    <td>{{ $item->karyawan->nama }}</td>
+                                    <td>{{ $item->karyawan->jabatan }}</td>
+                                    <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
+                                    <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
+                                    {{-- <td class="text-center">{{ $item->jumlah_menit_lembur }}</td> --}}
+                                    <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
+                                    <td class="text-center">{{ $item->first_in_late }}</td>
+                                    <td class="text-center">{{ $item->first_out_late }}</td>
+                                    <td class="text-center">{{ $item->second_in_late }}</td>
+                                    <td class="text-center">{{ $item->second_out_late }}</td>
+                                    {{-- <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td> --}}
+                                    <td class="text-center">{{ $item->total_noscan }}</td>
+                                    <td class="text-center">{{ $item->total_hari_kerja }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </table-responsive>
                 {{ $filteredData->links() }}
             </div>
         </div>

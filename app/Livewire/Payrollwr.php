@@ -56,18 +56,32 @@ class Payrollwr extends Component
 
         $subtotal = 0;
 
-        Payroll::with('karyawan')->whereMonth('date', $this->month)
+        Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
             ->truncate();
 
         foreach ($datas as $data) {
             $payroll = new Payroll();
-            $payroll->karyawan_id = $data->karyawan->id;
             $payroll->jamkerjaid_id = $data->id;
-            if ($payroll->karyawan->metode_penggajian == 'Perjam') {
+            $payroll->nama = $data->karyawan->nama;
+            $payroll->id_karyawan = $data->karyawan->id_karyawan;
+            $payroll->jabatan = $data->karyawan->jabatan;
+            $payroll->company = $data->karyawan->company;
+            $payroll->placement = $data->karyawan->placement;
+
+            $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
+            $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
+            $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
+            $payroll->gaji_bpjs = $data->karyawan->gaji_bpjs;
+            $payroll->jkk = $data->karyawan->jkk;
+            $payroll->jkm = $data->karyawan->jkm;
+            $payroll->hari_kerja = $data->total_hari_kerja;
+            $payroll->jam_kerja = $data->jumlah_jam_kerja;
+            $payroll->jam_lembur = $data->jumlah_menit_lembur;
+            if ($payroll->metode_penggajian == 'Perjam') {
                 $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
             } else {
-                if ($payroll->karyawan->gaji_overtime == 0) {
+                if ($payroll->gaji_lembur == 0) {
                     $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
                 } else {
                     $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
@@ -124,274 +138,262 @@ class Payrollwr extends Component
     }
     public function render()
     {
-        $latest_payroll_id = Payroll::latest('jamkerjaid_id')->first();
 
 
-        if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
+        $latest_payroll_id = Payroll::latest()->first();;
 
+        if(Payroll::count() == 0){
+
+            $this->rebuild();
+        } else {
+            if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
                 $this->rebuild();
+            }
         }
+
+
+
 
         switch ($this->selected_company) {
             case 0:
 
                 $total = Payroll::sum('total');
-                // $payroll = Payroll::with('karyawan', 'jamkerjaid')
-                $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                // $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                    ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 1:
 
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'placement', 'YCME')
+                $total = Payroll::where('placement', 'YCME')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'placement', 'YCME')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('placement', 'YCME')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 2:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'placement', 'YEV')
+                $total = Payroll::where('placement', 'YEV')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'placement', 'YEV')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('placement', 'YEV')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 3:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'placement', 'YIG')
-                    ->orWhereRelation('karyawan', 'placement', 'YSM')
+                $total = Payroll::where('placement', 'YIG')
+                    ->orWhere('placement', 'YSM')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'YIG')
-                    ->orWhereRelation('karyawan', 'company', 'YSM')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'YIG')
+                    ->orWhere('company', 'YSM')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 4:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'ASB')
+                $total = Payroll::where('company', 'ASB')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'ASB')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'ASB')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 5:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'DPA')
+                $total = Payroll::where('company', 'DPA')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'DPA')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'DPA')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 6:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'YCME')
+                $total = Payroll::where('company', 'YCME')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'YCME')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'YCME')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 7:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'YEV')
+                $total = Payroll::where('company', 'YEV')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'YEV')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'YEV')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 8:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'YIG')
+                $total = Payroll::where('company', 'YIG')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'YIG')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'YIG')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             case 9:
-                $total = Payroll::with('karyawan')
-                    ->whereRelation('karyawan', 'company', 'YSM')
+                $total = Payroll::where('company', 'YSM')
                     ->sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->whereRelation('karyawan', 'company', 'YSM')
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company', 'YSM')
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
 
             default:
                 $total = Payroll::sum('total');
-                // $payroll = Payroll::with('karyawan')
-                 $payroll = Payroll::select(['payrolls.*','karyawans.*'])
-                ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
-                ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
+                $payroll = Payroll::query()
+                //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
+                // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
+                // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
 
-                     ->whereMonth('payrolls.date', $this->month)
-                    ->whereYear('payrolls.date', $this->year)
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->whereRelation('karyawan', 'id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhereRelation('karyawan', 'metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                     ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+
+                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;

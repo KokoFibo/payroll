@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payrolls', function (Blueprint $table) {
+
             $table->id();
-            $table->integer('jamkerjaid_id');
+
+            $table->foreignId('jamkerjaid_id');
             $table->index('jamkerjaid_id');
             $table->integer('id_karyawan');
             $table->string('nama');
@@ -24,9 +26,9 @@ return new class extends Migration
             $table->double('hari_kerja',5,1);
             $table->double('jam_kerja',6,1);
             $table->double('jam_lembur',6,1)->nullable();
-            $table->integer('gaji_pokok',6,1);
-            $table->integer('gaji_lembur',6,1)->nullable();
-            $table->integer('gaji_bpjs',6,1)->nullable();
+            $table->integer('gaji_pokok');
+            $table->integer('gaji_lembur')->nullable();
+            $table->integer('gaji_bpjs')->nullable();
             $table->double('subtotal',12,1);
             $table->double('pajak',8,1)->nullable();
             $table->double('jht',8,1)->nullable();
