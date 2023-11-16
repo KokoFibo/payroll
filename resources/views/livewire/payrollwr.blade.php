@@ -73,31 +73,35 @@
                     <thead>
                         <tr>
                             <th wire:click="sortColumnName('id_karyawan')">ID <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">Nama <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">Jabatan <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">Company <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">Metode Penggajian <i
+                            <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('company')">Company <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('metode_penggajian')">Metode Penggajian <i
                                     class="fa-solid fa-sort"></i></th>
                             <th wire:click="sortColumnName('id_karyawan')">Hari Kerja <i class="fa-solid fa-sort"></i>
                             </th>
-                            <th wire:click="sortColumnName('id_karyawan')">Jam Kerja <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('jumlah_jam_kerja')">Jam Kerja <i
+                                    class="fa-solid fa-sort"></i>
                             </th>
-                            <th wire:click="sortColumnName('id_karyawan')">Jam Lembur <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('jumlah_menit_lembur')">Jam Lembur <i
+                                    class="fa-solid fa-sort"></i>
                             </th>
-                            <th wire:click="sortColumnName('id_karyawan')">Gaji Pokok <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i class="fa-solid fa-sort"></i>
                             </th>
-                            <th wire:click="sortColumnName('id_karyawan')">Gaji Lembur <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('gaji_overtime')">Gaji Lembur <i
+                                    class="fa-solid fa-sort"></i>
                             </th>
-                            <th wire:click="sortColumnName('id_karyawan')">Gaji BPJS <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
                             </th>
                             <th wire:click="sortColumnName('id_karyawan')">Sub Gaji <i class="fa-solid fa-sort"></i>
                             </th>
                             <th wire:click="sortColumnName('id_karyawan')">Pajak <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">JHT <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">JP <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">JKK <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">JKM <i class="fa-solid fa-sort"></i></th>
-                            <th wire:click="sortColumnName('id_karyawan')">Kesehatan <i class="fa-solid fa-sort"></i>
+                            <th wire:click="sortColumnName('potongan_JHT')">JHT <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('potongan_JP')">JP <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('potongan_JKK')">JKK <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('potongan_JKM')">JKM <i class="fa-solid fa-sort"></i></th>
+                            <th wire:click="sortColumnName('potongan_kesehatan')">Kesehatan <i
+                                    class="fa-solid fa-sort"></i>
                             </th>
                             <th wire:click="sortColumnName('id_karyawan')">Total <i class="fa-solid fa-sort"></i></th>
                         </tr>

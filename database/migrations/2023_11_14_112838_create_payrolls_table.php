@@ -13,15 +13,27 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('karyawan_id');
-            $table->foreignId('jamkerjaid_id');
+            $table->integer('jamkerjaid_id');
+            $table->index('jamkerjaid_id');
+            $table->integer('id_karyawan');
+            $table->string('nama');
+            $table->string('jabatan');
+            $table->string('company');
+            $table->string('placement');
+            $table->string('metode_penggajian');
+            $table->double('hari_kerja',5,1);
+            $table->double('jam_kerja',6,1);
+            $table->double('jam_lembur',6,1)->nullable();
+            $table->integer('gaji_pokok',6,1);
+            $table->integer('gaji_lembur',6,1)->nullable();
+            $table->integer('gaji_bpjs',6,1)->nullable();
             $table->double('subtotal',12,1);
-            $table->double('pajak',8,1);
-            $table->double('jht',8,1);
-            $table->double('jp',8,1);
-            $table->double('jkk',8,1);
-            $table->double('jkm',8,1);
-            $table->double('kesehatan',8,1);
+            $table->double('pajak',8,1)->nullable();
+            $table->double('jht',8,1)->nullable();
+            $table->double('jp',8,1)->nullable();
+            $table->double('jkk',8,1)->nullable();
+            $table->double('jkm',8,1)->nullable();
+            $table->double('kesehatan',8,1)->nullable();
             $table->double('total',12,1);
             $table->date('date');
             $table->timestamps();
