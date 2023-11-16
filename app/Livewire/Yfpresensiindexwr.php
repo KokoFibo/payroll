@@ -231,7 +231,8 @@ class Yfpresensiindexwr extends Component
                 }
             } else {
                 // JIKA BUKAN HARI SABTU
-                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' ) ) {
+                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' ) ||
+                Carbon::parse( $data->second_in )->betweenIncluded( '11:00', '15:00' )) {
                     $data->shift = 'Pagi';
                     // dd($data->shift, $is_saturday );
 
