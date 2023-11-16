@@ -345,7 +345,8 @@ class YfpresensiController extends Controller {
             } else {
                 $id_karyawan = $dataKaryawan->id;
             }
-
+            // pakai code dibawah ini, jika masih banyak second yang masuk ke malam hari second_in code
+            // if(Carbon::parse( $second_in )->betweenIncluded( '11:01', '14:00' ))   $shift = 'Pagi',
             // ook
             Yfrekappresensi::create( [
                 'user_id' => $user_id,

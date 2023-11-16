@@ -1,10 +1,5 @@
 <div>
-    <style>
-        td,
-        th {
-            white-space: nowrap;
-        }
-    </style>
+
     @section('title', 'Karyawan')
     <div class="d-flex  p-4">
         <div class="col-4 d-flex gap-3">
@@ -61,8 +56,14 @@
                 </div>
 
             </div>
+            <style>
+                td,
+                th {
+                    white-space: nowrap;
+                }
+            </style>
             <div class="card-body">
-                <div class="table-responsive-md">
+                <div class="table-responsive">
                     <table class="table  table-sm  table-hover mb-2">
                         <thead>
                             <tr>
