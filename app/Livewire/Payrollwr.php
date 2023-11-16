@@ -138,21 +138,15 @@ class Payrollwr extends Component
     }
     public function render()
     {
-
-
         $latest_payroll_id = Payroll::latest()->first();;
 
         if(Payroll::count() == 0){
-
             $this->rebuild();
         } else {
             if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
                 $this->rebuild();
             }
         }
-
-
-
 
         switch ($this->selected_company) {
             case 0:
@@ -165,12 +159,14 @@ class Payrollwr extends Component
 
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -189,12 +185,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('placement', 'YCME')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -211,12 +209,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('placement', 'YEV')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -235,12 +235,14 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->where('company', 'YIG')
                     ->orWhere('company', 'YSM')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -257,12 +259,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'ASB')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -279,12 +283,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'DPA')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -301,12 +307,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'YCME')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -323,12 +331,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'YEV')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -345,12 +355,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'YIG')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -367,12 +379,14 @@ class Payrollwr extends Component
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->where('company', 'YSM')
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
@@ -387,12 +401,14 @@ class Payrollwr extends Component
 
                      ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
-
-                            // ->orWhere('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            // ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                    ->when($this->search, function ($query) {
+                        $query
+                        ->Where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                    })
 
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
