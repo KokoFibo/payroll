@@ -60,6 +60,8 @@ return new class extends Migration
             $table->boolean('potongan_JKK')->nullable();
             $table->boolean('potongan_JKM')->nullable();
             $table->boolean('potongan_kesehatan')->nullable();
+            $table->string('no_npwp')->nullable();
+            $table->string('ptkp')->nullable();
             $table->integer('denda')->nullable();
 
 

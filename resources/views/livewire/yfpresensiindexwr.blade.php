@@ -109,7 +109,8 @@
                 </h4>
             </div>
             <style>
-                td {
+                td,
+                th {
                     white-space: nowrap;
                 }
             </style>
@@ -119,36 +120,36 @@
                     <table class="table table-sm table-hover mb-4">
                         <thead>
                             <tr>
-                                <td>Action</td>
-                                <td wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('first_out')">First out <i
+                                <th>Action</th>
+                                <th wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('first_out')">First out <i
                                         class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('second_in')">Second in <i
+                                </th>
+                                <th wire:click="sortColumnName('second_in')">Second in <i
                                         class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('second_out')">Second out <i
+                                </th>
+                                <th wire:click="sortColumnName('second_out')">Second out <i
                                         class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('overtime_in')">Overtime in <i
+                                </th>
+                                <th wire:click="sortColumnName('overtime_in')">Overtime in <i
                                         class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('overtime_out')">Overtime out <i
+                                </th>
+                                <th wire:click="sortColumnName('overtime_out')">Overtime out <i
                                         class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></td>
-                                <td wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i>
-                                </td>
-                                <td wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></td>
+                                </th>
+                                <th wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -386,6 +387,7 @@
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
                 <div class="modal-footer">
 

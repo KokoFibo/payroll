@@ -6,6 +6,24 @@ use App\Models\Karyawan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function monthName($tgl) {
+    switch ($tgl) {
+        case 1 : $monthNama = 'January'; break;
+        case 2 : $monthNama = 'February'; break;
+        case 3 : $monthNama = 'March'; break;
+        case 4 : $monthNama = 'April'; break;
+        case 5 : $monthNama = 'May'; break;
+        case 6 : $monthNama = 'June'; break;
+        case 7 : $monthNama = 'July'; break;
+        case 8 : $monthNama = 'August'; break;
+        case 9 : $monthNama = 'September'; break;
+        case 10 : $monthNama = 'October'; break;
+        case 11 : $monthNama = 'November'; break;
+        case 12 : $monthNama = 'December'; break;
+    }
+    return $monthNama;
+}
+
 function absen_kosong($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out) {
     if($first_in =='' && $first_out == '' && $second_in == '' && $second_out == '' && $overtime_in == '' && $overtime_out =='') {
     // if($first_in == null && $first_out ==  null && $second_in ==  null && $second_out ==  null && $overtime_in ==  null && $overtime_out == null) {

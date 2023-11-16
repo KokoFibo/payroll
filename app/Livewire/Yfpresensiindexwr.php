@@ -13,6 +13,9 @@ use App\Models\Yfrekappresensi;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class Yfpresensiindexwr extends Component
 {
     use WithPagination;
@@ -44,6 +47,7 @@ class Yfpresensiindexwr extends Component
     public $total_jam_kerja;
     public $total_jam_lembur;
     public $total_keterlambatan;
+    public $paginatedData;
 
     #[On('delete')]
     public function delete($id) {
@@ -100,6 +104,11 @@ class Yfpresensiindexwr extends Component
 
             }
         }
+        // $this->dataArr = $this->paginate($this->dataArr, 5);
+
+
+
+
 
         $this->total_hari_kerja = $total_hari_kerja;
         $this->total_jam_kerja = $total_jam_kerja;
@@ -109,6 +118,15 @@ class Yfpresensiindexwr extends Component
 
 
 
+    }
+    public function paginate($items, $perPage = 5, $page = null)
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $total = count($items);
+        $currentpage = $page;
+        $offset = ($currentpage * $perPage) - $perPage ;
+        $itemstoshow = array_slice($items , $offset , $perPage);
+        return new LengthAwarePaginator($itemstoshow ,$total   ,$perPage);
     }
 
     public function filterNoScan()

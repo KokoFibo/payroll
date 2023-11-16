@@ -168,7 +168,7 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">PTKP <span class="text-danger">*</span></label>
+                        <label class="form-label">PTKP </label>
                         <select class="form-select @error('ptkp') is-invalid @enderror"
                             aria-label="Default select example" wire:model="ptkp">
                             <option value=" ">Pilih PTKP</option>
