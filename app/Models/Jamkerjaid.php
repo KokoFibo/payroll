@@ -13,8 +13,10 @@ class Jamkerjaid extends Model
     public function karyawan () {
         return $this->belongsTo(Karyawan::class);
     }
+    public function payroll () {
+        return $this->hasMany(Payroll::class, 'jamkerjaid_id');
+    }
 
-//     public function payroll () {
-//         return $this->hasMany(Payroll::class);
-//     }
-// }
+
+
+}

@@ -10,11 +10,5 @@ class Karyawan extends Model {
     use HasFactory, HasUuids;
     protected $guarded = [];
 
-    // public function payroll () {
-    //     return $this->hasMany(Payroll::class);
-    // }
-    // public function jamkerjaid () {
-    //     return $this->hasMany(Jamkerjaid::class);
-    // }
 
 }
