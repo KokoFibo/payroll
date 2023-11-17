@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    @foreach ($dataArr as $d)
+    @foreach ($data as $d)
         <div class="flex px-3 pb-4 justify-center">
             <div
                 class="flex border-pink-500 border-l-8 rounded-lg bg-blue-100 w-screen h-20 items-center p-2 rounded-lg shadow-lg justify-around  ">
@@ -93,7 +93,8 @@
             </div>
         </div>
     @endforeach
-
+    <button>Prev</button>
+    <button>Next</button>
 </body>
 
 </html>

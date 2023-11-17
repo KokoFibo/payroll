@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardController extends Controller
 {
@@ -15,6 +18,14 @@ class DashboardController extends Controller
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
         return view('dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']));
     }
+
+    public function paginate($items, $perPage = 5, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
     public function mobile()
     {
         // ini hanya bisa di test di desktop tidak berlaku di user mobile
@@ -54,11 +65,17 @@ class DashboardController extends Controller
                     'jam_lembur' => $jam_lembur,
                 ];
                 $total_hari_kerja++;
+
+                $data = $this->paginate($dataArr);
+
             }
         }
 
+
+
         return view('mobile')->with([
             'dataArr' => $dataArr,
+            'data' => $data,
             'total_hari_kerja' => $total_hari_kerja,
             'total_jam_kerja' => $total_jam_kerja,
             'total_jam_lembur' => $total_jam_lembur,

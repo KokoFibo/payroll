@@ -370,14 +370,24 @@
                         </thead>
                         <tbody>
 
-                            @foreach ($dataArr as $data)
+
+                            @foreach ($this->dataArr as $d)
                                 <tr>
-                                    <td class="text-center">{{ $data['tgl'] }}</td>
-                                    <td class="text-center">{{ $data['jam_kerja'] }}</td>
-                                    <td class="text-center">{{ $data['jam_lembur'] }}</td>
-                                    <td class="text-center">{{ $data['terlambat'] }}</td>
+                                    <td class="text-center">{{ $d['tgl'] }}</td>
+                                    <td class="text-center">{{ $d['jam_kerja'] }}</td>
+                                    <td class="text-center">{{ $d['jam_lembur'] }}</td>
+                                    <td class="text-center">{{ $d['terlambat'] }}</td>
                                 </tr>
                             @endforeach
+                            {{-- @foreach ($dataArr as $d)
+                                <tr>
+                                    <td class="text-center">{{ $d->tgl }}</td>
+                                    <td class="text-center">{{ $d->jam_kerja }}</td>
+                                    <td class="text-center">{{ $d->jam_lembur }}</td>
+                                    <td class="text-center">{{ $d->terlambat }}</td>
+                                </tr>
+                            @endforeach --}}
+
 
                             <tr>
                                 <th class="text-center">{{ $total_hari_kerja }}</th>
@@ -400,24 +410,5 @@
         </div>
     </div>
     {{-- End  --}}
-    <script>
-        window.addEventListener("swal:confirm", (event) => {
-            console.log(event);
-            Swal.fire({
-                title: "Apakah yakin mau di delete",
-                text: "Data yang sudah di delete tidak dapat dikembalikan",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Delete",
-            }).then((willDelete) => {
-                if (willDelete.isConfirmed) {
-                    @this.dispatch("delete", {
-                        id: event.detail.id
-                    });
-                }
-            });
-        });
-    </script>
+
 </div>
