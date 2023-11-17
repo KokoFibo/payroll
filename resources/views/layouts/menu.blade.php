@@ -38,6 +38,8 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+            @endif
+            @if (Auth::user()->role > 3)
                 <li class="nav-item">
                     <a href="/payroll" class="nav-link" wire:navigate>
                         <i class="nav-icon fas fa-dollar-sign"></i>
