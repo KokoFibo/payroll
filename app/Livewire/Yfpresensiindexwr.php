@@ -103,23 +103,11 @@ public function showDetail($user_id)
             $total_keterlambatan += $terlambat;
         }
     }
-
     $this->total_hari_kerja = $total_hari_kerja;
     $this->total_jam_kerja = $total_jam_kerja;
     $this->total_jam_lembur = $total_jam_lembur;
     $this->total_keterlambatan = $total_keterlambatan;
 }
-
-
-
-    public function paginate($items, $perPage = 5, $page = null, $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
-    }
-
-
 
     public function filterNoScan()
     {
@@ -358,6 +346,8 @@ public function showDetail($user_id)
 
         ->paginate($this->perpage);
             // dd($datas[0]->user_id);
+
+
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
         'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi'
     ]));
