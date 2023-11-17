@@ -63,6 +63,7 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
         }
+        
         if($jabatan == 'Satpam') {
             if($shift == 'Pagi') {
                 if(is_saturday($tgl)) {
