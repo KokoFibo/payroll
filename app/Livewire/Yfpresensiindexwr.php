@@ -85,6 +85,12 @@ class Yfpresensiindexwr extends Component
                 $tgl = tgl_doang($d->date);
                 $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                 $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                if($d->karyawan->jabatan = 'Satpam') {
+                    if($terlambat >= 6 ) {
+                        $jam_kerja = 0.5;
+                    }
+
+                }
 
                 // if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
                     $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
@@ -183,6 +189,7 @@ class Yfpresensiindexwr extends Component
 
     public function save()
     {
+
         $this->validate([
             'first_in' => 'date_format:H:i|nullable',
             'first_out' => 'date_format:H:i|nullable',
@@ -213,7 +220,6 @@ class Yfpresensiindexwr extends Component
 
         // ================================
         $is_saturday = is_saturday( $data->date );
-
             if ( $is_saturday ) {
                 // JIKA HARI SABTU kkk
                 if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' ) ) {
@@ -231,15 +237,21 @@ class Yfpresensiindexwr extends Component
                 }
             } else {
                 // JIKA BUKAN HARI SABTU
-                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' ) ||
-                Carbon::parse( $data->second_in )->betweenIncluded( '11:00', '15:00' )) {
+                if ( Carbon::parse( $data->first_in )->betweenIncluded( '05:30', '15:00' )) {
                     $data->shift = 'Pagi';
-                    // dd($data->shift, $is_saturday );
-
                 } else {
                     $data->shift = 'Malam';
                     // dd($data->shift, $is_saturday );
 
+                }
+
+                if( $data->second_in != null) {
+                    if (Carbon::parse( $data->second_in )->betweenIncluded( '11:00', '15:00' ))
+                 {
+                    $data->shift = 'Pagi';
+                    // dd($data->shift, $is_saturday );
+
+                }
                 }
             }
 
