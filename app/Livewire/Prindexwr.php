@@ -121,7 +121,7 @@ class Prindexwr extends Component
 
         $filterArray = Yfrekappresensi::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
-            ->where('status')
+            // ->where('status')
             ->pluck('user_id')
             ->unique();
 
