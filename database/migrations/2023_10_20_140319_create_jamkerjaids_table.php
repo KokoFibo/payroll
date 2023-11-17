@@ -28,7 +28,7 @@ return new class extends Migration
             // $table->integer('overtime_in_late')->nullable();
             $table->integer('total_late')->nullable();
             $table->integer('total_noscan')->nullable();
-            $table->integer('total_hari_kerja')->nullable();
+            $table->double('total_hari_kerja',5,1)->nullable();
             $table->date('last_data_date')->nullable();
             $table->timestamps();
         });

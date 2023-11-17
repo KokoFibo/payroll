@@ -152,6 +152,7 @@ class Prindexwr extends Component
             $jam_kerja = 0;
             $total_jam_kerja = 0;
             $total_langsungLembur = 0;
+            $satpam_halfday = 0;
 
             $dataId = Yfrekappresensi::with('karyawan')->where('user_id', $data->user_id)
                 ->whereMonth('date', $this->month)
@@ -218,6 +219,13 @@ class Prindexwr extends Component
                         $late4 = checkSecondOutLate($dt->second_out, $dt->shift, $dt->date, $dt->karyawan->jabatan);
                         // $late5 = checkOvertimeInLate($dt->overtime_in, $dt->shift, $dt->date);
 
+                        if($dt->karyawan->jabatan == 'Satpam') {
+                            if($late4 >= 6) {
+
+                                $satpam_halfday = $satpam_halfday + 0.5;
+                            }
+                        }
+
                         if(($dt->second_in === null && $dt->second_out === null) || ($dt->first_in === null && $dt->first_out === null)){
                             $late1 = 0;
                             $late2 = 0;
@@ -280,7 +288,7 @@ class Prindexwr extends Component
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
             $data->second_in_late = $total_late_3 == 0 ? null : $total_late_3;
             $data->second_out_late = $total_late_4 == 0 ? null : $total_late_4;
-            $data->total_hari_kerja = $jumlah_hari_kerja;
+            $data->total_hari_kerja = $jumlah_hari_kerja - $satpam_halfday;
             // $data->overtime_in_late = $total_late_5 == 0 ? null : $total_late_5;
             $data->save();
         }

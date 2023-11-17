@@ -409,6 +409,7 @@ function trimTime($data)
 
 function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan)
 {
+
     $late_1 = 0;
     $late_2 = 0;
     $late_3 = 0;
@@ -418,49 +419,6 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan);
     $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan);
 
-    // if (($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')) {
-
-    //     dd('sini');
-    //     // jik
-    //     if ($first_in === null && $first_out === null) {
-    //             if($shift = 'Pagi'){
-    //                 if(Carbon::parse($second_in)->betweenIncluded('08:01', '13:03')) {
-    //                     $late3 = 0;
-    //                 }
-    //             } else {
-    //                 if (is_saturday($tgl)) {
-    //                     if(Carbon::parse($second_in)->betweenIncluded('17:01', '22:03')) {
-    //                         $late3 = 0;
-    //                     }
-    //                 } else {
-    //                     if(Carbon::parse($second_in)->betweenIncluded('20:01', '00:03')) {
-    //                         $late3 = 0;
-    //                     }
-    //                 }
-    //             }
-    //     } else {
-    //         if($shift = 'Pagi'){
-    //             if(Carbon::parse($second_in)->betweenIncluded('05:01', '07:03')) {
-    //                 $late1 = 0;
-    //             }
-    //         } else {
-    //             if (is_saturday($tgl)) {
-    //                 if(Carbon::parse($second_in)->betweenIncluded('15:01', '17:03')) {
-    //                     $late1 = 0;
-    //                 }
-    //             } else {
-    //                 if(Carbon::parse($second_in)->betweenIncluded('17:01', '20:03')) {
-    //                     $late1 = 0;
-    //             }
-    //         }
-
-    //     }
-    // }
-
-    // $total_late_1 = $total_late_1 + $late1;
-    // $total_late_2 = $total_late_2 + $late2;
-    // $total_late_3 = $total_late_3 + $late3;
-    // $total_late_4 = $total_late_4 + $late4;
     return $late1 + $late2 + $late3 + $late4;
 }
 
@@ -502,6 +460,7 @@ function is_jabatan_khusus($jabatan)
 
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
 {
+    // koko
     // $late = null;
     // $late1 = null;
     // $late2 = null;
@@ -509,7 +468,8 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late4 = null;
     // ffff
 
-    $jabatan = Karyawan::where('id_karyawan', $id)->first();
+    $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
+    $jabatan = $data_jabatan->jabatan;
     $jabatan_khusus = is_jabatan_khusus($jabatan);
 
     $late5 = null;
@@ -534,7 +494,7 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
         // return $late = 1;
         // $late2 = 1;
     }
-    if (checkSecondOutLate($second_out, $shift, $tgl, $jabatan->jabatan)) {
+    if (checkSecondOutLate($second_out, $shift, $tgl, $jabatan)) {
         //  return $late = $late + 1;
         // if ($jabatan_khusus != '1') {
         //     return $late = 1;
@@ -673,6 +633,7 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
                 }
             }
         }
+
         if($jabatan == 'Satpam') {
 
             if ($shift == 'Pagi') {
@@ -700,8 +661,8 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
 
             } else {
                 if(is_saturday($tgl)) {
-                    if (Carbon::parse($second_out)->betweenIncluded('20:01', '04:00')) {
-                        $t1 = strtotime('05:00:00');
+                    if (Carbon::parse($second_out)->betweenIncluded('20:01', '23:59')) {
+                        $t1 = strtotime('23:59:00');
                         $t2 = strtotime($second_out);
 
                         $diff = gmdate('H:i:s', $t1 - $t2);
@@ -710,7 +671,8 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
                         $late = null;
                     }
                 } else {
-                    if (Carbon::parse($second_out)->betweenIncluded('20:01', '07:00')) {
+                    if (Carbon::parse($second_out)->betweenIncluded('20:00', '23:59') ||
+                    Carbon::parse($second_out)->betweenIncluded('00:00', '07:00')) {
                         $t1 = strtotime('08:00:00');
                         $t2 = strtotime($second_out);
 
