@@ -79,7 +79,6 @@ class Payrollwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
-            $payroll->status_karyawan = $data->karyawan->status_karyawan;
             if ($payroll->metode_penggajian == 'Perjam') {
                 $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
             } else {
@@ -155,7 +154,7 @@ class Payrollwr extends Component
             case 0:
 
                 $total = Payroll::sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 // $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -169,16 +168,17 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 1:
 
                 $total = Payroll::where('placement', 'YCME')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -194,15 +194,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 2:
                 $total = Payroll::where('placement', 'YEV')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -217,16 +218,17 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 3:
                 $total = Payroll::where('placement', 'YIG')
                     ->orWhere('placement', 'YSM')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -242,15 +244,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 4:
                 $total = Payroll::where('company', 'ASB')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -265,15 +268,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 5:
                 $total = Payroll::where('company', 'DPA')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -288,15 +292,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 6:
                 $total = Payroll::where('company', 'YCME')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -311,15 +316,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 7:
                 $total = Payroll::where('company', 'YEV')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -334,15 +340,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 8:
                 $total = Payroll::where('company', 'YIG')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -357,15 +364,16 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             case 9:
                 $total = Payroll::where('company', 'YSM')
                     ->sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -380,14 +388,15 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
 
             default:
                 $total = Payroll::sum('total');
-                $payroll1 = Payroll::query()
+                $payroll = Payroll::query()
                 //  $payroll = Payroll::select(['payrolls.*','karyawans.*'])
                 // ->join('karyawans', 'payrolls.karyawan_id', '=', 'karyawans.id')
                 // ->join('jamkerjaids', 'payrolls.jamkerjaid_id', '=', 'jamkerjaids.id')
@@ -401,27 +410,14 @@ class Payrollwr extends Component
                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    });
+                    })
 
-
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
                 break;
         }
 
-        if($this->status==1) {
-            $payroll = $payroll1->where('status_karyawan','PKWT')
-            ->orWhere('status_karyawan','PKWTT')
-            ->orWhere('status_karyawan','Dirumahkan')
-            ->orderBy($this->columnName, $this->direction)
-            ->paginate($this->perpage);
-        } elseif($this->status==2)  {
-            $payroll = $payroll1->where('status_karyawan','Resigned')
-            ->orWhere('status_karyawan','Blacklist')
-            ->orderBy($this->columnName, $this->direction)
-            ->paginate($this->perpage);
-        } else {
-            $payroll = $payroll1->orderBy($this->columnName, $this->direction)
-            ->paginate($this->perpage);
-        }
+        // $payroll1 = $payroll
 
         $tgl = Payroll::select('updated_at')->first();
         if ($tgl != null) {

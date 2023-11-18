@@ -66,8 +66,18 @@
                         </div>
                     </div>
 
+
                     <div class="text-right px-1">
-                        <div class="d-flex gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-bold">Status Karyawan</span>
+                            <div class="col-4-flex align-items-center gap-3">
+                                <select class="form-select" wire:model.live="status">
+                                    {{-- <option selected>Open this select menu</option> --}}
+                                    <option value="0">All</option>
+                                    <option value="1">Aktif</option>
+                                    <option value="2">Non Aktif</option>
+                                </select>
+                            </div>
                             <button class="btn btn-success">Excel</button>
                             <button class="btn btn-danger">PDF</button>
                             <button class="btn btn-dark">Print</button>
@@ -118,7 +128,8 @@
                                 <th wire:click="sortColumnName('jp')">JP <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jkk')">JKK <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jkm')">JKM <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('kesehatan')">Kesehatan <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('kesehatan')">Kesehatan <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('total')">Total <i class="fa-solid fa-sort"></i></th>
                             </tr>
