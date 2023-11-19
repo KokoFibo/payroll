@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="w-screen flex px-3 mt-5 justify-center ">
-                <p>USer Profile Livewire</p>
+                <p>Profile Livewire</p>
             </div>
 
             <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
