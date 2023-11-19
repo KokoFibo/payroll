@@ -1,8 +1,8 @@
 <div>
     <div>
-        <div class="h-screen">
+        <div class="flex flex-col h-screen">
             <div class=header>
-                <div class="w-screen bg-black  shadow-xl rounded-b-3xl  sticky top-0 ">
+                <div class=" bg-black  shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between h-36 items-center">
                         <div class="flex flex-col -mt-5">
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
@@ -38,14 +38,38 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+                {{-- <div class="py-2"> --}}
+                <div class="flex justify-center">
+                    <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                    </h2>
+                </div>
+                {{-- </div> --}}
+
+            </div>
+            <div class="main  flex-1 overflow-y-auto ">
+                {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
+                <div class="w-screen flex px-3 mt-5  flex flex-col gap-5 ">
+
+
+                    @foreach ($data as $d)
+                        <div class="bg-white shadow rounded-xl mt-5 p-3">
+                            <div class="flex items-center gap-4">
+                                <div class="text-3xl text-gray-500"><i class="fa-regular fa-clipboard"></i></div>
+                                <div>
+                                    <div class="font-bold text-gray-500">{{ $d->title }}</div>
+                                    <div class="text-sm text-gray-500">{{ $d->description }}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endforeach
+
                 </div>
             </div>
-            <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-5 ">Informasi Terkini</h2>
-            <div class="w-screen flex px-3 mt-5 justify-center flex flex-col gap-5">
 
-            </div>
-
-            <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
+            <div class="footer flex justify-between h-15  ">
 
                 <button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i
                         class="fa-solid fa-left-long"></i>

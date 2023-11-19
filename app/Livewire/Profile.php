@@ -68,7 +68,7 @@ class Profile extends Component
         $karyawan->email = $this->email;
         $user->save();
         $karyawan->save();
-        $this->dispatch( 'success', message: 'Bahasa berhasil di rubah' );
+        $this->dispatch( 'success', message: 'Email berhasil di rubah' );
     }
 
     public function mount () {
