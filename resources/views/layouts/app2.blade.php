@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PWA  -->
-    <meta name="theme-color" content="#C62A27" />
-    <link rel="apple-touch-icon" href="{{ asset('yflogo.png') }}">
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    {{-- <meta name="theme-color" content="#212529" />
+    <link rel="apple-touch-icon" href="{{ asset('logoyf.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}"> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -74,7 +74,7 @@
 
             @include('layouts.footer')
 
-            <script src="{{ asset('/sw.js') }}"></script>
+            {{-- <script src="{{ asset('/sw.js') }}"></script>
             <script>
                 if ("serviceWorker" in navigator) {
                     // Register a service worker hosted at the root of the
@@ -90,7 +90,7 @@
                 } else {
                     console.error("Service workers are not supported.");
                 }
-            </script>
+            </script> --}}
     </body>
 
 </html>
