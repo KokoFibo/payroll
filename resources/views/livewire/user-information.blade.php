@@ -3,7 +3,7 @@
         <div class="h-screen">
             <div class=header>
                 <div class="w-screen bg-black  shadow-xl rounded-b-3xl  sticky top-0 ">
-                    <div class="flex justify-between h-32 items-center">
+                    <div class="flex justify-between h-36 items-center">
                         <div class="flex flex-col -mt-5">
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:150px">

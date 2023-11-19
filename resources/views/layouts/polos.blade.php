@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- PWA  -->
-    <meta name="theme-color" content="#6777ef" />
-    <link rel="apple-touch-icon" href="{{ asset('logo.PNG') }}">
+    <meta name="theme-color" content="#212529" />
+    <link rel="apple-touch-icon" href="{{ asset('logoyf.png') }}">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="dns-prefetch" href="//fonts.bunny.net">
