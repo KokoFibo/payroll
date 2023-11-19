@@ -3,14 +3,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-<!-- PWA  -->
-<meta name="theme-color" content="#212529" />
-<link rel="apple-touch-icon" href="{{ asset('yflogo.png') }}">
-<link rel="manifest" href="{{ asset('/manifest.json') }}">
+
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- PWA  -->
+    <meta name="theme-color" content="#212529" />
+    <link rel="apple-touch-icon" href="{{ asset('logoyf.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="icon" href="{{ url('favicon/favicon-32x32.png') }}">
 
