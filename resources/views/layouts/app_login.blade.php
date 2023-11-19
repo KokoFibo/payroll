@@ -4,7 +4,7 @@
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- PWA  -->
-<meta name="theme-color" content="#C62A27" />
+<meta name="theme-color" content="#212529" />
 <link rel="apple-touch-icon" href="{{ asset('yflogo.png') }}">
 <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
@@ -21,6 +21,7 @@
 
     {{-- <title>{{ config('app.name', 'Yifang Payroll') }}</title> --}}
     <title>Yifang Payroll</title>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

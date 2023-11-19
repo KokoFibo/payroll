@@ -2,10 +2,10 @@
     "name": "Yifang Payroll",
     "short_name": "Yifang",
     "start_url": "/index.php",
-    "background_color": "#C62A27",
+    "background_color": "#212529",
     "description": "Yifang Payroll Application",
     "display": "fullscreen",
-    "theme_color": "#C62A27",
+    "theme_color": "#212529",
     "icons": [
         {
             "src": "yflogo.png",
