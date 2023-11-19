@@ -40,8 +40,9 @@
                     </div>
                 </div>
             </div>
-            <div class="w-screen flex px-3 mt-5 justify-center ">
-                <p>User Information Livewire</p>
+            <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-5 ">Informasi</h2>
+            <div class="w-screen flex px-3 mt-5 justify-center flex flex-col gap-5">
+
             </div>
 
             <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">

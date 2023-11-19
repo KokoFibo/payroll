@@ -87,7 +87,7 @@ class Updatekaryawanwr extends Component {
 
         'id_karyawan' => 'required',
         'nama' => 'required',
-        'email' => 'email|required',
+        'email' => 'email|required|unique:users',
         'tanggal_lahir' => 'date|before:today|required',
         // PRIBADI
         'hp' => 'required',
