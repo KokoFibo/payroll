@@ -18,8 +18,7 @@
 </head>
 
 <body style="font-family: 'nunito'; background-image: url({{ asset('images/texture.png') }});">
-
-    {{-- @yiels('contents'); --}}
+    {{ $slot }}
     <script src="{{ asset('/sw.js') }}"></script>
     <script>
         if ("serviceWorker" in navigator) {
@@ -37,7 +36,7 @@
             console.error("Service workers are not supported.");
         }
     </script>
-    {{ $slot }}
+
 </body>
 
 </html>
