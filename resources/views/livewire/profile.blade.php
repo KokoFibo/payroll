@@ -40,16 +40,16 @@
                     </div>
                 </div>
             </div>
-            <h2 class="bg-purple-500 text-center  text-white text-xl rounded-xl   mt-5 ">User
+            <h2 class="bg-purple-500 text-center  text-white text-xl rounded-xl   mt-2 ">User
                 Profile</h2>
 
             {{-- Rubah Password --}}
-            <div class=" mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-2 rounded-xl shadow-xl">
+            <div class=" bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
                 <div>
-                    <label class="block text-sm font-medium leading-6 text-gray-900">Password Lama</label>
-                    <div class="relative mt-3 rounded-md shadow-sm">
+                    <label class="block text-sm font-medium  text-gray-900">Password Lama</label>
+                    <div class="relative mt-1 rounded-md shadow-sm">
                         <input type="password" wire:model="old_password"
-                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('old_password')
                             <div class="text-red-500">
                                 {{ $message }}
@@ -58,10 +58,10 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium leading-6 text-gray-900">Password Baru</label>
-                    <div class="relative mt-3 rounded-md shadow-sm">
+                    <label class="block text-sm font-medium  text-gray-900">Password Baru</label>
+                    <div class="relative mt-1 rounded-md shadow-sm">
                         <input type="password" wire:model="new_password"
-                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('new_password')
                             <div class="text-red-500">
                                 {{ $message }}
@@ -71,10 +71,10 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium leading-6 text-gray-900">Konfirmasi</label>
-                    <div class="relative mt-3 rounded-md shadow-sm">
+                    <label class="block text-sm font-medium  text-gray-900">Konfirmasi</label>
+                    <div class="relative mt-1 rounded-md shadow-sm">
                         <input type="password" wire:model="confirm_password"
-                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('confirm_password')
                             <div class="text-red-500">
                                 {{ $message }}
@@ -84,19 +84,19 @@
                     </div>
                 </div>
                 <button wire:click="changePassword"
-                    class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3">Rubah Password</button>
+                    class="bg-purple-500 text-sm text-white px-1 py-1 w-1/3 rounded shadow">Rubah Password</button>
             </div>
 
 
 
             {{-- Rubah Email --}}
-            <div class="mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-2 rounded-xl shadow-xl">
+            <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
                 <div>
-                    <label class="block text-sm font-medium leading-6 text-gray-900">Email Baru</label>
-                    <div class="relative mt-3 rounded-md shadow-sm">
+                    <label class="block text-sm font-medium  text-gray-900">Email Baru</label>
+                    <div class="relative mt-1 rounded-md shadow-sm">
                         <input type="text" wire:model="email"
-                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('email')
                             <div class="text-red-500">
                                 {{ $message }}
@@ -105,15 +105,16 @@
                     </div>
                 </div>
 
-                <button class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3" wire:click="changeEmail">Rubah
+                <button class="bg-purple-500 text-sm text-white px-1 py-1 w-1/3 rounded shadow"
+                    wire:click="changeEmail">Rubah
                     Email</button>
             </div>
 
 
             {{-- Rubah Bahasa --}}
-            <div class="mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-5 rounded-xl shadow-xl">
+            <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
-                <label class="block text-sm font-medium leading-6 text-gray-900">Bahasa</label>
+                <label class="block text-sm font-medium  text-gray-900">Bahasa</label>
                 <div class="flex gap-5">
                     <div>
                         <input wire:model="language" value="Id" type="radio">
@@ -124,7 +125,7 @@
                         <label class="form-check-label" for="flexRadioDefault1">Mandarin</label>
                     </div>
                 </div>
-                <button class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3"
+                <button class="bg-purple-500 text-sm text-white px-1 py-1 w-1/3 rounded shadow"
                     wire:click="changeLanguage">Rubah
                     Bahasa</button>
             </div>

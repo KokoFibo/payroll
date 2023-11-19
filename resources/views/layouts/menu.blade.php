@@ -191,6 +191,12 @@ with font-awesome or any other icon font library -->
                             </a>
                         </li>
                     @endif
+                    <li class="nav-item">
+                        <a href="/informationwr" class="nav-link" wire:navigate>
+                            <i class="fa-solid fa-user-check nav-icon"></i>
+                            <p>Add Information</p>
+                        </a>
+                    </li>
 
                 </ul>
             </li>

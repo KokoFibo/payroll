@@ -10,6 +10,7 @@ use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
 use App\Livewire\UserMobile;
 use App\Livewire\Informasiwr;
+use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
@@ -97,6 +98,7 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
+                Route::get('/informationwr', Informationwr::class);
 
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER
