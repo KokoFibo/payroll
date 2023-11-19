@@ -44,6 +44,7 @@ return new class extends Migration
             $table->integer('bonus')->nullable();
             $table->integer('thr')->nullable();
             $table->integer('denda')->nullable();
+            $table->integer('tambahan_shift_malam')->nullable();
             $table->timestamps();
         });
     }
