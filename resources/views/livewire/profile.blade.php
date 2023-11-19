@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-2">
                             <div>
                                 <h1 class="text-white p-3  text-sm">Hello, {{ auth()->user()->name }}</h1>
                             </div>
@@ -40,10 +40,97 @@
                     </div>
                 </div>
             </div>
-            <div class="w-screen flex px-3 mt-5 justify-center ">
-                <p>Profile Livewire</p>
+            <h2 class="bg-purple-500 text-center  text-white text-xl rounded-xl   mt-5 ">User
+                Profile</h2>
+
+            {{-- Rubah Password --}}
+            <div class=" mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-2 rounded-xl shadow-xl">
+                <div>
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Password Lama</label>
+                    <div class="relative mt-3 rounded-md shadow-sm">
+                        <input type="password" wire:model="old_password"
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        @error('old_password')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Password Baru</label>
+                    <div class="relative mt-3 rounded-md shadow-sm">
+                        <input type="password" wire:model="new_password"
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        @error('new_password')
+                            <div class="text-red-500">
+                                {{ $message }}
+
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Konfirmasi</label>
+                    <div class="relative mt-3 rounded-md shadow-sm">
+                        <input type="password" wire:model="confirm_password"
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        @error('confirm_password')
+                            <div class="text-red-500">
+                                {{ $message }}
+
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <button wire:click="changePassword"
+                    class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3">Rubah Password</button>
             </div>
 
+
+
+            {{-- Rubah Email --}}
+            <div class="mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-2 rounded-xl shadow-xl">
+
+                <div>
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Email Baru</label>
+                    <div class="relative mt-3 rounded-md shadow-sm">
+                        <input type="text" wire:model="email"
+                            class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        @error('email')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <button class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3" wire:click="changeEmail">Rubah
+                    Email</button>
+            </div>
+
+
+            {{-- Rubah Bahasa --}}
+            <div class="mx-3 px-3 py-3 mt-3 justify-center flex flex-col gap-5 rounded-xl shadow-xl">
+
+                <label class="block text-sm font-medium leading-6 text-gray-900">Bahasa</label>
+                <div class="flex gap-5">
+                    <div>
+                        <input wire:model="language" value="Id" type="radio">
+                        <label class="form-check-label" for="flexRadioDefault1">Indonesia</label>
+                    </div>
+                    <div>
+                        <input wire:model="language" value="Cn" type="radio">
+                        <label class="form-check-label" for="flexRadioDefault1">Mandarin</label>
+                    </div>
+                </div>
+                <button class="bg-purple-500 text-white px-4 py-2  rounded shadow ml-3"
+                    wire:click="changeLanguage">Rubah
+                    Bahasa</button>
+            </div>
+
+
+            {{-- Footer --}}
             <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
                 {{-- @if (isset($data)) --}}
                 {{-- @if ($data->currentPage() > 1) --}}
@@ -79,4 +166,5 @@
             </div>
         </div>
     </div>
+
 </div>

@@ -18,13 +18,13 @@ class Changeprofilewr extends Component {
 
     public function changeEmail() {
         $this->validate( [
-            'email' => 'email',
+            'email' => 'email|unique:users',
         ] );
 
         $user = User::find( Auth::user()->id );
         $user->email = $this->email;
-
-        $karyawan = Karyawan::where( 'id_karyawan', $user->username )->first();
+        $data_karyawan = Karyawan::where( 'id_karyawan', $user->username )->first();
+        $karyawan = Karyawan::find($data_karyawan->id);
         $karyawan->email = $this->email;
         $user->save();
         $karyawan->save();

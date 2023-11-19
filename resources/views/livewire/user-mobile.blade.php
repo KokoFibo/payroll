@@ -121,25 +121,26 @@
     <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
         @if (isset($data))
             {{-- @if ($data->currentPage() > 1) --}}
-            <a href="{{ $data->previousPageUrl() }}"><button
+            <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
                     class="  bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl"><i
                         class="fa-solid fa-left-long"></i>
                 </button></a>
 
             {{-- @endif --}}
             {{-- href="/profile" --}}
-            <a href="profile"><button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl"><i
+            <a wire:navigate href="profile"><button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl"><i
                         class="fa-solid fa-user"></i>
                 </button></a>
-            <a href="usermobile"><button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl"><i
-                        class="fa-solid fa-house"></i>
+            <a wire:navigate href="usermobile"><button
+                    class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl"><i class="fa-solid fa-house"></i>
                 </button></a>
             {{-- href="/userinformation" --}}
-            <a href="userinformation"><button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl "><i
+            <a wire:navigate href="userinformation"><button
+                    class="bg-opacity-0 text-purple-500 px-4 py-3 rounded  text-2xl "><i
                         class="fa-solid fa-circle-info"></i>
                 </button></a>
             {{-- @if ($data->hasMorePages()) --}}
-            <a href="{{ $data->nextPageUrl() }}"><button
+            <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
                     class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl "><i
                         class="fa-solid fa-right-long"></i></button></a>
 
