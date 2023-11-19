@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-5 ">Informasi</h2>
+            <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-5 ">Informasi Terkini</h2>
             <div class="w-screen flex px-3 mt-5 justify-center flex flex-col gap-5">
 
             </div>
