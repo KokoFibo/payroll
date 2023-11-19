@@ -260,8 +260,6 @@ public function showDetail($user_id)
     {
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
-
-
         if ($this->tanggal == null) {
             $lastDate = Yfrekappresensi::orderBy('date', 'desc')->first();
             if ($lastDate == null) {

@@ -36,7 +36,7 @@ class DashboardController extends Controller
     public function mobile()
     {
         // ini hanya bisa di test di desktop tidak berlaku di user mobile
-        $user_id = 4780;
+        $user_id = 4;
         $month = 11;
 
         $total_hari_kerja = 0;
@@ -63,14 +63,17 @@ class DashboardController extends Controller
             }
         }
 
-        return view('mobile')->with([
+        return  redirect('/usermobile');
+        // return  redirect('/karyawanindex');
 
-            'data' => $data,
-            'total_hari_kerja' => $total_hari_kerja,
-            'total_jam_kerja' => $total_jam_kerja,
-            'total_jam_lembur' => $total_jam_lembur,
-            'total_keterlambatan' => $total_keterlambatan,
+        // return view('mobile')->with([
 
-        ]);
+        //     'data' => $data,
+        //     'total_hari_kerja' => $total_hari_kerja,
+        //     'total_jam_kerja' => $total_jam_kerja,
+        //     'total_jam_lembur' => $total_jam_lembur,
+        //     'total_keterlambatan' => $total_keterlambatan,
+
+        // ]);
     }
 }

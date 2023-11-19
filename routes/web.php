@@ -1,18 +1,21 @@
 <?php
 
 use App\Livewire\Test;
+use App\Livewire\Profile;
 use App\Livewire\Developer;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
+use App\Livewire\UserMobile;
 use App\Livewire\Informasiwr;
 use App\Livewire\Editpresensiwr;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
+use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
@@ -44,6 +47,16 @@ Route::middleware(['auth'])->group(function () {
         // DASHBOARD
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+        Route::get('/userinfo', function() {
+            return view('user_information');
+        });
+        Route::get('/userslipgaji', function() {
+            return view('user_slipgaji');
+        });
+
+        Route::get('/usermobile', UserMobile::class);
+        Route::get('/profile', Profile::class);
+        Route::get('/userinformation', UserInformation::class);
 
         Route::middleware(['Admin'])->group(function () {
             //Dashboard
