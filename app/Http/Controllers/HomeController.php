@@ -108,16 +108,16 @@ class HomeController extends Controller {
                 $total_hari_kerja++;
             }
         }
-        return  redirect('/usermobile');
+        // return  redirect('/usermobile');
 
 
-        // return view('mobile')->with([
-        //     'dataArr' => $dataArr,
-        //     'total_hari_kerja' => $total_hari_kerja,
-        //     'total_jam_kerja' => $total_jam_kerja,
-        //     'total_jam_lembur' => $total_jam_lembur,
-        //     'total_keterlambatan' => $total_keterlambatan,
-        // ]);
+        return view('mobile')->with([
+            'dataArr' => $dataArr,
+            'total_hari_kerja' => $total_hari_kerja,
+            'total_jam_kerja' => $total_jam_kerja,
+            'total_jam_lembur' => $total_jam_lembur,
+            'total_keterlambatan' => $total_keterlambatan,
+        ]);
 
 
         }
