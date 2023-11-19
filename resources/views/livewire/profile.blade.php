@@ -2,7 +2,7 @@
     <div>
         <div class="h-screen">
             <div class=header>
-                <div class="w-screen bg-black  shadow-xl rounded-b-3xl  sticky top-0 ">
+                <div class="w-screen bg-gray-800  shadow-xl rounded-b-3xl  sticky top-0 ">
                     <div class="flex justify-between h-36 items-center">
                         <div class="flex flex-col -mt-5">
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
@@ -28,7 +28,7 @@
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                                    <i class="nav-icon fa-solid fa-right-from-bracket"></i>
+
                                     <button
                                         class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
                                 </a>
@@ -132,11 +132,11 @@
 
 
             {{-- Footer --}}
-            <div class="footer flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
+            <div class="footer bg-slate-800 flex justify-between h-15 fixed bottom-0 left-0 right-0 ">
                 {{-- @if (isset($data)) --}}
                 {{-- @if ($data->currentPage() > 1) --}}
                 {{-- <a href="{{ $data->previousPageUrl() }}"> --}}
-                <button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i
+                <button class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
                         class="fa-solid fa-left-long"></i>
                 </button>
                 {{-- </a> --}}
@@ -144,21 +144,21 @@
                 {{-- @endif --}}
                 {{-- href="/profile" --}}
                 <a wire:navigate href="profile"><button
-                        class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i class="fa-solid fa-user"></i>
+                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i class="fa-solid fa-user"></i>
                     </button></a>
 
                 <a wire:navigate href="/usermobile"><button
-                        class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i
+                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
                             class="fa-solid fa-house"></i>
                     </button></a>
                 {{-- href="/userinformation" --}}
                 <a wire:navigate href="userinformation"><button
-                        class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i
+                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
                             class="fa-solid fa-circle-info"></i>
                     </button></a>
                 {{-- @if ($data->hasMorePages()) --}}
                 {{-- <a href="{{ $data->nextPageUrl() }}"> --}}
-                <button class="bg-opacity-0 text-purple-500 px-4 py-3 rounded text-2xl"><i
+                <button class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
                         class="fa-solid fa-right-long"></i></button>
                 {{-- </a> --}}
 
