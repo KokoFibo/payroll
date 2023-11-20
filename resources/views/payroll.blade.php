@@ -4,7 +4,10 @@
 
 
 
-    @if (auth()->user()->role > 3 || $update == false)
+    @if (
+        (auth()->user()->role == 2 && $gaji_pokok <= 4500000) ||
+            (auth()->user()->role == 3 && $gaji_pokok <= 10000000) ||
+            auth()->user()->role > 3)
         <div class="card-header bg-secondary ">
             <h5 class="text-light">Gaji</h5>
         </div>
