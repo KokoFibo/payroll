@@ -11,12 +11,12 @@
                         </div>
                         <div class="flex justify-left -mt-4">
                             <div class="text-right px-5 pt-2 ">
-                                <select name="" id="" class="bg-black text-white text-sm">
+                                <select name="" id="" class="bg-gray-800 text-white text-sm">
                                     <option value="">2023</option>
                                 </select>
                             </div>
                             <div class="text-right px-5 pt-2 ">
-                                <select name="" id="" class="bg-black text-white text-sm">
+                                <select name="" id="" class="bg-gray-800 text-white text-sm">
                                     <option value="">November</option>
                                 </select>
                             </div>
