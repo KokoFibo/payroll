@@ -471,9 +471,16 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late4 = null;
     // ffff
 
-    $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
-    $jabatan = $data_jabatan->jabatan;
-    $jabatan_khusus = is_jabatan_khusus($jabatan);
+    try {
+        $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
+        $jabatan = $data_jabatan->jabatan;
+        $jabatan_khusus = is_jabatan_khusus($jabatan);
+    } catch (\Exception $e) {
+        dd( 'id_karyawan = ', $id);
+         return $e->getMessage();
+}
+
+
 
     $late5 = null;
 

@@ -22,6 +22,12 @@
     <!-- Scripts -->
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
+
+    <!-- hapus 2 baris alpine ini kalau ada masalah -->
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 

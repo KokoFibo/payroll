@@ -83,7 +83,7 @@ class Updatekaryawanwr extends Component {
 
     }
 
-    // protected $rules = [
+    // Cara benerin email unique agar bisa di update
         public function rules () {
 return [
 
@@ -222,8 +222,9 @@ return [
 
 
     public function exit () {
-        $this->reset();
+        // $this->reset();
         return redirect()->to( '/karyawanindex' );
+
     }
 
     public function render() {
