@@ -75,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');
             Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
             Route::get('/informasi', Informasiwr::class);
+            Route::get('/informationwr', Informationwr::class);
+
 
             // YF PRESENSI
             Route::get('/yfupload', function () {
@@ -98,7 +100,6 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
-                Route::get('/informationwr', Informationwr::class);
 
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER
