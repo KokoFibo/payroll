@@ -57,7 +57,7 @@
             <tbody>
                 @foreach ($data as $d)
                     <tr>
-                        <td>{{ $d->date }}</td>
+                        <td>{{ format_tgl($d->date) }}</td>
                         <td>{{ $d->title }}</td>
                         <td>{{ $d->description }}</td>
                         <td class="text-end">

@@ -83,11 +83,13 @@ class Updatekaryawanwr extends Component {
 
     }
 
-    protected $rules = [
+    // protected $rules = [
+        public function rules () {
+return [
 
         'id_karyawan' => 'required',
         'nama' => 'required',
-        'email' => 'email|required|unique:users',
+        'email' => 'email|required|unique:karyawans,email,'.$this->id,
         'tanggal_lahir' => 'date|before:today|required',
         // PRIBADI
         'hp' => 'required',
@@ -136,8 +138,8 @@ class Updatekaryawanwr extends Component {
         'ptkp' => 'nullable',
 
 
-
-];
+        ];
+    }
 
 
     public function update1() {
