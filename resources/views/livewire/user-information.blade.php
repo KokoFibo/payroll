@@ -69,30 +69,30 @@
                 </div>
             </div>
 
-            <div class="footer flex justify-between h-15 bg-gray-800 ">
+            <div class="footer flex justify-between h-16 items-center bg-gray-800 ">
 
-                <button class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
-                        class="fa-solid fa-left-long"></i>
+                <button class="text-purple-200 px-4 py-4 rounded text-2xl"><i class="fa-solid fa-left-long"></i>
                 </button>
 
 
 
                 {{-- href="/profile" --}}
                 <a wire:navigate href="profile"><button
-                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i class="fa-solid fa-user"></i>
+                        class="{{ 'profile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded text-2xl"><i
+                            class="fa-solid fa-user"></i>
                     </button></a>
 
                 <a wire:navigate href="/usermobile"><button
-                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
+                        class="{{ 'usermobile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded text-2xl"><i
                             class="fa-solid fa-house"></i>
                     </button></a>
                 {{-- href="/userinformation" --}}
                 <a wire:navigate href="userinformation"><button
-                        class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
+                        class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded text-2xl"><i
                             class="fa-solid fa-circle-info"></i>
                     </button></a>
 
-                <button class="bg-opacity-0 text-purple-200 px-4 py-3 rounded text-2xl"><i
+                <button class="text-purple-200 px-4 py-4 rounded text-2xl"><i
                         class="fa-solid fa-right-long"></i></button>
 
             </div>
