@@ -1,6 +1,17 @@
 <div>
 
     @section('title', 'Karyawan')
+    <div x-data="{
+        search: $persist(@entangle('search').live),
+        columnName: $persist(@entangle('columnName').live),
+        direction: $persist(@entangle('direction').live),
+        selectStatus: $persist(@entangle('selectStatus').live),
+        perpage: $persist(@entangle('perpage').live),
+        page: $persist(@entangle('paginators.page').live),
+    
+    }">
+
+    </div>
     <div class="d-flex  p-4">
         <div class="col-4 d-flex gap-3">
             <div class="input-group">

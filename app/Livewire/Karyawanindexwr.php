@@ -18,7 +18,7 @@ class Karyawanindexwr extends Component
 {
     use WithPagination;
 
-    public $search = '';
+    public $search;
     public $columnName = 'id_karyawan';
     public $direction = 'desc';
     public $id;
