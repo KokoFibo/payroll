@@ -26,11 +26,11 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 visually-hidden">
                         <div class="mb-3">
                             <label class="form-label">Tanggal Bergabung <span class="text-danger">*</span></label>
                             <div>
-                                <input type="datetime:local" id="tanggal"
+                                <input type="datetime:local" id="tanggal" disabled
                                     class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
                                     placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
                                 @error('tanggal_bergabung')
@@ -64,7 +64,7 @@
                     </div>
 
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Departemen <span class="text-danger">*</span></label>
                             <select class="form-select @error('departemen') is-invalid @enderror"
@@ -91,7 +91,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Jabatan <span class="text-danger">*</span></label>
                             <select class="form-select @error('jabatan') is-invalid @enderror"
@@ -128,7 +128,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">Level Jabatan</label>
                             <select class="form-select" aria-label="Default select example"
@@ -149,7 +149,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">placement <span class="text-danger">*</span></label>
                             <select class="form-select @error('placement') is-invalid @enderror"
