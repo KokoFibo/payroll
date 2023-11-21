@@ -12,7 +12,7 @@
                         <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
                     </button>
                 </div>
-                <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button>
+                <button wire:click="getPayroll" class="btn btn-primary text-end mb-3">Rebuild</button>
             </div>
         </div>
         <div class="card">
