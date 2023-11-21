@@ -61,6 +61,7 @@ class Prindexwr extends Component
     #[On('getPayroll')]
     public function getPayroll()
     {
+
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if($lock->build) {
@@ -89,16 +90,17 @@ class Prindexwr extends Component
 
 
 
-        $tglsementara = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->whereYear('date', $this->year)
-            ->whereMonth('date', $this->month)
-            ->count();
+        // $tglsementara = Yfrekappresensi::where('no_scan', 'No Scan')
+        //     ->whereYear('date', $this->year)
+        //     ->whereMonth('date', $this->month)
+        //     ->count();
 
-        if ($tglsementara) {
-            clear_locks();
-            $this->dispatch('error', message: 'Masih ada data no scan');
-            return back();
-        }
+        // if ($tglsementara) {
+        //     clear_locks();
+        //     $this->dispatch('error', message: 'Masih ada data no scan');
+        //     return back();
+        // }
+
         $checkIfJamKerjaExist = Jamkerjaid::whereMonth('date', $this->month)
         ->whereYear('date', $this->year)
         ->first();
@@ -160,13 +162,21 @@ class Prindexwr extends Component
                 ->whereYear('date', $this->year)
                 ->get();
 
+
             if (!$dataId) {
                 dd('data kosong from Prindex.php', $dataId);
             } else {
                 // ambil data per user id ok3
+                $n_noscan = 0;
                 foreach ($dataId as $dt) {
+                if($dt->no_scan != 'No Scan') {
+
                     $langsungLembur = 0 ;
                     $jam_kerja = 0;
+
+                    if($dt->no_scan_history == 'No Scan') {
+                            $n_noscan++;
+                        }
                 $jam_kerja = hitung_jam_kerja($dt->first_in, $dt->first_out, $dt->second_in, $dt->second_out, $dt->late, $dt->shift, $dt->date, $dt->karyawan->jabatan);
                 // if($dt->shift == 'Malam' || is_jabatan_khusus($dt->user_id)) {
                     $langsungLembur = langsungLembur( $dt->second_out, $dt->date, $dt->shift, $dt->karyawan->jabatan);
@@ -179,9 +189,9 @@ class Prindexwr extends Component
 
 
                     if ($dt->late == null) {
-                        if($dt->no_scan_history) {
-                            $n_noscan++;
-                        }
+                        // if($dt->no_scan_history) {
+                        //     $n_noscan++;
+                        // }
                         // $n_noscan = $dt->no_scan_history;
 
                         // khusus NO Late
@@ -208,9 +218,9 @@ class Prindexwr extends Component
                         // khusus yang late
 
                         $jumlah_hari_kerja = $dataId->count();
-                        if($dt->no_scan_history) {
-                            $n_noscan++;
-                        }
+                        // if($dt->no_scan_history) {
+                        //     $n_noscan++;
+                        // }
 
 
                         // check keterlambatan di hari kerja non overtime
@@ -262,6 +272,7 @@ class Prindexwr extends Component
                     $total_noscan = $total_noscan + $n_noscan;
 
                 }
+                }
                 $dt_name = $dt->name;
                 $dt_date = $dt->date;
                 $dt_karyawan_id = $dt->karyawan_id;
@@ -283,7 +294,8 @@ class Prindexwr extends Component
             $data->last_data_date = $last_data_date->date;
             $data->jumlah_jam_kerja = $jumlah_jam_kerja;
             $data->jumlah_menit_lembur = $jumlah_menit_lembur + $total_langsungLembur;
-            $data->total_noscan = $total_noscan;
+            // $data->total_noscan = $total_noscan;
+            $data->total_noscan = $n_noscan;
             $data->jumlah_jam_terlambat = $total_late == 0 ? null : $total_late;
             $data->first_in_late = $total_late_1 == 0 ? null : $total_late_1;
             $data->first_out_late = $total_late_2 == 0 ? null : $total_late_2;
