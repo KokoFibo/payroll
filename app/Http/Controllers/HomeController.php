@@ -56,7 +56,7 @@ class HomeController extends Controller {
         } else {
             $user->device = 1;
             $user->save();
-            if ( auth()->user()->role == 4 ) {
+            if ( auth()->user()->role == 5 ) {
                 $user->device = 1;
                 $user->save();
 
