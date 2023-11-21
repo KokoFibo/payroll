@@ -100,10 +100,10 @@
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">Status <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">Lama
-                                    Bekerja <i class="fa-solid fa-sort"></i>
-                                </th>
                                 @if (Auth::user()->role > 3)
+                                    <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">Lama
+                                        Bekerja <i class="fa-solid fa-sort"></i>
+                                    </th>
                                     <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
                                         Penggajian <i class="fa-solid fa-sort"></i>
                                     </th>
@@ -152,8 +152,8 @@
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
                                     @if (Auth::user()->role > 3)
+                                        <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
