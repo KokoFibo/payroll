@@ -58,11 +58,10 @@ class Prindexwr extends Component
     }
 
 
-// ok1
+ // ok1
     // #[On('getPayroll')]
     public function getPayroll()
     {
-
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if($lock->build) {
@@ -88,19 +87,6 @@ class Prindexwr extends Component
             ->whereYear('date', $this->year)
             ->orderBy('date', 'desc')
             ->first();
-
-
-
-        // $tglsementara = Yfrekappresensi::where('no_scan', 'No Scan')
-        //     ->whereYear('date', $this->year)
-        //     ->whereMonth('date', $this->month)
-        //     ->count();
-
-        // if ($tglsementara) {
-        //     clear_locks();
-        //     $this->dispatch('error', message: 'Masih ada data no scan');
-        //     return back();
-        // }
 
         $checkIfJamKerjaExist = Jamkerjaid::whereMonth('date', $this->month)
         ->whereYear('date', $this->year)
@@ -156,6 +142,7 @@ class Prindexwr extends Component
             $jam_kerja = 0;
             $total_jam_kerja = 0;
             $total_langsungLembur = 0;
+            $total_tambahan_shift_malam = 0;
             $satpam_halfday = 0;
 
             $dataId = Yfrekappresensi::with('karyawan')->where('user_id', $data->user_id)
@@ -196,6 +183,18 @@ class Prindexwr extends Component
                         // $n_noscan = $dt->no_scan_history;
 
                         // khusus NO Late
+                        if($dt->shift == 'Malam') {
+                            if(is_saturday($dt->date)) {
+                                if($jam_kerja >= 6) {
+                                    $total_tambahan_shift_malam++;
+                                }
+                            } else {
+                                if($jam_kerja >= 8) {
+                                    $total_tambahan_shift_malam++;
+                                }
+                            }
+                        }
+
                         $jumlah_hari_kerja = $dataId->count();
 
                         if ($dt->overtime_in != null) {
@@ -295,6 +294,8 @@ class Prindexwr extends Component
             $data->last_data_date = $last_data_date->date;
             $data->jumlah_jam_kerja = $jumlah_jam_kerja;
             $data->jumlah_menit_lembur = $jumlah_menit_lembur + $total_langsungLembur;
+            $data->tambahan_jam_shift_malam = $total_tambahan_shift_malam;
+
             // $data->total_noscan = $total_noscan;
             $data->total_noscan = $n_noscan;
             $data->jumlah_jam_terlambat = $total_late == 0 ? null : $total_late;
@@ -315,12 +316,11 @@ class Prindexwr extends Component
         $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         $this->rebuild();
     }
-    // ok2
 
-    // ok3
+    // ok2
     public function rebuild()
     {
-        $datas = Jamkerjaid::with('karyawan')
+        $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
             ->whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
             ->get();
@@ -345,7 +345,6 @@ class Prindexwr extends Component
             $payroll->company = $data->karyawan->company;
             $payroll->placement = $data->karyawan->placement;
             $payroll->status_karyawan = $data->karyawan->status_karyawan;
-
             $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
             $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
             $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
@@ -355,13 +354,14 @@ class Prindexwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
+            $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
             if ($payroll->metode_penggajian == 'Perjam') {
-                $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
             } else {
                 if ($payroll->gaji_lembur == 0) {
                     $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
                 } else {
-                    $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                    $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
                 }
             }
 
@@ -412,7 +412,7 @@ class Prindexwr extends Component
             $payroll->total = $payroll->subtotal - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
             $payroll->save();
         }
-        $this->dispatch('success', message: 'Data Payroll succesfully Rebuild');
+        $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
     }
 
     public function render()

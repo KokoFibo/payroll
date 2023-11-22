@@ -39,11 +39,11 @@ return new class extends Migration
             $table->double('total',12,1);
             $table->date('date');
             $table->string('status_karyawan');
-            $table->integer('uang_makan')->nullable();
-            $table->integer('denda_lupa_absen')->nullable();
-            $table->integer('bonus')->nullable();
-            $table->integer('thr')->nullable();
-            $table->integer('denda')->nullable();
+            // $table->integer('uang_makan')->nullable();
+            // $table->integer('denda_lupa_absen')->nullable();
+            // $table->integer('bonus')->nullable();
+            // $table->integer('thr')->nullable();
+            // $table->integer('denda')->nullable();
             $table->integer('tambahan_shift_malam')->nullable();
             $table->timestamps();
         });

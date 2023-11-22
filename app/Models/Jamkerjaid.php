@@ -17,6 +17,10 @@ class Jamkerjaid extends Model
         return $this->hasMany(Payroll::class, 'jamkerjaid_id');
     }
 
+    public function yfrekappresensi () {
+        return $this->belongsTo(Yfrekappresensi::class);
+    }
+
 
 
 }
