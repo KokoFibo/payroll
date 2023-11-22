@@ -111,7 +111,8 @@ public function showDetail($user_id)
 
     public function filterNoScan()
     {
-        $this->columnName = 'no_scan_history';
+        // $this->columnName = 'no_scan_history';
+        $this->columnName = 'no_scan';
         $this->direction = 'desc';
         $this->search = null;
         $this->resetPage();
