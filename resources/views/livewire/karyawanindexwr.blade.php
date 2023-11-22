@@ -1,17 +1,21 @@
 <div>
 
     @section('title', 'Karyawan')
-    <div x-data="{
-        search: $persist(@entangle('search').live),
-        columnName: $persist(@entangle('columnName').live),
-        direction: $persist(@entangle('direction').live),
-        selectStatus: $persist(@entangle('selectStatus').live),
-        perpage: $persist(@entangle('perpage').live),
-        page: $persist(@entangle('paginators.page').live),
-    
-    }">
+    @if (auth()->user()->role == 2 || auth()->user()->role == 3)
+        <div x-data="{
+            search: $persist(@entangle('search').live),
+            columnName: $persist(@entangle('columnName').live),
+            direction: $persist(@entangle('direction').live),
+            selectStatus: $persist(@entangle('selectStatus').live),
+            perpage: $persist(@entangle('perpage').live),
+            page: $persist(@entangle('paginators.page').live),
+        
+        }">
 
-    </div>
+
+        </div>
+    @endif
+
     <div class="d-flex  p-4">
         <div class="col-4 d-flex gap-3">
             <div class="input-group">
