@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('jumlah_jam_kerja',4,1)->nullable();
             $table->integer('jumlah_menit_lembur')->nullable();
             $table->integer('jumlah_jam_terlambat')->nullable();
+            $table->integer('tambahan_jam_shift_malam')->nullable();
             $table->integer('first_in_late')->nullable();
             $table->integer('first_out_late')->nullable();
             $table->integer('second_in_late')->nullable();

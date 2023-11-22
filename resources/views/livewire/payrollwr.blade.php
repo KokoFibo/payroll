@@ -13,6 +13,7 @@
                     </button>
                 </div>
                 <button wire:click="getPayroll" class="btn btn-primary text-end mb-3">Rebuild</button>
+                {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button> --}}
             </div>
         </div>
         <div class="card">
@@ -119,6 +120,9 @@
                                 <th wire:click="sortColumnName('gaji_lembur')">Gaji Lembur <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
@@ -152,6 +156,9 @@
                                         <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
                                         <td class="text-end">
                                             {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
+                                        </td>
+                                        <td class="text-end">
+                                            {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                         </td>
                                         <td class="text-end">
                                             {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}

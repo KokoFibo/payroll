@@ -10,4 +10,14 @@ class Payroll extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function karyawan () {
+        return $this->belongsTo(Karyawan::class);
+    }
+
+    public function yfrekappresensi () {
+        return $this->belongsTo(Yfrekappresensi::class);
+    }
+
+
 }

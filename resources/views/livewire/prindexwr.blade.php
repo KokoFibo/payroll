@@ -97,6 +97,9 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
                                     Overtime <i class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('tambahan_jam_shift_malam')">Tambahan
+                                    Jam
+                                    Overtime Shift Malam <i class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam
                                     Late
                                     <i class="fa-solid fa-sort"></i>
@@ -127,6 +130,7 @@
                                     <td>{{ $item->karyawan->jabatan }}</td>
                                     <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
                                     <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
+                                    <td class="text-center">{{ $item->tambahan_jam_shift_malam }}</td>
                                     {{-- <td class="text-center">{{ $item->jumlah_menit_lembur }}</td> --}}
                                     <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
                                     <td class="text-center">{{ $item->first_in_late }}</td>
