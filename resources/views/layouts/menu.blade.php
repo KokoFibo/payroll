@@ -152,6 +152,12 @@ with font-awesome or any other icon font library -->
                                 <p>Remove Duplikat Presensi</p>
                             </a>
                         </li>
+                        <li class="nav-item {{ 'exceluploader' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/exceluploader" class="nav-link" wire:navigate>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Excel Uploader</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
