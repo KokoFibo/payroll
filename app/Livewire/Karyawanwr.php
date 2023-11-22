@@ -18,7 +18,7 @@ class Karyawanwr extends Component
     public $metode_penggajian, $gaji_pokok, $gaji_overtime;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
-    public $iuran_air, $denda, $potongan_seragam, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
+    public $iuran_air, $denda, $iuran_locker, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
     public $no_npwp, $ptkp;
 
     public $id_karyawan_ini, $update;
@@ -74,7 +74,7 @@ class Karyawanwr extends Component
             'tunjangan_lama_kerja' => 'numeric|nullable',
             'iuran_air' => 'numeric|required',
             'denda' => 'numeric|nullable',
-            'potongan_seragam' => 'numeric|nullable',
+            'iuran_locker' => 'numeric|nullable',
             'gaji_bpjs' => 'nullable',
             'potongan_JHT' => 'nullable',
             'potongan_JP' => 'nullable',
@@ -141,7 +141,7 @@ class Karyawanwr extends Component
             $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
-            $data->potongan_seragam = $this->potongan_seragam;
+            $data->iuran_locker = $this->iuran_locker;
             $data->gaji_bpjs = $this->gaji_bpjs;
             $data->potongan_JHT = $this->potongan_JHT;
             $data->potongan_JP = $this->potongan_JP;
@@ -227,7 +227,7 @@ class Karyawanwr extends Component
             $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
             $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
             $data->iuran_air = $this->iuran_air;
-            $data->potongan_seragam = $this->potongan_seragam;
+            $data->iuran_locker = $this->iuran_locker;
             $data->gaji_bpjs = $this->gaji_bpjs;
             $data->potongan_JHT = $this->potongan_JHT;
             $data->potongan_JP = $this->potongan_JP;

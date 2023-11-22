@@ -53,7 +53,7 @@ return new class extends Migration
             $table->integer('tunjangan_lama_kerja')->nullable();
 
             $table->integer('iuran_air')->nullable();
-            $table->integer('potongan_seragam')->nullable();
+            $table->integer('iuran_locker')->nullable();
             $table->integer('gaji_bpjs')->nullable();
             $table->boolean('potongan_JHT')->nullable();
             $table->boolean('potongan_JP')->nullable();

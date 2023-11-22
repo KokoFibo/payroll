@@ -16,7 +16,7 @@ class Updatekaryawanwr extends Component {
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
-    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $potongan_seragam, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
+    public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update ;
     public  $no_npwp, $ptkp;
 
@@ -70,7 +70,7 @@ class Updatekaryawanwr extends Component {
          $this->tunjangan_lama_kerja = $data->tunjangan_lama_kerja;
          $this->iuran_air = $data->iuran_air;
          $this->denda = $data->denda;
-         $this->potongan_seragam = $data->potongan_seragam;
+         $this->iuran_locker = $data->iuran_locker;
          $this->gaji_bpjs = $data->gaji_bpjs;
          $this->potongan_JHT = $data->potongan_JHT;
          $this->potongan_JP = $data->potongan_JP;
@@ -126,7 +126,7 @@ return [
         'tunjangan_lama_kerja' => 'numeric|nullable',
         'iuran_air' => 'numeric|required',
         'denda' => 'numeric|nullable',
-        'potongan_seragam' => 'numeric|nullable',
+        'iuran_locker' => 'numeric|nullable',
         'gaji_bpjs' => 'nullable',
         'potongan_JHT' => 'nullable',
         'potongan_JP' => 'nullable',
@@ -186,7 +186,7 @@ return [
         $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
         $data->iuran_air = $this->iuran_air;
-        $data->potongan_seragam = $this->potongan_seragam;
+        $data->iuran_locker = $this->iuran_locker;
         $data->gaji_bpjs = $this->gaji_bpjs;
         $data->potongan_JHT = $this->potongan_JHT;
         $data->potongan_JP = $this->potongan_JP;

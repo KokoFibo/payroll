@@ -149,8 +149,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label class="form-label">Potongan seragam</label>
-                        <input wire:model="potongan_seragam" type="number" class="form-control">
+                        <label class="form-label">Iuran Locker</label>
+                        <input wire:model="iuran_locker" type="number" class="form-control">
                     </div>
                 </div>
 

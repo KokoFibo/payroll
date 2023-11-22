@@ -14,9 +14,17 @@ return new class extends Migration
         Schema::create('tambahans', function (Blueprint $table) {
             $table->id();
             $table->integer('uang_makan');
-            $table->integer('denda_lupa_absen');
             $table->integer('bonus');
-            $table->integer('thr');
+
+            $table->integer('baju_esd');
+            $table->integer('gelas');
+            $table->integer('sandal');
+            $table->integer('seragam');
+            $table->integer('sport_bra');
+            $table->integer('hijab_instan');
+            $table->integer('id_card_hilang');
+            $table->integer('masker_hijau');
+
             $table->integer('denda');
             $table->integer('lain');
             $table->timestamps();
