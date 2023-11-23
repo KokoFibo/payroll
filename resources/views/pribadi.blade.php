@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-6">
                 <div class="mb-3 form-group">
-                    <label class="form-label">Tanggal Lahir (mm/dd/yyyy) </label><span class="text-danger">*</span>
+                    <label class="form-label">Tanggal Lahir </label><span class="text-danger">*</span>
                     <div>
                         <input wire:model="tanggal_lahir" type="datetime:local" id="tanggal"
                             class="date form-control @error('tanggal_lahir') is-invalid @enderror">

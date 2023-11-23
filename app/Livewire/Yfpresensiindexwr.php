@@ -20,6 +20,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Yfpresensiindexwr extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $search = null;
     public $columnName = 'no_scan_history';
     public $direction = 'desc';
@@ -252,10 +254,7 @@ public function showDetail($user_id)
         $this->resetPage();
     }
 
-    public function updatingTanggal()
-    {
-        // $this->resetPage();
-    }
+
 
     public function render()
     {

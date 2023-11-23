@@ -13,6 +13,8 @@ use App\Models\Yfrekappresensi;
 class Payrollwr extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $selected_company=0;
     public $search;
     public $perpage = 10;

@@ -14,12 +14,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | Yifang </title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Scripts -->
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
@@ -31,6 +26,15 @@
 
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+        crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 
     <title>{{ $title ?? config('app.name') }}</title>
@@ -80,11 +84,11 @@
         <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
 
             {{ $slot }}
-            <style>
+            {{-- <style>
                 [x-cloak] {
                     display: none !important;
                 }
-            </style>
+            </style> --}}
         </div>
         <!-- /.content-wrapper -->
 
@@ -93,18 +97,15 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @livewireScripts
-        {{-- falt picker bagus --}}
+        {{-- flat picker bagus --}}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        {{-- <script>
-        flatpickr("input[type=datetime:local]", {
-            dateFormat: "d M Y",
-        });
-    </script> --}}
+
         <script>
             flatpickr("#tanggal", {
                 dateFormat: "d M Y",
             });
         </script>
+
 </body>
 
 </html>

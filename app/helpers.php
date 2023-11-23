@@ -3,10 +3,18 @@
 use Carbon\Carbon;
 use App\Models\Lock;
 use App\Models\Karyawan;
+use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
-
+function ada_tambahan($id) {
+   $data = Tambahan::where('user_id', $id)->first();
+   if($data == null){
+    return false;
+   } else {
+    return true;
+   }
+}
 
 
 function monthName($tgl) {

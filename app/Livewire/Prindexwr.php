@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 class Prindexwr extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $periode;
     public $search = '';
     public $cx = 0;

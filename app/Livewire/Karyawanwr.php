@@ -54,7 +54,7 @@ class Karyawanwr extends Component
             'alamat_tinggal' => 'required',
             // KEPEGAWAIAN
             'status_karyawan' => 'required',
-            'tanggal_bergabung' => 'date|before:tomorrow|required',
+            'tanggal_bergabung' => 'date|required',
             'company' => 'required',
             'placement' => 'required',
             'departemen' => 'required',
