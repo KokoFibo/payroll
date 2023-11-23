@@ -20,10 +20,6 @@ class Tambahanwr extends Component
     public function mount () {
         $this->modal = false;
         $this->is_edit = false;
-
-        // $this->tanggal =  date('Y-m-d');
-
-
     }
 
     public function add ($id_karyawan) {
@@ -31,8 +27,6 @@ class Tambahanwr extends Component
         $this->id = $data_karyawan->id ;
         $this->user_id = $id_karyawan;
         $this->nama_karyawan = $data_karyawan->nama;
-        // $this->tanggal =  date('m/d/Y');
-        // $this->tanggal =  date( 'm/d/Y', strtotime( now()->toDateString() ) );
         $this->tanggal =  date('Y-m-d');
         $this->modal = true;
     }
@@ -78,7 +72,6 @@ class Tambahanwr extends Component
         $data->masker_hijau = $this->masker_hijau;
         $data->potongan_lain = $this->potongan_lain;
         $data->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
-        // $data->tanggal = $this->tanggal;
         $data->save();
         if($this->is_edit == false) {
         $this->dispatch('success', message: 'Data sudah di Add');
@@ -111,7 +104,6 @@ class Tambahanwr extends Component
         $this->masker_hijau = null;
         $this->potongan_lain = null;
         $this->tanggal =  date( 'd M Y', strtotime( now()->toDateString() ) );
-
     }
 
     public function update($id) {
@@ -141,23 +133,7 @@ class Tambahanwr extends Component
         // $this->tanggal = $data_tambahan->tanggal;
     }
 
-    public function save1 () {
-        $data = Tambahan::find($this->id);
-        $data->uang_makan = $this->uang_makan;
-        $data->bonus = $this->bonus;
-        $data->baju_esd = $this->baju_esd;
-        $data->gelas = $this->gelas;
-        $data->sandal = $this->sandal;
-        $data->seragam = $this->seragam;
-        $data->sport_bra = $this->sport_bra;
-        $data->hijab_instan = $this->hijab_instan;
-        $data->id_card_hilang = $this->id_card_hilang;
-        $data->masker_hijau = $this->masker_hijau;
-        $data->tanggal = $this->tanggal;
-        $data->save();
-        $this->is_edit = false;
-        $this->dispatch('success', 'Data sudah di Add');
-    }
+
 
     public function updatingSearch()
     {
@@ -165,10 +141,12 @@ class Tambahanwr extends Component
     }
     public function delete  ($id) {
 
-        dd($id);
+        // dd($id);
+       $data_tambahan = Tambahan::where('user_id', $id)->first();
+       $data = Tambahan::find($data_tambahan->id);
+       $data->delete();
+       $this->dispatch('success', message: 'Data sudah di Delete');
     }
-
-
 
     public function render()
     {
