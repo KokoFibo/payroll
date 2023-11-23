@@ -2,27 +2,13 @@
     <div>
 
         <div class=header>
-            <div class="w-screen bg-gray-800 h-36 shadow-xl rounded-b-3xl  sticky top-0 ">
+            <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                 <div class="flex justify-between">
-                    <div class="flex flex-col gap-2">
-                        <div>
-                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                style="opacity: .8; width:150px">
-                        </div>
-                        <div class="flex justify-left -mt-4">
-                            <div class="text-right px-5 pt-2 ">
-                                <select name="" id="" class="bg-gray-800 text-white text-sm">
-                                    <option value="">2023</option>
-                                </select>
-                            </div>
-                            <div class="text-right px-5 pt-2 ">
-                                <select name="" id="" class="bg-gray-800 text-white text-sm">
-                                    <option value="">November</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div>
+                        <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
+                            style="opacity: .8; width:150px">
                     </div>
-                    <div class="flex flex-col p-3 gap-4 items-end">
+                    <div class="flex flex-col p-3 gap-5 items-end">
                         <div>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
@@ -38,14 +24,34 @@
                         <div>
                             <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="flex px-3  justify-center ">
+                <div class="w-screen bg-teal-500 h-10 shadow-xl rounded-3xl mt-2  ">
+                    <div class="h-10 flex justify-evenly items-center">
                         <div>
-                            <a href=""><button class="text-white bg-red-500 px-3 py-1 rounded-xl text-sm">Slip
-                                    Gaji</button></a>
+                            <select name="" id="" class="bg-teal-500 text-white text-sm">
+                                <option value="">2023</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="" id="" class="bg-teal-500 text-white text-sm">
+                                <option value="">November</option>
+                            </select>
+                        </div>
+                        <div>
+                            <a href="">
+                                <button
+                                    class="text-white bg-teal-900 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip
+                                    Gaji</button>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="flex px-3 pt-2 justify-center relative bottom-5">
+            <div class="flex px-3 pt-2 justify-center ">
                 <div
                     class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
                     <h1 class="pt-1 font-bold text-lg">Presensi Bulan November 2023</h1>
@@ -77,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="flex px-3 -mt-2 justify-center ">
+            <div class="flex px-3 mt-2 justify-center ">
                 <table class="w-screen">
                     <tbody>
                         @foreach ($data as $d)

@@ -2,29 +2,14 @@
     <div>
         <div class="h-screen">
             <div class=header>
-                <div class="w-screen bg-gray-800  shadow-xl rounded-b-3xl  sticky top-0 ">
-                    <div class="flex justify-between h-36 items-center">
-                        <div class="flex flex-col -mt-5">
+                <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
+                    <div class="flex justify-between">
+                        <div>
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:150px">
-                            <div class="flex justify-left -mt-4 invisible">
-                                <div class="text-right px-5 pt-2 ">
-                                    <select name="" id="" class="bg-black text-white text-sm">
-                                        <option value="">2023</option>
-                                    </select>
-                                </div>
-                                <div class="text-right px-5 pt-2 ">
-                                    <select name="" id="" class="bg-black text-white text-sm">
-                                        <option value="">November</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col p-3 gap-5 items-end">
                             <div>
-                                <h1 class="text-white p-3  text-sm">Hello, {{ auth()->user()->name }}</h1>
-                            </div>
-                            <div class="text-right px-5 ">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
@@ -36,6 +21,10 @@
                                     @csrf
                                 </form>
                             </div>
+                            <div>
+                                <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -125,7 +114,7 @@
                     </div>
                     <div>
                         <input wire:model="language" value="Cn" type="radio">
-                        <label class="form-check-label" for="flexRadioDefault1">Mandarin</label>
+                        <label class="form-check-label" for="flexRadioDefault1">中文</label>
                     </div>
                 </div>
                 <button class="bg-purple-500 text-sm text-white px-1 py-1 w-1/3 rounded shadow"
