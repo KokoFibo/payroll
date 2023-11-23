@@ -8,6 +8,7 @@ use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
+use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
 use App\Livewire\Informasiwr;
 use App\Livewire\Informationwr;
@@ -77,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
             Route::get('/informasi', Informasiwr::class);
             Route::get('/informationwr', Informationwr::class);
+            Route::get('/tambahan', Tambahanwr::class);
 
 
             // YF PRESENSI

@@ -17,6 +17,7 @@ use Illuminate\Database\Query\Builder;
 class Karyawanindexwr extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public $search;
     public $columnName = 'id_karyawan';

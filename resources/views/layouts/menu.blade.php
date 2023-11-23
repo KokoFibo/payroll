@@ -23,14 +23,14 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            {{-- <li class="nav-item {{ 'karyawanindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/karyawanindex" class="nav-link" wire:navigate>
+            <li class="nav-item {{ 'tambahan' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/tambahan" class="nav-link" wire:navigate>
                     <i class="nav-icon fa-solid fa-people-group"></i>
                     <p>
                         Bonus & Potongan
                     </p>
                 </a>
-            </li> --}}
+            </li>
             <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/yfpresensiindexwr" class="nav-link" wire:navigate>
                     <i class="nav-icon fas fa-clipboard-check"></i>

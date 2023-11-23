@@ -338,11 +338,11 @@
             </div>
         </div>
     </div>
-    <style>
+    {{-- <style>
         [x-cloak] {
             display: none !important;
         }
-    </style>
+    </style> --}}
 
 
     {{-- Modal ook --}}

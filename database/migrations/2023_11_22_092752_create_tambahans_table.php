@@ -13,20 +13,22 @@ return new class extends Migration
     {
         Schema::create('tambahans', function (Blueprint $table) {
             $table->id();
-            $table->integer('uang_makan');
-            $table->integer('bonus');
+            $table->integer('user_id');
 
-            $table->integer('baju_esd');
-            $table->integer('gelas');
-            $table->integer('sandal');
-            $table->integer('seragam');
-            $table->integer('sport_bra');
-            $table->integer('hijab_instan');
-            $table->integer('id_card_hilang');
-            $table->integer('masker_hijau');
+            $table->integer('uang_makan')->nullable();
+            $table->integer('bonus')->nullable();
+            $table->integer('bonus_lain')->nullable();
 
-            $table->integer('denda');
-            $table->integer('lain');
+            $table->integer('baju_esd')->nullable();
+            $table->integer('gelas')->nullable();
+            $table->integer('sandal')->nullable();
+            $table->integer('seragam')->nullable();
+            $table->integer('sport_bra')->nullable();
+            $table->integer('hijab_instan')->nullable();
+            $table->integer('id_card_hilang')->nullable();
+            $table->integer('masker_hijau')->nullable();
+            $table->integer('potongan_lain')->nullable();
+            $table->date('tanggal')->nullable();
             $table->timestamps();
         });
     }
