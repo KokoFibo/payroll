@@ -36,7 +36,7 @@ class DashboardController extends Controller
     public function mobile()
     {
         // ini hanya bisa di test di desktop tidak berlaku di user mobile
-        $user_id = 4;
+        $user_id = 1112;
         $month = 11;
 
         $total_hari_kerja = 0;
