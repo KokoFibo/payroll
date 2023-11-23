@@ -112,7 +112,7 @@
 
 
             {{-- Rubah Bahasa --}}
-            <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+            {{-- <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
                 <label class="block text-sm font-medium  text-gray-900">Bahasa</label>
                 <div class="flex gap-5">
@@ -128,7 +128,7 @@
                 <button class="bg-purple-500 text-sm text-white px-1 py-1 w-1/3 rounded shadow"
                     wire:click="changeLanguage">Rubah
                     Bahasa</button>
-            </div>
+            </div> --}}
 
 
             {{-- Footer --}}
