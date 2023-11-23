@@ -47,7 +47,7 @@
             </div>
             <div class="flex px-3 pt-2 justify-center relative bottom-5">
                 <div
-                    class="w-screen h-32 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
+                    class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
                     <h1 class="pt-1 font-bold text-lg">Presensi Bulan November 2023</h1>
                     <div class="flex justify-around text-center pb-1">
 
@@ -82,7 +82,7 @@
                     <tbody>
                         @foreach ($data as $d)
                             <tr
-                                class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-20 items-center p-2 rounded-lg shadow mb-3">
+                                class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
                                 <td class="text-center">
                                     <p
                                         class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
