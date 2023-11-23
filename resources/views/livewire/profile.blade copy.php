@@ -40,15 +40,18 @@
                     </div>
                 </div>
             </div>
-            <h2 class="bg-purple-500 text-center  text-white text-xl rounded-xl   mt-2 ">User
-                Profile</h2>
+            <div class="flex justify-center">
+                <h2 class="bg-purple-500 text-center text-white text-xl rounded-xl px-5 mt-3">User
+                    Profile
+                </h2>
+            </div>
 
             {{-- Ubah Password --}}
             <div class=" bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
                 <div>
-                    <label class="block text-sm font-medium  text-gray-900">Password Lama</label>
+                    {{-- <label class="block text-sm font-medium  text-gray-900">Password Lama</label> --}}
                     <div class="relative mt-1 rounded-md shadow-sm">
-                        <input type="password" wire:model="old_password"
+                        <input type="password" wire:model="old_password" placeholder="Password Lama"
                             class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('old_password')
                             <div class="text-red-500">
@@ -58,9 +61,9 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium  text-gray-900">Password Baru</label>
+                    {{-- <label class="block text-sm font-medium  text-gray-900">Password Baru</label> --}}
                     <div class="relative mt-1 rounded-md shadow-sm">
-                        <input type="password" wire:model="new_password"
+                        <input type="password" wire:model="new_password" placeholder="Password Baru"
                             class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('new_password')
                             <div class="text-red-500">
@@ -71,9 +74,9 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium  text-gray-900">Konfirmasi</label>
+                    {{-- <label class="block text-sm font-medium  text-gray-900">Konfirmasi</label> --}}
                     <div class="relative mt-1 rounded-md shadow-sm">
-                        <input type="password" wire:model="confirm_password"
+                        <input type="password" wire:model="confirm_password" placeholder="Konfirmasi"
                             class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('confirm_password')
                             <div class="text-red-500">
@@ -93,9 +96,9 @@
             <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
                 <div>
-                    <label class="block text-sm font-medium  text-gray-900">Email Baru</label>
+                    {{-- <label class="block text-sm font-medium  text-gray-900">Email Baru</label> --}}
                     <div class="relative mt-1 rounded-md shadow-sm">
-                        <input type="text" wire:model="email"
+                        <input type="text" wire:model="email" placeholder="Email Baru"
                             class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                         @error('email')
                             <div class="text-red-500">
@@ -114,7 +117,7 @@
             {{-- Ubah Bahasa --}}
             <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
-                <label class="block text-sm font-medium  text-gray-900">Bahasa</label>
+                {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
                 <div class="flex gap-5">
                     <div>
                         <input wire:model="language" value="Id" type="radio">
