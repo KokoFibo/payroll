@@ -8,6 +8,7 @@ use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Redirect;
+use Spatie\Activitylog\Contracts\Activity;
 
 $agent = new Agent();
 
@@ -36,6 +37,9 @@ class HomeController extends Controller {
         $jumlah_total_karyawan = Karyawan::count();
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
+
+        activity()->log( auth()->user()->name .', ID : ' . auth()->user()->username . ' Login');
+
 
         $agent = new Agent();
         $desktop = $agent->isDesktop();
