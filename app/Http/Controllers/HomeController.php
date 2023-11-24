@@ -38,7 +38,14 @@ class HomeController extends Controller {
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
 
-        activity()->log( auth()->user()->name .', ID : ' . auth()->user()->username . ' Login');
+        switch(auth()->user()->role) {
+           case 1 : $role_name = 'User'; break;
+           case 2 : $role_name = 'Admin'; break;
+           case 3 : $role_name = 'Senior Admin'; break;
+           case 4 : $role_name = 'Super Admin'; break;
+           case 5 : $role_name = 'Developer'; break;
+        }
+        activity()->log( auth()->user()->name .', '.$role_name.', ID : ' . auth()->user()->username . ' Login');
 
 
         $agent = new Agent();
