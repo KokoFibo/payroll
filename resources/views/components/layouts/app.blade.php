@@ -57,7 +57,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
-    @livewireStyles
+    {{-- @livewireStyles --}}
+
 </head>
 <style>
     body {
@@ -84,11 +85,7 @@
         <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
 
             {{ $slot }}
-            {{-- <style>
-                [x-cloak] {
-                    display: none !important;
-                }
-            </style> --}}
+
         </div>
         <!-- /.content-wrapper -->
 
@@ -96,7 +93,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        @livewireScripts
+        {{-- @livewireScripts --}}
         {{-- flat picker bagus --}}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

@@ -35,3 +35,4 @@ window.addEventListener("hide-form", (event) => {
 window.addEventListener("update-form", (event) => {
     $("#update-form-modal").modal("show");
 });
+
