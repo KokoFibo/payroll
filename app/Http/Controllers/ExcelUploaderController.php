@@ -22,6 +22,7 @@ class ExcelUploaderController extends Controller
             'file' => 'required|mimes:xlsx|max:2048',
         ] );
         $arrId = [];
+        $arrId_ada = [];
         $cx=0;
 
         $file = $request->file( 'file' );
@@ -32,21 +33,23 @@ class ExcelUploaderController extends Controller
 
 
 
-        for ( $i = 4; $i <= $row_limit; $i++ ) {
+        for ( $i = 2; $i <= $row_limit; $i++ ) {
             if ( $importedData->getCell( 'B' . $i )->getValue() != '' ) {
                 $user_id = $importedData->getCell( 'B' . $i )->getValue();
                 $data = Karyawan::where('id_karyawan', $user_id )->first();
                 if($data == null){
-
                     $arrId[] = $user_id;
+
                 } else {
                     $data_karyawan = Karyawan::find($data->id);
                     $data_karyawan->iuran_locker = 10000;
                     $data_karyawan->save();
+                    // $arrId_ada[] = $user_id;
                     $cx++;
                 }
             }
         }
         dd('data added : ', $cx, 'Data Tidak ditemukan: ',$arrId);
+        // dd('data added : ', $cx, 'Data  ditemukan: ',$arrId_ada, 'Data  ditemukan: ', $arrId );
     }
 }
