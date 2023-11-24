@@ -12,7 +12,7 @@ class UserLog extends Component
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $data = Activity::orderBy('created_at', 'desc')->paginate(5);
+        $data = Activity::orderBy('created_at', 'desc')->paginate(10);
         return view('livewire.user-log', compact('data'));
     }
 }
