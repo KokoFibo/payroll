@@ -577,7 +577,7 @@ function checkFirstInLate($check_in, $shift, $tgl)
                 $t2 = strtotime($check_in);
                 $diff = gmdate('H:i:s', $t2 - $t1);
                 $late = ceil(hoursToMinutes($diff) / $perJam);
-                if($late<=5 || $late>3.5) {
+                if($late<=5 && $late>3.5) {
                     if (is_friday( $tgl)) {
 
                         $late = 3.5;
