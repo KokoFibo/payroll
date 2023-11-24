@@ -19,6 +19,7 @@ class UserMobile extends Component
     {
         // $user_id = 107;
         // $user_id = 1140;
+        // $user_id = 1042;
         $user_id = auth()->user()->username;
         $month = 11;
 
@@ -33,11 +34,48 @@ class UserMobile extends Component
 
         foreach ($data1 as $d) {
             if ($d->no_scan == null) {
+
                 $tgl = tgl_doang($d->date);
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+            $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+
+            if ($d->karyawan->jabatan === 'Satpam') {
+                $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
+            }
+
+            $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+
+            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+
+            if($d->shift == 'Malam') {
+                if(is_saturday($d->date)) {
+                    if($jam_kerja >= 6) {
+                        $jam_lembur = $jam_lembur + 1;
+                    }
+                } else {
+                    if($jam_kerja >= 8) {
+                        $jam_lembur = $jam_lembur + 1;
+                    }
+                }
+            }
+
+                // $tgl = tgl_doang($d->date);
+                // $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                // $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                //     $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                // $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+
+                // if($d->shift == 'Malam') {
+                //     if(is_saturday($d->date)) {
+                //         if($jam_kerja >= 6) {
+                //             $jam_lembur = $jam_lembur + 1;
+                //         }
+                //     } else {
+                //         if($jam_kerja >= 8) {
+                //             $jam_lembur = $jam_lembur + 1;
+                //         }
+                //     }
+                // }
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur ;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;

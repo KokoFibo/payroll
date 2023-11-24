@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Lock;
 use App\Models\Payroll;
 use Livewire\Component;
+use App\Models\Tambahan;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Models\Yfrekappresensi;
@@ -342,6 +343,9 @@ class Payrollwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
+            $payroll->bonus = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
+            $payroll->potongan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda;
+
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
             if ($payroll->metode_penggajian == 'Perjam') {
                 $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
@@ -401,6 +405,40 @@ class Payrollwr extends Component
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
+        $this->bonus_potongan();
+    }
+
+    // okk
+    public function bonus_potongan () {
+        $bonus = 0;
+        $potongaan = 0;
+        $all_bonus = 0 ;
+        $all_potongan =0;
+        $tambahan = Tambahan::whereMonth('tanggal',$this->month)
+        ->whereYear('tanggal', $this->year)->get();
+
+        foreach($tambahan as $d) {
+            $all_bonus =  $d->uang_makan + $d->bonus +$d->bonus_lain;
+            $all_potongan =  $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
+            $id_payroll = Payroll::whereMonth('date',$this->month)
+            ->whereYear('date', $this->year)->where('id_karyawan', $d->user_id)->first();
+            if($id_payroll != null) {
+
+                $payroll = Payroll::find($id_payroll->id);
+
+                $payroll->bonus = $payroll->bonus + $all_bonus;
+                $payroll->potongan = $payroll->potongan + $all_potongan;
+                $payroll->save();
+            }
+        }
+        $this->dispatch('success', message: 'Bonus dan Potangan added');
+
+
+
+        // $bonus = $bonus + $all_bonus;
+        // $potongaan = $potongaan + $all_potongan;
+
+
     }
 
 
@@ -421,6 +459,7 @@ class Payrollwr extends Component
                 })
                 ->orderBy($this->columnName, $this->direction);
         }
+
 
     public function render()
     {
