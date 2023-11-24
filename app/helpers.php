@@ -371,19 +371,24 @@ function pembulatanJamOvertimeIn($jam)
 function pembulatanJamOvertimeOut($jam)
 {
     $arrJam = explode(':', $jam);
-    if ((int) $arrJam[1] >= 30) {
-        if ((int) $arrJam[0] < 10) {
-            return $menit = '0' . (int) $arrJam[0] . ':30:00';
+    try {
+        if ((int) $arrJam[1] >= 30) {
+            if ((int) $arrJam[0] < 10) {
+                return $menit = '0' . (int) $arrJam[0] . ':30:00';
+            } else {
+                return $menit = $arrJam[0] . ':30:00';
+            }
         } else {
-            return $menit = $arrJam[0] . ':30:00';
+            if ((int) $arrJam[0] < 10) {
+                return $menit = '0' . (int) $arrJam[0] . ':00:00';
+            } else {
+                return $menit = $arrJam[0] . ':00:00';
+            }
         }
-    } else {
-        if ((int) $arrJam[0] < 10) {
-            return $menit = '0' . (int) $arrJam[0] . ':00:00';
-        } else {
-            return $menit = $arrJam[0] . ':00:00';
-        }
-    }
+    } catch (\Exception $e) {
+         return $e->getMessage();
+}
+
 }
 
 function hitungLembur($overtime_in, $overtime_out)
@@ -570,9 +575,23 @@ function checkFirstInLate($check_in, $shift, $tgl)
             } else {
                 $t1 = strtotime('08:03:00');
                 $t2 = strtotime($check_in);
-
                 $diff = gmdate('H:i:s', $t2 - $t1);
                 $late = ceil(hoursToMinutes($diff) / $perJam);
+                if($late<=5 || $late>3.5) {
+                    if (is_friday( $tgl)) {
+
+                        $late = 3.5;
+                    } else {
+                        $late = 4;
+                    }
+                } elseif ($late>5) {
+                    if (is_friday( $tgl)) {
+
+                        $late =  $late - 1.5;
+                    } else {
+                        $late =  $late - 1;
+                    }
+                }
             }
         } else {
             if (is_saturday($tgl)) {
