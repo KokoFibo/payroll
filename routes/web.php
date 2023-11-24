@@ -2,6 +2,7 @@
 
 use App\Livewire\Test;
 use App\Livewire\Profile;
+use App\Livewire\UserLog;
 use App\Livewire\Developer;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
@@ -122,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);
                     Route::get('/exceluploader', [ExcelUploaderController::class, 'index']);
                     Route::post('/xlstore', [ExcelUploaderController::class, 'store']);
+                    Route::get('/UserLog', UserLog::class);
 
 
 

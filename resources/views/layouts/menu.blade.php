@@ -60,6 +60,12 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/UserLog" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>User Log</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -158,6 +164,12 @@ with font-awesome or any other icon font library -->
                             <a href="/exceluploader" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Excel Uploader</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/UserLog" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>User Log</p>
                             </a>
                         </li>
 
