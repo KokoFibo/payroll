@@ -193,12 +193,14 @@
 
                                             {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
                                                       class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button> --}}
-                                            @if (Auth::user()->role > 4)
-                                                <button
-                                                    wire:click="$dispatch('swal:confirm', { id: {{ $data->id }} })"
+                                            @if (Auth::user()->role > 2)
+                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
+                                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
+
+
                                         </td>
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>
@@ -410,5 +412,22 @@
         </div>
     </div>
     {{-- End  --}}
+    {{-- <script>
+        window.addEventListener("swal:confirm_delete_presensi", (event) => {
+            Swal.fire({
+                title: "Apakah yakin mau di delete",
+                text: "Data yang sudah di delete tidak dapat dikembalikan",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Delete",
+            }).then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    @this.dispatch("delete", event.detail.id);
+                }
+            });
+        });
+    </script> --}}
 
 </div>

@@ -111,16 +111,6 @@ public function showDetail($user_id)
     $this->total_keterlambatan = $total_keterlambatan;
 }
 
-// public function confirmDelete($id)
-//     {
-//         $this->id = $id;
-//         $this->dispatch('swal:confirm_delete_presensi', [
-//             'title' => 'Apakah Anda Yakin ok',
-//             'text' => 'isi text dengan apa?',
-//             'id' => $id,
-//         ]);
-//     }
-
     public function filterNoScan()
     {
         // $this->columnName = 'no_scan_history';
