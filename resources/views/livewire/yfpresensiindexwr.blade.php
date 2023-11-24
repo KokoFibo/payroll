@@ -200,7 +200,6 @@
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
 
-
                                         </td>
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>

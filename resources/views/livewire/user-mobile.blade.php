@@ -98,13 +98,38 @@
                                 <td class="text-center">
                                     <p class="text-gray-500">Jam Kerja</p>
                                     <p class="font-bold text-blue-500">
-                                        {{ hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan) }}
+                                        @php
+                                            $tgl = tgl_doang($d->date);
+                                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                                            $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+
+                                            if ($d->karyawan->jabatan === 'Satpam') {
+                                                $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
+                                            }
+
+                                            $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+
+                                            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+
+                                            if ($d->shift == 'Malam') {
+                                                if (is_saturday($d->date)) {
+                                                    if ($jam_kerja >= 6) {
+                                                        $jam_lembur = $jam_lembur + 1;
+                                                    }
+                                                } else {
+                                                    if ($jam_kerja >= 8) {
+                                                        $jam_lembur = $jam_lembur + 1;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+                                        {{ $jam_kerja }}
                                     </p>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-gray-500">Jam Lembur</p>
                                     <p class="font-bold text-blue-500">
-                                        {{ langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan) + hitungLembur($d->overtime_in, $d->overtime_out) / 60 }}
+                                        {{ $jam_lembur }}
                                     </p>
                                 </td>
                                 <td class="text-center">

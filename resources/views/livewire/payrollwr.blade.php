@@ -123,6 +123,10 @@
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('bonus')">Bonus <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('potongan')">Potongan <i class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
@@ -159,6 +163,12 @@
                                         </td>
                                         <td class="text-end">
                                             {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
+                                        </td>
+                                        <td class="text-end">
+                                            {{ $p->bonus ? number_format($p->bonus) : '' }}
+                                        </td>
+                                        <td class="text-end">
+                                            {{ $p->potongan ? number_format($p->potongan) : '' }}
                                         </td>
                                         <td class="text-end">
                                             {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}

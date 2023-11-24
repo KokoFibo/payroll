@@ -92,6 +92,18 @@ public function showDetail($user_id)
 
             $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
 
+            if($d->shift == 'Malam') {
+                if(is_saturday($d->date)) {
+                    if($jam_kerja >= 6) {
+                        $jam_lembur = $jam_lembur + 1;
+                    }
+                } else {
+                    if($jam_kerja >= 8) {
+                        $jam_lembur = $jam_lembur + 1;
+                    }
+                }
+            }
+
             $this->dataArr->push([
                 'tgl' => $tgl,
                 'jam_kerja' => $jam_kerja,
