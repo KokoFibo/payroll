@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Lock;
 use App\Models\Payroll;
 use Livewire\Component;
+use App\Models\Tambahan;
 use App\Models\Jamkerjaid;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -319,102 +320,148 @@ class Prindexwr extends Component
         $this->rebuild();
     }
 
-    // ok2
-    public function rebuild()
-    {
-        $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->get();
+     // ok2
+     public function rebuild()
+     {
+         $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
+             ->whereMonth('date', $this->month)
+             ->whereYear('date', $this->year)
+             ->get();
 
-        if ($datas->isEmpty()) {
-            $this->dispatch('error', message: 'Data Tidak Ditemukan');
-            return back();
+         if ($datas->isEmpty()) {
+             $this->dispatch('error', message: 'Data Tidak Ditemukan');
+             return back();
+         }
+
+         $subtotal = 0;
+         $denda_noscan = 0;
+
+         Payroll::whereMonth('date', $this->month)
+             ->whereYear('date', $this->year)
+             ->truncate();
+
+         foreach ($datas as $data) {
+             $payroll = new Payroll();
+             $payroll->jamkerjaid_id = $data->id;
+             $payroll->nama = $data->karyawan->nama;
+             $payroll->id_karyawan = $data->karyawan->id_karyawan;
+             $payroll->jabatan = $data->karyawan->jabatan;
+             $payroll->company = $data->karyawan->company;
+             $payroll->placement = $data->karyawan->placement;
+             $payroll->status_karyawan = $data->karyawan->status_karyawan;
+             $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
+             $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
+             $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
+             $payroll->gaji_bpjs = $data->karyawan->gaji_bpjs;
+             $payroll->jkk = $data->karyawan->jkk;
+             $payroll->jkm = $data->karyawan->jkm;
+             $payroll->hari_kerja = $data->total_hari_kerja;
+             $payroll->jam_kerja = $data->jumlah_jam_kerja;
+             $payroll->jam_lembur = $data->jumlah_menit_lembur;
+             //ok4
+             if($data->total_noscan > 3 && $payroll->metode_penggajian == 'Perjam') {
+                 $denda_noscan = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
+             } else {
+                 $denda_noscan = 0;
+             }
+
+             $payroll->bonus = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
+             $payroll->potongan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
+
+             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
+             if ($payroll->metode_penggajian == 'Perjam') {
+                 $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+             } else {
+                 if ($payroll->gaji_lembur == 0) {
+                     $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
+                 } else {
+                     $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                 }
+             }
+
+             if($data->karyawan->potongan_JP==1) {
+                 if($data->karyawan->gaji_bpjs <= 9559600) {
+                     $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
+                 } else {
+                     $payroll->jp = 9559600 * 0.01;
+
+                 }
+
+             } else {
+                 $payroll->jp = 0;
+             }
+
+             if($data->karyawan->potongan_JHT==1) {
+                 $payroll->jht = $data->karyawan->gaji_bpjs * 0.02;
+             }
+             else {
+                 $payroll->jht = 0;
+             }
+
+             if($data->karyawan->potongan_kesehatan==1) {
+                 $payroll->kesehatan = $data->karyawan->gaji_bpjs * 0.01;
+             } else {
+                 $payroll->kesehatan = 0;
+             }
+
+             $payroll->pajak = 0;
+             if($data->karyawan->potongan_JKK == 1){
+
+                 $payroll->jkk = 1;
+             } else {
+
+                 $payroll->jkk = 0;
+             }
+             if($data->karyawan->potongan_JKM == 1){
+
+                 $payroll->jkm = 1;
+             } else {
+
+                 $payroll->jkm = 0;
+             }
+
+
+
+             $payroll->date = $data->date;
+             $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
+             $payroll->save();
+         }
+         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
+         $this->bonus_potongan();
+     }
+
+    // ok3
+    public function bonus_potongan () {
+        $bonus = 0;
+        $potongaan = 0;
+        $all_bonus = 0 ;
+        $all_potongan =0;
+        $tambahan = Tambahan::whereMonth('tanggal',$this->month)
+        ->whereYear('tanggal', $this->year)->get();
+
+        foreach($tambahan as $d) {
+            $all_bonus =  $d->uang_makan + $d->bonus +$d->bonus_lain;
+            $all_potongan =  $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
+            $id_payroll = Payroll::whereMonth('date',$this->month)
+            ->whereYear('date', $this->year)->where('id_karyawan', $d->user_id)->first();
+            if($id_payroll != null) {
+
+                $payroll = Payroll::find($id_payroll->id);
+                $payroll->bonus = $payroll->bonus + $all_bonus;
+                $payroll->potongan = $payroll->potongan + $all_potongan;
+                $payroll->total = $payroll->total + $all_bonus - $all_potongan;
+                $payroll->save();
+            }
         }
 
-        $subtotal = 0;
-
-        Payroll::whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->truncate();
-
-        foreach ($datas as $data) {
-            $payroll = new Payroll();
-            $payroll->jamkerjaid_id = $data->id;
-            $payroll->nama = $data->karyawan->nama;
-            $payroll->id_karyawan = $data->karyawan->id_karyawan;
-            $payroll->jabatan = $data->karyawan->jabatan;
-            $payroll->company = $data->karyawan->company;
-            $payroll->placement = $data->karyawan->placement;
-            $payroll->status_karyawan = $data->karyawan->status_karyawan;
-            $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
-            $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
-            $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
-            $payroll->gaji_bpjs = $data->karyawan->gaji_bpjs;
-            $payroll->jkk = $data->karyawan->jkk;
-            $payroll->jkm = $data->karyawan->jkm;
-            $payroll->hari_kerja = $data->total_hari_kerja;
-            $payroll->jam_kerja = $data->jumlah_jam_kerja;
-            $payroll->jam_lembur = $data->jumlah_menit_lembur;
-            $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
-            if ($payroll->metode_penggajian == 'Perjam') {
-                $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
-            } else {
-                if ($payroll->gaji_lembur == 0) {
-                    $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
-                } else {
-                    $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
-                }
-            }
-
-            if($data->karyawan->potongan_JP==1) {
-                if($data->karyawan->gaji_bpjs <= 9559600) {
-                    $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
-                } else {
-                    $payroll->jp = 9559600 * 0.01;
-
-                }
-
-            } else {
-                $payroll->jp = 0;
-            }
-
-            if($data->karyawan->potongan_JHT==1) {
-                $payroll->jht = $data->karyawan->gaji_bpjs * 0.02;
-            }
-            else {
-                $payroll->jht = 0;
-            }
-
-            if($data->karyawan->potongan_kesehatan==1) {
-                $payroll->kesehatan = $data->karyawan->gaji_bpjs * 0.01;
-            } else {
-                $payroll->kesehatan = 0;
-            }
-
-            $payroll->pajak = 0;
-            if($data->karyawan->potongan_JKK == 1){
-
-                $payroll->jkk = 1;
-            } else {
-
-                $payroll->jkk = 0;
-            }
-            if($data->karyawan->potongan_JKM == 1){
-
-                $payroll->jkm = 1;
-            } else {
-
-                $payroll->jkm = 0;
-            }
+        $this->dispatch('success', message: 'Bonus dan Potangan added');
 
 
 
-            $payroll->date = $data->date;
-            $payroll->total = $payroll->subtotal - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
-            $payroll->save();
-        }
-        $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
+        // $bonus = $bonus + $all_bonus;
+        // $potongaan = $potongaan + $all_potongan;
+
+
     }
 
     public function render()

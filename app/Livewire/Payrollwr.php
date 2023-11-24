@@ -320,6 +320,7 @@ class Payrollwr extends Component
         }
 
         $subtotal = 0;
+        $denda_noscan = 0;
 
         Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
@@ -343,8 +344,15 @@ class Payrollwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
+            //ok4
+            if($data->total_noscan > 3 && $payroll->metode_penggajian == 'Perjam') {
+                $denda_noscan = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
+            } else {
+                $denda_noscan = 0;
+            }
+
             $payroll->bonus = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
-            $payroll->potongan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda;
+            $payroll->potongan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
             if ($payroll->metode_penggajian == 'Perjam') {
@@ -401,14 +409,14 @@ class Payrollwr extends Component
 
 
             $payroll->date = $data->date;
-            $payroll->total = $payroll->subtotal - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
+            $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
         $this->bonus_potongan();
     }
 
-    // okk
+    // ok3
     public function bonus_potongan () {
         $bonus = 0;
         $potongaan = 0;
@@ -425,12 +433,13 @@ class Payrollwr extends Component
             if($id_payroll != null) {
 
                 $payroll = Payroll::find($id_payroll->id);
-
                 $payroll->bonus = $payroll->bonus + $all_bonus;
                 $payroll->potongan = $payroll->potongan + $all_potongan;
+                $payroll->total = $payroll->total + $all_bonus - $all_potongan;
                 $payroll->save();
             }
         }
+
         $this->dispatch('success', message: 'Bonus dan Potangan added');
 
 
