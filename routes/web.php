@@ -120,7 +120,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/editpresensi', Editpresensiwr::class);
                     Route::get('/removepresensi', Removepresensiwr::class);
                     Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);
-                    // Route::get('/exceluploader', ExcelUploader::class);
                     Route::get('/exceluploader', [ExcelUploaderController::class, 'index']);
                     Route::post('/xlstore', [ExcelUploaderController::class, 'store']);
 
