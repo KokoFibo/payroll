@@ -160,7 +160,8 @@
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
                                     <tr x-data="{ edit: false }"
-                                        class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
+                                        class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}"
+                                        x-cloak>
                                         <td>
 
                                             @if ($btnEdit == true)
@@ -207,10 +208,10 @@
                                         <td>{{ $data->karyawan->placement }}</td>
                                         <td>{{ $data->karyawan->jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
-                                        <td x-show="!edit"
+                                        <td x-show="!edit" x-cloak
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date) ? 'text-danger' : '' }}">
                                             {{ format_jam($data->first_in) }} </td>
-                                        <td x-show="edit"><input
+                                        <td x-show="edit" x-cloak><input
                                                 style="width:100px; background-color: #ffeeba;; background-color: #ffeeba"
                                                 class="form-control @error('first_in') is-invalid @enderror"
                                                 id="first_in" type="text" wire:model="first_in">
@@ -221,10 +222,11 @@
                                                 </div>
                                             @enderror
                                         </td>
-                                        <td x-show="!edit"
+                                        <td x-show="!edit" x-cloak
                                             @if (is_jabatan_khusus($data->karyawan->jabatan) == 1) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->first_out) }} </td>
-                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                        <td x-show="edit" x-cloak><input
+                                                style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('first_out') is-invalid @enderror"
                                                 id="first_out" type="text" wire:model="first_out">
                                             @error('first_out')
@@ -234,10 +236,11 @@
                                             @enderror
 
                                         </td>
-                                        <td x-show="!edit"
+                                        <td x-show="!edit" x-cloak
                                             @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_in) }} </td>
-                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                        <td x-show="edit" x-cloak><input
+                                                style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('second_in') is-invalid @enderror"
                                                 id="second_in" type="text" wire:model="second_in">
                                             @error('second_in')
@@ -246,10 +249,11 @@
                                                 </div>
                                             @enderror
                                         </td>
-                                        <td x-show="!edit"
+                                        <td x-show="!edit" x-cloak
                                             @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date, $data->karyawan->jabatan) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_out) }} </td>
-                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                        <td x-show="edit" x-cloak><input
+                                                style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('second_out') is-invalid @enderror"
                                                 id="second_out" type="text" wire:model="second_out">
                                             @error('second_out')
@@ -258,8 +262,9 @@
                                                 </div>
                                             @enderror
                                         </td>
-                                        <td x-show="!edit">{{ format_jam($data->overtime_in) }} </td>
-                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                        <td x-show="!edit" x-cloak>{{ format_jam($data->overtime_in) }} </td>
+                                        <td x-show="edit" x-cloak><input
+                                                style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('overtime_in') is-invalid @enderror"
                                                 id="overtime_in" type="text" wire:model="overtime_in">
                                             @error('overtime_in')
@@ -268,9 +273,10 @@
                                                 </div>
                                             @enderror
                                         </td>
-                                        <td x-show="!edit">
+                                        <td x-show="!edit" x-cloak>
                                             {{ format_jam($data->overtime_out) }} </td>
-                                        <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
+                                        <td x-show="edit" x-cloak><input
+                                                style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('overtime_out') is-invalid @enderror"
                                                 id="overtime_out" type="text" wire:model="overtime_out">
                                             @error('overtime_out')
@@ -334,7 +340,7 @@
         </div>
     </div>
     {{-- <style>
-        [] {
+        [x-cloak] {
             display: none !important;
         }
     </style> --}}
