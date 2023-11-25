@@ -1,4 +1,5 @@
 <div>
+
     <div>
 
         <div class=header>
@@ -29,19 +30,20 @@
                 </div>
             </div>
             <div class="flex px-3  justify-center ">
-                <div class="w-screen bg-teal-500 h-10 shadow-xl rounded-3xl mt-2  ">
-                    <div class="h-10 flex justify-evenly items-center">
+                <div class="w-screen bg-teal-500 h-12 shadow-xl rounded-3xl mt-2  ">
+                    <div class="h-12 flex justify-evenly items-center">
                         <div>
-                            <select name="" id="" class="bg-teal-500 text-white text-sm">
-                                <option value="">2023</option>
+                            <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
+                                <option value="2023">2023</option>
                             </select>
                         </div>
                         <div>
-                            <select name="" id="" class="bg-teal-500 text-white text-sm">
-                                <option value="">November</option>
+                            <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
+                                <option value="11">November</option>
+                                {{-- <option value="12">Desember</option> --}}
                             </select>
                         </div>
-                        <div>
+                        <div class="invisible">
                             <a href="">
                                 <button
                                     class="text-white bg-teal-900 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip
@@ -54,26 +56,26 @@
             <div class="flex px-3 pt-2 justify-center ">
                 <div
                     class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
-                    <h1 class="pt-1 font-bold text-lg">Presensi Bulan November 2023</h1>
+                    <h1 class="pt-1 font-semibold">Presensi Bulan November 2023</h1>
                     <div class="flex justify-around text-center pb-1">
 
                         <div>
-                            <p>Hari</p>
+                            <p class="text-sm">Hari</p>
                             <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p>
                         </div>
 
                         <div>
-                            <p>Jam Kerja</p>
+                            <p class="text-sm">Jam Kerja</p>
                             <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
                         </div>
 
                         <div>
-                            <p>Jam Lembur</p>
+                            <p class="text-sm">Jam Lembur</p>
                             <p class="font-bold text-green-500 text-lg">{{ $total_jam_lembur }}</p>
                         </div>
 
                         <div>
-                            <p>Terlambat</p>
+                            <p class="text-sm">Terlambat</p>
                             <p class="font-bold text-green-500 text-lg">{{ $total_keterlambatan }}</p>
                         </div>
 
@@ -96,7 +98,7 @@
                                     </p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="text-gray-500">Jam Kerja</p>
+                                    <p class="text-gray-500 text-sm">Jam Kerja</p>
                                     <p class="font-bold text-blue-500">
                                         @php
                                             $tgl = tgl_doang($d->date);
@@ -127,13 +129,13 @@
                                     </p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="text-gray-500">Jam Lembur</p>
+                                    <p class="text-gray-500 text-sm">Jam Lembur</p>
                                     <p class="font-bold text-blue-500">
                                         {{ $jam_lembur }}
                                     </p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="text-gray-500">Terlambat</p>
+                                    <p class="text-gray-500 text-sm">Terlambat</p>
                                     <p class="font-bold text-blue-500">
                                         {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
                                     </p>
