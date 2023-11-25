@@ -13,6 +13,7 @@ class UserLog extends Component
     public function render()
     {
         $data = Activity::orderBy('created_at', 'desc')->paginate(10);
-        return view('livewire.user-log', compact('data'));
+        $log_activities = Activity::select('description')->distinct('description')->count();
+        return view('livewire.user-log', compact(['data', 'log_activities']));
     }
 }
