@@ -2,15 +2,19 @@
 
 namespace App\Exports;
 
+use Style\Alignment;
 use App\Models\Payroll;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
-class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize
+class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
 {
     protected $payroll;
 
@@ -20,35 +24,31 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
 
 
 
-
     public function collection()
     {
         return $this->payroll;
     }
 
+    public function title(): string {
+        return 'Laporan Gaji Karyawan';
+    }
+
     public function headings(): array
     {
         return [
-            'Nama',
-            'Bank',
-            'No. Rekening',
-            'Total Pembayaran',
-            'Company',
-            'Placement',
+            [
+                'Data Karyawan'
+            ],
+            [
+                'Nama',
+                'Bank',
+                'No. Rekening',
+                'Total Pembayaran',
+                'Company',
+                'Placement',
+            ],
         ];
     }
-
-    // public function bindValue(Cell $cell, $value)
-    // {
-    //     if ($cell->getColumn() == 'C') {
-    //         $cell->setValueExplicit($value, DataType::TYPE_STRING);
-
-    //         return true;
-    //     }
-
-
-    // }
-
 
     public function columnFormats(): array
     {
@@ -58,8 +58,17 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
         ];
     }
-}
-class UsersExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder implements WithCustomValueBinder
-{
 
+    public function styles (Worksheet $sheet) {
+        return [
+            '1' => ['font' => ['bold' => true]],
+            '2' => ['font' => ['bold' => true]],
+            '1' => ['font' => ['size' => 24]],
+        ];
+        // atau bisa juga
+        // $sheet->getStyle('1')->getFont()->setBold(true);
+        // $sheet->getStyle('2')->getFont()->setBold(true);
+
+    }
 }
+
