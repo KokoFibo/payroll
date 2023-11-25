@@ -12,8 +12,11 @@
                         <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
                     </button>
                 </div>
-                {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-3">Rebuild</button> --}}
-                <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button>
+                <div>
+                    <a href="/reportindex"><button class="btn btn-success text-end mb-3 mr-2">Report</button></a>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-3">Rebuild</button>
+                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button> --}}
+                </div>
             </div>
         </div>
         <div class="card">

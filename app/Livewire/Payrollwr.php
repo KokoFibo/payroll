@@ -336,6 +336,8 @@ class Payrollwr extends Component
             $payroll->placement = $data->karyawan->placement;
             $payroll->status_karyawan = $data->karyawan->status_karyawan;
             $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
+            $payroll->nomor_rekening = $data->karyawan->nomor_rekening;
+            $payroll->nama_bank = $data->karyawan->nama_bank;
             $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
             $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
             $payroll->gaji_bpjs = $data->karyawan->gaji_bpjs;

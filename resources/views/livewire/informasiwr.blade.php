@@ -33,7 +33,8 @@
                 </ul>
                 <h2>Perhitungan keterlambatan:</h2>
                 <ul>
-                    <li>Untuk jam kerja biasa, setiap keterlambatan lebih dari 3 menit akan dikenakan potongan 1 jam.
+                    <li>Untuk karyawan pabrik saat bekerja pada jam kerja biasa, setiap keterlambatan lebih dari 3 menit
+                        akan dikenakan potongan 1 jam.
                     </li>
                     <li>Untuk jam lembur, dihitung dengan pembulatan 30 menit dengan toleransi 3 menit.</li>
                 </ul>

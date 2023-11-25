@@ -16,45 +16,38 @@
         </div>
     @endif
 
-    <div class="d-flex  p-4">
-        <div class="col-4 d-flex gap-3">
-            <div class="input-group">
+    <div class="d-xl-flex justify-content-between p-4">
+        <div class="col-12 col-xl-4  d-xl-flex  gap-xl-3">
+            <div class="input-group col-12 col-xl-12 mb-2 mb-xl-0">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
-            <div class="col-4 d-flex align-items-center gap-3">
+            <div class="col-12 col-xl-8  d-flex align-items-center gap-3 mb-2 mb-xl-0">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
+                    <option value="10">10 rows perpage</option>
+                    <option value="15">15 rows perpage</option>
+                    <option value="20">20 rows perpage</option>
+                    <option value="25">25 rows perpage</option>
                 </select>
-                Perpage
             </div>
         </div>
-        <div class="col-4 ">
-        </div>
-        <div class="col-4 text-end">
-            {{-- wire loading mengganggu saat query --}}
-            {{-- <div wire:loading class="spinner-border text-success" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div> --}}
-            <div class="d-flex gap-2 justify-content-end">
-                <div class="col-3">
-                    <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
-                        <option value="All">All</option>
-                        <option value="Aktif">Aktif</option>
-                        <option value="Non Aktif">Non Aktif</option>
-                    </select>
+
+        <div class="col-12 col-xl-4  d-flex  gap-xl-3 justify-content-end">
+            <div class="col-6 col-xl-4">
+                <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
+                    <option value="All">All</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Non Aktif">Non Aktif</option>
+                </select>
+            </div>
+            @if (Auth::user()->role > 3)
+                <div class="col-6 col-xl-4 text-end">
+                    <button wire:click="excel" class="btn btn-success">Excel</button>
                 </div>
-                @if (Auth::user()->role > 3)
-                    <div>
-                        <button wire:click="excel" class="btn btn-success">Excel</button>
-                    </div>
-                @endif
-            </div>
+            @endif
         </div>
+        {{-- </div> --}}
     </div>
 
     <div class="px-4">
