@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\Paginator;
+use Spatie\Activitylog\Models\Activity;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardController extends Controller
@@ -17,6 +18,8 @@ class DashboardController extends Controller
         $jumlah_total_karyawan = Karyawan::count();
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
+       
+
         return view('dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']));
     }
 

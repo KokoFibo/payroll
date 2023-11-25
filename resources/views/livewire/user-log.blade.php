@@ -2,7 +2,8 @@
     <div class="col-6 mx-auto pt-5">
         <div class="card">
             <div class="card-header bg-success">
-                <h3>Yifang Payroll Activity Logs</h3>
+                <h3>Yifang Payroll Activity Logs </h3>
+                <h5>Today's Login : {{ $log_activities }} </h5>
             </div>
             <div class="card-body">
                 <table class="table">
