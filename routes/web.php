@@ -28,6 +28,7 @@ use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
 use App\Livewire\Yfdeletetanggalpresensiwr;
 use App\Http\Controllers\KaryawanController;
@@ -95,6 +96,8 @@ Route::middleware(['auth'])->group(function () {
             // PAYROLL
             Route::get('/payrollindex', Prindexwr::class);
             Route::get('/payroll', Payrollwr::class);
+            Route::get('/reportindex', [ReportController::class, 'index']);
+            Route::post('/createexcel', [ReportController::class, 'createExcel']);
 
             // USER SETTING
 

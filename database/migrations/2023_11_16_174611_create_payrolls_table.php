@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('company');
             $table->string('placement');
+            $table->string('nama_bank')->nullable();
+            $table->string('nomor_rekening')->nullable();
             $table->string('metode_penggajian');
             $table->double('hari_kerja',5,1);
             $table->double('jam_kerja',6,1);

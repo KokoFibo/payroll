@@ -1,7 +1,6 @@
 <div>
 
     <div>
-
         <div class=header>
             <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                 <div class="flex justify-between">
@@ -78,6 +77,7 @@
                             <p class="text-sm">Terlambat</p>
                             <p class="font-bold text-green-500 text-lg">{{ $total_keterlambatan }}</p>
                         </div>
+
 
                     </div>
 
