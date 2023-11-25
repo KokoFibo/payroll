@@ -1,5 +1,5 @@
 <div>
-    <div class="col-6 mx-auto pt-5">
+    <div class="col-12 col-xl-6 pt-5 mx-auto">
         <div class="card">
             <div class="card-header bg-success">
                 <h3>Yifang Payroll Activity Logs </h3>
@@ -24,8 +24,8 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $data->links() }}
             </div>
         </div>
+        {{ $data->links() }}
     </div>
 </div>
