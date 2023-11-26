@@ -17,6 +17,7 @@ class UserLog extends Component
         $total_logs = Activity::select('description')->distinct('description')->count();
         $today_logs = Activity::whereDate('created_at', Carbon::today())->select('description')->distinct('description')->count();
         $yesterday_log = Activity::whereDate('created_at', Carbon::yesterday())->select('description')->distinct('description')->count();
-        return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log']));
+        $total_created_logs = Activity::select('description')->count();
+        return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log', 'total_created_logs']));
     }
 }

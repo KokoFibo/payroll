@@ -6,6 +6,7 @@
                 <h5>Today's Login : {{ $today_logs }} </h5>
                 <h5>Yesterday's Login : {{ $yesterday_log }} </h5>
                 <h5>Total Login : {{ $total_logs }} </h5>
+                <h5>Total Created Log : {{ $total_created_logs }} </h5>
             </div>
             <div class="card-body">
                 <table class="table">
