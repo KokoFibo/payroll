@@ -38,11 +38,9 @@
             </div>
             <div class="main  flex-1 overflow-y-auto ">
                 {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
-                <div class="w-screen flex px-3 mt-5  flex flex-col gap-5 ">
-
-
+                <div class="w-screen flex px-3  mt-3 flex flex-col ">
                     @foreach ($data as $d)
-                        <div class="bg-white shadow rounded-xl mt-5 p-3">
+                        <div class="bg-white shadow rounded-xl mt-3 p-3">
                             <div class="flex items-center gap-4">
                                 <div class="text-3xl text-gray-500"><i class="fa-regular fa-clipboard"></i></div>
                                 <div>
@@ -53,18 +51,10 @@
 
                         </div>
                     @endforeach
-
                 </div>
             </div>
-
-            {{-- Footer --}}
-            <div class="footer flex justify-between h-16 items-center bg-gray-800 ">
-
-
-                {{-- @if ($data->currentPage() > 1) --}}
-                {{-- <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
-                    class="text-purple-200 px-4 py-4 rounded  text-2xl"><i class="fa-solid fa-left-long"></i>
-                </button></a> --}}
+            <div class="mt-20"></div>
+            <div class="footer w-screen flex justify-between h-16 items-center bg-gray-800 fixed bottom-0">
                 <a wire:navigate href="userregulation"><button
                         class="{{ 'userregulation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
                             class="fa-solid fa-list-check"></i></button></a>
@@ -84,10 +74,6 @@
                         class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
                             class="fa-solid fa-circle-info"></i>
                     </button></a>
-                {{-- @if ($data->hasMorePages()) --}}
-                {{-- <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
-                    class="text-purple-200 px-4 py-4 rounded text-2xl "><i
-                        class="fa-solid fa-right-long"></i></button></a> --}}
 
                 <div>
                     <a href="{{ route('logout') }}"
