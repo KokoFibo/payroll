@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex px-3 pt-2 justify-center ">
+            <div class="flex px-3 pt-2 justify-center  ">
                 <div
                     class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
                     <h1 class="pt-1 font-semibold">Presensi Bulan November 2023</h1>
@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="flex px-3 mt-2 justify-center ">
+            <div class="flex px-3 mt-2 justify-center relative h-48">
                 <table class="w-screen">
                     <tbody>
                         @foreach ($data as $d)
@@ -143,20 +143,36 @@
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
+                <div>
+                    <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
+                            class="bg-blue-700 opacity-20 text-purple-200 h-14 w-14 rounded-full text-2xl absolute top-1/3 left-1 "><i
+                                class="fa-solid fa-left-long"></i>
+                        </button></a>
+                </div>
+                <div>
+                    <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
+                            class="bg-blue-700 opacity-20 text-purple-200 h-14 w-14 rounded-full text-2xl absolute top-1/3 right-1 "><i
+                                class="fa-solid fa-right-long"></i></button></a>
+                </div>
+
+
             </div>
         </div>
     </div>
 
-
     {{-- {{ $data->links() }} --}}
-
+    {{-- Footer --}}
     <div class="footer bg-slate-800 flex justify-between h-16 items-center fixed bottom-0 left-0 right-0 ">
         @if (isset($data))
             {{-- @if ($data->currentPage() > 1) --}}
-            <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
+            {{-- <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
                     class="text-purple-200 px-4 py-4 rounded  text-2xl"><i class="fa-solid fa-left-long"></i>
-                </button></a>
+                </button></a> --}}
+            <a wire:navigate href="userregulation"><button
+                    class="{{ 'userregulation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
+                        class="fa-solid fa-list-check"></i></button></a>
 
             {{-- @endif --}}
             {{-- href="/profile" --}}
@@ -174,9 +190,22 @@
                         class="fa-solid fa-circle-info"></i>
                 </button></a>
             {{-- @if ($data->hasMorePages()) --}}
-            <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
+            {{-- <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
                     class="text-purple-200 px-4 py-4 rounded text-2xl "><i
-                        class="fa-solid fa-right-long"></i></button></a>
+                        class="fa-solid fa-right-long"></i></button></a> --}}
+
+            <div>
+                <a href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+
+                    <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
+                            class="fa-solid fa-power-off"></i></button>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
 
             {{-- @endif --}}
         @endif

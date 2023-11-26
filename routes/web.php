@@ -14,6 +14,7 @@ use App\Livewire\UserMobile;
 use App\Livewire\Informasiwr;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
+use App\Livewire\UserRegulation;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
@@ -62,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/usermobile', UserMobile::class);
         Route::get('/profile', Profile::class);
         Route::get('/userinformation', UserInformation::class);
+        Route::get('/userregulation', UserRegulation::class);
 
         Route::middleware(['Admin'])->group(function () {
             //Dashboard

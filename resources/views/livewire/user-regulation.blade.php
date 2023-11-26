@@ -30,30 +30,82 @@
                 </div>
                 {{-- <div class="py-2"> --}}
                 <div class="flex justify-center">
-                    <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                    <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-3">Jam Kerja & Keterlambatan
                     </h2>
                 </div>
                 {{-- </div> --}}
 
             </div>
-            <div class="main  flex-1 overflow-y-auto ">
+            <div class="main  flex-1  overflow-y-auto ">
                 {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
-                <div class="w-screen flex px-3  mt-3 flex flex-col ">
-                    @foreach ($data as $d)
-                        <div class="bg-white shadow rounded-xl mt-3 p-3">
-                            <div class="flex items-center gap-4">
-                                <div class="text-3xl text-gray-500"><i class="fa-regular fa-clipboard"></i></div>
-                                <div>
-                                    <div class="font-bold text-gray-500">{{ $d->title }}</div>
-                                    <div class="text-sm text-gray-500">{{ $d->description }}</div>
-                                </div>
-                            </div>
+                <div class="w-screen flex px-3 mt-5  flex flex-col gap-5 ">
 
-                        </div>
-                    @endforeach
+                    <div class="px-4 py-2">
+                        <h2 class="font-semibold mt-4 mb-2">Ketentuan jam kerja:</h2>
+                        <ul class="text-sm">
+                            <li class="mb-2">Shift Pagi:
+                                <ul class="list-disc ml-4">
+                                    <li>Jam kerja: 08:00 - 17:00</li>
+                                    <li>Jam Lembur: 18:00 - (mulai masuk setelah 17:30)</li>
+                                </ul>
+                            </li>
+                            <li class="mb-2">Hari Sabtu:
+                                <ul class="list-disc ml-4">
+                                    <li>Jam Kerja: 08:00 - 15:00</li>
+                                </ul>
+                            </li>
+                            <li class="mb-2">Istirahat Shift 1: 11:30 - 12:30 (batas waktu keluar
+                                mulai dari jam 11:30 - 11:59)</li>
+                            <li class="mb-2">Istirahat Shift 2: 12:00 - 13:00 (Batas waktu keluar
+                                mulai dari jam 12:00)</li>
+                        </ul>
+
+                        <ul class="mt-4 text-sm">
+                            <li class="mb-2">Shift Malam:
+                                <ul class="list-disc ml-4">
+                                    <li>Jam kerja: 20:00 - 05:00</li>
+                                    <li>Jam Lembur: Mulai dari jam 05:00</li>
+                                </ul>
+                            </li>
+                            <li class="mb-2">Hari Sabtu:
+                                <ul class="list-disc ml-4">
+                                    <li>Jam Kerja: 17:00 - 00:00</li>
+                                </ul>
+                            </li>
+                            <li class="mb-2 text-blue-500">Istirahat 00:00 - 01:00 (batas waktu keluar mulai dari jam
+                                00:00)
+                            </li>
+                        </ul>
+
+                        <h2 class="font-semibold mt-10 mb-2 ">Perhitungan keterlambatan:</h2>
+                        <p class="mb-2 text-sm">
+                            Untuk karyawan pabrik saat bekerja pada jam kerja biasa, setiap
+                            keterlambatan lebih dari 3 menit akan dikenakan potongan 1 jam.
+                        </p>
+                        <p class="mb-2 text-sm">Contoh:</p>
+                        <p class="text-sm">Jika masuk kerja pada jam 08:04 atau lebih, maka jam kerja akan dihitung
+                            mulai
+                            jam
+                            09:00. Jika masuk kerja sebelum jam 08:03, maka jam kerja akan dihitung mulai jam 08:00.</p>
+
+                        <hr class="my-3">
+                        <p class="mb-2 text-sm">Untuk jam lembur, dihitung dengan pembulatan 30 menit dengan toleransi 3
+                            menit.</p>
+
+                        <p class="mb-2 text-sm">Contoh:</p>
+                        <p class="text-sm">Jika masuk lembur pada jam 18:04 atau lebih, maka lembur akan dihitung mulai
+                            jam
+                            18:30. Jika masuk lembur sebelum jam 18:03, maka lembur akan dihitung mulai jam 18:00.</p>
+
+                        <h5 class="text-sm text-blue-500 mt-4">* Silakan informasikan kebagian terkait jika anda masuk
+                            diluar dari jam yang disebutkan di atas</h5>
+                    </div>
                 </div>
+                <div class="mt-20"></div>
+
             </div>
-            <div class="mt-20"></div>
+
+            {{-- Footer --}}
             <div class="footer w-screen flex justify-between h-16 items-center bg-gray-800 fixed bottom-0">
                 <a wire:navigate href="userregulation"><button
                         class="{{ 'userregulation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
@@ -92,4 +144,3 @@
             </div>
         </div>
     </div>
-</div>
