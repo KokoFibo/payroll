@@ -131,7 +131,7 @@
                                 <th wire:click="sortColumnName('potongan1x')">Potongan1x <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan1x')">Lupa Absen <i
+                                <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
