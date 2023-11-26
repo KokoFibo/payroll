@@ -131,31 +131,29 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $d)
-                                <tr class="{{ ada_tambahan($d->id_karyawan) ? 'table-success' : '' }}">
+                                <tr>
                                     <td>{{ $d->id_karyawan }}</td>
                                     <td>{{ $d->nama }}</td>
                                     <td>{{ $d->id }}</td>
                                     <td>
                                         @if (ada_tambahan($d->id_karyawan))
-                                            <div class="btn-group" role="group"
-                                                aria-label="Basic mixed styles example">
-                                                <button wire:click="update({{ $d->id_karyawan }})" type="button"
-                                                    class="btn btn-warning">Edit</button>
-                                                <button wire:confirm="Yakin mau di delete?"
-                                                    wire:click="delete({{ $d->id_karyawan }})" type="button"
-                                                    class="btn btn-danger">Delete</button>
+                                            <div class="text-center">
+                                                <div class="btn-group" role="group"
+                                                    aria-label="Basic mixed styles example">
+                                                    <button wire:click="update({{ $d->id_karyawan }})" type="button"
+                                                        class="btn btn-warning">Edit</button>
+                                                    <button wire:confirm="Yakin mau di delete?"
+                                                        wire:click="delete({{ $d->id_karyawan }})" type="button"
+                                                        class="btn btn-danger">Delete</button>
+                                                </div>
                                             </div>
                                         @else
-                                            <div class="btn-group" role="group"
-                                                aria-label="Basic mixed styles example">
+                                            <div class="text-center">
                                                 <button wire:click="add({{ $d->id_karyawan }})" type="button"
                                                     class="btn btn-success">Add</button>
-
                                             </div>
                                         @endif
-
                                     </td>
-
                                 </tr>
                             @endforeach
                         </tbody>

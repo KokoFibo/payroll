@@ -25,7 +25,7 @@ with font-awesome or any other icon font library -->
             </li>
             <li class="nav-item {{ 'tambahan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/tambahan" class="nav-link">
-                    <i class="nav-icon fa-solid fa-people-group"></i>
+                    <i class="nav-icon fa-solid fa-money-bill-transfer"></i>
                     <p>
                         Bonus & Potongan
                     </p>
@@ -40,7 +40,7 @@ with font-awesome or any other icon font library -->
             @if (Auth::user()->role > 2)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
-                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
                             Build Presensi Detail
                         </p>
@@ -62,7 +62,7 @@ with font-awesome or any other icon font library -->
             @if (Auth::user()->role > 4)
                 <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/UserLog" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                        <i class="nav-icon fa-solid fa-users-between-lines"></i>
                         <p>User Log</p>
                     </a>
                 </li>
