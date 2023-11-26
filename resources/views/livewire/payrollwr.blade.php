@@ -126,9 +126,13 @@
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus')">Bonus <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('bonus1x')">Bonus1x <i class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan')">Potongan <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('potongan1x')">Potongan1x <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('potongan1x')">Lupa Absen <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
                                 </th>
@@ -168,10 +172,13 @@
                                             {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                         </td>
                                         <td class="text-end">
-                                            {{ $p->bonus ? number_format($p->bonus) : '' }}
+                                            {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
                                         </td>
                                         <td class="text-end">
-                                            {{ $p->potongan ? number_format($p->potongan) : '' }}
+                                            {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
+                                        </td>
+                                        <td class="text-end">
+                                            {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
                                         </td>
                                         <td class="text-end">
                                             {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}

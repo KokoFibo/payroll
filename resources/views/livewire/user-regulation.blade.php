@@ -30,13 +30,14 @@
                 </div>
                 {{-- <div class="py-2"> --}}
                 <div class="flex justify-center">
-                    <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-3">Jam Kerja & Keterlambatan
+                    <h2 class="bg-gray-600 text-center text-white text-xl rounded-xl px-5 mt-3">Jam Kerja &
+                        Keterlambatan
                     </h2>
                 </div>
                 {{-- </div> --}}
 
             </div>
-            <div class="main  flex-1  overflow-y-auto ">
+            <div class="main  flex-1  overflow-y-auto text-gray-500 ">
                 {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
                 <div class="w-screen flex px-3 mt-5  flex flex-col gap-5 ">
 

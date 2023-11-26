@@ -367,8 +367,8 @@ class Prindexwr extends Component
                 $denda_noscan = 0;
             }
 
-            $payroll->bonus = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
-            $payroll->potongan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
+            $payroll->bonus1x = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
+            $payroll->potongan1x = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
             if ($payroll->metode_penggajian == 'Perjam') {
@@ -422,10 +422,19 @@ class Prindexwr extends Component
                 $payroll->jkm = 0;
             }
 
+            if($data->total_noscan == null) {
+                $payroll->denda_lupa_absen = 0;
+            } else {
+                if($data->total_noscan <=3 ) {
+                    $payroll->denda_lupa_absen = 0;
+                } else {
 
+                    $payroll->denda_lupa_absen = ($data->total_noscan - 3) *  ($payroll->gaji_pokok/198);
+                }
+            }
 
             $payroll->date = $data->date;
-            $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan ;
+            $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan1x - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen ;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
@@ -449,8 +458,8 @@ class Prindexwr extends Component
             if($id_payroll != null) {
 
                 $payroll = Payroll::find($id_payroll->id);
-                $payroll->bonus = $payroll->bonus + $all_bonus;
-                $payroll->potongan = $payroll->potongan + $all_potongan;
+                $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
+                $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
                 $payroll->total = $payroll->total + $all_bonus - $all_potongan;
                 $payroll->save();
             }
@@ -460,7 +469,7 @@ class Prindexwr extends Component
 
 
 
-        // $bonus = $bonus + $all_bonus;
+        // $bonus1x = $bonus1x + $all_bonus;
         // $potongaan = $potongaan + $all_potongan;
 
 
