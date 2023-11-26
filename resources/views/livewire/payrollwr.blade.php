@@ -126,10 +126,9 @@
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">Bonus1x <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('bonus1x')">Bonus <i class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan1x')">Potongan1x <i
-                                        class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('potongan1x')">Potongan <i class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
                                         class="fa-solid fa-sort"></i>
