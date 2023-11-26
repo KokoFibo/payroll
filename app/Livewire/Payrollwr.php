@@ -497,7 +497,7 @@ class Payrollwr extends Component
         //         $this->rebuild();
         //     }
         // }
-
+        
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->status == 2) {
