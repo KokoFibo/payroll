@@ -32,8 +32,9 @@ return new class extends Migration
             $table->integer('gaji_lembur')->nullable();
             $table->integer('gaji_bpjs')->nullable();
             $table->double('subtotal',12,1);
-            $table->double('bonus',12,1)->nullable();
-            $table->double('potongan',12,1)->nullable();
+            $table->double('bonus1x',12,1)->nullable();
+            $table->double('potongan1x',12,1)->nullable();
+            $table->double('denda_lupa_absen',12,1)->nullable();
             $table->double('pajak',8,1)->nullable();
             $table->double('jht',8,1)->nullable();
             $table->double('jp',8,1)->nullable();

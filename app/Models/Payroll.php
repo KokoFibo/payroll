@@ -18,6 +18,13 @@ class Payroll extends Model
     public function yfrekappresensi () {
         return $this->belongsTo(Yfrekappresensi::class);
     }
+    public function jamkerjaid () {
+        return $this->belongsTo(Jamkerjaid::class);
+    }
+
+   
+
+
 
 
 }

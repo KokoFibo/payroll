@@ -30,7 +30,7 @@
                 </div>
                 {{-- <div class="py-2"> --}}
                 <div class="flex justify-center">
-                    <h2 class="bg-black text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                    <h2 class="bg-gray-600 text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
                     </h2>
                 </div>
                 {{-- </div> --}}
