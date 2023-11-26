@@ -126,7 +126,8 @@
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">Bonus <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('bonus1x')">Bonus/U.Makan <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('potongan1x')">Potongan <i class="fa-solid fa-sort"></i>
                                 </th>
