@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
@@ -12,8 +13,10 @@ class UserLog extends Component
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $data = Activity::orderBy('created_at', 'desc')->paginate(10);
-        $log_activities = Activity::select('description')->distinct('description')->count();
-        return view('livewire.user-log', compact(['data', 'log_activities']));
+        $data = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->paginate(10);
+        $total_logs = Activity::select('description')->distinct('description')->count();
+        $today_logs = Activity::whereDate('created_at', Carbon::today())->select('description')->distinct('description')->count();
+        $yesterday_log = Activity::whereDate('created_at', Carbon::yesterday())->select('description')->distinct('description')->count();
+        return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log']));
     }
 }

@@ -3,7 +3,9 @@
         <div class="card">
             <div class="card-header bg-success">
                 <h3>Yifang Payroll Activity Logs </h3>
-                <h5>Today's Login : {{ $log_activities }} </h5>
+                <h5>Today's Login : {{ $today_logs }} </h5>
+                <h5>Yesterday's Login : {{ $yesterday_log }} </h5>
+                <h5>Total Login : {{ $total_logs }} </h5>
             </div>
             <div class="card-body">
                 <table class="table">
