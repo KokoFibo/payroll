@@ -463,7 +463,7 @@ class Payrollwr extends Component
 
 
 
-        public function getPayrollQuery($statuses, $search = null, $placement = null)
+        public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
         {
             return Payroll::query()
                 ->whereIn('status_karyawan', $statuses)
@@ -477,6 +477,11 @@ class Payrollwr extends Component
                 ->when($placement, function ($query) use ($placement) {
                     $query->where('placement', $placement);
                 })
+                ->when($company, function ($query) use ($company) {
+                    $query->where('company', $company);
+                })
+
+                
                 ->orderBy($this->columnName, $this->direction);
         }
 
@@ -503,64 +508,82 @@ class Payrollwr extends Component
 
         switch ($this->selected_company) {
             case 0:
-                $total = Payroll::sum('total');
+                $total = Payroll::whereIn('status_karyawan', $statuses)->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search)->paginate($this->perpage);
                 break;
+
             case 1:
-                $total = Payroll::where('placement', 'YCME')->sum('total');
+                $total = Payroll::whereIn('status_karyawan', $statuses)->where('placement', 'YCME')->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')->paginate($this->perpage);
                 break;
-            case 6:
-                $total = Payroll::where('company', 'YCME')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                ->where('company','YCME')
-                ->paginate($this->perpage);
-                break;
+
             case 2:
-                $total = Payroll::where('placement', 'YEV')->sum('total');
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('placement', 'YEV')->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')->paginate($this->perpage);
                 break;
-            case 7:
-                $total = Payroll::where('company', 'YEV')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                ->where('company','YEV')
-                ->paginate($this->perpage);
-                break;
+
             case 3:
-                $total = Payroll::whereIn('placement', ['YIG', 'YSM'])->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, ['YIG'])
-                ->orWhere('placement', 'YSM')
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->whereIn('placement', ['YIG', 'YSM'])->sum('total');
+
+                $payroll = Payroll::query()
+                ->whereIn('status_karyawan', $statuses)
+                ->when($this->search, function ($query)  {
+                    $query->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                })
+                ->whereIn('placement', ['YIG', 'YSM'])
+                ->orderBy($this->columnName, $this->direction)
                 ->paginate($this->perpage);
                 break;
 
-            case 8:
-                $total = Payroll::where('company', 'YIG')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YIG')
-                ->where('company','YIG')
-                ->paginate($this->perpage);
-                break;
             case 4:
-                $total = Payroll::where('company', 'ASB')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'ASB')
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'ASB')->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'' ,'ASB')
                 ->where('company','ASB')
                 ->paginate($this->perpage);
                 break;
+
             case 5:
-                $total = Payroll::where('company', 'DPA')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'DPA')
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'DPA')->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'', 'DPA')
                 ->where('company','DPA')
                 ->paginate($this->perpage);
                 break;
+
+            case 6:
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'YCME')->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'', 'YCME')
+                ->where('company','YCME')
+                ->paginate($this->perpage);
+                break;
+           
+            case 7:
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'YEV')->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'', 'YEV')
+                ->where('company','YEV')
+                ->paginate($this->perpage);
+                break;
+            
+
+            case 8:
+                
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'YIG')->sum('total');
+
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'', 'YIG')
+                ->where('company','YIG')
+                ->paginate($this->perpage);
+                break;
+            
             case 9:
-                $total = Payroll::where('company', 'YSM')->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YSM')
+                $total = Payroll::whereIn('status_karyawan',  $statuses)->where('company', 'YSM')->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search,'', 'YSM')
                 ->where('company','YSM')
                 ->paginate($this->perpage);
                 break;
-            // default:
-                // Handle default case
-                // $total = Payroll::sum('total');
-                // $payroll = $this->getPayrollQuery($statuses, $this->search)->paginate($this->perpage);
+           
         }
 
         /**
