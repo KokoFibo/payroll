@@ -103,6 +103,8 @@
                             <tr>
                                 <th wire:click="sortColumnName('id_karyawan')">ID <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('status_karyawan')">Status <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('company')">Company <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
@@ -134,7 +136,8 @@
                                 <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
                                 </th>
@@ -157,6 +160,7 @@
                                     <tr>
                                         <td>{{ $p->id_karyawan }}</td>
                                         <td>{{ $p->nama }}</td>
+                                        <td>{{ $p->status_karyawan }}</td>
                                         <td>{{ $p->jabatan }}</td>
                                         <td>{{ $p->company }}</td>
                                         <td>{{ $p->placement }}</td>
