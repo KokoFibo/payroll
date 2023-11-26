@@ -33,8 +33,8 @@ class UserMobile extends Component
 
     public function render()
     {
-        // $user_id = 1019;
-        $user_id = auth()->user()->username;
+        $user_id = 1019;
+        // $user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
