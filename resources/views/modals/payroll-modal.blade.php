@@ -71,7 +71,7 @@
                                         <td>
                                             Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                     </tr>
-                                    @if ($data_payroll->tambahan_shift_malam != null)
+                                    @if ($data_payroll->tambahan_shift_malam != 0)
                                         <tr>
                                             <td>Bonus Shift Malam
                                             </td>
@@ -85,7 +85,7 @@
                                         <td>
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                     </tr>
-                                    @if ($data_karyawan->iuran_air != null)
+                                    @if ($data_karyawan->iuran_air != 0)
                                         <tr>
                                             <td>Iuran air minum
                                             </td>
@@ -93,7 +93,7 @@
                                                 Rp. {{ number_format($data_karyawan->iuran_air) }}</td>
                                         </tr>
                                     @endif
-                                    @if ($data_karyawan->iuran_locker != null)
+                                    @if ($data_karyawan->iuran_locker != 0)
                                         <tr>
                                             <td>Iuran Locker</td>
                                             <td>
@@ -101,7 +101,7 @@
                                         </tr>
                                     @endif
 
-                                    @if ($data_payroll->bonus1x != null)
+                                    @if ($data_payroll->bonus1x != 0)
                                         <tr>
                                             <td>Bonus
                                             </td>
@@ -110,7 +110,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != null)
+                                    @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
                                         <tr>
                                             <td>Potongan</td>
                                             <td>
@@ -127,7 +127,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->jht != null)
+                                    @if ($data_payroll->jht != 0)
                                         <tr>
                                             <td>BPJS JHT</td>
                                             <td>
@@ -135,7 +135,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->jp != null)
+                                    @if ($data_payroll->jp != 0)
                                         <tr>
                                             <td>BPJS JP</td>
                                             <td>
@@ -144,7 +144,7 @@
                                         </tr>
                                     @endif
 
-                                    @if ($data_payroll->kesehatan != null)
+                                    @if ($data_payroll->kesehatan != 0)
                                         <tr>
                                             <td>BPJS Kesehatan
                                             </td>
