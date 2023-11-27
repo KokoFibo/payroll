@@ -5,7 +5,11 @@
             <h2 class="text-center text-bold">Yifang Payroll</h2>
 
             <div class="d-flex align-items-center justify-content-between px-4">
-                <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
+
+                <div class="px-3 py-2 mb-2 bg-success text-white rounded">
+                    <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
+                </div>
+
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
