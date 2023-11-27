@@ -11,7 +11,7 @@
                 <div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Slip Gaji </h3>
+                            <h4>Slip Gaji {{ monthName($month) }} {{ $year }} </h4>
 
                         </div>
                         <div class="card-body">
@@ -28,6 +28,11 @@
                                         <td>Nama</td>
                                         <td>
                                             {{ $data_payroll->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company / Placement</td>
+                                        <td>
+                                            {{ $data_karyawan->company }} / {{ $data_karyawan->placement }}</td>
                                     </tr>
                                     @if ($data_karyawan->no_npwp != null)
                                         <tr>
