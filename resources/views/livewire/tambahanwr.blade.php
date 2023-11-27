@@ -169,7 +169,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ $data->onEachSide(0)->links() }}
                         </div>
                     </div>
                 </div>

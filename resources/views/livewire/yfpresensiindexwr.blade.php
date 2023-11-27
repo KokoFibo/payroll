@@ -331,7 +331,7 @@
                             @endif
                         </tbody>
                     </table>
-                    {{ $datas->links() }}
+                    {{ $datas->onEachSide(0)->links() }}
                 </div>
 
             </div>

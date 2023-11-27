@@ -231,7 +231,7 @@
                             @endif
                         </tbody>
                     </table>
-                    {{ $payroll->links() }}
+                    {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
             <p class="px-3 text-success">Last Build: {{ $last_build }} </p>

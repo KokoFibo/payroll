@@ -9,18 +9,28 @@
                                 style="opacity: .8; width:150px">
                         </div>
                         <div class="flex flex-col p-3 gap-5 items-end">
-                            <div>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                            @if (auth()->user()->role < 4)
+                                <div>
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
 
-                                    <button
-                                        class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
+                                        <button
+                                            class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            @else
+                                <div>
+                                    <a href="/dashboard"><button
+                                            class="rounded-xl shadow bg-green-500 text-sm text-white px-3 py-1">Dasboard</button>
+                                    </a>
+
+                                </div>
+                            @endif
+
                             <div>
                                 <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
                             </div>

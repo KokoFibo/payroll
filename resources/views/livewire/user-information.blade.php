@@ -9,18 +9,28 @@
                                 style="opacity: .8; width:150px">
                         </div>
                         <div class="flex flex-col p-3 gap-5 items-end">
-                            <div>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                            @if (auth()->user()->role < 4)
+                                <div>
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
 
-                                    <button
-                                        class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
+                                        <button
+                                            class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            @else
+                                <div>
+                                    <a href="/dashboard"><button
+                                            class="rounded-xl shadow bg-green-500 text-sm text-white px-3 py-1">Dasboard</button>
+                                    </a>
+
+                                </div>
+                            @endif
+
                             <div>
                                 <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
                             </div>
@@ -30,7 +40,7 @@
                 </div>
                 {{-- <div class="py-2"> --}}
                 <div class="flex justify-center">
-                    <h2 class="bg-gray-600 text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                    <h2 class="bg-gray-500 text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
                     </h2>
                 </div>
                 {{-- </div> --}}

@@ -1,6 +1,6 @@
 <div>
     @if ($paginator->hasPages())
-        <nav class="d-flex flex-xl-row flex-column gap-2 gap-xl-0 justify-content-between align-items-center">
+        <nav class="d-flex d-row justify-content-between align-items-center">
             <div>
                 Total records found : {{ $paginator->total() }} data
             </div>

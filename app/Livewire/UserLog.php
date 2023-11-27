@@ -13,7 +13,7 @@ class UserLog extends Component
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $data = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->simplePaginate(10);
+        $data = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->paginate(10);
         $total_logs = Activity::select('description')->distinct('description')->count();
         $today_logs = Activity::whereDate('created_at', Carbon::today())->select('description')->distinct('description')->count();
         $yesterday_log = Activity::whereDate('created_at', Carbon::yesterday())->select('description')->distinct('description')->count();
