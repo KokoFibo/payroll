@@ -1,6 +1,6 @@
 <div>
     @section('title', 'Bonus dan Potongan')
-    <div class="col-8  mx-auto pt-3">
+    <div class="col-12 col-xl-8 mx-auto pt-3">
         <div class="card ">
             <div class="card-header bg-secondary">
                 <label class="col-sm-2  col-form-label">Bonus dan Potongan</label>
@@ -102,66 +102,78 @@
                         </div>
                     </div>
 
-                </div>
-                <div class="col-3 mb-3 ml-3 ">
-                    <button wire:click="save" class="btn btn-success mr-5">Save</button>
-                    <button wire:click="cancel" class="btn btn-dark">Cancel</button>
+                    <div class="d-flex gap-5">
+                        <button wire:click="save" class="btn btn-success">Save</button>
+                        <button wire:click="cancel" class="btn btn-dark">Cancel</button>
+                    </div>
                 </div>
             @endif
 
         </div>
+    </div>
+    <div class="col-12 col-xl-8 mx-auto pt-3">
+
         @if ($modal == false)
+            <style>
+                td,
+                th {
+                    white-space: nowrap;
+                }
+            </style>
+
+
             <div class="card">
                 <div class="card-header">
-                    <div class="input-group col-4">
+                    <div class="input-group col-12 col-xl-4">
                         <button class="btn btn-primary" type="button"><i
                                 class="fa-solid fa-magnifying-glass"></i></button>
                         <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
                     </div>
                 </div>
-
-                <div class="card-body">
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama Karyawan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $d)
-                                <tr>
-                                    <td>{{ $d->id_karyawan }}</td>
-                                    <td>{{ $d->nama }}</td>
-                                    <td>{{ $d->id }}</td>
-                                    <td>
-                                        @if (ada_tambahan($d->id_karyawan))
-                                            <div class="text-center">
-                                                <div class="btn-group" role="group"
-                                                    aria-label="Basic mixed styles example">
-                                                    <button wire:click="update({{ $d->id_karyawan }})" type="button"
-                                                        class="btn btn-warning">Edit</button>
-                                                    <button wire:confirm="Yakin mau di delete?"
-                                                        wire:click="delete({{ $d->id_karyawan }})" type="button"
-                                                        class="btn btn-danger">Delete</button>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="text-center">
-                                                <button wire:click="add({{ $d->id_karyawan }})" type="button"
-                                                    class="btn btn-success">Add</button>
-                                            </div>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{ $data->links() }}
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table  table-sm  table-hover mb-2">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama Karyawan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $d)
+                                        <tr>
+                                            <td>{{ $d->id_karyawan }}</td>
+                                            <td>{{ $d->nama }}</td>
+                                            <td>{{ $d->id }}</td>
+                                            <td>
+                                                @if (ada_tambahan($d->id_karyawan))
+                                                    <div class="text-center">
+                                                        <div class="btn-group" role="group"
+                                                            aria-label="Basic mixed styles example">
+                                                            <button wire:click="update({{ $d->id_karyawan }})"
+                                                                type="button" class="btn btn-warning">Edit</button>
+                                                            <button wire:confirm="Yakin mau di delete?"
+                                                                wire:click="delete({{ $d->id_karyawan }})"
+                                                                type="button" class="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="text-center">
+                                                        <button wire:click="add({{ $d->id_karyawan }})" type="button"
+                                                            class="btn btn-success">Add</button>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{ $data->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         @endif
     </div>
-
 </div>

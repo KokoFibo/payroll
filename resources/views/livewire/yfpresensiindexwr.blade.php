@@ -2,8 +2,8 @@
     @section('title', 'Presensi')
 
 
-    <div class="d-flex col-10  justify-content-between gap-5 px-4 pt-4">
-        <div class="col-3 bg-success p-2" style=" border-radius: 10px;">
+    <div class="d-flex  flex-column flex-xl-row col-12 col-xl-11   justify-content-xl-between gap-2 gap-xl-5 px-4 pt-4">
+        <div class="col-12 col-xl-3 bg-success p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
                 <div class="col-4 text-center">Hadir</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="col-3 bg-warning p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-warning p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">No scan</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -28,7 +28,7 @@
                 <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
-        <div class="col-3 bg-info p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-info p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Late</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -40,7 +40,7 @@
                 <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
-        <div class="col-3 bg-primary p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-primary p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Overtime</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -53,49 +53,52 @@
             </div>
         </div>
     </div>
-    <div class="col-12 p-4 d-flex align-items-center">
-        <div class="col-3">
-            <div class="input-group">
-                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
-            </div>
-        </div>
-        <div class="col-2">
-            <div>
+    <div class="col-11 p-4 d-flex flex-column flex-xl-row align-items-center gap-2">
+        <div class="col-6 d-flex">
+            <div class="col-8">
                 <div class="input-group">
-                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
-                    <input type="date" wire:model.live="tanggal" class="form-control">
+                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    <div class="input-group">
+                        <button class="btn btn-primary" type="button"><i
+                                class="fa-solid fa-calendar-days"></i></button>
+                        <input type="date" wire:model.live="tanggal" class="form-control">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-7  d-flex gap-3">
+        <div class="col-2  d-flex gap-3">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
-            {{-- </div> --}}
-            <div class="col-3 d-flex align-items-center gap-3"
-                style="border-radius: 10px; padding: 3px 10px 3px 10px; background-color: #9246FF; color: white">
-                <select class="form-select" wire:model.live="perpage">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                </select>
-                Perpage
-            </div>
-            <div class="col-3 d-flex align-items-center gap-3"
-                style="border-radius: 10px; padding: 3px 10px 3px 10px;
+        </div>
+
+        <div class="col-2 d-flex align-items-center gap-3"
+            style="border-radius: 10px; padding: 3px 10px 3px 10px; background-color: #9246FF; color: white">
+            <select class="form-select" wire:model.live="perpage">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+            </select>
+            Perpage
+        </div>
+        <div class="col-2 d-flex align-items-center gap-3"
+            style="border-radius: 10px; padding: 3px 10px 3px 10px;
                 background-color: skyblue; color: white">
-                <select class="form-select" wire:model.live="location">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="All">All</option>
-                    <option value="Kantor">Kantor</option>
-                    <option value="Pabrik 1">Pabrik 1</option>
-                    <option value="Pabrik 2">Pabrik 2</option>
-                </select>
-            </div>
+            <select class="form-select" wire:model.live="location">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="All">All</option>
+                <option value="Kantor">Kantor</option>
+                <option value="Pabrik 1">Pabrik 1</option>
+                <option value="Pabrik 2">Pabrik 2</option>
+            </select>
         </div>
     </div>
 
@@ -339,71 +342,9 @@
         }
     </style> --}}
 
-
+    @include('modals.presensi')
     {{-- Modal ook --}}
-    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Data Presensi Karyawan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>November 2023</h4>
-                    <p>User ID : {{ $user_id }}</p>
-                    <p>Nama : {{ $name }}</p>
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Jam Kerja</th>
-                                <th>Jam Lembur</th>
-                                <th>Terlambat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @foreach ($this->dataArr as $d)
-                                <tr>
-                                    <td class="text-center">{{ $d['tgl'] }}</td>
-                                    <td class="text-center">{{ $d['jam_kerja'] }}</td>
-                                    <td class="text-center">{{ $d['jam_lembur'] }}</td>
-                                    <td class="text-center">{{ $d['terlambat'] }}</td>
-                                </tr>
-                            @endforeach
-                            {{-- @foreach ($dataArr as $d)
-                                <tr>
-                                    <td class="text-center">{{ $d->tgl }}</td>
-                                    <td class="text-center">{{ $d->jam_kerja }}</td>
-                                    <td class="text-center">{{ $d->jam_lembur }}</td>
-                                    <td class="text-center">{{ $d->terlambat }}</td>
-                                </tr>
-                            @endforeach --}}
-
-
-                            <tr>
-                                <th class="text-center">{{ $total_hari_kerja }}</th>
-                                <th class="text-center">{{ $total_jam_kerja }}</th>
-                                <th class="text-center">{{ $total_jam_lembur }}</th>
-                                <th class="text-center">{{ $total_keterlambatan }}</th>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-
-
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
     {{-- End  --}}
     {{-- <script>
         window.addEventListener("swal:confirm_delete_presensi", (event) => {

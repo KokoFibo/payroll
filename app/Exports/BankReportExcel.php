@@ -59,11 +59,14 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
         ];
     }
 
+    
+
     public function styles (Worksheet $sheet) {
         return [
             '1' => ['font' => ['bold' => true]],
             '2' => ['font' => ['bold' => true]],
             '1' => ['font' => ['size' => 24]],
+            'C' => ['text' => ['align' => 'center']],
         ];
         // atau bisa juga
         // $sheet->getStyle('1')->getFont()->setBold(true);
