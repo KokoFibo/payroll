@@ -103,17 +103,16 @@
 
                                     @if ($data_payroll->bonus1x != null)
                                         <tr>
-                                            <td>Bonus1x payroll
+                                            <td>Bonus
                                             </td>
                                             <td>
                                                 Rp. {{ number_format($data_payroll->bonus1x) }}
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
+                                    @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != null)
                                         <tr>
-                                            <td>Potongan1x
-                                                payroll</td>
+                                            <td>Potongan</td>
                                             <td>
                                                 Rp. {{ number_format($data_payroll->potongan1x) }}
                                             </td>
