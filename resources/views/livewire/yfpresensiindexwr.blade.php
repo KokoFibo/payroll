@@ -2,7 +2,8 @@
     @section('title', 'Presensi')
 
 
-    <div class="d-flex  flex-column flex-xl-row col-12 col-xl-11   justify-content-xl-between gap-2 gap-xl-5 px-4 pt-4">
+    <div
+        class="d-flex  flex-column flex-xl-row col-12 col-xl-11   justify-content-xl-between gap-2 gap-xl-5 px-xl-4 pt-4">
         <div class="col-12 col-xl-3 bg-success p-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
                 <div class="col-4 text-center">Hadir</div>
@@ -53,15 +54,16 @@
             </div>
         </div>
     </div>
-    <div class="col-11 p-4 d-flex flex-column flex-xl-row align-items-center gap-2">
-        <div class="col-6 d-flex">
-            <div class="col-8">
+
+    <div class="col-xl-11 col-12  p-xl-4 d-flex flex-column flex-xl-row align-items-center gap-2 mt-xl-0 mt-2 ">
+        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row gap-2 ">
+            <div class="col-xl-8 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-xl-4 col-12">
                 <div>
                     <div class="input-group">
                         <button class="btn btn-primary" type="button"><i
@@ -71,27 +73,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-2  d-flex gap-3">
+        <div class="col-xl-2 col-12 justify-content-evenly  d-flex   ">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
         </div>
 
-        <div class="col-2 d-flex align-items-center gap-3"
-            style="border-radius: 10px; padding: 3px 10px 3px 10px; background-color: #9246FF; color: white">
+        <div class="col-xl-2 col-12 d-flex align-items-center">
             <select class="form-select" wire:model.live="perpage">
                 {{-- <option selected>Open this select menu</option> --}}
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
+                <option value="10">10 rows perpage</option>
+                <option value="15">15 rows perpage</option>
+                <option value="20">20 rows perpage</option>
+                <option value="25">25 rows perpage</option>
             </select>
-            Perpage
+
         </div>
-        <div class="col-2 d-flex align-items-center gap-3"
-            style="border-radius: 10px; padding: 3px 10px 3px 10px;
-                background-color: skyblue; color: white">
+        <div class="col-xl-2 col-12 d-flex align-items-center">
             <select class="form-select" wire:model.live="location">
                 {{-- <option selected>Open this select menu</option> --}}
                 <option value="All">All</option>
@@ -102,14 +101,16 @@
         </div>
     </div>
 
-    <div class="px-4">
+    <div class="p-3 px-xl-4">
         <div class="card">
             <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
-                <h4>
-                    Data Presensi {{ format_tgl_hari($tanggal) }}
+                <div class="d-flex flex-column flex-xl-row justify-content-xl-between align-items-center">
+                    <h3 class="fw-semibold fs-5 fwfs-3-xl">
+                        Data Presensi {{ format_tgl_hari($tanggal) }}
+                    </h3>
                     <a href="/yfupload">
                         <button class="btn btn-primary float-end">Upload Presensi</button></a>
-                </h4>
+                </div>
             </div>
             <style>
                 td,
@@ -330,9 +331,9 @@
                             @endif
                         </tbody>
                     </table>
+                    {{ $datas->links() }}
                 </div>
 
-                {{ $datas->links() }}
             </div>
         </div>
     </div>

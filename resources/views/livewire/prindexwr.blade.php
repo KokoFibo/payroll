@@ -5,53 +5,51 @@
             white-space: nowrap;
         }
     </style>
-    @section('title', 'Build Detail')
-
-    <div class="d-flex justify-content-between">
-        <div class="col-6 p-4 d-flex gap-3 ">
-            <div class="col-6">
+    @section('title', 'Presensi Detail')
+    <h4 class="text-center text-bold pt-2">Presensi Detail</h4>
+    <div class="col-12 d-flex flex-xl-row flex-column justify-content-xl-between">
+        <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-3 gap-2">
+            <div class="col-xl-6 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
                 </div>
             </div>
-            <div class="col-3 d-flex gap-3 align-items-center">
+            <div class="col-xl-2 col-12 ">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
+                    <option value="10">10 rows perpage</option>
+                    <option value="15">15 rows perpage</option>
+                    <option value="20">20 rows perpage</option>
+                    <option value="25">25 rows perpage</option>
                 </select>
-                Perpage
             </div>
-            <div class="col-2 d-flex align-items-center gap-3">
+            <div class="col-xl-2 col-12  ">
                 <select class="form-select" wire:model.live="year">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="{{ $year }}">{{ $year }}</option>
                 </select>
             </div>
-            <div class="col-2 d-flex align-items-center gap-3">
+            <div class="col-xl-2 col-12">
                 <select class="form-select" wire:model.live="month">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="{{ $month }}">{{ monthName($month) }}</option>
                 </select>
             </div>
         </div>
-        <div class="col-5 p-4 d-flex justify-content-end gap-3  align-items-center">
 
-            <div wire:loading>
+        <div class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column ">
+
+            <div class=" col-12" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
                 </button>
             </div>
-
-
-            <div>
+            <div class=" col-12">
                 {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
-                <button wire:click.prevent="getPayroll()" class="btn btn-primary" wire:loading.remove>Build
-                    Jam
+                <button wire:click.prevent="getPayroll()" class="btn btn-primary col-12 col-xl-8"
+                    wire:loading.remove>Build Jam
                     Kerja</button>
             </div>
 
@@ -63,19 +61,11 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h3>Detail Jam kerja karyawan per {{ monthYear($periode) }}, Data Terakhir Tanggal
+                    <h3 class="fw-semibold fs-5 fwfs-3-xl">Detail Jam kerja karyawan per {{ monthYear($periode) }}, Data
+                        Terakhir Tanggal
                         {{ format_tgl($lastData) }}
                     </h3>
-                    {{-- <div>
 
-                        <select wire:change="periode" class="form-select" wire:model.live="periode">
-                            @foreach ($periodePayroll as $p)
-                                < <option value="{{ $p->year }}-{{ addZeroToMonth($p->month) }}-01">
-                                    {{ $p->month_name }}
-                                    {{ $p->year }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
                 </div>
             </div>
             <style>
@@ -144,8 +134,8 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $filteredData->links() }}
                 </div>
-                {{ $filteredData->links() }}
             </div>
         </div>
     </div>

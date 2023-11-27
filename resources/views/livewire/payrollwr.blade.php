@@ -2,13 +2,12 @@
     @section('title', 'Payroll')
     <div class="pt-2">
         <div class="">
-            <h2 class="text-center text-bold">Yifang Payroll</h2>
+            <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
 
-            <div class="d-flex align-items-center justify-content-between px-4">
+            <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
 
-                <div class="px-3 py-2 mb-2 bg-success text-white rounded">
-                    <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
-                </div>
+
+                <button class="btn btn-info mb-2">Total Gaji : Rp. {{ number_format($total) }}</button>
 
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
@@ -17,23 +16,24 @@
                     </button>
                 </div>
                 <div>
-                    <a href="/reportindex"><button class="btn btn-success text-end mb-3 mr-2">Report</button></a>
-                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-3">Rebuild</button>
-                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-3">Rebuild</button> --}}
+                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2">Report</button></a>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
+                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex gap-3 col-8">
-                        <div class="input-group col-3">
+                {{-- <div class="d-flex justify-content-between align-items-center"> --}}
+                <div class="d-flex flex-xl-row flex-column col-xl-12 justify-content-between align-items-center ">
+                    <div class="col-xl-4 d-flex flex-xl-row flex-column gap-2">
+                        <div class="input-group col-xl-6 col-12">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="Search ...">
                         </div>
-                        <div class="col-2">
+                        <div class="col-xl-6 col-12">
                             <select wire:model.live="selected_company" class="form-select"
                                 aria-label="Default select example">
                                 <option value="0"selected>All</option>
@@ -48,25 +48,18 @@
                                 <option value="9">YSM</option>
                             </select>
                         </div>
-                        <div class="col-2 d-flex align-items-center gap-3">
-                            Perpage
-                            <select class="form-select" wire:model.live="perpage">
-                                {{-- <option selected>Open this select menu</option> --}}
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                            </select>
+                    </div>
 
-                        </div>
-                        <div class="col-2 d-flex align-items-center gap-3">
-                            Periode:
+                    <div class="col-xl-3 d-flex gap-2 mt-2">
+
+                        <div class="col-xl-6">
+
                             <select class="form-select" wire:model.live="year">
                                 {{-- <option selected>Open this select menu</option> --}}
                                 <option value="{{ $year }}">{{ $year }}</option>
                             </select>
                         </div>
-                        <div class="col-2 d-flex align-items-center gap-3">
+                        <div class="col-xl-6">
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option> --}}
                                 <option value="{{ $month }}">{{ monthName($month) }}</option>
@@ -75,25 +68,44 @@
                     </div>
 
 
-                    <div class="text-right px-1">
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="text-bold">Status Karyawan</span>
-                            <div class="col-4-flex align-items-center gap-3">
-                                <select class="form-select" wire:model.live="status">
-                                    {{-- <option selected>Open this select menu</option> --}}
-                                    <option value="0">All</option>
-                                    <option value="1">Aktif</option>
-                                    <option value="2">Non Aktif</option>
-                                </select>
+                    <div
+                        class="col-xl-5 mt-2 gap-2 d-flex flex-xl-row flex-column align-items-center  justify-content-end">
+                        <div class="col-xl-4">
+                            <select class="form-select" wire:model.live="perpage">
+                                {{-- <option selected>Open this select menu</option> --}}
+                                <option value="10">10 rows perpage</option>
+                                <option value="15">15 rows perpage</option>
+                                <option value="20">20 rows perpage</option>
+                                <option value="25">25 rows perpage</option>
+                            </select>
+
+                        </div>
+                        <div class="col-xl-4">
+                            <select class="form-select" wire:model.live="status">
+                                <option value="0">Semua</option>
+                                <option value="1">Status Aktif</option>
+                                <option value="2">Status Non Aktif</option>
+                            </select>
+                        </div>
+                        <div
+                            class="col-xl-4 mt-xl-0 mt-2 d-flex align-items-center justify-content-between justify-content-xl-end gap-2 ">
+                            <div>
+                                <button class="btn btn-success">Excel</button>
                             </div>
-                            <button class="btn btn-success">Excel</button>
-                            <button class="btn btn-danger">PDF</button>
-                            <button class="btn btn-dark">Print</button>
+                            <div>
+                                <button class="btn btn-danger">PDF</button>
+                            </div>
+                            <div>
+                                <button class="btn btn-dark">Print</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+
+
             <style>
                 td,
                 th {
@@ -219,8 +231,8 @@
                             @endif
                         </tbody>
                     </table>
+                    {{ $payroll->links() }}
                 </div>
-                {{ $payroll->links() }}
             </div>
             <p class="px-3 text-success">Last Build: {{ $last_build }} </p>
         </div>
