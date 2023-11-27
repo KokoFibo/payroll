@@ -29,6 +29,6 @@
                 </table>
             </div>
         </div>
-        {{ $data->links() }}
+        {{ $data->onEachSide(0)->links() }}
     </div>
 </div>

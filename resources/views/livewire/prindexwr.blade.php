@@ -134,7 +134,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $filteredData->links() }}
+                    {{ $filteredData->onEachSide(0)->links() }}
                 </div>
             </div>
         </div>

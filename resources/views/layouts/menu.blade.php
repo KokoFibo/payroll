@@ -189,6 +189,12 @@ with font-awesome or any other icon font library -->
                     <p> Informasi</p>
                 </a>
             </li>
+            <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/usermobile" class="nav-link">
+                    <i class="fa-solid fa-user-check nav-icon"></i>
+                    <p>User Mobile</p>
+                </a>
+            </li>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -223,6 +229,7 @@ with font-awesome or any other icon font library -->
                             <p>Add Information</p>
                         </a>
                     </li>
+
 
                 </ul>
             </li>
