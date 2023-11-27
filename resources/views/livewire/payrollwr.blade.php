@@ -5,7 +5,11 @@
             <h2 class="text-center text-bold">Yifang Payroll</h2>
 
             <div class="d-flex align-items-center justify-content-between px-4">
-                <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
+
+                <div class="px-3 py-2 mb-2 bg-success text-white rounded">
+                    <h5>Total Gaji : Rp. {{ number_format($total) }}</h5>
+                </div>
+
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -101,6 +105,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th wire:click="sortColumnName('id_karyawan')">ID <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">Status <i
@@ -125,22 +130,23 @@
                                 <th wire:click="sortColumnName('gaji_lembur')">Gaji Lembur <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('bonus1x')">Bonus/U.Makan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan1x')">Potongan <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('potongan1x')">Potongan <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
-                                </th>
+
                                 <th wire:click="sortColumnName('pajak')">Pajak <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jht')">JHT <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jp')">JP <i class="fa-solid fa-sort"></i></th>
@@ -158,6 +164,14 @@
 
                                 @foreach ($payroll as $p)
                                     <tr>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                wire:click="showDetail({{ $p->id_karyawan }})" data-bs-toggle="modal"
+                                                data-bs-target="#payroll"><i
+                                                    class="fa-solid fa-magnifying-glass"></i></button>
+                                        </td>
+
+
                                         <td>{{ $p->id_karyawan }}</td>
                                         <td>{{ $p->nama }}</td>
                                         <td>{{ $p->status_karyawan }}</td>
@@ -173,6 +187,10 @@
                                             {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
                                         </td>
                                         <td class="text-end">
+                                            {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
+                                        </td>
+                                        <td class="text-end">{{ number_format($p->subtotal) }}</td>
+                                        <td class="text-end">
                                             {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                         </td>
                                         <td class="text-end">
@@ -184,10 +202,7 @@
                                         <td class="text-end">
                                             {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
                                         </td>
-                                        <td class="text-end">
-                                            {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
-                                        </td>
-                                        <td class="text-end">{{ number_format($p->subtotal) }}</td>
+
                                         <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
                                         <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
                                         <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
@@ -210,4 +225,7 @@
             <p class="px-3 text-success">Last Build: {{ $last_build }} </p>
         </div>
     </div>
+
+    @include('modals.payroll-modal')
+
 </div>
