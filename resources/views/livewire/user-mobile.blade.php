@@ -85,20 +85,16 @@
                                             {{ $data_karyawan->no_npwp }}</td>
                                     </tr>
                                 @endif
-                                @if ($data_karyawan->nama_bank != null)
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Nama Bank</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $data_karyawan->nama_bank }}</td>
-                                    </tr>
-                                @endif
-                                @if ($data_karyawan->nomor_rekening != null)
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">No. Rekening</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $data_karyawan->nomor_rekening }}</td>
-                                    </tr>
-                                @endif
+                                <tr>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Nama Bank</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $data_karyawan->nama_bank }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">No. Rekening</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $data_karyawan->nomor_rekening }}</td>
+                                </tr>
                                 <tr>
                                     <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Hari Kerja</td>
                                     <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">

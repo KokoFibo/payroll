@@ -157,7 +157,7 @@ class Prindexwr extends Component
             if (!$dataId) {
                 dd('data kosong from Prindex.php', $dataId);
             } else {
-                // ambil data per user id ok3
+                // ambil data per user id 
                 $n_noscan = 0;
                 foreach ($dataId as $dt) {
                 if($dt->no_scan != 'No Scan') {
@@ -177,7 +177,17 @@ class Prindexwr extends Component
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_langsungLembur = $total_langsungLembur + ($langsungLembur * 60 );
 
-
+                if($dt->shift == 'Malam') {
+                    if(is_saturday($dt->date)) {
+                        if($jam_kerja >= 6) {
+                            $total_tambahan_shift_malam++;
+                        }
+                    } else {
+                        if($jam_kerja >= 8) {
+                            $total_tambahan_shift_malam++;
+                        }
+                    }
+                }
 
                     if ($dt->late == null) {
                         // if($dt->no_scan_history) {
@@ -186,17 +196,17 @@ class Prindexwr extends Component
                         // $n_noscan = $dt->no_scan_history;
 
                         // khusus NO Late
-                        if($dt->shift == 'Malam') {
-                            if(is_saturday($dt->date)) {
-                                if($jam_kerja >= 6) {
-                                    $total_tambahan_shift_malam++;
-                                }
-                            } else {
-                                if($jam_kerja >= 8) {
-                                    $total_tambahan_shift_malam++;
-                                }
-                            }
-                        }
+                        // if($dt->shift == 'Malam') {
+                        //     if(is_saturday($dt->date)) {
+                        //         if($jam_kerja >= 6) {
+                        //             $total_tambahan_shift_malam++;
+                        //         }
+                        //     } else {
+                        //         if($jam_kerja >= 8) {
+                        //             $total_tambahan_shift_malam++;
+                        //         }
+                        //     }
+                        // }
 
                         $jumlah_hari_kerja = $dataId->count();
 
@@ -286,7 +296,15 @@ class Prindexwr extends Component
 
             if($total_noscan == 0) $total_noscan=null;
             // $jumlah_jam_kerja = $jam_kerja  - $total_late ;
-            $jumlah_jam_kerja = $total_jam_kerja  - $total_late ;
+
+            if($dt->karyawan->jabatan == 'Satpam') {
+                
+                $jumlah_jam_kerja = $total_jam_kerja;
+            } else {
+                $jumlah_jam_kerja = $total_jam_kerja  - $total_late ;
+
+            }
+
 
             $data = Jamkerjaid::find($data->id);
 
@@ -320,7 +338,7 @@ class Prindexwr extends Component
         $this->rebuild();
     }
 
-     // ok2
+    // ok2
     public function rebuild()
     {
         $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
@@ -371,15 +389,32 @@ class Prindexwr extends Component
             $payroll->potongan1x = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur ;
-            if ($payroll->metode_penggajian == 'Perjam') {
-                $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            
+            // if ($payroll->metode_penggajian == 'Perjam') {
+            //     $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            // } else {
+            //     if ($payroll->gaji_lembur == 0) {
+            //         $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
+            //     } else {
+            //         $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            //     }
+            // }
+
+            if ($payroll->gaji_lembur == 0) { 
+                $payroll->subtotal =  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198);
+                if($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+                    $payroll->subtotal =  $payroll->hari_kerja * ($data->karyawan->gaji_pokok / 198 * 8);
+                }
             } else {
-                if ($payroll->gaji_lembur == 0) {
-                    $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
-                } else {
-                    $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                if($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+                    $payroll->subtotal = $payroll->tambahan_shift_malam +  $payroll->hari_kerja * ($data->karyawan->gaji_pokok / 198 * 8) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
                 }
             }
+
+           
+
+
 
             if($data->karyawan->potongan_JP==1) {
                 if($data->karyawan->gaji_bpjs <= 9559600) {

@@ -52,9 +52,6 @@ class UserMobile extends Component
         $this->is_slipGaji = false;
     $this->selectedMonth = Carbon::now()->month;
     $this->selectedYear = Carbon::now()->year;
-    
-
-
 
     }
 
