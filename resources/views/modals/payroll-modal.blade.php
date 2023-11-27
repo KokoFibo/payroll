@@ -153,7 +153,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_karyawan->ptkp != null)
+                                    @if ($data_karyawan->ptkp != 0)
                                         <tr>
                                             <td>PTKP</td>
                                             <td>

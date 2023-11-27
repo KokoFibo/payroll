@@ -120,7 +120,7 @@
                                     <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                                         Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                 </tr>
-                                @if ($data_payroll->tambahan_shift_malam != null)
+                                @if ($data_payroll->tambahan_shift_malam != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Bonus Shift Malam
                                         </td>
@@ -134,7 +134,7 @@
                                     <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                                         Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                 </tr>
-                                @if ($data_karyawan->iuran_air != null)
+                                @if ($data_karyawan->iuran_air != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Iuran air minum
                                         </td>
@@ -142,7 +142,7 @@
                                             Rp. {{ number_format($data_karyawan->iuran_air) }}</td>
                                     </tr>
                                 @endif
-                                @if ($data_karyawan->iuran_locker != null)
+                                @if ($data_karyawan->iuran_locker != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Iuran Locker</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
@@ -150,9 +150,9 @@
                                     </tr>
                                 @endif
 
-                                @if ($data_payroll->bonus1x != null)
+                                @if ($data_payroll->bonus1x != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Bonus1x payroll
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Bonus
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                                             Rp. {{ number_format($data_payroll->bonus1x) }}
@@ -161,8 +161,7 @@
                                 @endif
                                 @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Potongan1x
-                                            payroll</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Potongan</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                                             Rp. {{ number_format($data_payroll->potongan1x) }}
                                         </td>
@@ -177,7 +176,7 @@
                                         </td>
                                     </tr>
                                 @endif
-                                @if ($data_payroll->jht != null)
+                                @if ($data_payroll->jht != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JHT</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
@@ -185,7 +184,7 @@
                                         </td>
                                     </tr>
                                 @endif
-                                @if ($data_payroll->jp != null)
+                                @if ($data_payroll->jp != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JP</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
@@ -193,21 +192,21 @@
                                         </td>
                                     </tr>
                                 @endif
-                                {{-- @if ($data_payroll->jkk != null)
+                                {{-- @if ($data_payroll->jkk != 0)
                                     <tr>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JKK</td>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Rp. {{ number_format($data_payroll->jkk) }}
                                         </td>
                                     </tr>
                                 @endif
-                                @if ($data_payroll->jkm != null)
+                                @if ($data_payroll->jkm != 0)
                                     <tr>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JKM</td>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Rp. {{ number_format($data_payroll->jkm) }}
                                         </td>
                                     </tr>
                                 @endif --}}
-                                @if ($data_payroll->kesehatan != null)
+                                @if ($data_payroll->kesehatan != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS Kesehatan
                                         </td>
@@ -216,7 +215,7 @@
                                         </td>
                                     </tr>
                                 @endif
-                                @if ($data_karyawan->ptkp != null)
+                                @if ($data_karyawan->ptkp != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">PTKP</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
