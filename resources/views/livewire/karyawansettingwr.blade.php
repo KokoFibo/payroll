@@ -12,7 +12,7 @@
                         <h5>Reset Password Karyawan</h5>
                     </div>
                     <div class="card-body">
-                        <div class="input-group col-6 ">
+                        <div class="input-group col-xl-6 col-12 ">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"

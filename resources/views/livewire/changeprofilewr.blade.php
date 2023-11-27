@@ -3,7 +3,7 @@
 
     <div class="container">
 
-        <div class="mx-auto col-8 pt-4">
+        <div class="mx-auto col-xl-8 col-12 pt-4">
             {{-- <h5>
                 Hello, {{ namaDiAside($name) }} selamat datang di menu User Setting.
             </h5> --}}
@@ -14,7 +14,7 @@
 
 
 
-        <div class="card mt-5 col-8 mx-auto">
+        <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
                 <h5>Rubah Email</h5>
             </div>
@@ -32,7 +32,7 @@
                 <button wire:click="changeEmail" class="btn btn-outline-success">Simpan</button>
             </div>
         </div>
-        <div class="card mt-5 col-8 mx-auto">
+        <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
                 <h5>Rubah Password</h5>
             </div>
@@ -100,7 +100,7 @@
 
 
         </div>
-        <div class="card mt-5 col-8 mx-auto">
+        <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
                 <h5>Rubah Bahasa</h5>
             </div>
