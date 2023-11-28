@@ -82,32 +82,24 @@
                                 <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja
+                                    <i class="fa-solid fa-sort"></i>
                                 <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
                                     <i class="fa-solid fa-sort"></i>
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
                                     Overtime <i class="fa-solid fa-sort"></i></th>
+
+                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam
+                                    Terlambat
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                                 <th class="text-center" wire:click="sortColumnName('tambahan_jam_shift_malam')">Tambahan
                                     Jam
                                     Overtime Shift Malam <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam
-                                    Late
-                                    <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('first_in_late')">First In Late <i
-                                        class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('first_out_late')">First Out Late <i
-                                        class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('second_in_late')">Second In Late <i
-                                        class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('second_out_late')">Second Out Late
-                                    <i class="fa-solid fa-sort"></i>
-                                </th>
-                                {{-- <th class="text-center" wire:click="sortColumnName('overtime_in_late')">Overtime In Late <i class="fa-solid fa-sort"></i></th> --}}
                                 <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja
-                                    <i class="fa-solid fa-sort"></i>
+
                                 </th>
                             </tr>
                         </thead>
@@ -118,18 +110,12 @@
                                     <td>{{ $item->user_id }}</td>
                                     <td>{{ $item->karyawan->nama }}</td>
                                     <td>{{ $item->karyawan->jabatan }}</td>
-                                    <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
-                                    <td class="text-center">{{ $item->jumlah_menit_lembur / 60 }}</td>
-                                    <td class="text-center">{{ $item->tambahan_jam_shift_malam }}</td>
-                                    {{-- <td class="text-center">{{ $item->jumlah_menit_lembur }}</td> --}}
-                                    <td class="text-center">{{ $item->jumlah_jam_terlambat }}</td>
-                                    <td class="text-center">{{ $item->first_in_late }}</td>
-                                    <td class="text-center">{{ $item->first_out_late }}</td>
-                                    <td class="text-center">{{ $item->second_in_late }}</td>
-                                    <td class="text-center">{{ $item->second_out_late }}</td>
-                                    {{-- <td class="text-center">{{ $item->overtime_in_late * 30 /60}}</td> --}}
-                                    <td class="text-center">{{ $item->total_noscan }}</td>
                                     <td class="text-center">{{ $item->total_hari_kerja }}</td>
+                                    <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
+                                    <td class="text-center">{{ number_format($item->jumlah_menit_lembur, 1) }}</td>
+                                    <td class="text-center">{{ number_format($item->jumlah_jam_terlambat, 1) }}</td>
+                                    <td class="text-center">{{ $item->tambahan_jam_shift_malam }}</td>
+                                    <td class="text-center">{{ $item->total_noscan }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

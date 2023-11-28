@@ -263,18 +263,22 @@
                                 </div>
 
                                 <div>
-                                    <p class="text-sm">Jam Kerja</p>
+                                    <p class="text-sm">J. Kerja</p>
                                     <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
                                 </div>
 
                                 <div>
-                                    <p class="text-sm">Jam Lembur</p>
+                                    <p class="text-sm">J. Lembur</p>
                                     <p class="font-bold text-green-500 text-lg">{{ $total_jam_lembur }}</p>
                                 </div>
 
                                 <div>
                                     <p class="text-sm">Terlambat</p>
                                     <p class="font-bold text-green-500 text-lg">{{ $total_keterlambatan }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm">S. Malam</p>
+                                    <p class="font-bold text-green-500 text-lg">{{ $total_tambahan_shift_malam }}</p>
                                 </div>
 
 
@@ -296,7 +300,7 @@
                                             </p>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-gray-500 text-sm">Jam Kerja</p>
+                                            <p class="text-gray-500 text-sm">J. Kerja</p>
                                             <p class="font-bold text-blue-500">
                                                 @php
                                                     $tgl = tgl_doang($d->date);
@@ -309,16 +313,29 @@
 
                                                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
 
-                                                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                                                    if (is_sunday($d->date)) {
+                                                        $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
+                                                    } else {
+                                                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                                                    }
+
+                                                    $tambahan_shift_malam = 0;
 
                                                     if ($d->shift == 'Malam') {
                                                         if (is_saturday($d->date)) {
                                                             if ($jam_kerja >= 6) {
-                                                                $jam_lembur = $jam_lembur + 1;
+                                                                // $jam_lembur = $jam_lembur + 1;
+                                                                $tambahan_shift_malam = 1;
+                                                            }
+                                                        } elseif (is_sunday($d->date)) {
+                                                            if ($jam_kerja >= 16) {
+                                                                // $jam_lembur = $jam_lembur + 2;
+                                                                $tambahan_shift_malam = 2;
                                                             }
                                                         } else {
                                                             if ($jam_kerja >= 8) {
-                                                                $jam_lembur = $jam_lembur + 1;
+                                                                // $jam_lembur = $jam_lembur + 1;
+                                                                $tambahan_shift_malam = 1;
                                                             }
                                                         }
                                                     }
@@ -327,7 +344,7 @@
                                             </p>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-gray-500 text-sm">Jam Lembur</p>
+                                            <p class="text-gray-500 text-sm">J. Lembur</p>
                                             <p class="font-bold text-blue-500">
                                                 {{ $jam_lembur }}
                                             </p>
@@ -337,6 +354,10 @@
                                             <p class="font-bold text-blue-500">
                                                 {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
                                             </p>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-gray-500 text-sm">S. Malam</p>
+                                            <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
                                         </td>
                                     </tr>
                                 @endforeach

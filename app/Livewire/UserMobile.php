@@ -23,6 +23,8 @@ class UserMobile extends Component
     public $data_payroll;
     public $is_slipGaji = false;
     public $data_karyawan;
+    public $total_tambahan_shift_malam;
+    public $tambahan_shift_malam;
     
     // public function close () {
     //     $this->is_slipGaji = false;
@@ -60,12 +62,13 @@ class UserMobile extends Component
     $this->total_jam_kerja = 0;
     $this->total_jam_lembur = 0;
     $this->total_keterlambatan = 0;
+    $this->total_tambahan_shift_malam = 0;
     }
 
     public function render()
     {
         // $this->user_id = 1111;
-        // $this->user_id = 1078;
+        // $this->user_id = 3335;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -73,13 +76,16 @@ class UserMobile extends Component
         $total_jam_kerja = 0;
         $total_jam_lembur = 0;
         $total_keterlambatan = 0;
+        $tambahan_shift_malam = 0;
         $langsungLembur = 0;
+        $total_tambahan_shift_malam = 0;
         $this->clear_data();
 
         $data = Yfrekappresensi::where('user_id', $this->user_id)
         ->whereMonth('date', $this->selectedMonth)
         ->whereYear('date', $this->selectedYear)
         ->orderBy('date', 'desc')->simplePaginate(5);
+
         $data1 = Yfrekappresensi::where('user_id', $this->user_id)
         ->whereMonth('date', $this->selectedMonth)
         ->whereYear('date', $this->selectedYear)
@@ -89,6 +95,7 @@ class UserMobile extends Component
             if ($d->no_scan == null) {
 
                 $tgl = tgl_doang($d->date);
+                $tambahan_shift_malam = 0;
             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
             $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
 
@@ -108,16 +115,19 @@ class UserMobile extends Component
             if($d->shift == 'Malam') {
                 if(is_saturday($d->date)) {
                     if($jam_kerja >= 6) {
-                        $jam_lembur = $jam_lembur + 1;
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
                     }
                 } else if(is_sunday($d->date)) {
                     if($jam_kerja >= 16) {
-                        $jam_lembur = $jam_lembur + 2;
+                        // $jam_lembur = $jam_lembur + 2;
+                        $tambahan_shift_malam = 2;
                     }
                 }
                 else {
                     if($jam_kerja >= 8) {
-                        $jam_lembur = $jam_lembur + 1;
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
                     }
                 }
             }
@@ -125,6 +135,8 @@ class UserMobile extends Component
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur ;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;
                 $this->total_hari_kerja++;
+                $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
+
             }
         }
         return view('livewire.user-mobile', compact('data'))->layout('layouts.polos');

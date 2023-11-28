@@ -77,7 +77,9 @@ public function showDetail($user_id)
     $tambahan_shift_malam = 0;
     $total_tambahan_shift_malam = 0;
 
-    $data = Yfrekappresensi::where('user_id', $user_id)
+   
+
+    $data = Yfrekappresensi::with('karyawan')->where('user_id', $user_id)
         ->orderBy('date', 'desc')
         ->get();
 //ok2
