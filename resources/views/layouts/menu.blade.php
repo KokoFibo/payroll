@@ -42,7 +42,7 @@ with font-awesome or any other icon font library -->
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
-                            Build Presensi Detail
+                            Presensi Detail
                         </p>
                     </a>
                 </li>
