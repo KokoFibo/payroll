@@ -58,6 +58,10 @@ function clear_locks() {
     $lock->save();
 }
 function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
+
+    if(is_sunday($tgl)){
+        return $lembur = 0;
+    }
     $lembur = 0;
 
     $t2 = strtotime( $second_out );
@@ -166,29 +170,17 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     } else {
         //Shift Malam
         if(is_saturday($tgl)) {
-            if($t2<(strtotime('00:30:00'))) {
+            if( $t2 < (strtotime('00:30:00')) || $t2 <= (strtotime('23:59:00')) ) {
                 return $lembur = 0;
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00'))/60;
         } else  {
-            if($t2<(strtotime('05:30:00'))) {
+            if($t2<(strtotime('05:30:00')) || $t2 <= (strtotime('23:59:00')) ) {
                 return $lembur = 0;
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
         }
-        // if($jabatan == 'Satpam') {
-        //     if(is_saturday($tgl)) {
-        //         // rubah disini utk perubahan jam lembur satpam
-        //         if($t2<(strtotime('05:30:00'))) {
-        //             return $lembur = 0;
-        //         }
-        //     } else {
-        //     if($t2<(strtotime('08:30:00'))) {
-        //         return $lembur = 0;
-        //     }
-        //     }
-        //      $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('08:00:00'))/60;
-        // }
+        
     }
     }
 
@@ -267,6 +259,30 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     if($jabatan == 'Satpam'){
         $jam_kerja = 12;
     }
+// lolo
+    if(is_sunday($tgl)) {
+        // $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
+        // $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
+
+        $t1 = strtotime($first_in);
+        $t2 = strtotime($second_out);
+
+        $diff = gmdate('H:i:s', $t2 - $t1);
+
+        $diff = explode(':', $diff);
+        $jam = (int) $diff[0];
+        $menit = (int) $diff[1];
+
+        if ( $menit>=45 ) {
+            $jam = $jam + 1;
+        } else if($menit<45 && $menit > 15) {
+            $jam = $jam + 0.5;
+        } else {
+            $jam ;
+        }
+        $jam_kerja =  $jam * 2;
+    }
+
     return $jam_kerja;
 }
 
@@ -496,7 +512,11 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan);
     $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan);
 
-    return $late1 + $late2 + $late3 + $late4;
+    if(is_sunday($tgl)) {
+        return 0;
+    } else {
+        return $late1 + $late2 + $late3 + $late4;
+    }
 }
 
 
@@ -710,7 +730,8 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
             }
         } else {
             if (is_saturday($tgl)) {
-                if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+                // if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
+                if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
                     $t1 = strtotime('00:00:00');
                     $t2 = strtotime($second_out);
 
@@ -720,12 +741,22 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
                     $late = null;
                 }
             } else {
-                if (Carbon::parse($second_out)->betweenIncluded('00:00', '04:59')) {
+                if (Carbon::parse($second_out)->betweenIncluded('00:00', '04:59') ) {
                     $t1 = strtotime('05:00:00');
                     $t2 = strtotime($second_out);
 
                     $diff = gmdate('H:i:s', $t1 - $t2);
                     $late = ceil(hoursToMinutes($diff) / $perJam);
+
+                    // ook
+                } else if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+                    
+                $t1 = strtotime('23:59:00');
+                $t2 = strtotime($second_out);
+
+                $diff = gmdate('H:i:s', $t1 - $t2);
+                $late =( ceil(hoursToMinutes($diff) / $perJam) + 4);
+
                 } else {
                     $late = null;
                 }
@@ -786,7 +817,12 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan)
         // }
 
     }
-    return $late;
+    if(is_sunday($tgl)){
+        return 0;
+    } else {
+
+        return $late;
+    }
 }
 
 function checkOvertimeInLate($overtime_in, $shift, $tgl)

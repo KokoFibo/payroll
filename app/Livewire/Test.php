@@ -17,11 +17,28 @@ class Test extends Component {
 
     public function render() {
 
-        $second_out = '06:01:00';
-        $tgl = '2023-11-03';
-        $shift = 'Malam';
-        $langsungLembur = langsungLembur( $second_out, $tgl, $shift);
+        $first_in = '16:37';
+        $second_out = '23:21';
+        $t1 = strtotime($first_in);
+        $t2 = strtotime($second_out);
 
+        $diff = gmdate('H:i:s', $t2 - $t1);
+
+        $diff = explode(':', $diff);
+        $jam = (int) $diff[0];
+        $menit = (int) $diff[1];
+
+        if ( $menit>=45 ) {
+            $jam = $jam + 1;
+        } else if($menit<45 && $menit > 15) {
+            $jam = $jam + 0.5;
+        } else {
+            $jam ;
+        }
+
+       
+
+        dd($diff, $jam);
         return view( 'livewire.test', compact('langsungLembur') );
     }
 }

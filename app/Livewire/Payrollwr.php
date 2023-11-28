@@ -183,18 +183,23 @@ class Payrollwr extends Component
                 // $jam_kerja = $jam_kerja_harian;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_langsungLembur = $total_langsungLembur + ($langsungLembur * 60 );
-
                 if($dt->shift == 'Malam') {
                     if(is_saturday($dt->date)) {
                         if($jam_kerja >= 6) {
-                            $total_tambahan_shift_malam++;
+                            $total_tambahan_shift_malam = $total_tambahan_shift_malam + 1;
                         }
-                    } else {
+                    } else if(is_sunday($dt->date)) {
+                        if($jam_kerja >= 16) {
+                            $total_tambahan_shift_malam = $total_tambahan_shift_malam + 2;
+                        }
+                    }
+                    else {
                         if($jam_kerja >= 8) {
-                            $total_tambahan_shift_malam++;
+                            $total_tambahan_shift_malam = $total_tambahan_shift_malam + 1;
                         }
                     }
                 }
+                
 
                     if ($dt->late == null) {
                         // if($dt->no_scan_history) {
