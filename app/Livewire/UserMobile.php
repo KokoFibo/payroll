@@ -65,8 +65,8 @@ class UserMobile extends Component
     public function render()
     {
         // $this->user_id = 1111;
-        // $this->user_id = 4;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 1078;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
@@ -98,7 +98,12 @@ class UserMobile extends Component
 
             $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
 
-            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+
+            if(is_sunday($d->date)){
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+            } else {
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+            }
 
             if($d->shift == 'Malam') {
                 if(is_saturday($d->date)) {
