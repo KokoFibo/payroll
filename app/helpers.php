@@ -59,9 +59,9 @@ function clear_locks() {
 }
 function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
 
-    if(is_sunday($tgl)){
-        return $lembur = 0;
-    }
+    // if(is_sunday($tgl)){
+    //     return $lembur = 0;
+    // }
     $lembur = 0;
 
     $t2 = strtotime( $second_out );
@@ -175,7 +175,7 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00'))/60;
         } else  {
-            if($t2<(strtotime('05:30:00')) || $t2 <= (strtotime('23:59:00')) ) {
+            if($t2<(strtotime('05:30:00')) && $t2 <= (strtotime('23:59:00')) ) {
                 return $lembur = 0;
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00'))/60;
@@ -484,6 +484,7 @@ function hitungLembur($overtime_in, $overtime_out)
         // }
         $totalMenit = $jam * 60 + $menit;
 
+        
         return $totalMenit;
     } else {
         return 0;

@@ -50,6 +50,7 @@ class Yfpresensiindexwr extends Component
     public $total_jam_kerja;
     public $total_jam_lembur;
     public $total_keterlambatan;
+    public $total_tambahan_shift_malam;
     public $paginatedData;
     public $data1;
 
@@ -73,12 +74,15 @@ public function showDetail($user_id)
     $total_jam_lembur = 0;
     $total_keterlambatan = 0;
     $langsungLembur = 0;
+    $tambahan_shift_malam = 0;
+    $total_tambahan_shift_malam = 0;
 
     $data = Yfrekappresensi::where('user_id', $user_id)
         ->orderBy('date', 'desc')
         ->get();
 //ok2
     foreach ($data as $d) {
+        $tambahan_shift_malam = 0;
         if ($d->no_scan === null) {
             $tgl = tgl_doang($d->date);
            
@@ -90,22 +94,28 @@ public function showDetail($user_id)
             }
 
             $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-
-            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+            if(is_sunday($d->date)){
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+            } else {
+                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+            }
 
             if($d->shift == 'Malam') {
                 if(is_saturday($d->date)) {
                     if($jam_kerja >= 6) {
-                        $jam_lembur = $jam_lembur + 1;
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
                     }
                 } else if(is_sunday($d->date)) {
                     if($jam_kerja >= 16) {
-                        $jam_lembur = $jam_lembur + 2;
+                        // $jam_lembur = $jam_lembur + 2;
+                        $tambahan_shift_malam = 2;
                     }
                 }
                 else {
                     if($jam_kerja >= 8) {
-                        $jam_lembur = $jam_lembur + 1;
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
                     }
                 }
             }
@@ -115,18 +125,22 @@ public function showDetail($user_id)
                 'jam_kerja' => $jam_kerja,
                 'terlambat' => $terlambat,
                 'jam_lembur' => $jam_lembur,
+                'tambahan_shift_malam' => $tambahan_shift_malam,
             ]);
 
             $total_hari_kerja++;
             $total_jam_kerja += $jam_kerja;
             $total_jam_lembur += $jam_lembur;
             $total_keterlambatan += $terlambat;
+            $total_tambahan_shift_malam += $tambahan_shift_malam;
+           
         }
     }
     $this->total_hari_kerja = $total_hari_kerja;
     $this->total_jam_kerja = $total_jam_kerja;
     $this->total_jam_lembur = $total_jam_lembur;
     $this->total_keterlambatan = $total_keterlambatan;
+    $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
 }
 
     public function filterNoScan()
