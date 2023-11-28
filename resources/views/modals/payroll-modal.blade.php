@@ -64,7 +64,7 @@
                                     <tr>
                                         <td>Jam Lembur</td>
                                         <td>
-                                            {{ $data_payroll->jam_lembur / 60 }} jam</td>
+                                            {{ $data_payroll->jam_lembur }} jam</td>
                                     </tr>
                                     <tr>
                                         <td>Gaji Pokok</td>

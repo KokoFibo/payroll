@@ -193,7 +193,7 @@
                                         <td>{{ $p->metode_penggajian }}</td>
                                         <td class="text-end">{{ $p->hari_kerja }}</td>
                                         <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
-                                        <td class="text-end">{{ $p->jam_lembur / 60 }}</td>
+                                        <td class="text-end">{{ $p->jam_lembur }}</td>
                                         <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
                                         <td class="text-end">
                                             {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
