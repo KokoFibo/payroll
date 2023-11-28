@@ -59,7 +59,7 @@ class Yfpresensiindexwr extends Component
         $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
     }
 
-
+//ok1
 public function showDetail($user_id)
 {
     $this->user_id = $user_id;
@@ -77,10 +77,11 @@ public function showDetail($user_id)
     $data = Yfrekappresensi::where('user_id', $user_id)
         ->orderBy('date', 'desc')
         ->get();
-
+//ok2
     foreach ($data as $d) {
         if ($d->no_scan === null) {
             $tgl = tgl_doang($d->date);
+           
             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
             $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
             //evaluasi ini
@@ -97,7 +98,12 @@ public function showDetail($user_id)
                     if($jam_kerja >= 6) {
                         $jam_lembur = $jam_lembur + 1;
                     }
-                } else {
+                } else if(is_sunday($d->date)) {
+                    if($jam_kerja >= 16) {
+                        $jam_lembur = $jam_lembur + 2;
+                    }
+                }
+                else {
                     if($jam_kerja >= 8) {
                         $jam_lembur = $jam_lembur + 1;
                     }
@@ -122,16 +128,6 @@ public function showDetail($user_id)
     $this->total_jam_lembur = $total_jam_lembur;
     $this->total_keterlambatan = $total_keterlambatan;
 }
-
-// public function confirmDelete($id)
-//     {
-//         $this->id = $id;
-//         $this->dispatch('swal:confirm_delete_presensi', [
-//             'title' => 'Apakah Anda Yakin ok',
-//             'text' => 'isi text dengan apa?',
-//             'id' => $id,
-//         ]);
-//     }
 
     public function filterNoScan()
     {
@@ -161,9 +157,9 @@ public function showDetail($user_id)
         $this->resetPage();
         $this->render();
     }
+
     public function update($id)
     {
-
         // dd('ok');
         $this->id = $id;
         $data = Yfrekappresensi::find($id);
@@ -181,9 +177,6 @@ public function showDetail($user_id)
         $this->btnEdit = false;
         $this->selectedId = $id;
 
-
-
-        // $this->dispatch('update-form');
     }
 
     public function save()

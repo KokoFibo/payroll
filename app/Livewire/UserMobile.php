@@ -105,7 +105,12 @@ class UserMobile extends Component
                     if($jam_kerja >= 6) {
                         $jam_lembur = $jam_lembur + 1;
                     }
-                } else {
+                } else if(is_sunday($d->date)) {
+                    if($jam_kerja >= 16) {
+                        $jam_lembur = $jam_lembur + 2;
+                    }
+                }
+                else {
                     if($jam_kerja >= 8) {
                         $jam_lembur = $jam_lembur + 1;
                     }
