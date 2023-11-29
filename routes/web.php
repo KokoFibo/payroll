@@ -95,11 +95,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
             Route::get('/presensidetailwr', Presensidetailwr::class);
 
-            // PAYROLL
-            Route::get('/payrollindex', Prindexwr::class);
-            Route::get('/payroll', Payrollwr::class);
-            Route::get('/reportindex', [ReportController::class, 'index']);
-            Route::post('/createexcel', [ReportController::class, 'createExcel']);
+            
 
             // USER SETTING
 
@@ -109,6 +105,11 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
+                // PAYROLL
+            Route::get('/payrollindex', Prindexwr::class);
+            Route::get('/payroll', Payrollwr::class);
+            Route::get('/reportindex', [ReportController::class, 'index']);
+            Route::post('/createexcel', [ReportController::class, 'createExcel']);
 
                 Route::middleware(['Developer'])->group(function () {
                     // KHUSUS DEVELOPER
