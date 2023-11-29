@@ -435,7 +435,14 @@ class Prindexwr extends Component
             $lastData = null;
         }
 
+        $tgl = Jamkerjaid::select('updated_at')->first();
+        if ($tgl != null) {
+            $last_build = Carbon::parse($tgl->updated_at)->diffForHumans();
+        } else {
+            $last_build = 0;
+        }
 
-        return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData']));
+
+        return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData', 'last_build']));
     }
 }
