@@ -11,25 +11,25 @@
                     <p>Nama Karyawan : {{ $nama_karyawan }}</p>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Tanggal (mm/dd/yyyy)</label>
                                 <input wire:model="tanggal" class="form-control" type="date">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Uang Makan</label>
                                 <input wire:model="uang_makan" type="number" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Bonus</label>
                                 <input wire:model="bonus" type="number" class="form-control">
                             </div>
-                        </div>
-                        <div class="col-md-3">
+                        </div> --}}
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Bonus Lain</label>
                                 <input wire:model="bonus_lain" type="number" class="form-control">

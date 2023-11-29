@@ -27,6 +27,7 @@ class Payrollwr extends Component
     public $status = 1;
     public $data_payroll;
     public $data_karyawan;
+    
 
     public function showDetail($id_karyawan)
     {
@@ -78,14 +79,14 @@ class Payrollwr extends Component
     public function getPayroll()
     {
         // supaya tidak dilakukan bersamaan
-        $lock = Lock::find(1);
-        if ($lock->build) {
-            $lock->build = 0;
-            return back()->with('error', 'Mohon dicoba sebentar lagi');
-        } else {
-            $lock->build = 1;
-            $lock->save();
-        }
+        // $lock = Lock::find(1);
+        // if ($lock->build) {
+        //     $lock->build = 0;
+        //     return back()->with('error', 'Mohon dicoba sebentar lagi');
+        // } else {
+        //     $lock->build = 1;
+        //     $lock->save();
+        // }
 
         $jamKerjaKosong = Jamkerjaid::count();
         $adaPresensi = Yfrekappresensi::count();
@@ -133,15 +134,15 @@ class Payrollwr extends Component
             $filteredData->save();
         }
 
-        $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan, jabatan']])
+        $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
             ->whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
             ->get();
 
         // disini mulai prosesnya
         foreach ($filteredData as $data) {
-            // $dataId = Yfrekappresensi::with(['karyawan'=>['id_karyawan, jabatan']])
             $dataId = Yfrekappresensi::with('karyawan')
+       
                 ->where('user_id', $data->user_id)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -199,6 +200,19 @@ class Payrollwr extends Component
                                 }
                             }
                         }
+                        if($jam_lembur > 5) {
+                            $jam_lembur = 0;
+                        }
+                        if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' ) {
+                            if( is_friday($d->date) ) {
+                                $jam_kerja = 7.5;
+                            } elseif (is_saturday($d->date)) {
+                                $jam_kerja = 6;
+                            } else {
+                                $jam_kerja = 8;
+                            }
+                        }
+                        
 
                         $total_hari_kerja++;
                         $total_jam_kerja = $total_jam_kerja + $jam_kerja;
@@ -235,8 +249,8 @@ class Payrollwr extends Component
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
         // $this->periode = $current_date->date;
 
-        $lock->build = false;
-        $lock->save();
+        // $lock->build = false;
+        // $lock->save();
 
         $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         $this->rebuild();
@@ -282,17 +296,44 @@ class Payrollwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
+            $payroll->jumlah_jam_terlambat = $data->jumlah_jam_terlambat;
+            $payroll->total_noscan = $data->total_noscan;
+
             //ok4
             if ($data->total_noscan > 3 && $payroll->metode_penggajian == 'Perjam') {
                 $denda_noscan = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
             } else {
                 $denda_noscan = 0;
             }
+            // dari karyawan
+            $payroll->thr = $data->karyawan->bonus;
+            $payroll->tunjangan_jabatan = $data->karyawan->tunjangan_jabatan;
+            $payroll->tunjangan_bahasa = $data->karyawan->tunjangan_bahasa;
+            $payroll->tunjangan_skill = $data->karyawan->tunjangan_skill;
+            $payroll->tunjangan_lama_kerja = $data->karyawan->tunjangan_lama_kerja;
+            $payroll->tunjangan_lembur_sabtu = $data->karyawan->tunjangan_lembur_sabtu;
 
-            $payroll->bonus1x = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
-            $payroll->potongan1x = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
+            $payroll->iuran_air = $data->karyawan->iuran_air;
+            $payroll->iuran_locker = $data->karyawan->iuran_locker;
+// kkk
+            
+
+            // // dari Tambahan 
+            // $tambahan = Tambahan::where('user_id', $payroll->id_karyawan )->first();
+            // if($tambahan == null) {
+            //     $payroll->potongan1x = 0;
+            //     $payroll->bonus1x = 0;
+            // } else {
+            //     $payroll->potongan1x = 0;
+            //     $payroll->bonus1x = 0;
+            //     $payroll->bonus1x = $tambahan->uang_makan + $tambahan->bonus_lain;
+            //     $payroll->potongan1x = $tambahan->baju_esd + $tambahan->gelas + $tambahan->sandal + $tambahan->seragam + $tambahan->sport_bra + $tambahan->hijab_instan + $tambahan->id_card_hilang + $tambahan->masker_hijau + $tambahan->potongan_lain;
+            // }
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur;
+
+            // $payroll->bonus1x = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
+            // $payroll->potongan1x = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
 
             // if ($payroll->metode_penggajian == 'Perjam') {
             //     $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
@@ -303,18 +344,36 @@ class Payrollwr extends Component
             //         $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
             //     }
             // }
+            
 
-            if ($payroll->gaji_lembur == 0) {
-                $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198);
-                if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
-                    $payroll->subtotal = $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8);
+            if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+                if($data->karyawan->gaji_overtime == 0) {
+                    $payroll->subtotal = $payroll->hari_kerja * ($data->karyawan->gaji_pokok / 198) * 8;
+                } else {    
+                    if($data->jumlah_jam_kerja + $payroll->jam_lembur < 8) {
+                        $payroll->subtotal = ($payroll->hari_kerja * ($data->karyawan->gaji_pokok / 198) * 8 + ($payroll->jam_lembur * $data->karyawan->gaji_overtime) );
+                    } else {
+                        $payroll->subtotal = ($data->jumlah_jam_kerja + $payroll->jam_lembur) * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
+                    }
                 }
             } else {
-                $payroll->subtotal = $payroll->tambahan_shift_malam + $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
-                if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
-                    $payroll->subtotal = $payroll->tambahan_shift_malam + $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
-                }
+                $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
             }
+
+            
+            // if ($payroll->gaji_lembur == 0) {
+            //     $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198);
+            //     if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+            //         $payroll->subtotal = $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8);
+            //     }
+            // } else {
+            //     $payroll->subtotal = $payroll->tambahan_shift_malam + $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            //     if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+            //         $payroll->subtotal = $payroll->tambahan_shift_malam + $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            //     }
+            // }
+
+          
 
             if ($data->karyawan->potongan_JP == 1) {
                 if ($data->karyawan->gaji_bpjs <= 9559600) {
@@ -361,7 +420,21 @@ class Payrollwr extends Component
             }
 
             $payroll->date = $data->date;
-            $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan1x - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
+
+            // $total_bonus_dari_tambahan = 0;
+            //     $total_potongan_dari_tambahan = 0;
+            //     $total_bonus_dari_karyawan 
+            // $total_potongan_dari_karyawan 
+// kkk
+            $total_bonus_dari_karyawan = 0;
+            $total_potongan_dari_karyawan = 0;
+
+            $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
+            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker ;
+
+            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan  
+            - $total_potongan_dari_karyawan - $payroll->pajak 
+            - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
@@ -371,6 +444,20 @@ class Payrollwr extends Component
     // ok3
     public function bonus_potongan()
     {
+        // dari Tambahan 
+            // $tambahan = Tambahan::where('user_id', $payroll->id_karyawan )->first();
+            // if($tambahan == null) {
+            //     $payroll->potongan1x = 0;
+            //     $payroll->bonus1x = 0;
+            // } else {
+            //     $payroll->potongan1x = 0;
+            //     $payroll->bonus1x = 0;
+            //     $payroll->bonus1x = $tambahan->uang_makan + $tambahan->bonus_lain;
+            //     $payroll->potongan1x = $tambahan->baju_esd + $tambahan->gelas + $tambahan->sandal + $tambahan->seragam + $tambahan->sport_bra + $tambahan->hijab_instan + $tambahan->id_card_hilang + $tambahan->masker_hijau + $tambahan->potongan_lain;
+            // }
+
+
+        // =================================
         $bonus = 0;
         $potongaan = 0;
         $all_bonus = 0;
@@ -380,7 +467,7 @@ class Payrollwr extends Component
             ->get();
 
         foreach ($tambahan as $d) {
-            $all_bonus = $d->uang_makan + $d->bonus + $d->bonus_lain;
+            $all_bonus = $d->uang_makan +  $d->bonus_lain;
             $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
             $id_payroll = Payroll::whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)

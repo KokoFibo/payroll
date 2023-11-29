@@ -16,7 +16,6 @@ return new class extends Migration
             $table->integer('user_id');
 
             $table->integer('uang_makan')->nullable();
-            $table->integer('bonus')->nullable();
             $table->integer('bonus_lain')->nullable();
 
             $table->integer('baju_esd')->nullable();

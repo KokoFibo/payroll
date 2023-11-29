@@ -101,6 +101,7 @@ public function showDetail($user_id)
             } else {
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
             }
+            
 
             if($d->shift == 'Malam') {
                 if(is_saturday($d->date)) {
@@ -119,6 +120,19 @@ public function showDetail($user_id)
                         // $jam_lembur = $jam_lembur + 1;
                         $tambahan_shift_malam = 1;
                     }
+                }
+            }
+
+            if($jam_lembur > 5) {
+                $jam_lembur = 0;
+            }
+            if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' ) {
+                if( is_friday($d->date) ) {
+                    $jam_kerja = 7.5;
+                } elseif (is_saturday($d->date)) {
+                    $jam_kerja = 6;
+                } else {
+                    $jam_kerja = 8;
                 }
             }
 

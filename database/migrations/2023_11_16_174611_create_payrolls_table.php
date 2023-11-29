@@ -28,12 +28,15 @@ return new class extends Migration
             $table->double('hari_kerja',5,1);
             $table->double('jam_kerja',6,1);
             $table->double('jam_lembur',6,1)->nullable();
+            $table->double('jumlah_jam_terlambat',6,1)->nullable();
+            $table->integer('tambahan_shift_malam')->nullable();
             $table->integer('gaji_pokok');
             $table->integer('gaji_lembur')->nullable();
             $table->integer('gaji_bpjs')->nullable();
             $table->double('subtotal',12,1);
             $table->double('bonus1x',12,1)->nullable();
             $table->double('potongan1x',12,1)->nullable();
+            $table->double('total_noscan',12,1)->nullable();
             $table->double('denda_lupa_absen',12,1)->nullable();
             $table->double('pajak',8,1)->nullable();
             $table->double('jht',8,1)->nullable();
@@ -41,28 +44,22 @@ return new class extends Migration
             $table->double('jkk',8,1)->nullable();
             $table->double('jkm',8,1)->nullable();
             $table->double('kesehatan',8,1)->nullable();
-            // Tambahan
-            $table->integer('uang_makan')->nullable();
-            $table->integer('bonus')->nullable();
-            $table->integer('bonus_lain')->nullable();
-
-            $table->integer('baju_esd')->nullable();
-            $table->integer('gelas')->nullable();
-            $table->integer('sandal')->nullable();
-            $table->integer('seragam')->nullable();
-            $table->integer('sport_bra')->nullable();
-            $table->integer('hijab_instan')->nullable();
-            $table->integer('id_card_hilang')->nullable();
-            $table->integer('masker_hijau')->nullable();
-            $table->integer('potongan_lain')->nullable();
+            
             // Dari Karyawan
             $table->integer('thr')->nullable();
+            $table->integer('tunjangan_jabatan')->nullable();
+            $table->integer('tunjangan_bahasa')->nullable();
+            $table->integer('tunjangan_skill')->nullable();
+            $table->integer('tunjangan_lembur_sabtu')->nullable();
+            $table->integer('tunjangan_lama_kerja')->nullable();
+
+            $table->integer('iuran_air')->nullable();
+            $table->integer('iuran_locker')->nullable();
 
             $table->double('total',12,1);
             $table->date('date');
             $table->string('status_karyawan');
            
-            $table->integer('tambahan_shift_malam')->nullable();
             $table->timestamps();
         });
     }

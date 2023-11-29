@@ -68,8 +68,8 @@ class UserMobile extends Component
     public function render()
     {
         // $this->user_id = 1111;
-        // $this->user_id = 3335;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 2003;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
@@ -129,6 +129,19 @@ class UserMobile extends Component
                         // $jam_lembur = $jam_lembur + 1;
                         $tambahan_shift_malam = 1;
                     }
+                }
+            }
+
+            if($jam_lembur > 5) {
+                $jam_lembur = 0;
+            }
+            if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' ) {
+                if( is_friday($d->date) ) {
+                    $jam_kerja = 7.5;
+                } elseif (is_saturday($d->date)) {
+                    $jam_kerja = 6;
+                } else {
+                    $jam_kerja = 8;
                 }
             }
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
