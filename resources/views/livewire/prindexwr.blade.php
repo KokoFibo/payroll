@@ -115,8 +115,8 @@
                                     <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
                                     <td class="text-center">{{ number_format($item->jumlah_menit_lembur, 1) }}</td>
                                     <td class="text-center">{{ number_format($item->jumlah_jam_terlambat, 1) }}</td>
-                                    <td class="text-center">{{ $item->tambahan_jam_shift_malam }}</td>
-                                    <td class="text-center">{{ $item->total_noscan }}</td>
+                                    <td class="text-center">{{ number_format($item->tambahan_jam_shift_malam) }}</td>
+                                    <td class="text-center">{{ number_format($item->total_noscan) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

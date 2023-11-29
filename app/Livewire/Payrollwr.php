@@ -61,13 +61,16 @@ class Payrollwr extends Component
 
         $this->year = now()->year;
         $this->month = now()->month;
-        $this->data_payroll = Payroll::with('jamkerjaid')
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->where('id_karyawan', $data->id_karyawan)
-            ->first();
+        if($data != null) {
 
-        $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
+            $this->data_payroll = Payroll::with('jamkerjaid')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->where('id_karyawan', $data->id_karyawan)
+                ->first();
+    
+            $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
+        }
     }
 
     // ok1

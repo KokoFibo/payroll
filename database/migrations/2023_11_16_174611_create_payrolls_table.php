@@ -41,14 +41,27 @@ return new class extends Migration
             $table->double('jkk',8,1)->nullable();
             $table->double('jkm',8,1)->nullable();
             $table->double('kesehatan',8,1)->nullable();
+            // Tambahan
+            $table->integer('uang_makan')->nullable();
+            $table->integer('bonus')->nullable();
+            $table->integer('bonus_lain')->nullable();
+
+            $table->integer('baju_esd')->nullable();
+            $table->integer('gelas')->nullable();
+            $table->integer('sandal')->nullable();
+            $table->integer('seragam')->nullable();
+            $table->integer('sport_bra')->nullable();
+            $table->integer('hijab_instan')->nullable();
+            $table->integer('id_card_hilang')->nullable();
+            $table->integer('masker_hijau')->nullable();
+            $table->integer('potongan_lain')->nullable();
+            // Dari Karyawan
+            $table->integer('thr')->nullable();
+
             $table->double('total',12,1);
             $table->date('date');
             $table->string('status_karyawan');
-            // $table->integer('uang_makan')->nullable();
-            // $table->integer('denda_lupa_absen')->nullable();
-            // $table->integer('bonus')->nullable();
-            // $table->integer('thr')->nullable();
-            // $table->integer('denda')->nullable();
+           
             $table->integer('tambahan_shift_malam')->nullable();
             $table->timestamps();
         });

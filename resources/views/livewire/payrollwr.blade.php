@@ -171,7 +171,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($data_kosong > 0)
+                            @if ($payroll->isNotEmpty())
 
 
                                 @foreach ($payroll as $p)
@@ -237,7 +237,8 @@
             <p class="px-3 text-success">Last update: {{ $last_build }} </p>
         </div>
     </div>
-
-    @include('modals.payroll-modal')
+    @if ($data_payroll != null && $data_karyawan != null)
+        @include('modals.payroll-modal')
+    @endif
 
 </div>
