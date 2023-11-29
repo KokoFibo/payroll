@@ -101,12 +101,13 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
             Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
+            Route::get('/payrollindex', Prindexwr::class);
+
 
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
                 // PAYROLL
-            Route::get('/payrollindex', Prindexwr::class);
             Route::get('/payroll', Payrollwr::class);
             Route::get('/reportindex', [ReportController::class, 'index']);
             Route::post('/createexcel', [ReportController::class, 'createExcel']);
