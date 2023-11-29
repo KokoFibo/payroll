@@ -17,8 +17,8 @@
                 </div>
                 <div>
                     <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2">Report</button></a>
-                    {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
-                    <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
+                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
             </div>
         </div>
@@ -136,9 +136,6 @@
                                 <th wire:click="sortColumnName('jam_lembur')">Jam Lembur <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jumlah_jam_terlambat')">Terlambat <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
                                 <th wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -155,18 +152,9 @@
                                 <th wire:click="sortColumnName('bonus1x')">Bonus/U.Makan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">Bonus Karyawan<i
+                                <th wire:click="sortColumnName('potongan1x')">Potongan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan1x')">Potongan 1X<i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-
-                                <th wire:click="sortColumnName('potongan1x')">Potongan Karyawan<i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
-
-
                                 <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -206,7 +194,6 @@
                                         <td class="text-end">{{ $p->hari_kerja }}</td>
                                         <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
                                         <td class="text-end">{{ $p->jam_lembur }}</td>
-                                        <td class="text-end">{{ $p->jumlah_jam_terlambat }}</td>
                                         <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
                                         <td class="text-end">
                                             {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
@@ -221,23 +208,8 @@
                                         <td class="text-end">
                                             {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
                                         </td>
-                                        @php
-                                            $total_potongan_dari_karyawan = 0;
-                                            $total_bonus_dari_karyawan = 0;
-                                            $total_potongan_dari_karyawan = $p->iuran_air + $p->iuran_locker;
-                                            $total_bonus_dari_karyawan = $p->thr + $p->tunjangan_jabatan + $p->tunjangan_bahasa + $p->tunjangan_skill + $p->tunjangan_lembur_sabtu + $p->tunjangan_lama_kerja;
-
-                                        @endphp
-                                        <td class="text-end">
-                                            {{ number_format($total_bonus_dari_karyawan) }}
-                                            {{-- {{ $total_bonus_dari_karyawan ? number_format($total_bonus_dari_karyawan) : '' }} --}}
-                                        </td>
                                         <td class="text-end">
                                             {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
-                                        </td>
-
-                                        <td class="text-end">
-                                            {{ $total_potongan_dari_karyawan ? number_format($total_potongan_dari_karyawan) : '' }}
                                         </td>
                                         <td class="text-end">
                                             {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}

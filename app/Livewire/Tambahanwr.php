@@ -14,7 +14,7 @@ class Tambahanwr extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $id, $is_edit, $id_tambahan, $modal, $search, $user_id, $nama_karyawan;
-    public $tanggal, $uang_makan, $bonus, $bonus_lain, $baju_esd, $gelas, $sandal;
+    public $tanggal, $uang_makan,  $bonus_lain, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
 
     public function mount () {
@@ -35,7 +35,7 @@ class Tambahanwr extends Component
 
         if (
             $this->uang_makan == null &&
-            $this->bonus == null &&
+            // $this->bonus == null &&
             $this->bonus_lain == null &&
             $this->baju_esd == null &&
             $this->gelas == null &&
@@ -60,7 +60,7 @@ class Tambahanwr extends Component
             $data = Tambahan::find($this->id_tambahan);
         }
         $data->uang_makan = $this->uang_makan;
-        $data->bonus = $this->bonus;
+        // $data->bonus = $this->bonus;
         $data->bonus_lain = $this->bonus_lain;
         $data->baju_esd = $this->baju_esd;
         $data->gelas = $this->gelas;
@@ -92,7 +92,7 @@ class Tambahanwr extends Component
 
     public function clear_data () {
         $this->uang_makan = null;
-        $this->bonus = null;
+        // $this->bonus = null;
         $this->bonus_lain = null;
         $this->baju_esd = null;
         $this->gelas = null;
@@ -118,7 +118,7 @@ class Tambahanwr extends Component
         $data_tambahan = Tambahan::find($this->id_tambahan);
 
         $this->uang_makan = $data_tambahan->uang_makan;
-        $this->bonus = $data_tambahan->bonus;
+        // $this->bonus = $data_tambahan->bonus;
         $this->bonus_lain = $data_tambahan->bonus_lain;
         $this->baju_esd = $data_tambahan->baju_esd;
         $this->gelas = $data_tambahan->gelas;

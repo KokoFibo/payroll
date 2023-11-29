@@ -170,7 +170,7 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     } else {
         //Shift Malam
         if(is_saturday($tgl)) {
-            if( $t2 < (strtotime('00:30:00')) && $t2 <= (strtotime('23:59:00')) ) {
+            if( $t2 < ((strtotime('00:30:00')) && $t2 <= (strtotime('23:59:00'))) || ($t2 > (strtotime('15:00:00')) && $t2 < (strtotime('23:59:00'))) ) {
                 return $lembur = 0;
             }
              $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00'))/60;
@@ -184,7 +184,7 @@ function langsungLembur( $second_out, $tgl, $shift, $jabatan) {
     }
     }
 
-
+    
     return  $diff ;
 }
 

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->double('jumlah_menit_lembur',4,1)->nullable();
             $table->double('jumlah_jam_terlambat',4,1)->nullable();
             $table->double('tambahan_jam_shift_malam',4,1)->nullable();
-            $table->double('total_late',4,1)->nullable();
             $table->double('total_noscan',4,1)->nullable();
             $table->double('total_hari_kerja',5,1)->nullable();
             $table->date('last_data_date')->nullable();
