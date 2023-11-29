@@ -38,7 +38,8 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column ">
+        <div
+            class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
 
             <div class=" col-12" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>

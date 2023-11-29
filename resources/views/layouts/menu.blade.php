@@ -37,12 +37,12 @@ with font-awesome or any other icon font library -->
                     <p>Presensi</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 2)
+            @if (Auth::user()->role > 1)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
-                            Presensi Detail
+                            Presensi Summary
                         </p>
                     </a>
                 </li>
@@ -58,14 +58,55 @@ with font-awesome or any other icon font library -->
                 </li>
             @endif
 
-
-            @if (Auth::user()->role > 4)
-                <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/UserLog" class="nav-link">
-                        <i class="nav-icon fa-solid fa-users-between-lines"></i>
-                        <p>User Log</p>
+            <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/informationwr" class="nav-link">
+                    <i class="fa-solid fa-user-check nav-icon"></i>
+                    <p>Add Information</p>
+                </a>
+            </li>
+            @if (Auth::user()->role > 3)
+                <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/usermobile" class="nav-link">
+                        <i class="fa-solid fa-user-check nav-icon"></i>
+                        <p>User Mobile</p>
                     </a>
                 </li>
+            @endif
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fa-solid fa-gear nav-icon"></i>
+                    <p>Settings<i class="right fas fa-angle-left"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                        <a href="/changeprofilewr" class="nav-link">
+                            <i class="fa-solid fa-address-card nav-icon"></i>
+                            <p>Change Profile</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ 'karyawansettingwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                        <a href="/karyawansettingwr" class="nav-link">
+                            <i class="fa-solid fa-users-gear nav-icon"></i>
+                            <p>Karyawan Settings</p>
+                        </a>
+                    </li>
+                    @if (Auth::user()->role > 3)
+                        <li
+                            class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/changeuserrolewr" class="nav-link">
+                                <i class="fa-solid fa-user-check nav-icon"></i>
+                                <p>Change User Role</p>
+                            </a>
+                        </li>
+                    @endif
+
+
+
+                </ul>
+            </li>
+
+            @if (Auth::user()->role > 4)
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -146,8 +187,10 @@ with font-awesome or any other icon font library -->
                                 <p>Edit Presensi</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ 'removepresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a onclick="return confirm('Mau Remove Presensi')" href="/removepresensi" class="nav-link">
+                        <li
+                            class="nav-item {{ 'removepresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a onclick="return confirm('Mau Remove Presensi')" href="/removepresensi"
+                                class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Remove Presensi</p>
                             </a>
@@ -172,67 +215,29 @@ with font-awesome or any other icon font library -->
                                 <p>User Log</p>
                             </a>
                         </li>
+                        <li class="nav-item {{ 'test' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/test" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>test livewire aj</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
-
-                <li class="nav-item {{ 'test' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/test" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>test livewire aj</p>
+                <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/UserLog" class="nav-link">
+                        <i class="nav-icon fa-solid fa-users-between-lines"></i>
+                        <p>User Log</p>
                     </a>
                 </li>
             @endif
-            <li class="nav-item {{ 'informasi' == request()->path() ? 'bg-secondary rounded' : '' }}">
+            {{-- <li class="nav-item {{ 'informasi' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/informasi" class="nav-link">
                     <i class="fa-solid fa-circle-info nav-icon"></i>
                     <p> Informasi</p>
                 </a>
-            </li>
-            <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/usermobile" class="nav-link">
-                    <i class="fa-solid fa-user-check nav-icon"></i>
-                    <p>User Mobile</p>
-                </a>
-            </li>
+            </li> --}}
 
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fa-solid fa-gear nav-icon"></i>
-                    <p>Settings<i class="right fas fa-angle-left"></i></p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                        <a href="/changeprofilewr" class="nav-link">
-                            <i class="fa-solid fa-address-card nav-icon"></i>
-                            <p>Change Profile</p>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ 'karyawansettingwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                        <a href="/karyawansettingwr" class="nav-link">
-                            <i class="fa-solid fa-users-gear nav-icon"></i>
-                            <p>Karyawan Settings</p>
-                        </a>
-                    </li>
-                    @if (Auth::user()->role > 2)
-                        <li
-                            class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a href="/changeuserrolewr" class="nav-link">
-                                <i class="fa-solid fa-user-check nav-icon"></i>
-                                <p>Change User Role</p>
-                            </a>
-                        </li>
-                    @endif
-                    <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                        <a href="/informationwr" class="nav-link">
-                            <i class="fa-solid fa-user-check nav-icon"></i>
-                            <p>Add Information</p>
-                        </a>
-                    </li>
-
-
-                </ul>
-            </li>
         @endif
 
 
