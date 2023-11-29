@@ -57,10 +57,10 @@
                                 {{-- <option value="12">Desember</option> --}}
                             </select>
                         </div>
-                        <div class="invisible">
+                        <div class="{{ auth()->user()->role <= 3 ? 'invisible' : '' }}">
                             {{-- <div> --}}
-                            <button wire:click="slip_gaji"
-                                class="text-white bg-teal-900 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip
+                            <button wire:click="slip_gaji" {{-- class="bg-red-200 text-gray-700 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip --}}
+                                class="bg-gray-800 text-white hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip
                                 Gaji</button>
 
                         </div>
@@ -78,164 +78,164 @@
                             <tbody>
 
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Id</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Id</td>
 
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_payroll->id_karyawan }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Nama</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Nama</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_payroll->nama }}</td>
                                 </tr>
                                 @if ($data_karyawan->no_npwp != null)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">No. NPWP</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">No. NPWP</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_karyawan->no_npwp }}</td>
                                     </tr>
                                 @endif
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Nama Bank</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Nama Bank</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_karyawan->nama_bank }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">No. Rekening</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">No. Rekening</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_karyawan->nomor_rekening }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Hari Kerja</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Hari Kerja</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_payroll->hari_kerja }} hari</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Jam Kerja</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Jam Kerja</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         {{ $data_payroll->jam_kerja }} jam</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Jam Lembur</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $data_payroll->jam_lembur / 60 }} jam</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Jam Lembur</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                        {{ $data_payroll->jam_lembur }} jam</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Gaji Pokok</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Gaji Pokok</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         Rp. {{ number_format($data_payroll->gaji_pokok) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Gaji Lembur</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Gaji Lembur</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                 </tr>
                                 @if ($data_payroll->tambahan_shift_malam != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Bonus Shift Malam
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Bonus Shift Malam
                                         </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->tambahan_shift_malam) }}
                                         </td>
                                     </tr>
                                 @endif
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Subtotal Gaji</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Subtotal Gaji</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                 </tr>
                                 @if ($data_karyawan->iuran_air != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Iuran air minum
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Iuran air minum
                                         </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_karyawan->iuran_air) }}</td>
                                     </tr>
                                 @endif
                                 @if ($data_karyawan->iuran_locker != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Iuran Locker</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Iuran Locker</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_karyawan->iuran_locker) }}</td>
                                     </tr>
                                 @endif
 
                                 @if ($data_payroll->bonus1x != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Bonus
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Bonus
                                         </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->bonus1x) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Potongan</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Potongan</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->potongan1x) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_payroll->denda_lupa_absen != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Denda Lupa Absen
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Denda Lupa Absen
                                         </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->denda_lupa_absen) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_payroll->jht != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JHT</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->jht) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_payroll->jp != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JP</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->jp) }}
                                         </td>
                                     </tr>
                                 @endif
                                 {{-- @if ($data_payroll->jkk != 0)
                                     <tr>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JKK</td>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Rp. {{ number_format($data_payroll->jkk) }}
+                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKK</td>
+                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkk) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_payroll->jkm != 0)
                                     <tr>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS JKM</td>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Rp. {{ number_format($data_payroll->jkm) }}
+                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKM</td>
+                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkm) }}
                                         </td>
                                     </tr>
                                 @endif --}}
                                 @if ($data_payroll->kesehatan != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">BPJS Kesehatan
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS Kesehatan
                                         </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->kesehatan) }}
                                         </td>
                                     </tr>
                                 @endif
                                 @if ($data_karyawan->ptkp != 0)
                                     <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">PTKP</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP</td>
+                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_karyawan->ptkp) }}</td>
                                     </tr>
                                 @endif
 
                                 <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">Total Gaji</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Total Gaji</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         Rp. {{ number_format($data_payroll->total) }}
                                     </td>
                                 </tr>
