@@ -41,22 +41,20 @@ use App\Http\Controllers\ExcelUploaderController;
 // Middleware
 Auth::routes([
     'register' => false, // Register Routes...
-  'verify' => false, // Email Verification Routes...
+    'verify' => false, // Email Verification Routes...
 ]);
-
 
 Route::middleware(['guest'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
-
     Route::middleware(['User'])->group(function () {
         // DASHBOARD
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-        Route::get('/userinfo', function() {
+        Route::get('/userinfo', function () {
             return view('user_information');
         });
-        Route::get('/userslipgaji', function() {
+        Route::get('/userslipgaji', function () {
             return view('user_slipgaji');
         });
 
@@ -84,7 +82,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/informationwr', Informationwr::class);
             Route::get('/tambahan', Tambahanwr::class);
 
-
             // YF PRESENSI
             Route::get('/yfupload', function () {
                 return view('yfpresensi.upload');
@@ -95,25 +92,23 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
             Route::get('/presensidetailwr', Presensidetailwr::class);
 
-            
-
             // USER SETTING
 
             Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
             Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
             Route::get('/payrollindex', Prindexwr::class);
 
-
+            // KHUSUS Super Admin
             Route::middleware(['SuperAdmin'])->group(function () {
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
                 // PAYROLL
-            Route::get('/payroll', Payrollwr::class);
-            Route::get('/reportindex', [ReportController::class, 'index']);
-            Route::post('/createexcel', [ReportController::class, 'createExcel']);
+                Route::get('/payroll', Payrollwr::class);
+                Route::get('/reportindex', [ReportController::class, 'index']);
+                Route::post('/createexcel', [ReportController::class, 'createExcel']);
 
+                // KHUSUS DEVELOPER
                 Route::middleware(['Developer'])->group(function () {
-                    // KHUSUS DEVELOPER
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
                     Route::get('/importKaryawanExcel', [KaryawanController::class, 'importKaryawanExcel']);
                     Route::get('/karyawanviewimport', function () {
@@ -131,9 +126,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/exceluploader', [ExcelUploaderController::class, 'index']);
                     Route::post('/xlstore', [ExcelUploaderController::class, 'store']);
                     Route::get('/UserLog', UserLog::class);
-
-
-
 
                     Route::get('/MissingId', MissingId::class);
 

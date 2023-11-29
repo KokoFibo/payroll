@@ -124,6 +124,7 @@
                     {{ $filteredData->onEachSide(0)->links() }}
                 </div>
             </div>
+            <p class="px-3 text-success">Last update: {{ $last_build }} </p>
         </div>
     </div>
     <script>
