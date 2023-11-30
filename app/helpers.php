@@ -256,7 +256,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         }
     }
-    if($jabatan == 'Satpam'){
+    if(($jabatan == 'Satpam') && (is_sunday($tgl) == false)){
         $jam_kerja = 12;
         // $jam_kerja = $jam_kerja - $total_late;
     }
