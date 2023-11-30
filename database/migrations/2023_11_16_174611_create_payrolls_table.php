@@ -30,12 +30,17 @@ return new class extends Migration
             $table->double('jam_lembur',6,1)->nullable();
             $table->double('jumlah_jam_terlambat',6,1)->nullable();
             $table->integer('tambahan_shift_malam')->nullable();
+            $table->double('tambahan_jam_shift_malam',4,1)->nullable();
+
             $table->integer('gaji_pokok');
             $table->integer('gaji_lembur')->nullable();
             $table->integer('gaji_bpjs')->nullable();
             $table->double('subtotal',12,1);
             $table->double('bonus1x',12,1)->nullable();
             $table->double('potongan1x',12,1)->nullable();
+            // $table->double('bonus_karyawan',12,1)->nullable();
+            // $table->double('potongan_karyawan',12,1)->nullable();
+
             $table->double('total_noscan',12,1)->nullable();
             $table->double('denda_lupa_absen',12,1)->nullable();
             $table->double('pajak',8,1)->nullable();

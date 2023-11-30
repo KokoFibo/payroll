@@ -92,6 +92,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
             Route::get('/presensidetailwr', Presensidetailwr::class);
 
+            // Presensi Summary Excel
+            Route::get('/presensisummaryindex', [ReportController::class, 'presensi_summary_index']);
+            Route::post('/createexcelpresensisummary', [ReportController::class, 'createExcelPresensiSummary']);
+
+
             // USER SETTING
 
             Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
@@ -106,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
-
+                
                 // KHUSUS DEVELOPER
                 Route::middleware(['Developer'])->group(function () {
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');

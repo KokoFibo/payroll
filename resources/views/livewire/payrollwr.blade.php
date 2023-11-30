@@ -16,7 +16,11 @@
                     </button>
                 </div>
                 <div>
-                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2">Report</button></a>
+
+                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2">Report for
+                            bank</button></a>
+
+
                     <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
@@ -90,14 +94,14 @@
                         <div
                             class="col-xl-4 mt-xl-0 mt-2 d-flex align-items-center justify-content-between justify-content-xl-end gap-2 ">
                             <div>
-                                <button class="btn btn-success">Excel</button>
+                                <button wire:click="export" class="btn btn-success">Excel</button>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <button class="btn btn-danger">PDF</button>
                             </div>
                             <div>
                                 <button class="btn btn-dark">Print</button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
