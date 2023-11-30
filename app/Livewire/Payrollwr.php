@@ -32,98 +32,53 @@ class Payrollwr extends Component
     
     public function export () {
 
-        // $nama_file="";
-        // if ($this->status == 1) {
-        //     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
-        // } elseif ($this->status == 2) {
-        //     $statuses = ['Blacklist'];
-        // } else {
-        //     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
-        // }
-        // switch ($this->selected_company) {
-        //     case 0:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)->get();
-        //         $nama_file="semua_payroll.xlsx";
-        //         break;
+        $nama_file="";
+        
+        switch ($this->selected_company) {
+            case 0:
+                $nama_file="semua_payroll.xlsx";
+                break;
 
-        //     case 1:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('placement', 'YCME')->get();
-        //             $nama_file="payroll_pabrik1.xlsx";
-        //         break;
+            case 1:
+                    $nama_file="payroll_pabrik1.xlsx";
+                break;
 
-        //     case 2:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('placement', 'YEV')->get();
-        //             $nama_file="payroll_pabrik2.xlsx";
+            case 2:
+                    $nama_file="payroll_pabrik2.xlsx";
+                break;
 
-        //         break;
+            case 3:
+                    $nama_file="payroll_kantor.xlsx";
+                break;
 
-        //     case 3:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereIn('placement', ['YIG', 'YSM'])->get();
-        //             $nama_file="payroll_kantor.xlsx";
+            case 4:
+                    $nama_file="payroll_ASB.xlsx";
+                break;
 
-        //         break;
+            case 5:
+                   $nama_file="payroll_DPA.xlsx";
+                break;
 
-        //     case 4:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'ASB')
-        //             ->where('company', 'ASB')
-        //             ->get();
-        //             $nama_file="payroll_ASB.xlsx";
+            case 6:
+                   $nama_file="payroll_YCME.xlsx";
+                break;
 
-        //         break;
+            case 7:
+                   $nama_file="payroll_YEV.xlsx";
+                break;
 
-        //     case 5:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'DPA')
-        //             ->where('company', 'DPA')
-        //            ->get();
-        //            $nama_file="payroll_DPA.xlsx";
+            case 8:
+                   $nama_file="payroll_YIG.xlsx";
+                break;
 
-        //         break;
-
-        //     case 6:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'YCME')
-        //             ->where('company', 'YCME')
-        //            ->get();
-        //            $nama_file="payroll_YCME.xlsx";
-
-        //         break;
-
-        //     case 7:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'YEV')
-        //             ->where('company', 'YEV')
-        //            ->get();
-        //            $nama_file="payroll_YEV.xlsx";
-
-        //         break;
-
-        //     case 8:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'YIG')
-        //             ->where('company', 'YIG')
-        //            ->get();
-        //            $nama_file="payroll_YIG.xlsx";
-
-        //         break;
-
-        //     case 9:
-        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('company', 'YSM')
-        //             ->where('company', 'YSM')
-        //            ->get();
-        //            $nama_file="payroll_YSM.xlsx";
-
-        //         break;
-        // }
+            case 9:
+                   $nama_file="payroll_YSM.xlsx";
+                break;
+        }
 
         // return Excel::download(new PayrollExport($payroll), $nama_file);
-        $nama_file = "payroll.xlsx";
-        return Excel::download(new PayrollExport($this->selected_company), $nama_file);
+        // $nama_file = "payroll.xlsx";
+        return Excel::download(new PayrollExport($this->selected_company, $this->status ), $nama_file);
     }
 
 
@@ -437,6 +392,7 @@ class Payrollwr extends Component
 
             $payroll->iuran_air = $data->karyawan->iuran_air;
             $payroll->iuran_locker = $data->karyawan->iuran_locker;
+            $payroll->tambahan_jam_shift_malam = $data->tambahan_jam_shift_malam;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur;
 

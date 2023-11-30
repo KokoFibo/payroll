@@ -16,8 +16,11 @@
                     </button>
                 </div>
                 <div>
+
                     <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2">Report for
                             bank</button></a>
+
+
                     <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>

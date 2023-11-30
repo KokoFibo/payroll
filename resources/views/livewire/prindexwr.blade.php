@@ -41,13 +41,18 @@
         <div
             class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
 
-            <div class=" col-12" wire:loading>
+            <div class=" col-3">
+                {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
+                <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
+            </div>
+
+            <div class=" col-9" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
                 </button>
             </div>
-            <div class=" col-12">
+            <div class=" col-9">
                 {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
                 <button wire:click.prevent="getPayroll()" class="btn btn-primary col-12 col-xl-8"
                     wire:loading.remove>Build Jam

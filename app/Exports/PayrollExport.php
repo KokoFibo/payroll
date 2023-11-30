@@ -18,21 +18,27 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
 // class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
-class BankReportExcel implements  FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
+class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
 {
     use Exportable;
-    protected $selected_company;
-
-    // public function __construct (object $payroll) {
-    //     $this->payroll = $payroll;
-    // }
-
-    public function __construct ($selected_company) {
+    
+    
+        
+        protected $selected_company, $status;
+    public function __construct ($selected_company, $status) {
         $this->selected_company = $selected_company;
+        $this->status = $status;
+       
     }
 
     public function query () {
-        // $nama_file="";
+         if ($this->status == 1) {
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        } elseif ($this->status == 2) {
+            $statuses = ['Blacklist'];
+        } else {
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+        }
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
         } elseif ($this->status == 2) {
@@ -42,81 +48,80 @@ class BankReportExcel implements  FromQuery, WithHeadings, WithColumnFormatting,
         }
         switch ($this->selected_company) {
             case 0:
-                return Payroll::whereIn('status_karyawan', $statuses)->get();
-                $nama_file="semua_payroll.xlsx";
+                return Payroll::whereIn('status_karyawan', $statuses)
+                ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
                 break;
 
             case 1:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YCME')->get();
-                    $nama_file="payroll_pabrik1.xlsx";
+                 
+                    ->where('placement', 'YCME')
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
                 break;
 
             case 2:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV')->get();
-                    $nama_file="payroll_pabrik2.xlsx";
+                    ->where('placement', 'YEV')
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 3:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereIn('placement', ['YIG', 'YSM'])->get();
-                    $nama_file="payroll_kantor.xlsx";
+                    ->whereIn('placement', ['YIG', 'YSM'])
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 4:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'ASB')
-                    ->where('company', 'ASB')
-                    ->get();
-                    $nama_file="payroll_ASB.xlsx";
+                    ->whereMonth('date', 11)
+                    ->whereYear('date', 2023);
 
                 break;
 
             case 5:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'DPA')
-                    ->where('company', 'DPA')
-                   ->get();
-                   $nama_file="payroll_DPA.xlsx";
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 6:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YCME')
-                    ->where('company', 'YCME')
-                   ->get();
-                   $nama_file="payroll_YCME.xlsx";
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 7:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YEV')
-                    ->where('company', 'YEV')
-                   ->get();
-                   $nama_file="payroll_YEV.xlsx";
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 8:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YIG')
-                    ->where('company', 'YIG')
-                   ->get();
-                   $nama_file="payroll_YIG.xlsx";
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
 
             case 9:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YSM')
-                    ->where('company', 'YSM')
-                   ->get();
-                   $nama_file="payroll_YSM.xlsx";
+                    ->whereMonth('date', 11)
+                ->whereYear('date', 2023);
 
                 break;
         }
@@ -127,55 +132,104 @@ class BankReportExcel implements  FromQuery, WithHeadings, WithColumnFormatting,
         return [
             $payroll->id_karyawan,
             $payroll->nama,
+            $payroll->nama_bank,
+            $payroll->nomor_rekening,
             $payroll->jabatan,
-
-
+            $payroll->company,
+            $payroll->placement,
+            $payroll->metode_penggajian,
+            $payroll->hari_kerja,
+            $payroll->jam_kerja,
+            $payroll->jam_lembur,
+            $payroll->jumlah_jam_terlambat,
+            $payroll->tambahan_shift_malam,
+            $payroll->gaji_pokok,
+            $payroll->gaji_lembur,
+            $payroll->gaji_bpjs,
+            $payroll->bonus1x,
+            $payroll->potongan1x,
+            $payroll->total_noscan,
+            $payroll->denda_lupa_absen,
+            $payroll->pajak,
+            $payroll->jht,
+            $payroll->jp,
+            $payroll->jkk,
+            $payroll->jkm,
+            $payroll->kesehatan,
+            $payroll->iuran_air,
+            $payroll->iuran_locker,
+            $payroll->status_karyawan,
+            $payroll->total,
+          
         ];
     }
 
+    public function headings(): array
+    {
+        return [
+            [
+                'Payroll'
+            ],
+            [
+                'ID Karyawan',
+                'Nama',
+            'Nama Bank',
+            'No. Rekening',
+            'Jabatan',
+            'Company',
+            'Placement',
+            'Metode Penggajian',
+            'Total Hari Kerja',
+            'Total Jam Kerja (bersih)',
+            'Jam Lembur',
+            'Jumlah Jam Terlambat',
+            'Tambahan Shift Malam',
+            'Gaji Pokok',
+            'Gaji Lembur',
+            'Gaji BPJS',
+            'Bonus/U. Makan',
+            'Potongan 1X Potong',
+            'Total No Scan',
+            'Denda Lupa Absen',
+            'Pajak',
+            'JHT',
+            'JP',
+            'JKK',
+            'JKM',
+            'Kesehatan',
+            'Iuran Air',
+            'Iuran Locker',
+            'Status Karyawan',
+            'Total',
    
-
-
-
-    // public function collection()
-    // {
-    //     return $this->payroll;
-    // }
+            ],
+        ];
+    }
 
     public function title(): string {
         return 'Laporan Gaji Karyawan';
     }
 
-    // public function headings(): array
-    // {
-    //     return [
-    //         [
-    //             'Data Karyawan'
-    //         ],
-    //         [
-    //             'Nama',
-    //             'Bank',
-    //             'No. Rekening',
-    //             'Total Pembayaran',
-    //             'Company',
-    //             'Placement',
-    //         ],
-    //     ];
-    // }
-
     
-
-
     public function columnFormats(): array
     {
         return [
             // 'C' => NumberFormat::FORMAT_TEXT,
-            'C' => "0",
-            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'D' => "0",
+            'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'P' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'Q' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'R' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'V' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'W' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'Z' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'AA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'AB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'AD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
         ];
     }
-
-    
 
     public function styles (Worksheet $sheet) {
         return [

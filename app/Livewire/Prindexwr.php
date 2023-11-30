@@ -326,6 +326,7 @@ class Prindexwr extends Component
 
             $payroll->iuran_air = $data->karyawan->iuran_air;
             $payroll->iuran_locker = $data->karyawan->iuran_locker;
+            $payroll->tambahan_jam_shift_malam = $data->tambahan_jam_shift_malam;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur;
 
