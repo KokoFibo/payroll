@@ -340,7 +340,7 @@
                                                             }
                                                         }
                                                     }
-                                                    if ($jam_lembur > 5 && is_sunday($d->date) == false) {
+                                                    if ($jam_lembur >= 9 && is_sunday($d->date) == false) {
                                                         $jam_lembur = 0;
                                                     }
                                                     if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {

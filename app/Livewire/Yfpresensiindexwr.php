@@ -124,7 +124,7 @@ public function showDetail($user_id)
                 }
             }
 
-            if(($jam_lembur > 5) && (is_sunday($d->date) == false)) {
+            if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
                 $jam_lembur = 0;
             }
 

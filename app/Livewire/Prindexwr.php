@@ -66,14 +66,14 @@ class Prindexwr extends Component
     public function getPayroll()
     {
         // supaya tidak dilakukan bersamaan
-        // $lock = Lock::find(1);
-        // if ($lock->build) {
-        //     $lock->build = 0;
-        //     return back()->with('error', 'Mohon dicoba sebentar lagi');
-        // } else {
-        //     $lock->build = 1;
-        //     $lock->save();
-        // }
+        $lock = Lock::find(1);
+        if ($lock->build) {
+            $lock->build = 0;
+            return back()->with('error', 'Mohon dicoba sebentar lagi');
+        } else {
+            $lock->build = 1;
+            $lock->save();
+        }
 
         $jamKerjaKosong = Jamkerjaid::count();
         $adaPresensi = Yfrekappresensi::count();
@@ -187,7 +187,7 @@ class Prindexwr extends Component
                                 }
                             }
                         }
-                        if(($jam_lembur > 5) && (is_sunday($d->date) == false)) {
+                        if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
                             $jam_lembur = 0;
                         }
                         if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
@@ -260,8 +260,8 @@ class Prindexwr extends Component
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
         // $this->periode = $current_date->date;
 
-        // $lock->build = false;
-        // $lock->save();
+        $lock->build = false;
+        $lock->save();
 
         $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         $this->rebuild();

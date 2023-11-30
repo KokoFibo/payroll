@@ -10,7 +10,9 @@ use App\Models\Karyawan;
 use App\Models\Tambahan;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
+use App\Exports\PayrollExport;
 use App\Models\Yfrekappresensi;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Payrollwr extends Component
 {
@@ -28,6 +30,102 @@ class Payrollwr extends Component
     public $data_payroll;
     public $data_karyawan;
     
+    public function export () {
+
+        // $nama_file="";
+        // if ($this->status == 1) {
+        //     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        // } elseif ($this->status == 2) {
+        //     $statuses = ['Blacklist'];
+        // } else {
+        //     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+        // }
+        // switch ($this->selected_company) {
+        //     case 0:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)->get();
+        //         $nama_file="semua_payroll.xlsx";
+        //         break;
+
+        //     case 1:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('placement', 'YCME')->get();
+        //             $nama_file="payroll_pabrik1.xlsx";
+        //         break;
+
+        //     case 2:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('placement', 'YEV')->get();
+        //             $nama_file="payroll_pabrik2.xlsx";
+
+        //         break;
+
+        //     case 3:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereIn('placement', ['YIG', 'YSM'])->get();
+        //             $nama_file="payroll_kantor.xlsx";
+
+        //         break;
+
+        //     case 4:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'ASB')
+        //             ->where('company', 'ASB')
+        //             ->get();
+        //             $nama_file="payroll_ASB.xlsx";
+
+        //         break;
+
+        //     case 5:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'DPA')
+        //             ->where('company', 'DPA')
+        //            ->get();
+        //            $nama_file="payroll_DPA.xlsx";
+
+        //         break;
+
+        //     case 6:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'YCME')
+        //             ->where('company', 'YCME')
+        //            ->get();
+        //            $nama_file="payroll_YCME.xlsx";
+
+        //         break;
+
+        //     case 7:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'YEV')
+        //             ->where('company', 'YEV')
+        //            ->get();
+        //            $nama_file="payroll_YEV.xlsx";
+
+        //         break;
+
+        //     case 8:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'YIG')
+        //             ->where('company', 'YIG')
+        //            ->get();
+        //            $nama_file="payroll_YIG.xlsx";
+
+        //         break;
+
+        //     case 9:
+        //         $payroll = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('company', 'YSM')
+        //             ->where('company', 'YSM')
+        //            ->get();
+        //            $nama_file="payroll_YSM.xlsx";
+
+        //         break;
+        // }
+
+        // return Excel::download(new PayrollExport($payroll), $nama_file);
+        $nama_file = "payroll.xlsx";
+        return Excel::download(new PayrollExport($this->selected_company), $nama_file);
+    }
+
 
     public function showDetail($id_karyawan)
     {
@@ -74,19 +172,19 @@ class Payrollwr extends Component
         }
     }
 
-    // ok1
+   // ok1
     // #[On('getPayroll')]
     public function getPayroll()
     {
         // supaya tidak dilakukan bersamaan
-        // $lock = Lock::find(1);
-        // if ($lock->build) {
-        //     $lock->build = 0;
-        //     return back()->with('error', 'Mohon dicoba sebentar lagi');
-        // } else {
-        //     $lock->build = 1;
-        //     $lock->save();
-        // }
+        $lock = Lock::find(1);
+        if ($lock->build) {
+            $lock->build = 0;
+            return back()->with('error', 'Mohon dicoba sebentar lagi');
+        } else {
+            $lock->build = 1;
+            $lock->save();
+        }
 
         $jamKerjaKosong = Jamkerjaid::count();
         $adaPresensi = Yfrekappresensi::count();
@@ -200,7 +298,7 @@ class Payrollwr extends Component
                                 }
                             }
                         }
-                        if(($jam_lembur > 5) && (is_sunday($d->date) == false)) {
+                        if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
                             $jam_lembur = 0;
                         }
                         if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
@@ -273,8 +371,8 @@ class Payrollwr extends Component
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
         // $this->periode = $current_date->date;
 
-        // $lock->build = false;
-        // $lock->save();
+        $lock->build = false;
+        $lock->save();
 
         $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         $this->rebuild();

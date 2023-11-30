@@ -36,6 +36,9 @@ return new class extends Migration
             $table->double('subtotal',12,1);
             $table->double('bonus1x',12,1)->nullable();
             $table->double('potongan1x',12,1)->nullable();
+            // $table->double('bonus_karyawan',12,1)->nullable();
+            // $table->double('potongan_karyawan',12,1)->nullable();
+
             $table->double('total_noscan',12,1)->nullable();
             $table->double('denda_lupa_absen',12,1)->nullable();
             $table->double('pajak',8,1)->nullable();
