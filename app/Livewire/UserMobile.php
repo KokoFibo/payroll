@@ -68,7 +68,7 @@ class UserMobile extends Component
     public function render()
     {
         // $this->user_id = 1111;
-        // $this->user_id = 1086;
+        // $this->user_id = 3288;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -132,7 +132,7 @@ class UserMobile extends Component
                 }
             }
 
-            if($jam_lembur > 5) {
+            if(($jam_lembur > 5) && (is_sunday($d->date) == false)) {
                 $jam_lembur = 0;
             }
                 if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {
@@ -142,6 +142,11 @@ class UserMobile extends Component
                     $jam_kerja = 6;
                 } else {
                     $jam_kerja = 8;
+                }
+
+                if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+
                 }
             }
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;

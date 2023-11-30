@@ -98,6 +98,7 @@ public function showDetail($user_id)
             $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
             if(is_sunday($d->date)){
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+                
             } else {
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
             }
@@ -123,9 +124,10 @@ public function showDetail($user_id)
                 }
             }
 
-            if($jam_lembur > 5) {
+            if(($jam_lembur > 5) && (is_sunday($d->date) == false)) {
                 $jam_lembur = 0;
             }
+
             if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {
                 if( is_friday($d->date) ) {
                     $jam_kerja = 7.5;
@@ -134,6 +136,10 @@ public function showDetail($user_id)
                 } else {
                     $jam_kerja = 8;
                 }
+            }
+            if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+
             }
 
             $this->dataArr->push([
