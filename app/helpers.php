@@ -258,7 +258,9 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     }
     if($jabatan == 'Satpam'){
         $jam_kerja = 12;
+        // $jam_kerja = $jam_kerja - $total_late;
     }
+    
 // lolo
     if(is_sunday($tgl)) {
         // $t1 = strtotime(pembulatanJamOvertimeIn($first_in));

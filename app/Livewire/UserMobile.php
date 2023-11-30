@@ -68,7 +68,7 @@ class UserMobile extends Component
     public function render()
     {
         // $this->user_id = 1111;
-        // $this->user_id = 2;
+        // $this->user_id = 1086;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -135,7 +135,7 @@ class UserMobile extends Component
             if($jam_lembur > 5) {
                 $jam_lembur = 0;
             }
-            if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' ) {
+                if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {
                 if( is_friday($d->date) ) {
                     $jam_kerja = 7.5;
                 } elseif (is_saturday($d->date)) {

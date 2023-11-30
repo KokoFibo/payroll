@@ -91,9 +91,9 @@ public function showDetail($user_id)
             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
             $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
             //evaluasi ini
-            if ($d->karyawan->jabatan === 'Satpam') {
-                $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
-            }
+            // if ($d->karyawan->jabatan === 'Satpam') {
+            //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
+            // }
 
             $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
             if(is_sunday($d->date)){
@@ -126,7 +126,7 @@ public function showDetail($user_id)
             if($jam_lembur > 5) {
                 $jam_lembur = 0;
             }
-            if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' ) {
+            if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {
                 if( is_friday($d->date) ) {
                     $jam_kerja = 7.5;
                 } elseif (is_saturday($d->date)) {

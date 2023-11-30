@@ -130,6 +130,11 @@
                                     <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                         Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                 </tr>
+                                <tr>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Subtotal Gaji</td>
+                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                        Rp. {{ number_format($data_payroll->subtotal) }}</td>
+                                </tr>
                                 @if ($data_payroll->tambahan_shift_malam != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Bonus Shift Malam
@@ -139,11 +144,7 @@
                                         </td>
                                     </tr>
                                 @endif
-                                <tr>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Subtotal Gaji</td>
-                                    <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                        Rp. {{ number_format($data_payroll->subtotal) }}</td>
-                                </tr>
+
                                 @if ($data_karyawan->iuran_air != 0)
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Iuran air minum
@@ -342,7 +343,7 @@
                                                     if ($jam_lembur > 5) {
                                                         $jam_lembur = 0;
                                                     }
-                                                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM') {
+                                                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
                                                         if (is_friday($d->date)) {
                                                             $jam_kerja = 7.5;
                                                         } elseif (is_saturday($d->date)) {

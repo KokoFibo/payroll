@@ -131,7 +131,8 @@
                                 <th wire:click="sortColumnName('id_karyawan')">Hari Kerja <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jam_kerja')">Jam Kerja <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('jam_kerja')">Jam Kerja Bersih <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('jam_lembur')">Jam Lembur <i
                                         class="fa-solid fa-sort"></i>
