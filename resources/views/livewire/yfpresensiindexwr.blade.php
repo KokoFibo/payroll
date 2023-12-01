@@ -57,9 +57,9 @@
 
     {{-- <div
         class=" gap-3  p-xl-4 d-flex  flex-column flex-xl-row align-items-center justify-content-xl-between mt-xl-0 mt-2 "> --}}
-    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between   pt-4">
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between   pt-2">
 
-        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row gap-2 ">
+        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row  gap-2 gap-xl-0 ">
             <div class="col-xl-7 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -76,14 +76,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-12 gap-3 justify-content-evenly  d-flex   ">
+        <div class="col-xl-3 col-12 gap-3 text-center     ">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
         </div>
 
-        <div class="col-xl-3 col-12 d-flex flex-row ">
+        <div class="col-xl-3 col-12 d-flex flex-row  ">
             <div class="col-6 ">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
