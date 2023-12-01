@@ -58,7 +58,6 @@
                                     <div class="text-sm text-gray-500">{{ $d->description }}</div>
                                 </div>
                             </div>
-
                         </div>
                     @endforeach
                 </div>
