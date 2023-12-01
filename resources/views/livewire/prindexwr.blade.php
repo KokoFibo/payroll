@@ -8,7 +8,7 @@
     @section('title', 'Presensi Detail')
     <h4 class="text-center text-bold pt-2">Presensi Detail</h4>
     <div class="col-12 d-flex flex-xl-row flex-column justify-content-xl-between">
-        <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-3 gap-2">
+        <div class="col-xl-9 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2">
             <div class="col-xl-6 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -40,24 +40,22 @@
         </div>
 
         <div
-            class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
+            class="col-xl-3 col-12 gap-3 gap-xl-0 p-xl-4 d-flex justify-content-evenly  flex-xl-row text-center {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
 
-            <div class=" col-3">
+            <div class=" col-6">
                 {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
-                <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
+                <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2"
+                        wire:loading.remove>Excel</button></a>
             </div>
 
-            <div class=" col-9" wire:loading>
+            <div class=" col-12" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
                 </button>
             </div>
-            <div class=" col-9">
-                {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
-                <button wire:click.prevent="getPayroll()" class="btn btn-primary col-12 col-xl-8"
-                    wire:loading.remove>Build Jam
-                    Kerja</button>
+            <div class=" col-6">
+                <button wire:click.prevent="getPayroll()" class="btn btn-primary" wire:loading.remove>Rebuild</button>
             </div>
 
         </div>

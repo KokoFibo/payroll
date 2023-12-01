@@ -2,9 +2,8 @@
     @section('title', 'Presensi')
 
 
-    <div
-        class="d-flex  flex-column flex-xl-row col-12 col-xl-11   justify-content-xl-between gap-2 gap-xl-5 px-xl-4 pt-4">
-        <div class="col-12 col-xl-3 bg-success p-2" style=" border-radius: 10px;">
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
+        <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
                 <div class="col-4 text-center">Hadir</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -17,7 +16,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-xl-3 bg-warning p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-warning py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">No scan</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -29,7 +28,7 @@
                 <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
-        <div class="col-12 col-xl-3 bg-info p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-info py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Late</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -41,7 +40,7 @@
                 <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
-        <div class="col-12 col-xl-3 bg-primary p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-primary py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">Overtime</div>
                 <div class="col-4 text-center">Pagi</div>
@@ -55,15 +54,19 @@
         </div>
     </div>
 
-    <div class="col-xl-11 col-12  p-xl-4 d-flex flex-column flex-xl-row align-items-center gap-2 mt-xl-0 mt-2 ">
-        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row gap-2 ">
-            <div class="col-xl-8 col-12">
+
+    {{-- <div
+        class=" gap-3  p-xl-4 d-flex  flex-column flex-xl-row align-items-center justify-content-xl-between mt-xl-0 mt-2 "> --}}
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between   pt-2">
+
+        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row  gap-2 gap-xl-0 ">
+            <div class="col-xl-7 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
                 </div>
             </div>
-            <div class="col-xl-4 col-12">
+            <div class="col-xl-5 col-12">
                 <div>
                     <div class="input-group">
                         <button class="btn btn-primary" type="button"><i
@@ -73,31 +76,33 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-12 justify-content-evenly  d-flex   ">
+        <div class="col-xl-3 col-12 gap-3 text-center     ">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
         </div>
 
-        <div class="col-xl-2 col-12 d-flex align-items-center">
-            <select class="form-select" wire:model.live="perpage">
-                {{-- <option selected>Open this select menu</option> --}}
-                <option value="10">10 rows perpage</option>
-                <option value="15">15 rows perpage</option>
-                <option value="20">20 rows perpage</option>
-                <option value="25">25 rows perpage</option>
-            </select>
+        <div class="col-xl-3 col-12 d-flex flex-row  ">
+            <div class="col-6 ">
+                <select class="form-select" wire:model.live="perpage">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="10">10 rows perpage</option>
+                    <option value="15">15 rows perpage</option>
+                    <option value="20">20 rows perpage</option>
+                    <option value="25">25 rows perpage</option>
+                </select>
 
-        </div>
-        <div class="col-xl-2 col-12 d-flex align-items-center">
-            <select class="form-select" wire:model.live="location">
-                {{-- <option selected>Open this select menu</option> --}}
-                <option value="All">All</option>
-                <option value="Kantor">Kantor</option>
-                <option value="Pabrik 1">Pabrik 1</option>
-                <option value="Pabrik 2">Pabrik 2</option>
-            </select>
+            </div>
+            <div class="col-6 ">
+                <select class="form-select" wire:model.live="location">
+                    {{-- <option selected>Open this select menu</option> --}}
+                    <option value="All">All</option>
+                    <option value="Kantor">Kantor</option>
+                    <option value="Pabrik 1">Pabrik 1</option>
+                    <option value="Pabrik 2">Pabrik 2</option>
+                </select>
+            </div>
         </div>
     </div>
 

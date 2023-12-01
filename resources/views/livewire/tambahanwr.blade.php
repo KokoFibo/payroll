@@ -1,6 +1,6 @@
 <div>
     @section('title', 'Bonus dan Potongan')
-    <div class="col-12 col-xl-8 mx-auto pt-3">
+    <div class="col-12  mx-auto pt-3">
         <div class="card ">
             <div class="card-header bg-secondary">
                 <label class="col-sm-2  col-form-label">Bonus dan Potongan</label>
@@ -111,7 +111,7 @@
 
         </div>
     </div>
-    <div class="col-12 col-xl-8 mx-auto pt-3">
+    <div class="col-12  mx-auto pt-3">
 
         @if ($modal == false)
             <style>
