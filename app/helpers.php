@@ -19,18 +19,18 @@ function ada_tambahan($id) {
 
 function monthName($tgl) {
     switch ($tgl) {
-        case 1 : $monthNama = 'January'; break;
-        case 2 : $monthNama = 'February'; break;
-        case 3 : $monthNama = 'March'; break;
+        case 1 : $monthNama = 'Januari'; break;
+        case 2 : $monthNama = 'Februari'; break;
+        case 3 : $monthNama = 'Maret'; break;
         case 4 : $monthNama = 'April'; break;
-        case 5 : $monthNama = 'May'; break;
-        case 6 : $monthNama = 'June'; break;
-        case 7 : $monthNama = 'July'; break;
-        case 8 : $monthNama = 'August'; break;
+        case 5 : $monthNama = 'Mei'; break;
+        case 6 : $monthNama = 'Juni'; break;
+        case 7 : $monthNama = 'Juli'; break;
+        case 8 : $monthNama = 'Agustus'; break;
         case 9 : $monthNama = 'September'; break;
-        case 10 : $monthNama = 'October'; break;
+        case 10 : $monthNama = 'Oktober'; break;
         case 11 : $monthNama = 'November'; break;
-        case 12 : $monthNama = 'December'; break;
+        case 12 : $monthNama = 'Desember'; break;
     }
     return $monthNama;
 }

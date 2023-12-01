@@ -25,6 +25,8 @@ class UserMobile extends Component
     public $data_karyawan;
     public $total_tambahan_shift_malam;
     public $tambahan_shift_malam;
+    public $cx;
+
     
     // public function close () {
     //     $this->is_slipGaji = false;
@@ -52,8 +54,7 @@ class UserMobile extends Component
     }
     public function mount () {
         $this->is_slipGaji = false;
-    // $this->selectedMonth = Carbon::now()->month;
-    $this->selectedMonth =11;
+    $this->selectedMonth = Carbon::now()->month;
     $this->selectedYear = Carbon::now()->year;
 
     }
@@ -68,6 +69,7 @@ class UserMobile extends Component
 
     public function render()
     {
+        $this->cx++;
         // $this->user_id = 1111;
         // $this->user_id = 3288;
         $this->user_id = auth()->user()->username;
@@ -85,7 +87,8 @@ class UserMobile extends Component
         $data = Yfrekappresensi::where('user_id', $this->user_id)
         ->whereMonth('date', $this->selectedMonth)
         ->whereYear('date', $this->selectedYear)
-        ->orderBy('date', 'desc')->simplePaginate(5);
+        // ->orderBy('date', 'desc')->simplePaginate(5);
+        ->orderBy('date', 'desc')->get();
 
         $data1 = Yfrekappresensi::where('user_id', $this->user_id)
         ->whereMonth('date', $this->selectedMonth)
