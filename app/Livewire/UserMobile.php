@@ -52,7 +52,8 @@ class UserMobile extends Component
     }
     public function mount () {
         $this->is_slipGaji = false;
-    $this->selectedMonth = Carbon::now()->month;
+    // $this->selectedMonth = Carbon::now()->month;
+    $this->selectedMonth =11;
     $this->selectedYear = Carbon::now()->year;
 
     }
