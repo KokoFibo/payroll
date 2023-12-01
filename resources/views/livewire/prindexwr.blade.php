@@ -33,7 +33,8 @@
             <div class="col-xl-2 col-12">
                 <select class="form-select" wire:model.live="month">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="{{ $month }}">{{ monthName($month) }}</option>
+                    <option value="11">{{ monthName(11) }}</option>
+                    <option value="12">{{ monthName(12) }}</option>
                 </select>
             </div>
         </div>
