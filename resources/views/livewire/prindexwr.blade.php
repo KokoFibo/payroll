@@ -40,7 +40,7 @@
         </div>
 
         <div
-            class="col-xl-3 col-12  p-xl-4 d-flex  flex-xl-row flex-column {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
+            class="col-xl-3 col-12 gap-3 p-xl-4 d-flex  flex-xl-row flex-column {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
 
             <div class=" col-3">
                 {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
@@ -56,8 +56,7 @@
             <div class=" col-9">
                 {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
                 <button wire:click.prevent="getPayroll()" class="btn btn-primary col-12 col-xl-8"
-                    wire:loading.remove>Build Jam
-                    Kerja</button>
+                    wire:loading.remove>Rebuild</button>
             </div>
 
         </div>
