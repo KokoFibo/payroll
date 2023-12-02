@@ -141,6 +141,9 @@ public function showDetail($user_id)
                 $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
 
             }
+            if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                $jam_lembur = 6;
+            }
 
             $this->dataArr->push([
                 'tgl' => $tgl,

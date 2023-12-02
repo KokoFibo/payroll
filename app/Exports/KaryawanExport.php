@@ -3,172 +3,138 @@
 namespace App\Exports;
 
 use App\Models\Karyawan;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+// use Maatwebsite\Excel\Concerns\FromCollection;
+// use Maatwebsite\Excel\Concerns\FromQuery;
+// use Maatwebsite\Excel\Concerns\WithHeadings;
+// use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 // use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class KaryawanExport implements FromCollection, FromQuery,  ShouldAutoSize, WithHeadings
+use Style\Alignment;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+
+class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
 {
     /**
      * @return \Illuminate\Support\Collection
      */
-    protected $selectedAll;
-     public function __construct($selectedAll)
+    protected $selected_company, $selectStatus;
+
+    public function __construct($selected_company, $selectStatus)
     {
-        $this->selectedAll = $selectedAll;
+        $this->selected_company = $selected_company;
+        $this->selectStatus = $selectStatus;
     }
 
-    // public function columnFormats(): array
-    // {
-    //     return [
-    //         'M' => Text::make('No. Iden', 'no_identitas'),
-    //         'X' => Text::make('No. Rekening', 'nomor_rekening'),
-    //         // 'D' => Date::make('Date of Birth', 'dob'),
-    //     ];
-    // }
-
-    public function collection()
-    {
-        // return Karyawan::all();
-
-        // return Karyawan::where('status_karyawan', 'Karyawan Tetap')->get(['id_karyawan', 'nama', 'email', 'hp', 'telepon', 'tempat_lahir', 'tanggal_lahir', 'gender', 'status_pernikahan', 'golongan_darah', 'agama', 'jenis_identitas', 'no_identitas', 'alamat_identitas', 'alamat_tinggal', 'status_karyawan', 'tanggal_bergabung', 'company', 'departemen', 'jabatan', 'level_jabatan', 'metode_penggajian', 'gaji_pokok', 'gaji_overtime', 'bonus', 'tunjangan_jabatan', 'tunjangan_bahasa', 'tunjangan_skill', 'tunjangan_lembur_sabtu', 'tunjangan_lama_kerja', 'iuran_air', 'potongan_seragam', 'denda']);
-        return Karyawan::whereIn('id', $this->selectedAll)->get([
-            'id_karyawan',
-            'nama',
-            'email',
-            'tanggal_lahir',
-            'hp',
-            'telepon',
-            'tempat_lahir',
-            'gender',
-            'status_pernikahan',
-            'golongan_darah',
-            'agama',
-            'jenis_identitas',
-            'no_identitas',
-            'alamat_identitas',
-            'alamat_tinggal',
-            'status_karyawan',
-            'tanggal_bergabung',
-            'company',
-            'placement',
-            'departemen',
-            'jabatan',
-            'level_jabatan',
-            'nama_bank',
-            'nomor_rekening',
-            'metode_penggajian',
-            'gaji_pokok',
-            'gaji_overtime',
-            'bonus',
-            'tunjangan_jabatan',
-            'tunjangan_bahasa',
-            'tunjangan_skill',
-            'tunjangan_lembur_sabtu',
-            'tunjangan_lama_kerja',
-            'iuran_air',
-            'denda',
-            'potongan_seragam',
-            'potongan_JHT',
-            'potongan_JP',
-            'potongan_kesehatan'
-             ]);
-    }
-    public function headings(): array
-    {
-        return [
-            'ID',
-            'Nama',
-            'Email',
-            'Tanggal Lahir',
-            'HP',
-            'Telepon',
-            'Tempat Lahir',
-            'Gender',
-            'Status Pernikahan',
-            'Golongan Darah',
-            'Agama',
-            'Jenis Identitas',
-            'No. Identitas',
-            'Alamat Identitas',
-            'Alamat Tinggal',
-            'Status Karyawan',
-            'Tanggal Bergabung',
-            'Company',
-            'Placement',
-            'Departemen',
-            'Jabatan',
-            'Level Jabatan',
-            'Nama Bank',
-            'Nomor Rekening',
-            'Metode Penggajian',
-            'Gaji Pokok',
-            'Gaji Overtime',
-            'Bonus',
-            'Tunjangan Jabatan',
-            'Tunjangan Bahasa',
-            'Tunjangan Skill',
-            'Tunjangan Lembur Sabtu',
-            'Tunjangan Lama Kerja',
-            'Iuran Air',
-            'Denda',
-            'Potongan Seragam',
-            'P. JHT',
-            'P. JP',
-            'P. Kesehatan',
-            ];
-    }
     public function query()
     {
-        return Karyawan::all();
-        // return Karyawan::where('status_karyawan', 'Karyawan Tetap')->get();
-        // return Karyawan::whereIn('id', $this->selectedId);
-        // return Karyawan::whereIn('id', $this->selectedAll);
+        if ($this->selectStatus == 1) {
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        } elseif ($this->selectStatus == 2) {
+            $statuses = ['Blacklist'];
+        } else {
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+        }
+
+        switch ($this->selected_company) {
+            case 0:
+                return Karyawan::whereIn('status_karyawan', $statuses);
+                break;
+
+            case 1:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YCME');
+                break;
+
+            case 2:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV');
+                break;
+
+            case 3:
+                return Karyawan::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM']);
+                break;
+
+               
+
+            case 4:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'ASB');
+                break;
+
+            case 5:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'DPA');
+                break;
+
+            case 6:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YCME');
+                break;
+
+            case 7:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YEV');
+                break;
+
+            case 8:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YIG');
+                break;
+
+            case 9:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YSM');
+                break;
+        }
     }
-// ================================
-            // 'id',
-            // 'Nama',
-            // 'Email',
-            // 'Tanggal Lahir',
-            // 'HP',
-            // 'Telepon',
-            // 'Tempat Lahir',
-            // 'Gender',
-            // 'Status Pernikahan',
-            // 'Golongan Darah',
-            // 'Agama',
-            // 'Jenis Identitas',
-            // 'No. Identitas',
-            // 'Alamat Identitas',
-            // 'Alamat Tinggal',
-            // 'Status Karyawan',
-            // 'Tanggal Bergabung',
-            // 'Company',
-            // 'Placement',
-            // 'Departemen',
-            // 'Jabatan',
-            // 'Level Jabatan',
-            // 'Nama Bank',
-            // 'Nomor Rekening',
-            // 'Metode Penggajian',
-            // 'Gaji Pokok',
-            // 'Gaji Overtime',
-            // 'Bonus',
-            // 'Tunjangan Jabatan',
-            // 'Tunjangan Bahasa',
-            // 'Tunjangan Skill',
-            // 'Tunjangan Lembur Sabtu',
-            // 'Tunjangan Lama Kerja',
-            // 'Iuran Air',
-            // 'Denda',
-            // 'Potongan Seragam',
-            // 'P. JHT',
-            // 'P. JP',
-            // 'P. Kesehatan'
 
+    public function map($karyawan): array
+    {
+        return [$karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan, 
+        $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs];
+    }
 
+    public function columnFormats(): array
+    {
+        return [
+            // 'C' => NumberFormat::FORMAT_TEXT,
+            // 'D' => '0',
+           
+            'G' => NumberFormat::FORMAT_DATE_XLSX15,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+          
+           
+        ];
+    }
 
-// ====================================
+    public function headings(): array
+    {
+        return [['Data Karyawan'], ['ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
+        'Status Karyawan', 'Tanggal Bergabung','Metode Penggajian','Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS', 
+         ]];
+    }
+
+    public function title(): string
+    {
+        return 'Data Karyawan';
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            '1' => ['font' => ['bold' => true]],
+            '2' => ['font' => ['bold' => true]],
+            '1' => ['font' => ['size' => 24]],
+            // 'C' => ['text' => ['align' => 'center']],
+        ];
+        // atau bisa juga
+        // $sheet->getStyle('1')->getFont()->setBold(true);
+        // $sheet->getStyle('2')->getFont()->setBold(true);
+    }
+
 }

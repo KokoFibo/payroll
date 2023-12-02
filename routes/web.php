@@ -37,6 +37,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
+use App\Http\Controllers\KaryawanExcelController;
 
 // Middleware
 Auth::routes([
@@ -111,7 +112,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
-                
+
+                // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
+                // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
+
+
                 // KHUSUS DEVELOPER
                 Route::middleware(['Developer'])->group(function () {
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
