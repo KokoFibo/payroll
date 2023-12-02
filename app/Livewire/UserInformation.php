@@ -3,13 +3,13 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Information;
+use App\Models\Mobileinformation;
 
 class UserInformation extends Component
 {
     public function render()
     {
-        $data = Information::orderBy('date', 'desc')->get();
+        $data = Mobileinformation::orderBy('date', 'desc')->get();
         return view('livewire.user-information', compact('data'))->layout('layouts.polos');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Information;
+use App\Models\Mobileinformation;
 
 class Informationwr extends Component
 {
@@ -17,7 +18,7 @@ class Informationwr extends Component
 
     public function update ($id) {
         $this->id = $id;
-        $data = Information::find($id);
+        $data = Mobileinformation::find($id);
         // $this->date = $data->date ;
         $this->date =  date( 'd M Y', strtotime( $data->date ) );
 
@@ -27,7 +28,7 @@ class Informationwr extends Component
     }
 
     public function save () {
-        $data = Information::find($this->id);
+        $data = Mobileinformation::find($this->id);
         $this->date = date( 'Y-m-d', strtotime( $this->date ) );
 
         $data->date = $this->date;
@@ -43,7 +44,7 @@ class Informationwr extends Component
     }
 
     public function delete ($id) {
-        $data = Information::find($id);
+        $data = Mobileinformation::find($id);
         $data->delete();
         $this->reset();
         $this->dispatch( 'success', message: 'Informasi berhasil di delete' );
@@ -57,13 +58,13 @@ class Informationwr extends Component
         ]);
         $this->date = date( 'Y-m-d', strtotime( $this->date ) );
 
-        Information::create([
+        Mobileinformation::create([
             'title' => $this->title,
             'description' => $this->description,
             'date' =>  $this->date,
         ]);
         //     dd($this->title, $this->description );
-        // $data = new Information;
+        // $data = new Mobileinformation;
         // $data->title = $this->title;
         // $data->description = $this->description;
         // $data->save();
@@ -80,7 +81,7 @@ class Informationwr extends Component
     }
     public function render()
     {
-        $data = Information::orderBy('date', 'desc')->get();
+        $data = Mobileinformation::orderBy('date', 'desc')->get();
         return view('livewire.informationwr', compact('data'));
     }
 }
