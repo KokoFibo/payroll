@@ -22,9 +22,9 @@
                             bank</button></a>
 
 
-                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2"
-                        wire:loading.remove>Rebuild</button>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+                    {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
             </div>
         </div>
@@ -201,6 +201,7 @@
                                                 wire:click="showDetail({{ $p->id_karyawan }})" data-bs-toggle="modal"
                                                 data-bs-target="#payroll"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
+
                                         </td>
 
 
@@ -273,8 +274,17 @@
             <p class="px-3 text-success">Last update: {{ $last_build }} </p>
         </div>
     </div>
-    @if ($data_payroll != null && $data_karyawan != null)
-        @include('modals.payroll-modal')
-    @endif
+    {{-- @if ($data_payroll != null && $data_karyawan != null) --}}
+    @include('modals.payroll-modal')
+    <!-- Button trigger modal -->
+
+
+
+    {{-- @endif --}}
+
+
+
+
+
 
 </div>
