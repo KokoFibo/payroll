@@ -193,7 +193,6 @@
                         <tbody>
                             @if ($payroll->isNotEmpty())
 
-
                                 @foreach ($payroll as $p)
                                     <tr>
                                         <td>
@@ -274,13 +273,9 @@
             <p class="px-3 text-success">Last update: {{ $last_build }} </p>
         </div>
     </div>
-    {{-- @if ($data_payroll != null && $data_karyawan != null) --}}
-    @include('modals.payroll-modal')
-    <!-- Button trigger modal -->
-
-
-
-    {{-- @endif --}}
+    @if ($data_payroll != null && $data_karyawan != null)
+        @include('modals.payroll-modal')
+    @endif
 
 
 

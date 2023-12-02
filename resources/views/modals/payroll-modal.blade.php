@@ -15,6 +15,7 @@
 
                         </div>
                         <div class="card-body">
+
                             <table class="table">
                                 <tbody>
 
@@ -175,6 +176,7 @@
 
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>

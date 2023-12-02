@@ -123,7 +123,6 @@ class Payrollwr extends Component
                 ->whereYear('date', $this->year)
                 ->where('id_karyawan', $data->id_karyawan)
                 ->first();
-    
             $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
         }
     }
@@ -549,21 +548,30 @@ class Payrollwr extends Component
         switch ($this->selected_company) {
             case 0:
                 $total = Payroll::whereIn('status_karyawan', $statuses)->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search)->paginate($this->perpage);
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->paginate($this->perpage);
                 break;
 
             case 1:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YCME')
                     ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')->paginate($this->perpage);
+                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                    ->paginate($this->perpage);
                 break;
 
             case 2:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YEV')
                     ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')->paginate($this->perpage);
+                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                    ->paginate($this->perpage);
                 break;
 
             case 3:
@@ -582,6 +590,8 @@ class Payrollwr extends Component
                             ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
                     })
                     ->whereIn('placement', ['YIG', 'YSM'])
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
@@ -591,7 +601,10 @@ class Payrollwr extends Component
                     ->where('company', 'ASB')
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-                    ->where('company', 'ASB')
+                
+                ->where('company', 'ASB')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -600,7 +613,10 @@ class Payrollwr extends Component
                     ->where('company', 'DPA')
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-                    ->where('company', 'DPA')
+                
+                ->where('company', 'DPA')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -609,7 +625,10 @@ class Payrollwr extends Component
                     ->where('company', 'YCME')
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-                    ->where('company', 'YCME')
+                
+                ->where('company', 'YCME')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -618,7 +637,10 @@ class Payrollwr extends Component
                     ->where('company', 'YEV')
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-                    ->where('company', 'YEV')
+                
+                ->where('company', 'YEV')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -628,7 +650,10 @@ class Payrollwr extends Component
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-                    ->where('company', 'YIG')
+                
+                ->where('company', 'YIG')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -637,7 +662,10 @@ class Payrollwr extends Component
                     ->where('company', 'YSM')
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                    ->where('company', 'YSM')
+                
+                ->where('company', 'YSM')
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
         }
