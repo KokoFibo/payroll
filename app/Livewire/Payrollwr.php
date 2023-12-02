@@ -128,7 +128,7 @@ class Payrollwr extends Component
     }
 
     public function getPayrollQueue () {
-        // dispatch(new BuildPayrollJob($this->month, $this->year));
+        $this->dispatch(new BuildPayrollJob($this->month, $this->year));
         
  
     }
@@ -279,7 +279,7 @@ class Payrollwr extends Component
                         }
 
                         if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                            $jam_lembur = 6;
+                            $jam_lembur = 0;
                         }
 
                         // if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {

@@ -19,6 +19,7 @@ class BuildPayrollJob implements ShouldQueue
     protected $month, $year;
     public function __construct($month, $year)
     {
+       
         $this->month = $month;
         $this->year = $year;
     }
@@ -30,16 +31,16 @@ class BuildPayrollJob implements ShouldQueue
     public function handle(): void
     {
         // supaya tidak dilakukan bersamaan
-        $lock = Lock::find(1);
-        if ($lock->build) {
-            $lock->build = 0;
-            $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+        // $lock = Lock::find(1);
+        // if ($lock->build) {
+        //     $lock->build = 0;
+        //     $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
 
-        } else {
-            $lock->build = 1;
-            $lock->save();
-        }
-
+        // } else {
+        //     $lock->build = 1;
+        //     $lock->save();
+        // }
+            dd('job');
         $jamKerjaKosong = Jamkerjaid::count();
         $adaPresensi = Yfrekappresensi::count();
         if ($jamKerjaKosong == null && $adaPresensi == null) {
@@ -169,6 +170,10 @@ class BuildPayrollJob implements ShouldQueue
                             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
 
                         }
+                        if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                            $jam_lembur = 0;
+                        }
+
 
                         // if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
 
@@ -369,8 +374,8 @@ class BuildPayrollJob implements ShouldQueue
                 $payroll->save();
             }
         }
-        $lock->build = false;
-        $lock->save();
+        // $lock->build = false;
+        // $lock->save();
         $this->dispatch('success', message: 'Payroll built succesfully');
 
         $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
