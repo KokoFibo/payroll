@@ -142,7 +142,7 @@ public function showDetail($user_id)
 
             }
             if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                $jam_lembur = 6;
+                $jam_lembur = 0;
             }
 
             $this->dataArr->push([

@@ -185,7 +185,7 @@
                                                 }
 
                                                 if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                                                    $jam_lembur = 6;
+                                                    $jam_lembur = 0;
                                                 }
                                             @endphp
                                             {{ $jam_kerja }}
