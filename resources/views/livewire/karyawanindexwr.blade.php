@@ -18,7 +18,7 @@
 
     <div class="d-xl-flex justify-content-between p-4">
         <div class="col-12 col-xl-4  d-xl-flex  gap-xl-3">
-            <div class="input-group col-12 col-xl-12 mb-2 mb-xl-0">
+            <div class="input-group col-12 col-xl-12 mb-2 ">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
             </div>
@@ -34,16 +34,30 @@
         </div>
 
         <div class="col-12 col-xl-4  d-flex  gap-xl-3 justify-content-end">
+            <div class="col-xl-6 col-12">
+                <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
+                    <option value="0"selected>All Companies</option>
+                    <option value="1">Pabrik 1</option>
+                    <option value="2">Pabrik 2</option>
+                    <option value="3">Kantor</option>
+                    <option value="4">ASB</option>
+                    <option value="5">DPA</option>
+                    <option value="6">YCME</option>
+                    <option value="7">YEV</option>
+                    <option value="8">YIG</option>
+                    <option value="9">YSM</option>
+                </select>
+            </div>
             <div class="col-6 col-xl-4">
                 <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
-                    <option value="All">All</option>
-                    <option value="Aktif">Aktif</option>
-                    <option value="Non Aktif">Non Aktif</option>
+                    <option value="0">All Status</option>
+                    <option value="1">Aktif</option>
+                    <option value="2">Non Aktif</option>
                 </select>
             </div>
             @if (Auth::user()->role > 3)
                 <div class="col-6 col-xl-4 text-end">
-                    <button wire:click="excel" class="btn btn-success">Excel</button>
+                    <button wire:click="excel" class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
                 </div>
             @endif
         </div>
