@@ -533,13 +533,13 @@ class Payrollwr extends Component
     {
         $latest_payroll_id = Payroll::latest()->first();
 
-        if(Payroll::count() == 0){
-            $this->rebuild();
-        } else {
-            if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
-                $this->rebuild();
-            }
-        }
+        // if(Payroll::count() == 0){
+        //     $this->rebuild();
+        // } else {
+        //     if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
+        //         $this->rebuild();
+        //     }
+        // }
 
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
@@ -551,7 +551,11 @@ class Payrollwr extends Component
 
         switch ($this->selected_company) {
             case 0:
-                $total = Payroll::whereIn('status_karyawan', $statuses)->sum('total');
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->sum('total');
+
                 $payroll = $this->getPayrollQuery($statuses, $this->search)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -560,8 +564,11 @@ class Payrollwr extends Component
 
             case 1:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->where('placement', 'YCME')
                     ->sum('total');
+
                     $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
                     ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -571,7 +578,10 @@ class Payrollwr extends Component
             case 2:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YEV')
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
                     ->sum('total');
+
                     $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
                     ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -581,6 +591,8 @@ class Payrollwr extends Component
             case 3:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->whereIn('placement', ['YIG', 'YSM'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
 
                 $payroll = Payroll::query()
@@ -603,6 +615,8 @@ class Payrollwr extends Component
             case 4:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'ASB')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
                 
@@ -615,6 +629,8 @@ class Payrollwr extends Component
             case 5:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'DPA')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
                 
@@ -627,6 +643,8 @@ class Payrollwr extends Component
             case 6:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YCME')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
                 
@@ -639,6 +657,8 @@ class Payrollwr extends Component
             case 7:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YEV')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
                 
@@ -651,6 +671,8 @@ class Payrollwr extends Component
             case 8:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YIG')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
@@ -664,6 +686,8 @@ class Payrollwr extends Component
             case 9:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YSM')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
                 
