@@ -22,9 +22,9 @@
                             bank</button></a>
 
 
-                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2"
-                        wire:loading.remove>Rebuild</button>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+                    {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
             </div>
         </div>
@@ -193,7 +193,6 @@
                         <tbody>
                             @if ($payroll->isNotEmpty())
 
-
                                 @foreach ($payroll as $p)
                                     <tr>
                                         <td>
@@ -201,6 +200,7 @@
                                                 wire:click="showDetail({{ $p->id_karyawan }})" data-bs-toggle="modal"
                                                 data-bs-target="#payroll"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
+
                                         </td>
 
 
@@ -276,5 +276,10 @@
     @if ($data_payroll != null && $data_karyawan != null)
         @include('modals.payroll-modal')
     @endif
+
+
+
+
+
 
 </div>
