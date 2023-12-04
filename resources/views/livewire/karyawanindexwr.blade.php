@@ -20,15 +20,15 @@
         <div class="col-12 col-xl-4  d-xl-flex  gap-xl-3">
             <div class="input-group col-12 col-xl-12 mb-2 ">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+                <input type="search" wire:model.live="search" class="form-control" placeholder="{{ __('Search') }} ...">
             </div>
             <div class="col-12 col-xl-8  d-flex align-items-center gap-3 mb-2 mb-xl-0">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 rows perpage</option>
-                    <option value="15">15 rows perpage</option>
-                    <option value="20">20 rows perpage</option>
-                    <option value="25">25 rows perpage</option>
+                    <option value="10">10 {{ __('rows perpage') }}</option>
+                    <option value="15">15 {{ __('rows perpage') }}</option>
+                    <option value="20">20 {{ __('rows perpage') }}</option>
+                    <option value="25">25 {{ __('rows perpage') }}</option>
                 </select>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="col-12 col-xl-4  d-flex  gap-xl-3 justify-content-end">
             <div class="col-xl-6 col-12">
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
-                    <option value="0"selected>All Companies</option>
+                    <option value="0"selected>{{ __('All Companies') }}</option>
                     <option value="1">Pabrik 1</option>
                     <option value="2">Pabrik 2</option>
                     <option value="3">Kantor</option>
@@ -50,9 +50,9 @@
             </div>
             <div class="col-6 col-xl-4">
                 <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
-                    <option value="0">All Status</option>
-                    <option value="1">Aktif</option>
-                    <option value="2">Non Aktif</option>
+                    <option value="0">{{ __('All Status') }}</option>
+                    <option value="1">{{ __('Aktif') }}</option>
+                    <option value="2">{{ __('Non Aktif') }}</option>
                 </select>
             </div>
             @if (Auth::user()->role > 3)
@@ -71,10 +71,10 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h3 class="fw-semibold fs-5 fwfs-3-xl">Data Karyawan</h3>
+                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
                     </div>
                     <a href="/karyawancreate"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
-                            Karyawan baru</button></a>
+                            {{ __('Karyawan baru') }}</button></a>
                 </div>
 
             </div>
@@ -90,41 +90,44 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th wire:click="sortColumnName('id_karyawan')">Id Karyawan <i
+                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Id Karyawan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('company')">Company <i
+                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('placement')">Placement <i
+                                <th class="text-center" wire:click="sortColumnName('company')">{{ __('Company') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('departemen')">Departemen <i
-                                        class="fa-solid fa-sort"></i>
+                                <th class="text-center" wire:click="sortColumnName('placement')">{{ __('Placement') }}
+                                    <i class="fa-solid fa-sort"></i>
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('jabatan')">Jabatan <i
+                                <th class="text-center" wire:click="sortColumnName('departemen')">
+                                    {{ __('Departemen') }} <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 @if (Auth::user()->role > 3)
-                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">Level Jabatan
+                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">
+                                        {{ __('Level Jabatan') }}
                                         <i class="fa-solid fa-sort"></i>
                                 @endif
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('status_karyawan')">Status <i
-                                        class="fa-solid fa-sort"></i>
+                                <th class="text-center" wire:click="sortColumnName('status_karyawan')">
+                                    {{ __('Status') }} <i class="fa-solid fa-sort"></i>
                                 </th>
                                 @if (Auth::user()->role > 3)
-                                    <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">Lama
-                                        Bekerja <i class="fa-solid fa-sort"></i>
+                                    <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">
+                                        {{ __('Lama Bekerja') }} <i class="fa-solid fa-sort"></i>
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('metode_penggajian')">Metode
-                                        Penggajian <i class="fa-solid fa-sort"></i>
+                                    <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
+                                        {{ __('Metode Penggajian') }} <i class="fa-solid fa-sort"></i>
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
-                                            class="fa-solid fa-sort"></i>
+                                    <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
+                                        {{ __('Gaji Pokok') }} <i class="fa-solid fa-sort"></i>
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_overtime')">Overtime <i
-                                            class="fa-solid fa-sort"></i>
+                                    <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
+                                        {{ __('Overtime') }} <i class="fa-solid fa-sort"></i>
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('bonus')">Bonus <i
+                                    <th class="text-center" wire:click="sortColumnName('bonus')">{{ __('Bonus') }} <i
                                             class="fa-solid fa-sort"></i>
                                     </th>
                                 @endif

@@ -8,6 +8,21 @@
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:150px">
                         </div>
+                        @if (auth()->user()->language == 'Cn')
+
+                            <div class="flex items-end mb-2">
+                                @if (app()->getLocale() == 'id')
+                                    <a class="nav-link" href="{{ url('locale/cn') }}"><button
+                                            class="text-white text-sm bg-red-500 py-1 rounded-xl px-3">{{ __('中文') }}</button></a>
+                                @endif
+
+                                @if (app()->getLocale() == 'cn')
+                                    <a class="nav-link" href="{{ url('locale/id') }}"><button
+                                            class="text-white text-sm bg-red-500 py-1 rounded-xl px-3">{{ __('英语') }}</button></a>
+                                @endif
+                            </div>
+                        @endif
+
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)
                                 <div>
@@ -35,6 +50,7 @@
                             <div>
                                 <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
                             </div>
+
 
                         </div>
                     </div>

@@ -5,9 +5,9 @@
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
-                <div class="col-4 text-center">Hadir</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('Hadir') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $totalHadir }}</div>
@@ -18,9 +18,9 @@
 
         <div class="col-12 col-xl-3 bg-warning py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">No scan</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('No scan') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
@@ -30,9 +30,9 @@
         </div>
         <div class="col-12 col-xl-3 bg-info py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">Late</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('Late') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $totalLate }}</div>
@@ -42,9 +42,9 @@
         </div>
         <div class="col-12 col-xl-3 bg-primary py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">Overtime</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('Overtime') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $overtime }}</div>
@@ -63,7 +63,8 @@
             <div class="col-xl-7 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+                    <input type="search" wire:model.live="search" class="form-control"
+                        placeholder="{{ __('Search') }} ...">
                 </div>
             </div>
             <div class="col-xl-5 col-12">
@@ -78,29 +79,29 @@
         </div>
         <div class="col-xl-3 col-12 gap-3 text-center     ">
             {{-- <div class="col-2"> --}}
-            <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
-            <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
-            <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
+            <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Reset') }}</button>
+            <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
+            <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
         </div>
 
         <div class="col-xl-3 col-12 d-flex flex-row  ">
             <div class="col-6 ">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 rows perpage</option>
-                    <option value="15">15 rows perpage</option>
-                    <option value="20">20 rows perpage</option>
-                    <option value="25">25 rows perpage</option>
+                    <option value="10">10 {{ __('rows perpage') }}</option>
+                    <option value="15">15 {{ __('rows perpage') }}</option>
+                    <option value="20">20 {{ __('rows perpage') }}</option>
+                    <option value="25">25 {{ __('rows perpage') }}</option>
                 </select>
 
             </div>
             <div class="col-6 ">
                 <select class="form-select" wire:model.live="location">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="All">All</option>
-                    <option value="Kantor">Kantor</option>
-                    <option value="Pabrik 1">Pabrik 1</option>
-                    <option value="Pabrik 2">Pabrik 2</option>
+                    <option value="All">{{ __('All') }}</option>
+                    <option value="Kantor">{{ __('Kantor') }}</option>
+                    <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
+                    <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
                 </select>
             </div>
         </div>
@@ -111,10 +112,10 @@
             <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
                 <div class="d-flex flex-column flex-xl-row justify-content-xl-between align-items-center">
                     <h3 class="fw-semibold fs-5 fwfs-3-xl">
-                        Data Presensi {{ format_tgl_hari($tanggal) }}
+                        {{ __('Data Presensi') }} {{ format_tgl_hari($tanggal) }}
                     </h3>
                     <a href="/yfupload">
-                        <button class="btn btn-primary float-end">Upload Presensi</button></a>
+                        <button class="btn btn-primary float-end">{{ __('Upload Presensi') }}</button></a>
                 </div>
             </div>
             <style>
@@ -130,35 +131,44 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('first_out')">First out <i
+                                <th wire:click="sortColumnName('user_id')">{{ __('ID') }} <i
+                                        class=" fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('second_in')">Second in <i
+                                <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('second_out')">Second out <i
+                                <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('overtime_in')">Overtime in <i
+                                <th wire:click="sortColumnName('first_in')">{{ __('First in') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('overtime_out')">Overtime out <i
+                                <th wire:click="sortColumnName('first_out')">{{ __('First out') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('second_in')">{{ __('Second in') }} <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('second_out')">{{ __('Second out') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('overtime_in')">{{ __('Overtime in') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('overtime_out')">{{ __('Overtime out') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('late')">{{ __('Late') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('no_scan')">{{ __('No scan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('shift')">{{ __('Shift') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody>

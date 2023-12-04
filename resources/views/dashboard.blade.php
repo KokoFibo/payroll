@@ -10,13 +10,15 @@
             <div class="row align-items-stretch">
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
-                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Jumlah Karyawan
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Jumlah Karyawan') }}
                         </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_total_karyawan }}</span>
                     </div>
                 </div>
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
-                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Karyawan Pria</h4>
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Pria') }}</h4>
                         <span class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_pria }}</span>
                         {{-- <span
                             class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> --}}
@@ -25,13 +27,14 @@
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
                         <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
-                            Karyawan Wanita</h4><span
+                            {{ __('Karyawan Wanita') }}</h4><span
                             class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_wanita }}</span>
                     </div>
                 </div>
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
-                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Reserved
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Reserved') }}
                         </h4><span class="hind-font caption-12 c-dashboardInfo__count">100%</span>
                     </div>
                 </div>

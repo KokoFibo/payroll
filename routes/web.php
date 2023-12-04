@@ -49,6 +49,10 @@ Route::middleware(['guest'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['User'])->group(function () {
+        Route::get('locale/{locale}', function($locale){
+            Session::put('locale', $locale);
+            return redirect()->back();
+        });
         // DASHBOARD
         Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);

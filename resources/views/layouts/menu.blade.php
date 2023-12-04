@@ -9,7 +9,7 @@ with font-awesome or any other icon font library -->
             <a href="/dashboard" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                    Dashboard
+                    {{ __('Dashboard') }}
                 </p>
             </a>
         </li>
@@ -19,7 +19,7 @@ with font-awesome or any other icon font library -->
                 <a href="/karyawanindex" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
                     <p>
-                        Data Karyawan
+                        {{ __('Data Karyawan') }}
                     </p>
                 </a>
             </li>
@@ -27,14 +27,14 @@ with font-awesome or any other icon font library -->
                 <a href="/tambahan" class="nav-link">
                     <i class="nav-icon fa-solid fa-money-bill-transfer"></i>
                     <p>
-                        Bonus & Potongan
+                        {{ __('Bonus & Potongan') }}
                     </p>
                 </a>
             </li>
             <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/yfpresensiindexwr" class="nav-link">
                     <i class="nav-icon fas fa-clipboard-check"></i>
-                    <p>Presensi</p>
+                    <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
             @if (Auth::user()->role > 1)
@@ -42,7 +42,7 @@ with font-awesome or any other icon font library -->
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
-                            Presensi Summary
+                            {{ __('Presensi Summary') }}
                         </p>
                     </a>
                 </li>
@@ -52,7 +52,7 @@ with font-awesome or any other icon font library -->
                     <a href="/payroll" class="nav-link">
                         <i class="nav-icon fas fa-dollar-sign"></i>
                         <p>
-                            Payroll
+                            {{ __('Payroll') }}
                         </p>
                     </a>
                 </li>
@@ -61,14 +61,14 @@ with font-awesome or any other icon font library -->
             <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/informationwr" class="nav-link">
                     <i class="fa-solid fa-user-check nav-icon"></i>
-                    <p>Add Information</p>
+                    <p>{{ __('Add Information') }}</p>
                 </a>
             </li>
             @if (Auth::user()->role > 3)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
                         <i class="fa-solid fa-user-check nav-icon"></i>
-                        <p>User Mobile</p>
+                        <p>{{ __('User Mobile') }}</p>
                     </a>
                 </li>
             @endif
@@ -76,19 +76,19 @@ with font-awesome or any other icon font library -->
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fa-solid fa-gear nav-icon"></i>
-                    <p>Settings<i class="right fas fa-angle-left"></i></p>
+                    <p>{{ __('Settings') }}<i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                         <a href="/changeprofilewr" class="nav-link">
                             <i class="fa-solid fa-address-card nav-icon"></i>
-                            <p>Change Profile</p>
+                            <p>{{ __('Change Profile') }}</p>
                         </a>
                     </li>
                     <li class="nav-item {{ 'karyawansettingwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                         <a href="/karyawansettingwr" class="nav-link">
                             <i class="fa-solid fa-users-gear nav-icon"></i>
-                            <p>Karyawan Settings</p>
+                            <p>{{ __('Karyawan Settings') }}</p>
                         </a>
                     </li>
                     @if (Auth::user()->role > 3)
@@ -96,7 +96,7 @@ with font-awesome or any other icon font library -->
                             class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a href="/changeuserrolewr" class="nav-link">
                                 <i class="fa-solid fa-user-check nav-icon"></i>
-                                <p>Change User Role</p>
+                                <p>{{ __('Change User Role') }}</p>
                             </a>
                         </li>
                     @endif
@@ -111,7 +111,7 @@ with font-awesome or any other icon font library -->
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
-                            Developer Tools
+                            {{ __('') }}Developer Tools
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -122,13 +122,13 @@ with font-awesome or any other icon font library -->
                             <a onclick="return confirm('Mau upload karyawan?')" href="/karyawanviewimport"
                                 class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Karyawan Uploader</p>
+                                <p>{{ __('') }}Karyawan Uploader</p>
                             </a>
                         </li>
                         <li class="nav-item {{ 'generateusers' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau generate user?')" href="/generateusers" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Generate Users</p>
+                                <p>{{ __('') }}Generate Users</p>
                             </a>
                         </li>
 
@@ -137,7 +137,7 @@ with font-awesome or any other icon font library -->
                             <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"
                                 class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Delete Tgl Presensi</p>
+                                <p>{{ __('') }}Delete Tgl Presensi</p>
                             </a>
                         </li>
                         <li
