@@ -37,6 +37,7 @@ class HomeController extends Controller {
         $jumlah_total_karyawan = Karyawan::count();
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
+        
 
         switch(auth()->user()->role) {
            case 1 : $role_name = 'User'; break;

@@ -19,7 +19,7 @@ with font-awesome or any other icon font library -->
                 <a href="/karyawanindex" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
                     <p>
-                        Data Karyawan
+                        {{ __('Data Karyawan') }}
                     </p>
                 </a>
             </li>
@@ -27,7 +27,7 @@ with font-awesome or any other icon font library -->
                 <a href="/tambahan" class="nav-link">
                     <i class="nav-icon fa-solid fa-money-bill-transfer"></i>
                     <p>
-                        Bonus & Potongan
+                        {{ __('Bonus & Potongan') }}
                     </p>
                 </a>
             </li>

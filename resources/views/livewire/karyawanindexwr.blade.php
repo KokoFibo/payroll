@@ -71,7 +71,7 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h3 class="fw-semibold fs-5 fwfs-3-xl">Data Karyawan</h3>
+                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
                     </div>
                     <a href="/karyawancreate"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
                             Karyawan baru</button></a>

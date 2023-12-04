@@ -8,6 +8,12 @@
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:150px">
                         </div>
+
+                        @if (auth()->user()->language == 'Cn')
+                            <div class="flex items-end mb-2">
+                                <button class="text-white bg-blue-500 rounded px-2">Indonesia</button>
+                            </div>
+                        @endif
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)
                                 <div>

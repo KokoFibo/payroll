@@ -15,7 +15,11 @@ class SuperAdmin {
     */
 
     public function handle( Request $request, Closure $next ): Response {
+        
+        // App::setLocale($locale);
+        // App::setLocale('cn');
         if ( ( Auth::user()->role >3 && Auth::user()->device == 1 ) || Auth::user()->role >3 ) {
+            // App::setLocale('cn');
             return $next( $request );
         } else {
             return redirect()->back();

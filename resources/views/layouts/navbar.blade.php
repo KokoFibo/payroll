@@ -1,5 +1,6 @@
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-dark text-light py-3">
+
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -12,6 +13,16 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav
                 ml-auto">
+
+        <li class="nav-item">
+            @if (app()->getLocale() == 'id')
+                <a class="nav-link" href="{{ url('locale/cn') }}">中文 </a>
+            @endif
+
+            @if (app()->getLocale() == 'cn')
+                <a class="nav-link" href="{{ url('locale/id') }}">{{ __('Indonesia') }} </a>
+            @endif
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">

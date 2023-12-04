@@ -28,7 +28,9 @@ use App\Livewire\Removepresensiwr;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
 use App\Livewire\Yfdeletetanggalpresensiwr;
@@ -49,8 +51,9 @@ Route::middleware(['guest'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['User'])->group(function () {
+
         // DASHBOARD
-        Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
         Route::get('/userinfo', function () {
             return view('user_information');
@@ -106,6 +109,12 @@ Route::middleware(['auth'])->group(function () {
 
             // KHUSUS Super Admin
             Route::middleware(['SuperAdmin'])->group(function () {
+                Route::get('locale/{locale}', function($locale){
+                     
+                    Session::put('locale', $locale);
+                    return redirect()->back();
+                });
+
                 Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                 Route::get('/changeuserrolewr', Changeuserrolewr::class);
                 // PAYROLL
@@ -119,6 +128,12 @@ Route::middleware(['auth'])->group(function () {
 
                 // KHUSUS DEVELOPER
                 Route::middleware(['Developer'])->group(function () {
+                    // Route::get('locale/{locale}', function($locale){
+                        
+                    //     Session::put('locale', $locale);
+                    //     return redirect()->back();
+                    // });
+
                     Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
                     Route::get('/importKaryawanExcel', [KaryawanController::class, 'importKaryawanExcel']);
                     Route::get('/karyawanviewimport', function () {
