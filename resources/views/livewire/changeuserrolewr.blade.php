@@ -4,31 +4,31 @@
         <div class="container">
             <div class="mx-auto  pt-4">
                 <button class="mx-auto col-12 btn btn-info btn-large">
-                    <h3 class="px-3">Rubah Role Karyawan</h3>
+                    <h3 class="px-3">{{ __('Rubah Role Karyawan') }}</h3>
                 </button>
                 <div class="card mt-5  mx-auto">
                     <div class="card-header">
-                        <h5>Rubah Role Karyawan</h5>
+                        <h5>{{ __('Rubah Role Karyawan') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="input-group col-xl-6 col-12 ">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
-                                placeholder="Masukkan Nama/ID Karyawan">
+                                placeholder="{{ __('Masukkan Nama/ID Karyawan') }}">
                         </div>
                         @if ($data)
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Handphone</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Branch</th>
-                                        <th>Departemen</th>
-                                        <th>Jabatan</th>
+                                        <th>{{ __('ID') }}</th>
+                                        <th>{{ __('Nama') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Handphone') }}</th>
+                                        <th>{{ __('Tanggal Lahir') }}</th>
+                                        <th>{{ __('Company') }}</th>
+                                        <th>{{ __('Departemen') }}</th>
+                                        <th>{{ __('Jabatan') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,7 +51,7 @@
                                             <input wire:model="role" class="form-check-input" type="radio"
                                                 value="1">
                                             <label class="form-check-label">
-                                                <h5>User</h5>
+                                                <h5>{{ __('User') }}</h5>
                                             </label>
                                         </div>
 
@@ -59,14 +59,14 @@
                                             <input wire:model="role" class="form-check-input" type="radio"
                                                 value="2">
                                             <label class="form-check-label">
-                                                <h5>Admin</h5>
+                                                <h5>{{ __('Admin') }}</h5>
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input" type="radio"
                                                 value="3">
                                             <label class="form-check-label">
-                                                <h5>Senior Admin</h5>
+                                                <h5>{{ __('Senior Admin') }}</h5>
                                             </label>
                                         </div>
                                         @if (auth()->user()->role > 3)
@@ -74,7 +74,7 @@
                                                 <input wire:model="role" class="form-check-input" type="radio"
                                                     value="4">
                                                 <label class="form-check-label">
-                                                    <h5>Super Admin</h5>
+                                                    <h5>{{ __('Super Admin') }}</h5>
                                                 </label>
                                             </div>
                                         @endif
@@ -85,7 +85,7 @@
                             </div>
 
                             <div class="col-3">
-                                <button wire:click="save" class="btn btn-primary">Save</button>
+                                <button wire:click="save" class="btn btn-primary">{{ __('Save') }}</button>
                             </div>
                         @endif
                     </div>

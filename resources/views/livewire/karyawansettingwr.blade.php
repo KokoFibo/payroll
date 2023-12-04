@@ -2,34 +2,35 @@
     @section('title', ' Karyawan Setting')
 
     <div>
+
         <div class="container">
             <div class="mx-auto  pt-4">
                 <button class="mx-auto col-12 btn btn-primary btn-large">
-                    <h3 class="px-3">Karyawan Settings</h3>
+                    <h3 class="px-3">{{ __('Karyawan Settings') }}</h3>
                 </button>
                 <div class="card mt-5  mx-auto">
                     <div class="card-header">
-                        <h5>Reset Password Karyawan</h5>
+                        <h5>{{ __('Reset Password Karyawan') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="input-group col-xl-6 col-12 ">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
-                                placeholder="Masukkan Nama/ID Karyawan">
+                                placeholder="{{ __('Masukkan Nama/ID Karyawan') }}">
                         </div>
                         @if ($data)
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Handphone</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Branch</th>
-                                        <th>Departemen</th>
-                                        <th>Jabatan</th>
+                                        <th>{{ __('ID') }}</th>
+                                        <th>{{ __('Nama') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Handphone') }}</th>
+                                        <th>{{ __('Tanggal Lahir') }}</th>
+                                        <th>{{ __('Company') }}</th>
+                                        <th>{{ __('Departemen') }}</th>
+                                        <th>{{ __('Jabatan') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,7 +48,8 @@
                             </table>
 
                             <div class="col-3 mt-3">
-                                <button wire:click="resetPassword" class="btn btn-primary">Reset Password</button>
+                                <button wire:click="resetPassword"
+                                    class="btn btn-primary">{{ __('Reset Password') }}</button>
                             </div>
                         @endif
                     </div>

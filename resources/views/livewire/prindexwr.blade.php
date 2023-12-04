@@ -6,22 +6,23 @@
         }
     </style>
     @section('title', 'Presensi Detail')
-    <h4 class="text-center text-bold pt-2">Presensi Detail</h4>
+    <h4 class="text-center text-bold pt-2">{{ __('Presensi Detail') }}</h4>
     <div class="col-12 d-flex flex-xl-row flex-column justify-content-xl-between">
         <div class="col-xl-9 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2">
             <div class="col-xl-6 col-12">
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
+                    <input type="search" wire:model.live="search" class="form-control"
+                        placeholder="{{ __('Search') }} ...">
                 </div>
             </div>
             <div class="col-xl-2 col-12 ">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 rows perpage</option>
-                    <option value="15">15 rows perpage</option>
-                    <option value="20">20 rows perpage</option>
-                    <option value="25">25 rows perpage</option>
+                    <option value="10">10 {{ __('rows perpage') }}</option>
+                    <option value="15">15 {{ __('rows perpage') }}</option>
+                    <option value="20">20 {{ __('rows perpage') }}</option>
+                    <option value="25">25 {{ __('rows perpage') }}</option>
                 </select>
             </div>
             <div class="col-xl-2 col-12  ">
@@ -51,11 +52,12 @@
             <div class=" col-12" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
+                    <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                 </button>
             </div>
             <div class=" col-6">
-                <button wire:click.prevent="getPayroll()" class="btn btn-primary" wire:loading.remove>Rebuild</button>
+                <button wire:click.prevent="getPayroll()" class="btn btn-primary"
+                    wire:loading.remove>{{ __('Rebuild') }}</button>
             </div>
 
         </div>
@@ -66,8 +68,9 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h3 class="fw-semibold fs-5 fwfs-3-xl">Detail Jam kerja karyawan per {{ monthYear($periode) }}, Data
-                        Terakhir Tanggal
+                    <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Detail Jam kerja karyawan per') }}
+                        {{ monthYear($periode) }},
+                        {{ __('Data Terakhir Tanggal') }}
                         {{ format_tgl($lastData) }}
                     </h3>
 
@@ -84,26 +87,32 @@
                     <table class="table mb-3">
                         <thead>
                             <tr>
-                                <th wire:click="sortColumnName('user_id')">User ID <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('nama')">Name <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">Total Hari Kerja
-                                    <i class="fa-solid fa-sort"></i>
-                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">Jumlah Jam Kerja
-                                    <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">Jumlah Jam
-                                    Overtime <i class="fa-solid fa-sort"></i></th>
-
-                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">Jumlah Jam
-                                    Terlambat
-                                    <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th class="text-center" wire:click="sortColumnName('tambahan_jam_shift_malam')">Tambahan
-                                    Jam
-                                    Overtime Shift Malam <i class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('total_noscan')">Total No Scan <i
+                                <th wire:click="sortColumnName('user_id')">{{ __('User ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('nama')">{{ __('Name') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">
+                                    {{ __('Total Hari Kerja') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_kerja')">
+                                    {{ __('Jumlah Jam Kerja') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('jumlah_menit_lembur')">
+                                    {{ __('Jumlah Jam Overtime') }} <i class="fa-solid fa-sort"></i></th>
+
+                                <th class="text-center" wire:click="sortColumnName('jumlah_jam_terlambat')">
+                                    {{ __('Jumlah Jam Terlambat') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('tambahan_jam_shift_malam')">
+                                    {{ __('Tambahan Jam Overtime Shift Malam') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('total_noscan')">
+                                    {{ __('Total No Scan') }} <i class="fa-solid fa-sort"></i></th>
 
                                 </th>
                             </tr>
@@ -128,7 +137,7 @@
                     {{ $filteredData->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3 text-success">Last update: {{ $last_build }} </p>
+            <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>
     <script>

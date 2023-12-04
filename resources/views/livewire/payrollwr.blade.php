@@ -7,22 +7,21 @@
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
 
 
-                <button class="btn btn-info mb-2">Total Gaji : Rp. {{ number_format($total) }}</button>
+                <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">Building Payroll... sedikit lama, jangan tekan apapun.</span>
+                        <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                     </button>
                 </div>
                 <div>
 
-                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2" wire:loading.remove>Report
-                            for
-                            bank</button></a>
+                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2"
+                            wire:loading.remove>{{ __('Report for bank') }}</button></a>
 
 
-                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">Rebuild</button>
+                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                     {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
@@ -37,15 +36,15 @@
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
-                                placeholder="Search ...">
+                                placeholder="{{ __('Search') }} ...">
                         </div>
                         <div class="col-xl-6 col-12">
                             <select wire:model.live="selected_company" class="form-select"
                                 aria-label="Default select example">
-                                <option value="0"selected>All</option>
-                                <option value="1">Pabrik 1</option>
-                                <option value="2">Pabrik 2</option>
-                                <option value="3">Kantor</option>
+                                <option value="0"selected>{{ __('All Companies') }}All Companies</option>
+                                <option value="1">{{ __('Pabrik 1') }}</option>
+                                <option value="2">{{ __('Pabrik 2') }}</option>
+                                <option value="3">{{ __('Kantor') }}</option>
                                 <option value="4">ASB</option>
                                 <option value="5">DPA</option>
                                 <option value="6">YCME</option>
@@ -80,18 +79,18 @@
                         <div class="col-xl-4">
                             <select class="form-select" wire:model.live="perpage">
                                 {{-- <option selected>Open this select menu</option> --}}
-                                <option value="10">10 rows perpage</option>
-                                <option value="15">15 rows perpage</option>
-                                <option value="20">20 rows perpage</option>
-                                <option value="25">25 rows perpage</option>
+                                <option value="10">10 {{ __('rows perpage') }}</option>
+                                <option value="15">15 {{ __('rows perpage') }}</option>
+                                <option value="20">20 {{ __('rows perpage') }}</option>
+                                <option value="25">25 {{ __('rows perpage') }}</option>
                             </select>
 
                         </div>
                         <div class="col-xl-4">
                             <select class="form-select" wire:model.live="status">
-                                <option value="0">Semua</option>
-                                <option value="1">Status Aktif</option>
-                                <option value="2">Status Non Aktif</option>
+                                <option value="0">{{ __('Semua') }}Semua</option>
+                                <option value="1">{{ __('Status Aktif') }}</option>
+                                <option value="2">{{ __('Status Non Aktif') }}</option>
                             </select>
                         </div>
                         <div
@@ -125,61 +124,69 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th wire:click="sortColumnName('id_karyawan')">ID <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('status_karyawan')">Status <i
+                                <th wire:click="sortColumnName('id_karyawan')">{{ __('ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('company')">Company <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('metode_penggajian')">Metode Penggajian <i
+                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('id_karyawan')">Hari Kerja <i
+                                <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jam_kerja')">Jam Kerja Bersih <i
+                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jam_lembur')">Jam Lembur <i
+                                <th wire:click="sortColumnName('jam_kerja')">{{ __('Jam Kerja Bersih') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jumlah_jam_terlambat')">Terlambat <i
+                                <th wire:click="sortColumnName('jam_lembur')">{{ __('Jam Lembur') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_pokok')">Gaji Pokok <i
+                                <th wire:click="sortColumnName('jumlah_jam_terlambat')">{{ __('Terlambat') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_lembur')">Gaji Lembur <i
+                                <th wire:click="sortColumnName('gaji_pokok')">{{ __('Gaji Pokok') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_bpjs')">Gaji BPJS <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('subtotal')">Sub Gaji <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('tambahan_shift_malam')">Tambahan Shift Malam <i
+                                <th wire:click="sortColumnName('gaji_lembur')">{{ __('Gaji Lembur') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">Bonus/U.Makan <i
+                                <th wire:click="sortColumnName('gaji_bpjs')">{{ __('Gaji BPJS') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">Bonus Karyawan<i
+                                <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('potongan1x')">Potongan 1X<i
+                                <th wire:click="sortColumnName('tambahan_shift_malam')">
+                                    {{ __('Tambahan Shift Malam') }} <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus/U.Makan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus Karyawan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('potongan1x')">{{ __('Potongan 1X') }}<i
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
-                                <th wire:click="sortColumnName('potongan1x')">Potongan Karyawan<i
+                                <th wire:click="sortColumnName('potongan1x')">{{ __('Potongan Karyawan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
 
-                                <th wire:click="sortColumnName('denda_lupa_absen')">Lupa Absen <i
+                                <th wire:click="sortColumnName('denda_lupa_absen')">{{ __('Lupa Absen') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
-                                <th wire:click="sortColumnName('pajak')">Pajak <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('pajak')">{{ __('Pajak') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jht')">JHT <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jp')">JP <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jkk')">JKK <i class="fa-solid fa-sort"></i></th>
@@ -187,7 +194,8 @@
                                 <th wire:click="sortColumnName('kesehatan')">Kesehatan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('total')">Total <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -263,14 +271,14 @@
                                     </tr>
                                 @endforeach
                             @else
-                                <h4>No Data Found</h4>
+                                <h4>{{ __('No Data Found') }}</h4>
                             @endif
                         </tbody>
                     </table>
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3 text-success">Last update: {{ $last_build }} </p>
+            <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>
     @if ($data_payroll != null && $data_karyawan != null)

@@ -3,16 +3,17 @@
     <div class="card-body">
         <div class="card">
             <div class="card-header bg-secondary">
-                <h5 class="text-light">Gaji</h5>
+                <h5 class="text-light">{{ __('Gaji') }}</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">Status Karyawan <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Status Karyawan') }} <span
+                                    class="text-danger">*</span></label>
                             <select class="form-select @error('status_karyawan') is-invalid @enderror""
                                 aria-label="Default select example" wire:model="status_karyawan">
-                                <option value=" ">Pilih status karyawan</option>
+                                <option value=" ">{{ __('Pilih status karyawan') }}</option>
                                 <option value="PKWT">PKWT</option>
                                 <option value="PKWTT">PKWTT</option>
                                 <option value="Dirumahkan">Dirumahkan</option>
@@ -28,7 +29,8 @@
                     </div>
                     <div class="col-md-4 visually-hidden">
                         <div class="mb-3">
-                            <label class="form-label">Tanggal Bergabung <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Tanggal Bergabung') }} <span
+                                    class="text-danger">*</span></label>
                             <div>
                                 <input type="datetime:local" id="tanggal" disabled
                                     class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
@@ -43,10 +45,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">Company <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Company') }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('company') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="company">
-                                <option value=" ">Pilih company</option>
+                                <option value=" ">{{ __('Pilih company') }}</option>
                                 <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
@@ -66,10 +68,10 @@
 
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">Departemen <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Departemen') }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('departemen') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="departemen">
-                                <option value=" ">Pilih departemen</option>
+                                <option value=" ">{{ __('Pilih departemen') }}</option>
                                 <option value="BD">BD</option>
                                 <option value="Engineering">Engineering</option>
                                 <option value="EXIM">EXIM</option>
@@ -93,11 +95,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">Jabatan <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Jabatan') }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('jabatan') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="jabatan">
-                                <option value=" ">Pilih jabatan</option>
-                                <option value="Admin">Admin</option>
+                                <option value=" ">{{ __('Pilih jabatan') }}</option>
+                                <option value="Admin">{{ __('') }}Admin</option>
                                 <option value="Asisten Direktur">Asisten Direktur</option>
                                 <option value="Asisten Kepala">Asisten Kepala</option>
                                 <option value="Asisten Manager">Asisten Manager</option>
@@ -130,10 +132,10 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">Level Jabatan</label>
+                            <label class="form-label">{{ __('Level Jabatan') }}</label>
                             <select class="form-select" aria-label="Default select example"
                                 wire:model="level_jabatan">
-                                <option value=" ">Pilih level jabatan</option>
+                                <option value=" ">{{ __('Pilih level jabatan') }}</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
                                 <option value="M3">M3</option>
@@ -151,10 +153,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">placement <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ __('Placement') }} <span
+                                    class="text-danger">*</span></label>
                             <select class="form-select @error('placement') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="placement">
-                                <option value=" ">Pilih placement</option>
+                                <option value=" ">{{ __('Pilih placement') }}</option>
                                 <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
@@ -175,15 +178,15 @@
         </div>
         <div class="card mt-2">
             <div class="card-header bg-secondary">
-                <h5 class="text-light">Data Bank</h5>
+                <h5 class="text-light">{{ __('Data Bank') }}</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label">Nama Bank</label>
+                            <label class="form-label">{{ __('Nama Bank') }}</label>
                             <select class="form-select" aria-label="Default select example" wire:model="nama_bank">
-                                <option value=" ">Pilih nama bank</option>
+                                <option value=" ">{{ __('Pilih nama bank') }}</option>
                                 <option value="BRI">BRI</option>
                                 <option value="BCA">BCA</option>
                                 <option value="Mandiri">Mandiri</option>
@@ -194,7 +197,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label">Nomor Rekening</label>
+                            <label class="form-label">{{ __('Nomor Rekening') }}</label>
                             <input wire:model="nomor_rekening" type="number" class="form-control">
                         </div>
                     </div>
