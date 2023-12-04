@@ -2,11 +2,11 @@
     <div class="col-xl-6 col-12 pt-5 mx-auto">
         <div class="card">
             <div class="card-header">
-                Add Information
+                {{ __('Add Information') }}
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label">Date<span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('Date') }}<span class="text-danger">*</span></label>
                     <div>
                         <input type="datetime:local" id="tanggal"
                             class="date form-control @error('date') is-invalid @enderror"" placeholder="mm-dd-yyyy"
@@ -19,7 +19,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="Title" class="form-label">Title (Max. 30 Characters)</label>
+                    <label for="Title" class="form-label">{{ __('Title') }}
+                        ({{ __('Max. 30 Characters') }})</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror"" wire:model="title">
                     @error('title')
                         <div class="invalid-feedback">
@@ -28,7 +29,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
+                    <label for="description" class="form-label">{{ __('Description') }}</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" wire:model="description"></textarea>
                     @error('description')
                         <div class="invalid-feedback">
@@ -37,9 +38,9 @@
                     @enderror
                 </div>
                 @if ($is_update == false)
-                    <button wire:click="add" class="btn btn-outline-success">Simpan</button>
+                    <button wire:click="add" class="btn btn-outline-success">{{ __('Simpan') }}</button>
                 @else
-                    <button wire:click="save" class="btn btn-outline-success">Update</button>
+                    <button wire:click="save" class="btn btn-outline-success">{{ __('Update') }}</button>
                 @endif
             </div>
         </div>
@@ -48,9 +49,9 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Description</th>
+                    <th>{{ __('Date') }}</th>
+                    <th>{{ __('Title') }}</th>
+                    <th>{{ __('Description') }}</th>
                     <th></th>
                 </tr>
             </thead>

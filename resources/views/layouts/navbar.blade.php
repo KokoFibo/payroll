@@ -7,7 +7,7 @@
         </li>
     </ul>
 
-    <h2 class="ml-auto text-bold  fs-3">Yifang Investment Group Payroll System</h2>
+    <h2 class="ml-auto text-bold  fs-3">{{ __('Yifang Investment Group Payroll System') }}</h2>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav

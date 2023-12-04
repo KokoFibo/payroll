@@ -8,7 +8,7 @@
                 Hello, {{ namaDiAside($name) }} selamat datang di menu User Setting.
             </h5> --}}
             <button class="mx-auto col-12 btn btn-success btn-large">
-                <h3 class="px-3">User Settings</h3>
+                <h3 class="px-3">{{ __('User Settings') }}</h3>
             </button>
         </div>
 
@@ -16,7 +16,7 @@
 
         <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
-                <h5>Rubah Email</h5>
+                <h5>{{ __('Rubah Email') }}</h5>
             </div>
             <div class="card-body">
                 <div class="input-group mb-3">
@@ -24,22 +24,23 @@
 
                     @error('email')
                         <div class="invalid-feedback">
-                            Format email salah.
+                            {{ __('Format email salah') }}.
                         </div>
                     @enderror
                 </div>
 
-                <button wire:click="changeEmail" class="btn btn-outline-success">Simpan</button>
+                <button wire:click="changeEmail" class="btn btn-outline-success">{{ __('Simpan') }}</button>
             </div>
         </div>
         <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
-                <h5>Rubah Password</h5>
+                <h5>{{ __('Rubah Password') }}</h5>
             </div>
             <div class="card-body">
                 <div x-data="{ showPassword: false }" class="input-group mb-3">
                     <input wire:model="old_password" :type="showPassword ? 'text' : 'password'"
-                        class="form-control @error('old_password') is-invalid @enderror" placeholder="Password lama">
+                        class="form-control @error('old_password') is-invalid @enderror"
+                        placeholder="{{ __('Password lama') }}">
 
                     <svg @click="showPassword = !showPassword" xmlns="http://www.w3.org/2000/svg" width="18"
                         height="18" fill="gray"
@@ -59,7 +60,8 @@
                 </div>
                 <div x-data="{ showPassword: false }" class="input-group mb-3">
                     <input wire:model="new_password" :type="showPassword ? 'text' : 'password'"
-                        class="form-control @error('new_password') is-invalid @enderror" placeholder="Password baru">
+                        class="form-control @error('new_password') is-invalid @enderror"
+                        placeholder="{{ __('Password baru') }}">
                     <svg @click="showPassword = !showPassword" xmlns="http://www.w3.org/2000/svg" width="18"
                         height="18" fill="gray"
                         style="position: absolute; transform: translateY(-50%); top: 50%; right: 0.75rem;"
@@ -78,7 +80,7 @@
                 <div x-data="{ showPassword: false }" class="input-group mb-3">
                     <input wire:model="confirm_password" :type="showPassword ? 'text' : 'password'"
                         class="form-control @error('confirm_password') is-invalid @enderror"
-                        placeholder="Konfirmasi password">
+                        placeholder="{{ __('Konfirmasi password') }}">
                     <svg @click="showPassword = !showPassword" xmlns="http://www.w3.org/2000/svg" width="18"
                         height="18" fill="gray"
                         style="position: absolute; transform: translateY(-50%); top: 50%; right: 0.75rem;"
@@ -94,7 +96,7 @@
                         </div>
                     @enderror
                 </div>
-                <button wire:click="changePassword" class="btn btn-outline-success">Simpan</button>
+                <button wire:click="changePassword" class="btn btn-outline-success">{{ __('Simpan') }}</button>
 
             </div>
 
@@ -102,21 +104,21 @@
         </div>
         <div class="card mt-5 col-xl-8 col-12 mx-auto">
             <div class="card-header">
-                <h5>Rubah Bahasa</h5>
+                <h5>{{ __('') }}Rubah Bahasa</h5>
             </div>
             <div class="card-body">
                 <div class="form-check mb-2">
                     <input wire:model="language" value="Id" class="form-check-input" type="radio"
                         name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">Indonesia</label>
+                    <label class="form-check-label" for="flexRadioDefault1">{{ __('Indonesia') }}</label>
                 </div>
                 <div class="form-check mb-4">
                     <input wire:model="language" value="Cn" class="form-check-input" type="radio"
                         name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">Mandarin</label>
+                    <label class="form-check-label" for="flexRadioDefault1">{{ __('Mandarin') }}</label>
                 </div>
 
-                <button wire:click="changeLanguage" class="btn btn-outline-success">Simpan</button>
+                <button wire:click="changeLanguage" class="btn btn-outline-success">{{ __('Simpan') }}</button>
 
             </div>
 
