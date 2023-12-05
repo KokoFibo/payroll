@@ -10,10 +10,7 @@ use App\Models\Karyawan;
 use App\Models\Tambahan;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
-use App\Jobs\BuildPayrollJob;
-use App\Exports\PayrollExport;
 use App\Models\Yfrekappresensi;
-use Maatwebsite\Excel\Facades\Excel;
 
 class Payrollwr extends Component
 {
@@ -30,58 +27,6 @@ class Payrollwr extends Component
     public $status = 1;
     public $data_payroll;
     public $data_karyawan;
-    
-    public function export () {
-
-        $nama_file="";
-        
-        switch ($this->selected_company) {
-            case 0:
-                $nama_file="semua_payroll.xlsx";
-                break;
-
-            case 1:
-                    $nama_file="payroll_pabrik1.xlsx";
-                break;
-
-            case 2:
-                    $nama_file="payroll_pabrik2.xlsx";
-                break;
-
-            case 3:
-                    $nama_file="payroll_kantor.xlsx";
-                break;
-
-            case 4:
-                    $nama_file="payroll_ASB.xlsx";
-                break;
-
-            case 5:
-                   $nama_file="payroll_DPA.xlsx";
-                break;
-
-            case 6:
-                   $nama_file="payroll_YCME.xlsx";
-                break;
-
-            case 7:
-                   $nama_file="payroll_YEV.xlsx";
-                break;
-
-            case 8:
-                   $nama_file="payroll_YIG.xlsx";
-                break;
-
-            case 9:
-                   $nama_file="payroll_YSM.xlsx";
-                break;
-        }
-
-        // return Excel::download(new PayrollExport($payroll), $nama_file);
-        // $nama_file = "payroll.xlsx";
-        return Excel::download(new PayrollExport($this->selected_company, $this->status ), $nama_file);
-    }
-
 
     public function showDetail($id_karyawan)
     {
@@ -123,22 +68,15 @@ class Payrollwr extends Component
                 ->whereYear('date', $this->year)
                 ->where('id_karyawan', $data->id_karyawan)
                 ->first();
+    
             $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
         }
     }
 
-    public function getPayrollQueue () {
-        $this->dispatch(new BuildPayrollJob($this->month, $this->year));
-        
- 
-    }
-
-   // ok1
+    // ok1
     // #[On('getPayroll')]
-    
     public function getPayroll()
     {
-
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if ($lock->build) {
@@ -195,15 +133,15 @@ class Payrollwr extends Component
             $filteredData->save();
         }
 
-        $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
+        $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan, jabatan']])
             ->whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
             ->get();
 
         // disini mulai prosesnya
         foreach ($filteredData as $data) {
+            // $dataId = Yfrekappresensi::with(['karyawan'=>['id_karyawan, jabatan']])
             $dataId = Yfrekappresensi::with('karyawan')
-       
                 ->where('user_id', $data->user_id)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -232,9 +170,9 @@ class Payrollwr extends Component
                         $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                         $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
                         //evaluasi ini
-                        // if ($d->karyawan->jabatan === 'Satpam') {
-                        //     $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
-                        // }
+                        if ($d->karyawan->jabatan === 'Satpam') {
+                            $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
+                        }
 
                         $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
 
@@ -261,46 +199,6 @@ class Payrollwr extends Component
                                 }
                             }
                         }
-                        if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
-                            $jam_lembur = 0;
-                        }
-                        if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                            if( is_friday($d->date) ) {
-                                $jam_kerja = 7.5;
-                            } elseif (is_saturday($d->date)) {
-                                $jam_kerja = 6;
-                            } else {
-                                $jam_kerja = 8;
-                            }
-                        }
-
-                        if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                        }
-
-                        if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                            $jam_lembur = 0;
-                        }
-
-                        // if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-
-                        //     $jam_kerja =  $jam_kerja * 2;
-                        //     $jam_lembur = $jam_lembur * 2;
-                        
-                        // }
-
-                        // if($d->karyawan->jabatan == 'Satpam') {
-                        //     if($jam_kerja >= 8){
-                        //         if( is_friday($d->date) ) {
-                        //             $jam_kerja = 7.5;
-                        //         } elseif (is_saturday($d->date)) {
-                        //             $jam_kerja = 6;
-                        //         } else {
-                        //             $jam_kerja = 8;
-                        //         }
-                        //     }
-                        // }
-                        
 
                         $total_hari_kerja++;
                         $total_jam_kerja = $total_jam_kerja + $jam_kerja;
@@ -384,36 +282,40 @@ class Payrollwr extends Component
             $payroll->hari_kerja = $data->total_hari_kerja;
             $payroll->jam_kerja = $data->jumlah_jam_kerja;
             $payroll->jam_lembur = $data->jumlah_menit_lembur;
-            $payroll->jumlah_jam_terlambat = $data->jumlah_jam_terlambat;
-            $payroll->total_noscan = $data->total_noscan;
-
             //ok4
             if ($data->total_noscan > 3 && $payroll->metode_penggajian == 'Perjam') {
                 $denda_noscan = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
             } else {
                 $denda_noscan = 0;
             }
-            // dari karyawan
-            $payroll->thr = $data->karyawan->bonus;
-            $payroll->tunjangan_jabatan = $data->karyawan->tunjangan_jabatan;
-            $payroll->tunjangan_bahasa = $data->karyawan->tunjangan_bahasa;
-            $payroll->tunjangan_skill = $data->karyawan->tunjangan_skill;
-            $payroll->tunjangan_lama_kerja = $data->karyawan->tunjangan_lama_kerja;
-            $payroll->tunjangan_lembur_sabtu = $data->karyawan->tunjangan_lembur_sabtu;
 
-            $payroll->iuran_air = $data->karyawan->iuran_air;
-            $payroll->iuran_locker = $data->karyawan->iuran_locker;
-            $payroll->tambahan_jam_shift_malam = $data->tambahan_jam_shift_malam;
+            $payroll->bonus1x = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lama_kerja;
+            $payroll->potongan1x = $data->karyawan->iuran_air + $data->karyawan->iuran_locker + $data->karyawan->denda + $denda_noscan;
 
             $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur;
 
-            // if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM'|| $data->karyawan->jabatan == 'Satpam') {
-            //     $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
+            // if ($payroll->metode_penggajian == 'Perjam') {
+            //     $payroll->subtotal = $payroll->tambahan_shift_malam +  $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
             // } else {
+            //     if ($payroll->gaji_lembur == 0) {
+            //         $payroll->subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26);
+            //     } else {
+            //         $payroll->subtotal = $payroll->tambahan_shift_malam + $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+            //     }
             // }
-            
-            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
-            
+
+            if ($payroll->gaji_lembur == 0) {
+                $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198);
+                if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+                    $payroll->subtotal = $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8);
+                }
+            } else {
+                $payroll->subtotal = $payroll->tambahan_shift_malam + $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM') {
+                    $payroll->subtotal = $payroll->tambahan_shift_malam + $payroll->hari_kerja * (($data->karyawan->gaji_pokok / 198) * 8) + ($data->jumlah_menit_lembur / 60) * $data->karyawan->gaji_overtime;
+                }
+            }
+
             if ($data->karyawan->potongan_JP == 1) {
                 if ($data->karyawan->gaji_bpjs <= 9559600) {
                     $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
@@ -459,16 +361,7 @@ class Payrollwr extends Component
             }
 
             $payroll->date = $data->date;
-
-          
-            $total_bonus_dari_karyawan = 0;
-            $total_potongan_dari_karyawan = 0;
-
-            $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
-            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker ;
-            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan  +$payroll->tambahan_shift_malam
-            - $total_potongan_dari_karyawan - $payroll->pajak 
-            - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
+            $payroll->total = $payroll->subtotal + $payroll->bonus - $payroll->potongan1x - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
@@ -478,7 +371,6 @@ class Payrollwr extends Component
     // ok3
     public function bonus_potongan()
     {
-       
         $bonus = 0;
         $potongaan = 0;
         $all_bonus = 0;
@@ -488,7 +380,7 @@ class Payrollwr extends Component
             ->get();
 
         foreach ($tambahan as $d) {
-            $all_bonus = $d->uang_makan +  $d->bonus_lain;
+            $all_bonus = $d->uang_makan + $d->bonus + $d->bonus_lain;
             $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
             $id_payroll = Payroll::whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -505,6 +397,8 @@ class Payrollwr extends Component
 
         $this->dispatch('success', message: 'Bonus dan Potangan added');
 
+        // $bonus1x = $bonus1x + $all_bonus;
+        // $potongaan = $potongaan + $all_potongan;
     }
 
     public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
@@ -533,66 +427,45 @@ class Payrollwr extends Component
     {
         $latest_payroll_id = Payroll::latest()->first();
 
-        // if(Payroll::count() == 0){
-        //     $this->rebuild();
-        // } else {
-        //     if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
-        //         $this->rebuild();
-        //     }
-        // }
+        if(Payroll::count() == 0){
+            $this->rebuild();
+        } else {
+            if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
+                $this->rebuild();
+            }
+        }
 
         if ($this->status == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->status == 2) {
-            $statuses = ['Blacklist'];
+            $statuses = ['Resigned', 'Blacklist'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
         switch ($this->selected_company) {
             case 0:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                ->sum('total');
-
-                $payroll = $this->getPayrollQuery($statuses, $this->search)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                ->paginate($this->perpage);
+                $total = Payroll::whereIn('status_karyawan', $statuses)->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search)->paginate($this->perpage);
                 break;
 
             case 1:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
                     ->where('placement', 'YCME')
                     ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                    ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
+                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')->paginate($this->perpage);
                 break;
 
             case 2:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YEV')
-                    ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
                     ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                    ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
+                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')->paginate($this->perpage);
                 break;
 
             case 3:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
 
                 $payroll = Payroll::query()
@@ -606,8 +479,6 @@ class Payrollwr extends Component
                             ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
                     })
                     ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
@@ -615,85 +486,55 @@ class Payrollwr extends Component
             case 4:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'ASB')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-                
-                ->where('company', 'ASB')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'ASB')
                     ->paginate($this->perpage);
                 break;
 
             case 5:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'DPA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-                
-                ->where('company', 'DPA')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'DPA')
                     ->paginate($this->perpage);
                 break;
 
             case 6:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-                
-                ->where('company', 'YCME')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'YCME')
                     ->paginate($this->perpage);
                 break;
 
             case 7:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-                
-                ->where('company', 'YEV')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'YEV')
                     ->paginate($this->perpage);
                 break;
 
             case 8:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YIG')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-                
-                ->where('company', 'YIG')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'YIG')
                     ->paginate($this->perpage);
                 break;
 
             case 9:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YSM')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                
-                ->where('company', 'YSM')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'YSM')
                     ->paginate($this->perpage);
                 break;
         }
