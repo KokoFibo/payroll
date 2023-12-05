@@ -1,8 +1,12 @@
-@extends('layouts.app2')
+@extends('layouts.app4')
 
 @section('title', 'Dashboard')
 
 @section('content')
+    <div class="pt-5">
+    </div>
+    {{-- Jumlah Karyawan --}}
+
 
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
@@ -41,13 +45,153 @@
             </div>
         </div>
     </div>
-    <div style="display: none">
-        {{-- <div> --}}
+
+    {{-- Department --}}
+    <div class="flex justify-evenly mt-3">
+        {{-- Jumlah karyawan --}}
+        <div>
+            <div class="h-3 rounded-t-lg bg-blue-500">
+            </div>
+            <div class="bg-blue-200 h-96 rounded-b-lg w-96 shadow p-3 ">
+                <p class="text-center text-lg mb-3">Jumlah Karyawan</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">Pabrik 1</h2>
+                        <h2 class="text-center   text-gray-600">Pabrik 2</h2>
+                        <h2 class="text-center   text-gray-600">Kantor</h2>
+                        <h2 class="text-center   text-gray-600">ASB</h2>
+                        <h2 class="text-center   text-gray-600">DPA</h2>
+                        <h2 class="text-center   text-gray-600">YCME</h2>
+                        <h2 class="text-center   text-gray-600">YEV</h2>
+                        <h2 class="text-center   text-gray-600">YIG</h2>
+                        <h2 class="text-center   text-gray-600">YSM</h2>
+                        <h2 class="text-center font-semibold  text-gray-600">Total</h2>
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_1 }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_2 }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Kantor }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_ASB }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_DPA }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YCME }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YEV }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YIG }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YSM }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_all }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Departement --}}
+        <div>
+            <div class="h-3 rounded-t-lg bg-green-500">
+            </div>
+            <div class="bg-green-200 w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg mb-3 ">Department</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">BD</h2>
+                        <h2 class="text-center   text-gray-600">Engineering</h2>
+                        <h2 class="text-center   text-gray-600">EXIM</h2>
+                        <h2 class="text-center   text-gray-600">Finance_Accounting</h2>
+                        <h2 class="text-center   text-gray-600">GA</h2>
+                        <h2 class="text-center   text-gray-600">Gudang</h2>
+                        <h2 class="text-center   text-gray-600">HR</h2>
+                        <h2 class="text-center   text-gray-600">Legal</h2>
+                        <h2 class="text-center   text-gray-600">Procurement</h2>
+                        <h2 class="text-center   text-gray-600">Produksi</h2>
+                        <h2 class="text-center   text-gray-600">Quality Control</h2>
+                        <h2 class="text-center   text-gray-600">Yifang</h2>
+
+
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_BD }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Engineering }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_EXIM }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Finance_Accounting }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_GA }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Gudang }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_HR }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Legal }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Procurement }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Produksi }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Quality_Control }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Yifang }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Jabatan --}}
+        <div>
+            <div class="h-3 rounded-t-lg bg-red-500">
+            </div>
+
+            <div class="bg-red-200 w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
+                <p class="text-center text-lg mb-3">Jabatan</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">Admin</h2>
+                        <h2 class="text-center   text-gray-600">Asisten Direktur</h2>
+                        <h2 class="text-center   text-gray-600">Asisten Kepala</h2>
+                        <h2 class="text-center   text-gray-600">Asisten Manager</h2>
+                        <h2 class="text-center   text-gray-600">Asisten Pengawas</h2>
+                        <h2 class="text-center   text-gray-600">Asisten Wakil_Presiden</h2>
+                        <h2 class="text-center   text-gray-600">Design grafis</h2>
+                        <h2 class="text-center   text-gray-600">Director</h2>
+                        <h2 class="text-center   text-gray-600">Kepala</h2>
+                        <h2 class="text-center   text-gray-600">Manager</h2>
+                        <h2 class="text-center   text-gray-600">Pengawas</h2>
+                        <h2 class="text-center   text-gray-600">President</h2>
+                        <h2 class="text-center   text-gray-600">Senior_staff</h2>
+                        <h2 class="text-center   text-gray-600">Staff</h2>
+                        <h2 class="text-center   text-gray-600">Supervisor</h2>
+                        <h2 class="text-center   text-gray-600">Vice President</h2>
+                        <h2 class="text-center   text-gray-600">Satpam</h2>
+                        <h2 class="text-center   text-gray-600">Koki</h2>
+                        <h2 class="text-center   text-gray-600">Dapur Kantor</h2>
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Admin }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Direktur }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Kepala }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Manager }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Pengawas }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Wakil_Presiden }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Design_grafis }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Director }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Kepala }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Manager }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Pengawas }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_President }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Senior_staff }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Staff }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Supervisor }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Vice_President }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Satpam }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Koki }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Dapur_Kantor }}</h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    {{-- <div style="display: none">
         <div class="w-1/5 h-40 bg-teal-500 rounded-xl shadow-xl">
             <h2></h2>
             1000
         </div>
-    </div>
+    </div> --}}
+
     <style>
         .c-dashboardInfo {
             margin-bottom: 15px;
