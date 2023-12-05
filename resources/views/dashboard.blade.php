@@ -53,19 +53,19 @@
             <div class="h-3 rounded-t-lg bg-blue-500">
             </div>
             <div class="bg-blue-200 h-96 rounded-b-lg w-96 shadow p-3 ">
-                <p class="text-center text-lg mb-3">Jumlah Karyawan</p>
+                <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center   text-gray-600">Pabrik 1</h2>
-                        <h2 class="text-center   text-gray-600">Pabrik 2</h2>
-                        <h2 class="text-center   text-gray-600">Kantor</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
                         <h2 class="text-center   text-gray-600">ASB</h2>
                         <h2 class="text-center   text-gray-600">DPA</h2>
                         <h2 class="text-center   text-gray-600">YCME</h2>
                         <h2 class="text-center   text-gray-600">YEV</h2>
                         <h2 class="text-center   text-gray-600">YIG</h2>
                         <h2 class="text-center   text-gray-600">YSM</h2>
-                        <h2 class="text-center font-semibold  text-gray-600">Total</h2>
+                        <h2 class="text-center font-semibold  text-gray-600">{{ __('Total') }}</h2>
                     </div>
                     <div class="flex flex-column gap-2">
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_1 }}</h2>
@@ -87,21 +87,21 @@
             <div class="h-3 rounded-t-lg bg-green-500">
             </div>
             <div class="bg-green-200 w-96  rounded-b-lg shadow p-3  ">
-                <p class="text-center text-lg mb-3 ">Department</p>
+                <p class="text-center text-lg mb-3 ">{{ __('Department') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center   text-gray-600">BD</h2>
-                        <h2 class="text-center   text-gray-600">Engineering</h2>
-                        <h2 class="text-center   text-gray-600">EXIM</h2>
-                        <h2 class="text-center   text-gray-600">Finance_Accounting</h2>
-                        <h2 class="text-center   text-gray-600">GA</h2>
-                        <h2 class="text-center   text-gray-600">Gudang</h2>
-                        <h2 class="text-center   text-gray-600">HR</h2>
-                        <h2 class="text-center   text-gray-600">Legal</h2>
-                        <h2 class="text-center   text-gray-600">Procurement</h2>
-                        <h2 class="text-center   text-gray-600">Produksi</h2>
-                        <h2 class="text-center   text-gray-600">Quality Control</h2>
-                        <h2 class="text-center   text-gray-600">Yifang</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('BD') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Engineering') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('EXIM') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Finance Accounting') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('GA') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Gudang') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('HR') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Legal') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Procurement') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Produksi') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Quality Control') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Yifang') }}</h2>
 
 
                     </div>
@@ -128,28 +128,28 @@
             </div>
 
             <div class="bg-red-200 w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
-                <p class="text-center text-lg mb-3">Jabatan</p>
+                <p class="text-center text-lg mb-3">{{ __('Jabatan') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center   text-gray-600">Admin</h2>
-                        <h2 class="text-center   text-gray-600">Asisten Direktur</h2>
-                        <h2 class="text-center   text-gray-600">Asisten Kepala</h2>
-                        <h2 class="text-center   text-gray-600">Asisten Manager</h2>
-                        <h2 class="text-center   text-gray-600">Asisten Pengawas</h2>
-                        <h2 class="text-center   text-gray-600">Asisten Wakil_Presiden</h2>
-                        <h2 class="text-center   text-gray-600">Design grafis</h2>
-                        <h2 class="text-center   text-gray-600">Director</h2>
-                        <h2 class="text-center   text-gray-600">Kepala</h2>
-                        <h2 class="text-center   text-gray-600">Manager</h2>
-                        <h2 class="text-center   text-gray-600">Pengawas</h2>
-                        <h2 class="text-center   text-gray-600">President</h2>
-                        <h2 class="text-center   text-gray-600">Senior_staff</h2>
-                        <h2 class="text-center   text-gray-600">Staff</h2>
-                        <h2 class="text-center   text-gray-600">Supervisor</h2>
-                        <h2 class="text-center   text-gray-600">Vice President</h2>
-                        <h2 class="text-center   text-gray-600">Satpam</h2>
-                        <h2 class="text-center   text-gray-600">Koki</h2>
-                        <h2 class="text-center   text-gray-600">Dapur Kantor</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Admin') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Direktur') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Kepala') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Manager') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Pengawas') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Wakil_Presiden') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Design grafis') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Director') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Kepala') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Manager') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pengawas') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('President') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Senior staff') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Staff') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Supervisor') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Vice President') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Satpam') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Koki') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Dapur Kantor') }}</h2>
                     </div>
                     <div class="flex flex-column gap-2">
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Admin }}</h2>
