@@ -153,7 +153,8 @@
                                             {{-- @endif --}}
 
                                             @if (Auth::user()->role > 4)
-                                                <button wire:click="confirmDelete(`{{ $data->id }}`)"
+                                                <button wire:click="delete(`{{ $data->id }}`)"
+                                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif

@@ -34,10 +34,11 @@ class Karyawanindexwr extends Component
         $this->selectStatus = 1;
     }
 
-    #[On('delete')]
-    public function delete()
+    // #[On('delete')]
+    public function delete($id)
     {
-        $Data_Karyawan = Karyawan::find($this->id);
+       
+        $Data_Karyawan = Karyawan::find($id);
         $dataUser = User::where('username', $Data_Karyawan->id_karyawan)->first();
         if ($dataUser->id) {
             $user = User::find($dataUser->id);
