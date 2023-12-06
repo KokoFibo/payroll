@@ -237,6 +237,8 @@ foreach ($datas as $data) {
             $denda_lupa_absen = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
         }
     }
+// hapus ini jika sdh kelar
+    $denda_lupa_absen = 0;
 
     $total_bonus_dari_karyawan = 0;
     $total_potongan_dari_karyawan = 0;
