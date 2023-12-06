@@ -7,6 +7,11 @@ use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function nama_file_excel($nama_file, $month, $year){
+    $arrNamaFile = explode('.', $nama_file);
+    return $arrNamaFile[0] . '_' . $month . '_'.$year.'.'.$arrNamaFile[1];
+}
+
 function ada_tambahan($id) {
    $data = Tambahan::where('user_id', $id)->first();
    if($data == null){

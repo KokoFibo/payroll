@@ -19,6 +19,7 @@ use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
+use App\Livewire\UpdatedPresensi;
 use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Deletepresensiwr;
@@ -142,6 +143,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/UserLog', UserLog::class);
 
                     Route::get('/MissingId', MissingId::class);
+                    Route::get('/UpdatedPresensi', UpdatedPresensi::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');

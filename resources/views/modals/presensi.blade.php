@@ -8,8 +8,29 @@
              </div>
              <div class="modal-body">
                  <h4>November 2023</h4>
-                 <p>User ID : {{ $user_id }}</p>
-                 <p>Nama : {{ $name }}</p>
+                 <div>
+                     <p>User ID : {{ $user_id }}</p>
+                     <p>Nama : {{ $name }}</p>
+                 </div>
+                 <div class="d-flex gap-3 align-items-center">
+                     <div class="mb-3 row">
+                         <label class="col-sm-2 col-form-label">Year</label>
+                         <div class="col-sm-10">
+                             <input wire:model.live="year" type="number" class="form-control">
+                         </div>
+                     </div>
+                     <div class="mb-3 row">
+                         <label class="col-sm-2 col-form-label">Month</label>
+                         <div class="col-sm-10">
+                             <input wire:model.live="month" type="number" class="form-control">
+                         </div>
+                     </div>
+                     <div class="mb-3 row">
+                         <button wire:click="submitPresensiDetail({{ $user_id }})"
+                             class="btn btn-primary btn-sm">Submit</button>
+                     </div>
+                 </div>
+
 
                  <table class="table table-hover">
                      <thead>

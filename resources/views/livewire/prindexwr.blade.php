@@ -56,7 +56,11 @@
                 </button>
             </div>
             <div class=" col-6">
-                <button wire:click.prevent="getPayroll()" class="btn btn-primary"
+                {{-- <button wire:click.prevent="getPayroll()" class="btn btn-primary"
+                    wire:loading.remove>{{ __('Rebuild') }}</button> --}}
+
+
+                <button wire:click.prevent="buat_payroll" class="btn btn-primary"
                     wire:loading.remove>{{ __('Rebuild') }}</button>
             </div>
 

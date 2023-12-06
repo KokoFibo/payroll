@@ -209,6 +209,13 @@ with font-awesome or any other icon font library -->
                                 <p>Excel Uploader</p>
                             </a>
                         </li>
+                        <li
+                            class="nav-item {{ 'UpdatedPresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/UpdatedPresensi" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Updated Presensi</p>
+                            </a>
+                        </li>
                         <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a href="/UserLog" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>

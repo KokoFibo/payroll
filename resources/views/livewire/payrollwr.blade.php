@@ -6,7 +6,6 @@
 
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
 
-
                 <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
                 <div wire:loading>
@@ -21,7 +20,8 @@
                             wire:loading.remove>{{ __('Report for bank') }}</button></a>
 
 
-                    <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
+                    {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
+                    <button wire:click="buat_payroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
                     {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                     {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                 </div>
@@ -126,6 +126,8 @@
                                 <th></th>
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Date') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
@@ -213,6 +215,7 @@
 
 
                                         <td>{{ $p->id_karyawan }}</td>
+                                        <td>{{ $p->date }}</td>
                                         <td>{{ $p->nama }}</td>
                                         <td>{{ $p->status_karyawan }}</td>
                                         <td>{{ $p->jabatan }}</td>

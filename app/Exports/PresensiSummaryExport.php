@@ -22,10 +22,12 @@ class PresensiSummaryExport implements FromQuery, WithHeadings, WithColumnFormat
 {
     use Exportable;
 
-    protected $selected_company;
-    public function __construct($selected_company)
+    protected $selected_company, $year, $month;
+    public function __construct($selected_company, $year, $month)
     {
         $this->selected_company = $selected_company;
+        $this->year = $year;
+        $this->month = $month;
        
     }
 
@@ -50,76 +52,75 @@ class PresensiSummaryExport implements FromQuery, WithHeadings, WithColumnFormat
             
             case 0:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', 11)
-                ->whereYear('date', 2023); 
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year); 
                 break;
 
             case 1:
                 return Payroll::whereIn('status_karyawan', $statuses)
                 ->where('placement', 'YCME')
-                ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
                 break;
 
             case 2:
                 return Payroll::whereIn('status_karyawan', $statuses)->where('placement', 'YEV')
-                ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
-
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
                 break;
 
             case 3:
                 return Payroll::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM'])
-                ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
 
                 break;
 
             case 4:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'ASB')
-                    ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
 
                 break;
 
             case 5:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'DPA')
-                    ->whereMonth('date', 11)
-                    ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year);
 
                 break;
 
             case 6:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YCME')
-                    ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
 
                 break;
 
             case 7:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YEV')
-                    ->whereMonth('date', 11)
-                ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year);
 
                 break;
 
             case 8:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YIG')
-                    ->whereMonth('date', 11)
-                    ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year);
 
                 break;
 
             case 9:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YSM')
-                    ->whereMonth('date', 11)
-                    ->whereYear('date', 2023);
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year);
 
                 break;
         }

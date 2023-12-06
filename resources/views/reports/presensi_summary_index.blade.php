@@ -21,6 +21,7 @@
                             <select class="form-select form-select-lg mb-3" aria-label="Large select example"
                                 name="month">
                                 <option value="11">November</option>
+                                <option value="12">Desember</option>
                             </select>
                         </div>
                     </div>

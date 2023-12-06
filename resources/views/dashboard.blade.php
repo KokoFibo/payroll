@@ -47,7 +47,7 @@
     </div>
 
     {{-- Department --}}
-    <div class="flex justify-evenly mt-3">
+    <div class="d-flex gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3">
         {{-- Jumlah karyawan --}}
         <div>
             <div class="h-3 rounded-t-lg bg-blue-500">

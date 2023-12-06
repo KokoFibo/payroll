@@ -16,13 +16,13 @@
         </div>
     @endif
 
-    <div class="d-xl-flex justify-content-between p-4">
-        <div class="col-12 col-xl-4  d-xl-flex  gap-xl-3">
-            <div class="input-group col-12 col-xl-12 mb-2 ">
+    <div class="d-flex flex-column flex-xl-row gap-2 justify-content-between align-items-center p-4">
+        <div class="col-12 col-xl-8 gap-2 d-flex flex-column flex-xl-row gap-xl-3">
+            <div class="input-group col-12 col-xl-7  ">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <input type="search" wire:model.live="search" class="form-control" placeholder="{{ __('Search') }} ...">
             </div>
-            <div class="col-12 col-xl-8  d-flex align-items-center gap-3 mb-2 mb-xl-0">
+            <div class="col-12 col-xl-5  d-flex align-items-center gap-3  mb-xl-0">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="10">10 {{ __('rows perpage') }}</option>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-xl-4  d-flex  gap-xl-3 justify-content-end">
+        <div class="col-12 col-xl-3  d-flex flex-column flex-xl-row gap-2  gap-xl-3 justify-content-end">
             <div class="col-xl-6 col-12">
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
                     <option value="0"selected>{{ __('All Companies') }}</option>
@@ -48,16 +48,19 @@
                     <option value="9">YSM</option>
                 </select>
             </div>
-            <div class="col-6 col-xl-4">
+            <div class="col-12 col-xl-4">
                 <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
                     <option value="0">{{ __('All Status') }}</option>
                     <option value="1">{{ __('Aktif') }}</option>
                     <option value="2">{{ __('Non Aktif') }}</option>
                 </select>
             </div>
+
+        </div>
+        <div class="col-12 col-xl-1">
             @if (Auth::user()->role > 3)
-                <div class="col-6 col-xl-4 text-end">
-                    <button wire:click="excel" class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
+                <div class="col-12">
+                    <button wire:click="excel" class="btn btn-success col-12">Excel</button></a>
                 </div>
             @endif
         </div>

@@ -60,6 +60,34 @@ class Prindexwr extends Component
         $this->resetPage();
     }
 
+    public function buat_payroll()
+    {
+        // supaya tidak dilakukan bersamaan
+        //     $lock = Lock::find(1);
+        //     if ($lock->build) {
+        //         $lock->build = 0;
+        //         return back()->with('error', 'Mohon dicoba sebentar lagi');
+        //     } else {
+        //         $lock->build = 1;
+        //         $lock->save();
+        //     }
+
+        $result  = build_payroll($this->month, $this->year);
+        if($result == 0 ) {
+
+            $this->dispatch('error', message: 'Data Presensi tidak ada');
+        } else {
+            
+            
+            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+        }
+
+        
+        //     $lock->build = false;
+        //     $lock->save();
+        return redirect()->to('/payrollindex');
+    }
+
 
  // ok1
     // #[On('getPayroll')]
