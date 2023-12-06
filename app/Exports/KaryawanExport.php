@@ -63,8 +63,6 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
                 return Karyawan::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM']);
                 break;
 
-               
-
             case 4:
                 return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'ASB');
                 break;
