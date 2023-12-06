@@ -65,6 +65,9 @@ class DashboardController extends Controller
         $jabatan_Satpam = Karyawan::where('jabatan', 'Satpam')->count();
         $jabatan_Koki = Karyawan::where('jabatan', 'Koki')->count();
         $jabatan_Dapur_Kantor = Karyawan::where('jabatan', 'Dapur Kantor')->count();
+        $jabatan_Dapur_Pabrik = Karyawan::where('jabatan', 'Dapur Pabrik')->count();
+        $jabatan_QC_Aging = Karyawan::where('jabatan', 'QC Aging')->count();
+        $jabatan_Driver = Karyawan::where('jabatan', 'Driver')->count();
 
 
         
@@ -80,7 +83,8 @@ class DashboardController extends Controller
         'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Yifang',
         'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
-        'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor'
+        'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
+        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver'
         ]) );
 
     }

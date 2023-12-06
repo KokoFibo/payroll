@@ -77,6 +77,11 @@
                                         <td>
                                             Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                     </tr>
+                                    <tr>
+                                        <td>Subtotal Gaji</td>
+                                        <td>
+                                            Rp. {{ number_format($data_payroll->subtotal) }}</td>
+                                    </tr>
                                     @if ($data_payroll->tambahan_shift_malam != 0)
                                         <tr>
                                             <td>Bonus Shift Malam
@@ -86,11 +91,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    <tr>
-                                        <td>Subtotal Gaji</td>
-                                        <td>
-                                            Rp. {{ number_format($data_payroll->subtotal) }}</td>
-                                    </tr>
+
                                     @if ($data_karyawan->iuran_air != 0)
                                         <tr>
                                             <td>Iuran air minum
