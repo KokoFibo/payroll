@@ -17,28 +17,22 @@ class Test extends Component {
 
     public function render() {
 
-        $first_in = '16:37';
-        $second_out = '23:21';
-        $t1 = strtotime($first_in);
-        $t2 = strtotime($second_out);
+        $nama_file = "summary.xlsx";
+        $month = 11;
+        $year = 2023;
+        // function nama_file_excel($nama_file, $month, $year){
+        //     $arrNamaFile = explode('.', $nama_file);
+        //     return $arrNamaFile[0] . '_' . $month . '_'.$year.'.'.$arrNamaFile[1];
+        // }
 
-        $diff = gmdate('H:i:s', $t2 - $t1);
-
-        $diff = explode(':', $diff);
-        $jam = (int) $diff[0];
-        $menit = (int) $diff[1];
-
-        if ( $menit>=45 ) {
-            $jam = $jam + 1;
-        } else if($menit<45 && $menit > 15) {
-            $jam = $jam + 0.5;
-        } else {
-            $jam ;
-        }
-
+        dd(nama_file_excel($nama_file, $month, $year));
        
+        
 
-        dd($diff, $jam);
-        return view( 'livewire.test', compact('langsungLembur') );
+
+
+
+
+        return view( 'livewire.test' );
     }
 }

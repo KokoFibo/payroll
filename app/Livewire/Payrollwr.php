@@ -30,58 +30,59 @@ class Payrollwr extends Component
     public $status = 1;
     public $data_payroll;
     public $data_karyawan;
-    
-    public function export () {
+    public $cx;
 
-        $nama_file="";
-        
+    public function export()
+    {
+        $nama_file = '';
+
         switch ($this->selected_company) {
             case 0:
-                $nama_file="semua_payroll.xlsx";
+                $nama_file = 'semua_payroll.xlsx';
                 break;
 
             case 1:
-                    $nama_file="payroll_pabrik1.xlsx";
+                $nama_file = 'payroll_pabrik1.xlsx';
                 break;
 
             case 2:
-                    $nama_file="payroll_pabrik2.xlsx";
+                $nama_file = 'payroll_pabrik2.xlsx';
                 break;
 
             case 3:
-                    $nama_file="payroll_kantor.xlsx";
+                $nama_file = 'payroll_kantor.xlsx';
                 break;
 
             case 4:
-                    $nama_file="payroll_ASB.xlsx";
+                $nama_file = 'payroll_ASB.xlsx';
                 break;
 
             case 5:
-                   $nama_file="payroll_DPA.xlsx";
+                $nama_file = 'payroll_DPA.xlsx';
                 break;
 
             case 6:
-                   $nama_file="payroll_YCME.xlsx";
+                $nama_file = 'payroll_YCME.xlsx';
                 break;
 
             case 7:
-                   $nama_file="payroll_YEV.xlsx";
+                $nama_file = 'payroll_YEV.xlsx';
                 break;
 
             case 8:
-                   $nama_file="payroll_YIG.xlsx";
+                $nama_file = 'payroll_YIG.xlsx';
                 break;
 
             case 9:
-                   $nama_file="payroll_YSM.xlsx";
+                $nama_file = 'payroll_YSM.xlsx';
                 break;
         }
 
         // return Excel::download(new PayrollExport($payroll), $nama_file);
         // $nama_file = "payroll.xlsx";
-        return Excel::download(new PayrollExport($this->selected_company, $this->status ), $nama_file);
+        $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+        return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
     }
-
 
     public function showDetail($id_karyawan)
     {
@@ -116,8 +117,7 @@ class Payrollwr extends Component
 
         $this->year = now()->year;
         $this->month = now()->month;
-        if($data != null) {
-
+        if ($data != null) {
             $this->data_payroll = Payroll::with('jamkerjaid')
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -127,18 +127,46 @@ class Payrollwr extends Component
         }
     }
 
-    public function getPayrollQueue () {
+    public function getPayrollQueue()
+    {
         $this->dispatch(new BuildPayrollJob($this->month, $this->year));
-        
- 
     }
 
-   // ok1
-    // #[On('getPayroll')]
+    public function buat_payroll()
+    {
+        // supaya tidak dilakukan bersamaan
+        //     $lock = Lock::find(1);
+        //     if ($lock->build) {
+        //         $lock->build = 0;
+        //         return back()->with('error', 'Mohon dicoba sebentar lagi');
+        //     } else {
+        //         $lock->build = 1;
+        //         $lock->save();
+        //     }
+
+        $result  = build_payroll($this->month, $this->year);
+        if($result == 0 ) {
+
+            $this->dispatch('error', message: 'Data Presensi tidak ada');
+        } else {
+            
+            
+            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+        }
+
+        
+        //     $lock->build = false;
+        //     $lock->save();
+        return redirect()->to('/payroll');
+    }
+
     
+
+    // ok1
+    // #[On('getPayroll')]
+
     public function getPayroll()
     {
-
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if ($lock->build) {
@@ -203,7 +231,7 @@ class Payrollwr extends Component
         // disini mulai prosesnya
         foreach ($filteredData as $data) {
             $dataId = Yfrekappresensi::with('karyawan')
-       
+
                 ->where('user_id', $data->user_id)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -261,11 +289,11 @@ class Payrollwr extends Component
                                 }
                             }
                         }
-                        if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
+                        if ($jam_lembur >= 9 && is_sunday($d->date) == false) {
                             $jam_lembur = 0;
                         }
-                        if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                            if( is_friday($d->date) ) {
+                        if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                            if (is_friday($d->date)) {
                                 $jam_kerja = 7.5;
                             } elseif (is_saturday($d->date)) {
                                 $jam_kerja = 6;
@@ -274,11 +302,11 @@ class Payrollwr extends Component
                             }
                         }
 
-                        if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                        if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
                             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                         }
 
-                        if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                        if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                             $jam_lembur = 0;
                         }
 
@@ -286,7 +314,7 @@ class Payrollwr extends Component
 
                         //     $jam_kerja =  $jam_kerja * 2;
                         //     $jam_lembur = $jam_lembur * 2;
-                        
+
                         // }
 
                         // if($d->karyawan->jabatan == 'Satpam') {
@@ -300,7 +328,6 @@ class Payrollwr extends Component
                         //         }
                         //     }
                         // }
-                        
 
                         $total_hari_kerja++;
                         $total_jam_kerja = $total_jam_kerja + $jam_kerja;
@@ -315,7 +342,7 @@ class Payrollwr extends Component
                 if ($n_noscan == 0) {
                     $n_noscan = null;
                 }
-                
+
                 $data->total_hari_kerja = $total_hari_kerja;
                 $data->jumlah_jam_kerja = $total_jam_kerja;
                 $data->jumlah_menit_lembur = $total_jam_lembur;
@@ -362,7 +389,7 @@ class Payrollwr extends Component
 
         Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
-            ->truncate();
+            ->delete();
 
         foreach ($datas as $data) {
             $payroll = new Payroll();
@@ -411,9 +438,9 @@ class Payrollwr extends Component
             //     $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
             // } else {
             // }
-            
-            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
-            
+
+            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $payroll->jam_lembur * $data->karyawan->gaji_overtime;
+
             if ($data->karyawan->potongan_JP == 1) {
                 if ($data->karyawan->gaji_bpjs <= 9559600) {
                     $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
@@ -460,15 +487,12 @@ class Payrollwr extends Component
 
             $payroll->date = $data->date;
 
-          
             $total_bonus_dari_karyawan = 0;
             $total_potongan_dari_karyawan = 0;
 
             $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
-            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker ;
-            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan  +$payroll->tambahan_shift_malam
-            - $total_potongan_dari_karyawan - $payroll->pajak 
-            - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
+            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
+            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan + $payroll->tambahan_shift_malam - $total_potongan_dari_karyawan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
@@ -478,7 +502,6 @@ class Payrollwr extends Component
     // ok3
     public function bonus_potongan()
     {
-       
         $bonus = 0;
         $potongaan = 0;
         $all_bonus = 0;
@@ -488,7 +511,7 @@ class Payrollwr extends Component
             ->get();
 
         foreach ($tambahan as $d) {
-            $all_bonus = $d->uang_makan +  $d->bonus_lain;
+            $all_bonus = $d->uang_makan + $d->bonus_lain;
             $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
             $id_payroll = Payroll::whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -504,7 +527,6 @@ class Payrollwr extends Component
         }
 
         $this->dispatch('success', message: 'Bonus dan Potangan added');
-
     }
 
     public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
@@ -525,22 +547,16 @@ class Payrollwr extends Component
             ->when($company, function ($query) use ($company) {
                 $query->where('company', $company);
             })
+           
 
             ->orderBy($this->columnName, $this->direction);
     }
 
     public function render()
     {
-        $latest_payroll_id = Payroll::latest()->first();
-
-        // if(Payroll::count() == 0){
-        //     $this->rebuild();
-        // } else {
-        //     if(Jamkerjaid::find($latest_payroll_id->jamkerjaid_id)==null){
-        //         $this->rebuild();
-        //     }
-        // }
-
+        $this->cx++;
+      
+      
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
         } elseif ($this->status == 2) {
@@ -552,26 +568,26 @@ class Payrollwr extends Component
         switch ($this->selected_company) {
             case 0:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                ->sum('total');
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                ->paginate($this->perpage);
+                    ->whereMonth('date', $this->month )
+                    ->whereYear('date', $this->year)
+                    ->paginate($this->perpage);
                 break;
 
             case 1:
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->where('placement', 'YCME')
                     ->sum('total');
 
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
+                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -579,12 +595,12 @@ class Payrollwr extends Component
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YEV')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->whereYear('date', $this->year)
                     ->sum('total');
 
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
+                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -607,7 +623,7 @@ class Payrollwr extends Component
                     })
                     ->whereIn('placement', ['YIG', 'YSM'])
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->whereYear('date', $this->year)
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
                 break;
@@ -619,10 +635,10 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-                
-                ->where('company', 'ASB')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+
+                    ->where('company', 'ASB')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -633,10 +649,10 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-                
-                ->where('company', 'DPA')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+
+                    ->where('company', 'DPA')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -647,10 +663,10 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-                
-                ->where('company', 'YCME')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+
+                    ->where('company', 'YCME')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -661,10 +677,10 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-                
-                ->where('company', 'YEV')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+
+                    ->where('company', 'YEV')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -676,10 +692,10 @@ class Payrollwr extends Component
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-                
-                ->where('company', 'YIG')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+
+                    ->where('company', 'YIG')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -690,32 +706,28 @@ class Payrollwr extends Component
                     ->whereYear('date', $this->year)
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                
-                ->where('company', 'YSM')
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
+                    ->where('company', 'YSM')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
         }
 
-        /**
-         * Get the payroll query based on parameters.
-         *
-         * @param array|string $statuses
-         * @param string|null $search
-         * @param array|string|null $placement
-         *
-         * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-         */
+      
 
-        $tgl = Payroll::select('updated_at')->first();
+        $tgl = Payroll::whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)
+        ->select('created_at')->first();
         if ($tgl != null) {
-            $last_build = Carbon::parse($tgl->updated_at)->diffForHumans();
+            $last_build = Carbon::parse($tgl->created_at)->diffForHumans();
         } else {
             $last_build = 0;
         }
 
         $data_kosong = Jamkerjaid::count();
+
+         
+        $this->cx++;
 
         return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong']));
     }

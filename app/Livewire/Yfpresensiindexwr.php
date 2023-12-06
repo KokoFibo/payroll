@@ -53,6 +53,18 @@ class Yfpresensiindexwr extends Component
     public $total_tambahan_shift_malam;
     public $paginatedData;
     public $data1;
+    public $month;
+    public $year;
+
+    public function mount () {
+        $this->year = now()->year;
+        $this->month = now()->month;
+    }
+// ok1
+    public function submitPresensiDetail ($user_id) {
+        $this->showDetail($user_id);
+    }
+
 
     #[On('delete')]
     public function delete($id) {
@@ -80,6 +92,8 @@ public function showDetail($user_id)
    
 
     $data = Yfrekappresensi::with('karyawan')->where('user_id', $user_id)
+    ->whereMonth('date', $this->month)
+    ->whereYear('date', $this->year)
         ->orderBy('date', 'desc')
         ->get();
 //ok2
