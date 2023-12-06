@@ -150,6 +150,10 @@
                         <h2 class="text-center   text-gray-600">{{ __('Satpam') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Koki') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Dapur Kantor') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Dapur Pabrik') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('QC Aging') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Driver') }}</h2>
+
                     </div>
                     <div class="flex flex-column gap-2">
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Admin }}</h2>
@@ -172,6 +176,9 @@
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Satpam }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Koki }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Dapur_Kantor }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Dapur_Pabrik }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_QC_Aging }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Driver }}</h2>
 
                     </div>
                 </div>
