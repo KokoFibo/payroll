@@ -20,7 +20,7 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
 
     public function __construct (object $payroll) {
         $this->payroll = $payroll;
-        dd($this->payroll);
+       
     }
 
 
