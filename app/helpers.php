@@ -7,6 +7,22 @@ use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function month_year($tgl) {
+    $date = Carbon::createFromFormat('Y-m-d', $tgl);
+    $monthName = $date->format('F');
+    $year = $date->format('Y');
+    return $monthName. ' '. $year ;
+}
+
+function check_bulan($tgl, $bulan, $tahun) {
+    $arrTgl = explode('-', $tgl);
+    if($arrTgl[0] == $tahun && $arrTgl[1] == $bulan )  {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function nama_file_excel($nama_file, $month, $year){
     $arrNamaFile = explode('.', $nama_file);
     return $arrNamaFile[0] . '_' . $month . '_'.$year.'.'.$arrNamaFile[1];

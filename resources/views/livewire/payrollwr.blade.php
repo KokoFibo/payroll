@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 d-flex gap-2 mt-2">
+                    <div class="col-xl-3 d-flex gap-2 ">
 
                         <div class="col-xl-6">
 
@@ -87,8 +87,7 @@
                     </div>
 
 
-                    <div
-                        class="col-xl-5 mt-2 gap-2 d-flex flex-xl-row flex-column align-items-center  justify-content-end">
+                    <div class="col-xl-5  gap-2 d-flex flex-xl-row flex-column align-items-center  justify-content-end">
                         <div class="col-xl-4">
                             <select class="form-select" wire:model.live="perpage">
                                 {{-- <option selected>Open this select menu</option> --}}
@@ -217,74 +216,78 @@
                             @if ($payroll->isNotEmpty())
 
                                 @foreach ($payroll as $p)
-                                    <tr>
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                wire:click="showDetail({{ $p->id_karyawan }})" data-bs-toggle="modal"
-                                                data-bs-target="#payroll"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></button>
+                                    @if (check_bulan($p->date, $month, $year))
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    wire:click="showDetail({{ $p->id_karyawan }})"
+                                                    data-bs-toggle="modal" data-bs-target="#payroll"><i
+                                                        class="fa-solid fa-magnifying-glass"></i></button>
 
-                                        </td>
+                                            </td>
 
 
-                                        <td>{{ $p->id_karyawan }}</td>
-                                        <td>{{ $p->date }}</td>
-                                        <td>{{ $p->nama }}</td>
-                                        <td>{{ $p->status_karyawan }}</td>
-                                        <td>{{ $p->jabatan }}</td>
-                                        <td>{{ $p->company }}</td>
-                                        <td>{{ $p->placement }}</td>
-                                        <td>{{ $p->metode_penggajian }}</td>
-                                        <td class="text-end">{{ $p->hari_kerja }}</td>
-                                        <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
-                                        <td class="text-end">{{ $p->jam_lembur }}</td>
-                                        <td class="text-end">{{ $p->jumlah_jam_terlambat }}</td>
-                                        <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
-                                        <td class="text-end">
-                                            {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
-                                        </td>
-                                        <td class="text-end">
-                                            {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
-                                        </td>
-                                        <td class="text-end">{{ number_format($p->subtotal) }}</td>
-                                        <td class="text-end">
-                                            {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
-                                        </td>
-                                        <td class="text-end">
-                                            {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
-                                        </td>
-                                        @php
-                                            $total_potongan_dari_karyawan = 0;
-                                            $total_bonus_dari_karyawan = 0;
-                                            $total_potongan_dari_karyawan = $p->iuran_air + $p->iuran_locker;
-                                            $total_bonus_dari_karyawan = $p->thr + $p->tunjangan_jabatan + $p->tunjangan_bahasa + $p->tunjangan_skill + $p->tunjangan_lembur_sabtu + $p->tunjangan_lama_kerja;
+                                            <td>{{ $p->id_karyawan }}</td>
+                                            {{-- <td>{{ format_tgl($p->date) }}</td> --}}
+                                            <td>{{ month_year($p->date) }}</td>
+                                            <td>{{ $p->nama }}</td>
+                                            <td>{{ $p->status_karyawan }}</td>
+                                            <td>{{ $p->jabatan }}</td>
+                                            <td>{{ $p->company }}</td>
+                                            <td>{{ $p->placement }}</td>
+                                            <td>{{ $p->metode_penggajian }}</td>
+                                            <td class="text-end">{{ $p->hari_kerja }}</td>
+                                            <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
+                                            <td class="text-end">{{ $p->jam_lembur }}</td>
+                                            <td class="text-end">{{ $p->jumlah_jam_terlambat }}</td>
+                                            <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
+                                            <td class="text-end">
+                                                {{ $p->gaji_lembur ? number_format($p->gaji_lembur) : '' }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
+                                            </td>
+                                            <td class="text-end">{{ number_format($p->subtotal) }}</td>
+                                            <td class="text-end">
+                                                {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
+                                            </td>
+                                            @php
+                                                $total_potongan_dari_karyawan = 0;
+                                                $total_bonus_dari_karyawan = 0;
+                                                $total_potongan_dari_karyawan = $p->iuran_air + $p->iuran_locker;
+                                                $total_bonus_dari_karyawan = $p->thr + $p->tunjangan_jabatan + $p->tunjangan_bahasa + $p->tunjangan_skill + $p->tunjangan_lembur_sabtu + $p->tunjangan_lama_kerja;
 
-                                        @endphp
-                                        <td class="text-end">
-                                            {{ number_format($total_bonus_dari_karyawan) }}
-                                            {{-- {{ $total_bonus_dari_karyawan ? number_format($total_bonus_dari_karyawan) : '' }} --}}
-                                        </td>
-                                        <td class="text-end">
-                                            {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
-                                        </td>
+                                            @endphp
+                                            <td class="text-end">
+                                                {{ number_format($total_bonus_dari_karyawan) }}
+                                                {{-- {{ $total_bonus_dari_karyawan ? number_format($total_bonus_dari_karyawan) : '' }} --}}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
+                                            </td>
 
-                                        <td class="text-end">
-                                            {{ $total_potongan_dari_karyawan ? number_format($total_potongan_dari_karyawan) : '' }}
-                                        </td>
-                                        <td class="text-end">
-                                            {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
-                                        </td>
+                                            <td class="text-end">
+                                                {{ $total_potongan_dari_karyawan ? number_format($total_potongan_dari_karyawan) : '' }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
+                                            </td>
 
-                                        <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
-                                        <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
-                                        <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
-                                        <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
-                                        <td class="text-end">{{ $p->jkm ? 'Yes' : '' }}</td>
-                                        <td class="text-end">{{ $p->kesehatan ? number_format($p->kesehatan) : '' }}
-                                        </td>
+                                            <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
+                                            <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
+                                            <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
+                                            <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
+                                            <td class="text-end">{{ $p->jkm ? 'Yes' : '' }}</td>
+                                            <td class="text-end">
+                                                {{ $p->kesehatan ? number_format($p->kesehatan) : '' }}
+                                            </td>
 
-                                        <td class="text-end">{{ number_format($p->total) }}</td>
-                                    </tr>
+                                            <td class="text-end">{{ number_format($p->total) }}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             @else
                                 <h4>{{ __('No Data Found') }}</h4>

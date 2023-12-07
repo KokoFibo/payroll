@@ -160,6 +160,8 @@ function build_payroll($month, $year)
             'karyawan_id' => $d->karyawan->id,
             'date' => buatTanggal($d->date),
             'last_data_date' => $last_data_date->date,
+            'created_at' => now()->toDateTimeString(),
+            'updated_at' => now()->toDateTimeString()
         ];
         
     }
@@ -289,7 +291,9 @@ foreach ($datas as $data) {
     'tambahan_shift_malam' => $tambahan_shift_malam,
     'subtotal' => $subtotal,
     'date' => buatTanggal($data->date),
-    'total' => $subtotal + $total_bonus_dari_karyawan + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $denda_lupa_absen
+    'total' => $subtotal + $total_bonus_dari_karyawan + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $denda_lupa_absen,
+    'created_at' => now()->toDateTimeString(),
+    'updated_at' => now()->toDateTimeString()
   ];
 }
 $chunks = array_chunk($payrollArr, 100);
