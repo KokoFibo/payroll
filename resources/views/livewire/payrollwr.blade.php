@@ -1,5 +1,6 @@
 <div>
     @section('title', 'Payroll')
+
     <div class="pt-2">
         <div class="">
             <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
@@ -8,22 +9,34 @@
 
                 <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
+
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                     </button>
                 </div>
-                <div>
+                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-3 align-items-center">
+                    <div class="form-check form-switch">
+                        <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
+                            id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
+                        <label class="form-check-label"
+                            for="flexSwitchCheckChecked">{{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }}</label>
+                    </div>
 
-                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2"
-                            wire:loading.remove>{{ __('Report for bank') }}</button></a>
+                    <div>
+                        <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2"
+                                wire:loading.remove>{{ __('Report for bank') }}</button></a>
 
+                    </div>
 
-                    {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                    <button wire:click="buat_payroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
-                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
-                    {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+                    <div>
+                        {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
+                        <button wire:click="buat_payroll"
+                            class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
+                        {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+                        {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+                    </div>
                 </div>
             </div>
         </div>

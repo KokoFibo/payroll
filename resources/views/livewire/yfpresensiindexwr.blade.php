@@ -185,7 +185,7 @@
                                             @if ($btnEdit == true)
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm"><i
+                                                    class="btn btn-success btn-sm {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
                                             @else
                                                 @if ($data->id == $selectedId)
@@ -203,17 +203,10 @@
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
 
-
-                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
-                                                      class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square">
-                                                      </i></button> --}}
-
-
-                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
-                                                      class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button> --}}
                                             @if (Auth::user()->role > 2)
                                                 <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                    {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif

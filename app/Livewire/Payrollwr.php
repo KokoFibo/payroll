@@ -31,6 +31,7 @@ class Payrollwr extends Component
     public $data_payroll;
     public $data_karyawan;
     public $cx;
+    public $lock_presensi;
 
     public function export()
     {
@@ -111,6 +112,8 @@ class Payrollwr extends Component
         $this->resetPage();
     }
 
+    
+
     public function mount()
     {
         $data = Payroll::first();
@@ -125,6 +128,15 @@ class Payrollwr extends Component
                 ->first();
             $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
         }
+
+        $lock=Lock::find(1);
+        $this->lock_presensi = $lock->presensi;
+    }
+    public function updatedLockPresensi () {
+        // $lock=Lock::find(1);
+        $lock=Lock::first();
+        $lock->presensi = $this->lock_presensi;
+        $lock->save();
     }
 
     public function getPayrollQueue()
