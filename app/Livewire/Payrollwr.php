@@ -87,6 +87,7 @@ class Payrollwr extends Component
 
     public function showDetail($id_karyawan)
     {
+    
         $this->data_payroll = Payroll::with('jamkerjaid')
             ->whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
@@ -544,7 +545,8 @@ class Payrollwr extends Component
     public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
     {
         return Payroll::query()
-            ->whereIn('status_karyawan', $statuses)
+        
+        ->whereIn('status_karyawan', $statuses)
             ->when($search, function ($query) use ($search) {
                 $query
                     ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
@@ -559,6 +561,7 @@ class Payrollwr extends Component
             ->when($company, function ($query) use ($company) {
                 $query->where('company', $company);
             })
+           
            
 
             ->orderBy($this->columnName, $this->direction);
@@ -585,9 +588,9 @@ class Payrollwr extends Component
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search)
-                    ->whereMonth('date', $this->month )
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
+                ->whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)    
+                ->paginate($this->perpage);
                 break;
 
             case 1:
@@ -598,9 +601,9 @@ class Payrollwr extends Component
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
+                ->whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)    
+                ->paginate($this->perpage);
                 break;
 
             case 2:
@@ -611,9 +614,9 @@ class Payrollwr extends Component
                     ->sum('total');
 
                 $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
+                ->whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)    
+                ->paginate($this->perpage);
                 break;
 
             case 3:
@@ -634,9 +637,9 @@ class Payrollwr extends Component
                             ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
                     })
                     ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->orderBy($this->columnName, $this->direction)
+                    ->whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -650,7 +653,7 @@ class Payrollwr extends Component
 
                     ->where('company', 'ASB')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -664,7 +667,7 @@ class Payrollwr extends Component
 
                     ->where('company', 'DPA')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -678,7 +681,7 @@ class Payrollwr extends Component
 
                     ->where('company', 'YCME')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -692,7 +695,7 @@ class Payrollwr extends Component
 
                     ->where('company', 'YEV')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -707,7 +710,7 @@ class Payrollwr extends Component
 
                     ->where('company', 'YIG')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
 
@@ -720,7 +723,7 @@ class Payrollwr extends Component
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
                     ->where('company', 'YSM')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
+        ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
                 break;
         }
