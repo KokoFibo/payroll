@@ -13,7 +13,7 @@
 "10 rows perpage" : "每页10行",
 "Action" : "操作",
 "Add" : "添加",
-"Aktif" : "激活",
+
 "All Companies" : "所有公司",
 "All Status" : "所有状态",
 "Bonus" : "奖金",
@@ -70,7 +70,7 @@
 "Name" : "名字",
 "No scan" : "无扫描记录",
 "No Scan" : "无扫描记录",
-"Non-Aktif" : "未激活",
+
 "Overtime" : "加班",
 "Overtime in" : "加班签到",
 "Overtime out" : "加班签退",
@@ -271,7 +271,13 @@
 "QC Aging" : "Aging 质量控制",
 "Driver" : "司机",
 "Presensi is locked" : "考勤已锁定",
-"Presensi is unlocked" : "考勤已解锁"
+"Presensi is unlocked" : "考勤已解锁",
+"Aktif" : "活跃状态",
+"Non-Aktif" : "非活跃状态",
+"Non Aktif" : "非活跃状态",
+"Status Aktif" : "活跃状态",
+"Status Non Aktif" : "非活跃状态",
+"Semua" :  "所有状态"
 
 
 

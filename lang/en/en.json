@@ -270,7 +270,11 @@
 "QC Aging" : "QC Aging",
 "Driver" : "Driver",
 "Presensi is locked" : "Presensi is locked",
-"Presensi is unlocked" : "Presensi is unlocked"
+"Presensi is unlocked" : "Presensi is unlocked",
+"Non Aktif" : "Non Aktif",
+"Status Aktif" : "Status Aktif",
+"Status Non Aktif" : "Status Non Aktif",
+"Semua" :  "Semua"
 
 
 
