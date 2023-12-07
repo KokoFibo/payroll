@@ -37,9 +37,9 @@
             <div class="col-xl-6 col-12">
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
                     <option value="0"selected>{{ __('All Companies') }}</option>
-                    <option value="1">Pabrik 1</option>
-                    <option value="2">Pabrik 2</option>
-                    <option value="3">Kantor</option>
+                    <option value="1">{{ __('Pabrik 1') }}</option>
+                    <option value="2">{{ __('Pabrik 2') }}</option>
+                    <option value="3">{{ __('Kantor') }}</option>
                     <option value="4">ASB</option>
                     <option value="5">DPA</option>
                     <option value="6">YCME</option>
