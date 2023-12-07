@@ -55,11 +55,43 @@ class Yfpresensiindexwr extends Component
     public $data1;
     public $month;
     public $year;
+    public $bulan;
+    public $tahun;
+    public $lock_presensi;
 
     public function mount () {
         $this->year = now()->year;
         $this->month = now()->month;
+        // $this->lock_presensi = $lock->presensi;
+        if(  $this->year == now()->year &&
+        $this->month == now()->month) {
+            $this->lock_presensi = 0;
+        } else {
+            $lock = Lock::find(1);
+        $this->lock_presensi = $lock->presensi;
+        }
+      
     }
+
+
+    public function updatedTanggal($nilai_tanggal) {
+            $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
+            $this->tahun = Carbon::parse($nilai_tanggal)->format('Y');
+                if(  $this->tahun == now()->year &&
+                $this->bulan == now()->month) {
+                    $this->lock_presensi = 0;
+                } else {
+                    $lock = Lock::find(1);
+                $this->lock_presensi = $lock->presensi;
+                }
+}
+
+public function updatedLockPresensi () {
+    dd('updatedLockPresensi');
+}
+       
+        
+   
 // ok1
     public function submitPresensiDetail ($user_id) {
         $this->showDetail($user_id);
@@ -365,22 +397,6 @@ public function showDetail($user_id)
             ->where('date', '=', $this->tanggal)
             ->count();
 
-        // $datas = Yfrekappresensi::whereDate('date', 'like', '%' . $this->tanggal . '%')
-        //     ->orderBy($this->columnName, $this->direction)
-        //     ->when($this->search, function ($query) {
-        //         $query
-        //             ->where('name', 'LIKE', '%' . trim($this->search) . '%')
-        //             ->orWhere('name', 'LIKE', '%' . trim($this->search) . '%')
-        //             // ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //             // ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //             ->orWhere('user_id', trim($this->search))
-        //             ->orWhere('department', 'LIKE', '%' . trim($this->search) . '%')
-        //             // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-        //             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
-        //             ->where('date', 'like', '%' . $this->tanggal . '%');
-        //     })
-        //     ->paginate(10);
-
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
         ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
@@ -412,6 +428,8 @@ public function showDetail($user_id)
 
         ->paginate($this->perpage);
             // dd($datas[0]->user_id);
+
+       
 
 
         return view('livewire.yfpresensiindexwr', compact(['datas', 'totalHadir', 'totalHadirPagi',
