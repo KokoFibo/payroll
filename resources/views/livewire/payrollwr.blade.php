@@ -20,8 +20,14 @@
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
-                        <label class="form-check-label"
-                            for="flexSwitchCheckChecked">{{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }}</label>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                            {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
+                            @if ($lock_presensi)
+                                {{ __('Presensi is locked') }}
+                            @else
+                                {{ __('Presensi is unlocked') }}
+                            @endif
+                        </label>
                     </div>
 
                     <div>
@@ -100,7 +106,7 @@
                         </div>
                         <div class="col-xl-4">
                             <select class="form-select" wire:model.live="status">
-                                <option value="0">{{ __('Semua') }}Semua</option>
+                                <option value="0">{{ __('Semua') }}</option>
                                 <option value="1">{{ __('Status Aktif') }}</option>
                                 <option value="2">{{ __('Status Non Aktif') }}</option>
                             </select>

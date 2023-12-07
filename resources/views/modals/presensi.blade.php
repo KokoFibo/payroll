@@ -3,11 +3,11 @@
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
              <div class="modal-header">
-                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Data Presensi Karyawan</h1>
+                 <h1 class="modal-title fs-4" id="staticBackdropLabel">Data Presensi Karyawan</h1>
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <div class="modal-body">
-                 <h4>November 2023</h4>
+                 <h4>{{ monthName($month) }} {{ $year }}</h4>
                  <div>
                      <p>User ID : {{ $user_id }}</p>
                      <p>Nama : {{ $name }}</p>
@@ -32,14 +32,14 @@
                  </div>
 
 
-                 <table class="table table-hover">
+                 <table class="table table-hover  table-bordered">
                      <thead>
                          <tr>
-                             <th>Tanggal</th>
-                             <th>Jam Kerja</th>
-                             <th>Jam Lembur</th>
-                             <th>Terlambat</th>
-                             <th>Shift Malam</th>
+                             <th class="text-center">Tanggal</th>
+                             <th class="text-center">Jam Kerja</th>
+                             <th class="text-center">Jam Lembur</th>
+                             <th class="text-center">Terlambat</th>
+                             <th class="text-center">Shift Malam</th>
                          </tr>
                      </thead>
                      <tbody>
@@ -64,12 +64,12 @@
                             @endforeach --}}
 
 
-                         <tr>
-                             <th class="text-center">{{ $total_hari_kerja }}</th>
-                             <th class="text-center">{{ $total_jam_kerja }}</th>
-                             <th class="text-center">{{ $total_jam_lembur }}</th>
-                             <th class="text-center">{{ $total_keterlambatan }}</th>
-                             <th class="text-center">{{ $total_tambahan_shift_malam }}</th>
+                         <tr class="table-success">
+                             <th class="text-center fs-5">{{ $total_hari_kerja }}</th>
+                             <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
+                             <th class="text-center fs-5">{{ $total_jam_lembur }}</th>
+                             <th class="text-center fs-5">{{ $total_keterlambatan }}</th>
+                             <th class="text-center fs-5">{{ $total_tambahan_shift_malam }}</th>
                          </tr>
                      </tbody>
                  </table>
