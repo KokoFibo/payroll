@@ -151,9 +151,9 @@ class Karyawanindexwr extends Component
     public function render()
     {
         if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
-            $statuses = ['Blacklist'];
+            $statuses = ['Blacklist', 'Resigned'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
