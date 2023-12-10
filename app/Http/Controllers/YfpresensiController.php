@@ -174,6 +174,7 @@ class YfpresensiController extends Controller {
         $jumlahKaryawanHadir = DB::table( 'yfpresensis' )
         ->distinct( 'user_id' )
         ->count( 'user_id' );
+
         $karyawanHadir = DB::table( 'yfpresensis' )
         // ->select( 'user_id', 'name', 'date', 'department' )
         ->select( 'user_id', 'date' )
@@ -349,6 +350,7 @@ class YfpresensiController extends Controller {
             // pakai code dibawah ini, jika masih banyak second yang masuk ke malam hari second_in code
             // if(Carbon::parse( $second_in )->betweenIncluded( '11:01', '14:00' ))   $shift = 'Pagi';
             // ook
+            
             Yfrekappresensi::create( [
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,

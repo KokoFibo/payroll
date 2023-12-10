@@ -14,19 +14,14 @@ class Test extends Component {
     // public $saturday;
     use WithPagination;
 
+    
+
 
     public function render() {
 
-        $nama_file = "summary.xlsx";
-        $month = 11;
-        $year = 2023;
-        // function nama_file_excel($nama_file, $month, $year){
-        //     $arrNamaFile = explode('.', $nama_file);
-        //     return $arrNamaFile[0] . '_' . $month . '_'.$year.'.'.$arrNamaFile[1];
-        // }
-
-        dd(nama_file_excel($nama_file, $month, $year));
        
+       $number = "12,250,0,0,0";
+       dd(convert_numeric($number));
         
 
 

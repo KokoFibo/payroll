@@ -231,6 +231,12 @@ with font-awesome or any other icon font library -->
 
                     </ul>
                 </li>
+                <li class="nav-item {{ 'test' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/test" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>test livewire aj</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'UserLog' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/UserLog" class="nav-link">
                         <i class="nav-icon fa-solid fa-users-between-lines"></i>
