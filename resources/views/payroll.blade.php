@@ -29,7 +29,7 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji pokok') }} <span class="text-danger">*</span></label>
-                        <input wire:model="gaji_pokok" type="number"
+                        <input wire:model="gaji_pokok" type="text" type-currency="IDR"
                             class="form-control @error('gaji_pokok') is-invalid @enderror">
                         @error('gaji_pokok')
                             <div class="invalid-feedback">
@@ -41,7 +41,7 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji Overtime') }} <span class="text-danger">*</span></label>
-                        <input wire:model="gaji_overtime" type="number"
+                        <input wire:model="gaji_overtime" type="text" type-currency="IDR"
                             class="form-control @error('gaji_overtime') is-invalid @enderror">
                         @error('gaji_overtime')
                             <div class="invalid-feedback">
@@ -74,20 +74,20 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Bonus') }}</label>
-                        <input wire:model="bonus" type="number" class="form-control">
+                        <input wire:model="bonus" type="text" type-currency="IDR" class="form-control">
 
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Tunjangan Jabatan') }}</label>
-                        <input wire:model="tunjangan_jabatan" type="number" class="form-control">
+                        <input wire:model="tunjangan_jabatan" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Tunjangan Bahasa') }}</label>
-                        <input wire:model="tunjangan_bahasa" type="number" class="form-control">
+                        <input wire:model="tunjangan_bahasa" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
             </div>
@@ -96,20 +96,22 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Tunjangan Skill') }}</label>
-                        <input wire:model="tunjangan_skill" type="number" class="form-control">
+                        <input wire:model="tunjangan_skill" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Tunjangan Lembur Sabtu') }}</label>
-                        <input wire:model="tunjangan_lembur_sabtu" type="number" class="form-control">
+                        <input wire:model="tunjangan_lembur_sabtu" type="text" type-currency="IDR"
+                            class="form-control">
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Tunjangan Lama Kerja') }}</label>
-                        <input wire:model="tunjangan_lama_kerja" type="number" class="form-control">
+                        <input wire:model="tunjangan_lama_kerja" type="text" type-currency="IDR"
+                            class="form-control">
                     </div>
                 </div>
 
@@ -128,7 +130,7 @@
                     <div class="mb-3">
                         <label class="form-label">{{ __('Iuran air minum') }} <span
                                 class="text-danger">*</span></label>
-                        <input wire:model="iuran_air" type="number"
+                        <input wire:model="iuran_air" type="text" type-currency="IDR"
                             class="form-control @error('iuran_air') is-invalid @enderror">
                         @error('iuran_air')
                             <div class="invalid-feedback">
@@ -140,21 +142,21 @@
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Denda') }}</label>
-                        <input wire:model="denda" type="number" class="form-control">
+                        <input wire:model="denda" type="text" type-currency="IDR" class="form-control">
 
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Iuran Locker') }}</label>
-                        <input wire:model="iuran_locker" type="number" class="form-control">
+                        <input wire:model="iuran_locker" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji BPJS') }}</label>
-                        <input wire:model="gaji_bpjs" type="number" class="form-control">
+                        <input wire:model="gaji_bpjs" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
 

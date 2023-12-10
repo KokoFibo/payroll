@@ -7,6 +7,17 @@ use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Yfrekappresensi;
 
+function convert_numeric($number) {
+    $number =  trim($number, "Rp\u{A0}");
+    $arrNumber = explode('.', $number);
+    $numberString="";
+    for($i=0; $i<count($arrNumber); $i++) {
+        $numberString = $numberString.$arrNumber[$i];
+    }
+    return  (int)$numberString;
+}
+
+
 function month_year($tgl) {
     $date = Carbon::createFromFormat('Y-m-d', $tgl);
     $monthName = $date->format('F');

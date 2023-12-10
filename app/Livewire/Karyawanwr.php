@@ -37,10 +37,10 @@ class Karyawanwr extends Component
 
             'id_karyawan' => 'required',
             'nama' => 'required',
-            'email' => 'email|required',
+            'email' => 'email|nullable',
             'tanggal_lahir' => 'date|before:today|required',
             // PRIBADI
-            'hp' => 'required',
+            'hp' => 'nullable',
             'telepon' => 'nullable',
             'tempat_lahir' => 'required',
             'gender' => 'required',
@@ -85,9 +85,22 @@ class Karyawanwr extends Component
             'ptkp' => 'nullable',
 
     ];
+    
 
     public function save()
     {
+            $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+        $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+            $this->bonus = convert_numeric($this->bonus);
+            $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+            $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+            $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+            $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+            $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+            $this->iuran_air = convert_numeric($this->iuran_air);
+            $this->iuran_locker = convert_numeric($this->iuran_locker);
+            $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+            $this->denda = convert_numeric($this->denda);
         $this->validate();
         $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
         $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
@@ -184,7 +197,19 @@ class Karyawanwr extends Component
 
     public function update()
     {
-        // $this->validate();
+        $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+        $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+            $this->bonus = convert_numeric($this->bonus);
+            $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+            $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+            $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+            $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+            $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+            $this->iuran_air = convert_numeric($this->iuran_air);
+            $this->iuran_locker = convert_numeric($this->iuran_locker);
+            $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+            $this->denda = convert_numeric($this->denda);
+        $this->validate();
 
         try {
             $data = Karyawan::find($this->id);
@@ -247,6 +272,7 @@ class Karyawanwr extends Component
             $data_user->email = trim($this->email, ' ');
             $data_user->password  = Hash::make(generatePassword($this->tanggal_lahir));
             $data_user->save();
+            
 
             $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
         $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
@@ -270,6 +296,22 @@ class Karyawanwr extends Component
         $this->reset();
         return redirect()->to('/karyawanindex');
     }
+    // public function updated() {
+
+    //     $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+    //     $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+    //         $this->bonus = convert_numeric($this->bonus);
+    //         $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+    //         $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+    //         $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+    //         $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+    //         $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+    //         $this->iuran_air = convert_numeric($this->iuran_air);
+    //         $this->iuran_locker = convert_numeric($this->iuran_locker);
+    //         $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+    //         $this->denda = convert_numeric($this->denda);
+
+    // }
 
     public function render()
     {

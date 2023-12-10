@@ -60,6 +60,7 @@ class Updatekaryawanwr extends Component {
 
          //Payroll
          $this->metode_penggajian = trim($data->metode_penggajian);
+        //  $this->gaji_pokok = $data->gaji_pokok;
          $this->gaji_pokok = $data->gaji_pokok;
          $this->gaji_overtime = $data->gaji_overtime;
          $this->bonus = $data->bonus;
@@ -89,10 +90,10 @@ return [
 
         'id_karyawan' => 'required',
         'nama' => 'required',
-        'email' => 'email|required|unique:karyawans,email,'.$this->id,
+        'email' => 'email|nullable|unique:karyawans,email,'.$this->id,
         'tanggal_lahir' => 'date|before:today|required',
         // PRIBADI
-        'hp' => 'required',
+        'hp' => 'nullable',
         'telepon' => 'nullable',
         'tempat_lahir' => 'required',
         'gender' => 'required',
@@ -143,7 +144,18 @@ return [
 
 
     public function update1() {
-
+        $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+        $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+            $this->bonus = convert_numeric($this->bonus);
+            $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+            $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+            $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+            $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+            $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+            $this->iuran_air = convert_numeric($this->iuran_air);
+            $this->iuran_locker = convert_numeric($this->iuran_locker);
+            $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+            $this->denda = convert_numeric($this->denda);
         $this->validate();
         $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
         $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
