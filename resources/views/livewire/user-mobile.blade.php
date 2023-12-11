@@ -46,10 +46,13 @@
 
                                 </div>
                             @endif
+                            @if ($is_slipGaji != true)
+                                <div>
+                                    <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
+                                </div>
+                            @endif
 
-                            <div>
-                                <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
-                            </div>
+
 
 
                         </div>
@@ -146,13 +149,13 @@
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_payroll->id_karyawan }}</td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Nama') }}</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_payroll->nama }}</td>
-                                    </tr>
-                                    @if ($data_karyawan->no_npwp != null)
+                                    </tr> --}}
+                                    {{-- @if ($data_karyawan->no_npwp != null)
                                         <tr>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                 {{ __('No. NPWP') }}
@@ -160,20 +163,20 @@
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                 {{ $data_karyawan->no_npwp }}</td>
                                         </tr>
-                                    @endif
-                                    <tr>
+                                    @endif --}}
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Nama Bank') }}</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_karyawan->nama_bank }}</td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('No. Rekening') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_karyawan->nomor_rekening }}</td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('T. Hari Kerja') }}
@@ -194,23 +197,23 @@
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Gaji Pokok') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->gaji_pokok) }}</td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Gaji Lembur') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('Subtotal Gaji') }}
+                                            {{ __('Subtotal') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
@@ -328,7 +331,7 @@
 
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('Total Gaji') }}
+                                            {{ __('Total Terima') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->total) }}
