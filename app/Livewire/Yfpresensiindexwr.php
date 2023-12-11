@@ -73,6 +73,18 @@ class Yfpresensiindexwr extends Component
       
     }
 
+    public function delete_no_scan ($id) {
+        $data=Yfrekappresensi::find($id);
+        if($data->no_scan == ""){
+            $data->no_scan_history = null;
+            $data->save();
+            $this->dispatch('Success', message: 'No Scan History sudah di delete');
+        } else {
+            $this->dispatch('error', message: 'No Scan harus di bersihkan dulu');
+        }
+
+    }
+
 
     public function updatedTanggal($nilai_tanggal) {
             $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
@@ -400,6 +412,7 @@ public function showDetail($user_id)
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
         ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+       
 
         ->when($this->location == 'Pabrik 1', function ($query) {
             return $query->where('placement', 'YCME');
@@ -414,6 +427,7 @@ public function showDetail($user_id)
         ->orderBy('user_id', 'asc')
         ->orderBy('date', 'asc')
         ->whereDate('date',  $this->tanggal)
+        
         ->when($this->search, function ($query) {
             $query
             ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
@@ -424,7 +438,9 @@ public function showDetail($user_id)
             ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
             // ->where('date', 'like', '%' . $this->tanggal . '%');
+           
         })
+
 
         ->paginate($this->perpage);
             // dd($datas[0]->user_id);
