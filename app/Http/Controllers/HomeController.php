@@ -63,7 +63,7 @@ class HomeController extends Controller {
     $department_Procurement = Karyawan::where('departemen', 'Procurement')->count();
     $department_Produksi = Karyawan::where('departemen', 'Produksi')->count();
     $department_Quality_Control = Karyawan::where('departemen', 'Quality Control')->count();
-    $department_Yifang = Karyawan::where('departemen', 'Yifang')->count();
+    $department_Board_of_Director = Karyawan::where('departemen', 'Board of Director')->count();
 
     // Jabatan
     $jabatan_Admin = Karyawan::where('jabatan', 'Admin')->count();
@@ -114,7 +114,7 @@ class HomeController extends Controller {
                 return view( 'dashboard', compact([ 'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_all', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV', 
         'jumlah_YIG', 'jumlah_YSM','jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
         'department_BD', 'department_Engineering', 'department_EXIM','department_Finance_Accounting', 'department_GA','department_Gudang',
-        'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Yifang',
+        'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Board_of_Director',
         'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor',
