@@ -21,17 +21,47 @@ class Karyawanindexwr extends Component
 
     public $search;
     public $columnName = 'id_karyawan';
-    public $direction = 'desc';
+    public $direction = 'Asc';
     public $id;
     public $selectedAll = [];
     public $selectStatus = 'Aktif';
     public $perpage = 10;
     public $selected_company;
 
+    // variable untuk filter
+    public $search_id_karyawan;
+    public $search_nama;
+    public $search_company;
+    public $search_placement;
+    public $search_department;
+    public $search_jabatan;
+    public $search_status;
+    public $search_tanggal_bergabung;
+    public $search_gaji_pokok;
+    public $search_gaji_overtime;
+  
+
     public function mount()
     {
         $this->selected_company = 0;
         $this->selectStatus = 1;
+        // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
+        // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
+    }
+
+    public function reset_filter () {
+        $this->selectStatus = 1;
+        $this->search_nama = "";
+        $this->search_id_karyawan = "";
+        $this->search_company = "";
+        $this->search_placement = "";
+        $this->search_jabatan = "";
+        $this->search_department = "";
+        $this->search_tanggal_bergabung = "";
+        $this->search_gaji_pokok = "";
+        $this->search_gaji_overtime = "";
+        $this->direction = 'Asc';
+
     }
 
     // #[On('delete')]
@@ -147,6 +177,7 @@ class Karyawanindexwr extends Component
 
             ->orderBy($this->columnName, $this->direction);
     }
+    
 
     public function render()
     {
@@ -157,78 +188,131 @@ class Karyawanindexwr extends Component
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
+
+          $jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
+        $departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
         
 
-        switch ($this->selected_company) {
-            case 0:
-                $datas = $this->getPayrollQuery($statuses, $this->search)
-                ->paginate($this->perpage);
-                break;
+        // switch ($this->selected_company) {
+        //     case 0:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search)
+        //         ->paginate($this->perpage);
+        //         break;
 
-            case 1:
+        //     case 1:
                 
-                    $datas = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                    ->paginate($this->perpage);
-                break;
+        //             $datas = $this->getPayrollQuery($statuses, $this->search, 'YCME')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 2:
-                    $datas = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                    ->paginate($this->perpage);
-                break;
+        //     case 2:
+        //             $datas = $this->getPayrollQuery($statuses, $this->search, 'YEV')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 3:
-                $datas = Karyawan::query()
-                        ->whereIn('status_karyawan', $statuses)
-                        ->when($this->search, function ($query) {
-                            $query
-                                ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                        })
-                        ->whereIn('placement', ['YIG', 'YSM'])
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-                break;
+        //     case 3:
+        //         $datas = Karyawan::query()
+        //                 ->whereIn('status_karyawan', $statuses)
+        //                 ->when($this->search, function ($query) {
+        //                     $query
+        //                         ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
+        //                         ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+        //                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+        //                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+        //                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+        //                 })
+        //                 ->whereIn('placement', ['YIG', 'YSM'])
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //         break;
                 
 
-            case 4:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-                ->where('company', 'ASB')
-                    ->paginate($this->perpage);
-                break;
+        //     case 4:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
+        //         ->where('company', 'ASB')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 5:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-                ->where('company', 'DPA')
-                    ->paginate($this->perpage);
-                break;
+        //     case 5:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
+        //         ->where('company', 'DPA')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 6:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-                ->where('company', 'YCME')
-                    ->paginate($this->perpage);
-                break;
+        //     case 6:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
+        //         ->where('company', 'YCME')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 7:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-                ->where('company', 'YEV')
-                    ->paginate($this->perpage);
-                break;
+        //     case 7:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
+        //         ->where('company', 'YEV')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 8:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-                ->where('company', 'YIG')
-                    ->paginate($this->perpage);
-                break;
+        //     case 8:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
+        //         ->where('company', 'YIG')
+        //             ->paginate($this->perpage);
+        //         break;
 
-            case 9:
-                $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                ->where('company', 'YSM')
-                    ->paginate($this->perpage);
-                break;
-        }
-        return view('livewire.karyawanindexwr', compact(['datas']));
+        //     case 9:
+        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
+        //         ->where('company', 'YSM')
+        //             ->paginate($this->perpage);
+        //         break;
+        // }
+        $datas = Karyawan::query()
+        // ->orderBy('nama', $this->direction)
+        ->whereIn('status_karyawan', $statuses)
+        ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
+        ->when($this->search_id_karyawan, function ($query) {
+            $query->where('id_karyawan', trim($this->search_id_karyawan))
+            ->orderBy('nama', 'asc' );
+        })
+        
+        ->when($this->search_company, function ($query) {
+            $query->where('company', $this->search_company)->orderBy('nama', 'asc' );
+        })
+       
+        ->when($this->search_placement, function ($query) {
+            if($this->search_placement == 1){
+                $query->where('placement', 'YCME')
+                ->orderBy('nama', 'asc' );
+            } elseif($this->search_placement == 2){
+                $query->where('placement', 'YEV')
+                ->orderBy('nama', 'asc' );
+            } else {
+                $query->whereIn('placement', ['YIG', 'YSM'])
+                ->orderBy('nama', 'asc' );
+            }
+        })
+
+        
+
+
+        ->when($this->search_jabatan, function ($query) {
+            $query->where('jabatan', $this->search_jabatan)
+            ->orderBy('nama', 'asc' );
+        })
+        ->when($this->search_department, function ($query) {
+            $query->where('departemen', $this->search_department)
+            ->orderBy('nama', 'asc' );
+        })
+        ->when($this->search_tanggal_bergabung, function ($query) {
+            $query->orderBy('tanggal_bergabung', $this->search_tanggal_bergabung );
+        })
+        ->when($this->search_gaji_pokok, function ($query) {
+            $query->orderBy('gaji_pokok', $this->search_gaji_pokok );
+        })
+        ->when($this->search_gaji_overtime, function ($query) {
+            $query->orderBy('gaji_overtime', $this->search_gaji_overtime );
+        })
+        ->when($this->search_tanggal_bergabung == "", function ($query) {
+            $query->orderBy('id_karyawan', 'desc');
+        })
+        ->paginate($this->perpage);
+        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans']));
     }
 }

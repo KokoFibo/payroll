@@ -83,7 +83,7 @@
                                 <option value="Procurement">Procurement</option>
                                 <option value="Produksi">Produksi</option>
                                 <option value="Quality Control">Quality Control</option>
-                                <option value="Yifang">Yifang</option>
+                                <option value="Board of Director">Board of Director</option>
 
                             </select>
                             @error('departemen')

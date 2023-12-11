@@ -278,7 +278,10 @@
 "Non Aktif" : "非活跃状态",
 "Status Aktif" : "活跃状态",
 "Status Non Aktif" : "非活跃状态",
-"Semua" :  "所有状态"
+"Semua" :  "所有状态",
+"Asc" : "升序", 
+"Desc" : "降序", 
+"Board of Director" : "董事会"
 
 
 

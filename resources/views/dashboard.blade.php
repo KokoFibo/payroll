@@ -101,7 +101,7 @@
                         <h2 class="text-center   text-gray-600">{{ __('Procurement') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Produksi') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Quality Control') }}</h2>
-                        <h2 class="text-center   text-gray-600">{{ __('Yifang') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Board of Director') }}</h2>
 
 
                     </div>
@@ -117,7 +117,7 @@
                         <h2 class="text-center  font-semibold text-gray-600">{{ $department_Procurement }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ $department_Produksi }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ $department_Quality_Control }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Yifang }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Board_of_Director }}</h2>
                     </div>
                 </div>
             </div>
