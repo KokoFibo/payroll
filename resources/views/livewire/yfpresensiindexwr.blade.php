@@ -178,6 +178,7 @@
 
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
+
                                     <tr x-data="{ edit: false }"
                                         class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
                                         <td>
@@ -320,7 +321,7 @@
                                             @endif
 
                                         </td>
-                                        <td>
+                                        <td x-show="!edit">
                                             @if ($data->no_scan_history == 'No Scan' && $data->no_scan == 'No Scan')
                                                 <h6><span class="badge bg-warning">No Scan</span></h6>
                                             @elseif ($data->no_scan_history == 'No Scan' && $data->no_scan == null)
@@ -331,6 +332,16 @@
                                                 {{ $data->no_scan }}
                                             @endif
                                             </i>
+                                        </td>
+                                        <td x-show="edit">
+                                            @if ($data->no_scan_history == 'No Scan' && $data->no_scan == '')
+                                                <button wire:click="delete_no_scan({{ $data->id }})"
+                                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                    class="btn btn-danger btn-sm"><i
+                                                        class="fa-solid fa-trash-can confirm-delete"></i>
+                                                </button>
+                                            @endif
+                                        </td>
                                         <td>{{ $data->shift }}</td>
                                     </tr>
                                 @endforeach
