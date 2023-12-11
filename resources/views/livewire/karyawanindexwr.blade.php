@@ -158,7 +158,7 @@
 
 
                                 @if (Auth::user()->role > 3)
-                                    <th>
+                                    <th style="border-style: none;">
                                     </th>
                                 @endif
                                 <th style="border-style: none;">
