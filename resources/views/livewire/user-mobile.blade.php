@@ -4,12 +4,13 @@
             <div class=header>
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between">
-                        <div>
-                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                style="opacity: .8; width:150px">
-                        </div>
+                        @if ($is_slipGaji != true)
+                            <div>
+                                <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
+                                    style="opacity: .8; width:150px">
+                            </div>
+                        @endif
                         @if (auth()->user()->language == 'Cn')
-
                             <div class="flex items-end mb-2">
                                 @if (app()->getLocale() == 'id')
                                     <a class="nav-link" href="{{ url('locale/cn') }}"><button
