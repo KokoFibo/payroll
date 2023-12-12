@@ -62,6 +62,8 @@ class Yfpresensiindexwr extends Component
     public function mount () {
         $this->year = now()->year;
         $this->month = now()->month;
+        $this->bulan = now()->month;
+        $this->tahun = now()->year;
         // $this->lock_presensi = $lock->presensi;
         if(  $this->year == now()->year &&
         $this->month == now()->month) {
