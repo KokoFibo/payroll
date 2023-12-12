@@ -10,6 +10,7 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Redirect;
 use Spatie\Activitylog\Contracts\Activity;
 
+
 $agent = new Agent();
 
 class HomeController extends Controller {
@@ -51,6 +52,25 @@ class HomeController extends Controller {
     $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
     $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM','YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
+    $placementArr = [
+        $jumlah_Pabrik_1, $jumlah_Pabrik_2,  $jumlah_Kantor
+    ];
+    $placementLabelArr = [
+        'Pabrik 1', 'Pabrik 2',  'Kantor'
+    ];
+    $companyArr = [
+        
+        $jumlah_ASB,
+        $jumlah_YCME,
+        $jumlah_YEV,
+        $jumlah_YSM,
+        $jumlah_DPA,
+        $jumlah_YIG,
+    ];
+    $companyLabelArr = [
+        'ASB','YCME', 'YEV',  'YSM', 'DPA', 'YIG'
+    ];
+    
     // Department
     $department_BD = Karyawan::where('departemen', 'BD')->count();
     $department_Engineering = Karyawan::where('departemen', 'Engineering')->count();
@@ -117,8 +137,8 @@ class HomeController extends Controller {
         'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Board_of_Director',
         'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
-        'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor',
-        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver'
+        'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
+        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr'
 
         ]) );
             }else {
@@ -135,14 +155,12 @@ class HomeController extends Controller {
                 return view( 'dashboard', compact([ 'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_all', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV', 
         'jumlah_YIG', 'jumlah_YSM','jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
         'department_BD', 'department_Engineering', 'department_EXIM','department_Finance_Accounting', 'department_GA','department_Gudang',
-        'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Yifang',
+        'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Board_of_Director',
         'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor',
-        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver'
-
-        ]) );
-            }
+        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',  'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr']));
+        }
             $user->device = 0;
             $user->save();
             // return view( 'dashboardMobile1' );

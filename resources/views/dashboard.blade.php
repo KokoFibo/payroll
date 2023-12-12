@@ -2,10 +2,118 @@
 
 @section('title', 'Dashboard')
 
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"
+        integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var placement = <?php echo json_encode($placementArr); ?>;
+        var placementLabel = <?php echo json_encode($placementLabelArr); ?>;
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: placementLabel,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: placement,
+                    borderWidth: 1,
+
+                    {{-- datalabels: {
+                        color: 'white',
+                    },
+                    formatter: function(value, ctx) {
+                        return context.chart.data.label[ctx.dataIndex];
+                    } --}}
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
+                },
+
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+
+                },
+
+            },
+
+
+
+        });
+    </script>
+
+    <script>
+        var companyArr = <?php echo json_encode($companyArr); ?>;
+        var companyLabelArr = <?php echo json_encode($companyLabelArr); ?>;
+
+        const ctx1 = document.getElementById('chart_company');
+
+        new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: companyLabelArr,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: companyArr,
+
+                    datalabels: {
+                        color: 'white',
+                    },
+
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+
+                },
+
+            },
+
+
+
+        });
+    </script>
+@endsection
+
 @section('content')
     <div class="pt-5">
     </div>
-    {{-- Jumlah Karyawan --}}
+
 
 
     {{-- Dashboard device = {{ isDesktop() }} --}}
@@ -82,6 +190,7 @@
                 </div>
             </div>
         </div>
+
         {{-- Departement --}}
         <div>
             <div class="h-3 rounded-t-lg bg-green-500">
@@ -185,6 +294,56 @@
             </div>
         </div>
     </div>
+
+    <div
+        class="flex py-3  px-2 mt-5 flex-col flex-xl-row items-center justify-evenly bg-blue-100 col-xl-10 mx-auto rounded-xl shadow ">
+        <div>
+            <div class="h-3 rounded-t-lg bg-blue-500">
+            </div>
+            <div class="bg-blue-200 h-96 rounded-b-lg w-96 shadow-md p-3 ">
+                <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
+                        <h2 class="text-center   text-gray-600">ASB</h2>
+                        <h2 class="text-center   text-gray-600">DPA</h2>
+                        <h2 class="text-center   text-gray-600">YCME</h2>
+                        <h2 class="text-center   text-gray-600">YEV</h2>
+                        <h2 class="text-center   text-gray-600">YIG</h2>
+                        <h2 class="text-center   text-gray-600">YSM</h2>
+                        <h2 class="text-center font-semibold  text-gray-600">{{ __('Total') }}</h2>
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_1 }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_2 }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Kantor }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_ASB }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_DPA }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YCME }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YEV }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YIG }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YSM }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_all }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Charts --}}
+
+        <div class="w-96 xl:w-1/3">
+            {{-- <div style="width: 450px"> --}}
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="w-96 xl:w-1/3">
+            {{-- <div style="width: 450px"> --}}
+            <canvas id="chart_company"></canvas>
+        </div>
+    </div>
+
+
 
 
 
