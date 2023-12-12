@@ -250,6 +250,9 @@ foreach ($datas as $data) {
     $pajak = 0;
     $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
     $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_overtime;
+    if($data->karyawan->jabatan == 'Satpam'){
+        $tambahan_shift_malam = 0;
+    }
     
 // ok3
     $payrollArr[] = [

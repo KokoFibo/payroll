@@ -27,6 +27,9 @@ class Prindexwr extends Component
     public $year;
     public $month;
 
+
+
+
     public function sortColumnName($namaKolom)
     {
         $this->columnName = $namaKolom;
@@ -39,8 +42,8 @@ class Prindexwr extends Component
 
     public function mount()
     {
-        $this->year = now()->year;
-        $this->month = now()->month;
+        $this->year =  now()->year;
+        $this->month =  now()->month;
 
         $getTglTerakhir = Yfrekappresensi::select('date')
             ->orderBy('date', 'desc')
@@ -69,23 +72,29 @@ class Prindexwr extends Component
         //         $lock->save();
         //     }
 
-        $result = build_payroll($this->month, $this->year);
-        if ($result == 0) {
+        $result  = build_payroll($this->month, $this->year);
+        if($result == 0 ) {
+
             $this->dispatch('error', message: 'Data Presensi tidak ada');
         } else {
+            
+            
             $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         }
 
+        
         //     $lock->build = false;
         //     $lock->save();
         return redirect()->to('/payrollindex');
     }
 
-    // ok1
-    // #[On('getPayroll')]
 
+ // ok1
+    // #[On('getPayroll')]
+    
     public function getPayroll()
     {
+
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if ($lock->build) {
@@ -150,7 +159,7 @@ class Prindexwr extends Component
         // disini mulai prosesnya
         foreach ($filteredData as $data) {
             $dataId = Yfrekappresensi::with('karyawan')
-
+       
                 ->where('user_id', $data->user_id)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -208,11 +217,11 @@ class Prindexwr extends Component
                                 }
                             }
                         }
-                        if ($jam_lembur >= 9 && is_sunday($d->date) == false) {
+                        if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
                             $jam_lembur = 0;
                         }
-                        if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                            if (is_friday($d->date)) {
+                        if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                            if( is_friday($d->date) ) {
                                 $jam_kerja = 7.5;
                             } elseif (is_saturday($d->date)) {
                                 $jam_kerja = 6;
@@ -221,11 +230,11 @@ class Prindexwr extends Component
                             }
                         }
 
-                        if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                        if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
                             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                         }
 
-                        if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                        if($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                             $jam_lembur = 0;
                         }
 
@@ -233,7 +242,7 @@ class Prindexwr extends Component
 
                         //     $jam_kerja =  $jam_kerja * 2;
                         //     $jam_lembur = $jam_lembur * 2;
-
+                        
                         // }
 
                         // if($d->karyawan->jabatan == 'Satpam') {
@@ -247,6 +256,7 @@ class Prindexwr extends Component
                         //         }
                         //     }
                         // }
+                        
 
                         $total_hari_kerja++;
                         $total_jam_kerja = $total_jam_kerja + $jam_kerja;
@@ -261,7 +271,7 @@ class Prindexwr extends Component
                 if ($n_noscan == 0) {
                     $n_noscan = null;
                 }
-
+                
                 $data->total_hari_kerja = $total_hari_kerja;
                 $data->jumlah_jam_kerja = $total_jam_kerja;
                 $data->jumlah_menit_lembur = $total_jam_lembur;
@@ -357,9 +367,9 @@ class Prindexwr extends Component
             //     $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
             // } else {
             // }
-
-            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $payroll->jam_lembur * $data->karyawan->gaji_overtime;
-
+            
+            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
+            
             if ($data->karyawan->potongan_JP == 1) {
                 if ($data->karyawan->gaji_bpjs <= 9559600) {
                     $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
@@ -406,12 +416,15 @@ class Prindexwr extends Component
 
             $payroll->date = $data->date;
 
+          
             $total_bonus_dari_karyawan = 0;
             $total_potongan_dari_karyawan = 0;
 
             $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
-            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
-            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan + $payroll->tambahan_shift_malam - $total_potongan_dari_karyawan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
+            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker ;
+            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan  +$payroll->tambahan_shift_malam
+            - $total_potongan_dari_karyawan - $payroll->pajak 
+            - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
             $payroll->save();
         }
         $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
@@ -421,6 +434,7 @@ class Prindexwr extends Component
     // ok3
     public function bonus_potongan()
     {
+       
         $bonus = 0;
         $potongaan = 0;
         $all_bonus = 0;
@@ -430,7 +444,7 @@ class Prindexwr extends Component
             ->get();
 
         foreach ($tambahan as $d) {
-            $all_bonus = $d->uang_makan + $d->bonus_lain;
+            $all_bonus = $d->uang_makan +  $d->bonus_lain;
             $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
             $id_payroll = Payroll::whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
@@ -446,6 +460,7 @@ class Prindexwr extends Component
         }
 
         $this->dispatch('success', message: 'Bonus dan Potangan added');
+
     }
 
     public function render()
@@ -459,46 +474,48 @@ class Prindexwr extends Component
         $this->cx++;
 
         $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
-            ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            // ->whereMonth('date', 'like', '%' . $this->month . '%')
-            //     ->whereYear('date', 'like', '%' . $this->year . '%')
-            ->where(function ($query) {
-                $query->when($this->search, function ($subQuery) {
-                    $subQuery
-                        ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('user_id', trim($this->search))
-                        ->orWhere('jabatan', trim($this->search));
-                });
-            })
-            
-            ->orderBy($this->columnName, $this->direction)
-            ->orderBy('user_id', 'asc')
-            ->paginate($this->perpage);
-
-        // $filteredData = Jamkerjaid::with('karyawan')
+    ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
+    ->where(function ($query) {
+        $query
+        ->whereMonth('date',  $this->month )
+            ->whereYear('date', $this->year )
         // ->whereMonth('date', 'like', '%' . $this->month . '%')
-        // ->whereYear('date', 'like', '%' . $this->year . '%')
-        // ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
-        // ->orWhereRelation('karyawan', 'user_id', trim($this->search))
-        // ->orWhereRelation('karyawan', 'jabatan', trim($this->search))
-        // ->orderBy($this->columnName, $this->direction)
-        // ->sortBy('karyawan.id_karyawan')
-        // ->paginate($this->perpage);
+        //     ->whereYear('date', 'like', '%' . $this->year . '%')
+
+
+            ->when($this->search, function ($subQuery) {
+                $subQuery->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('user_id', trim($this->search))
+                    ->orWhere('jabatan', trim($this->search));
+            });
+    })
+    ->orderBy($this->columnName, $this->direction)
+    ->orderBy('user_id', 'asc')
+    ->paginate($this->perpage);
+
+    // $filteredData = Jamkerjaid::with('karyawan')
+    // ->whereMonth('date', 'like', '%' . $this->month . '%')
+    // ->whereYear('date', 'like', '%' . $this->year . '%')
+    // ->orWhereRelation('karyawan', 'nama', 'LIKE', '%' . trim($this->search) . '%')
+    // ->orWhereRelation('karyawan', 'user_id', trim($this->search))
+    // ->orWhereRelation('karyawan', 'jabatan', trim($this->search))
+    // ->orderBy($this->columnName, $this->direction)
+    // ->sortBy('karyawan.id_karyawan')
+    // ->paginate($this->perpage);
 
         if ($filteredData->isNotEmpty()) {
             $lastData = $filteredData[0]->last_data_date;
         } else {
             $lastData = null;
         }
-
+ 
         $tgl = Jamkerjaid::select('updated_at')->first();
         if ($tgl != null) {
             $last_build = Carbon::parse($tgl->updated_at)->diffForHumans();
         } else {
             $last_build = 0;
         }
+
 
         return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData', 'last_build']));
     }
