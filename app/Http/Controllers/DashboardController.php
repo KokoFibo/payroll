@@ -13,8 +13,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardController extends Controller
 {
+    
     public function index()
     {
+       
         $jumlah_total_karyawan = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
@@ -30,6 +32,27 @@ class DashboardController extends Controller
         $jumlah_Pabrik_1 = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM','YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+
+        $placementArr = [
+            $jumlah_Pabrik_1, $jumlah_Pabrik_2,  $jumlah_Kantor
+        ];
+        $placementLabelArr = [
+            'Pabrik 1', 'Pabrik 2',  'Kantor'
+        ];
+        $companyArr = [
+            
+            $jumlah_ASB,
+            $jumlah_YCME,
+            $jumlah_YEV,
+            $jumlah_YSM,
+            $jumlah_DPA,
+            $jumlah_YIG,
+        ];
+        $companyLabelArr = [
+            'ASB','YCME', 'YEV',  'YSM', 'DPA', 'YIG'
+        ];
+
+        
 
         // Department
         $department_BD = Karyawan::where('departemen', 'BD')->count();
@@ -84,9 +107,7 @@ class DashboardController extends Controller
         'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
-        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver'
-        ]) );
-
+        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr']));
     }
 
     public function paginate($items, $perPage = 5, $page = null, $options = [])
