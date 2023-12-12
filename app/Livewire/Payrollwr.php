@@ -549,7 +549,8 @@ class Payrollwr extends Component
         ->whereIn('status_karyawan', $statuses)
             ->when($search, function ($query) use ($search) {
                 $query
-                    ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
+                    // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
+                    ->where('id_karyawan',  trim($search))
                     ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('jabatan', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('company', 'LIKE', '%' . trim($search) . '%')
