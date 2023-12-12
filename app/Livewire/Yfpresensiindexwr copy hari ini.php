@@ -366,7 +366,6 @@ public function showDetail($user_id)
         $this->resetPage();
     }
 
-    
 
 
     public function render()
@@ -427,35 +426,20 @@ public function showDetail($user_id)
         ->orderBy($this->columnName, $this->direction)
         ->orderBy('user_id', 'asc')
         ->orderBy('date', 'asc')
-        ->when($this->search=="", function ($query){
-            $query
-            ->whereDate('date',  $this->tanggal);
-        })
-        ->when($this->search, function ($query){
-            $query
-            ->whereMonth('date', $this->bulan)
-            ->whereYear('date', $this->tahun);
-        })
+        ->whereDate('date',  $this->tanggal)
         
-        
-
-        ->where(function ($query) {
-            $query->when($this->search, function ($subQuery) {
-                $subQuery
-                ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                ->orWhere('user_id', trim($this->search))
-                // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
-                ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
-                // ->whereMonth('date', $this->month)
-                // ->whereYear('date', $this->year);
-              
-            });
+        ->when($this->search, function ($query) {
+            $query
+            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('user_id', trim($this->search))
+            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
+            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+            // ->where('date', 'like', '%' . $this->tanggal . '%');
+           
         })
-
-
 
 
         ->paginate($this->perpage);

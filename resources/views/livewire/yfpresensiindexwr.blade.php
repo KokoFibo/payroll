@@ -1,7 +1,6 @@
 <div>
     @section('title', 'Presensi')
 
-
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row">
