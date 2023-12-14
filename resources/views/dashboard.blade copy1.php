@@ -77,11 +77,7 @@
                     data: companyArr,
 
                     datalabels: {
-
-                        anchor: 'center',
-                        display: 'auto',
-                        align: 'center',
-                        
+                        color: 'white',
                     },
 
                 }]
@@ -96,7 +92,7 @@
                         display: true
                     },
                     datalabels: {
-                        color: 'black',
+                        color: 'white',
 
                         formatter: function(value, context) {
                             return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data

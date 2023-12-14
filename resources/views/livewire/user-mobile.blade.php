@@ -280,47 +280,49 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->jht != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->jht) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_payroll->jp != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->jp) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    {{-- @if ($data_payroll->jkk != 0)
+                                    @if ($data_payroll->gaji_pokok <= 4500000)
+                                        @if ($data_payroll->jht != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->jht) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->jp != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->jp) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        {{-- @if ($data_payroll->jkk != 0)
                                     <tr>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKK</td>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkk) }}
                                         </td>
                                     </tr>
-                                @endif
-                                @if ($data_payroll->jkm != 0)
-                                    <tr>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKM</td>
-                                        <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkm) }}
-                                        </td>
-                                    </tr>
-                                @endif --}}
-                                    @if ($data_payroll->kesehatan != 0)
+                                    @endif
+                                    @if ($data_payroll->jkm != 0)
                                         <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
-                                                Kesehatan
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->kesehatan) }}
+                                            <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKM</td>
+                                            <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkm) }}
                                             </td>
                                         </tr>
+                                    @endif --}}
+                                        @if ($data_payroll->kesehatan != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                    Kesehatan
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->kesehatan) }}
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endif
                                     @if ($data_karyawan->ptkp != 0)
                                         <tr>
@@ -404,7 +406,7 @@
                                                             }
                                                         }
                                                     }
-                                                    if ($jam_lembur >= 9 && is_sunday($d->date) == false) {
+                                                    if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
                                                         $jam_lembur = 0;
                                                     }
                                                     if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {

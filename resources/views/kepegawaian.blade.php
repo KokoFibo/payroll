@@ -12,7 +12,7 @@
                             <label class="form-label">{{ __('Status Karyawan') }} <span
                                     class="text-danger">*</span></label>
                             <select class="form-select @error('status_karyawan') is-invalid @enderror""
-                                aria-label="Default select example" wire:model="status_karyawan">
+                                aria-label="Default select example" wire:model.live="status_karyawan">
                                 <option value=" ">{{ __('Pilih status karyawan') }}</option>
                                 <option value="PKWT">PKWT</option>
                                 <option value="PKWTT">PKWTT</option>
@@ -26,6 +26,37 @@
                                 </div>
                             @enderror
                         </div>
+                        @if ($status_karyawan == 'Resigned')
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('Tanggal Resigned') }}</label>
+                                <div>
+                                    <input type="date"
+                                        class="date form-control @error('tanggal_resigned') is-invalid @enderror""
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_resigned">
+                                    @error('tanggal_resigned')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
+                        @if ($status_karyawan == 'Blacklist')
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
+                                <div>
+                                    <input type="date"
+                                        class="date form-control @error('tanggal_blacklist') is-invalid @enderror""
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_blacklist">
+                                    @error('tanggal_blacklist')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                     <div class="col-md-4 visually-hidden">
                         <div class="mb-3">
@@ -205,4 +236,6 @@
             </div>
         </div>
     </div>
+
+
 </div>

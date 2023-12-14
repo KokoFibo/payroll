@@ -19,6 +19,7 @@ use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
+use App\Livewire\Liburnasionalwr;
 use App\Livewire\UpdatedPresensi;
 use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
@@ -117,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
+                Route::get('/liburnasional', Liburnasionalwr::class);
 
                 // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
                 // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);

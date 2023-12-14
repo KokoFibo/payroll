@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Metode Penggajian') }} <span class="text-danger">*</span></label>
                         <select class="form-select @error('metode_penggajian') is-invalid @enderror"
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 {{-- ====================================================== --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji pokok') }} <span class="text-danger">*</span></label>
                         <input wire:model="gaji_pokok" type="text" type-currency="IDR"
@@ -38,12 +38,24 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji Overtime') }} <span class="text-danger">*</span></label>
                         <input wire:model="gaji_overtime" type="text" type-currency="IDR"
                             class="form-control @error('gaji_overtime') is-invalid @enderror">
                         @error('gaji_overtime')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">{{ __('Gaji Shift Malam Satpam') }}</label>
+                        <input wire:model="gaji_shift_malam_satpam" type="text" type-currency="IDR"
+                            class="form-control @error('gaji_shift_malam_satpam') is-invalid @enderror">
+                        @error('gaji_shift_malam_satpam')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

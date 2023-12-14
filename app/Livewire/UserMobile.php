@@ -70,8 +70,8 @@ class UserMobile extends Component
     public function render()
     {
         $this->cx++;
-        // $this->user_id = 1111;
-        // $this->user_id = 5364;
+        // $this->user_id = 103;
+        // $this->user_id = 109;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -136,7 +136,7 @@ class UserMobile extends Component
                 }
             }
 
-            if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
+            if(($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver') ) {
                 $jam_lembur = 0;
             }
                 if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {

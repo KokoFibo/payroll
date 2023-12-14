@@ -9,13 +9,14 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use App\Livewire\Karyawanindexwr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\RequiredIf;
 
 class Updatekaryawanwr extends Component {
     public $id;
-    public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
+    public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
-    public $gaji_pokok, $gaji_overtime, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
+    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
+    public $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update ;
     public  $no_npwp, $ptkp;
@@ -38,6 +39,7 @@ class Updatekaryawanwr extends Component {
          $this->status_pernikahan = trim($data->status_pernikahan);
          $this->golongan_darah = trim($data->golongan_darah);
          $this->agama = trim($data->agama);
+         $this->etnis = trim($data->etnis);
 
          // Identitas
          $this->jenis_identitas = trim($data->jenis_identitas);
@@ -47,8 +49,9 @@ class Updatekaryawanwr extends Component {
 
          //Data Kepegawaian
          $this->status_karyawan = trim($data->status_karyawan);
-        //  $this->tanggal_bergabung = $data->tanggal_bergabung;
-        $this->tanggal_bergabung =  date( 'd M Y', strtotime( $data->tanggal_bergabung) );
+         $this->tanggal_bergabung =  date( 'd M Y', strtotime( $data->tanggal_bergabung) );
+          $this->tanggal_resigned = $data->tanggal_resigned;
+          $this->tanggal_blacklist = $data->tanggal_blacklist;
 
          $this->company = trim($data->company);
          $this->placement = trim($data->placement);
@@ -63,6 +66,7 @@ class Updatekaryawanwr extends Component {
         //  $this->gaji_pokok = $data->gaji_pokok;
          $this->gaji_pokok = $data->gaji_pokok;
          $this->gaji_overtime = $data->gaji_overtime;
+         $this->gaji_shift_malam_satpam = $data->gaji_shift_malam_satpam;
          $this->bonus = $data->bonus;
          $this->tunjangan_jabatan = $data->tunjangan_jabatan;
          $this->tunjangan_bahasa = $data->tunjangan_bahasa;
@@ -100,6 +104,7 @@ return [
         'status_pernikahan' => 'nullable',
         'golongan_darah' => 'nullable',
         'agama' => 'nullable',
+        'etnis' => 'required',
         // IDENTITAS
         'jenis_identitas' => 'required',
         'no_identitas' => 'required',
@@ -107,6 +112,8 @@ return [
         'alamat_tinggal' => 'required',
         // KEPEGAWAIAN
         'status_karyawan' => 'required',
+        'tanggal_resigned' => new RequiredIf($this->status_karyawan == 'Resigned'),
+        'tanggal_blacklist' => new RequiredIf($this->status_karyawan == 'Blacklist'),
         'tanggal_bergabung' => 'date|before:tomorrow|required',
         'company' => 'required',
         'placement' => 'required',
@@ -119,6 +126,7 @@ return [
         'metode_penggajian' => 'required',
         'gaji_pokok' => 'numeric|required',
         'gaji_overtime' => 'numeric|required',
+        'gaji_shift_malam_satpam' => 'numeric',
         'bonus' => 'numeric|nullable',
         'tunjangan_jabatan' => 'numeric|nullable',
         'tunjangan_bahasa' => 'numeric|nullable',
@@ -146,6 +154,7 @@ return [
     public function update1() {
         $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+        $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
             $this->bonus = convert_numeric($this->bonus);
             $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
             $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
@@ -171,6 +180,7 @@ return [
         $data->status_pernikahan = $this->status_pernikahan;
         $data->golongan_darah = $this->golongan_darah;
         $data->agama = $this->agama;
+        $data->etnis = $this->etnis;
         // Identitas
         $data->jenis_identitas = $this->jenis_identitas;
         $data->no_identitas = $this->no_identitas;
@@ -179,6 +189,19 @@ return [
         // Data Kepegawaian
         $data->status_karyawan = $this->status_karyawan;
         $data->tanggal_bergabung = $this->tanggal_bergabung;
+        if($this->status_karyawan == 'Resigned') {
+            $data->tanggal_blacklist = null;
+            $data->tanggal_resigned = $this->tanggal_resigned;
+        } elseif ($this->status_karyawan == 'Blacklist') {
+            
+            $data->tanggal_resigned = null;
+            $data->tanggal_blacklist = $this->tanggal_blacklist;
+        } else {
+            $data->tanggal_blacklist = null;
+            $data->tanggal_resigned = null;
+
+        }
+
         $data->company = $this->company;
         $data->placement = $this->placement;
         $data->departemen = $this->departemen;
@@ -190,6 +213,7 @@ return [
         // Payroll
         $data->gaji_pokok = $this->gaji_pokok;
         $data->gaji_overtime = $this->gaji_overtime;
+        $data->gaji_shift_malam_satpam = $this->gaji_shift_malam_satpam;
         $data->metode_penggajian = $this->metode_penggajian;
         $data->bonus = $this->bonus;
         $data->tunjangan_jabatan = $this->tunjangan_jabatan;

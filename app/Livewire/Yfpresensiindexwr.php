@@ -184,9 +184,9 @@ public function showDetail($user_id)
                 }
             }
 
-            if(($jam_lembur >= 9) && (is_sunday($d->date) == false)) {
+            if(($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver') ) {
                 $jam_lembur = 0;
-            }
+            } 
 
             if($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam' ) {
                 if( is_friday($d->date) ) {

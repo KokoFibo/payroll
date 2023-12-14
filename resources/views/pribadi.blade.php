@@ -123,7 +123,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('') }}Golongan Darah</label>
                     <select wire:model="golongan_darah" class="form-select" aria-label="Default select example">
@@ -135,7 +135,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Agama') }}</label>
                     <select wire:model="agama" class="form-select" aria-label="Default select example">
@@ -147,6 +147,25 @@
                         <option value="Katolik">{{ __('Katolik') }}</option>
                         <option value="Konghucu">{{ __('Konghucu') }}</option>
                     </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Etnis') }} <span class="text-danger">*</span></label>
+                    <select wire:model="etnis" class="form-select @error('etnis') is-invalid @enderror""
+                        aria-label="Default select example">
+                        <option value=" ">{{ __('Pilih Etnis') }}</option>
+                        <option value="China">{{ __('China') }}</option>
+                        <option value="Jawa">{{ __('Jawa') }}</option>
+                        <option value="Sunda">{{ __('Sunda') }}</option>
+                        <option value="Tionghoa">{{ __('Tionghoa') }}</option>
+                        <option value="lainnya">{{ __('lainnya') }}</option>
+                    </select>
+                    @error('etnis')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
             </div>
         </div>

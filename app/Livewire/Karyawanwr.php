@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 class Karyawanwr extends Component
 {
     public $id;
-    public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama;
+    public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
     public $status_karyawan, $tanggal_bergabung, $company, $placement, $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
 
-    public $metode_penggajian, $gaji_pokok, $gaji_overtime;
+    public $metode_penggajian, $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
     public $iuran_air, $denda, $iuran_locker, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
@@ -47,6 +47,7 @@ class Karyawanwr extends Component
             'status_pernikahan' => 'nullable',
             'golongan_darah' => 'nullable',
             'agama' => 'nullable',
+            'etnis' => 'required',
             // IDENTITAS
             'jenis_identitas' => 'required',
             'no_identitas' => 'required',
@@ -66,6 +67,7 @@ class Karyawanwr extends Component
             'metode_penggajian' => 'required',
             'gaji_pokok' => 'numeric|required',
             'gaji_overtime' => 'numeric|required',
+            'gaji_shift_malam_satpam' => 'numeric',
             'bonus' => 'numeric|nullable',
             'tunjangan_jabatan' => 'numeric|nullable',
             'tunjangan_bahasa' => 'numeric|nullable',
@@ -91,6 +93,7 @@ class Karyawanwr extends Component
     {
             $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+        $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
             $this->bonus = convert_numeric($this->bonus);
             $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
             $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
@@ -127,6 +130,9 @@ class Karyawanwr extends Component
             $data->status_pernikahan = $this->status_pernikahan;
             $data->golongan_darah = $this->golongan_darah;
             $data->agama = $this->agama;
+            $data->etnis = $this->etnis;
+            $data->denda = $this->denda;
+
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
             $data->no_identitas = $this->no_identitas;
@@ -146,6 +152,7 @@ class Karyawanwr extends Component
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
             $data->gaji_overtime = $this->gaji_overtime;
+            $data->gaji_shift_malam_satpam = $this->gaji_shift_malam_satpam;
             $data->metode_penggajian = $this->metode_penggajian;
             $data->bonus = $this->bonus;
             $data->tunjangan_jabatan = $this->tunjangan_jabatan;
@@ -166,7 +173,6 @@ class Karyawanwr extends Component
             $data->ptkp = $this->ptkp;
 
 
-            $data->denda = $this->denda;
 
             try {
                 $data->save();
@@ -199,6 +205,7 @@ class Karyawanwr extends Component
     {
         $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
+        $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
             $this->bonus = convert_numeric($this->bonus);
             $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
             $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
@@ -225,6 +232,9 @@ class Karyawanwr extends Component
             $data->status_pernikahan = $this->status_pernikahan;
             $data->golongan_darah = $this->golongan_darah;
             $data->agama = $this->agama;
+            $data->etnis = $this->etnis;
+            $data->denda = $this->denda;
+
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
             $data->no_identitas = $this->no_identitas;
@@ -244,6 +254,7 @@ class Karyawanwr extends Component
             // Payroll
             $data->gaji_pokok = $this->gaji_pokok;
             $data->gaji_overtime = $this->gaji_overtime;
+            $data->gaji_shift_malam_satpam = $this->gaji_shift_malam_satpam;
             $data->metode_penggajian = $this->metode_penggajian;
             $data->bonus = $this->bonus;
             $data->tunjangan_jabatan = $this->tunjangan_jabatan;
@@ -264,7 +275,6 @@ class Karyawanwr extends Component
             $data->ptkp = $this->ptkp;
 
 
-            $data->denda = $this->denda;
             $data->save();
             $user = User::where('username',$this->id_karyawan )->first();
             $data_user = User::find($user->id);
