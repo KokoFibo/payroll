@@ -56,15 +56,15 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/liburnasional" class="nav-link">
-                        <i class="nav-icon fa-solid fa-holly-berry"></i>
-                        <p>
-                            {{ __('Libur Nasional') }}
-                        </p>
-                    </a>
-                </li>
             @endif
+            <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/liburnasional" class="nav-link">
+                    <i class="nav-icon fa-solid fa-holly-berry"></i>
+                    <p>
+                        {{ __('Libur Nasional') }}
+                    </p>
+                </a>
+            </li>
 
             <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/informationwr" class="nav-link">

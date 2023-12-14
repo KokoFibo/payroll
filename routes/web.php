@@ -109,6 +109,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
             Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
             Route::get('/payrollindex', Prindexwr::class);
+            Route::get('/liburnasional', Liburnasionalwr::class);
+
 
             // KHUSUS Super Admin
             Route::middleware(['SuperAdmin'])->group(function () {
@@ -118,7 +120,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
-                Route::get('/liburnasional', Liburnasionalwr::class);
 
                 // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
                 // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
