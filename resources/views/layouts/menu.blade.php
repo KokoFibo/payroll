@@ -68,14 +68,14 @@ with font-awesome or any other icon font library -->
 
             <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/informationwr" class="nav-link">
-                    <i class="fa-solid fa-user-check nav-icon"></i>
+                    <i class="nav-icon fa-solid fa-user-check nav-icon"></i>
                     <p>{{ __('Add Information') }}</p>
                 </a>
             </li>
             @if (Auth::user()->role > 3)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
-                        <i class="fa-solid fa-user-check nav-icon"></i>
+                        <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
                         <p>{{ __('User Mobile') }}</p>
                     </a>
                 </li>
