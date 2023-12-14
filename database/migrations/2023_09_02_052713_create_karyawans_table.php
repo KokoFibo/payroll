@@ -63,6 +63,10 @@ return new class extends Migration
             $table->string('no_npwp')->nullable();
             $table->string('ptkp')->nullable();
             $table->integer('denda')->nullable();
+            $table->integer('gaji_shift_malam_satpam')->nullable();
+            $table->string('etnis')->nullable();
+            $table->date('tanggal_resigned')->nullable();
+            $table->date('tanggal_blacklist')->nullable();
 
 
             $table->timestamps();

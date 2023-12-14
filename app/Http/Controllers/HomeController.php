@@ -37,8 +37,8 @@ class HomeController extends Controller {
     //   ini beneran di user mobile
 
     $jumlah_total_karyawan = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->count();
-    $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->count();
+    $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+    $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
     // Jumlah Karyawan
     $jumlah_all =  $jumlah_total_karyawan;
