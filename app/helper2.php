@@ -337,7 +337,17 @@ function build_payroll($month, $year)
             $payroll->save();
         }
     }
- // ok 4
+    
+    // ok 4
+    // perhitungan untuk karyawan yg resign sebelum 3 bulan
+
+    
+
+
+
+
+
+ // ok 5
 //  Zheng Guixin 1
 // Eddy Chan 2
 // Yang Xiwen 3
@@ -459,17 +469,10 @@ $idArrTKA = [1, 3, 5, 25];
             }
         }
 
-
-
-
 // ok 5
  // Libur nasional dan resigned sebelum 3 bulan kerja
 
  $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->sum('jumlah_hari_libur');
-
-
-    
-
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
 

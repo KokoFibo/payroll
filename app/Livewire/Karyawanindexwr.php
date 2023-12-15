@@ -104,10 +104,12 @@ class Karyawanindexwr extends Component
     {
         return $this->direction === 'asc' ? 'desc' : 'asc';
     }
+    
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
     public function excel()
     {
         $nama_file = "";
@@ -193,76 +195,6 @@ class Karyawanindexwr extends Component
         $departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
         
 
-        // switch ($this->selected_company) {
-        //     case 0:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search)
-        //         ->paginate($this->perpage);
-        //         break;
-
-        //     case 1:
-                
-        //             $datas = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 2:
-        //             $datas = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 3:
-        //         $datas = Karyawan::query()
-        //                 ->whereIn('status_karyawan', $statuses)
-        //                 ->when($this->search, function ($query) {
-        //                     $query
-        //                         ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-        //                         ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //                         ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-        //                         ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-        //                         ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-        //                 })
-        //                 ->whereIn('placement', ['YIG', 'YSM'])
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //         break;
-                
-
-        //     case 4:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-        //         ->where('company', 'ASB')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 5:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-        //         ->where('company', 'DPA')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 6:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-        //         ->where('company', 'YCME')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 7:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-        //         ->where('company', 'YEV')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 8:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-        //         ->where('company', 'YIG')
-        //             ->paginate($this->perpage);
-        //         break;
-
-        //     case 9:
-        //         $datas = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-        //         ->where('company', 'YSM')
-        //             ->paginate($this->perpage);
-        //         break;
-        // }
         $datas = Karyawan::query()
         // ->orderBy('nama', $this->direction)
         ->whereIn('status_karyawan', $statuses)
