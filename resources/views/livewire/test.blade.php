@@ -7,6 +7,7 @@
                 <th>tgl mulai kerja</th>
                 <th>tgl resigned</th>
                 <th>gaji pokok</th>
+                <th>Jumlah hari resign</th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                     <td>{{ $d->tanggal_bergabung }}</td>
                     <td>{{ $d->tanggal_resigned }}</td>
                     <td>{{ $d->gaji_pokok }}</td>
+                    <td>{{ jumlah_hari_resign($d->tanggal_bergabung, $d->tanggal_resigned) }}</td>
                 </tr>
             @endforeach
 

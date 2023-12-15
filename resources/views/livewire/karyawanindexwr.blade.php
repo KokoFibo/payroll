@@ -244,6 +244,11 @@
                                 <th class="text-center" wire:click="sortColumnName('iuran_locker')">
                                     {{ __('Iuran Locker') }}
                                 </th>
+                                @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                    <th class="text-center">
+                                        {{ __('Lama bekerja') }}
+                                    </th>
+                                @endif
 
 
                             </tr>
@@ -289,6 +294,11 @@
                                         <td class="text-center">{{ number_format($data->iuran_air) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
+                                    @endif
+                                    @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                        <td class="text-center">
+                                            {{ lama_resign($data->tanggal_bergabung, $data->tanggal_resigned, $data->tanggal_blacklist) }}
+                                        </td>
                                     @endif
 
 

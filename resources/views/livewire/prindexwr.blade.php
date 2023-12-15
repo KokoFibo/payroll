@@ -97,6 +97,10 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th class="text-center" wire:click="sortColumnName('total_hari_kerja')">
                                     {{ __('Total Hari Kerja') }}
                                     <i class="fa-solid fa-sort"></i>
@@ -124,10 +128,13 @@
                         <tbody>
                             @foreach ($filteredData as $item)
                                 {{-- {{ dd($item) }} --}}
-                                <tr>
+                                <tr
+                                    class="{{ $item->karyawan->status_karyawan == 'Resigned' ? 'table-warning' : '' }}">
                                     <td>{{ $item->user_id }}</td>
                                     <td>{{ $item->karyawan->nama }}</td>
                                     <td>{{ $item->karyawan->jabatan }}</td>
+                                    <td>{{ $item->karyawan->metode_penggajian }}</td>
+                                    <td>{{ $item->karyawan->status_karyawan }}</td>
                                     <td class="text-center">{{ $item->total_hari_kerja }}</td>
                                     <td class="text-center">{{ number_format($item->jumlah_jam_kerja, 1) }}</td>
                                     <td class="text-center">{{ number_format($item->jumlah_menit_lembur, 1) }}</td>

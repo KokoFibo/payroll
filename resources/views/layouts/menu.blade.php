@@ -57,14 +57,7 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
-            <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/liburnasional" class="nav-link">
-                    <i class="nav-icon fa-solid fa-holly-berry"></i>
-                    <p>
-                        {{ __('Libur Nasional') }}
-                    </p>
-                </a>
-            </li>
+
 
             <li class="nav-item {{ 'informationwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/informationwr" class="nav-link">
@@ -108,13 +101,18 @@ with font-awesome or any other icon font library -->
                             </a>
                         </li>
                     @endif
-
-
-
                 </ul>
             </li>
 
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/liburnasional" class="nav-link">
+                        <i class="nav-icon fa-solid fa-holly-berry"></i>
+                        <p>
+                            {{ __('Libur Nasional') }}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
