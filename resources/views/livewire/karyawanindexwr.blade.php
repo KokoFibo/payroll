@@ -228,16 +228,22 @@
                                     <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">
                                         {{ __('Lama Bekerja') }}
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
-                                        {{ __('Metode Penggajian') }}
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
-                                        {{ __('Gaji Pokok') }}
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
-                                        {{ __('Overtime') }}
-                                    </th>
                                 @endif
+                                <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
+                                    {{ __('Metode Penggajian') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
+                                    {{ __('Gaji Pokok') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
+                                    {{ __('Overtime') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('iuran_air')">
+                                    {{ __('Iuran Air') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('iuran_locker')">
+                                    {{ __('Iuran Locker') }}
+                                </th>
 
 
                             </tr>
@@ -247,14 +253,10 @@
                                 <tr>
                                     <td>
                                         <div class="text-start">
-                                            {{-- @if (karyawan_allow_edit($data->id, Auth::user()->role)) --}}
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
                                                     class="btn btn-success btn-sm"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
-                                            {{-- @else --}}
-                                            {{-- <button wire:click="no_edit" class="btn btn-success btn-sm"><i --}}
-                                            {{-- class="fa-regular fa-pen-to-square"></i></button> --}}
-                                            {{-- @endif --}}
+
 
                                             @if (Auth::user()->role > 4)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
@@ -274,11 +276,18 @@
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    @if (Auth::user()->role > 3)
-                                        <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                    @if (
+                                        (auth()->user()->role == 2 && $data->gaji_pokok <= 4500000) ||
+                                            (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
+                                            auth()->user()->role > 3)
+                                        @if (Auth::user()->role > 3)
+                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                        @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
+                                        <td class="text-center">{{ number_format($data->iuran_air) }}</td>
+                                        <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
                                     @endif
 
@@ -288,27 +297,12 @@
                         </tbody>
                     </table>
                     {{ $datas->onEachSide(0)->links() }}
+                    {{-- {{ $datas->links() }} --}}
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    window.addEventListener("swal:confirm", (event) => {
-        Swal.fire({
-            title: "Apakah yakin mau di delete",
-            text: "Data yang sudah di delete tidak dapat dikembalikan",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Delete",
-        }).then((willDelete) => {
-            if (willDelete.isConfirmed) {
-                @this.dispatch("delete", event.detail.id);
-            }
-        });
-    });
-</script>
 
-</div>
+
+{{-- </div> --}}
