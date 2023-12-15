@@ -47,7 +47,9 @@
                         color: 'white',
 
                         formatter: function(value, context) {
-                            return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                                .datasets[0].data[context.dataIndex] --}}
+                            return context.chart.data
                                 .datasets[0].data[context.dataIndex]
                         }
                     },
@@ -79,9 +81,9 @@
                     datalabels: {
 
                         anchor: 'center',
-                        display: 'auto',
+                        display: true,
                         align: 'center',
-                        
+
                     },
 
                 }]
@@ -96,10 +98,12 @@
                         display: true
                     },
                     datalabels: {
-                        color: 'black',
+                        color: 'white',
 
                         formatter: function(value, context) {
-                            return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                                .datasets[0].data[context.dataIndex] --}}
+                            return context.chart.data
                                 .datasets[0].data[context.dataIndex]
                         }
                     },
