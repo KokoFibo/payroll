@@ -167,9 +167,7 @@ class ReportController extends Controller
                 break;
         }
 
-        // return Excel::download(new PayrollExport($payroll), $nama_file);
-        // $nama_file = "payroll.xlsx";
-        // dd($request->year, $request->month);
+ 
         $nama_file = nama_file_excel($nama_file, $request->month, $request->year);
 
         return Excel::download(new PresensiSummaryExport($request->selectedCompany, $request->year, $request->month), $nama_file);

@@ -116,13 +116,13 @@ class Liburnasionalwr extends Component
     }
     public function render()
     {
-        $data = Liburnasional::orderBy('tanggal_mulai_hari_libur', 'desc')
+        $data = Liburnasional::orderBy('tanggal_mulai_hari_libur', 'asc')
         ->when($this->month != "", function($query) {
             $query
             ->whereMonth('tanggal_mulai_hari_libur', $this->month);
         })
         ->whereYear('tanggal_mulai_hari_libur', $this->year)
-        ->paginate(10);
+        ->get();
         return view('livewire.liburnasionalwr', [
             'data' => $data
         ]);

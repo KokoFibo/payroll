@@ -30,9 +30,11 @@ class Test extends Component
  $data1 = Karyawan::whereMonth('tanggal_resigned', $this->month)
  ->whereYear('tanggal_resigned', $this->year)
  ->first();
-$tanggal_resigned = Carbon::parse($data1->tanggal_resigned);
-$tanggal_bergabung = Carbon::parse($data1->tanggal_bergabung);
- dd($tanggal_resigned->diffInDays($tanggal_bergabung));
+// $tanggal_resigned = Carbon::parse($data1->tanggal_resigned);
+// $tanggal_bergabung = Carbon::parse($data1->tanggal_bergabung);
+//  dd($tanggal_resigned->diffInDays($tanggal_bergabung));
+
+ $jumlah = jumlah_hari_resign($data1->tanggal_bergabung, $data1->tanggal_resigned);
 
         return view('livewire.test', [
             'data' => $data
