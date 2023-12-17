@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use App\Models\Payroll;
 use App\Models\Karyawan;
-use App\Models\Tambahan;
+use App\Models\Bonuspotongan;
 use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
@@ -260,7 +260,7 @@ function build_payroll($month, $year)
 
         $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_overtime;
         if ($data->karyawan->jabatan == 'Satpam') {
-            $tambahan_shift_malam = 0;
+            $tambahan_shift_malam =$data->tambahan_jam_shift_malam * $data->karyawan->gaji_shift_malam_satpam;
         }
         $hari_kerja_cuti = 0;
         if ($data->karyawan->metode_penggajian == 'Perbulan') {
@@ -326,11 +326,11 @@ function build_payroll($month, $year)
     $potongaan = 0;
     $all_bonus = 0;
     $all_potongan = 0;
-    $tambahan = Tambahan::whereMonth('tanggal', $month)
+    $bonuspotongan = Bonuspotongan::whereMonth('tanggal', $month)
         ->whereYear('tanggal', $year)
         ->get();
 
-    foreach ($tambahan as $d) {
+    foreach ($bonuspotongan as $d) {
         $all_bonus = $d->uang_makan + $d->bonus_lain;
         $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
         $id_payroll = Payroll::whereMonth('date', $month)
