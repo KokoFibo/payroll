@@ -5,7 +5,66 @@ use App\Models\Lock;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
 use Illuminate\Support\Str;
+use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
+
+function lama_bekerja($tgl_mulai_kerja, $tgl_resigned)
+{
+    $tgl_mulai_kerja = Carbon::parse($tgl_mulai_kerja);
+    $tgl_resigned = Carbon::parse($tgl_resigned);
+    $days = $tgl_resigned->diffinDays($tgl_mulai_kerja);
+    return $days;
+}
+
+function JumlahHariCuti($user_id, $tanggal_resigned, $month, $year)
+{
+    $dataResignedArr = [];
+    $cutiArr = [];
+    $data = Karyawan::where('id_karyawan', $user_id)
+        ->where('tanggal_resigned', '!=', null)
+        ->whereMonth('tanggal_resigned', $month)
+        ->whereYear('tanggal_resigned', $year)
+        ->first();
+
+    $haricuti = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+        ->whereYear('tanggal_mulai_hari_libur', $year)
+        ->orderBy('tanggal_mulai_hari_libur', 'asc')
+        ->get();
+
+    foreach ($haricuti as $h) {
+        if ($h->jumlah_hari_libur == 1) {
+            $cutiArr[] = [
+                'tgl' => $h->tanggal_mulai_hari_libur,
+            ];
+        } else {
+            $i = 0;
+            for ($i = 0; $i < $h->jumlah_hari_libur; $i++) {
+                $cutiArr[] = [
+                    'tgl' => Carbon::parse($h->tanggal_mulai_hari_libur)
+                        ->addDay($i)
+                        ->format('Y-m-d'),
+                ];
+            }
+        }
+    }
+
+    // foreach ($data as $d) {
+    $startDate = Carbon::parse($data->tanggal_bergabung);
+    $endDate = Carbon::parse($tanggal_resigned);
+    $days = $endDate->diffinDays($startDate);
+    $cuti = 0;
+    
+        foreach ($cutiArr as $c) {
+            $resigned = Carbon::createFromFormat('Y-m-d', $tanggal_resigned);
+            $libur = Carbon::createFromFormat('Y-m-d', $c['tgl']);
+            if ($resigned->gt($libur)) {
+                $cuti++;
+            }
+        }
+
+        return $cuti;
+   
+}
 
 function jumlah_hari_resign($tanggal_bergabung, $tanggal_resigned)
 {
@@ -17,7 +76,6 @@ function jumlah_hari_resign($tanggal_bergabung, $tanggal_resigned)
         return $resigned->diffInDays($tanggal_bergabung);
     }
 }
-
 
 function lama_resign($tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist)
 {

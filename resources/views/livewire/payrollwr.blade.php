@@ -183,6 +183,9 @@
                                 <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">
                                     {{ __('Tambahan Shift Malam') }} <i class="fa-solid fa-sort"></i>
                                 </th>
@@ -202,6 +205,9 @@
 
 
                                 <th wire:click="sortColumnName('denda_lupa_absen')">{{ __('Lupa Absen') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('denda_resigned')">{{ __('Denda Resigned') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
@@ -255,6 +261,9 @@
                                             </td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
                                             <td class="text-end">
+                                                {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
+                                            </td>
+                                            <td class="text-end">
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
                                             <td class="text-end">
@@ -280,6 +289,10 @@
                                             </td>
                                             <td class="text-end">
                                                 {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->denda_resigned ? number_format($p->denda_resigned) : '' }}
+
                                             </td>
 
                                             <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
