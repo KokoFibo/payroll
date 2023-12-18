@@ -9,6 +9,8 @@
         integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
+    {{-- placement --}}
     <script>
         var placement = <?php echo json_encode($placementArr); ?>;
         var placementLabel = <?php echo json_encode($placementLabelArr); ?>;
@@ -62,7 +64,7 @@
 
         });
     </script>
-
+    {{-- Company --}}
     <script>
         var companyArr = <?php echo json_encode($companyArr); ?>;
         var companyLabelArr = <?php echo json_encode($companyLabelArr); ?>;
@@ -116,6 +118,56 @@
 
         });
     </script>
+
+    {{-- Jumlah karyawan pria wanita --}}
+    <script>
+        var jumlah_karyawanArr = <?php echo json_encode($jumlah_karyawanArr); ?>;
+        var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+
+        const ctx3 = document.getElementById('jumlah_karyawan');
+
+        new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: jumlah_karyawan_labelArr,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: jumlah_karyawanArr,
+                    borderWidth: 1,
+
+                    {{-- datalabels: {
+                        color: 'white',
+                    },
+                    formatter: function(value, ctx3) {
+                        return context.chart.data.label[ctx.dataIndex];
+                    } --}}
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
+                },
+
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                                .datasets[0].data[context.dataIndex] --}}
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+                },
+            },
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -131,15 +183,16 @@
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
                         <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                            {{ __('Jumlah Karyawan') }}
-                        </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_total_karyawan }}</span>
+                            {{ __('Karyawan Baru MTD') }}
+                        </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_baru_mtd }}</span>
+
                     </div>
                 </div>
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
                         <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                            {{ __('Karyawan Pria') }}</h4>
-                        <span class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_pria }}</span>
+                            {{ __('Karyawan Resigned MTD') }}</h4>
+                        <span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_resigned_mtd }}</span>
                         {{-- <span
                             class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> --}}
                     </div>
@@ -147,54 +200,35 @@
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
                         <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
-                            {{ __('Karyawan Wanita') }}</h4><span
-                            class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_wanita }}</span>
+                            {{ __('Karyawan Blacklist MTD') }}</h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_blacklist_mtd }}</span>
                     </div>
                 </div>
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
                     <div class="wrap">
                         <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                            {{ __('Reserved') }}
-                        </h4><span class="hind-font caption-12 c-dashboardInfo__count">100%</span>
+                            {{ __('Karyawan Aktif MTD') }}
+                        </h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ number_format($karyawan_aktif_mtd) }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+
     {{-- Department --}}
     <div class="d-flex gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3">
-        {{-- Jumlah karyawan --}}
+        {{-- Jumlah karyawan Pria wanita --}}
         <div>
-            <div class="h-3 rounded-t-lg bg-blue-500">
+            <div class="h-3 rounded-t-lg bg-teal-500">
             </div>
-            <div class="bg-blue-200 h-96 rounded-b-lg w-96 shadow p-3 ">
-                <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
-                <div class="flex gap-3 justify-evenly">
-                    <div class="flex flex-column gap-2">
-                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
-                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
-                        <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
-                        <h2 class="text-center   text-gray-600">ASB</h2>
-                        <h2 class="text-center   text-gray-600">DPA</h2>
-                        <h2 class="text-center   text-gray-600">YCME</h2>
-                        <h2 class="text-center   text-gray-600">YEV</h2>
-                        <h2 class="text-center   text-gray-600">YIG</h2>
-                        <h2 class="text-center   text-gray-600">YSM</h2>
-                        <h2 class="text-center font-semibold  text-gray-600">{{ __('Total') }}</h2>
-                    </div>
-                    <div class="flex flex-column gap-2">
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_1 }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_2 }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Kantor }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_ASB }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_DPA }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YCME }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YEV }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YIG }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YSM }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_all }}</h2>
-                    </div>
+            <div class="bg-teal-100 w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg mb-3 ">{{ __('Jumlah Karyawan') }}</p>
+                <h1 class="text-center font-semibold text-xl">{{ $jumlah_total_karyawan }}</h1>
+                <div style="width:350px;">
+                    <canvas id="jumlah_karyawan">
+                    </canvas>
                 </div>
             </div>
         </div>
@@ -223,18 +257,23 @@
 
                     </div>
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_BD }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Engineering }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_EXIM }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Finance_Accounting }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_GA }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Gudang }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_HR }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Legal }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Procurement }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Produksi }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Quality_Control }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $department_Board_of_Director }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_BD) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Engineering) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_EXIM) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Finance_Accounting) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_GA) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Gudang) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_HR) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Legal) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Procurement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Produksi) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Quality_Control) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Board_of_Director) }}</h2>
                     </div>
                 </div>
             </div>
@@ -273,29 +312,41 @@
 
                     </div>
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Admin }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Direktur }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Kepala }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Manager }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Pengawas }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Asisten_Wakil_Presiden }}
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Admin) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Direktur) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Design_grafis }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Director }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Kepala }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Manager }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Pengawas }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_President }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Senior_staff }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Staff }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Supervisor }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Vice_President }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Satpam }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Koki }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Dapur_Kantor }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Dapur_Pabrik }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_QC_Aging }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jabatan_Driver }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Asisten_Kepala) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Asisten_Manager) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Pengawas) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Wakil_Presiden) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Design_grafis) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Director) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Kepala) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Manager) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Pengawas) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_President) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Senior_staff) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Staff) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Supervisor) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Vice_President) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Satpam) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Koki) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Dapur_Kantor) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Dapur_Pabrik) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_QC_Aging) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Driver) }}</h2>
 
                     </div>
                 </div>
@@ -315,31 +366,37 @@
                         <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
                         <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
+                        <h2 class="text-center font-semibold  text-gray-600 mb-2 text-lg">{{ __('Total') }}</h2>
                         <h2 class="text-center   text-gray-600">ASB</h2>
                         <h2 class="text-center   text-gray-600">DPA</h2>
                         <h2 class="text-center   text-gray-600">YCME</h2>
                         <h2 class="text-center   text-gray-600">YEV</h2>
                         <h2 class="text-center   text-gray-600">YIG</h2>
                         <h2 class="text-center   text-gray-600">YSM</h2>
-                        <h2 class="text-center font-semibold  text-gray-600">{{ __('Total') }}</h2>
+                        <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
                     </div>
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_1 }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Pabrik_2 }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_Kantor }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_ASB }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_DPA }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YCME }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YEV }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YIG }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_YSM }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ $jumlah_all }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_1) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_2) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Kantor) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600 mb-2 text-lg">
+                            {{ number_format($jumlah_placement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_ASB) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_DPA) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YCME) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YEV) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YIG) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YSM) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600 text-lg">{{ number_format($jumlah_company) }}
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
 
         {{-- Charts --}}
+
 
         <div class="w-96 xl:w-1/3">
             {{-- <div style="width: 450px"> --}}
