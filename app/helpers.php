@@ -8,6 +8,25 @@ use Illuminate\Support\Str;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 
+function is_35_days($month, $year) {
+    $tgl = $year.'-'.$month.'-01';
+   
+    $thirtyFiveDaysAgo = Carbon::now()->subDays(35);
+        $yourDate = Carbon::parse($tgl);
+        if ($yourDate->lessThan($thirtyFiveDaysAgo)) {
+            // Date is more than 35 days ago
+            // Your logic here
+            // echo 'Date is more than 35 days ago.';
+            return true;
+        } else {
+            // Date is 35 days ago or less
+            // Your logic here
+            // echo 'Date is 35 days ago or less.';
+            return false;
+        }
+         
+}
+
 function lama_bekerja($tgl_mulai_kerja, $tgl_resigned)
 {
     $tgl_mulai_kerja = Carbon::parse($tgl_mulai_kerja);

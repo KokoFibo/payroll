@@ -38,7 +38,7 @@
 
                     <div>
                         {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                        <button wire:click="buat_payroll"
+                        <button wire:click="buat_payroll" {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
                             class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
                         {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                         {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
@@ -222,6 +222,10 @@
                                 </th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total')">{{ __('created at') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total')">{{ __('updated at') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -305,6 +309,8 @@
                                             </td>
 
                                             <td class="text-end">{{ number_format($p->total) }}</td>
+                                            <td class="text-end">{{ format_tgl($p->created_at) }}</td>
+                                            <td class="text-end">{{ format_tgl($p->updated_at) }}</td>
                                         </tr>
                                     @endif
                                 @endforeach

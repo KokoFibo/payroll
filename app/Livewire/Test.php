@@ -31,6 +31,11 @@ class Test extends Component
     {
         // $ninetyDaysAgo  = 0;
         // lama_bekerja($tgl_mulai_kerja, $tgl_resigned)
+$month = '11';
+$year = '2023';
+        dd(is_35_days($month, $year));
+        
+
        
         $ninetyDaysAgo = Carbon::now()->subDays(90);
         $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
