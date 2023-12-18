@@ -38,7 +38,7 @@
 
                     <div>
                         {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                        <button wire:click="buat_payroll"
+                        <button wire:click="buat_payroll" {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
                             class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
                         {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                         {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
@@ -183,6 +183,9 @@
                                 <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">
                                     {{ __('Tambahan Shift Malam') }} <i class="fa-solid fa-sort"></i>
                                 </th>
@@ -204,6 +207,9 @@
                                 <th wire:click="sortColumnName('denda_lupa_absen')">{{ __('Lupa Absen') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('denda_resigned')">{{ __('Denda Resigned') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
 
                                 <th wire:click="sortColumnName('pajak')">{{ __('Pajak') }} <i
                                         class="fa-solid fa-sort"></i></th>
@@ -215,6 +221,10 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total')">{{ __('created at') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total')">{{ __('updated at') }} <i
                                         class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
@@ -255,6 +265,9 @@
                                             </td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
                                             <td class="text-end">
+                                                {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
+                                            </td>
+                                            <td class="text-end">
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
                                             <td class="text-end">
@@ -281,6 +294,10 @@
                                             <td class="text-end">
                                                 {{ $p->denda_lupa_absen ? number_format($p->denda_lupa_absen) : '' }}
                                             </td>
+                                            <td class="text-end">
+                                                {{ $p->denda_resigned ? number_format($p->denda_resigned) : '' }}
+
+                                            </td>
 
                                             <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
                                             <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
@@ -292,6 +309,8 @@
                                             </td>
 
                                             <td class="text-end">{{ number_format($p->total) }}</td>
+                                            <td class="text-end">{{ format_tgl($p->created_at) }}</td>
+                                            <td class="text-end">{{ format_tgl($p->updated_at) }}</td>
                                         </tr>
                                     @endif
                                 @endforeach

@@ -493,9 +493,11 @@ class Prindexwr extends Component
             $lastData = null;
         }
 
-        $tgl = Jamkerjaid::select('updated_at')->first();
+        $tgl = Jamkerjaid::whereMonth('date', $this->month)
+        ->whereYear('date', $this->year)
+        ->select('created_at')->first();
         if ($tgl != null) {
-            $last_build = Carbon::parse($tgl->updated_at)->diffForHumans();
+            $last_build = Carbon::parse($tgl->created_at)->diffForHumans();
         } else {
             $last_build = 0;
         }

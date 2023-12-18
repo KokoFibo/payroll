@@ -25,12 +25,13 @@ return new class extends Migration
             $table->string('nama_bank')->nullable();
             $table->string('nomor_rekening')->nullable();
             $table->string('metode_penggajian');
-            $table->double('hari_kerja',5,1);
+            $table->double('hari_kerja',5,1); 
             $table->double('jam_kerja',6,1);
             $table->double('jam_lembur',6,1)->nullable();
             $table->double('jumlah_jam_terlambat',6,1)->nullable();
             $table->integer('tambahan_shift_malam')->nullable();
             $table->double('tambahan_jam_shift_malam',4,1)->nullable();
+            $table->integer('libur_nasional')->nullable();
 
             $table->integer('gaji_pokok');
             $table->integer('gaji_lembur')->nullable();
@@ -43,6 +44,7 @@ return new class extends Migration
 
             $table->double('total_noscan',12,1)->nullable();
             $table->double('denda_lupa_absen',12,1)->nullable();
+            $table->integer('denda_resigned')->nullable();
             $table->double('pajak',8,1)->nullable();
             $table->double('jht',8,1)->nullable();
             $table->double('jp',8,1)->nullable();

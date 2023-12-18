@@ -61,6 +61,7 @@
 
 
                 <button wire:click.prevent="buat_payroll" class="btn btn-primary"
+                    {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
                     wire:loading.remove>{{ __('Rebuild') }}</button>
             </div>
 
