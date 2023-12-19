@@ -80,7 +80,7 @@ class HomeController extends Controller {
     ];
 
     $jumlah_karyawan_labelArr = [
-        'Pria', 'Wanita'
+        'Pria 男', 'Wanita 女'
     ];
 
 
@@ -88,7 +88,7 @@ class HomeController extends Controller {
         $jumlah_Pabrik_1, $jumlah_Pabrik_2,  $jumlah_Kantor
     ];
     $placementLabelArr = [
-        'Pabrik 1', 'Pabrik 2',  'Kantor'
+        'Pabrik 1 工厂1', 'Pabrik 2 工厂2',  'Kantor 办公室'
     ];
     $companyArr = [
         

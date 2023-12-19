@@ -171,7 +171,8 @@
 @endsection
 
 @section('content')
-    <div class="pt-5">
+    <h1 class="pt-3  text-xl lg:text-4xl text-center font-semibold">{{ __('Dashboard') }}</h1>
+    <div>
     </div>
 
 
@@ -218,12 +219,12 @@
 
 
     {{-- Department --}}
-    <div class="d-flex gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3">
+    <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3">
         {{-- Jumlah karyawan Pria wanita --}}
         <div>
-            <div class="h-3 rounded-t-lg bg-teal-500">
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-teal-500">
             </div>
-            <div class="bg-teal-100 w-96  rounded-b-lg shadow p-3  ">
+            <div class="bg-teal-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
                 <p class="text-center text-lg mb-3 ">{{ __('Jumlah Karyawan') }}</p>
                 <h1 class="text-center font-semibold text-xl">{{ $jumlah_total_karyawan }}</h1>
                 <div style="width:350px;">
@@ -235,9 +236,9 @@
 
         {{-- Departement --}}
         <div>
-            <div class="h-3 rounded-t-lg bg-green-500">
+            <div class="h-3 rounded-t rounded-t-lg w-full lg:w-96 bg-green-500">
             </div>
-            <div class="bg-green-200 w-96  rounded-b-lg shadow p-3  ">
+            <div class="bg-green-200 w-full lg:w-96  rounded-b-lg shadow p-3  ">
                 <p class="text-center text-lg mb-3 ">{{ __('Department') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
@@ -258,18 +259,23 @@
                     </div>
                     <div class="flex flex-column gap-2">
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_BD) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Engineering) }}
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Engineering) }}
                         </h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_EXIM) }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">
                             {{ number_format($department_Finance_Accounting) }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_GA) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Gudang) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_HR) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Legal) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Procurement) }}
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Gudang) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Produksi) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_HR) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Legal) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Procurement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Produksi) }}
+                        </h2>
                         <h2 class="text-center  font-semibold text-gray-600">
                             {{ number_format($department_Quality_Control) }}</h2>
                         <h2 class="text-center  font-semibold text-gray-600">
@@ -280,10 +286,10 @@
         </div>
         {{-- Jabatan --}}
         <div>
-            <div class="h-3 rounded-t-lg bg-red-500">
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-red-500">
             </div>
 
-            <div class="bg-red-200 w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
+            <div class="bg-red-200 w-full lg:w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
                 <p class="text-center text-lg mb-3">{{ __('Jabatan') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
@@ -355,11 +361,11 @@
     </div>
 
     <div
-        class="flex py-3  px-2 mt-5 flex-col flex-xl-row items-center justify-evenly bg-blue-100 col-xl-10 mx-auto rounded-xl shadow ">
+        class=" flex   px-2 mt-2 flex-col flex-xl-row lg:items-center justify-evenly    bg-blue-100  col-xl-10 mx-auto rounded-xl shadow  ">
         <div>
-            <div class="h-3 rounded-t-lg bg-blue-500">
+            <div class="h-3 rounded-t-lg bg-blue-500 w-full lg:w-96">
             </div>
-            <div class="bg-blue-200 h-96 rounded-b-lg w-96 shadow-md p-3 ">
+            <div class="bg-blue-200 h-96 rounded-b-lg w-full lg:w-96 shadow-md p-3">
                 <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
@@ -398,11 +404,11 @@
         {{-- Charts --}}
 
 
-        <div class="w-96 xl:w-1/3">
+        <div class="w-full xl:w-1/3  mt-2">
             {{-- <div style="width: 450px"> --}}
             <canvas id="myChart"></canvas>
         </div>
-        <div class="w-96 xl:w-1/3">
+        <div class="w-full xl:w-1/3  mt-2">
             {{-- <div style="width: 450px"> --}}
             <canvas id="chart_company"></canvas>
         </div>

@@ -281,7 +281,13 @@
 "Semua" :  "所有状态",
 "Asc" : "升序", 
 "Desc" : "降序", 
-"Board of Director" : "董事会"
+"Board of Director" : "董事会",
+
+"Karyawan Baru MTD" : "本月新员工",
+"Karyawan Resigned MTD" : "本月离职员工",
+"Karyawan Blacklist MTD" : "本月黑名单员工",
+"Karyawan Aktif MTD" : "本月活跃员工"
+
 
 
 
