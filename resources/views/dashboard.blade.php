@@ -361,7 +361,7 @@
     </div>
 
     <div
-        class="flex px-2  flex-col flex-xl-row lg:items-center justify-evenly  bg-blue-100  col-xl-10 mx-auto rounded-xl shadow  ">
+        class="flex px-2 mt-2 flex-col flex-xl-row lg:items-center justify-evenly  bg-blue-100  col-xl-10 mx-auto rounded-xl shadow  ">
         <div>
             <div class="h-3 rounded-t-lg bg-blue-500 w-full lg:w-96">
             </div>
