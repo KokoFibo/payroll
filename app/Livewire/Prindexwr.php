@@ -30,8 +30,8 @@ class Prindexwr extends Component
     public function sortColumnName($namaKolom)
     {
         $this->columnName = $namaKolom;
-        $this->direction = $this->swapDirection();
-    }
+          $this->direction = $this->swapDirection();
+    } 
     public function swapDirection()
     {
         return $this->direction === 'asc' ? 'desc' : 'asc';

@@ -146,6 +146,7 @@ class HomeController extends Controller {
 
 
         switch(auth()->user()->role) {
+           case 0 : $role_name = 'BOD'; break;
            case 1 : $role_name = 'User'; break;
            case 2 : $role_name = 'Admin'; break;
            case 3 : $role_name = 'Senior Admin'; break;
@@ -181,7 +182,7 @@ class HomeController extends Controller {
         } else {
             $user->device = 1;
             $user->save();
-            if ( auth()->user()->role == 5 ) {
+            if ( auth()->user()->role == 5 || auth()->user()->role == 0) {
                 $user->device = 1;
                 $user->save();
 
