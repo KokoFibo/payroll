@@ -19,6 +19,11 @@ class Changeuserrolewr extends Component
     {
         $user = User::find($this->user_id);
         $user->role = $this->role;
+        if($this->role == 0) {
+            $user->language = 'Cn';
+        } else {
+            $user->language = 'Id';
+        }
         $user->save();
         $this->dispatch('success', message: 'Role Karyawan berhasil di ganti');
     }

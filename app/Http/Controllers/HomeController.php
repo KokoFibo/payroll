@@ -163,7 +163,7 @@ class HomeController extends Controller {
         if ( $desktop ) {
             $user->device = 1;
             $user->save();
-            if(auth()->user()->role >1) {
+            if(auth()->user()->role != 1) {
                 return view( 'dashboard', compact([ 'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV', 
         'jumlah_YIG', 'jumlah_YSM','jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
         'department_BD', 'department_Engineering', 'department_EXIM','department_Finance_Accounting', 'department_GA','department_Gudang',
