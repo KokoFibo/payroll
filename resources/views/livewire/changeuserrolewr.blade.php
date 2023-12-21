@@ -77,6 +77,13 @@
                                                     <h5>{{ __('Super Admin') }}</h5>
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input wire:model="role" class="form-check-input" type="radio"
+                                                    value="0">
+                                                <label class="form-check-label">
+                                                    <h5>{{ __('Board of Director') }}</h5>
+                                                </label>
+                                            </div>
                                         @endif
 
                                     </div>
