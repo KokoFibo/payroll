@@ -23,12 +23,17 @@ class Test extends Component
     public $year = 2023;
     public $today;
 
+    
+
     public function mount () {
         $this->today = now();
     }
 
     public function render()
     {
+
+        $lembur = Carbon::parse(pembulatanJamOvertimeOut('01:35:00'))->diffInMinutes(Carbon::parse('00:00:00')) / 60 + 3.5;
+    dd($lembur);
         // $ninetyDaysAgo  = 0;
         // lama_bekerja($tgl_mulai_kerja, $tgl_resigned)
 $month = '11';
