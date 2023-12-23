@@ -32,37 +32,40 @@ class Test extends Component
 
     public function render()
     {
-        // $counttotalHadir = Yfrekappresensi::query()
-        // ->where('date', Yfrekappresensi::max('date'))
-        // ->count();
-        // $latestDate = Yfrekappresensi::query()
-        // ->where('date', Yfrekappresensi::max('date'))->first();
 
-        dd(ratarata(30));
-
-        $counttotalHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))
-            ->count();
-        $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
-
-        $events = 0;
-        $avg =0; 
-        $i = 0;
-            $n = 7;
-            $cx=0;
-        while($cx < $n) {
-            $today = Carbon::today();
-            $events = Yfrekappresensi::whereDate('date',  $today->subDays($i+1))->count();
-            if($events != 0) {
-                $avg+=$events;
-                $data[] = $events;
-                $cx++;
-            }
-            $i++;
+        $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        $uniqueDates = Payroll::distinct()->pluck('date');
+        for($i = 0; $i < $uniqueDates->count();  $i++){
+            $all = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->sum('total');
+            $ASB = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'ASB')->sum('total');
+            $DPA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'DPA')->sum('total');
+            $YCME = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YCME')->sum('total');
+            $YEV = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YEV')->sum('total');
+            $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
+            $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
+            $dataPayroll[] =[
+                'tgl' => month_year($uniqueDates[$i]),
+                'All' => number_format($all),
+                'ASB' => $ASB,
+                'DPA' => $DPA,
+                'YCME' => $YCME,
+                'YEV' => $YEV,
+                'YIG' => $YIG,
+                'YSM' => $YSM
+            ];
+            
         }
-        dd($data, round($avg/7));
+
+       foreach($dataPayroll as $d) {
+
+           dd($d['All']);
+       }
+
+        
 
 
         
+// batas
 
 
 

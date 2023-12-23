@@ -4,716 +4,1000 @@
 
 {{-- Charts --}}
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"
-    integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"
+        integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-{{-- placement --}}
-<script>
-    var placement = <?php echo json_encode($placementArr); ?>;
-    var placementLabel = <?php echo json_encode($placementLabelArr); ?>;
+    {{-- placement --}}
+    <script>
+        var placement = <?php echo json_encode($placementArr); ?>;
+        var placementLabel = <?php echo json_encode($placementLabelArr); ?>;
 
-    const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: placementLabel,
-            datasets: [{
-                label: 'Jumlah Karyawan ',
-                data: placement,
-                borderWidth: 1,
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: placementLabel,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: placement,
+                    borderWidth: 1,
 
-                {{-- datalabels: {
+                    {{-- datalabels: {
                     color: 'white',
                 },
                 formatter: function(value, ctx) {
                     return context.chart.data.label[ctx.dataIndex];
                 } --}}
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+                }]
             },
-
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+
                 },
 
             },
 
-        },
 
 
+        });
+    </script>
+    {{-- Company --}}
+    <script>
+        var companyArr = <?php echo json_encode($companyArr); ?>;
+        var companyLabelArr = <?php echo json_encode($companyLabelArr); ?>;
 
-    });
-</script>
-{{-- Company --}}
-<script>
-    var companyArr = <?php echo json_encode($companyArr); ?>;
-    var companyLabelArr = <?php echo json_encode($companyLabelArr); ?>;
+        const ctx1 = document.getElementById('chart_company');
 
-    const ctx1 = document.getElementById('chart_company');
+        new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: companyLabelArr,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: companyArr,
 
-    new Chart(ctx1, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: companyLabelArr,
-            datasets: [{
-                label: 'Jumlah Karyawan ',
-                data: companyArr,
+                    datalabels: {
 
-                datalabels: {
+                        anchor: 'center',
+                        display: true,
+                        align: 'center',
 
-                    anchor: 'center',
-                    display: true,
-                    align: 'center',
+                    },
 
-                },
-
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+                }]
             },
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+
                 },
 
             },
 
-        },
 
 
+        });
+    </script>
 
-    });
-</script>
+    {{-- Jumlah karyawan pria wanita --}}
+    <script>
+        var jumlah_karyawanArr = <?php echo json_encode($jumlah_karyawanArr); ?>;
+        var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
 
-{{-- Jumlah karyawan pria wanita --}}
-<script>
-    var jumlah_karyawanArr = <?php echo json_encode($jumlah_karyawanArr); ?>;
-    var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+        const ctx3 = document.getElementById('jumlah_karyawan');
 
-    const ctx3 = document.getElementById('jumlah_karyawan');
+        new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: jumlah_karyawan_labelArr,
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: jumlah_karyawanArr,
+                    borderWidth: 1,
 
-    new Chart(ctx3, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: jumlah_karyawan_labelArr,
-            datasets: [{
-                label: 'Jumlah Karyawan ',
-                data: jumlah_karyawanArr,
-                borderWidth: 1,
-
-                {{-- datalabels: {
+                    {{-- datalabels: {
                     color: 'white',
                 },
                 formatter: function(value, ctx3) {
                     return context.chart.data.label[ctx.dataIndex];
                 } --}}
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+                }]
             },
-
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
                 },
             },
-        },
-    });
-</script>
+        });
+    </script>
 
-{{-- Kehadiran --}}
-<script>
-    var dataCountLatestHadir = <?php echo json_encode($dataCountLatestHadir); ?>;
-    // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+    {{-- Kehadiran --}}
+    <script>
+        var dataCountLatestHadir = <?php echo json_encode($dataCountLatestHadir); ?>;
+        // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
 
-    const ctx4 = document.getElementById('latestKehadiran');
+        const ctx4 = document.getElementById('latestKehadiran');
 
-    new Chart(ctx4, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: ['Hadir 出勤', 'Absen 缺勤'],
-            datasets: [{
-                label: 'Jumlah Karyawan ',
-                data: dataCountLatestHadir,
-                // data: ['1000', '2000'],
-                borderWidth: 1,
+        new Chart(ctx4, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: ['Hadir 出勤', 'Absen 缺勤'],
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: dataCountLatestHadir,
+                    // data: ['1000', '2000'],
+                    borderWidth: 1,
 
-                
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+
+                }]
             },
-
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
                 },
             },
-        },
-    });
-</script>
+        });
+    </script>
 
-{{-- Rata-rata 7 hari --}}
-<script>
-    var average7Hari = <?php echo json_encode($average7Hari); ?>;
-    // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+    {{-- Rata-rata 7 hari --}}
+    <script>
+        var average7Hari = <?php echo json_encode($average7Hari); ?>;
+        // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
 
-    const ctx5 = document.getElementById('rataRata7Hari');
+        const ctx5 = document.getElementById('rataRata7Hari');
 
-    new Chart(ctx5, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: ['Hadir 出勤', 'Absen 缺勤'],
-            datasets: [{
-                label: 'Rata-rata 7 hari ',
-                data: average7Hari,
-                // data: ['1000', '2000'],
-                borderWidth: 1,
+        new Chart(ctx5, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: ['Hadir 出勤', 'Absen 缺勤'],
+                datasets: [{
+                    label: 'Rata-rata 7 hari ',
+                    data: average7Hari,
+                    // data: ['1000', '2000'],
+                    borderWidth: 1,
 
-                
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+
+                }]
             },
-
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
                 },
             },
-        },
-    });
-</script>
+        });
+    </script>
 
-{{-- Rata-rata 30 hari --}}
-<script>
-    var average30Hari = <?php echo json_encode($average30Hari); ?>;
-    // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+    {{-- Rata-rata 30 hari --}}
+    <script>
+        var average30Hari = <?php echo json_encode($average30Hari); ?>;
+        // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
 
-    const ctx6 = document.getElementById('rataRata30Hari');
+        const ctx6 = document.getElementById('rataRata30Hari');
 
-    new Chart(ctx6, {
-        type: 'pie',
-        data: {
-            {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
-            labels: ['Hadir 出勤', 'Absen 缺勤'],
-            datasets: [{
-                label: 'Rata-rata 30 hari ',
-                data: average30Hari,
-                // data: ['1000', '2000'],
-                borderWidth: 1,
+        new Chart(ctx6, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: ['Hadir 出勤', 'Absen 缺勤'],
+                datasets: [{
+                    label: 'Rata-rata 30 hari ',
+                    data: average30Hari,
+                    // data: ['1000', '2000'],
+                    borderWidth: 1,
 
-                
-            }]
-        },
-        plugins: [ChartDataLabels],
-        options: {
-            layout: {
-                padding: 20
+
+                }]
             },
-
-            plugins: {
-                legend: {
-                    display: true
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
                 },
-                datalabels: {
-                    color: 'white',
 
-                    formatter: function(value, context) {
-                        {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
                             .datasets[0].data[context.dataIndex] --}}
-                        return context.chart.data
-                            .datasets[0].data[context.dataIndex]
-                    }
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
                 },
             },
-        },
-    });
-</script>
+        });
+    </script>
+
+    {{-- Barchart Payroll All --}}
+    <script>
+        var dataAll = <?php echo json_encode($dataAll); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx7 = document.getElementById('payrollAll');
+
+        new Chart(ctx7, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll All ',
+                    data: dataAll,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollASB --}}
+    <script>
+        var dataASB = <?php echo json_encode($dataASB); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx8 = document.getElementById('payrollASB');
+
+        new Chart(ctx8, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll ASB ',
+                    data: dataASB,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollDPA --}}
+    <script>
+        var dataDPA = <?php echo json_encode($dataDPA); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx9 = document.getElementById('payrollDPA');
+
+        new Chart(ctx9, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll DPA ',
+                    data: dataDPA,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollYCME --}}
+    <script>
+        var dataYCME = <?php echo json_encode($dataYCME); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx10 = document.getElementById('payrollYCME');
+
+        new Chart(ctx10, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YCME ',
+                    data: dataYCME,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollYIG --}}
+    <script>
+        var dataYIG = <?php echo json_encode($dataYIG); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx11 = document.getElementById('payrollYIG');
+
+        new Chart(ctx11, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YIG ',
+                    data: dataYIG,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrollYSM --}}
+    <script>
+        var dataYSM = <?php echo json_encode($dataYSM); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx12 = document.getElementById('payrollYSM');
+
+        new Chart(ctx12, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YSM ',
+                    data: dataYSM,
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+                    borderWidth: 1,
+                }]
+            },
+            
+            borderWidth: 1
+        });
+    </script>
 
 
 @endsection
 
-
-
 @section('content')
-<h1 class="pt-3  text-xl lg:text-4xl text-center font-semibold">{{ __('Dashboard') }}</h1>
-<div>
-</div>
+    <h1 class="pt-3  text-xl lg:text-4xl text-center font-semibold">{{ __('Dashboard') }}</h1>
+    <div>
+    </div>
 
 
 
-{{-- Dashboard device = {{ isDesktop() }} --}}
-<div id="root">
-    <div class="container pt-5">
-        <div class="row align-items-stretch">
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                    <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                        {{ __('Karyawan Baru MTD') }}
-                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_baru_mtd }}</span>
+    {{-- Dashboard device = {{ isDesktop() }} --}}
+    <div id="root">
+        <div class="container pt-5">
+            <div class="row align-items-stretch">
+                <div class="c-dashboardInfo col-lg-3 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Baru MTD') }}
+                        </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_baru_mtd }}</span>
 
+                    </div>
                 </div>
-            </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                    <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                        {{ __('Karyawan Resigned MTD') }}</h4>
-                    <span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_resigned_mtd }}</span>
-                    {{-- <span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> --}}
+                <div class="c-dashboardInfo col-lg-3 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Resigned MTD') }}</h4>
+                        <span class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_resigned_mtd }}</span>
+                        {{-- <span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> --}}
+                    </div>
                 </div>
-            </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                    <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
-                        {{ __('Karyawan Blacklist MTD') }}</h4><span
-                        class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_blacklist_mtd }}</span>
+                <div class="c-dashboardInfo col-lg-3 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
+                            {{ __('Karyawan Blacklist MTD') }}</h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ $karyawan_blacklist_mtd }}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                    <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                        {{ __('Karyawan Aktif MTD') }}
-                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{ number_format($karyawan_aktif_mtd)
-                        }}</span>
+                <div class="c-dashboardInfo col-lg-3 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Aktif MTD') }}
+                        </h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ number_format($karyawan_aktif_mtd) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
-    <div>
-        <div class="h-3 rounded-t-lg w-full lg:w-96 bg-violet-500">
-        </div>
-        <div class="bg-violet-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-            <p class="text-center text-lg text-gray-700 mt-2">{{ __('Kehadiran Terbaru') }}</p>
-            <div style="width:350px;">
+    <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-violet-500">
+            </div>
+            <div class="bg-violet-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg text-gray-700 mt-2">{{ __('Kehadiran Terbaru') }}</p>
+                <div style="width:350px;">
                     <canvas id="latestKehadiran"></canvas>
-                </canvas>
+                    </canvas>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <div class="h-3 rounded-t-lg w-full lg:w-96 bg-green-500">
-        </div>
-        <div class="bg-green-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-            <p class="text-center text-lg text-gray-700 mt-2">{{ __('Rata Rata 7 Hari') }}</p>
-            <div style="width:350px;">
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-green-500">
+            </div>
+            <div class="bg-green-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg text-gray-700 mt-2">{{ __('Rata Rata 7 Hari') }}</p>
+                <div style="width:350px;">
                     <canvas id="rataRata7Hari"></canvas>
-                </canvas>
+                    </canvas>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <div class="h-3 rounded-t-lg w-full lg:w-96 bg-blue-500">
-        </div>
-        <div class="bg-blue-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-            <p class="text-center text-lg text-gray-700 mt-2">{{ __('Rata Rata 30 Hari') }}</p>
-            <div style="width:350px;">
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-blue-500">
+            </div>
+            <div class="bg-blue-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg text-gray-700 mt-2">{{ __('Rata Rata 30 Hari') }}</p>
+                <div style="width:350px;">
                     <canvas id="rataRata30Hari"></canvas>
-                </canvas>
-            </div>
-        </div>
-    </div>
-
-
-
-    
-
-   
-</div>
-
-
-{{-- Department --}}
-<div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
-    {{-- Jumlah karyawan Pria wanita --}}
-    <div>
-        <div class="h-3 rounded-t-lg w-full lg:w-96 bg-teal-500">
-        </div>
-        <div class="bg-teal-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-            <p class="text-center text-lg mb-3 ">{{ __('Jumlah Karyawan') }}</p>
-            <h1 class="text-center font-semibold text-xl">{{ $jumlah_total_karyawan }}</h1>
-            <div style="width:350px;">
-                <canvas id="jumlah_karyawan">
-                </canvas>
-            </div>
-        </div>
-    </div>
-
-    {{-- Departement --}}
-    <div>
-        <div class="h-3 rounded-t rounded-t-lg w-full lg:w-96 bg-green-500">
-        </div>
-        <div class="bg-green-200 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-            <p class="text-center text-lg mb-3 ">{{ __('Department') }}</p>
-            <div class="flex gap-3 justify-evenly">
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center   text-gray-600">{{ __('BD') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Engineering') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('EXIM') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Finance Accounting') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('GA') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Gudang') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('HR') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Legal') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Procurement') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Produksi') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Quality Control') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Board of Director') }}</h2>
-
-
-                </div>
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_BD) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($department_Engineering) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_EXIM)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($department_Finance_Accounting) }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_GA) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($department_Gudang) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_HR) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Legal)
-                        }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($department_Procurement) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($department_Produksi) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($department_Quality_Control) }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($department_Board_of_Director) }}</h2>
+                    </canvas>
                 </div>
             </div>
         </div>
+
+
+
+
+
+
     </div>
-    {{-- Jabatan --}}
-    <div>
-        <div class="h-3 rounded-t-lg w-full lg:w-96 bg-red-500">
-        </div>
 
-        <div class="bg-red-200 w-full lg:w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
-            <p class="text-center text-lg mb-3">{{ __('Jabatan') }}</p>
-            <div class="flex gap-3 justify-evenly">
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center   text-gray-600">{{ __('Admin') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Asisten Direktur') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Asisten Kepala') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Asisten Manager') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Asisten Pengawas') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Asisten Wakil_Presiden') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Design grafis') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Director') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Kepala') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Manager') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Pengawas') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('President') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Senior staff') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Staff') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Supervisor') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Vice President') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Satpam') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Koki') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Dapur Kantor') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Dapur Pabrik') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('QC Aging') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Driver') }}</h2>
 
-                </div>
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Admin) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($jabatan_Asisten_Direktur) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Asisten_Kepala) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Asisten_Manager) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($jabatan_Asisten_Pengawas) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">
-                        {{ number_format($jabatan_Asisten_Wakil_Presiden) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Design_grafis) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Director)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Kepala)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Manager)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Pengawas)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_President) }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Senior_staff) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Staff) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Supervisor) }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Vice_President) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Satpam)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Koki) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Dapur_Kantor) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{
-                        number_format($jabatan_Dapur_Pabrik) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_QC_Aging)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Driver)
-                        }}</h2>
-
+    {{-- Department --}}
+    <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
+        {{-- Jumlah karyawan Pria wanita --}}
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-teal-500">
+            </div>
+            <div class="bg-teal-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg mb-3 ">{{ __('Jumlah Karyawan') }}</p>
+                <h1 class="text-center font-semibold text-xl">{{ $jumlah_total_karyawan }}</h1>
+                <div style="width:350px;">
+                    <canvas id="jumlah_karyawan">
+                    </canvas>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div
-    class="flex px-2 mt-2 flex-col flex-xl-row lg:items-center justify-evenly  bg-blue-100  col-xl-10 mx-auto rounded-xl shadow  ">
-    <div>
-        <div class="h-3 rounded-t-lg bg-blue-500 w-full lg:w-96">
-        </div>
-        <div class="bg-blue-200 h-96 rounded-b-lg w-full lg:w-96 shadow-md p-3">
-            <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
-            <div class="flex gap-3 justify-evenly">
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
-                    <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
-                    <h2 class="text-center font-semibold  text-gray-600 mb-2 text-lg">{{ __('Total') }}</h2>
-                    <h2 class="text-center   text-gray-600">ASB</h2>
-                    <h2 class="text-center   text-gray-600">DPA</h2>
-                    <h2 class="text-center   text-gray-600">YCME</h2>
-                    <h2 class="text-center   text-gray-600">YEV</h2>
-                    <h2 class="text-center   text-gray-600">YIG</h2>
-                    <h2 class="text-center   text-gray-600">YSM</h2>
-                    <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
+        {{-- Departement --}}
+        <div>
+            <div class="h-3 rounded-t rounded-t-lg w-full lg:w-96 bg-green-500">
+            </div>
+            <div class="bg-green-200 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg mb-3 ">{{ __('Department') }}</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">{{ __('BD') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Engineering') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('EXIM') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Finance Accounting') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('GA') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Gudang') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('HR') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Legal') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Procurement') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Produksi') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Quality Control') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Board of Director') }}</h2>
+
+
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_BD) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Engineering) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_EXIM) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Finance_Accounting) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_GA) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Gudang) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_HR) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Legal) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Procurement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($department_Produksi) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Quality_Control) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($department_Board_of_Director) }}</h2>
+                    </div>
                 </div>
-                <div class="flex flex-column gap-2">
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_1)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_2)
-                        }}</h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Kantor) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600 mb-2 text-lg">
-                        {{ number_format($jumlah_placement) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_ASB) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_DPA) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YCME) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YEV) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YIG) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YSM) }}
-                    </h2>
-                    <h2 class="text-center  font-semibold text-gray-600 text-lg">{{
-                        number_format($jumlah_company) }}
-                    </h2>
+            </div>
+        </div>
+        {{-- Jabatan --}}
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-red-500">
+            </div>
+
+            <div class="bg-red-200 w-full lg:w-96 h-96 shadow p-3 rounded-b-lg overflow-y-auto ">
+                <p class="text-center text-lg mb-3">{{ __('Jabatan') }}</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">{{ __('Admin') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Direktur') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Kepala') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Manager') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Pengawas') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Asisten Wakil_Presiden') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Design grafis') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Director') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Kepala') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Manager') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pengawas') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('President') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Senior staff') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Staff') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Supervisor') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Vice President') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Satpam') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Koki') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Dapur Kantor') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Dapur Pabrik') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('QC Aging') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Driver') }}</h2>
+
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Admin) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Direktur) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Asisten_Kepala) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Asisten_Manager) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Pengawas) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">
+                            {{ number_format($jabatan_Asisten_Wakil_Presiden) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Design_grafis) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Director) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Kepala) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Manager) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Pengawas) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_President) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Senior_staff) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Staff) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Supervisor) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Vice_President) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Satpam) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Koki) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Dapur_Kantor) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Dapur_Pabrik) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_QC_Aging) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Driver) }}</h2>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Charts --}}
+    <div
+        class="flex px-2 mt-2 flex-col flex-xl-row lg:items-center justify-evenly  bg-blue-100  col-xl-10 mx-auto rounded-xl shadow  ">
+        <div>
+            <div class="h-3 rounded-t-lg bg-blue-500 w-full lg:w-96">
+            </div>
+            <div class="bg-blue-200 h-96 rounded-b-lg w-full lg:w-96 shadow-md p-3">
+                <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 1') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Pabrik 2') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Kantor') }}</h2>
+                        <h2 class="text-center font-semibold  text-gray-600 mb-2 text-lg">{{ __('Total') }}</h2>
+                        <h2 class="text-center   text-gray-600">ASB</h2>
+                        <h2 class="text-center   text-gray-600">DPA</h2>
+                        <h2 class="text-center   text-gray-600">YCME</h2>
+                        <h2 class="text-center   text-gray-600">YEV</h2>
+                        <h2 class="text-center   text-gray-600">YIG</h2>
+                        <h2 class="text-center   text-gray-600">YSM</h2>
+                        <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
+                    </div>
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_1) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Pabrik_2) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_Kantor) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600 mb-2 text-lg">
+                            {{ number_format($jumlah_placement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_ASB) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_DPA) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YCME) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YEV) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YIG) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jumlah_YSM) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600 text-lg">{{ number_format($jumlah_company) }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Charts --}}
 
 
-    <div class="w-full xl:w-1/3  mt-2">
+        <div class="w-full xl:w-1/3  mt-2">
 
-        <canvas id="myChart"></canvas>
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="w-full xl:w-1/3  mt-2">
+
+            <canvas id="chart_company"></canvas>
+        </div>
     </div>
-    <div class="w-full xl:w-1/3  mt-2">
 
-        <canvas id="chart_company"></canvas>
-    </div>
-</div>
 
-{{-- <div style="display: none">
-    <div class="w-1/5 h-40 bg-teal-500 rounded-xl shadow-xl">
-        <h2></h2>
-        1000
-    </div>
-</div> --}}
 
-<style>
-    .c-dashboardInfo {
-        margin-bottom: 15px;
-    }
 
-    .c-dashboardInfo .wrap {
-        background: #ffffff;
-        box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 7px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        padding: 40px 25px 20px;
-        height: 100%;
-    }
 
-    .c-dashboardInfo__title,
-    .c-dashboardInfo__subInfo {
-        color: #6c6c6c;
-        font-size: 1.18em;
-    }
+    @if (auth()->user()->role >= 4)
+        <div class="w-full px-2 lg:w-5/6 mx-auto">
+            <div class="relative overflow-x-auto pb-2 mt-3">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3"></th>
+                            <th scope="col" class="px-6 py-3">All</th>
+                            <th scope="col" class="px-6 py-3">ASB</th>
+                            <th scope="col" class="px-6 py-3">DPA</th>
+                            <th scope="col" class="px-6 py-3">YCME</th>
+                            <th scope="col" class="px-6 py-3">YEV</th>
+                            <th scope="col" class="px-6 py-3">YIG</th>
+                            <th scope="col" class="px-6 py-3">YSM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($dataPayroll as $dp)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                    {{ $dp['tgl'] }}</th>
+                                <td class="px-6 py-4">{{ number_format($dp['All']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['ASB']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['DPA']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['YCME']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['YEV']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['YIG']) }}</td>
+                                <td class="px-6 py-4">{{ number_format($dp['YSM']) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    .c-dashboardInfo span {
-        display: block;
-    }
+        <div class="flex flex-col lg:flex-row justify-evenly px-2">
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollAll"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollASB"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollDPA"></canvas>
+            </div>
+        </div>
 
-    .c-dashboardInfo__count {
-        font-weight: 600;
-        font-size: 2.5em;
-        line-height: 64px;
-        color: #323c43;
-    }
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYCME"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYIG"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYSM"></canvas>
+            </div>
+        </div>
 
-    .c-dashboardInfo .wrap:after {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 10px;
-        content: "";
-    }
+    @endif
 
-    .c-dashboardInfo:nth-child(1) .wrap:after {
-        background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
-    }
+    {{-- <div style="display: none">
+        <div class="mt-5 w-1/5 h-40 bg-teal-500 rounded-xl shadow-xl">
+            <h2></h2>
+            1000
+        </div>
+    </div> --}}
+    <style>
+        .c-dashboardInfo {
+            margin-bottom: 15px;
+        }
 
-    .c-dashboardInfo:nth-child(2) .wrap:after {
-        background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
-    }
+        .c-dashboardInfo .wrap {
+            background: #ffffff;
+            box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 7px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 25px 20px;
+            height: 100%;
+        }
 
-    .c-dashboardInfo:nth-child(3) .wrap:after {
-        background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
-    }
+        .c-dashboardInfo__title,
+        .c-dashboardInfo__subInfo {
+            color: #6c6c6c;
+            font-size: 1.18em;
+        }
 
-    .c-dashboardInfo:nth-child(4) .wrap:after {
-        background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
-    }
+        .c-dashboardInfo span {
+            display: block;
+        }
 
-    .c-dashboardInfo__title svg {
-        color: #d7d7d7;
-        margin-left: 5px;
-    }
+        .c-dashboardInfo__count {
+            font-weight: 600;
+            font-size: 2.5em;
+            line-height: 64px;
+            color: #323c43;
+        }
 
-    .MuiSvgIcon-root-19 {
-        fill: currentColor;
-        width: 1em;
-        height: 1em;
-        display: inline-block;
-        font-size: 24px;
-        transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-        user-select: none;
-        flex-shrink: 0;
-    }
-</style>
+        .c-dashboardInfo .wrap:after {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            content: "";
+        }
+
+        .c-dashboardInfo:nth-child(1) .wrap:after {
+            background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
+        }
+
+        .c-dashboardInfo:nth-child(2) .wrap:after {
+            background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
+        }
+
+        .c-dashboardInfo:nth-child(3) .wrap:after {
+            background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
+        }
+
+        .c-dashboardInfo:nth-child(4) .wrap:after {
+            background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
+        }
+
+        .c-dashboardInfo__title svg {
+            color: #d7d7d7;
+            margin-left: 5px;
+        }
+
+        .MuiSvgIcon-root-19 {
+            fill: currentColor;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            font-size: 24px;
+            transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            user-select: none;
+            flex-shrink: 0;
+        }
+    </style>
 @endsection
