@@ -251,10 +251,9 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan)
                     // dd($t2, 'bukan sabtu');
                     return $lembur = 0;
                 } else {
-                    // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00'))/60;
                     if ($t2 <= strtotime('23:59:00') && $t2 >= strtotime('20:30:00')) {
-                       
-                    return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00')) / 60;
+                        
+                        return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00')) / 60;
                     } 
                     else {
                         
