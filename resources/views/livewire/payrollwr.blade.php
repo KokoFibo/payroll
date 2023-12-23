@@ -9,7 +9,7 @@
 
                 <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
-
+ 
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>

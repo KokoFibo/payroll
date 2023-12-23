@@ -458,6 +458,7 @@ class Prindexwr extends Component
             ->get();
         $this->cx++;
 
+
         $filteredData = Jamkerjaid::select(['jamkerjaids.*', 'karyawans.nama'])
             ->join('karyawans', 'jamkerjaids.karyawan_id', '=', 'karyawans.id')
             ->whereMonth('date', $this->month)
@@ -469,7 +470,9 @@ class Prindexwr extends Component
                     $subQuery
                         ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
                         ->orWhere('user_id', trim($this->search))
-                        ->orWhere('jabatan', trim($this->search));
+                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%')
+                        ->orWhere('status_karyawan', 'LIKE', '%' . trim($this->search) . '%');
                 });
             })
             
