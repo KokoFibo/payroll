@@ -8,6 +8,7 @@ use App\Models\Karyawan;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Models\Yfrekappresensi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Spatie\Activitylog\Contracts\Activity;
 
@@ -141,7 +142,17 @@ class HomeController extends Controller {
     $jabatan_QC_Aging = Karyawan::where('jabatan', 'QC Aging')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
     $jabatan_Driver = Karyawan::where('jabatan', 'Driver')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
-       
+    //    Kehadiran
+    $countLatestHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->count();
+    $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
+
+    $dataCountLatestHadir = [$countLatestHadir, $jumlah_total_karyawan - $countLatestHadir ];
+
+    //  $average7Hari = ratarata (7);
+    $average7Hari = [ratarata (7), $jumlah_total_karyawan - ratarata (7)];
+
+     //  rata-rata 30 hari
+     $average30Hari = [ratarata (30), $jumlah_total_karyawan - ratarata (30)];
        
 
 
@@ -172,7 +183,8 @@ class HomeController extends Controller {
         'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
         'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
-        'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd'
+        'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
+        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari'
 
         ]) );
             }else {
@@ -195,7 +207,8 @@ class HomeController extends Controller {
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor',
         'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',  'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr',
         'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
-        'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd'
+        'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd', 
+        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari'
     ]));
         }
             $user->device = 0;

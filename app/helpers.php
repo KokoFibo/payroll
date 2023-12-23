@@ -8,6 +8,24 @@ use Illuminate\Support\Str;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 
+function ratarata ($ndays) {
+    $events = 0;
+        $avg =0; 
+        $i = 0;
+            $cx=0;
+        while($cx < $ndays) {
+            $today = Carbon::today();
+            $events = Yfrekappresensi::whereDate('date',  $today->subDays($i+1))->count();
+            if($events != 0) {
+                $avg+=$events;
+                $data[] = $events;
+                $cx++;
+            }
+            $i++;
+        }
+        return round($avg/$ndays);
+}
+
 function is_35_days($month, $year) {
     $tgl = $year.'-'.$month.'-01';
    
