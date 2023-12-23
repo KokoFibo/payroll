@@ -41,6 +41,7 @@ class Prindexwr extends Component
     {
         $this->year = now()->year;
         $this->month = now()->month;
+       
 
         $getTglTerakhir = Yfrekappresensi::select('date')
             ->orderBy('date', 'desc')
@@ -69,11 +70,15 @@ class Prindexwr extends Component
         //         $lock->save();
         //     }
 
+        
         $result = build_payroll($this->month, $this->year);
         if ($result == 0) {
             $this->dispatch('error', message: 'Data Presensi tidak ada');
+            
         } else {
             $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+            
+
         }
 
         //     $lock->build = false;
