@@ -2,7 +2,7 @@
     @section('title', 'Payroll')
 
     <div class="pt-2">
-        <div class="">
+        <div class=""> 
             <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
 
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">

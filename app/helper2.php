@@ -289,7 +289,7 @@ function build_payroll($month, $year)
             'gaji_pokok' => $data->karyawan->gaji_pokok,
             'gaji_lembur' => $data->karyawan->gaji_overtime,
             'gaji_bpjs' => $data->karyawan->gaji_bpjs,
-// oll
+            // oll
             'libur_nasional' => $libur_nasional,
 
             'jkk' => $data->karyawan->jkk,
@@ -361,23 +361,29 @@ function build_payroll($month, $year)
         $lama_bekerja = lama_bekerja($d->tanggal_bergabung, $d->tanggal_resigned);
         if ($lama_bekerja <= 90) {
             $data_payrolls = Payroll::where('id_karyawan', $d->id_karyawan)
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->first();
-            $data_payroll = Payroll::find($data_payrolls->id);
-            if ($data_payroll->metode_penggajian == 'Perbulan') {
-                $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / 26);
-            } else {
-                $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
-            }
-            $data_payroll->total = $data_payroll->total - $data_payroll->denda_resigned;
-            if($data_payroll->total < 0) {
-                $data_payroll->total = 0;
-            }
-            $data_payroll->save();
-        }
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->first();
 
-        
+            try {
+                $data_payroll = Payroll::find($data_payrolls->id);
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+
+            if ($data_payroll != null) {
+                if ($data_payroll->metode_penggajian == 'Perbulan') {
+                    $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / 26);
+                } else {
+                    $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
+                }
+                $data_payroll->total = $data_payroll->total - $data_payroll->denda_resigned;
+                if ($data_payroll->total < 0) {
+                    $data_payroll->total = 0;
+                }
+                $data_payroll->save();
+            }
+        }
     }
 
     // ok 5

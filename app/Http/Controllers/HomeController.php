@@ -153,6 +153,36 @@ class HomeController extends Controller {
 
      //  rata-rata 30 hari
      $average30Hari = [ratarata (30), $jumlah_total_karyawan - ratarata (30)];
+
+     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        $uniqueDates = Payroll::distinct()->pluck('date');
+        for($i = 0; $i < $uniqueDates->count();  $i++){
+            $all = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->sum('total');
+            $ASB = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'ASB')->sum('total');
+            $DPA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'DPA')->sum('total');
+            $YCME = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YCME')->sum('total');
+            $YEV = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YEV')->sum('total');
+            $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
+            $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
+            $dataPayroll[] =[
+                'tgl' => month_year($uniqueDates[$i]),
+                'All' => $all,
+                'ASB' => $ASB,
+                'DPA' => $DPA,
+                'YCME' => $YCME,
+                'YEV' => $YEV,
+                'YIG' => $YIG,
+                'YSM' => $YSM
+            ];
+            $dataTgl[] = month_year($uniqueDates[$i]);
+            $dataAll[] =  $all;
+            $dataASB[] =  $ASB;
+            $dataDPA[] =  $DPA;
+            $dataYCME[] =  $YCME;
+            $dataYEV[] =  $YEV;
+            $dataYIG[] =  $YIG;
+            $dataYSM[] =  $YSM;
+        }
        
 
 
@@ -184,7 +214,8 @@ class HomeController extends Controller {
         'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
         'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
         'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari'
+        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
+        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM'
 
         ]) );
             }else {
@@ -208,7 +239,8 @@ class HomeController extends Controller {
         'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',  'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr',
         'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
         'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd', 
-        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari'
+        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
+        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM'
     ]));
         }
             $user->device = 0;
