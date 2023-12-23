@@ -554,7 +554,8 @@ class Payrollwr extends Component
                     ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('jabatan', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('company', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%');
+                    ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
             })
             ->when($placement, function ($query) use ($placement) {
                 $query->where('placement', $placement);
@@ -563,8 +564,6 @@ class Payrollwr extends Component
                 $query->where('company', $company);
             })
            
-           
-
             ->orderBy($this->columnName, $this->direction);
     }
 
@@ -738,13 +737,13 @@ class Payrollwr extends Component
             $last_build = Carbon::parse($tgl->created_at)->diffForHumans();
         } else {
             $last_build = 0;
-        }
+        } 
 
         $data_kosong = Jamkerjaid::count();
 
          
         $this->cx++;
-
+ 
         return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong']));
     }
 }

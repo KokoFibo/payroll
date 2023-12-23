@@ -34,25 +34,27 @@
                 </select>
             </div>
         </div>
+        
 
-        <div class="col-xl-4 col-12 gap-3 gap-xl-0 p-xl-4 d-flex justify-content-evenly  flex-xl-row text-center {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
-            <div class="d-flex">
-                <div class=" col-6">
-                    <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2"
-                            wire:loading.remove>Excel</button></a>
-                </div>
-    
-                <div class=" col-6">
-                    <button wire:click.prevent="buat_payroll" class="btn btn-primary"
-                    {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
-                    wire:loading.remove>{{ __('Rebuild') }}</button>
-                </div>
+        <div
+            class="col-xl-4 col-12 gap-3 gap-xl-0 p-xl-4 d-flex justify-content-evenly  flex-xl-row text-center {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
+ 
+            <div class=" col-6">
+                {{-- <button wire:click.prevent="getPayrollConfirmation" class="btn btn-primary" wire:loading.remove>Build --}}
+                <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2"
+                        wire:loading.remove>Excel</button></a>
             </div>
+
             <div class="col-12" wire:loading>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                 </button>
+            </div>
+            <div class=" col-6">
+                <button wire:click.prevent="buat_payroll" class="btn btn-primary"
+                    {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
+                    wire:loading.remove>{{ __('Rebuild') }}</button>
             </div>
 
         </div>
