@@ -34,10 +34,10 @@
                 <tr>
                     <td>{{ $d->id_karyawan }}</td>
                     <td>{{ $d->nama }}</td>
-                    <th>{{ $d->company }}</th>
-                    <th>{{ $d->departemen }}</th>
-                    <th>{{ $d->jabatan }}</th>
-                    <th>{{ $d->status_karyawan }}</th>
+                    <td>{{ $d->company }}</td>
+                    <td>{{ $d->departemen }}</td>
+                    <td>{{ $d->jabatan }}</td>
+                    <td>{{ $d->status_karyawan }}</td>
                     <td>{{ $d->tanggal_bergabung }}</td>
 
                     <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
