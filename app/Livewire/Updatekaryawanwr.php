@@ -19,10 +19,11 @@ class Updatekaryawanwr extends Component {
     public $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update ;
-    public  $no_npwp, $ptkp;
+    public  $no_npwp, $ptkp, $status_off;
 
 
     public function mount ( $id ) {
+        $this->status_off = false;
         $this->update = true;
          $this->id = $id;
          $data = Karyawan::find($id);

@@ -11,14 +11,22 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Status Karyawan') }} <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select @error('status_karyawan') is-invalid @enderror""
-                                aria-label="Default select example" wire:model.live="status_karyawan">
+                            <select class="form-select @error('status_karyawan') is-invalid @enderror"
+                                
+                                @if ($status_off)
+                                wire:model="status_karyawan"
+                                @else
+                                wire:model.live="status_karyawan"
+                                @endif
+                                >
                                 <option value=" ">{{ __('Pilih status karyawan') }}</option>
                                 <option value="PKWT">PKWT</option>
                                 <option value="PKWTT">PKWTT</option>
-                                <option value="Dirumahkan">Dirumahkan</option>
-                                <option value="Resigned">Resigned</option>
-                                <option value="Blacklist">Blacklist</option>
+                                @if ($status_off == false)
+                                    <option value="Dirumahkan">Dirumahkan</option>
+                                    <option value="Resigned">Resigned</option>
+                                    <option value="Blacklist">Blacklist</option>
+                                @endif
                             </select>
                             @error('status_karyawan')
                                 <div class="invalid-feedback">

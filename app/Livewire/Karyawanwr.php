@@ -21,7 +21,7 @@ class Karyawanwr extends Component
     public $iuran_air, $denda, $iuran_locker, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
     public $no_npwp, $ptkp;
 
-    public $id_karyawan_ini, $update;
+    public $id_karyawan_ini, $update, $status_off;
 
     public function mount()
     {
@@ -31,6 +31,7 @@ class Karyawanwr extends Component
         $this->status_karyawan = 'PKWT';
         $this->tanggal_bergabung =  date( 'd M Y', strtotime( now()->toDateString() ) );
         $this->id_karyawan_ini = '';
+        $this->status_off = true;
     }
 
     protected $rules = [
