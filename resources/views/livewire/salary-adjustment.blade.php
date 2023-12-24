@@ -1,33 +1,31 @@
 <div>
-    <div class="d-flex justify-content-between align-items-center py-2">
+    <div class="d-flex  align-items-center py-2">
         <div class="col-12 col-lg-2">
             <select class="form-select" wire:model.live="pilihLamaKerja">
-                <option value=" ">Pilih Bulan</option>
-                <option value="90">3 bulan</option>
-                <option value="120">4 Bulan</option>
-                <option value="150">5 Bulan</option>
-                <option value="180">6 Bulan</option>
-                <option value="210">7 Bulan</option>
+                <option value=" ">{{ __('Pilih lama bekerja') }}</option>
+                <option value="90">{{ __('3 bulan') }}</option>
+                <option value="120">{{ __('4 Bulan') }}</option>
+                <option value="150">{{ __('5 Bulan') }}</option>
+                <option value="180">{{ __('6 Bulan') }}</option>
+                <option value="210">{{ __('7 Bulan') }}</option>
               </select>
         </div>
-        <div class="col-12 col-lg-3 ">
-            <h5>Gaji Rekomendasi : {{ number_format($gaji_rekomendasi) }}</h5>
-        </div>
+        <h4 class="mx-auto">{{ __('Penyesuaian Gaji') }}</h4>
+       
     </div>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Company</th>
-                <th>Departemen</th>
-                <th>Jabatan</th>
-                <th>Status</th>
-                <th>tanggal_bergabung</th>
-                <th>lama_bekerja</th>
-                <th>Gaji Pokok</th>
-                <th>Gaji Rekomendasi : Rp {{ number_format($gaji_rekomendasi) }}</th>
-
+                <th>{{ __('ID') }}</th>
+                <th>{{ __('Nama') }}</th>
+                <th>{{ __('Company') }}</th>
+                <th>{{ __('Departemen') }}</th>
+                <th>{{ __('Jabatan') }}</th>
+                <th>{{ __('Status') }}</th>
+                <th>{{ __('Tanggal Bergabung') }}</th>
+                <th>{{ __('Lama Bekerja') }}</th>
+                <th>{{ __('Gaji Pokok') }}</th>
+                <th>{{ __('Gaji Rekomendasi') }} : Rp {{ number_format($gaji_rekomendasi) }}</th>
             </tr>
         </thead>
         <tbody>

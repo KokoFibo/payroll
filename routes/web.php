@@ -40,6 +40,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\SalaryAdjustment;
 
 // Middleware
 Auth::routes([
@@ -147,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::get('/MissingId', MissingId::class);
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
+                    Route::get('/salaryadjustment', SalaryAdjustment::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');

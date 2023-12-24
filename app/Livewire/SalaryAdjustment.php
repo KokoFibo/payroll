@@ -3,28 +3,17 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Tambahan;
-use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
-use App\Models\Bonuspotongan;
-use App\Models\Liburnasional;
-use App\Models\Yfrekappresensi;
 
-class Test extends Component
+class SalaryAdjustment extends Component
 {
-    // public $saturday;
     use WithPagination;
-    protected $paginationTheme = 'bootstrap';
-    public $month = 12;
-    public $year = 2023;
     public $today;
+    protected $paginationTheme = 'bootstrap';
+
     public $pilihLamaKerja, $gaji_rekomendasi;
-
-
 
     public function mount()
     {
@@ -34,20 +23,14 @@ class Test extends Component
     }
 
     public function sesuaikan($id) {
-       $data = Karyawan::find($id);
-       dd($data->nama, $data->gaji_pokok);
-    }
+        $data = Karyawan::find($id);
+        $data->gaji_pokok = $this->gaji_rekomendasi;
+        $data->save();
+        $this->dispatch( 'success', message: 'Data Gaji Karyawan Sudah di Sesuaikan' );
+     }
 
     public function render()
     {
-
-        $month = '11';
-        $year = '2023';
-
-
-
-
-
         $ninetyDaysAgo = Carbon::now()->subDays(90);
         $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
         $hundredFiftyDaysAgo = Carbon::now()->subDays(150);
@@ -126,8 +109,6 @@ class Test extends Component
             //         ->paginate(10);
             //     break;
         }
-        // $data = Payroll::where('denda_resigned','!=', null)->get();
-
-        return view('livewire.test', compact(['data']));
+        return view('livewire.salary-adjustment', compact('data'));
     }
 }

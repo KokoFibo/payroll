@@ -31,6 +31,16 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+            @if (Auth::user()->role > 4)
+            <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/salaryadjustment" class="nav-link">
+                    <i class="nav-icon fa-solid fa-sliders"></i>
+                    <p>
+                        {{ __('Penyesuaian Gaji') }}
+                    </p>
+                </a>
+            </li>
+            @endif
             <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/yfpresensiindexwr" class="nav-link">
                     <i class="nav-icon fas fa-clipboard-check"></i>
