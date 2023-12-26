@@ -184,6 +184,16 @@ class HomeController extends Controller {
             $dataYSM[] =  $YSM;
         }
        
+         // Shift Pagi dan Shift Malam
+
+         $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
+        $shift_malam = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Malam')->count();
+        $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
+         $total = $shift_pagi + $shift_malam;
+ 
+         $shiftPagiMalam = [$shift_pagi/$total*100, $shift_malam/$total*100 ];
+        // $shiftPagiMalam = [70, 30];
+
 
 
         switch(auth()->user()->role) {
@@ -215,7 +225,7 @@ class HomeController extends Controller {
         'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
         'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
         'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM'
+        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
 
         ]) );
             }else {
@@ -240,7 +250,7 @@ class HomeController extends Controller {
         'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
         'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd', 
         'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM'
+        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
     ]));
         }
             $user->device = 0;
