@@ -13,12 +13,13 @@ use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Query\Builder;
+use App\Exports\KaryawanByDepartmentExport;
 
 class Karyawanindexwr extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-
+    public $month, $year;
     public $search;
     public $columnName = 'id_karyawan';
     public $direction = 'Asc';
@@ -40,9 +41,28 @@ class Karyawanindexwr extends Component
     public $search_gaji_pokok;
     public $search_gaji_overtime;
   
+    public function excelByDepartment() {
+        $nama_file = "";
+        switch($this->search_placement) {
 
+            case '1' : 
+                $nama_file="pabrik_1_".$this->search_department."_".$this->month."_".$this->year.".xlsx";
+                 break;
+            case '2' : 
+                $nama_file="pabrik_2_".$this->search_department."_".$this->month."_".$this->year.".xlsx";
+                break;
+            case '3' : 
+                $nama_file="kantor_".$this->search_department."_".$this->month."_".$this->year.".xlsx";
+                break;
+            
+        }
+        // dd($nama_file);
+        return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
+    }
     public function mount()
     {
+        $this->year = now()->year;
+        $this->month = now()->month;
         $this->selected_company = 0;
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
