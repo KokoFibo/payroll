@@ -196,6 +196,13 @@
 
 
                                         </select></th>
+                                        <th style="width: 150px; border-style: none;">
+                                            <button wire:click="excelByDepartment" class="btn btn-success btn-sm" 
+                                            @if ($search_placement == null || $search_department == null)
+                                            disabled
+                                            @endif
+                                            >Excel by Departement</button>
+                                        </th>
                                 @endif
 
 
