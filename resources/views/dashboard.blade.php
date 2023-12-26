@@ -216,6 +216,52 @@
         });
     </script>
 
+    {{-- shiftPagiMalam --}}
+    <script>
+        var shiftPagiMalam = <?php echo json_encode($shiftPagiMalam); ?>;
+        // var jumlah_karyawan_labelArr = <?php echo json_encode($jumlah_karyawan_labelArr); ?>;
+
+        const ctx13 = document.getElementById('shiftPagiMalam');
+
+        new Chart(ctx13, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: ['Shift Pagi 早班', 'Shift Malam 夜班'],
+                datasets: [{
+                    label: 'Jumlah Karyawan ',
+                    data: shiftPagiMalam,
+                    // data: ['700', '300'],
+                    borderWidth: 1,
+
+
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
+                },
+
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                            .datasets[0].data[context.dataIndex] --}}
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+                },
+            },
+        });
+    </script>
+
     {{-- Rata-rata 7 hari --}}
     <script>
         var average7Hari = <?php echo json_encode($average7Hari); ?>;
@@ -607,7 +653,7 @@
             <div class="h-3 rounded-t-lg w-full lg:w-96 bg-violet-500">
             </div>
             <div class="bg-violet-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
-                <p class="text-center text-lg text-gray-700 mt-2">{{ __('Kehadiran Terbaru') }}</p>
+                <p class="text-center text-lg text-gray-700 mt-2">{{ __('Presensi') }} {{ format_tgl($latestDate->date) }} </p>
                 <div style="width:350px;">
                     <canvas id="latestKehadiran"></canvas>
                     </canvas>
@@ -637,11 +683,6 @@
             </div>
         </div>
 
-
-
-
-
-
     </div>
 
 
@@ -653,13 +694,27 @@
             </div>
             <div class="bg-teal-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
                 <p class="text-center text-lg mb-3 ">{{ __('Jumlah Karyawan') }}</p>
-                <h1 class="text-center font-semibold text-xl">{{ $jumlah_total_karyawan }}</h1>
+                <h1 class="text-center font-semibold text-xl">{{ number_format($jumlah_total_karyawan) }}</h1>
                 <div style="width:350px;">
                     <canvas id="jumlah_karyawan">
                     </canvas>
                 </div>
             </div>
         </div>
+        <div>
+            <div class="h-3 rounded-t-lg w-full lg:w-96 bg-teal-500">
+            </div>
+            <div class="bg-teal-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
+                <p class="text-center text-lg mb-3 ">{{ __('Shift Pagi & Shift Malam') }}</p>
+                <h1 class="text-center font-semibold text-xl">{{ __('Month to Date') }}(%)</h1>
+                <div style="width:350px;">
+                    <canvas id="shiftPagiMalam">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
 
         {{-- Departement --}}
         <div>
