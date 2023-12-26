@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
+                Route::get('/salaryadjustment', SalaryAdjustment::class);
 
                 // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
                 // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
@@ -148,7 +149,6 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::get('/MissingId', MissingId::class);
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
-                    Route::get('/salaryadjustment', SalaryAdjustment::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');
