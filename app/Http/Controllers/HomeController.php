@@ -191,8 +191,8 @@ class HomeController extends Controller {
         $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
          $total = $shift_pagi + $shift_malam;
  
-         $shiftPagiMalam = [$shift_pagi/$total*100, $shift_malam/$total*100 ];
-        // $shiftPagiMalam = [70, 30];
+         $shiftPagiMalam = [round($shift_pagi/$total*100,1), round(100-$shift_pagi/$total*100,1) ];
+
 
 
 
