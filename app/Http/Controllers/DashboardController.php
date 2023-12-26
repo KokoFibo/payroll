@@ -178,8 +178,8 @@ class DashboardController extends Controller
         $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
         $total = $shift_pagi + $shift_malam;
 
-        $shiftPagiMalam = [$shift_pagi/$total*100, $shift_malam/$total*100 ];
-        $shiftPagiMalam = [70, 30];
+        $shiftPagiMalam = [round($shift_pagi/$total*100,1), round(100-$shift_pagi/$total*100,1) ];
+
 
         // return view('dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']));
         return view( 'dashboard', compact([ 'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV', 
