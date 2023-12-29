@@ -21,8 +21,8 @@ class Karyawanindexwr extends Component
     protected $paginationTheme = 'bootstrap';
     public $month, $year;
     public $search;
-    public $columnName = 'nama';
-    public $direction = 'Asc';
+    public $columnName = 'id_karyawan';
+    public $direction = 'desc';
     public $id;
     public $selectedAll = [];
     public $selectStatus = 'Aktif';
@@ -84,7 +84,8 @@ class Karyawanindexwr extends Component
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
-
+        $this->columnName = 'id_karyawan';
+        $this->direction = 'desc';
     }
 
     public function reset_filter()
@@ -99,7 +100,8 @@ class Karyawanindexwr extends Component
         $this->search_tanggal_bergabung = "";
         $this->search_gaji_pokok = "";
         $this->search_gaji_overtime = "";
-        $this->direction = 'Asc';
+        $this->columnName = 'id_karyawan';
+        $this->direction = 'desc';
     }
 
     // #[On('delete')]

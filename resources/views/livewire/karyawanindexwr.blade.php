@@ -21,7 +21,6 @@
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
 
-
         <div class="col-xl-2 col-12">
             @if (Auth::user()->role > 3)
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
@@ -79,7 +78,7 @@
                         </div>
 
                         <div class="col-12 col-xl-3">
-                            <button wire:click="reset_filter" class="btn btn-success col-12">Reset</button>
+                            <button wire:click="reset_filter" class="btn btn-success col-12">Refresh</button>
                         </div>
                         <div class="col-12 col-xl-3">
                             <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
