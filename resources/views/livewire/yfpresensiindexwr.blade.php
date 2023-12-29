@@ -3,16 +3,31 @@
 
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
-            <div class="d-flex flex-row">
-                <div class="col-4 text-center">{{ __('Hadir') }}</div>
-                <div class="col-4 text-center">{{ __('Pagi') }}</div>
-                <div class="col-4 text-center">{{ __('Malam') }}</div>
-            </div>
-            <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ $totalHadir }}</div>
-                <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
-                <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
-            </div>
+            @if ($absensiKosong == 0)
+                <div class="d-flex flex-row">
+                    <div class="col-4 text-center">{{ __('Hadir') }}</div>
+                    <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                    <div class="col-4 text-center">{{ __('Malam') }}</div>
+                </div>
+                <div class="d-flex flex-row ">
+                    <div class="col-4 text-center">{{ $totalHadir }}</div>
+                    <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
+                    <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                </div>
+            @else
+                <div class="d-flex flex-row">
+                    <div class="col-3 text-center">{{ __('Hadir') }}</div>
+                    <div class="col-3 text-center">{{ __('Pagi') }}</div>
+                    <div class="col-3 text-center">{{ __('Malam') }}</div>
+                    <div class="col-3 text-center">{{ __('Kosong') }}</div>
+                </div>
+                <div class="d-flex flex-row ">
+                    <div class="col-3 text-center">{{ $totalHadir }}</div>
+                    <div class="col-3 text-center">{{ $totalHadirPagi }}</div>
+                    <div class="col-3 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                    <div class="col-3 text-center text-danger text-bold">{{ $absensiKosong }}</div>
+                </div>
+            @endif
         </div>
 
         <div class="col-12 col-xl-3 bg-warning py-2" style=" border-radius: 10px;">
@@ -78,7 +93,7 @@
         </div>
         <div class="col-xl-3 col-12 gap-3 text-center     ">
             {{-- <div class="col-2"> --}}
-            <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Reset') }}</button>
+            <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
         </div>
