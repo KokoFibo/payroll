@@ -5,9 +5,12 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Livewire\WithPagination;
 
 class Changeuserrolewr extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $search;
     public $id;
     public $username;
@@ -19,7 +22,7 @@ class Changeuserrolewr extends Component
     {
         $user = User::find($this->user_id);
         $user->role = $this->role;
-        if($this->role == 0) {
+        if ($this->role == 0) {
             $user->language = 'Cn';
         } else {
             $user->language = 'Id';
@@ -47,15 +50,19 @@ class Changeuserrolewr extends Component
             $data = null;
             $this->id = null;
         }
-        if($data != null){
-        $user = User::where('username', $data->id_karyawan)->first();
-        if($user) {
-            $this->role = $user->role;
-            $this->user_id = $user->id;
-        } else {
-            $this->role = null;
+        if ($data != null) {
+            $user = User::where('username', $data->id_karyawan)->first();
+            if ($user) {
+                $this->role = $user->role;
+                $this->user_id = $user->id;
+            } else {
+                $this->role = null;
+            }
         }
-    }
-        return view('livewire.changeuserrolewr', compact(['data']));
+        $dataRole = User::whereIn('role', [0, 2, 3, 4])
+            ->whereNotIn('username', [20000, 30000, 40000])
+            ->orderBy('role', 'asc')->paginate(10);
+
+        return view('livewire.changeuserrolewr', compact(['data', 'dataRole']));
     }
 }
