@@ -238,10 +238,7 @@ class Karyawanindexwr extends Component
             ->whereIn('status_karyawan', $statuses)
             ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
             ->when($this->search_id_karyawan, function ($query) {
-                $query->where('id_karyawan', trim($this->search_id_karyawan))
-                    ->orderBy('tanggal_bergabung', $this->search_tanggal_bergabung)
-                    ->orderBy('gaji_pokok', $this->search_gaji_pokok)
-                    ->orderBy('gaji_overtime', $this->search_gaji_overtime);
+                $query->where('id_karyawan', trim($this->search_id_karyawan));
             })
 
             ->when($this->search_company, function ($query) {
@@ -276,11 +273,11 @@ class Karyawanindexwr extends Component
             // ->when($this->search_tanggal_bergabung == "", function ($query) {
             //     $query->orderBy('id_karyawan', 'desc');
             // })
-            ->orderBy($this->columnName, $this->direction)
             // ->orderBy('id_karyawan', 'desc')
             // ->orderBy('tanggal_bergabung', $this->search_tanggal_bergabung)
             // ->orderBy('gaji_pokok', $this->search_gaji_pokok)
             // ->orderBy('gaji_overtime', $this->search_gaji_overtime)
+            ->orderBy($this->columnName, $this->direction)
 
 
 
