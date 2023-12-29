@@ -10,7 +10,11 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>Date</th>
+                        <th>Jabatan</th>
+                        <th>Company</th>
+                        <th>Placement</th>
+                        <th>Metode Penggajian</th>
+                        <th>Tanggal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,11 +22,16 @@
                         <tr>
                             <td>{{ $d->user_id }}</td>
                             <td>{{ $d->karyawan->nama }}</td>
-                            <td>{{ $d->date }}</td>
+                            <td>{{ $d->karyawan->jabatan }}</td>
+                            <td>{{ $d->karyawan->company }}</td>
+                            <td>{{ $d->karyawan->placement }}</td>
+                            <td>{{ $d->karyawan->metode_penggajian }}</td>
+                            <td>{{ format_tgl($d->date) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            {{ $data->links() }}
         </div>
     </div>
 </div>
