@@ -11,14 +11,12 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Status Karyawan') }} <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select @error('status_karyawan') is-invalid @enderror"
-                                
-                                @if ($status_off)
-                                wire:model="status_karyawan"
+                            {{-- ok1 --}}
+                            <select class="form-select @error('status_karyawan') is-invalid @enderror" name="status"
+                                id="statusid" onchange="getStatusValue()"
+                                @if ($status_off) wire:model="status_karyawan"
                                 @else
-                                wire:model.live="status_karyawan"
-                                @endif
-                                >
+                                wire:model="status_karyawan" @endif>
                                 <option value=" ">{{ __('Pilih status karyawan') }}</option>
                                 <option value="PKWT">PKWT</option>
                                 <option value="PKWTT">PKWTT</option>
@@ -34,36 +32,36 @@
                                 </div>
                             @enderror
                         </div>
-                        @if ($status_karyawan == 'Resigned')
-                            <div class="mb-3">
-                                <label class="form-label">{{ __('Tanggal Resigned') }}</label>
-                                <div>
-                                    <input type="date"
-                                        class="date form-control @error('tanggal_resigned') is-invalid @enderror""
-                                        placeholder="mm-dd-yyyy" wire:model="tanggal_resigned">
-                                    @error('tanggal_resigned')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                        {{-- @if ($status_karyawan == 'Resigned') --}}
+                        <div class="mb-3" style="display: none" id="resignedid">
+                            <label class="form-label">{{ __('Tanggal Resigned') }}</label>
+                            <div>
+                                <input type="date"
+                                    class="date form-control @error('tanggal_resigned') is-invalid @enderror""
+                                    placeholder="mm-dd-yyyy" wire:model="tanggal_resigned">
+                                @error('tanggal_resigned')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                        @endif
-                        @if ($status_karyawan == 'Blacklist')
-                            <div class="mb-3">
-                                <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
-                                <div>
-                                    <input type="date"
-                                        class="date form-control @error('tanggal_blacklist') is-invalid @enderror""
-                                        placeholder="mm-dd-yyyy" wire:model="tanggal_blacklist">
-                                    @error('tanggal_blacklist')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                        </div>
+                        {{-- @endif --}}
+                        {{-- @if ($status_karyawan == 'Blacklist') --}}
+                        <div class="mb-3" style="display: none" id="blacklistid">
+                            <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
+                            <div>
+                                <input type="date"
+                                    class="date form-control @error('tanggal_blacklist') is-invalid @enderror""
+                                    placeholder="mm-dd-yyyy" wire:model="tanggal_blacklist">
+                                @error('tanggal_blacklist')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
-                        @endif
+                        </div>
+                        {{-- @endif --}}
 
                     </div>
                     <div class="col-md-4 visually-hidden">
@@ -244,6 +242,25 @@
             </div>
         </div>
     </div>
-
+    {{-- ok1 --}}
+    <script>
+        function getStatusValue() {
+            let status = document.getElementById("statusid");
+            let resigned = document.getElementById("resignedid");
+            let blacklist = document.getElementById("blacklistid");
+            if (status.value == "Resigned") {
+                resigned.style.display = "block";
+                blacklist.style.display = "none";
+                console.log(status.value)
+            } else if (status.value == "Blacklist") {
+                blacklist.style.display = "block";
+                resigned.style.display = "none";
+                console.log(status.value)
+            } else {
+                blacklist.style.display = "none";
+                resigned.style.display = "none";
+            }
+        }
+    </script>
 
 </div>
