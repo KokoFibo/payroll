@@ -40,6 +40,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\AbsensiKosong;
 use App\Livewire\SalaryAdjustment;
 
 // Middleware
@@ -48,11 +49,12 @@ Auth::routes([
     'verify' => false, // Email Verification Routes...
 ]);
 
-Route::middleware(['guest'])->group(function () {});
+Route::middleware(['guest'])->group(function () {
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['User'])->group(function () {
-        Route::get('locale/{locale}', function($locale){
+        Route::get('locale/{locale}', function ($locale) {
             Session::put('locale', $locale);
             return redirect()->back();
         });
@@ -149,6 +151,7 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::get('/MissingId', MissingId::class);
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
+                    Route::get('/absensikosong', AbsensiKosong::class);
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');

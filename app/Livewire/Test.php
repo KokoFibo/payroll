@@ -16,34 +16,50 @@ use App\Models\Yfrekappresensi;
 
 class Test extends Component
 {
-    // public $saturday;
-    use WithPagination;
-    protected $paginationTheme = 'bootstrap';
-    public $month;
-    public $year;
-    public $today;
+  // public $saturday;
+  use WithPagination;
+  protected $paginationTheme = 'bootstrap';
+  public $month;
+  public $year;
+  public $today;
 
 
 
-    public function mount()
-    {
-        $this->today = now();
-       
-        $this->year = now()->year;
-        $this->month = now()->month;
+  public function mount()
+  {
+    $this->today = now();
+
+    $this->year = now()->year;
+    $this->month = now()->month;
+  }
+
+
+  public function delete()
+  {
+    $data = Yfrekappresensi::where('first_in', null)
+      ->where('first_out', null)
+      ->where('second_in', null)
+      ->where('second_out', null)
+      ->where('overtime_in', null)
+      ->where('overtime_out', null)
+      ->get();
+    foreach ($data as $d) {
+      $data_delete = Yfrekappresensi::find($d->id);
+      $data_delete->delete();
     }
 
-    
+    $this->dispatch('success', message: 'Data Absensi Kosong semua sudah di delete');
+  }
+  public function render()
+  {
 
-    public function render()
-    {
-
-        $shift_pagi = Yfrekappresensi::whereMonth('date', $this->month)->whereYear('date', $this->year)->where('shift', 'Pagi')->count();
-        $shift_malam = Yfrekappresensi::whereMonth('date', $this->month)->whereYear('date', $this->year)->where('shift', 'Malam')->count();
-        $uniqueDates = Yfrekappresensi::whereMonth('date', $this->month)->whereYear('date', $this->year)->distinct()->pluck('date');
-        $total = $shift_pagi + $shift_malam;
-        dd( $shift_pagi/$total*100,  $shift_malam/$total*100, $uniqueDates);
-
-        return view('livewire.test', compact(['data']));
-    }
+    $data = Yfrekappresensi::where('first_in', null)
+      ->where('first_out', null)
+      ->where('second_in', null)
+      ->where('second_out', null)
+      ->where('overtime_in', null)
+      ->where('overtime_out', null)
+      ->get();
+    return view('livewire.test', compact(['data']));
+  }
 }

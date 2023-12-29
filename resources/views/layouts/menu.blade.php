@@ -32,14 +32,14 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
             @if (Auth::user()->role >= 4)
-            <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/salaryadjustment" class="nav-link">
-                    <i class="nav-icon fa-solid fa-sliders"></i>
-                    <p>
-                        {{ __('Penyesuaian Gaji') }}
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/salaryadjustment" class="nav-link">
+                        <i class="nav-icon fa-solid fa-sliders"></i>
+                        <p>
+                            {{ __('Penyesuaian Gaji') }}
+                        </p>
+                    </a>
+                </li>
             @endif
             <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/yfpresensiindexwr" class="nav-link">
@@ -47,6 +47,15 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
+            @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'absensikosong' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/absensikosong" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-check"></i>
+                        <p>{{ __('Absensi Kosong') }}</p>
+                    </a>
+                </li>
+            @endif
+
             @if (Auth::user()->role > 1)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
