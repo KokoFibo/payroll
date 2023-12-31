@@ -112,7 +112,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
             Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
             Route::get('/payrollindex', Prindexwr::class);
-            Route::get('/liburnasional', Liburnasionalwr::class);
 
 
             // KHUSUS Super Admin
@@ -152,6 +151,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/MissingId', MissingId::class);
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
                     Route::get('/absensikosong', AbsensiKosong::class);
+                    Route::get('/liburnasional', Liburnasionalwr::class);
+
 
                     // TEST
                     Route::get('/test', Test::class)->name('test');
