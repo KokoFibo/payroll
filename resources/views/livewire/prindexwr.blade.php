@@ -23,7 +23,8 @@
             <div class="col-xl-2 col-12  ">
                 <select class="form-select" wire:model.live="year">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="{{ $year }}">{{ $year }}</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
                 </select>
             </div>
             <div class="col-xl-2 col-12">
@@ -31,6 +32,7 @@
                     {{-- <option selected>Open this select menu</option> --}}
                     <option value="11">{{ monthName(11) }}</option>
                     <option value="12">{{ monthName(12) }}</option>
+                    <option value="1">{{ monthName(1) }}</option>
                 </select>
             </div>
         </div>
@@ -38,26 +40,26 @@
         <div
             class="col-xl-4 col-12 gap-3 gap-xl-0 p-xl-4 d-flex justify-content-evenly  flex-xl-row text-center {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
             <div class="d-flex text-center">
-                <div class="col-12" wire:loading >
+                <div class="col-12" wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                     </button>
                 </div>
-                <div  wire:loading.class="invisible" class="d-flex mt-2 mt-lg-0">
+                <div wire:loading.class="invisible" class="d-flex mt-2 mt-lg-0">
                     <div class="col-6">
-                        <a href="/presensisummaryindex"><button class="btn btn-success text-end mb-2 mr-2"
-                               >Excel</button></a>
+                        <a href="/presensisummaryindex"><button
+                                class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
                     </div>
 
                     <div class=" col-6">
-                        <button wire:click="buat_payroll" class="btn btn-primary" 
+                        <button wire:click="buat_payroll" class="btn btn-primary"
                             {{ is_35_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
                     </div>
                 </div>
 
 
-                
+
             </div>
 
         </div>
