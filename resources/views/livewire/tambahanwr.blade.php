@@ -153,7 +153,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>{{ __('id') }}</th>
+                                        {{-- <th>{{ __('id') }}</th> --}}
                                         <th>{{ __('ID Karyawan') }}</th>
                                         <th>{{ __('Nama Karyawan') }}</th>
                                         <th>{{ __('Jabatan') }}</th>
@@ -189,7 +189,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $d->id }}</td>
+                                            {{-- <td>{{ $d->id }}</td> --}}
                                             <td>{{ $d->user_id }}</td>
                                             <td>{{ $d->karyawan->nama }}</td>
                                             <td>{{ $d->karyawan->jabatan }}</td>
