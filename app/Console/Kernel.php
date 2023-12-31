@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $result  = build_payroll(now()->month, now()->year);
             adjustSalary();
-        })->everyMinute();
+        })->dailyAt('1:00');
     }
 
     /**
