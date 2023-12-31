@@ -8,6 +8,99 @@ use Illuminate\Support\Str;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 
+function adjustSalary()
+{
+    $ninetyDaysAgo = Carbon::now()->subDays(90);
+    $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
+    $hundredFiftyDaysAgo = Carbon::now()->subDays(150);
+    $hundredEigtyDaysAgo = Carbon::now()->subDays(180);
+    $twoHundredTenDaysAgo = Carbon::now()->subDays(210);
+    $twoHundredFortyDaysAgo = Carbon::now()->subDays(240);
+
+    // 90 <= 119
+    $data = Karyawan::where('tanggal_bergabung', '<=', $ninetyDaysAgo)->where('tanggal_bergabung', '>', $hundredTwentyDaysAgo)
+        ->where('gaji_pokok', '<', 2100000)
+        ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->orderBy('tanggal_bergabung', 'desc')
+        ->get();
+    $gaji_rekomendasi = 2100000;
+    if ($data != null) {
+        foreach ($data as $d) {
+            $d = Karyawan::find($d->id);
+            $d->gaji_pokok = $gaji_rekomendasi;
+            $d->save();
+        }
+    }
+
+
+
+    // 120 < 149
+    $data = Karyawan::where('tanggal_bergabung', '<=', $hundredTwentyDaysAgo)->where('tanggal_bergabung', '>', $hundredFiftyDaysAgo)
+        ->where('gaji_pokok', '<', 2200000)
+        ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->orderBy('tanggal_bergabung', 'desc')
+        ->get();
+    $gaji_rekomendasi = 2200000;
+    if ($data != null) {
+        foreach ($data as $d) {
+            $d = Karyawan::find($d->id);
+            $d->gaji_pokok = $gaji_rekomendasi;
+            $d->save();
+        }
+    }
+
+
+    // 150 < 179
+    $data = Karyawan::where('tanggal_bergabung', '<=', $hundredFiftyDaysAgo)->where('tanggal_bergabung', '>', $hundredEigtyDaysAgo)
+        ->where('gaji_pokok', '<', 2300000)
+        ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->orderBy('tanggal_bergabung', 'desc')
+        ->get();
+    $gaji_rekomendasi = 2300000;
+    if ($data != null) {
+        foreach ($data as $d) {
+            $d = Karyawan::find($d->id);
+            $d->gaji_pokok = $gaji_rekomendasi;
+            $d->save();
+        }
+    }
+
+    // 180 < 209
+    $data = Karyawan::where('tanggal_bergabung', '<=', $hundredEigtyDaysAgo)->where('tanggal_bergabung', '>', $twoHundredTenDaysAgo)
+        ->where('gaji_pokok', '<', 2400000)
+        ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->orderBy('tanggal_bergabung', 'desc')
+        ->get();
+    $gaji_rekomendasi = 2400000;
+    if ($data != null) {
+        foreach ($data as $d) {
+            $d = Karyawan::find($d->id);
+            $d->gaji_pokok = $gaji_rekomendasi;
+            $d->save();
+        }
+    }
+
+    // 210 < 240
+    $data = Karyawan::where('tanggal_bergabung', '<=', $twoHundredTenDaysAgo)->where('tanggal_bergabung', '>', $twoHundredFortyDaysAgo)
+        ->where('gaji_pokok', '<', 2500000)
+        ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->orderBy('tanggal_bergabung', 'desc')
+        ->get();
+    $gaji_rekomendasi = 2500000;
+    if ($data != null) {
+        foreach ($data as $d) {
+            $d = Karyawan::find($d->id);
+            $d->gaji_pokok = $gaji_rekomendasi;
+            $d->save();
+        }
+    }
+}
+
 function role_name($role)
 {
     switch ($role) {
