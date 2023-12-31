@@ -8,6 +8,7 @@ use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 //ok1
+
 function build_payroll($month, $year)
 {
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
