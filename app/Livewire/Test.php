@@ -52,14 +52,9 @@ class Test extends Component
   }
   public function render()
   {
+    adjustSalary();
+    // $this->dispatch('success', message: 'Data Gaji Karyawan Sudah di Sesuaikan');
 
-    $data = Yfrekappresensi::where('first_in', null)
-      ->where('first_out', null)
-      ->where('second_in', null)
-      ->where('second_out', null)
-      ->where('overtime_in', null)
-      ->where('overtime_out', null)
-      ->get();
-    return view('livewire.test', compact(['data']));
+    return view('livewire.test');
   }
 }

@@ -14,13 +14,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $d)
+                    {{-- @foreach ($data as $d)
                         <tr>
                             <td>{{ $d->user_id }}</td>
                             <td>{{ $d->karyawan->nama }}</td>
                             <td>{{ $d->date }}</td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
                 </tbody>
             </table>
         </div>
