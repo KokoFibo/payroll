@@ -100,41 +100,43 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h4>List of Roles</h4>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($dataRole as $d)
+    <div class="p-2 p-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h4>List of Roles</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>{{ $d->username }}</td>
-                            <td>{{ $d->name }}</td>
-                            <td>
-                                @if ($d->role == 0)
-                                    <badge class="badge badge-primary">{{ role_name($d->role) }}</badge>
-                                @elseif($d->role == 2)
-                                    <badge class="badge badge-warning">{{ role_name($d->role) }}</badge>
-                                @elseif($d->role == 3)
-                                    <badge class="badge badge-dark">{{ role_name($d->role) }}</badge>
-                                @else
-                                    <badge class="badge badge-success">{{ role_name($d->role) }}</badge>
-                                @endif
-
-                            </td>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Role</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($dataRole as $d)
+                            <tr>
+                                <td>{{ $d->username }}</td>
+                                <td>{{ $d->name }}</td>
+                                <td>
+                                    @if ($d->role == 0)
+                                        <badge class="badge badge-primary">{{ role_name($d->role) }}</badge>
+                                    @elseif($d->role == 2)
+                                        <badge class="badge badge-warning">{{ role_name($d->role) }}</badge>
+                                    @elseif($d->role == 3)
+                                        <badge class="badge badge-dark">{{ role_name($d->role) }}</badge>
+                                    @else
+                                        <badge class="badge badge-success">{{ role_name($d->role) }}</badge>
+                                    @endif
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{ $dataRole->links() }}
         </div>
-        {{ $dataRole->links() }}
     </div>
 </div>
