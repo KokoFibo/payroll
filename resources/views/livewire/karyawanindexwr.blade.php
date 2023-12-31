@@ -160,11 +160,14 @@
                                         </select>
                                     </div>
                                 </th>
+                                @if (auth()->user()->role >= 4)
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                            @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
+                                            Departement</button>
+                                    </th>
+                                @endif
 
-                                <th style="width: 150px; border-style: none;">
-                                    <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
-                                        @if ($search_placement == null || $search_department == null) disabled @endif>Excel by Departement</button>
-                                </th>
                             </tr>
 
                             <tr>
