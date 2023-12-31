@@ -2,14 +2,14 @@
     @section('title', 'Payroll')
 
     <div class="pt-2">
-        <div class=""> 
+        <div class="">
             <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
 
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
 
                 <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
- 
+
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -80,7 +80,8 @@
 
                             <select class="form-select" wire:model.live="year">
                                 {{-- <option selected>Open this select menu</option> --}}
-                                <option value="{{ $year }}">{{ $year }}</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
                             </select>
                         </div>
                         <div class="col-xl-6">
@@ -88,6 +89,7 @@
                                 {{-- <option selected>Open this select menu</option> --}}
                                 <option value="11">{{ monthName(11) }}</option>
                                 <option value="12">{{ monthName(12) }}</option>
+                                <option value="1">{{ monthName(1) }}</option>
                             </select>
                         </div>
                     </div>

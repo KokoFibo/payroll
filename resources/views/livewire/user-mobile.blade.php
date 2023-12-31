@@ -66,12 +66,14 @@
                             <div>
                                 <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
                                     <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
                                 </select>
                             </div>
                             <div>
                                 <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
                                     <option value="11">November</option>
                                     <option value="12">Desember</option>
+                                    <option value="1">Januari</option>
                                 </select>
                             </div>
                             <div class="{{ auth()->user()->role <= 3 ? 'invisible' : '' }}">

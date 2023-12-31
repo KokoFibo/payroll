@@ -14,7 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardController extends Controller
 {
-    
+
     public function index()
     {
         $year = now()->year;
@@ -24,27 +24,27 @@ class DashboardController extends Controller
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
         $karyawan_baru_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereMonth('tanggal_bergabung', $month)
-        ->whereYear('tanggal_bergabung', $year)
-        ->count();
+            ->whereMonth('tanggal_bergabung', $month)
+            ->whereYear('tanggal_bergabung', $year)
+            ->count();
 
         $karyawan_resigned_mtd = Karyawan::where('status_karyawan', 'Resigned')
-        ->whereMonth('tanggal_resigned', $month)
-        ->whereYear('tanggal_resigned', $year)
-        ->count();
+            ->whereMonth('tanggal_resigned', $month)
+            ->whereYear('tanggal_resigned', $year)
+            ->count();
 
-        $karyawan_blacklist_mtd = Karyawan::where('status_karyawan','Blacklist')
-        ->whereMonth('tanggal_blacklist', $month)
-        ->whereYear('tanggal_blacklist', $year)
-        ->count();
+        $karyawan_blacklist_mtd = Karyawan::where('status_karyawan', 'Blacklist')
+            ->whereMonth('tanggal_blacklist', $month)
+            ->whereYear('tanggal_blacklist', $year)
+            ->count();
 
         $karyawan_aktif_mtd = Payroll::whereMonth('date', $month)
-        ->whereYear('date', $year)
-        ->count();
+            ->whereYear('date', $year)
+            ->count();
 
 
         // Jumlah Karyawan
-        
+
         $jumlah_ASB = Karyawan::where('company', 'ASB')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_DPA = Karyawan::where('company', 'DPA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_YCME = Karyawan::where('company', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
@@ -53,9 +53,9 @@ class DashboardController extends Controller
         $jumlah_YSM = Karyawan::where('company', 'YSM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Pabrik_1 = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-        $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM','YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-        $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor ;
-        $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG+  $jumlah_YSM;
+        $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM', 'YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+        $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor;
+        $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM;
 
         $jumlah_karyawanArr = [
             $jumlah_karyawan_pria, $jumlah_karyawan_wanita
@@ -73,10 +73,10 @@ class DashboardController extends Controller
             'Pabrik 1 工厂1', 'Pabrik 2 工厂2',  'Kantor 办公室'
         ];
 
-      
+
 
         $companyArr = [
-            
+
             $jumlah_ASB,
             $jumlah_YCME,
             $jumlah_YEV,
@@ -85,10 +85,10 @@ class DashboardController extends Controller
             $jumlah_YIG,
         ];
         $companyLabelArr = [
-            'ASB','YCME', 'YEV',  'YSM', 'DPA', 'YIG'
+            'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG'
         ];
 
-        
+
 
         // Department
         $department_BD = Karyawan::where('departemen', 'BD')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
@@ -128,21 +128,21 @@ class DashboardController extends Controller
         $jabatan_QC_Aging = Karyawan::where('jabatan', 'QC Aging')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jabatan_Driver = Karyawan::where('jabatan', 'Driver')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
- //    Kehadiran
- $countLatestHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->count();
- $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
+        //    Kehadiran
+        $countLatestHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->count();
+        $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
 
- $dataCountLatestHadir = [$countLatestHadir, $jumlah_total_karyawan - $countLatestHadir ];
+        $dataCountLatestHadir = [$countLatestHadir, $jumlah_total_karyawan - $countLatestHadir];
 
- //  rata-rata 7 hari
- $average7Hari = [ratarata (7), $jumlah_total_karyawan - ratarata (7)];
- 
- //  rata-rata 30 hari
-     $average30Hari = [ratarata (30), $jumlah_total_karyawan - ratarata (30)];
+        //  rata-rata 7 hari
+        $average7Hari = [ratarata(7), $jumlah_total_karyawan - ratarata(7)];
 
-     $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
+        //  rata-rata 30 hari
+        $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
+
+        $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
         $uniqueDates = Payroll::distinct()->pluck('date');
-        for($i = 0; $i < $uniqueDates->count();  $i++){
+        for ($i = 0; $i < $uniqueDates->count(); $i++) {
             $all = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->sum('total');
             $ASB = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'ASB')->sum('total');
             $DPA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'DPA')->sum('total');
@@ -150,7 +150,7 @@ class DashboardController extends Controller
             $YEV = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YEV')->sum('total');
             $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
             $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
-            $dataPayroll[] =[
+            $dataPayroll[] = [
                 'tgl' => month_year($uniqueDates[$i]),
                 'All' => $all,
                 'ASB' => $ASB,
@@ -171,30 +171,35 @@ class DashboardController extends Controller
         }
 
         // Shift Pagi dan Shift Malam
-      
+
 
         $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
         $shift_malam = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Malam')->count();
         $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
         $total = $shift_pagi + $shift_malam;
 
-        $shiftPagiMalam = [round($shift_pagi/$total*100,1), round(100-$shift_pagi/$total*100,1) ];
+        if ($shift_pagi != null && $shift_malam != null) {
+            $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
+        } else {
+            $shiftPagiMalam = 0;
+        }
 
 
         // return view('dashboard', compact(['jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita']));
-        return view( 'dashboard', compact([ 'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV', 
-        'jumlah_YIG', 'jumlah_YSM','jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
-        'department_BD', 'department_Engineering', 'department_EXIM','department_Finance_Accounting', 'department_GA','department_Gudang',
-        'department_HR', 'department_Legal', 'department_Procurement','department_Produksi', 'department_Quality_Control','department_Board_of_Director',
-        'jabatan_Admin','jabatan_Asisten_Direktur','jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager','jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
-        'jabatan_Design_grafis', 'jabatan_Director','jabatan_Kepala','jabatan_Manager','jabatan_Pengawas','jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
-        'jabatan_Supervisor','jabatan_Vice_President','jabatan_Satpam','jabatan_Koki','jabatan_Dapur_Kantor', 
-        'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
-        'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-        'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll', 
-        'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
-        
-    ]));
+        return view('dashboard', compact([
+            'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
+            'jumlah_YIG', 'jumlah_YSM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+            'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
+            'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
+            'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
+            'jabatan_Design_grafis', 'jabatan_Director', 'jabatan_Kepala', 'jabatan_Manager', 'jabatan_Pengawas', 'jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
+            'jabatan_Supervisor', 'jabatan_Vice_President', 'jabatan_Satpam', 'jabatan_Koki', 'jabatan_Dapur_Kantor',
+            'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
+            'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
+            'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
+            'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
+
+        ]));
     }
 
     public function paginate($items, $perPage = 5, $page = null, $options = [])
@@ -204,7 +209,8 @@ class DashboardController extends Controller
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
-    public function makan () {
+    public function makan()
+    {
 
         return 'Makan';
     }
@@ -230,10 +236,10 @@ class DashboardController extends Controller
                 $tgl = tgl_doang($d->date);
                 $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
                 $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-                    $langsungLembur = langsungLembur( $d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
                 $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
-                $total_jam_lembur = $total_jam_lembur + $jam_lembur ;
+                $total_jam_lembur = $total_jam_lembur + $jam_lembur;
                 $total_keterlambatan = $total_keterlambatan + $terlambat;
 
                 $total_hari_kerja++;
@@ -241,6 +247,5 @@ class DashboardController extends Controller
         }
 
         return  redirect('/usermobile');
-        
     }
 }
