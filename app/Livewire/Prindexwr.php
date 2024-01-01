@@ -30,8 +30,8 @@ class Prindexwr extends Component
     public function sortColumnName($namaKolom)
     {
         $this->columnName = $namaKolom;
-          $this->direction = $this->swapDirection();
-    } 
+        $this->direction = $this->swapDirection();
+    }
     public function swapDirection()
     {
         return $this->direction === 'asc' ? 'desc' : 'asc';
@@ -39,9 +39,16 @@ class Prindexwr extends Component
 
     public function mount()
     {
-        $this->year = now()->year;
-        $this->month = now()->month;
-       
+        if (now()->day < 5) {
+            $this->year =
+                now()->subMonth()->year;
+            $this->month =
+                now()->subMonth()->month;
+        } else {
+            $this->year = now()->year;
+            $this->month = now()->month;
+        }
+
 
         $getTglTerakhir = Yfrekappresensi::select('date')
             ->orderBy('date', 'desc')
@@ -70,15 +77,12 @@ class Prindexwr extends Component
         //         $lock->save();
         //     }
 
-        
+
         $result = build_payroll($this->month, $this->year);
         if ($result == 0) {
             $this->dispatch('error', message: 'Data Presensi tidak ada');
-            
         } else {
             $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
-            
-
         }
 
         //     $lock->build = false;
@@ -480,7 +484,7 @@ class Prindexwr extends Component
                         ->orWhere('status_karyawan', 'LIKE', '%' . trim($this->search) . '%');
                 });
             })
-            
+
             ->orderBy($this->columnName, $this->direction)
             ->orderBy('user_id', 'asc')
             ->paginate($this->perpage);
@@ -502,8 +506,8 @@ class Prindexwr extends Component
         }
 
         $tgl = Jamkerjaid::whereMonth('date', $this->month)
-        ->whereYear('date', $this->year)
-        ->select('created_at')->first();
+            ->whereYear('date', $this->year)
+            ->select('created_at')->first();
         if ($tgl != null) {
             $last_build = Carbon::parse($tgl->created_at)->diffForHumans();
         } else {

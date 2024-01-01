@@ -118,9 +118,16 @@ class Payrollwr extends Component
     public function mount()
     {
         $data = Payroll::first();
+        if (now()->day < 5) {
+            $this->year =
+                now()->subMonth()->year;
+            $this->month =
+                now()->subMonth()->month;
+        } else {
+            $this->year = now()->year;
+            $this->month = now()->month;
+        }
 
-        $this->year = now()->year;
-        $this->month = now()->month;
         if ($data != null) {
             $this->data_payroll = Payroll::with('jamkerjaid')
                 ->whereMonth('date', $this->month)
