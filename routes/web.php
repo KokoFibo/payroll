@@ -12,6 +12,8 @@ use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
 use App\Livewire\Informasiwr;
+use App\Livewire\DataResigned;
+use App\Livewire\AbsensiKosong;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
 use App\Livewire\UserRegulation;
@@ -27,10 +29,12 @@ use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\Presensidetailwr;
 use App\Livewire\Removepresensiwr;
+use App\Livewire\SalaryAdjustment;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
 use App\Livewire\Yfdeletetanggalpresensiwr;
@@ -40,9 +44,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\AbsensiKosong;
-use App\Livewire\DataResigned;
-use App\Livewire\SalaryAdjustment;
 
 // Middleware
 Auth::routes([
@@ -54,6 +55,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('logout', LogoutController::class)->name('logout');
     Route::middleware(['User'])->group(function () {
         Route::get('locale/{locale}', function ($locale) {
             Session::put('locale', $locale);

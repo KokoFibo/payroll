@@ -27,14 +27,14 @@
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)
                                 <div>
-                                    <a href="{{ route('logout') }}"
+                                    {{-- <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
+                                 document.getElementById('logout-form').submit();"> --}}
 
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         <button
                                             class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">{{ __('Logout') }}</button>
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        {{-- </a> --}}
                                         @csrf
                                     </form>
                                 </div>
@@ -484,14 +484,14 @@
                     </button></a>
 
                 <div>
-                    <a href="{{ route('logout') }}"
+                    {{-- <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
+                                 document.getElementById('logout-form').submit();"> --}}
 
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
                                 class="fa-solid fa-power-off"></i></button>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        {{-- </a> --}}
                         @csrf
                     </form>
                 </div>
