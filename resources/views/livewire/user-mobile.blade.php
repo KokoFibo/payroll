@@ -27,15 +27,14 @@
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)
                                 <div>
-                                    {{-- <a href="{{ route('logout') }}"
+                                    <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();"> --}}
+                                 document.getElementById('logout-form').submit();">
 
-                                    <form id="logout-form" action="{{ route('logout1') }}" method="POST"
-                                        class="d-none">
                                         <button
                                             class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">{{ __('Logout') }}</button>
-                                        {{-- </a> --}}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
@@ -67,14 +66,12 @@
                             <div>
                                 <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
                                     <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
                                 </select>
                             </div>
                             <div>
                                 <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
                                     <option value="11">November</option>
                                     <option value="12">Desember</option>
-                                    <option value="1">Januari</option>
                                 </select>
                             </div>
                             <div class="{{ auth()->user()->role <= 3 ? 'invisible' : '' }}">
@@ -485,14 +482,14 @@
                     </button></a>
 
                 <div>
-                    {{-- <a href="{{ route('logout') }}"
+                    <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();"> --}}
+                                 document.getElementById('logout-form').submit();">
 
-                    <form id="logout-form" action="{{ route('logout1') }}" method="POST" class="d-none">
                         <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
                                 class="fa-solid fa-power-off"></i></button>
-                        {{-- </a> --}}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>
