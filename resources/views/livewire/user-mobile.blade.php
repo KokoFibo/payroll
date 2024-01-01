@@ -31,7 +31,8 @@
                                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();"> --}}
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('logout1') }}" method="POST"
+                                        class="d-none">
                                         <button
                                             class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">{{ __('Logout') }}</button>
                                         {{-- </a> --}}
@@ -488,7 +489,7 @@
                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();"> --}}
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <form id="logout-form" action="{{ route('logout1') }}" method="POST" class="d-none">
                         <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
                                 class="fa-solid fa-power-off"></i></button>
                         {{-- </a> --}}

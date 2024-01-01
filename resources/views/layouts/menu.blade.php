@@ -292,12 +292,12 @@ with font-awesome or any other icon font library -->
 
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}"
+            <a class="nav-link" href="{{ route('logout1') }}"
                 onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                 <p>{{ __('Logout') }}</p>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                <form id="logout-form" action="{{ route('logout1') }}" method="POST" class="d-none">
             </a>
             @csrf
             </form>
