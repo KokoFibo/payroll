@@ -297,10 +297,14 @@ with font-awesome or any other icon font library -->
                                  document.getElementById('logout-form').submit();">
                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                 <p>{{ __('Logout') }}</p>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
             </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
+            @csrf
             </form>
+
+
+
+
         </li>
     </ul>
 
