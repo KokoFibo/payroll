@@ -12,9 +12,11 @@
                     <div class="card-header text-light text-center" style="background-color: #EF4444; ">
                         <h5>{{ __('Login') }}</h5>
                     </div>
-                    <div class="card-body pt-4" style="background-color: #E5E7EB;">
-                        {{-- <h5 class="text-center py-2 text-bold">Login</h5> --}}
-                        <form method="POST" action="{{ route('login') }}">
+                    {{-- <div class="card-body pt-4" style="background-color: #E5E7EB;">
+                        <form method="POST" action="{{ route('login') }}"> --}}
+                    <div x-data="{ submitButtonDisabled: false }" class="card-body pt-4" style="background-color: #E5E7EB;">
+                        <form method="POST" action="{{ route('login') }}" x-on:submit="submitButtonDisabled = true">
+
                             @csrf
 
                             <div class="row mb-3">
@@ -81,7 +83,8 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary"
+                                    {{-- <button type="submit" class="btn btn-primary"  --}}
+                                    <button type="submit" class="btn btn-primary" x-bind:disabled="submitButtonDisabled"
                                         style="background-color: #EF4444; border-color: #EF4444;">
                                         {{ __('Login') }}
                                     </button>
