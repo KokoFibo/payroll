@@ -10,19 +10,24 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>Date</th>
+                        <th>Metode</th>
+                        <th>Resigned</th>
+                        <th>Blacklist</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data as $d)
+                    @foreach ($data as $d)
                         <tr>
-                            <td>{{ $d->user_id }}</td>
-                            <td>{{ $d->karyawan->nama }}</td>
-                            <td>{{ $d->date }}</td>
+                            <td>{{ $d->id_karyawan }}</td>
+                            <td>{{ $d->nama }}</td>
+                            <td>{{ $d->metode_penggajian }}</td>
+                            <td>{{ $d->tanggal_resigned }}</td>
+                            <td>{{ $d->tanggal_blacklist }}</td>
                         </tr>
-                    @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
+        {{ $data->links() }}
     </div>
 </div>

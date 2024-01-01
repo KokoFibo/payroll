@@ -151,85 +151,89 @@ class Yfpresensiindexwr extends Component
             ->orderBy('date', 'desc')
             ->get();
         //ok2
-        foreach ($data as $d) {
-            $tambahan_shift_malam = 0;
-            if ($d->no_scan === null) {
-                $tgl = tgl_doang($d->date);
-
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-                //evaluasi ini
-                // if ($d->karyawan->jabatan === 'Satpam') {
-                //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
-                // }
-
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-                if (is_sunday($d->date)) {
-                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
-                } else {
-                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
-                }
+        if ($data != null) {
 
 
-                if ($d->shift == 'Malam') {
-                    if (is_saturday($d->date)) {
-                        if ($jam_kerja >= 6) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else if (is_sunday($d->date)) {
-                        if ($jam_kerja >= 16) {
-                            // $jam_lembur = $jam_lembur + 2;
-                            $tambahan_shift_malam = 2;
-                        }
-                    } else {
-                        if ($jam_kerja >= 8) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
-                    }
-                }
+            foreach ($data as $d) {
+                $tambahan_shift_malam = 0;
+                if ($d->no_scan === null) {
+                    $tgl = tgl_doang($d->date);
 
-                if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver')) {
-                    $jam_lembur = 0;
-                }
-
-                if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                    if (is_friday($d->date)) {
-                        $jam_kerja = 7.5;
-                    } elseif (is_saturday($d->date)) {
-                        $jam_kerja = 6;
-                    } else {
-                        $jam_kerja = 8;
-                    }
-                }
-                if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                }
-                if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                    $jam_lembur = 0;
-                }
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                    //evaluasi ini
+                    // if ($d->karyawan->jabatan === 'Satpam') {
+                    //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
+                    // }
 
-                $this->dataArr->push([
-                    'tgl' => $tgl,
-                    'jam_kerja' => $jam_kerja,
-                    'terlambat' => $terlambat,
-                    'jam_lembur' => $jam_lembur,
-                    'tambahan_shift_malam' => $tambahan_shift_malam,
-                ]);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                    if (is_sunday($d->date)) {
+                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+                    } else {
+                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                    }
 
-                $total_hari_kerja++;
-                $total_jam_kerja += $jam_kerja;
-                $total_jam_lembur += $jam_lembur;
-                $total_keterlambatan += $terlambat;
-                $total_tambahan_shift_malam += $tambahan_shift_malam;
+
+                    if ($d->shift == 'Malam') {
+                        if (is_saturday($d->date)) {
+                            if ($jam_kerja >= 6) {
+                                // $jam_lembur = $jam_lembur + 1;
+                                $tambahan_shift_malam = 1;
+                            }
+                        } else if (is_sunday($d->date)) {
+                            if ($jam_kerja >= 16) {
+                                // $jam_lembur = $jam_lembur + 2;
+                                $tambahan_shift_malam = 2;
+                            }
+                        } else {
+                            if ($jam_kerja >= 8) {
+                                // $jam_lembur = $jam_lembur + 1;
+                                $tambahan_shift_malam = 1;
+                            }
+                        }
+                    }
+
+                    if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver')) {
+                        $jam_lembur = 0;
+                    }
+
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                        if (is_friday($d->date)) {
+                            $jam_kerja = 7.5;
+                        } elseif (is_saturday($d->date)) {
+                            $jam_kerja = 6;
+                        } else {
+                            $jam_kerja = 8;
+                        }
+                    }
+                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                    }
+                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                        $jam_lembur = 0;
+                    }
+
+                    $this->dataArr->push([
+                        'tgl' => $tgl,
+                        'jam_kerja' => $jam_kerja,
+                        'terlambat' => $terlambat,
+                        'jam_lembur' => $jam_lembur,
+                        'tambahan_shift_malam' => $tambahan_shift_malam,
+                    ]);
+
+                    $total_hari_kerja++;
+                    $total_jam_kerja += $jam_kerja;
+                    $total_jam_lembur += $jam_lembur;
+                    $total_keterlambatan += $terlambat;
+                    $total_tambahan_shift_malam += $tambahan_shift_malam;
+                }
             }
+            $this->total_hari_kerja = $total_hari_kerja;
+            $this->total_jam_kerja = $total_jam_kerja;
+            $this->total_jam_lembur = $total_jam_lembur;
+            $this->total_keterlambatan = $total_keterlambatan;
+            $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
         }
-        $this->total_hari_kerja = $total_hari_kerja;
-        $this->total_jam_kerja = $total_jam_kerja;
-        $this->total_jam_lembur = $total_jam_lembur;
-        $this->total_keterlambatan = $total_keterlambatan;
-        $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
     }
 
     public function filterNoScan()

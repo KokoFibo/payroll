@@ -162,8 +162,6 @@ class Payrollwr extends Component
         if ($result == 0) {
             $this->dispatch('error', message: 'Data Presensi tidak ada');
         } else {
-
-
             $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         }
 

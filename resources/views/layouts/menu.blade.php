@@ -23,6 +23,17 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+            @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/dataresigned" class="nav-link">
+                        <i class="nav-icon fa-solid fa-person-walking"></i>
+                        <p>
+                            {{ __('Data Resigned') }}
+                        </p>
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item {{ 'tambahan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/tambahan" class="nav-link">
                     <i class="nav-icon fa-solid fa-money-bill-transfer"></i>
@@ -179,7 +190,8 @@ with font-awesome or any other icon font library -->
                                 <p>Delete No Scan</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ 'deletejamkerja' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                        <li
+                            class="nav-item {{ 'deletejamkerja' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau delete jam kerja?')" href="/deletejamkerja"
                                 class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>

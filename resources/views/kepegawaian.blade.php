@@ -32,8 +32,9 @@
                                 </div>
                             @enderror
                         </div>
-                        {{-- @if ($status_karyawan == 'Resigned') --}}
-                        <div class="mb-3" style="display: none" id="resignedid">
+
+                        <div class="mb-3" style="{{ $status_karyawan == 'Resigned' ? '' : 'display: none' }}"
+                            id="resignedid">
                             <label class="form-label">{{ __('Tanggal Resigned') }}</label>
                             <div>
                                 <input type="date"
@@ -46,9 +47,10 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- @endif --}}
+
                         {{-- @if ($status_karyawan == 'Blacklist') --}}
-                        <div class="mb-3" style="display: none" id="blacklistid">
+                        <div class="mb-3" style="{{ $status_karyawan == 'Blacklist' ? '' : 'display: none' }}"
+                            id="blacklistid">
                             <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
                             <div>
                                 <input type="date"
