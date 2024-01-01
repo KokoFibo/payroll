@@ -7,10 +7,11 @@ use App\Models\Bonuspotongan;
 use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
-//ok1
+//ok 1
 
 function build_payroll($month, $year)
 {
+
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
         ->whereYear('tanggal_mulai_hari_libur', $year)
         ->sum('jumlah_hari_libur');
@@ -38,7 +39,6 @@ function build_payroll($month, $year)
     Jamkerjaid::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->delete();
-
     $jumlah_jam_terlambat = null;
     $jumlah_menit_lembur = null;
     $dt_name = null;
@@ -174,7 +174,7 @@ function build_payroll($month, $year)
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
-    // ok2
+    // ok 2
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
         ->get();
@@ -189,7 +189,6 @@ function build_payroll($month, $year)
     Payroll::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->delete();
-
     foreach ($datas as $data) {
         //   $payroll = new Payroll();
 
@@ -322,8 +321,7 @@ function build_payroll($month, $year)
         Payroll::insert($chunk);
     }
 
-    // ok3
-
+    // ok 3
     // Bonus dan Potongan
 
     $bonus = 0;
@@ -350,6 +348,7 @@ function build_payroll($month, $year)
         }
     }
 
+
     // ok 4
     // perhitungan untuk karyawan yg resign sebelum 3 bulan
 
@@ -357,6 +356,7 @@ function build_payroll($month, $year)
         ->whereMonth('tanggal_resigned', $month)
         ->whereYear('tanggal_resigned', $year)
         ->get();
+
     foreach ($data as $d) {
         // $cuti = JumlahHariCuti($d->id_karyawan, $d->tanggal_resigned, $month, $year);
         $lama_bekerja = lama_bekerja($d->tanggal_bergabung, $d->tanggal_resigned);
@@ -366,10 +366,17 @@ function build_payroll($month, $year)
                 ->whereYear('date', $year)
                 ->first();
 
-            try {
+            // try {
+            //     $data_payroll = Payroll::find($data_payrolls->id);
+            // } catch (\Exception $e) {
+            //     dd($e->getMessage(), $d->id_karyawan, $lama_bekerja);
+            //     return $e->getMessage();
+            // }
+
+            if ($data_payrolls != null) {
                 $data_payroll = Payroll::find($data_payrolls->id);
-            } catch (\Exception $e) {
-                return $e->getMessage();
+            } else {
+                $data_payroll = null;
             }
 
             if ($data_payroll != null) {
@@ -386,6 +393,7 @@ function build_payroll($month, $year)
             }
         }
     }
+
 
     // ok 5
     //  Zheng Guixin 1
@@ -405,7 +413,6 @@ function build_payroll($month, $year)
         $is_exist = Payroll::where('id_karyawan', $id)->first();
         if ($is_exist) {
             $data = Payroll::find($is_exist->id);
-
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = $data_karyawan->jabatan;
@@ -508,8 +515,7 @@ function build_payroll($month, $year)
             $data->save();
         }
     }
-
-    // ok 5
+    // ok 6
     // Libur nasional dan resigned sebelum 3 bulan kerja
 
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
@@ -517,6 +523,7 @@ function build_payroll($month, $year)
         ->sum('jumlah_hari_libur');
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
+
 
     return 1;
 }

@@ -41,6 +41,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AbsensiKosong;
+use App\Livewire\DataResigned;
 use App\Livewire\SalaryAdjustment;
 
 // Middleware
@@ -152,6 +153,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
                     Route::get('/absensikosong', AbsensiKosong::class);
                     Route::get('/liburnasional', Liburnasionalwr::class);
+                    Route::get('/dataresigned', DataResigned::class);
 
 
                     // TEST

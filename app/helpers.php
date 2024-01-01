@@ -298,6 +298,9 @@ function ada_tambahan($id)
 
 function monthName($tgl)
 {
+    if ($tgl < 1 || $tgl > 12) {
+        $tgl = now()->month;
+    }
     switch ($tgl) {
         case 1:
             $monthNama = 'Januari';
