@@ -43,7 +43,7 @@
                         <td>{{ $d->departemen }}</td>
                         <td>{{ $d->jabatan }}</td>
                         <td>{{ $d->status_karyawan }}</td>
-                        <td>{{ $d->tanggal_bergabung }}</td>
+                        <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
                         <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
                         <td>{{ number_format($d->gaji_pokok) }}</td>
                         <td class="text-center">
