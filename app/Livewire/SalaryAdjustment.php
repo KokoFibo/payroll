@@ -14,6 +14,8 @@ class SalaryAdjustment extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $pilihLamaKerja, $gaji_rekomendasi;
+    public $gaji, $gaji_pokok;
+    public $id, $nama;
 
     public function mount()
     {
@@ -22,11 +24,30 @@ class SalaryAdjustment extends Component
         $this->gaji_rekomendasi = 2100000;
     }
 
-    public function sesuaikan($id)
+    public function edit($id)
     {
+        $this->gaji = 0;
         $data = Karyawan::find($id);
-        $data->gaji_pokok = $this->gaji_rekomendasi;
+
+        $this->gaji_pokok = $data->gaji_pokok;
+        $this->id = $id;
+        $this->nama = $data->nama;
+    }
+
+    public function save()
+    {
+        $this->gaji = convert_numeric($this->gaji);
+
+        if ($this->gaji < $this->gaji_pokok || $this->gaji > $this->gaji_rekomendasi) {
+
+            $this->dispatch('error', message: 'Gaji tidak sesuai rekomendasi');
+            return;
+        }
+        $data = Karyawan::find($this->id);
+        $data->gaji_pokok = $this->gaji;
         $data->save();
+        $this->gaji = 0;
+
         $this->dispatch('success', message: 'Data Gaji Karyawan Sudah di Sesuaikan');
     }
 
@@ -42,8 +63,6 @@ class SalaryAdjustment extends Component
         switch ($this->pilihLamaKerja) {
 
             case 90:
-
-
                 // 90 <= 119
                 $data = Karyawan::where('tanggal_bergabung', '<=', $ninetyDaysAgo)->where('tanggal_bergabung', '>', $hundredTwentyDaysAgo)
                     ->where('gaji_pokok', '<', 2100000)
