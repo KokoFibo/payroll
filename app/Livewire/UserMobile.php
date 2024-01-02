@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
@@ -52,7 +53,13 @@ class UserMobile extends Component
     }
     public function mount()
     {
-        $this->is_slipGaji = false;
+        $data_lock = Lock::find(1);
+
+        if ($data_lock->slip_gaji == 1) {
+            $this->is_slipGaji = false;
+        } else {
+            $this->is_slipGaji = true;
+        }
         $this->selectedMonth = Carbon::now()->month;
         $this->selectedYear = Carbon::now()->year;
     }
@@ -70,8 +77,8 @@ class UserMobile extends Component
     {
         $this->cx++;
         // $this->user_id = 103;
-        // $this->user_id = 109;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 4;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
