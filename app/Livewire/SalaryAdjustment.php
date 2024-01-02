@@ -38,7 +38,7 @@ class SalaryAdjustment extends Component
     {
         $this->gaji = convert_numeric($this->gaji);
 
-        if ($this->gaji < $this->gaji_pokok || $this->gaji > $this->gaji_rekomendasi) {
+        if ($this->gaji < $this->gaji_pokok || $this->gaji > 2500000) {
 
             $this->dispatch('error', message: 'Gaji tidak sesuai rekomendasi');
             return;
