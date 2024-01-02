@@ -32,6 +32,7 @@ class Payrollwr extends Component
     public $data_karyawan;
     public $cx;
     public $lock_presensi;
+    public $lock_slip_gaji;
 
     public function export()
     {
@@ -113,8 +114,6 @@ class Payrollwr extends Component
         $this->resetPage();
     }
 
-
-
     public function mount()
     {
         $data = Payroll::first();
@@ -139,12 +138,20 @@ class Payrollwr extends Component
 
         $lock = Lock::find(1);
         $this->lock_presensi = $lock->presensi;
+        $this->lock_slip_gaji = $lock->slip_gaji;
     }
     public function updatedLockPresensi()
     {
         // $lock=Lock::find(1);
         $lock = Lock::first();
         $lock->presensi = $this->lock_presensi;
+        $lock->save();
+    }
+    public function updatedLockSlipGaji()
+    {
+        // $lock=Lock::find(1);
+        $lock = Lock::first();
+        $lock->slip_gaji = $this->lock_slip_gaji;
         $lock->save();
     }
 

@@ -4,12 +4,12 @@
             <div class=header>
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between">
-                        @if ($is_slipGaji != true)
-                            <div>
-                                <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                    style="opacity: .8; width:150px">
-                            </div>
-                        @endif
+                        {{-- @if ($is_slipGaji != true) --}}
+                        <div>
+                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
+                                style="opacity: .8; width:150px">
+                        </div>
+                        {{-- @endif --}}
                         @if (auth()->user()->language == 'Cn')
                             <div class="flex items-end mb-2">
                                 @if (app()->getLocale() == 'id')
@@ -66,15 +66,17 @@
                             <div>
                                 <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
                                     <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
                                 </select>
                             </div>
                             <div>
                                 <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
-                                    <option value="11">November</option>
+                                    {{-- <option value="11">November</option> --}}
                                     <option value="12">Desember</option>
+                                    <option value="1">Januari</option>
                                 </select>
                             </div>
-                            <div class="{{ auth()->user()->role <= 3 ? 'invisible' : '' }}">
+                            <div class="{{ auth()->user()->role <= 3 && $is_slipGaji == false ? 'invisible' : '' }}">
                                 {{-- <div> --}}
                                 <button wire:click="slip_gaji" {{-- class="bg-red-200 text-gray-700 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip --}}
                                     class="bg-gray-800 text-white hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">{{ __('Slip Gaji') }}</button>
