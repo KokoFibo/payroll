@@ -2,12 +2,14 @@
     <div class="d-flex flex-column-reverse flex-lg-row align-items-center pt-2">
         <div class="col-12 col-lg-2">
             <select class="form-select" wire:model.live="pilihLamaKerja">
-                <option value=" ">{{ __('Pilih lama bekerja') }}</option>
-                <option value="90">{{ __('3 bulan') }}</option>
-                <option value="120">{{ __('4 Bulan') }}</option>
-                <option value="150">{{ __('5 Bulan') }}</option>
-                <option value="180">{{ __('6 Bulan') }}</option>
-                <option value="210">{{ __('7 Bulan') }}</option>
+                {{-- <option value=" ">{{ __('Pilih lama bekerja') }}</option> --}}
+                <option value="3">{{ __('3 bulan') }}</option>
+                <option value="4">{{ __('4 Bulan') }}</option>
+                <option value="5">{{ __('5 Bulan') }}</option>
+                <option value="6">{{ __('6 Bulan') }}</option>
+                <option value="7">{{ __('7 Bulan') }}</option>
+                <option value="8">{{ __('8 Bulan') }}</option>
+                {{-- <option value="9">{{ __('9 Bulan') }}</option> --}}
             </select>
         </div>
         <h3 class="mx-auto">{{ __('Penyesuaian Gaji') }}</h3>
@@ -27,6 +29,7 @@
                     <th>{{ __('Lama Bekerja') }}</th>
                     <th>{{ __('Gaji Pokok') }}</th>
                     <th>{{ __('Gaji Rekomendasi') }} : Rp {{ number_format($gaji_rekomendasi) }}</th>
+                    {{-- <th></th> --}}
                     <th></th>
                 </tr>
             </thead>
