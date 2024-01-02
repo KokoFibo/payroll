@@ -914,7 +914,7 @@
 
 
 
-    @if (auth()->user()->role >= 4)
+    @if (auth()->user()->role >= 4 || auth()->user()->role == 0)
         <div class="w-full px-2 lg:w-5/6 mx-auto">
             <div class="relative overflow-x-auto pb-2 mt-3">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
