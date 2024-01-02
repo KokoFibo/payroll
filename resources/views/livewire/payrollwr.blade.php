@@ -17,17 +17,21 @@
                     </button>
                 </div>
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center">
-                    <div class="form-check form-switch">
-                        <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
-                            id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">
-                            @if ($lock_slip_gaji)
-                                {{ __('Slip Gaji is locked') }}
-                            @else
-                                {{ __('Slip Gaji is unlocked') }}
-                            @endif
-                        </label>
-                    </div>
+                    @if (auth()->user()->role > 4)
+
+                        <div class="form-check form-switch">
+                            <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox"
+                                role="switch" id="flexSwitchCheckChecked" value=1
+                                {{ $lock_slip_gaji ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">
+                                @if ($lock_slip_gaji)
+                                    {{ __('Slip Gaji is locked') }}
+                                @else
+                                    {{ __('Slip Gaji is unlocked') }}
+                                @endif
+                            </label>
+                        </div>
+                    @endif
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
