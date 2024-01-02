@@ -20,7 +20,7 @@ class SalaryAdjustment extends Component
     public function mount()
     {
         $this->today = now();
-        $this->pilihLamaKerja = 3;
+        $this->pilihLamaKerja = 90;
         $this->gaji_rekomendasi = 2100000;
     }
 
@@ -53,26 +53,18 @@ class SalaryAdjustment extends Component
 
     public function render()
     {
-        // $ninetyDaysAgo = Carbon::now()->subDays(90);
-        // $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
-        // $hundredFiftyDaysAgo = Carbon::now()->subDays(150);
-        // $hundredEigtyDaysAgo = Carbon::now()->subDays(180);
-        // $twoHundredTenDaysAgo = Carbon::now()->subDays(210);
-        // $twoHundredFortyDaysAgo = Carbon::now()->subDays(240);
-        // $twoHundredseventyDaysAgo = Carbon::now()->subDays(270);
+        $ninetyDaysAgo = Carbon::now()->subDays(90);
+        $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
+        $hundredFiftyDaysAgo = Carbon::now()->subDays(150);
+        $hundredEigtyDaysAgo = Carbon::now()->subDays(180);
+        $twoHundredTenDaysAgo = Carbon::now()->subDays(210);
+        $twoHundredFortyDaysAgo = Carbon::now()->subDays(240);
 
-        $bulan3 = Carbon::now()->startOfMonth()->subMonths(4);
-        $bulan4 = Carbon::now()->startOfMonth()->subMonths(5);
-        $bulan5 = Carbon::now()->startOfMonth()->subMonths(6);
-        $bulan6 = Carbon::now()->startOfMonth()->subMonths(7);
-        $bulan7 = Carbon::now()->startOfMonth()->subMonths(8);
-        $bulan8 = Carbon::now()->startOfMonth()->subMonths(9);
-        $bulan9 = Carbon::now()->startOfMonth()->subMonths(10);
-
-        // dd($bulan3->format('m'));
         switch ($this->pilihLamaKerja) {
-            case "3":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
+
+            case 90:
+                // 90 <= 119
+                $data = Karyawan::where('tanggal_bergabung', '<=', $ninetyDaysAgo)->where('tanggal_bergabung', '>', $hundredTwentyDaysAgo)
                     ->where('gaji_pokok', '<', 2100000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -81,10 +73,9 @@ class SalaryAdjustment extends Component
                     ->paginate(10);
                 $this->gaji_rekomendasi = 2100000;
                 break;
-
-            case "4":
-
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
+            case 120:
+                // 120 < 149
+                $data = Karyawan::where('tanggal_bergabung', '<=', $hundredTwentyDaysAgo)->where('tanggal_bergabung', '>', $hundredFiftyDaysAgo)
                     ->where('gaji_pokok', '<', 2200000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -94,8 +85,10 @@ class SalaryAdjustment extends Component
                 $this->gaji_rekomendasi = 2200000;
                 break;
 
-            case "5":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
+            case 150:
+
+                // 150 < 179
+                $data = Karyawan::where('tanggal_bergabung', '<=', $hundredFiftyDaysAgo)->where('tanggal_bergabung', '>', $hundredEigtyDaysAgo)
                     ->where('gaji_pokok', '<', 2300000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -105,8 +98,9 @@ class SalaryAdjustment extends Component
                 $this->gaji_rekomendasi = 2300000;
                 break;
 
-            case "6":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
+            case 180:
+                // 180 < 209
+                $data = Karyawan::where('tanggal_bergabung', '<=', $hundredEigtyDaysAgo)->where('tanggal_bergabung', '>', $twoHundredTenDaysAgo)
                     ->where('gaji_pokok', '<', 2400000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -116,19 +110,12 @@ class SalaryAdjustment extends Component
                 $this->gaji_rekomendasi = 2400000;
                 break;
 
-            case "7":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
-                    ->orderBy('tanggal_bergabung', 'desc')
-                    ->paginate(10);
-                $this->gaji_rekomendasi = 2500000;
-                break;
+            case 210:
 
-            case "8":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
+                // 210 < 240
+                // $data = Karyawan::where('tanggal_bergabung', '<=', $twoHundredTenDaysAgo)->where('tanggal_bergabung', '>', $twoHundredFortyDaysAgo)
+                $data = Karyawan::where('tanggal_bergabung', '<=', $twoHundredTenDaysAgo)
+                    // ->where('tanggal_bergabung', '>', $twoHundredFortyDaysAgo)
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -138,7 +125,6 @@ class SalaryAdjustment extends Component
                 $this->gaji_rekomendasi = 2500000;
                 break;
         }
-
         return view('livewire.salary-adjustment', compact('data'));
     }
 }
