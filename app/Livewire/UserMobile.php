@@ -28,6 +28,8 @@ class UserMobile extends Component
     public $tambahan_shift_malam;
     public $cx;
 
+    public $is_detail;
+
 
     // public function close () {
     //     $this->is_slipGaji = false;
@@ -49,7 +51,13 @@ class UserMobile extends Component
             //     'ID Karyawan' => $this->id_karyawan,
             //     'Nama' => $this->nama,
             // ];
+            $this->is_detail = true;
         }
+    }
+
+    public function detail_gaji()
+    {
+        $this->is_detail = false;
     }
     public function mount()
     {
@@ -60,6 +68,7 @@ class UserMobile extends Component
         } else {
             $this->is_slipGaji = true;
         }
+        $is_detail = false;
         $this->selectedMonth = Carbon::now()->month;
         $this->selectedYear = Carbon::now()->year;
     }
@@ -77,7 +86,6 @@ class UserMobile extends Component
     {
         $this->cx++;
         // $this->user_id = 103;
-        // $this->user_id = 4;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 

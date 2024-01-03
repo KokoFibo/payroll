@@ -78,8 +78,13 @@
                             </div>
                             <div class="{{ auth()->user()->role <= 3 && $is_slipGaji == false ? 'invisible' : '' }}">
                                 {{-- <div> --}}
-                                <button wire:click="slip_gaji" {{-- class="bg-red-200 text-gray-700 hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">Slip --}}
-                                    class="bg-gray-800 text-white hover:bg-teal-700 px-3 py-1 rounded-xl text-sm">{{ __('Slip Gaji') }}</button>
+                                @if ($is_detail == false)
+                                    <button wire:click="slip_gaji"
+                                        class="bg-gray-800 text-white  px-3 py-1 rounded-xl text-sm">{{ __('Slip Gaji') }}</button>
+                                @else
+                                    <button wire:click="detail_gaji"
+                                        class="bg-white text-black font-semibold px-3 py-1 rounded-xl text-sm">{{ __('Detail Gaji') }}</button>
+                                @endif
 
                             </div>
                         </div>
@@ -137,7 +142,7 @@
             {{-- Main Table --}}
             <div class="main  flex-1 overflow-y-auto ">
                 {{-- Slip Gaji --}}
-                @if ($is_slipGaji == true)
+                @if ($is_slipGaji == true && $is_detail == true)
                     @if ($data_payroll != null)
                         <div>
                             <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
@@ -353,15 +358,20 @@
                         </div>
 
                     @endif
-                @else
-                    {{-- End slip gajiGaji --}}
-                    {{-- presensi harian --}}
+                @endif
+                {{-- @else --}}
+                {{-- End slip gajiGaji --}}
+                {{-- presensi harian --}}
+                @if ($is_detail == false)
+
                     <div class="w-screen flex px-3  mt-3 flex flex-col ">
                         <table>
                             <tbody>
+
                                 @foreach ($data as $index => $d)
                                     <tr
                                         class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
+
                                         <td class="text-center">
                                             <p
                                                 class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
@@ -455,6 +465,7 @@
                         </table>
                     </div>
                 @endif
+                {{-- @endif --}}
                 {{-- End Presensi Harian --}}
             </div>.
             {{-- End Main Table --}}
