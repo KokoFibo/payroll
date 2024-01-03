@@ -192,7 +192,7 @@ function build_payroll($month, $year)
     foreach ($datas as $data) {
         //   $payroll = new Payroll();
 
-        if ($data->total_noscan > 3 && $data->karyawan->metode_penggajian == 'Perjam') {
+        if ($data->total_noscan > 3 && trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $denda_noscan = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
         } else {
             $denda_noscan = 0;
@@ -244,7 +244,7 @@ function build_payroll($month, $year)
             }
         }
         // hapus ini jika sdh kelar
-        $denda_lupa_absen = 0;
+        // $denda_lupa_absen = 0;
 
         $total_bonus_dari_karyawan = 0;
         $total_potongan_dari_karyawan = 0;
@@ -252,7 +252,8 @@ function build_payroll($month, $year)
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
-        if ($data->karyawan->metode_penggajian == 'Perjam') {
+
+        if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         } else {
             $subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
@@ -262,8 +263,9 @@ function build_payroll($month, $year)
         if ($data->karyawan->jabatan == 'Satpam') {
             $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_shift_malam_satpam;
         }
+
         $libur_nasional = 0;
-        if ($data->karyawan->metode_penggajian == 'Perbulan') {
+        if (trim($data->karyawan->metode_penggajian) == 'Perbulan') {
             $libur_nasional = $jumlah_libur_nasional * $data->karyawan->gaji_pokok / 26;
         } else {
             $libur_nasional = 0;
@@ -276,6 +278,7 @@ function build_payroll($month, $year)
             'jkk' => $jkk,
             'jkm' => $jkm,
             'denda_lupa_absen' => $denda_lupa_absen,
+
             'jamkerjaid_id' => $data->id,
             'nama' => $data->karyawan->nama,
             'id_karyawan' => $data->karyawan->id_karyawan,
@@ -380,7 +383,7 @@ function build_payroll($month, $year)
             }
 
             if ($data_payroll != null) {
-                if ($data_payroll->metode_penggajian == 'Perbulan') {
+                if (trim($data_payroll->metode_penggajian) == 'Perbulan') {
                     $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / 26);
                 } else {
                     $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
