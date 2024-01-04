@@ -42,7 +42,7 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role >= 3)
+            @if (Auth::user()->role >= 2)
                 <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/salaryadjustment" class="nav-link">
                         <i class="nav-icon fa-solid fa-sliders"></i>
