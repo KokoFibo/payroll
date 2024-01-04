@@ -53,7 +53,7 @@
 
                     <div>
                         {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                        <button wire:click="buat_payroll" {{ is_35_days($month, $year) == true ? 'disabled' : '' }}
+                        <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                             class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
                         {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
                         {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
