@@ -4,7 +4,7 @@
         <div class="card-header">
             <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                 <div>
-                    <h4>Penyesuaian Gaji Karyawan</h4>
+                    <h4>{{ __('Penyesuaian Gaji Karyawan') }}</h4>
                 </div>
                 <div class="col-12 col-lg-2">
                     <select class="form-select" wire:model.live="pilihLamaKerja">
@@ -69,7 +69,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th><button class="btn btn-primary" wire:click="refresh">Refresh</button></th>
+                            <th><button class="btn btn-primary" wire:click="refresh">{{ __('Refresh') }}</button></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -114,7 +114,7 @@
                                     @if (auth()->user()->role >= 3)
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                             wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                            class="btn btn-warning btn-sm">Edit</button>
+                                            class="btn btn-warning btn-sm">{{ __('编辑') }}</button>
                                     @endif
                                 </td>
                             </tr>
@@ -132,14 +132,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Penyesuaian Gaji Karyawan</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ __('Penyesuaian Gaji Karyawan') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="d-flex flex-column">
-                            <p class="form-label">Nama : {{ $nama }} </p>
-                            <p class="form-label">Rekomendasi : Rp{{ number_format($gaji_rekomendasi) }} </p>
+                            <p class="form-label">{{ __('Nama') }} : {{ $nama }} </p>
+                            <p class="form-label">{{ __('Rekomendasi') }} : Rp{{ number_format($gaji_rekomendasi) }}
+                            </p>
                         </div>
                         <div class="d-flex gap-2 mt-2 align-items-center">
                             <input type="text" class="form-control" value="{{ number_format($gaji_pokok) }}">
