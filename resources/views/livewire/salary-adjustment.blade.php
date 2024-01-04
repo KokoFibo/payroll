@@ -47,9 +47,11 @@
                         <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
                         <td>{{ number_format($d->gaji_pokok) }}</td>
                         <td class="text-center">
-                            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                class="btn btn-warning btn-sm">Edit</button>
+                            @if (auth()->user()->role >= 3)
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                    wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
+                                    class="btn btn-warning btn-sm">Edit</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
