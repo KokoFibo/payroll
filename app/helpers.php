@@ -148,13 +148,13 @@ function ratarata($ndays)
     return round($avg / $ndays);
 }
 
-function is_35_days($month, $year)
+function is_40_days($month, $year)
 {
     $tgl = $year . '-' . $month . '-01';
 
-    $thirtyFiveDaysAgo = Carbon::now()->subDays(35);
+    $fortyDaysAgo = Carbon::now()->subDays(40);
     $yourDate = Carbon::parse($tgl);
-    if ($yourDate->lessThan($thirtyFiveDaysAgo)) {
+    if ($yourDate->lessThan($fortyDaysAgo)) {
         // Date is more than 35 days ago
         // Your logic here
         // echo 'Date is more than 35 days ago.';

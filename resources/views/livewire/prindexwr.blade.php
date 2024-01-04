@@ -54,7 +54,7 @@
 
                     <div class=" col-6">
                         <button wire:click="buat_payroll" class="btn btn-primary"
-                            {{ is_35_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
+                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
                     </div>
                 </div>
 
