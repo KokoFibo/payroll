@@ -1,63 +1,129 @@
 <div>
-    <div class="d-flex flex-column-reverse flex-lg-row align-items-center pt-2">
-        <div class="col-12 col-lg-2">
-            <select class="form-select" wire:model.live="pilihLamaKerja">
-                {{-- <option value=" ">{{ __('Pilih lama bekerja') }}</option> --}}
-                <option value="3">{{ __('3 bulan') }}</option>
-                <option value="4">{{ __('4 Bulan') }}</option>
-                <option value="5">{{ __('5 Bulan') }}</option>
-                <option value="6">{{ __('6 Bulan') }}</option>
-                <option value="7">{{ __('7 Bulan') }}</option>
-                <option value="8">{{ __('8 Bulan') }}</option>
-                {{-- <option value="9">{{ __('9 Bulan') }}</option> --}}
-            </select>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
+                <div>
+                    <h4>Penyesuaian Gaji Karyawan</h4>
+                </div>
+                <div class="col-12 col-lg-2">
+                    <select class="form-select" wire:model.live="pilihLamaKerja">
+                        {{-- <option value=" ">{{ __('Pilih lama bekerja') }}</option> --}}
+                        <option value="3">{{ __('3 bulan') }}</option>
+                        <option value="4">{{ __('4 Bulan') }}</option>
+                        <option value="5">{{ __('5 Bulan') }}</option>
+                        <option value="6">{{ __('6 Bulan') }}</option>
+                        <option value="7">{{ __('7 Bulan') }}</option>
+                        <option value="8">{{ __('8 Bulan') }}</option>
+                        {{-- <option value="9">{{ __('9 Bulan') }}</option> --}}
+                    </select>
+                </div>
+            </div>
         </div>
-        <h3 class="mx-auto">{{ __('Penyesuaian Gaji') }}</h3>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 130px; border-style: none;">
 
-    </div>
-    <div class="table-responsive p-3">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>{{ __('ID Karyawan') }}</th>
-                    <th>{{ __('Nama') }}</th>
-                    <th>{{ __('Company') }}</th>
-                    <th>{{ __('Departemen') }}</th>
-                    <th>{{ __('Jabatan') }}</th>
-                    <th>{{ __('Status') }}</th>
-                    <th>{{ __('Tanggal Bergabung') }}</th>
-                    <th>{{ __('Lama Bekerja') }}</th>
-                    <th>{{ __('Gaji Pokok') }}</th>
-                    <th>{{ __('Gaji Rekomendasi') }} : Rp {{ number_format($gaji_rekomendasi) }}</th>
-                    {{-- <th></th> --}}
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+                                <input wire:model.live="search_id_karyawan" type="text" class="form-control"
+                                    placeholder="{{ __('ID') }}">
+                            </th>
+                            <th style="border-style: none;">
+                                <input wire:model.live="search_nama" type="text" class="form-control"
+                                    placeholder="{{ __('Nama Karyawan') }}">
+                            </th>
+                            <th style="width: 130px; border-style: none;">
+                                <div style="width: 130px">
+                                    <select wire:model.live="search_company" class="form-select"
+                                        aria-label="Default select example">
+                                        <option value="">{{ __('Company') }}</option>
+                                        @foreach ($companies as $j)
+                                            <option value="{{ $j }}">{{ $j }}</option>
+                                        @endforeach
 
-                @foreach ($data as $d)
-                    <tr>
-                        <td>{{ $d->id_karyawan }}</td>
-                        <td>{{ $d->nama }}</td>
-                        <td>{{ $d->company }}</td>
-                        <td>{{ $d->departemen }}</td>
-                        <td>{{ $d->jabatan }}</td>
-                        <td>{{ $d->status_karyawan }}</td>
-                        <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
-                        <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
-                        <td>{{ number_format($d->gaji_pokok) }}</td>
-                        <td class="text-center">
-                            @if (auth()->user()->role >= 3)
-                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                    wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                    class="btn btn-warning btn-sm">Edit</button>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $data->links() }}
+                                    </select>
+                                </div>
+                            </th>
+
+                            <th style="width: 200px; border-style: none;">
+                                <div style="width: 130px">
+                                    <select wire:model.live="search_department" class="form-select"
+                                        aria-label="Default select example">
+                                        <option value="">{{ __('Department') }}</option>
+                                        @foreach ($departments as $j)
+                                            <option value="{{ $j }}">{{ $j }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </th>
+                            <th style="width: 220px; border-style: none;">
+                                <div style="width: 130px">
+                                    <select wire:model.live="search_jabatan"class="form-select"
+                                        aria-label="Default select example">
+                                        <option value="">{{ __('Jabatan') }}</option>
+                                        @foreach ($jabatans as $j)
+                                            <option value="{{ $j }}">{{ $j }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </th>
+                            <th><button class="btn btn-primary" wire:click="refresh">Refresh</button></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+                        <tr>
+                            <th>{{ __('ID Karyawan') }}</th>
+                            <th>{{ __('Nama') }}</th>
+                            <th wire:click="sortColumnName('company')">
+                                {{ __('Company') }}</th>
+                            <th wire:click="sortColumnName('departemen')">
+                                {{ __('Department') }}</th>
+                            <th wire:click="sortColumnName('jabatan')">
+                                {{ __('Jabatan') }}</th>
+                            <th wire:click="sortColumnName('status_karyawan')">
+                                {{ __('Status') }}</th>
+                            <th wire:click="sortColumnName('tanggal_bergabung')">
+                                {{ __('Tanggal Bergabung') }}</th>
+                            <th wire:click="sortColumnName('tanggal_bergabung')">
+                                {{ __('Lama Bekerja') }}</th>
+                            <th>{{ __('Gaji Pokok') }}</th>
+                            <th>{{ __('Gaji Rekomendasi') }} : Rp {{ number_format($gaji_rekomendasi) }}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach ($data as $d)
+                            <tr>
+                                <td>{{ $d->id_karyawan }}</td>
+                                <td>{{ $d->nama }}</td>
+                                <td>{{ $d->company }}</td>
+                                <td>{{ $d->departemen }}</td>
+                                <td>{{ $d->jabatan }}</td>
+                                <td>{{ $d->status_karyawan }}</td>
+                                <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
+                                <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
+                                <td>{{ number_format($d->gaji_pokok) }}</td>
+                                <td class="text-center">
+                                    @if (auth()->user()->role >= 3)
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                            wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
+                                            class="btn btn-warning btn-sm">Edit</button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $data->links() }}
+            </div>
+        </div>
     </div>
 
     <!-- Modal -->
