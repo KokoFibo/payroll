@@ -14,7 +14,7 @@
                             <input wire:model.live="user_id" type="numeric" class="form-control" id="user_id">
                         </div>
                         <div class="mb-3 col-12 col-xl-3">
-                            <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
+                            <label for="nama_karyawan" class="form-label">{{ __('Nama Karyawan') }}</label>
                             <input wire:model.live="nama_karyawan" type="text" class="form-control"
                                 id="nama_karyawan" disabled>
                         </div>
@@ -141,7 +141,7 @@
                                 placeholder="{{ __('Search') }} ...">
                         </div>
                         <div class="mt-2 mt-lg-0">
-                            <button wire:click="add" class="btn btn-primary col-12 ">Add New</button>
+                            <button wire:click="add" class="btn btn-primary col-12 ">{{ __('Add New') }}</button>
                         </div>
                     </div>
 

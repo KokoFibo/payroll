@@ -78,7 +78,8 @@
                         </div>
 
                         <div class="col-12 col-xl-3">
-                            <button wire:click="reset_filter" class="btn btn-success col-12">Refresh</button>
+                            <button wire:click="reset_filter"
+                                class="btn btn-success col-12">{{ __('Refresh') }}</button>
                         </div>
                         <div class="col-12 col-xl-3">
                             <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
