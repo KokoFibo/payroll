@@ -82,8 +82,8 @@
                                 </div>
                             </th>
                             <th><button class="btn btn-primary" wire:click="refresh">{{ __('Refresh') }}</button></th>
-                            <th></th>
-                            <th></th>
+                            <th>Gaji Rekomendasi</th>
+                            <th>Rp 2,100,000</th>
                             <th></th>
                             <th></th>
 
