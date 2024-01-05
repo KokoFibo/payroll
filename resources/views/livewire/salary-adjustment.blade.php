@@ -114,7 +114,7 @@
                                     @if (auth()->user()->role >= 3)
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                             wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                            class="btn btn-warning btn-sm">{{ __('编辑') }}</button>
+                                            class="btn btn-warning btn-sm">{{ __('Edit') }}</button>
                                     @endif
                                 </td>
                             </tr>
