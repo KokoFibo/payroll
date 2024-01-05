@@ -5,7 +5,7 @@
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between">
                         {{-- @if ($is_slipGaji != true) --}}
-                        <div>
+                        <div class="{{ $is_slipGaji == true ? 'invisible' : '' }} ">
                             <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:150px">
                         </div>
