@@ -287,7 +287,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_payroll->gaji_pokok <= 4500000)
+                                    @if ($data_payroll->gaji_pokok >= 4500000)
                                         @if ($data_payroll->jht != 0)
                                             <tr>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
