@@ -18,23 +18,24 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
 // class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
-class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
+class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
 {
     use Exportable;
-    
-    
-        
-        protected $selected_company, $status, $month, $year;
-    public function __construct ($selected_company, $status, $month, $year) {
+
+
+
+    protected $selected_company, $status, $month, $year;
+    public function __construct($selected_company, $status, $month, $year)
+    {
         $this->selected_company = $selected_company;
         $this->status = $status;
         $this->month = $month;
         $this->year = $year;
-       
     }
 
-    public function query () {
-         if ($this->status == 1) {
+    public function query()
+    {
+        if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
         } elseif ($this->status == 2) {
             $statuses = ['Blacklist'];
@@ -51,85 +52,86 @@ class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, S
         switch ($this->selected_company) {
             case 0:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 1:
                 return Payroll::whereIn('status_karyawan', $statuses)
-                 
                     ->where('placement', 'YCME')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 2:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('placement', 'YEV')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 3:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->whereIn('placement', ['YIG', 'YSM'])
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 4:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'ASB')
                     ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 5:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'DPA')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 6:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YCME')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 7:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YEV')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 8:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YIG')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
 
             case 9:
                 return Payroll::whereIn('status_karyawan', $statuses)
                     ->where('company', 'YSM')
                     ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year);
-
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
                 break;
         }
     }
 
-    public function map ($payroll): array
+    public function map($payroll): array
     {
         return [
             $payroll->id_karyawan,
@@ -162,7 +164,7 @@ class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, S
             $payroll->iuran_locker,
             $payroll->status_karyawan,
             $payroll->total,
-          
+
         ];
     }
 
@@ -175,44 +177,45 @@ class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, S
             [
                 'ID Karyawan',
                 'Nama',
-            'Nama Bank',
-            'No. Rekening',
-            'Jabatan',
-            'Company',
-            'Placement',
-            'Metode Penggajian',
-            'Total Hari Kerja',
-            'Total Jam Kerja (bersih)',
-            'Jam Lembur',
-            'Jumlah Jam Terlambat',
-            'Tambahan Shift Malam',
-            'Gaji Pokok',
-            'Gaji Lembur',
-            'Gaji BPJS',
-            'Bonus/U. Makan',
-            'Potongan 1X Potong',
-            'Total No Scan',
-            'Denda Lupa Absen',
-            'Pajak',
-            'JHT',
-            'JP',
-            'JKK',
-            'JKM',
-            'Kesehatan',
-            'Iuran Air',
-            'Iuran Locker',
-            'Status Karyawan',
-            'Total',
-   
+                'Nama Bank',
+                'No. Rekening',
+                'Jabatan',
+                'Company',
+                'Placement',
+                'Metode Penggajian',
+                'Total Hari Kerja',
+                'Total Jam Kerja (bersih)',
+                'Jam Lembur',
+                'Jumlah Jam Terlambat',
+                'Tambahan Shift Malam',
+                'Gaji Pokok',
+                'Gaji Lembur',
+                'Gaji BPJS',
+                'Bonus/U. Makan',
+                'Potongan 1X Potong',
+                'Total No Scan',
+                'Denda Lupa Absen',
+                'Pajak',
+                'JHT',
+                'JP',
+                'JKK',
+                'JKM',
+                'Kesehatan',
+                'Iuran Air',
+                'Iuran Locker',
+                'Status Karyawan',
+                'Total',
+
             ],
         ];
     }
 
-    public function title(): string {
+    public function title(): string
+    {
         return 'Laporan Gaji Karyawan';
     }
 
-    
+
     public function columnFormats(): array
     {
         return [
@@ -233,7 +236,8 @@ class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, S
         ];
     }
 
-    public function styles (Worksheet $sheet) {
+    public function styles(Worksheet $sheet)
+    {
         return [
             '1' => ['font' => ['bold' => true]],
             '2' => ['font' => ['bold' => true]],
@@ -246,4 +250,3 @@ class PayrollExport implements  FromQuery, WithHeadings, WithColumnFormatting, S
 
     }
 }
-
