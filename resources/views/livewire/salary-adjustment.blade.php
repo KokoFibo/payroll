@@ -5,6 +5,7 @@
             <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                 <div>
                     <h4>{{ __('Penyesuaian Gaji Karyawan') }}</h4>
+                    <p>search_placement : {{ $search_placement }}</p>
                 </div>
                 <div class="col-12 col-lg-2">
                     <select class="form-select" wire:model.live="pilihLamaKerja">
@@ -40,6 +41,18 @@
                                         aria-label="Default select example">
                                         <option value="">{{ __('Company') }}</option>
                                         @foreach ($companies as $j)
+                                            <option value="{{ $j }}">{{ $j }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                            </th>
+                            <th style="width: 130px; border-style: none;">
+                                <div style="width: 130px">
+                                    <select wire:model.live="search_placement" class="form-select"
+                                        aria-label="Default select example">
+                                        <option value="">{{ __('Placement') }}</option>
+                                        @foreach ($placements as $j)
                                             <option value="{{ $j }}">{{ $j }}</option>
                                         @endforeach
 
@@ -82,6 +95,8 @@
                             <th>{{ __('Nama') }}</th>
                             <th wire:click="sortColumnName('company')">
                                 {{ __('Company') }}</th>
+                            <th wire:click="sortColumnName('placement')">
+                                {{ __('Placement') }}</th>
                             <th wire:click="sortColumnName('departemen')">
                                 {{ __('Department') }}</th>
                             <th wire:click="sortColumnName('jabatan')">
@@ -104,6 +119,7 @@
                                 <td>{{ $d->id_karyawan }}</td>
                                 <td>{{ $d->nama }}</td>
                                 <td>{{ $d->company }}</td>
+                                <td>{{ $d->placement }}</td>
                                 <td>{{ $d->departemen }}</td>
                                 <td>{{ $d->jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>

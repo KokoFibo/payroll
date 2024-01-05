@@ -146,14 +146,10 @@ class SalaryAdjustment extends Component
                         $query->where('company', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -187,16 +183,11 @@ class SalaryAdjustment extends Component
                     ->when($this->search_company, function ($query) {
                         $query->where('company', $this->search_company);
                     })
-
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -232,16 +223,11 @@ class SalaryAdjustment extends Component
                     ->when($this->search_company, function ($query) {
                         $query->where('company', $this->search_company);
                     })
-
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -274,16 +260,11 @@ class SalaryAdjustment extends Component
                     ->when($this->search_company, function ($query) {
                         $query->where('company', $this->search_company);
                     })
-
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -316,16 +297,11 @@ class SalaryAdjustment extends Component
                     ->when($this->search_company, function ($query) {
                         $query->where('company', $this->search_company);
                     })
-
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -358,16 +334,11 @@ class SalaryAdjustment extends Component
                     ->when($this->search_company, function ($query) {
                         $query->where('company', $this->search_company);
                     })
-
                     ->when($this->search_placement, function ($query) {
-                        if ($this->search_placement == 1) {
-                            $query->where('placement', 'YCME');
-                        } elseif ($this->search_placement == 2) {
-                            $query->where('placement', 'YEV');
-                        } else {
-                            $query->whereIn('placement', ['YIG', 'YSM']);
-                        }
+                        $query->where('placement', $this->search_placement);
                     })
+
+
                     ->when($this->search_jabatan, function ($query) {
                         $query->where('jabatan', $this->search_jabatan);
                     })
@@ -384,14 +355,16 @@ class SalaryAdjustment extends Component
         $jabatans = array();
         $departments = array();
         $companies = array();
+        $placements = array();
 
         $jabatans = array_merge($jabatans, $data2->pluck('jabatan')->unique()->toArray());
         $departments = array_merge($departments, $data2->pluck('departemen')->unique()->toArray());
         $companies = array_merge($companies, $data2->pluck('company')->unique()->toArray());
+        $placements = array_merge($placements, $data2->pluck('placement')->unique()->toArray());
 
 
 
 
-        return view('livewire.salary-adjustment', compact('data', 'departments', 'jabatans', 'companies'));
+        return view('livewire.salary-adjustment', compact('data', 'departments', 'jabatans', 'companies', 'placements'));
     }
 }
