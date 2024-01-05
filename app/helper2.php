@@ -11,7 +11,6 @@ use App\Models\Yfrekappresensi;
 
 function build_payroll($month, $year)
 {
-
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
         ->whereYear('tanggal_mulai_hari_libur', $year)
         ->sum('jumlah_hari_libur');
@@ -20,7 +19,6 @@ function build_payroll($month, $year)
     $adaPresensi = Yfrekappresensi::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->count();
-
     // if ($jamKerjaKosong == null || $adaPresensi == null) {
     if ($adaPresensi == null) {
         return 0;
@@ -34,7 +32,6 @@ function build_payroll($month, $year)
         ->whereYear('date', $year)
         ->orderBy('date', 'desc')
         ->first();
-
     //     delete jamkerjaid yg akan di build
     Jamkerjaid::whereMonth('date', $month)
         ->whereYear('date', $year)
@@ -397,7 +394,6 @@ function build_payroll($month, $year)
         }
     }
 
-
     // ok 5
     //  Zheng Guixin 1
     // Eddy Chan 2
@@ -412,9 +408,13 @@ function build_payroll($month, $year)
     foreach ($idArrTKA as $id) {
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
-
-        $is_exist = Payroll::where('id_karyawan', $id)->first();
+        //ook
+        $is_exist = Payroll::where('id_karyawan', $id)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->first();
         if ($is_exist) {
+            dd($is_exist->id);
             $data = Payroll::find($is_exist->id);
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
@@ -433,7 +433,6 @@ function build_payroll($month, $year)
             $data->save();
         } else {
             $data = new Payroll();
-
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = $data_karyawan->jabatan;
@@ -473,7 +472,8 @@ function build_payroll($month, $year)
         } else {
             $kesehatan = 0;
         }
-        $is_exist = Payroll::where('id_karyawan', $id)->first();
+        $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
+            ->whereYear('date', $year)->first();
         if ($is_exist) {
             $data = Payroll::find($is_exist->id);
             $data->jp = $jp;
