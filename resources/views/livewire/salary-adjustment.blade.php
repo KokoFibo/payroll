@@ -5,7 +5,6 @@
             <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between">
                 <div>
                     <h4>{{ __('Penyesuaian Gaji Karyawan') }}</h4>
-                    <p>search_placement : {{ $search_placement }}</p>
                 </div>
                 <div class="col-12 col-lg-2">
                     <select class="form-select" wire:model.live="pilihLamaKerja">
