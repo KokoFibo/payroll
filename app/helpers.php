@@ -8,6 +8,16 @@ use Illuminate\Support\Str;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 
+function is_data_locked()
+{
+    $data = Lock::find(1);
+    if ($data->data == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function adjustSalary()
 {
     $ninetyDaysAgo = Carbon::now()->subDays(90);

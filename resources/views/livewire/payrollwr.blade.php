@@ -18,7 +18,6 @@
                 </div>
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center">
                     @if (auth()->user()->role > 4)
-
                         <div class="form-check form-switch">
                             <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox"
                                 role="switch" id="flexSwitchCheckChecked" value=1
@@ -32,6 +31,17 @@
                             </label>
                         </div>
                     @endif
+                    <div class="form-check form-switch">
+                        <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
+                            id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                            @if ($lock_data)
+                                {{ __('Data is locked') }}
+                            @else
+                                {{ __('Data is unlocked') }}
+                            @endif
+                        </label>
+                    </div>
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>

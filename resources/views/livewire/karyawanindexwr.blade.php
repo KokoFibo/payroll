@@ -82,7 +82,8 @@
                                 class="btn btn-success col-12">{{ __('Refresh') }}</button>
                         </div>
                         <div class="col-12 col-xl-3">
-                            <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
+                            <a href="/karyawancreate"><button
+                                    class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }}"><i
                                         class="fa-solid fa-plus"></i>
                                     {{ __('Karyawan baru') }}</button></a>
                         </div>
@@ -230,14 +231,14 @@
                                     <td>
                                         <div class="text-start">
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm"><i
+                                                    class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
 
 
                                             @if (Auth::user()->role > 4)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    class="btn btn-danger btn-sm"><i
+                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif
                                         </div>

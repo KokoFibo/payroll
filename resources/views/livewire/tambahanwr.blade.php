@@ -141,7 +141,9 @@
                                 placeholder="{{ __('Search') }} ...">
                         </div>
                         <div class="mt-2 mt-lg-0">
-                            <button wire:click="add" class="btn btn-primary col-12 ">{{ __('Add New') }}</button>
+                            <button wire:click="add"
+                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }}"
+                                {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Add New') }}</button>
                         </div>
                     </div>
 
@@ -179,12 +181,13 @@
                                                     <div class="btn-group  gap-2" role="group"
                                                         aria-label="Basic mixed styles example">
                                                         <button wire:click="update({{ $d->id }})"
-                                                            type="button" class="btn btn-warning btn-sm"><i
+                                                            type="button"
+                                                            class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                                 class="fa-regular fa-pen-to-square"></i></button>
                                                         <button
                                                             wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE""
                                                             wire:click="delete({{ $d->id }})" type="button"
-                                                            class="btn btn-danger btn-sm"><i
+                                                            class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                                 class="fa-solid fa-trash-can"></i></button>
                                                     </div>
                                                 </div>
