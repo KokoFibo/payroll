@@ -33,6 +33,7 @@ class Payrollwr extends Component
     public $cx;
     public $lock_presensi;
     public $lock_slip_gaji;
+    public $lock_data;
 
     public function export()
     {
@@ -139,6 +140,7 @@ class Payrollwr extends Component
         $lock = Lock::find(1);
         $this->lock_presensi = $lock->presensi;
         $this->lock_slip_gaji = $lock->slip_gaji;
+        $this->lock_data = $lock->data;
     }
     public function updatedLockPresensi()
     {
@@ -154,6 +156,15 @@ class Payrollwr extends Component
         $lock->slip_gaji = $this->lock_slip_gaji;
         $lock->save();
     }
+    public function updatedLockData()
+    {
+        // $lock=Lock::find(1);
+        $lock = Lock::first();
+        $lock->data = $this->lock_data;
+        $lock->save();
+    }
+
+
 
     public function getPayrollQueue()
     {

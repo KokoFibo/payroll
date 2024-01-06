@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('build_payroll')->nullable()->default(false);
             $table->boolean('tambahan')->nullable()->default(false);
             $table->boolean('slip_gaji')->nullable()->default(false);
+            $table->boolean('data')->nullable()->default(false);
             $table->timestamps();
         });
     }
