@@ -25,16 +25,16 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 130px; border-style: none;">
+                            <th style="width: 130px;">
 
                                 <input wire:model.live="search_id_karyawan" type="text" class="form-control"
                                     placeholder="{{ __('ID') }}">
                             </th>
-                            <th style="border-style: none;">
+                            <th>
                                 <input wire:model.live="search_nama" type="text" class="form-control"
                                     placeholder="{{ __('Nama Karyawan') }}">
                             </th>
-                            <th style="width: 130px; border-style: none;">
+                            <th style="width: 130px;">
                                 <div style="width: 130px">
                                     <select wire:model.live="search_company" class="form-select"
                                         aria-label="Default select example">
@@ -46,7 +46,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th style="width: 130px; border-style: none;">
+                            <th style="width: 130px;">
                                 <div style="width: 130px">
                                     <select wire:model.live="search_placement" class="form-select"
                                         aria-label="Default select example">
@@ -59,7 +59,7 @@
                                 </div>
                             </th>
 
-                            <th style="width: 200px; border-style: none;">
+                            <th style="width: 200px;">
                                 <div style="width: 130px">
                                     <select wire:model.live="search_department" class="form-select"
                                         aria-label="Default select example">
@@ -70,7 +70,7 @@
                                     </select>
                                 </div>
                             </th>
-                            <th style="width: 220px; border-style: none;">
+                            <th style="width: 220px;">
                                 <div style="width: 130px">
                                     <select wire:model.live="search_jabatan"class="form-select"
                                         aria-label="Default select example">
