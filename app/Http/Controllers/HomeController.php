@@ -158,7 +158,8 @@ class HomeController extends Controller
         $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
 
         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
-        $uniqueDates = Payroll::distinct()->pluck('date');
+        $uniqueDates = Payroll::orderBy('date', 'asc')->distinct()->pluck('date');
+
         for ($i = 0; $i < $uniqueDates->count(); $i++) {
             $all = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->sum('total');
             $ASB = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'ASB')->sum('total');
