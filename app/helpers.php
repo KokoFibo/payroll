@@ -7,7 +7,20 @@ use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\Hash;
 
+function acakPassword($nama)
+{
+    $arrNama = explode(' ', $nama);
+    return Hash::make($arrNama[0] . '_out_' . $arrNama[0]);
+}
+function acakEmail($nama, $id)
+{
+    $arrNama = explode(' ', $nama);
+
+    return $arrNama[0]  . '_' . $arrNama[0] . '_' . $id . '@' . $arrNama[0] . '.'
+        .     'out';
+}
 function is_data_locked()
 {
     $data = Lock::find(1);
