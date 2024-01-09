@@ -77,6 +77,9 @@ class Test extends Component
   }
   public function render()
   {
+    $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
+    $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
+    dd($uniqueDates->count(), $shift_pagi);
     $data = Karyawan::where('status_karyawan', $this->status_karyawan)
       ->when($this->status_karyawan == "Resigned", function ($query) {
         return $query->whereMonth('tanggal_resigned', $this->month)

@@ -196,10 +196,12 @@ class HomeController extends Controller
         $total = $shift_pagi + $shift_malam;
 
         if ($shift_pagi != null && $shift_malam != null) {
-
-            $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
+            // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
+            $shiftPagiMalam = [$shift_pagi / $uniqueDates->count(), $shift_malam / $uniqueDates->count()];
         } else {
             $shiftPagiMalam = 0;
+            $shiftPagi = 0;
+            $shiftMalam = 0;
         }
 
 
@@ -272,7 +274,8 @@ class HomeController extends Controller
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+
                 ]));
             }
             $user->device = 0;

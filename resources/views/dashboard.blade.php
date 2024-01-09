@@ -229,7 +229,7 @@
                 {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
                 labels: ['Shift Pagi 早班', 'Shift Malam 夜班'],
                 datasets: [{
-                    label: 'Jumlah Karyawan in % ',
+                    label: 'Jumlah Karyawan ',
                     data: shiftPagiMalam,
                     // data: ['700', '300'],
                     borderWidth: 1,
