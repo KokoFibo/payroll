@@ -707,7 +707,7 @@
             </div>
             <div class="bg-pink-100 w-full lg:w-96  rounded-b-lg shadow p-3  ">
                 <p class="text-center text-lg mb-3 ">{{ __('Shift Pagi & Shift Malam') }}</p>
-                <h1 class="text-center font-semibold text-xl">{{ __('Month to Date') }}(%)</h1>
+                <h1 class="text-center font-semibold text-xl">{{ __('Month to Date') }}</h1>
                 <div style="width:350px;">
                     <canvas id="shiftPagiMalam">
                     </canvas>
