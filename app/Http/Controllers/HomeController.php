@@ -197,7 +197,7 @@ class HomeController extends Controller
 
         if ($shift_pagi != null && $shift_malam != null) {
             // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
-            $shiftPagiMalam = [$shift_pagi / $uniqueDates->count(), $shift_malam / $uniqueDates->count()];
+            $shiftPagiMalam = [round($shift_pagi / $uniqueDates->count()), round($shift_malam / $uniqueDates->count())];
         } else {
             $shiftPagiMalam = 0;
             $shiftPagi = 0;
