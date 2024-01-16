@@ -5,10 +5,10 @@
 
             <div class=header>
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between items-center">
                         <div>
-                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                style="opacity: .8; width:150px">
+                            <img src="{{ asset('images/logo-only.png') }}" class="ml-3"alt="Yifang Logo"
+                                style="opacity: .8; width: 50px">
                         </div>
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)

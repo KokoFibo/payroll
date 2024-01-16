@@ -5,9 +5,9 @@
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between">
                         {{-- @if ($is_slipGaji != true) --}}
-                        <div class="{{ $is_slipGaji == true ? 'invisible' : '' }} ">
-                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                style="opacity: .8; width:150px">
+                        <div class="{{ $is_slipGaji == true ? 'invisible' : '' }} ml-3 self-center">
+                            <img src="{{ asset('images/logo-only.png') }}" alt="Yifang Logo"
+                                style="opacity: .8; width:50px">
                         </div>
                         {{-- @endif --}}
                         @if (auth()->user()->language == 'Cn')
