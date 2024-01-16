@@ -141,28 +141,28 @@ class DashboardController extends Controller
         $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
 
         //  Presensi by Depertemen
-        $bd = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $bd = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'BD')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
 
-        $engineering = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $engineering = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Engineering')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $exim = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $exim = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'EXIM')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $finance_accounting = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $finance_accounting = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Finance Accounting')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $ga = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $ga = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'GA')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
@@ -177,27 +177,27 @@ class DashboardController extends Controller
             ->where('departemen', 'Gudang')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $hr = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $hr = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'HR')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $legal = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $legal = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Legal')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $procurement = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $procurement = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Procurement')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $produksi = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $produksi = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Produksi')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $quality_control = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        $quality_control = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Quality Control')
             ->whereDate('date', Yfrekappresensi::max('date'))->count();
