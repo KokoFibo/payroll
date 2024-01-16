@@ -219,13 +219,13 @@
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                     </tr> --}}
-                                    <tr>
+                                    {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Subtotal') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
-                                    </tr>
+                                    </tr> --}}
                                     @if ($data_payroll->tambahan_shift_malam != 0)
                                         <tr>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">

@@ -38,73 +38,74 @@ class Test extends Component
   }
 
 
-  public function delete()
-  {
-    $data = Karyawan::where('status_karyawan', $this->status_karyawan)
-      ->when($this->status_karyawan == "Resigned", function ($query) {
-        return $query->whereMonth('tanggal_resigned', $this->month)
-          ->whereYear('tanggal_resigned', $this->year);
-      })
-      ->when($this->status_karyawan == "Blacklist", function ($query) {
-        return $query->whereMonth('tanggal_blacklist', $this->month)
-          ->whereYear('tanggal_blacklist', $this->year);
-      })->get();
-    $cx = 0;
-    foreach ($data as $d) {
-      if ($d->email != acakEmail($d->nama)) {
-        $cx++;
-        $data_hapus = User::where('username', $d->id_karyawan)->first();
-        $data_karyawan = Karyawan::find($d->id);
-        $data_id = User::find($data_hapus->id);
-
-        // dd($data_karyawan->nama, $data_karyawan->id_karyawan, $data_id->name, $data_id->username);
-        $data_id->email = acakEmail($d->nama);
-        $data_id->password = acakPassword($d->nama);
-        $data_karyawan->email = acakEmail($d->nama);
-        $data_id->save();
-        $data_karyawan->save();
-      }
-    }
-
-    if ($cx > 0) {
-      $this->dispatch('success', message: 'Data Absensi Kosong semua sudah di delete');
-    }
-  }
-
-  public function UpdatedStatusKaryawan()
-  {
-    $this->render();
-  }
   public function render()
   {
-    $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
-    $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
-    dd($uniqueDates->count(), $shift_pagi);
-    $data = Karyawan::where('status_karyawan', $this->status_karyawan)
-      ->when($this->status_karyawan == "Resigned", function ($query) {
-        return $query->whereMonth('tanggal_resigned', $this->month)
-          ->whereYear('tanggal_resigned', $this->year);
-      })
-      ->when($this->status_karyawan == "Blacklist", function ($query) {
-        return $query->whereMonth('tanggal_blacklist', $this->month)
-          ->whereYear('tanggal_blacklist', $this->year);
-      })
-      ->paginate(10);
+    $bd = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'BD')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $engineering = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Engineering')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $exim = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'EXIM')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $finance_accounting = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Finance Accounting')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $ga = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'GA')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $gudang = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Gudang')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $hr = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'HR')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $legal = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Legal')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $procurement = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Procurement')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $produksi = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Produksi')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $quality_control = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->select('karyawans.*', 'yfrekappresensis.*')
+      ->where('departemen', 'Quality Control')
+      ->whereDate('date', '2024-01-13')->count();
+
+    $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
+      $procurement + $produksi + $quality_control;
 
 
-    // $dataResigned = Karyawan::whereMonth('tanggal_resigned', 12)->whereYear('tanggal_resigned', 2023)
-    //   ->count();
-    // $dataBlacklist = Karyawan::whereMonth('tanggal_blacklist', 12)->whereYear('tanggal_blacklist', 2023)
-    //   ->count();
-
-    // $data = Karyawan::whereNotNull('tanggal_resigned')
-    //   ->whereMonth('tanggal_resigned', 12)->whereYear('tanggal_resigned', 2023)
-    //   ->whereRaw('DATEDIFF(tanggal_resigned, tanggal_bergabung) < 90')
-    //   ->paginate(10);
 
 
 
 
-    return view('livewire.test', compact(['data']));
+    return view('livewire.test', compact([
+      'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
+      'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen'
+    ]));
   }
 }

@@ -353,6 +353,51 @@
             },
         });
     </script>
+    {{-- Presensi by Departement --}}
+    <script>
+        var presensi_by_departement_Arr = <?php echo json_encode($presensi_by_departement_Arr); ?>;
+        var presensi_by_departement_LabelArr = <?php echo json_encode($presensi_by_departement_LabelArr); ?>;
+
+        const ctxPbD = document.getElementById('presensiByDepartment');
+
+        new Chart(ctxPbD, {
+            type: 'pie',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: presensi_by_departement_LabelArr,
+                datasets: [{
+                    label: presensi_by_departement_LabelArr,
+                    data: presensi_by_departement_Arr,
+                    // data: ['1000', '2000'],
+                    borderWidth: 1,
+
+
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                layout: {
+                    padding: 20
+                },
+
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    datalabels: {
+                        color: 'white',
+
+                        formatter: function(value, context) {
+                            {{-- return context.chart.data.labels[context.dataIndex] + ' : ' + context.chart.data
+                            .datasets[0].data[context.dataIndex] --}}
+                            return context.chart.data
+                                .datasets[0].data[context.dataIndex]
+                        }
+                    },
+                },
+            },
+        });
+    </script>
 
     {{-- Barchart Payroll All --}}
     <script>
@@ -685,7 +730,73 @@
         </div>
 
     </div>
+    {{-- Presensi by Department --}}
+    <div
+        class="flex px-2 mt-2 flex-col flex-xl-row lg:items-center justify-evenly  bg-purple-100  col-xl-10 mx-auto rounded-xl shadow  ">
+        <div>
+            <div class="h-3 rounded-t-lg bg-purple-500 w-full lg:w-96">
+            </div>
+            <div class="bg-purple-200  rounded-b-lg w-full lg:w-96 shadow-md p-3">
 
+                <p class="text-center text-lg mb-3">{{ __('Presensi by Department') }}
+                    <br class="text-center text-lg mb-3">{{ format_tgl($latestDate->date) }}
+                </p>
+
+                <div class="flex gap-3 justify-evenly">
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center   text-gray-600">BD</h2>
+                        <h2 class="text-center   text-gray-600">Engineering</h2>
+                        <h2 class="text-center   text-gray-600">EXIM</h2>
+                        <h2 class="text-center   text-gray-600">Finance Accounting</h2>
+                        <h2 class="text-center   text-gray-600">GA</h2>
+                        <h2 class="text-center   text-gray-600">Gudang</h2>
+                        <h2 class="text-center   text-gray-600">HR</h2>
+                        <h2 class="text-center   text-gray-600">Legal</h2>
+                        <h2 class="text-center   text-gray-600">Procurement</h2>
+                        <h2 class="text-center   text-gray-600">Produksi</h2>
+                        <h2 class="text-center   text-gray-600">Quality Control</h2>
+                        <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
+                    </div>
+
+                    <div class="flex flex-column gap-2">
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($bd) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($engineering) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($exim) }}
+                        </h2>
+
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($finance_accounting) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($ga) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($gudang) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($hr) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($legal) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($procurement) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600 ">{{ number_format($produksi) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600 ">{{ number_format($quality_control) }}
+                        </h2>
+                        <h2 class="text-center  font-semibold text-gray-600 text-lg">
+                            {{ number_format($total_presensi_by_departemen) }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Charts --}}
+
+
+        <div class="w-full xl:w-1/3  mt-2">
+
+            <canvas id="presensiByDepartment"></canvas>
+        </div>
+
+    </div>
 
     {{-- Department --}}
     <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
