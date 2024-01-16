@@ -1,80 +1,14 @@
 <div>
-    <div class="card">
-        <div class="card-header">
-            <div class="d-flex justify-content-evenly">
-                <div>
-
-                    <h4>Data Karyawan Resigned & Blacklist cx : {{ $cx }}</h4>
-                </div>
-                <div>
-                    <select class="form-select" aria-label="Default select example" wire:model.live="year">
-                        <option selected>Open this select menu</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                    </select>
-                </div>
-                <div>
-                    <select class="form-select" aria-label="Default select example" wire:model.live="month">
-                        <option selected>Open this select menu</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                        <option value="1">January</option>
-                    </select>
-                </div>
-                <div>
-                    <select class="form-select" aria-label="Default select example" wire:model.live="status_karyawan">
-                        <option selected>Open this select menu</option>
-                        <option value="Resigned">Resigned</option>
-                        <option value="Blacklist">Blacklist</option>
-                    </select>
-                </div>
-                <div>
-                    <button class="btn btn-primary" wire:click="delete">Delete All</button>
-                </div>
-
-            </div>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Metode</th>
-                        <th>Status Karyawan</th>
-                        @if ($status_karyawan == 'Resigned')
-                            <th>Resigned</th>
-                        @else
-                            <th>Blacklist</th>
-                        @endif
-                        <th>Tanggal Bergabung</th>
-                        <th>Lama Bekerja</th>
-                        <th>Email</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $d)
-                        {{-- @if ($d->email != acakEmail($d->nama)) --}}
-                        <tr>
-                            <td>{{ $d->id_karyawan }}</td>
-                            <td>{{ $d->nama }}</td>
-                            <td>{{ $d->metode_penggajian }}</td>
-                            <td>{{ $d->status_karyawan }}</td>
-                            @if ($status_karyawan == 'Resigned')
-                                <td>{{ format_tgl($d->tanggal_resigned) }}</td>
-                            @else
-                                <td>{{ format_tgl($d->tanggal_blacklist) }}</td>
-                            @endif
-                            <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
-                            <td>{{ lamaBekerja($d->tanggal_bergabung) }}</td>
-                            <td>{{ $d->email }}</td>
-                        </tr>
-                        {{-- @endif --}}
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        {{ $data->links() }}
-    </div>
+    <h2 class="text-center   text-gray-600">BD : {{ $bd }}</h2>
+    <h2 class="text-center   text-gray-600">Engineering : {{ $engineering }}</h2>
+    <h2 class="text-center   text-gray-600">EXIM : {{ $exim }}</h2>
+    <h2 class="text-center   text-gray-600">Finance Accounting : {{ $finance_accounting }}</h2>
+    <h2 class="text-center   text-gray-600">GA : {{ $ga }}</h2>
+    <h2 class="text-center   text-gray-600">Gudang : {{ $gudang }}</h2>
+    <h2 class="text-center   text-gray-600">HR : {{ $hr }}</h2>
+    <h2 class="text-center   text-gray-600">Legal : {{ $legal }}</h2>
+    <h2 class="text-center   text-gray-600">Procurement : {{ $procurement }}</h2>
+    <h2 class="text-center   text-gray-600">Produksi : {{ $produksi }}</h2>
+    <h2 class="text-center   text-gray-600">Quality Control : {{ $quality_control }}</h2>
+    <h2 class="text-center   text-gray-600">Total : {{ $total }}</h2>
 </div>

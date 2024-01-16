@@ -13,6 +13,6 @@ class Karyawan extends Model
 
     public function yfrekappresensi()
     {
-        return $this->hasMany(yfrekappresensi::class);
+        return $this->hasMany(Yfrekappresensi::class);
     }
 }
