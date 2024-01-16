@@ -158,77 +158,77 @@ class HomeController extends Controller
         $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
 
         //  Presensi by Depertemen
-        $bd = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'BD')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $bd = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'BD')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $engineering = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Engineering')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $engineering = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Engineering')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $exim = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'EXIM')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $exim = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'EXIM')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $finance_accounting = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Finance Accounting')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $finance_accounting = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Finance Accounting')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $ga = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'GA')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $ga = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'GA')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $gudang = Karyawan::join(
-            'Yfrekappresensis',
-            'karyawans.id',
-            '=',
-            'yfrekappresensis.karyawan_id'
-        )
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Gudang')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $gudang = Karyawan::join(
+        //     'Yfrekappresensis',
+        //     'karyawans.id',
+        //     '=',
+        //     'yfrekappresensis.karyawan_id'
+        // )
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Gudang')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $hr = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'HR')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $hr = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'HR')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $legal = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Legal')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $legal = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Legal')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $procurement = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Procurement')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $procurement = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Procurement')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $produksi = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Produksi')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $produksi = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Produksi')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $quality_control = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-            ->select('karyawans.*', 'yfrekappresensis.*')
-            ->where('departemen', 'Quality Control')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+        // $quality_control = Karyawan::join('Yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+        //     ->select('karyawans.*', 'yfrekappresensis.*')
+        //     ->where('departemen', 'Quality Control')
+        //     ->whereDate('date', Yfrekappresensi::max('date'))->count();
 
-        $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
-            $procurement + $produksi + $quality_control;
+        // $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
+        //     $procurement + $produksi + $quality_control;
 
-        $presensi_by_departement_Arr = [
+        // $presensi_by_departement_Arr = [
 
-            $bd, $engineering, $exim, $finance_accounting, $ga, $gudang, $hr, $legal,
-            $procurement, $produksi, $quality_control
-        ];
-        $presensi_by_departement_LabelArr = [
-            'BD', 'Engineering', 'EXIM',  'Finance Accounting', 'GA', 'Gudang', 'HR', 'Legal', 'Procurement', 'Produksi', 'Quality Control'
-        ];
+        //     $bd, $engineering, $exim, $finance_accounting, $ga, $gudang, $hr, $legal,
+        //     $procurement, $produksi, $quality_control
+        // ];
+        // $presensi_by_departement_LabelArr = [
+        //     'BD', 'Engineering', 'EXIM',  'Finance Accounting', 'GA', 'Gudang', 'HR', 'Legal', 'Procurement', 'Produksi', 'Quality Control'
+        // ];
 
 
 
@@ -325,10 +325,11 @@ class HomeController extends Controller
                     'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
-                    'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
-                    'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
-                    'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr'
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
+                    // ,
+                    // 'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
+                    // 'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
+                    // 'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr'
 
                 ]));
             } else {
@@ -353,10 +354,11 @@ class HomeController extends Controller
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
-                    'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
-                    'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
-                    'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr'
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam'
+                    // ,
+                    // 'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
+                    // 'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
+                    // 'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr'
 
                 ]));
             }
