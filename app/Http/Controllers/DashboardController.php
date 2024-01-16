@@ -144,28 +144,28 @@ class DashboardController extends Controller
         $bd = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'BD')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
 
         $engineering = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Engineering')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $exim = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'EXIM')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $finance_accounting = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Finance Accounting')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $ga = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'GA')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $gudang = Karyawan::join(
             'Yfrekappresensis',
@@ -175,32 +175,32 @@ class DashboardController extends Controller
         )
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Gudang')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $hr = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'HR')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $legal = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Legal')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $procurement = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Procurement')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $produksi = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Produksi')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $quality_control = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'Quality Control')
-            ->whereDate('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', Yfrekappresensi::max('date'))->count();
 
         $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
             $procurement + $produksi + $quality_control;
