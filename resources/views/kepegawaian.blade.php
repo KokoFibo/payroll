@@ -95,6 +95,7 @@
                                 <option value="YEV">YEV</option>
                                 <option value="YIG">YIG</option>
                                 <option value="YSM">YSM</option>
+                                <option value="YAM">YAM</option>
 
                             </select>
                             @error('company')
@@ -204,6 +205,7 @@
                                 <option value="YIG">YIG</option>
                                 <option value="YSM">YSM</option>
                                 <option value="YEV">YEV</option>
+                                <option value="YAM">YAM</option>
 
                             </select>
                             @error('placement')
