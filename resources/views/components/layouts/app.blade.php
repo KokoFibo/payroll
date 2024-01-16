@@ -69,13 +69,9 @@
     }
 </style>
 
-<body style="font-family: 'nunito'; >
-
-
-    <body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
 
     <div class="wrapper">
-
 
         @include('layouts.navbar')
 
@@ -103,7 +99,7 @@
             });
         </script>
 
-
+    </div>
 
 </body>
 
