@@ -366,7 +366,7 @@
                 {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
                 labels: presensi_by_departement_LabelArr,
                 datasets: [{
-                    label: presensi_by_departement_LabelArr,
+                    label: 'Total Hadir',
                     data: presensi_by_departement_Arr,
                     // data: ['1000', '2000'],
                     borderWidth: 1,
