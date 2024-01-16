@@ -144,8 +144,8 @@ class DashboardController extends Controller
         $bd = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
             ->where('departemen', 'BD')
-            ->where('date', Yfrekappresensi::max('date'))->count();
-
+            // ->where('date', Yfrekappresensi::max('date'))->count();
+            ->where('date', '2024-01-15')->count();
 
         $engineering = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
             ->select('karyawans.*', 'yfrekappresensis.*')
