@@ -744,17 +744,17 @@
 
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center   text-gray-600">BD</h2>
-                        <h2 class="text-center   text-gray-600">Engineering</h2>
-                        <h2 class="text-center   text-gray-600">EXIM</h2>
-                        <h2 class="text-center   text-gray-600">Finance Accounting</h2>
-                        <h2 class="text-center   text-gray-600">GA</h2>
-                        <h2 class="text-center   text-gray-600">Gudang</h2>
-                        <h2 class="text-center   text-gray-600">HR</h2>
-                        <h2 class="text-center   text-gray-600">Legal</h2>
-                        <h2 class="text-center   text-gray-600">Procurement</h2>
-                        <h2 class="text-center   text-gray-600">Produksi</h2>
-                        <h2 class="text-center   text-gray-600">Quality Control</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('BD') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Engineering') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('EXIM') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Finance Accounting') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('GA') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Gudang') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('HR') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Legal') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Procurement') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Produksi') }}</h2>
+                        <h2 class="text-center   text-gray-600">{{ __('Quality Control') }}</h2>
                         <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
                     </div>
 
@@ -941,7 +941,8 @@
                         </h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Staff) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Supervisor) }}</h2>
+                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Supervisor) }}
+                        </h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Vice_President) }}
                         </h2>
                         <h2 class="text-center  font-semibold text-gray-600">{{ number_format($jabatan_Satpam) }}</h2>

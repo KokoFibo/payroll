@@ -222,7 +222,8 @@ class HomeController extends Controller
             $procurement, $produksi, $quality_control
         ];
         $presensi_by_departement_LabelArr = [
-            'BD', 'Engineering', 'EXIM',  'Finance Accounting', 'GA', 'Gudang', 'HR', 'Legal', 'Procurement', 'Produksi', 'Quality Control'
+            'BD 业务拓展', 'Engineering 工程', 'EXIM 出口进口',  'Finance Accounting 财务会计', 'GA 综合行政', 'Gudang 仓库', 'HR 人力资源',
+            'Legal 法务', 'Procurement 采购', 'Produksi 生产', 'Quality Control 质量控制'
         ];
 
 
