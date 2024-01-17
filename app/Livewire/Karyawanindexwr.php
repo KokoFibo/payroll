@@ -12,6 +12,7 @@ use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
 use App\Exports\KaryawanByDepartmentExport;
 
@@ -37,6 +38,7 @@ class Karyawanindexwr extends Component
     public $search_placement;
     public $search_department;
     public $search_jabatan;
+    public $search_etnis;
     public $search_status;
     public $search_tanggal_bergabung;
     public $search_gaji_pokok;
@@ -76,6 +78,31 @@ class Karyawanindexwr extends Component
         // dd($nama_file);
         return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
     }
+    public function excelByEtnis()
+    {
+
+        $nama_file = "";
+        switch ($this->search_etnis) {
+
+            case 'Jawa':
+                $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case 'Sunda':
+                $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case 'Tionghoa':
+                $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case 'Lainnya':
+                $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case 'kosong':
+                $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+        }
+        // dd($nama_file);
+        return Excel::download(new KaryawanByEtnisExport($this->search_etnis), $nama_file);
+    }
     public function mount()
     {
         $this->year = now()->year;
@@ -96,6 +123,7 @@ class Karyawanindexwr extends Component
         $this->search_company = "";
         $this->search_placement = "";
         $this->search_jabatan = "";
+        $this->search_etnis = "";
         $this->search_department = "";
         $this->search_tanggal_bergabung = "";
         $this->search_gaji_pokok = "";
@@ -207,6 +235,7 @@ class Karyawanindexwr extends Component
                     ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('etnis', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
             })
@@ -258,6 +287,13 @@ class Karyawanindexwr extends Component
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan', $this->search_jabatan);
+            })
+            ->when($this->search_etnis, function ($query) {
+                if ($this->search_etnis == 'kosong') {
+                    $query->where('etnis', null);
+                } else {
+                    $query->where('etnis', $this->search_etnis);
+                }
             })
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', $this->search_department);
