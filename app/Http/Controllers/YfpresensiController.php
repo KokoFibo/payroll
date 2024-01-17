@@ -72,6 +72,8 @@ class YfpresensiController extends Controller
 
     public function store(Request $request)
     {
+        Yfpresensi::query()->truncate();
+
         $lock = Lock::find(1);
         if ($lock->upload) {
             $lock->upload = false;
