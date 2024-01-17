@@ -1031,14 +1031,14 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-red-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3"></th>
-                            <th scope="col" class="px-6 py-3">All</th>
-                            <th scope="col" class="px-6 py-3">ASB</th>
-                            <th scope="col" class="px-6 py-3">DPA</th>
-                            <th scope="col" class="px-6 py-3">YCME</th>
-                            <th scope="col" class="px-6 py-3">YEV</th>
-                            <th scope="col" class="px-6 py-3">YIG</th>
-                            <th scope="col" class="px-6 py-3">YSM</th>
+                            <th scope="col" class="px-6 py-3 text-center"></th>
+                            <th scope="col" class="px-6 py-3 text-center">All</th>
+                            <th scope="col" class="px-6 py-3 text-center">ASB</th>
+                            <th scope="col" class="px-6 py-3 text-center">DPA</th>
+                            <th scope="col" class="px-6 py-3 text-center">YCME</th>
+                            <th scope="col" class="px-6 py-3 text-center">YEV</th>
+                            <th scope="col" class="px-6 py-3 text-center">YIG</th>
+                            <th scope="col" class="px-6 py-3 text-center">YSM</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1046,13 +1046,13 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     {{ $dp['tgl'] }}</th>
-                                <td class="px-6 py-4">{{ number_format($dp['All']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['ASB']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['DPA']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['YCME']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['YEV']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['YIG']) }}</td>
-                                <td class="px-6 py-4">{{ number_format($dp['YSM']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['All']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['ASB']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['DPA']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['YCME']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['YEV']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['YIG']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['YSM']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
