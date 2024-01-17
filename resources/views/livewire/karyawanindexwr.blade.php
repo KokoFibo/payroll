@@ -163,10 +163,29 @@
                                     </div>
                                 </th>
                                 @if (auth()->user()->role >= 4)
+                                    <th style="width: 220px; border-style: none;">
+                                        <div style="width: 130px">
+                                            <select wire:model.live="search_etnis" class="form-select"
+                                                aria-label="Default select example">
+                                                <option value="">{{ __('Etnis') }}</option>
+                                                <option value="Jawa">{{ __('Jawa') }}</option>
+                                                <option value="Sunda">{{ __('Sunda') }}</option>
+                                                <option value="Tionghoa">{{ __('Tionghoa') }}</option>
+                                                <option value="China">{{ __('China') }}</option>
+                                                <option value="Lainnya">{{ __('Lainnya') }}</option>
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                            </select>
+                                        </div>
+                                    </th>
                                     <th style="width: 150px; border-style: none;">
                                         <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
                                             @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
                                             Departement</button>
+                                    </th>
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
+                                            @if ($search_etnis == null) disabled @endif>Excel by
+                                            Etnis</button>
                                     </th>
                                 @endif
 
@@ -189,6 +208,8 @@
                                 <th class="text-center" wire:click="sortColumnName('jabatan')">
                                     {{ __('Jabatan') }} </th>
                                 @if (Auth::user()->role > 3)
+                                    <th class="text-center" wire:click="sortColumnName('etnis')">
+                                        {{ __('Etnis') }}
                                     <th class="text-center" wire:click="sortColumnName('level_jabatan')">
                                         {{ __('Level Jabatan') }}
                                 @endif
@@ -250,6 +271,7 @@
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     @if (Auth::user()->role > 3)
+                                        <td class="text-center">{{ $data->etnis }}</td>
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
