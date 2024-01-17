@@ -130,6 +130,8 @@
                     </h3>
                     <div>
                         @if (auth()->user()->role == 5)
+                            <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
+                                <button class="btn btn-warning">{{ __('Delete Tgl Presensi') }}</button></a>
                             <a href="/addpresensi">
                                 <button class="btn btn-success">{{ __('Add Presensi') }}</button></a>
                         @endif

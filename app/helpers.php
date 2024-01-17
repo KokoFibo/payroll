@@ -900,7 +900,7 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
         $jabatan = $data_jabatan->jabatan;
         $jabatan_khusus = is_jabatan_khusus($jabatan);
     } catch (\Exception $e) {
-        dd('id_karyawan = ', $id);
+        dd('ID karyawan tidak ada dalam database = ', $id);
         return $e->getMessage();
     }
 
