@@ -44,6 +44,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\AddPresensi;
 
 // Middleware
 Auth::routes([
@@ -157,6 +158,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/absensikosong', AbsensiKosong::class);
                     Route::get('/liburnasional', Liburnasionalwr::class);
                     Route::get('/dataresigned', DataResigned::class);
+                    Route::get('/addpresensi', AddPresensi::class);
 
 
                     // TEST
