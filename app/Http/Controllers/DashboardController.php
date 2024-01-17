@@ -23,6 +23,10 @@ class DashboardController extends Controller
         $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
+        $jumlah_karyawan_baru_hari_ini = Karyawan::where('tanggal_bergabung', today())->count();
+        $jumlah_karyawan_Resigned_hari_ini = Karyawan::where('tanggal_resigned', today())->count();
+        $jumlah_karyawan_blacklist_hari_ini = Karyawan::where('tanggal_blacklist', today())->count();
+
         $karyawan_baru_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
             ->whereMonth('tanggal_bergabung', $month)
             ->whereYear('tanggal_bergabung', $year)
@@ -273,7 +277,8 @@ class DashboardController extends Controller
             'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
             'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
             'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
-            'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen', 'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr'
+            'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen', 'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
+            'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini'
 
         ]));
     }
