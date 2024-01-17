@@ -72,7 +72,6 @@ class YfpresensiController extends Controller
 
     public function store(Request $request)
     {
-        Yfpresensi::query()->truncate();
 
         $lock = Lock::find(1);
         if ($lock->upload) {
@@ -84,6 +83,7 @@ class YfpresensiController extends Controller
         //     $lock->upload = true;
         //     $lock->save();
         // }
+        Yfpresensi::query()->truncate();
 
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
