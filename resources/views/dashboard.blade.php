@@ -759,28 +759,28 @@
                     </div>
 
                     <div class="flex flex-column gap-2">
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($bd) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($engineering) }}</h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($exim) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($bd) }}</h2>
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($engineering) }}</h2>
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($exim) }}
                         </h2>
 
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($finance_accounting) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($finance_accounting) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($ga) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($ga) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($gudang) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($gudang) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($hr) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($hr) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($legal) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($legal) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600">{{ number_format($procurement) }}
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($procurement) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600 ">{{ number_format($produksi) }}
+                        <h2 class="text-right  font-semibold text-gray-600 ">{{ number_format($produksi) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600 ">{{ number_format($quality_control) }}
+                        <h2 class="text-right  font-semibold text-gray-600 ">{{ number_format($quality_control) }}
                         </h2>
-                        <h2 class="text-center  font-semibold text-gray-600 text-lg">
+                        <h2 class="text-right  font-semibold text-gray-600 text-lg">
                             {{ number_format($total_presensi_by_departemen) }}
                         </h2>
                     </div>
