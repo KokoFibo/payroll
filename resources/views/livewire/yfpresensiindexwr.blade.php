@@ -128,8 +128,14 @@
                     <h3 class="fw-semibold fs-5 fwfs-3-xl">
                         {{ __('Data Presensi') }} {{ format_tgl_hari($tanggal) }}
                     </h3>
-                    <a href="/yfupload">
-                        <button class="btn btn-primary float-end">{{ __('Upload Presensi') }}</button></a>
+                    <div>
+                        @if (auth()->user()->role == 5)
+                            <a href="/addpresensi">
+                                <button class="btn btn-success">{{ __('Add Presensi') }}</button></a>
+                        @endif
+                        <a href="/yfupload">
+                            <button class="btn btn-primary">{{ __('Upload Presensi') }}</button></a>
+                    </div>
                 </div>
             </div>
             <style>
