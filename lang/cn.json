@@ -299,5 +299,8 @@
     "Tanggal Bergabung": "加入日期",
     "Gaji Rekomendasi": "建议工资",
     "Rekomendasi": "建议工资",
-    "Presensi by Department": "按部门考勤"
+    "Presensi by Department": "按部门考勤",
+    "Karyawan Baru Hari Ini": "今天新员工",
+    "Karyawan Resigned Hari Ini": "今天员工离职",
+    "Karyawan Blacklist Hari Ini": "今天员工被列入黑名单"
 }
