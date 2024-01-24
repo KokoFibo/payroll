@@ -79,6 +79,9 @@ class Payrollwr extends Component
             case 9:
                 $nama_file = 'payroll_YSM.xlsx';
                 break;
+            case 10:
+                $nama_file = 'payroll_YAM.xlsx';
+                break;
         }
 
         // return Excel::download(new PayrollExport($payroll), $nama_file);
@@ -745,6 +748,18 @@ class Payrollwr extends Component
                     ->sum('total');
                 $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
                     ->where('company', 'YSM')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->paginate($this->perpage);
+                break;
+            case 10:
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('company', 'YAM')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YAM')
+                    ->where('company', 'YAM')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
