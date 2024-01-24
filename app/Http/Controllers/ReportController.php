@@ -115,6 +115,15 @@ class ReportController extends Controller
                     ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
                 $nama_file = 'YSM_Bank.xlsx';
                 break;
+            case '11':
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $request->month)
+                    ->whereYear('date', $request->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('company', 'YAM')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                $nama_file = 'YAM_Bank.xlsx';
+                break;
         }
 
         $nama_file = nama_file_excel($nama_file, $request->month, $request->year);

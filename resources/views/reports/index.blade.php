@@ -13,17 +13,17 @@
                     <div class="d-lg-flex flex-row ">
                         <div class="col-12 col-lg-6">
                             <select class="form-select form-select-lg mb-3" aria-label="Large select example" name="year">
-                                <option value="2023">2023</option>
                                 <option value="2024">2024</option>
+                                <option value="2023">2023</option>
 
                             </select>
                         </div>
                         <div class="col-12 col-lg-6">
                             <select class="form-select form-select-lg mb-3" aria-label="Large select example"
                                 name="month">
+                                <option value="1">Januari</option>
                                 <option value="11">November</option>
                                 <option value="12">Desember</option>
-                                <option value="1">Januari</option>
                             </select>
                         </div>
                     </div>
@@ -41,6 +41,7 @@
                             <option value="8">YEV</option>
                             <option value="9">YIG</option>
                             <option value="10">YSM</option>
+                            <option value="11">YAM</option>
 
                         </select>
                     </div>

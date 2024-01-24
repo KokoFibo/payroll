@@ -95,6 +95,7 @@
                                 <option value="7">YEV</option>
                                 <option value="8">YIG</option>
                                 <option value="9">YSM</option>
+                                <option value="10">YAM</option>
                             </select>
                         </div>
                     </div>

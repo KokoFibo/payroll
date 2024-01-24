@@ -29,85 +29,85 @@ class Karyawanwr extends Component
         // $this->id_karyawan = getNextIdKaryawan();
         $this->id_karyawan = '000000';
         $this->status_karyawan = 'PKWT';
-        $this->tanggal_bergabung =  date( 'd M Y', strtotime( now()->toDateString() ) );
+        $this->tanggal_bergabung =  date('d M Y', strtotime(now()->toDateString()));
         $this->id_karyawan_ini = '';
         $this->status_off = true;
     }
 
     protected $rules = [
 
-            'id_karyawan' => 'required',
-            'nama' => 'required',
-            'email' => 'email|nullable',
-            'tanggal_lahir' => 'date|before:today|required',
-            // PRIBADI
-            'hp' => 'nullable',
-            'telepon' => 'nullable',
-            'tempat_lahir' => 'required',
-            'gender' => 'required',
-            'status_pernikahan' => 'nullable',
-            'golongan_darah' => 'nullable',
-            'agama' => 'nullable',
-            'etnis' => 'required',
-            // IDENTITAS
-            'jenis_identitas' => 'required',
-            'no_identitas' => 'required',
-            'alamat_identitas' => 'required',
-            'alamat_tinggal' => 'required',
-            // KEPEGAWAIAN
-            'status_karyawan' => 'required',
-            'tanggal_bergabung' => 'date|required',
-            'company' => 'required',
-            'placement' => 'required',
-            'departemen' => 'required',
-            'jabatan' => 'required',
-            'level_jabatan' => 'nullable',
-            'nama_bank' => 'nullable',
-            'nomor_rekening' => 'nullable',
-            // PAYROLL
-            'metode_penggajian' => 'required',
-            'gaji_pokok' => 'numeric|required',
-            'gaji_overtime' => 'numeric|required',
-            'gaji_shift_malam_satpam' => 'numeric',
-            'bonus' => 'numeric|nullable',
-            'tunjangan_jabatan' => 'numeric|nullable',
-            'tunjangan_bahasa' => 'numeric|nullable',
-            'tunjangan_skill' => 'numeric|nullable',
-            'tunjangan_lembur_sabtu' => 'numeric|nullable',
-            'tunjangan_lama_kerja' => 'numeric|nullable',
-            'iuran_air' => 'numeric|required',
-            'denda' => 'numeric|nullable',
-            'iuran_locker' => 'numeric|nullable',
-            'gaji_bpjs' => 'nullable',
-            'potongan_JHT' => 'nullable',
-            'potongan_JP' => 'nullable',
-            'potongan_JKK' => 'nullable',
-            'potongan_JKM' => 'nullable',
-            'potongan_kesehatan' => 'nullable',
-            'no_npwp' => 'nullable',
-            'ptkp' => 'nullable',
+        'id_karyawan' => 'required',
+        'nama' => 'required',
+        'email' => 'email|nullable',
+        'tanggal_lahir' => 'date|before:today|required',
+        // PRIBADI
+        'hp' => 'nullable',
+        'telepon' => 'nullable',
+        'tempat_lahir' => 'required',
+        'gender' => 'required',
+        'status_pernikahan' => 'nullable',
+        'golongan_darah' => 'nullable',
+        'agama' => 'nullable',
+        'etnis' => 'required',
+        // IDENTITAS
+        'jenis_identitas' => 'required',
+        'no_identitas' => 'required',
+        'alamat_identitas' => 'required',
+        'alamat_tinggal' => 'required',
+        // KEPEGAWAIAN
+        'status_karyawan' => 'required',
+        'tanggal_bergabung' => 'date|required',
+        'company' => 'required',
+        'placement' => 'required',
+        'departemen' => 'required',
+        'jabatan' => 'required',
+        'level_jabatan' => 'nullable',
+        'nama_bank' => 'nullable',
+        'nomor_rekening' => 'nullable',
+        // PAYROLL
+        'metode_penggajian' => 'required',
+        'gaji_pokok' => 'numeric|required',
+        'gaji_overtime' => 'numeric|required',
+        'gaji_shift_malam_satpam' => 'numeric',
+        'bonus' => 'numeric|nullable',
+        'tunjangan_jabatan' => 'numeric|nullable',
+        'tunjangan_bahasa' => 'numeric|nullable',
+        'tunjangan_skill' => 'numeric|nullable',
+        'tunjangan_lembur_sabtu' => 'numeric|nullable',
+        'tunjangan_lama_kerja' => 'numeric|nullable',
+        'iuran_air' => 'numeric|required',
+        'denda' => 'numeric|nullable',
+        'iuran_locker' => 'numeric|nullable',
+        'gaji_bpjs' => 'nullable',
+        'potongan_JHT' => 'nullable',
+        'potongan_JP' => 'nullable',
+        'potongan_JKK' => 'nullable',
+        'potongan_JKM' => 'nullable',
+        'potongan_kesehatan' => 'nullable',
+        'no_npwp' => 'nullable',
+        'ptkp' => 'nullable',
 
     ];
-    
+
 
     public function save()
     {
-            $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+        $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
-            $this->bonus = convert_numeric($this->bonus);
-            $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
-            $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
-            $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
-            $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
-            $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
-            $this->iuran_air = convert_numeric($this->iuran_air);
-            $this->iuran_locker = convert_numeric($this->iuran_locker);
-            $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
-            $this->denda = convert_numeric($this->denda);
+        $this->bonus = convert_numeric($this->bonus);
+        $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+        $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+        $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+        $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+        $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+        $this->iuran_air = convert_numeric($this->iuran_air);
+        $this->iuran_locker = convert_numeric($this->iuran_locker);
+        $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+        $this->denda = convert_numeric($this->denda);
         $this->validate();
-        $this->tanggal_lahir = date( 'Y-m-d', strtotime( $this->tanggal_lahir ) );
-        $this->tanggal_bergabung = date( 'Y-m-d', strtotime( $this->tanggal_bergabung ) );
+        $this->tanggal_lahir = date('Y-m-d', strtotime($this->tanggal_lahir));
+        $this->tanggal_bergabung = date('Y-m-d', strtotime($this->tanggal_bergabung));
 
         $ada = Karyawan::where('id_karyawan', $this->id_karyawan_ini)->first();
 
@@ -188,12 +188,12 @@ class Karyawanwr extends Component
                     'password' => Hash::make(generatePassword($this->tanggal_lahir)),
                     // 'remember_token' => Str::random(10),
                 ]);
-                $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
-        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
+                $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+                $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
                 $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
             } catch (\Exception $e) {
-                $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
-        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
+                $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+                $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
                 $this->dispatch('error', message: $e->getMessage());
                 return $e->getMessage();
             }
@@ -207,16 +207,16 @@ class Karyawanwr extends Component
         $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
-            $this->bonus = convert_numeric($this->bonus);
-            $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
-            $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
-            $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
-            $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
-            $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
-            $this->iuran_air = convert_numeric($this->iuran_air);
-            $this->iuran_locker = convert_numeric($this->iuran_locker);
-            $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
-            $this->denda = convert_numeric($this->denda);
+        $this->bonus = convert_numeric($this->bonus);
+        $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
+        $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+        $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
+        $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
+        $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
+        $this->iuran_air = convert_numeric($this->iuran_air);
+        $this->iuran_locker = convert_numeric($this->iuran_locker);
+        $this->gaji_bpjs = convert_numeric($this->gaji_bpjs);
+        $this->denda = convert_numeric($this->denda);
         $this->validate();
 
         try {
@@ -277,20 +277,20 @@ class Karyawanwr extends Component
 
 
             $data->save();
-            $user = User::where('username',$this->id_karyawan )->first();
+            $user = User::where('username', $this->id_karyawan)->first();
             $data_user = User::find($user->id);
             $data_user->name = titleCase($this->nama);
             $data_user->email = trim($this->email, ' ');
             $data_user->password  = Hash::make(generatePassword($this->tanggal_lahir));
             $data_user->save();
-            
 
-            $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
-        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
+
+            $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+            $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
             $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
         } catch (\Exception $e) {
-            $this->tanggal_lahir = date( 'd M Y', strtotime( $this->tanggal_lahir ) );
-        $this->tanggal_bergabung = date( 'd M Y', strtotime( $this->tanggal_bergabung ) );
+            $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+            $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
             $this->dispatch('error', message: $e->getMessage());
             return $e->getMessage();
         }
