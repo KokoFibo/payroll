@@ -34,6 +34,7 @@
                     <option value="7">YEV</option>
                     <option value="8">YIG</option>
                     <option value="9">YSM</option>
+                    <option value="10">YAM</option>
                 </select>
             @endif
 
@@ -147,7 +148,7 @@
                                             aria-label="Default select example">
                                             <option value="">{{ __('Department') }}</option>
                                             @foreach ($departments as $j)
-                                                <option value="{{ $j->departemen }}">{{ $j->departemen }}</option>
+                                                <option value="{{ $j }}">{{ $j }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -158,7 +159,7 @@
                                             aria-label="Default select example">
                                             <option value="">{{ __('Jabatan') }}</option>
                                             @foreach ($jabatans as $j)
-                                                <option value="{{ $j->jabatan }}">{{ $j->jabatan }}</option>
+                                                <option value="{{ $j }}">{{ $j }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -169,12 +170,20 @@
                                             <select wire:model.live="search_etnis" class="form-select"
                                                 aria-label="Default select example">
                                                 <option value="">{{ __('Etnis') }}</option>
-                                                <option value="Jawa">{{ __('Jawa') }}</option>
+                                                {{-- <option value="Jawa">{{ __('Jawa') }}</option>
                                                 <option value="Sunda">{{ __('Sunda') }}</option>
                                                 <option value="Tionghoa">{{ __('Tionghoa') }}</option>
                                                 <option value="China">{{ __('China') }}</option>
                                                 <option value="Lainnya">{{ __('Lainnya') }}</option>
-                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
+                                                @foreach ($etnises as $j)
+                                                    @if ($j == '')
+                                                        <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                                    @else
+                                                        <option value="{{ $j }}">{{ $j }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
                                             </select>
                                         </div>
                                     </th>

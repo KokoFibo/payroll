@@ -113,6 +113,7 @@ class Karyawanindexwr extends Component
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
         $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
+        $this->search_etnis = "";
     }
 
     public function reset_filter()
@@ -177,6 +178,23 @@ class Karyawanindexwr extends Component
     {
         $this->resetPage();
     }
+    public function updatingSearchPlacement()
+    {
+        $this->resetPage();
+    }
+    public function updatingSearchDepartment()
+    {
+
+        $this->resetPage();
+    }
+    public function updatingSearchEtnis()
+    {
+        $this->resetPage();
+    }
+    public function updatingSearchJabatan()
+    {
+        $this->resetPage();
+    }
 
     public function excel()
     {
@@ -212,6 +230,9 @@ class Karyawanindexwr extends Component
                 break;
             case '9':
                 $nama_file = "Karyawan_YSM.xlsx";
+                break;
+            case '10':
+                $nama_file = "Karyawan_YAM.xlsx";
                 break;
         }
         return Excel::download(new karyawanExport($this->selected_company, $this->selectStatus), $nama_file);
@@ -260,8 +281,33 @@ class Karyawanindexwr extends Component
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
-        $jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
-        $departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
+
+        // $departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
+        switch ($this->search_placement) {
+            case 1:
+                $departments = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
+                $jabatans = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
+                $etnises = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
+                break;
+            case 2:
+                $departments = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
+                $jabatans = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
+                $etnises = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
+
+                break;
+            case 3:
+                $departments = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
+                $jabatans = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
+                $etnises = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
+                break;
+            default:
+                $departments = Karyawan::pluck('departemen')->whereIn('status_karyawan', $statuses)->unique();
+                $jabatans = Karyawan::pluck('jabatan')->whereIn('status_karyawan', $statuses)->unique();
+                $etnises = Karyawan::pluck('etnis')->whereIn('status_karyawan', $statuses)->unique();
+                break;
+        }
+
+
 
 
         $datas = Karyawan::query()
@@ -296,7 +342,7 @@ class Karyawanindexwr extends Component
                 }
             })
             ->when($this->search_department, function ($query) {
-                $query->where('departemen', $this->search_department);
+                $query->where('departemen', trim($this->search_department));
             })
             // ->when($this->search_tanggal_bergabung, function ($query) {
             //     $this->cx++;
@@ -316,12 +362,8 @@ class Karyawanindexwr extends Component
             // ->orderBy('gaji_pokok', $this->search_gaji_pokok)
             // ->orderBy('gaji_overtime', $this->search_gaji_overtime)
             ->orderBy($this->columnName, $this->direction)
-
-
-
-
             ->paginate($this->perpage);
         $this->cx++;
-        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans']));
+        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises']));
     }
 }
