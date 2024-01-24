@@ -40,14 +40,17 @@ class Test extends Component
 
   public function render()
   {
-    // $data = Karyawan::where('tanggal_bergabung', '2024-01-15')->count();
-    $data = Karyawan::where('tanggal_bergabung', today())->count();
-    dd($data);
+    $data = Karyawan::where('placement', 'YCME')->pluck('departemen')->unique();
 
 
 
 
 
-    return view('livewire.test');
+
+
+
+
+
+    return view('livewire.test', compact('data'));
   }
 }

@@ -86,13 +86,18 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
             case 9:
                 return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YSM');
                 break;
+            case 10:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YAM');
+                break;
         }
     }
 
     public function map($karyawan): array
     {
-        return [$karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan, 
-        $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs];
+        return [
+            $karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan,
+            $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs
+        ];
     }
 
     public function columnFormats(): array
@@ -100,21 +105,22 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
         return [
             // 'C' => NumberFormat::FORMAT_TEXT,
             // 'D' => '0',
-           
+
             'G' => NumberFormat::FORMAT_DATE_XLSX15,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-          
-           
+
+
         ];
     }
 
     public function headings(): array
     {
-        return [['Data Karyawan'], ['ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
-        'Status Karyawan', 'Tanggal Bergabung','Metode Penggajian','Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS', 
-         ]];
+        return [['Data Karyawan'], [
+            'ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
+            'Status Karyawan', 'Tanggal Bergabung', 'Metode Penggajian', 'Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS',
+        ]];
     }
 
     public function title(): string
@@ -134,5 +140,4 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
         // $sheet->getStyle('1')->getFont()->setBold(true);
         // $sheet->getStyle('2')->getFont()->setBold(true);
     }
-
 }
