@@ -184,7 +184,6 @@ class Karyawanindexwr extends Component
     }
     public function updatingSearchDepartment()
     {
-
         $this->resetPage();
     }
     public function updatingSearchEtnis()
@@ -192,6 +191,11 @@ class Karyawanindexwr extends Component
         $this->resetPage();
     }
     public function updatingSearchJabatan()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchCompany()
     {
         $this->resetPage();
     }
@@ -281,34 +285,74 @@ class Karyawanindexwr extends Component
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
+        $departments = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->when($this->search_company, function ($query) {
+                $query->where('company', trim($this->search_company));
+            })
+            ->pluck('departemen')->unique();
 
-        // $departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
-        switch ($this->search_placement) {
-            case 1:
-                $departments = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
-                $jabatans = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
-                $etnises = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
-                break;
-            case 2:
-                $departments = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
-                $jabatans = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
-                $etnises = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
+        $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->when($this->search_company, function ($query) {
+                $query->where('company', trim($this->search_company));
+            })
+            ->pluck('jabatan')->unique();
 
-                break;
-            case 3:
-                $departments = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->pluck('departemen')->unique();
-                $jabatans = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('jabatan')->unique();
-                $etnises = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
-                break;
-            default:
-                $departments = Karyawan::pluck('departemen')->unique();
-                $jabatans = Karyawan::pluck('jabatan')->unique();
-                $etnises = Karyawan::pluck('etnis')->unique();
-                break;
-        }
+        $etnises = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->when($this->search_company, function ($query) {
+                $query->where('company', trim($this->search_company));
+            })
+            ->pluck('etnis')->unique();
 
-
-
+        $companies = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->pluck('company')->unique();
 
         $datas = Karyawan::query()
             // ->orderBy('nama', $this->direction)
@@ -364,6 +408,6 @@ class Karyawanindexwr extends Component
             ->orderBy($this->columnName, $this->direction)
             ->paginate($this->perpage);
         $this->cx++;
-        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises']));
+        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises', 'companies']));
     }
 }
