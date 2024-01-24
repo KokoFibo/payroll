@@ -321,6 +321,41 @@ class Karyawanindexwr extends Component
             })
             ->pluck('jabatan')->unique();
 
+
+
+        $companies = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->pluck('company')->unique();
+
+        $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
+            ->when($this->search_placement, function ($query) {
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
+            })
+            ->when($this->search_department, function ($query) {
+                $query->where('departemen', trim($this->search_department));
+            })
+            ->when($this->search_company, function ($query) {
+                $query->where('company', trim($this->search_company));
+            })
+            ->pluck('jabatan')->unique();
+
         $etnises = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
                 if ($this->search_placement == 1) {
@@ -337,22 +372,10 @@ class Karyawanindexwr extends Component
             ->when($this->search_company, function ($query) {
                 $query->where('company', trim($this->search_company));
             })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan', trim($this->search_jabatan));
+            })
             ->pluck('etnis')->unique();
-
-        $companies = Karyawan::whereIn('status_karyawan', $statuses)
-            ->when($this->search_placement, function ($query) {
-                if ($this->search_placement == 1) {
-                    $query->where('placement', 'YCME');
-                } elseif ($this->search_placement == 2) {
-                    $query->where('placement', 'YEV');
-                } else {
-                    $query->whereIn('placement', ['YIG', 'YSM']);
-                }
-            })
-            ->when($this->search_department, function ($query) {
-                $query->where('departemen', trim($this->search_department));
-            })
-            ->pluck('company')->unique();
 
         $datas = Karyawan::query()
             // ->orderBy('nama', $this->direction)
@@ -408,6 +431,6 @@ class Karyawanindexwr extends Component
             ->orderBy($this->columnName, $this->direction)
             ->paginate($this->perpage);
         $this->cx++;
-        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises', 'companies']));
+        return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises', 'companies', 'jabatans']));
     }
 }

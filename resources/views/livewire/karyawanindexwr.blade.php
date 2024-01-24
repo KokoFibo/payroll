@@ -21,7 +21,6 @@
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
         <div class="col-xl-2 col-12">
-            <p>search_company: {{ $search_company }}</p>
             @if (Auth::user()->role > 3)
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
                     <option value="0"selected>{{ __('All Companies') }}</option>
