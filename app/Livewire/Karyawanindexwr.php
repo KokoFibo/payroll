@@ -301,9 +301,9 @@ class Karyawanindexwr extends Component
                 $etnises = Karyawan::whereIn('placement', ['YIG', 'YSM'])->whereIn('status_karyawan', $statuses)->where('departemen', $this->search_department)->pluck('etnis')->unique();
                 break;
             default:
-                $departments = Karyawan::pluck('departemen')->whereIn('status_karyawan', $statuses)->unique();
-                $jabatans = Karyawan::pluck('jabatan')->whereIn('status_karyawan', $statuses)->unique();
-                $etnises = Karyawan::pluck('etnis')->whereIn('status_karyawan', $statuses)->unique();
+                $departments = Karyawan::pluck('departemen')->unique();
+                $jabatans = Karyawan::pluck('jabatan')->unique();
+                $etnises = Karyawan::pluck('etnis')->unique();
                 break;
         }
 
