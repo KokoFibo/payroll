@@ -301,6 +301,9 @@ class Karyawanindexwr extends Component
             ->when($this->search_company, function ($query) {
                 $query->where('company', trim($this->search_company));
             })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan', trim($this->search_jabatan));
+            })
             ->pluck('departemen')->unique();
 
         $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
@@ -335,6 +338,9 @@ class Karyawanindexwr extends Component
             })
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', trim($this->search_department));
+            })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan', trim($this->search_jabatan));
             })
             ->pluck('company')->unique();
 
