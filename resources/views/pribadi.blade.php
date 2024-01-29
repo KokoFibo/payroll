@@ -169,6 +169,42 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Nama Kontak Darurat') }} </label>
+                    <input wire:model="kontak_darurat" type="text"
+                        class="form-control @error('kontak_darurat') is-invalid @enderror">
+                    @error('kontak_darurat')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Handphone1') }} </label>
+                    <input wire:model="hp1" type="text" class="form-control @error('hp1') is-invalid @enderror">
+                    @error('hp1')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Handphone2') }} </label>
+                    <input wire:model="hp2" type="text" class="form-control @error('hp2') is-invalid @enderror">
+                    @error('hp2')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

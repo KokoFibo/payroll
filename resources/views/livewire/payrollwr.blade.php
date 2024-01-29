@@ -9,7 +9,6 @@
 
                 <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
 
-
                 <div wire:loading>
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -248,6 +247,9 @@
                                 <th wire:click="sortColumnName('kesehatan')">Kesehatan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('tanggungan')">Tanggungan <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
                                         class="fa-solid fa-sort"></i></th>
 
@@ -331,6 +333,9 @@
                                             <td class="text-end">{{ $p->jkm ? 'Yes' : '' }}</td>
                                             <td class="text-end">
                                                 {{ $p->kesehatan ? number_format($p->kesehatan) : '' }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $p->tanggungan ? number_format($p->tanggungan) : '' }}
                                             </td>
 
                                             <td class="text-end">{{ number_format($p->total) }}</td>

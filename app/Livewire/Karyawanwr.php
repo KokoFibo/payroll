@@ -20,6 +20,8 @@ class Karyawanwr extends Component
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
     public $iuran_air, $denda, $iuran_locker, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
     public $no_npwp, $ptkp;
+    public $kontak_darurat, $hp1, $hp2;
+    public $tanggungan;
 
     public $id_karyawan_ini, $update, $status_off;
 
@@ -29,6 +31,7 @@ class Karyawanwr extends Component
         // $this->id_karyawan = getNextIdKaryawan();
         $this->id_karyawan = '000000';
         $this->status_karyawan = 'PKWT';
+        $this->tanggungan = 0;
         $this->tanggal_bergabung =  date('d M Y', strtotime(now()->toDateString()));
         $this->id_karyawan_ini = '';
         $this->status_off = true;
@@ -49,6 +52,9 @@ class Karyawanwr extends Component
         'golongan_darah' => 'nullable',
         'agama' => 'nullable',
         'etnis' => 'required',
+        'kontak_darurat' => 'nullable',
+        'hp1' => 'nullable',
+        'hp2' => 'nullable',
         // IDENTITAS
         'jenis_identitas' => 'required',
         'no_identitas' => 'required',
@@ -84,6 +90,7 @@ class Karyawanwr extends Component
         'potongan_JKK' => 'nullable',
         'potongan_JKM' => 'nullable',
         'potongan_kesehatan' => 'nullable',
+        'tanggungan' => 'nullable',
         'no_npwp' => 'nullable',
         'ptkp' => 'nullable',
 
@@ -132,6 +139,10 @@ class Karyawanwr extends Component
             $data->golongan_darah = $this->golongan_darah;
             $data->agama = $this->agama;
             $data->etnis = $this->etnis;
+            $data->kontak_darurat = $this->kontak_darurat;
+            $data->hp1 = $this->hp1;
+            $data->hp2 = $this->hp2;
+
             $data->denda = $this->denda;
 
             // Identitas
@@ -168,8 +179,8 @@ class Karyawanwr extends Component
             $data->potongan_JP = $this->potongan_JP;
             $data->potongan_JKK = $this->potongan_JKK;
             $data->potongan_JKM = $this->potongan_JKM;
-
             $data->potongan_kesehatan = $this->potongan_kesehatan;
+            $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
 
@@ -234,6 +245,9 @@ class Karyawanwr extends Component
             $data->golongan_darah = $this->golongan_darah;
             $data->agama = $this->agama;
             $data->etnis = $this->etnis;
+            $data->kontak_darurat = $this->kontak_darurat;
+            $data->hp1 = $this->hp1;
+            $data->hp2 = $this->hp2;
             $data->denda = $this->denda;
 
             // Identitas
@@ -270,8 +284,8 @@ class Karyawanwr extends Component
             $data->potongan_JP = $this->potongan_JP;
             $data->potongan_JKK = $this->potongan_JKK;
             $data->potongan_JKM = $this->potongan_JKM;
-
             $data->potongan_kesehatan = $this->potongan_kesehatan;
+            $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
 

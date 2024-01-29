@@ -138,7 +138,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Iuran air minum') }} <span
                                 class="text-danger">*</span></label>
@@ -151,36 +151,36 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Denda') }}</label>
                         <input wire:model="denda" type="text" type-currency="IDR" class="form-control">
 
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Iuran Locker') }}</label>
                         <input wire:model="iuran_locker" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Gaji BPJS') }}</label>
                         <input wire:model="gaji_bpjs" type="text" type-currency="IDR" class="form-control">
                     </div>
                 </div>
-
-            </div>
-            <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Nomor NPWP') }}</label>
                         <input wire:model="no_npwp" type="number" class="form-control">
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">PTKP </label>
@@ -197,58 +197,107 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">{{ __('Potongan BPJS') }}</label>
-                <div class="mb-3 d-flex gap-4">
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_JHT" class="form-check-input"
-                            {{ $potongan_JHT == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            JHT
-                        </label>
-                    </div>
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_JP" class="form-check-input"
-                            {{ $potongan_JP == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            JP
-                        </label>
-                    </div>
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_JKK"
-                            class="form-check-input @error('potongan_JKK') is-invalid @enderror""
-                            {{ $potongan_JKK == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            JKK
-                        </label>
-                        @error('potongan_JKK')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_JKM" class="form-check-input"
-                            {{ $potongan_JKM == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            JKM
-                        </label>
-                    </div>
 
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_kesehatan" class="form-check-input"
-                            {{ $potongan_kesehatan == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            Kesehatan
-                        </label>
-                    </div>
 
+
+            <div class="row">
+                {{-- Potongan BPJS --}}
+                <div class="col-md-6">
+                    <label class="form-label">{{ __('Potongan BPJS') }}</label>
+                    <div class="mb-3 d-flex gap-4">
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_JHT" class="form-check-input"
+                                {{ $potongan_JHT == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                JHT
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_JP" class="form-check-input"
+                                {{ $potongan_JP == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                JP
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_JKK"
+                                class="form-check-input @error('potongan_JKK') is-invalid @enderror""
+                                {{ $potongan_JKK == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                JKK
+                            </label>
+                            @error('potongan_JKK')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_JKM" class="form-check-input"
+                                {{ $potongan_JKM == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                JKM
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_kesehatan" class="form-check-input"
+                                {{ $potongan_kesehatan == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Kesehatan
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {{-- Tanggungan --}}
+                <div class="col-md-6">
+                    <label class="form-label">{{ __('Tanggungan BPJS') }}</label>
+                    <div class="mb-3 d-flex gap-4">
+
+                        <div class="form-check mt-2">
+                            <input type="radio" wire:model="tanggungan" class="form-check-input" value="0"
+                                nama="tanggungan"
+                                id="flexRadioDefault1>
+                            <label class="form-check-label"
+                                for="flexRadioDefault1">
+                            Tidak ada
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="radio" wire:model="tanggungan" class="form-check-input" value="1"
+                                nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                                for="flexRadioDefault1">
+                            1 Orang
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="radio" wire:model="tanggungan" class="form-check-input" value="2"
+                                nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                                for="flexRadioDefault1">
+                            2 Orang
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="radio" wire:model="tanggungan" class="form-check-input" value="3"
+                                nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                                for="flexRadioDefault1">
+                            3 Orang
+                            </label>
+
+                        </div>
+                        <div class="form-check mt-2">
+                            <input type="radio" wire:model="tanggungan" class="form-check-input" value="4"
+                                nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                                for="flexRadioDefault1">
+                            4 Orang
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
+
     </div>
-
-
-</div>
 </div>
