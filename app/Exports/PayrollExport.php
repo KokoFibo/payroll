@@ -167,6 +167,7 @@ class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, Sh
             $payroll->jkk,
             $payroll->jkm,
             $payroll->kesehatan,
+            $payroll->tanggungan,
             $payroll->iuran_air,
             $payroll->iuran_locker,
             $payroll->status_karyawan,
@@ -208,6 +209,7 @@ class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, Sh
                 'JKK',
                 'JKM',
                 'Kesehatan',
+                'Tanggungan',
                 'Iuran Air',
                 'Iuran Locker',
                 'Status Karyawan',
@@ -239,7 +241,8 @@ class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, Sh
             'Z' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'AA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'AB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-            'AD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'AC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'AE' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
         ];
     }
 

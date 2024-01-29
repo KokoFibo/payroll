@@ -330,6 +330,16 @@
                                             </td>
                                         </tr>
                                     @endif
+                                    @if ($data_payroll->tanggungan != 0)
+                                        <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                Tanggungan
+                                            </td>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                Rp. {{ number_format($data_payroll->tanggungan) }}
+                                            </td>
+                                        </tr>
+                                    @endif
                                     {{-- @endif --}}
                                     @if ($data_karyawan->ptkp != 0)
                                         <tr>

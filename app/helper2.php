@@ -214,10 +214,26 @@ function build_payroll($month, $year)
         }
 
         if ($data->karyawan->potongan_kesehatan == 1) {
-            $kesehatan = $data->karyawan->gaji_bpjs * 0.01;
+            if ($data->karyawan->gaji_bpjs <= 4601988) {
+                $kesehatan = 4601988 * 0.01;
+            } else {
+                $kesehatan = $data->karyawan->gaji_bpjs * 0.01;
+            }
         } else {
             $kesehatan = 0;
         }
+
+        if ($data->karyawan->tanggungan >= 1) {
+            if ($data->karyawan->gaji_bpjs <= 4601988) {
+                $tanggungan = $data->karyawan->tanggungan * 4601988 * 0.01;
+            } else {
+                $tanggungan = $data->karyawan->tanggungan * $data->karyawan->gaji_bpjs * 0.01;
+            }
+        } else {
+            $tanggungan = 0;
+        }
+
+
 
         $pajak = 0;
         if ($data->karyawan->potongan_JKK == 1) {
@@ -272,6 +288,7 @@ function build_payroll($month, $year)
             'jp' => $jp,
             'jht' => $jht,
             'kesehatan' => $kesehatan,
+            'tanggungan' => $tanggungan,
             'jkk' => $jkk,
             'jkm' => $jkm,
             'denda_lupa_absen' => $denda_lupa_absen,
@@ -311,7 +328,7 @@ function build_payroll($month, $year)
             'tambahan_shift_malam' => $tambahan_shift_malam,
             'subtotal' => $subtotal,
             'date' => buatTanggal($data->date),
-            'total' => $subtotal + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $denda_lupa_absen,
+            'total' => $subtotal + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ];
