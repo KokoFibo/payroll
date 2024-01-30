@@ -27,6 +27,7 @@ class UserMobile extends Component
     public $total_tambahan_shift_malam;
     public $tambahan_shift_malam;
     public $cx;
+    public $isEmergencyContact;
 
     public $is_detail;
 
@@ -71,6 +72,7 @@ class UserMobile extends Component
         $is_detail = false;
         $this->selectedMonth = Carbon::now()->month;
         $this->selectedYear = Carbon::now()->year;
+        $this->isEmergencyContact = false;
     }
 
     public function clear_data()
@@ -87,7 +89,7 @@ class UserMobile extends Component
         $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 1112;
+        // $this->user_id = 1070;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -99,6 +101,13 @@ class UserMobile extends Component
         $langsungLembur = 0;
         $total_tambahan_shift_malam = 0;
         $this->clear_data();
+
+        $data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
+        if ($data_karyawan != null)
+            if ($data_karyawan->kontak_darurat && $data_karyawan->hp1)  $this->isEmergencyContact = true;
+
+
+
 
         $data = Yfrekappresensi::where('user_id', $this->user_id)
             ->whereMonth('date', $this->selectedMonth)
