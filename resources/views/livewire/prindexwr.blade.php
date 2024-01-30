@@ -33,6 +33,7 @@
                     <option value="11">{{ monthName(11) }}</option>
                     <option value="12">{{ monthName(12) }}</option>
                     <option value="1">{{ monthName(1) }}</option>
+                    <option value="2">{{ monthName(2) }}</option>
                 </select>
             </div>
         </div>

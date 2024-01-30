@@ -3,12 +3,14 @@
         <div class="flex flex-col h-screen">
             <div class=header>
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
+
                     <div class="flex justify-between">
                         {{-- @if ($is_slipGaji != true) --}}
                         <div class="{{ $is_slipGaji == true ? 'invisible' : '' }} ml-3 self-center">
                             <img src="{{ asset('images/logo-only.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:50px">
                         </div>
+
                         {{-- @endif --}}
                         @if (auth()->user()->language == 'Cn')
                             <div class="flex items-end mb-2">
@@ -74,6 +76,7 @@
                                     {{-- <option value="11">November</option> --}}
                                     <option value="12">Desember</option>
                                     <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
                                 </select>
                             </div>
                             <div class="{{ auth()->user()->role <= 3 && $is_slipGaji == false ? 'invisible' : '' }}">
@@ -136,7 +139,10 @@
                     </div>
                 </div>
                 {{-- End Summary --}}
-
+                @if (!$isEmergencyContact)
+                    <p class="bg-red-600 text-white text-center p-2 mt-3 ">
+                        {{ __('Silakan update data kontak darurat anda di menu profile') }}</p>
+                @endif
             </div>
 
             {{-- Main Table --}}

@@ -302,5 +302,16 @@
     "Presensi by Department": "按部门考勤",
     "Karyawan Baru Hari Ini": "今天新员工",
     "Karyawan Resigned Hari Ini": "今天员工离职",
-    "Karyawan Blacklist Hari Ini": "今天员工被列入黑名单"
+    "Karyawan Blacklist Hari Ini": "今天员工被列入黑名单",
+    "Update Data Kontak Darurat": "更新紧急联系人信息",
+    "Nama yang dapat dihubungi saat darurat": "紧急联系人姓名",
+    "Ubah Bahasa": "更改语言",
+    "Ubah Email": "更改电子邮件",
+    "Ubah Password": "更改密码",
+    "Email Baru": "新电子邮件",
+    "Password Lama": "旧密码",
+    "Password Baru": "新密码",
+    "Konfirmasi": "确认密码",
+    "User Profile": "用户档案",
+    "Silakan update data kontak darurat anda di menu profile": "请在个人资料菜单中更新您的紧急联系信息"
 }
