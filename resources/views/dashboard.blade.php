@@ -1067,6 +1067,7 @@
                             <th scope="col" class="px-6 py-3 text-center">YEV</th>
                             <th scope="col" class="px-6 py-3 text-center">YIG</th>
                             <th scope="col" class="px-6 py-3 text-center">YSM</th>
+                            <th scope="col" class="px-6 py-3 text-center">YAM</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1081,6 +1082,7 @@
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YEV']) }}</td>
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YIG']) }}</td>
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YSM']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['YAM']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
