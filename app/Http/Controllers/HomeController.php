@@ -244,6 +244,7 @@ class HomeController extends Controller
             $YEV = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YEV')->sum('total');
             $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
             $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
+            $YAM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YAM')->sum('total');
             $dataPayroll[] = [
                 'tgl' => month_year($uniqueDates[$i]),
                 'All' => $all,
@@ -252,7 +253,8 @@ class HomeController extends Controller
                 'YCME' => $YCME,
                 'YEV' => $YEV,
                 'YIG' => $YIG,
-                'YSM' => $YSM
+                'YSM' => $YSM,
+                'YAM' => $YAM
             ];
             $dataTgl[] = month_year($uniqueDates[$i]);
             $dataAll[] =  $all;
