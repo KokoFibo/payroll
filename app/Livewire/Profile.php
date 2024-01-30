@@ -25,34 +25,56 @@ class Profile extends Component
         if ($user->language != $this->language) {
             $user->language = $this->language;
             $user->save();
-            $this->dispatch('success', message: 'Bahasa berhasil di rubah');
+            if (auth()->user()->language == 'Cn')
+                $this->dispatch('success', message: 'Bahasa berhasil di rubah');
+            else $this->dispatch('success', message: '语言已成功更改');
         }
     }
 
     public function changePassword()
     {
-        $this->validate([
-            'old_password' => 'required|min:6',
-            'new_password' => 'required|min:6|different:old_password',
-            'confirm_password' => 'required|same:new_password',
-        ], [
-            'old_password.require' => 'Wajib diisi',
-            'old_password.min' => 'Minimal harus 6 karakter',
-            'new_password.require' => 'Wajib diisi',
-            'new_password.min' => 'Minimal harus 6 karakter',
-            'new_password.different:old_password' => 'Harus berbeda dengan password lama',
-            'confirm_password.required' => 'Wajib diisi',
-            'confirm_password.same:new_password' => 'Password berbeda',
-        ]);
+        if (auth()->user()->language == 'Cn') {
+            $this->validate([
+                'old_password' => 'required|min:6',
+                'new_password' => 'required|min:6|different:old_password',
+                'confirm_password' => 'required|same:new_password',
+            ], [
+                'old_password.required' => '必填项',
+                'old_password.min' => '最少需要6个字符',
+                'new_password.required' => '必填项',
+                'new_password.min' => '最少需要6个字符',
+                'new_password.different:old_password' => '必须与旧密码不同',
+                'confirm_password.required' => '必填项',
+                'confirm_password.same:new_password' => '密码不同',
+            ]);
+        } else {
+            $this->validate([
+                'old_password' => 'required|min:6',
+                'new_password' => 'required|min:6|different:old_password',
+                'confirm_password' => 'required|same:new_password',
+            ], [
+                'old_password.required' => 'Wajib diisi',
+                'old_password.min' => 'Minimal harus 6 karakter',
+                'new_password.required' => 'Wajib diisi',
+                'new_password.min' => 'Minimal harus 6 karakter',
+                'new_password.different:old_password' => 'Harus berbeda dengan password lama',
+                'confirm_password.required' => 'Wajib diisi',
+                'confirm_password.same:new_password' => 'Password berbeda',
+            ]);
+        }
 
         $user = User::find(Auth::user()->id);
         if (Hash::check($this->old_password, Auth::user()->password)) {
             $user->password = Hash::make($this->new_password);
 
             $user->save();
-            $this->dispatch('success', message: 'Password berhasil di rubah');
+            if (auth()->user()->language == 'Cn')
+                $this->dispatch('success', message: '密码已成功更改');
+            else $this->dispatch('success', message: 'Password berhasil di rubah');
         } else {
-            $this->dispatch('error', message: 'Password gagal di rubah');
+            if (auth()->user()->language == 'Cn')
+                $this->dispatch('error', message: '密码更改失败');
+            else $this->dispatch('error', message: 'Password gagal di rubah');
         }
     }
 
@@ -72,7 +94,10 @@ class Profile extends Component
         $karyawan->email = $this->email;
         $user->save();
         $karyawan->save();
-        $this->dispatch('success', message: 'Email berhasil di rubah');
+
+        if (auth()->user()->language == 'Cn')
+            $this->dispatch('success', message: '电子邮件已成功更改');
+        else $this->dispatch('success', message: 'Email berhasil di rubah');
     }
 
     public function mount()
@@ -105,6 +130,9 @@ class Profile extends Component
         $data->hp1 = $this->hp1;
         $data->hp2 = $this->hp2;
         $data->save();
+        if (auth()->user()->language == 'Cn')
+            $this->dispatch('success', message: '紧急联系信息已更新');
+        else $this->dispatch('success', message: 'Data kontak darurat sudah di update');
     }
     public function render()
     {
