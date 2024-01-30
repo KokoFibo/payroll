@@ -643,6 +643,87 @@
             borderWidth: 1
         });
     </script>
+    {{-- Barchart Payroll payrolYEV --}}
+    <script>
+        var dataYEV = <?php echo json_encode($dataYEV); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx50 = document.getElementById('payrollYEV');
+
+        new Chart(ctx50, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YEV ',
+                    data: dataYEV,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrolYAM --}}
+    <script>
+        var dataYAM = <?php echo json_encode($dataYAM); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx51 = document.getElementById('payrollYAM');
+
+        new Chart(ctx51, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YAM ',
+                    data: dataYAM,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
 
 
 @endsection
@@ -993,7 +1074,7 @@
         <div>
             <div class="h-3 rounded-t-lg bg-blue-500 w-full lg:w-96">
             </div>
-            <div class="bg-blue-200 h-96 rounded-b-lg w-full lg:w-96 shadow-md p-3">
+            <div class="bg-blue-200  rounded-b-lg w-full lg:w-96 shadow-md p-3">
                 <p class="text-center text-lg mb-3">{{ __('Jumlah Karyawan') }}</p>
                 <div class="flex gap-3 justify-evenly">
                     <div class="flex flex-column gap-2">
@@ -1007,6 +1088,7 @@
                         <h2 class="text-center   text-gray-600">YEV</h2>
                         <h2 class="text-center   text-gray-600">YIG</h2>
                         <h2 class="text-center   text-gray-600">YSM</h2>
+                        <h2 class="text-center   text-gray-600">YAM</h2>
                         <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
                     </div>
                     <div class="flex flex-column gap-2">
@@ -1028,6 +1110,8 @@
                         <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_YIG) }}
                         </h2>
                         <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_YSM) }}
+                        </h2>
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_YAM) }}
                         </h2>
                         <h2 class="text-right  font-semibold text-gray-600 text-lg">{{ number_format($jumlah_company) }}
                         </h2>
@@ -1102,15 +1186,24 @@
             </div>
         </div>
 
-        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2">
             <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
                 <canvas id="payrollYCME"></canvas>
             </div>
             <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
-                <canvas id="payrollYIG"></canvas>
+                <canvas id="payrollYEV"></canvas>
             </div>
             <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYIG"></canvas>
+            </div>
+
+        </div>
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
                 <canvas id="payrollYSM"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYAM"></canvas>
             </div>
         </div>
 

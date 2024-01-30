@@ -77,11 +77,12 @@ class HomeController extends Controller
         $jumlah_YEV = Karyawan::where('company', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_YIG = Karyawan::where('company', 'YIG')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_YSM = Karyawan::where('company', 'YSM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+        $jumlah_YAM = Karyawan::where('company', 'YAM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Pabrik_1 = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM', 'YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
         $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor;
-        $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM;
+        $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM + $jumlah_YAM;
 
         $jumlah_karyawanArr = [
             $jumlah_karyawan_pria, $jumlah_karyawan_wanita
@@ -106,9 +107,11 @@ class HomeController extends Controller
             $jumlah_YSM,
             $jumlah_DPA,
             $jumlah_YIG,
+            $jumlah_YAM,
+
         ];
         $companyLabelArr = [
-            'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG'
+            'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM'
         ];
 
         // Department
@@ -264,6 +267,7 @@ class HomeController extends Controller
             $dataYEV[] =  $YEV;
             $dataYIG[] =  $YIG;
             $dataYSM[] =  $YSM;
+            $dataYAM[] =  $YAM;
         }
 
         // Shift Pagi dan Shift Malam
@@ -318,7 +322,7 @@ class HomeController extends Controller
             if (auth()->user()->role != 1) {
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
@@ -327,7 +331,7 @@ class HomeController extends Controller
                     'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
@@ -346,7 +350,7 @@ class HomeController extends Controller
 
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
@@ -356,7 +360,7 @@ class HomeController extends Controller
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
