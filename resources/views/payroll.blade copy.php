@@ -199,7 +199,7 @@
             {{-- Potongan BPJS --}}
             <div class="col-md-6">
                 <label class="form-label">{{ __('Potongan BPJS') }}</label>
-                <div class="mb-3 d-flex gap-lg-4 flex-column flex-lg-row gap-0 border rounded py-2 px-4">
+                <div class="mb-3 d-flex gap-4">
                     <div class="form-check mt-2">
                         <input type="checkbox" wire:model="potongan_JHT" class="form-check-input"
                             {{ $potongan_JHT == 1 ? 'checked' : '' }}>
@@ -247,7 +247,7 @@
             {{-- Tanggungan --}}
             <div class="col-md-6">
                 <label class="form-label">{{ __('Tanggungan BPJS') }}</label>
-                <div class="mb-3 d-flex gap-lg-4 flex-column flex-lg-row gap-0 border rounded py-2 px-4">
+                <div class="mb-3 d-flex gap-4">
 
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="0"
