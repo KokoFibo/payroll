@@ -138,12 +138,12 @@
                                         <select wire:model.live="search_placement" class="form-select"
                                             aria-label="Default select example">
                                             <option value="">{{ __('Placement') }}</option>
-                                            <option value="1">Pabrik 1</option>
-                                            <option value="2">Pabrik 2</option>
-                                            <option value="3">Kantor</option>
+                                            <option value="1">YCME</option>
+                                            <option value="2">YEV</option>
+                                            {{-- <option value="3">Kantor</option> --}}
+                                            <option value="6">YAM</option>
                                             <option value="4">YIG</option>
                                             <option value="5">YSM</option>
-                                            <option value="6">YAM</option>
                                         </select>
                                     </div>
                                 </th>
