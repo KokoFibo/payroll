@@ -40,7 +40,18 @@ class Test extends Component
 
   public function render()
   {
-    $data = Karyawan::where('placement', 'YCME')->pluck('departemen')->unique();
+    $datakaryawan = Karyawan::select('id_karyawan')->get()->toArray();
+    $datauser = User::select('username')->get()->toArray();
+
+    // Extract values from arrays
+    $karyawanIds = array_column($datakaryawan, 'id_karyawan');
+    $usernames = array_column($datauser, 'username');
+
+    // Find elements in $karyawanIds that are not in $usernames
+    $missingKaryawanIds = array_diff($karyawanIds, $usernames);
+
+    // Output the result
+    // dd($missingKaryawanIds);
 
 
 
@@ -51,6 +62,8 @@ class Test extends Component
 
 
 
-    return view('livewire.test', compact('data'));
+
+
+    return view('livewire.test', compact('missingKaryawanIds'));
   }
 }
