@@ -386,6 +386,12 @@ class Karyawanindexwr extends Component
                     $query->where('placement', 'YCME');
                 } elseif ($this->search_placement == 2) {
                     $query->where('placement', 'YEV');
+                } elseif ($this->search_placement == 4) {
+                    $query->where('placement', 'YIG');
+                } elseif ($this->search_placement == 5) {
+                    $query->where('placement', 'YSM');
+                } elseif ($this->search_placement == 6) {
+                    $query->where('placement', 'YAM');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }
@@ -403,23 +409,7 @@ class Karyawanindexwr extends Component
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', trim($this->search_department));
             })
-            // ->when($this->search_tanggal_bergabung, function ($query) {
-            //     $this->cx++;
-            //     $query->orderBy('tanggal_bergabung', $this->search_tanggal_bergabung);
-            // })
-            // ->when($this->search_gaji_pokok, function ($query) {
-            //     $query->orderBy('gaji_pokok', $this->search_gaji_pokok);
-            // })
-            // ->when($this->search_gaji_overtime, function ($query) {
-            //     $query->orderBy('gaji_overtime', $this->search_gaji_overtime);
-            // })
-            // ->when($this->search_tanggal_bergabung == "", function ($query) {
-            //     $query->orderBy('id_karyawan', 'desc');
-            // })
-            // ->orderBy('id_karyawan', 'desc')
-            // ->orderBy('tanggal_bergabung', $this->search_tanggal_bergabung)
-            // ->orderBy('gaji_pokok', $this->search_gaji_pokok)
-            // ->orderBy('gaji_overtime', $this->search_gaji_overtime)
+
             ->orderBy($this->columnName, $this->direction)
             ->paginate($this->perpage);
         $this->cx++;
