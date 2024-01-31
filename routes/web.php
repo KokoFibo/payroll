@@ -45,6 +45,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AddPresensi;
+use App\Livewire\UserNotFound;
 
 // Middleware
 Auth::routes([
@@ -159,6 +160,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/liburnasional', Liburnasionalwr::class);
                     Route::get('/dataresigned', DataResigned::class);
                     Route::get('/addpresensi', AddPresensi::class);
+                    Route::get('/usernotfound', UserNotFound::class);
 
 
                     // TEST

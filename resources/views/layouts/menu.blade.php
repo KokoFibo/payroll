@@ -143,6 +143,7 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -202,6 +203,12 @@ with font-awesome or any other icon font library -->
                             <a onclick="return confirm('Mau check missing ID?')" href="/MissingId" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Missing ID</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ 'usernotfound' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/usernotfound" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>User Not Found</p>
                             </a>
                         </li>
                         <li

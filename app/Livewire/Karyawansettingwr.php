@@ -18,7 +18,12 @@ class Karyawansettingwr extends Component
     {
         if ($this->username != null) {
             $user = User::where('username', $this->username)->first();
+            if ($user == null) {
+                $this->dispatch('error', message: 'ID: ' . $this->username . ' tidak terdapat pada table USER');
+                return;
+            }
             $data = User::find($user->id);
+
             if ($data) {
                 $data->password = Hash::make(generatePassword($this->tanggal_lahir));
                 $data->save();
