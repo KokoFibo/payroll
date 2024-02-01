@@ -1,7 +1,10 @@
 <div>
     <div class="card">
         <div class="card-header">
-            <h4>Karyawan bekerja lebih dari 1 tahun</h4>
+            <div class="d-flex flex-lg-row flex-column justify-content-between align-items-center">
+                <h4>Karyawan masa kerja yang lebih dari 1 tahun</h4>
+                <a href="/karyawanindex"><button class="btn btn-primary">Exit</button></a>
+            </div>
         </div>
         <div class="card-body">
 
@@ -11,11 +14,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>Lama Bekerja</th>
                         <th>Company</th>
                         <th>Placement</th>
                         <th>Departemen</th>
                         <th>Jabatana</th>
+                        <th>Tanggal Bergabung</th>
+                        <th>Lama Bekerja</th>
                         <th>Iuran Locker</th>
                         <th>Status Karyawan</th>
                         <th></th>
@@ -30,10 +34,12 @@
                             <td>{{ $d->placement }}</td>
                             <td>{{ $d->departemen }}</td>
                             <td>{{ $d->jabatan }}</td>
+                            <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
                             <td>{{ lamaBekerja($d->tanggal_bergabung) }}</td>
                             <td>{{ number_format($d->iuran_locker) }}</td>
                             <td>{{ $d->status_karyawan }}</td>
-                            <td><button class="btn btn-warning" wire:click="delete(`{{ $d->id }}`)">Kosongkan Iuran
+                            <td><button class="btn btn-warning" wire:click="delete(`{{ $d->id }}`)" disabled>Hapus
+                                    Iuran
                                     Locker</button></td>
                         </tr>
                     @endforeach

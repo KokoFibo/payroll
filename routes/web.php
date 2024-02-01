@@ -11,8 +11,11 @@ use App\Livewire\Rubahidwr;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
+use App\Livewire\AddPresensi;
 use App\Livewire\Informasiwr;
+use App\Livewire\IuranLocker;
 use App\Livewire\DataResigned;
+use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
@@ -44,8 +47,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\AddPresensi;
-use App\Livewire\UserNotFound;
 
 // Middleware
 Auth::routes([
@@ -96,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/informasi', Informasiwr::class);
             Route::get('/informationwr', Informationwr::class);
             Route::get('/tambahan', Tambahanwr::class);
+            Route::get('/iuranlocker', IuranLocker::class);
 
             // YF PRESENSI
             Route::get('/yfupload', function () {

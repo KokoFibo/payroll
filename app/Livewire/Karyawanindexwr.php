@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
-use Livewire\WithPagination;
 // use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +44,7 @@ class Karyawanindexwr extends Component
     public $search_tanggal_bergabung;
     public $search_gaji_pokok;
     public $search_gaji_overtime;
+    public $is_tanggal_gajian;
     // public $departments, $companies, $etnises, $jabatans;
 
     public function updatedSearchTanggalBergabung()
@@ -115,6 +117,12 @@ class Karyawanindexwr extends Component
         $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
         $this->search_etnis = "";
+
+        $dateToCheck = now(); // Replace this with your actual date
+        if ($dateToCheck->day >= 1 && $dateToCheck->day <= 10)
+            $this->is_tanggal_gajian = true;
+        else
+            $this->is_tanggal_gajian = false;
     }
 
     public function reset_filter()
