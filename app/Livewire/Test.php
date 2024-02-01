@@ -37,33 +37,18 @@ class Test extends Component
     $this->status_karyawan = "Resigned";
   }
 
-
+  public function delete($id)
+  {
+    $data = Karyawan::find($id);
+    $data->iuran_locker = 0;
+    $data->save();
+    $this->dispatch('success', message: 'Iuran Locker ' . $data->nama . ' sudah di kosongkan');
+  }
   public function render()
   {
-    $datakaryawan = Karyawan::select('id_karyawan')->get()->toArray();
-    $datauser = User::select('username')->get()->toArray();
-
-    // Extract values from arrays
-    $karyawanIds = array_column($datakaryawan, 'id_karyawan');
-    $usernames = array_column($datauser, 'username');
-
-    // Find elements in $karyawanIds that are not in $usernames
-    $missingKaryawanIds = array_diff($karyawanIds, $usernames);
-
-    // Output the result
-    // dd($missingKaryawanIds);
-
-
-
-
-
-
-
-
-
-
-
-
-    return view('livewire.test', compact('missingKaryawanIds'));
+    $data = Karyawan::where('iuran_locker', '>', 0)
+      ->where('tanggal_bergabung', '<', Carbon::now()->subDays(365))->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+      ->paginate(10);
+    return view('livewire.test', compact('data'));
   }
 }

@@ -20,6 +20,9 @@
 
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
+        @if ($is_tanggal_gajian || auth()->user()->role == 5)
+            <a href="/iuranlocker"><button class="btn btn-primary">Hapus Iuran Locker</button></a>
+        @endif
         <div class="col-xl-2 col-12">
             @if (Auth::user()->role > 3)
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
@@ -59,6 +62,7 @@
                     </div>
                     <div
                         class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6">
+
                         <div class="col-12 col-xl-3">
                             <select class="form-select" wire:model.live="perpage">
                                 {{-- <option selected>Open this select menu</option> --}}
