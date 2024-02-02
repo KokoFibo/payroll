@@ -14,6 +14,7 @@ use App\Jobs\BuildPayrollJob;
 use App\Exports\PayrollExport;
 use App\Models\Yfrekappresensi;
 use App\Exports\PlacementExport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Payrollwr extends Component
@@ -36,6 +37,8 @@ class Payrollwr extends Component
     public $lock_presensi;
     public $lock_slip_gaji;
     public $lock_data;
+    public $select_month, $select_year, $add_month;
+
 
     public function exportPlacement()
     {
@@ -195,6 +198,20 @@ class Payrollwr extends Component
         $this->lock_presensi = $lock->presensi;
         $this->lock_slip_gaji = $lock->slip_gaji;
         $this->lock_data = $lock->data;
+
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+        $this->add_month = false;
+        foreach ($this->select_month as $sm) {
+            if ($sm == $this->month)
+                $this->add_month = true;
+        }
     }
     public function updatedLockPresensi()
     {
