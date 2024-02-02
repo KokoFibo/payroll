@@ -1,6 +1,12 @@
 <div>
 
     @section('title', 'Karyawan')
+    <style>
+        td,
+        th {
+            white-space: nowrap;
+        }
+    </style>
     @if (auth()->user()->role == 2 || auth()->user()->role == 3)
         <div x-data="{
             search: $persist(@entangle('search').live),
@@ -50,11 +56,7 @@
             @endif
         </div>
     </div>
-
-
     <div class="px-4">
-
-
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
@@ -95,17 +97,8 @@
                 </div>
 
             </div>
-
-
-            <style>
-                td,
-                th {
-                    white-space: nowrap;
-                }
-            </style>
             <div class="card-body">
                 <div class="table-responsive">
-
                     <table class="table  table-sm  table-hover mb-2 ">
                         <thead>
                             <tr>

@@ -16,25 +16,16 @@
         </div>
     @endif
 
-    <div class="d-flex flex-column flex-xl-row gap-2 justify-content-between align-items-center p-4">
-        <div class="col-12 col-xl-8 gap-2 d-flex flex-column flex-xl-row gap-xl-3">
-            <div class="input-group col-12 col-xl-7  ">
-                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="search" wire:model.live="search" class="form-control" placeholder="{{ __('Search') }} ...">
-            </div>
-            <div class="col-12 col-xl-5  d-flex align-items-center gap-3  mb-xl-0">
-                <select class="form-select" wire:model.live="perpage">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 {{ __('rows perpage') }}</option>
-                    <option value="15">15 {{ __('rows perpage') }}</option>
-                    <option value="20">20 {{ __('rows perpage') }}</option>
-                    <option value="25">25 {{ __('rows perpage') }}</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="col-12 col-xl-3  d-flex flex-column flex-xl-row gap-2  gap-xl-3 justify-content-end">
-            <div class="col-xl-6 col-12">
+
+
+    <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
+        @if ($is_tanggal_gajian || auth()->user()->role == 5)
+            <a href="/iuranlocker"><button class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus Iuran
+                    Locker</button></a>
+        @endif
+        <div class="col-xl-2 col-12">
+            @if (Auth::user()->role > 3)
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
                     <option value="0"selected>{{ __('All Companies') }}</option>
                     <option value="1">{{ __('Pabrik 1') }}</option>
@@ -46,15 +37,9 @@
                     <option value="7">YEV</option>
                     <option value="8">YIG</option>
                     <option value="9">YSM</option>
+                    <option value="10">YAM</option>
                 </select>
-            </div>
-            <div class="col-12 col-xl-4">
-                <select wire:model.live="selectStatus" class="form-select" aria-label="Default select example">
-                    <option value="0">{{ __('All Status') }}</option>
-                    <option value="1">{{ __('Aktif') }}</option>
-                    <option value="2">{{ __('Non Aktif') }}</option>
-                </select>
-            </div>
+            @endif
 
         </div>
         <div class="col-12 col-xl-1">
@@ -64,23 +49,54 @@
                 </div>
             @endif
         </div>
-        {{-- </div> --}}
     </div>
+
 
     <div class="px-4">
 
 
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
+                    <div class="col-12 col-xl-3">
                         <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
                     </div>
-                    <a href="/karyawancreate"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
-                            {{ __('Karyawan baru') }}</button></a>
+                    <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
+                        class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2  col-xl-9">
+
+                        <div class="col-12 col-xl-3">
+                            <select class="form-select" wire:model.live="perpage">
+                                {{-- <option selected>Open this select menu</option> --}}
+                                <option value="10">10 {{ __('rows perpage') }}</option>
+                                <option value="15">15 {{ __('rows perpage') }}</option>
+                                <option value="20">20 {{ __('rows perpage') }}</option>
+                                <option value="25">25 {{ __('rows perpage') }}</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-xl-3">
+                            <select wire:model.live="selectStatus" class="form-select"
+                                aria-label="Default select example">
+                                <option value="0">{{ __('All Status') }}</option>
+                                <option value="1">{{ __('Aktif') }}</option>
+                                <option value="2">{{ __('Non Aktif') }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-xl-3">
+                            <button wire:click="reset_filter"
+                                class="btn btn-success col-12">{{ __('Refresh') }}</button>
+                        </div>
+                        <div class="col-12 col-xl-3">
+                            <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
+                                        class="fa-solid fa-plus"></i>
+                                    {{ __('Karyawan baru') }}</button></a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
+
+
             <style>
                 td,
                 th {
@@ -89,49 +105,160 @@
             </style>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table  table-sm  table-hover mb-2">
+
+                    <table class="table  table-sm  table-hover mb-2 ">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Id Karyawan') }} <i
-                                        class="fa-solid fa-sort"></i>
+                                <th style="width: 50px; border-style: none;"></th>
+                                <th style="width: 130px; border-style: none;">
+
+                                    <input wire:model.live="search_id_karyawan" type="text" class="form-control"
+                                        placeholder="{{ __('ID Karyawan') }}">
                                 </th>
-                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
-                                        class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('company')">{{ __('Company') }} <i
-                                        class="fa-solid fa-sort"></i></th>
-                                <th class="text-center" wire:click="sortColumnName('placement')">{{ __('Placement') }}
-                                    <i class="fa-solid fa-sort"></i>
+                                <th style="border-style: none;">
+                                    <input wire:model.live="search_nama" type="text" class="form-control"
+                                        placeholder="{{ __('Nama Karyawan') }}">
+                                </th>
+                                <th style="width: 130px; border-style: none;">
+                                    <div style="width: 130px">
+                                        <select wire:model.live="search_company" class="form-select"
+                                            aria-label="Default select example">
+                                            <option value="">{{ __('Company') }}</option>
+                                            {{-- <option value="ASB">ASB</option>
+                                            <option value="DPA">DPA</option>
+                                            <option value="YCME">YCME</option>
+                                            <option value="YEV">YEV</option>
+                                            <option value="YIG">YIG</option>
+                                            <option value="YSM">YSM</option>
+                                            <option value="YAM">YAM</option> --}}
+                                            @foreach ($companies as $j)
+                                                <option value="{{ $j }}">{{ $j }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </th>
+                                <th style="width:130px; border-style: none;">
+                                    <div style="width: 130px">
+                                        <select wire:model.live="search_placement" class="form-select"
+                                            aria-label="Default select example">
+                                            <option value="">{{ __('Placement') }}</option>
+                                            <option value="1">YCME</option>
+                                            <option value="2">YEV</option>
+                                            {{-- <option value="3">Kantor</option> --}}
+                                            <option value="6">YAM</option>
+                                            <option value="4">YIG</option>
+                                            <option value="5">YSM</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th style="width: 200px; border-style: none;">
+                                    <div style="width: 130px">
+                                        <select wire:model.live="search_department" class="form-select"
+                                            aria-label="Default select example">
+                                            <option value="">{{ __('Department') }}</option>
+                                            @foreach ($departments as $j)
+                                                <option value="{{ $j }}">{{ $j }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </th>
+                                <th style="width: 220px; border-style: none;">
+                                    <div style="width: 130px">
+                                        <select wire:model.live="search_jabatan"class="form-select"
+                                            aria-label="Default select example">
+                                            <option value="">{{ __('Jabatan') }}</option>
+                                            @foreach ($jabatans as $j)
+                                                <option value="{{ $j }}">{{ $j }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </th>
+                                @if (auth()->user()->role >= 4)
+                                    <th style="width: 220px; border-style: none;">
+                                        <div style="width: 130px">
+                                            <select wire:model.live="search_etnis" class="form-select"
+                                                aria-label="Default select example">
+                                                <option value="">{{ __('Etnis') }}</option>
+                                                {{-- <option value="Jawa">{{ __('Jawa') }}</option>
+                                                <option value="Sunda">{{ __('Sunda') }}</option>
+                                                <option value="Tionghoa">{{ __('Tionghoa') }}</option>
+                                                <option value="China">{{ __('China') }}</option>
+                                                <option value="Lainnya">{{ __('Lainnya') }}</option>
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
+                                                @foreach ($etnises as $j)
+                                                    @if ($j == '')
+                                                        <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                                    @else
+                                                        <option value="{{ $j }}">{{ $j }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                            @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
+                                            Departement</button>
+                                    </th>
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
+                                            @if ($search_etnis == null) disabled @endif>Excel by
+                                            Etnis</button>
+                                    </th>
+                                @endif
+
+                            </tr>
+
+                            <tr>
+                                <th></th>
+                                <th wire:click="sortColumnName('id_karyawan')">{{ __('ID Karyawan') }}
+                                </th>
+                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} </th>
+                                <th class="text-center" wire:click="sortColumnName('company')">
+                                    {{ __('Company') }} </th>
+                                <th class="text-center" wire:click="sortColumnName('placement')">
+                                    {{ __('Placement') }}
+
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('departemen')">
-                                    {{ __('Departemen') }} <i class="fa-solid fa-sort"></i>
+                                    {{ __('Departemen') }}
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
-                                        class="fa-solid fa-sort"></i></th>
+                                <th class="text-center" wire:click="sortColumnName('jabatan')">
+                                    {{ __('Jabatan') }} </th>
                                 @if (Auth::user()->role > 3)
+                                    <th class="text-center" wire:click="sortColumnName('etnis')">
+                                        {{ __('Etnis') }}
                                     <th class="text-center" wire:click="sortColumnName('level_jabatan')">
                                         {{ __('Level Jabatan') }}
-                                        <i class="fa-solid fa-sort"></i>
                                 @endif
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">
-                                    {{ __('Status') }} <i class="fa-solid fa-sort"></i>
+                                    {{ __('Status') }}
                                 </th>
                                 @if (Auth::user()->role > 3)
                                     <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">
-                                        {{ __('Lama Bekerja') }} <i class="fa-solid fa-sort"></i>
+                                        {{ __('Lama Bekerja') }}
                                     </th>
-                                    <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
-                                        {{ __('Metode Penggajian') }} <i class="fa-solid fa-sort"></i>
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
-                                        {{ __('Gaji Pokok') }} <i class="fa-solid fa-sort"></i>
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
-                                        {{ __('Overtime') }} <i class="fa-solid fa-sort"></i>
-                                    </th>
-                                    <th class="text-center" wire:click="sortColumnName('bonus')">{{ __('Bonus') }} <i
-                                            class="fa-solid fa-sort"></i>
+                                @endif
+                                <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
+                                    {{ __('Metode Penggajian') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
+                                    {{ __('Gaji Pokok') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
+                                    {{ __('Overtime') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('iuran_air')">
+                                    {{ __('Iuran Air') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('iuran_locker')">
+                                    {{ __('Iuran Locker') }}
+                                </th>
+                                @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                    <th class="text-center">
+                                        {{ __('Lama bekerja') }}
                                     </th>
                                 @endif
 
@@ -143,19 +270,15 @@
                                 <tr>
                                     <td>
                                         <div class="text-start">
-                                            {{-- @if (karyawan_allow_edit($data->id, Auth::user()->role)) --}}
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm"><i
+                                                    class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
-                                            {{-- @else --}}
-                                            {{-- <button wire:click="no_edit" class="btn btn-success btn-sm"><i --}}
-                                            {{-- class="fa-regular fa-pen-to-square"></i></button> --}}
-                                            {{-- @endif --}}
+
 
                                             @if (Auth::user()->role > 4)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    class="btn btn-danger btn-sm"><i
+                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif
                                         </div>
@@ -167,16 +290,28 @@
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
                                     @if (Auth::user()->role > 3)
+                                        <td class="text-center">{{ $data->etnis }}</td>
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    @if (Auth::user()->role > 3)
-                                        <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                    @if (
+                                        (auth()->user()->role == 2 && $data->gaji_pokok <= 4500000) ||
+                                            (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
+                                            auth()->user()->role > 3)
+                                        @if (Auth::user()->role > 3)
+                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                        @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
-                                        <td class="text-center">{{ number_format($data->bonus) }}</td>
+                                        <td class="text-center">{{ number_format($data->iuran_air) }}</td>
+                                        <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
+                                    @endif
+                                    @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                        <td class="text-center">
+                                            {{ lama_resign($data->tanggal_bergabung, $data->tanggal_resigned, $data->tanggal_blacklist) }}
+                                        </td>
                                     @endif
 
 
@@ -184,27 +319,14 @@
                             @endforeach
                         </tbody>
                     </table>
+
                     {{ $datas->onEachSide(0)->links() }}
+                    {{-- {{ $datas->links() }} --}}
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        window.addEventListener("swal:confirm", (event) => {
-            Swal.fire({
-                title: "Apakah yakin mau di delete",
-                text: "Data yang sudah di delete tidak dapat dikembalikan",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Delete",
-            }).then((willDelete) => {
-                if (willDelete.isConfirmed) {
-                    @this.dispatch("delete", event.detail.id);
-                }
-            });
-        });
-    </script>
-
 </div>
+
+
+{{-- </div> --}}

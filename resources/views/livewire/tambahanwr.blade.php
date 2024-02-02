@@ -208,17 +208,17 @@
                                             <td>{{ $d->karyawan->nama }}</td>
                                             <td>{{ $d->karyawan->jabatan }}</td>
                                             <td>{{ format_tgl($d->tanggal) }}</td>
-                                            <td>{{ number_format($d->uang_makan) }}</td>
-                                            <td>{{ number_format($d->bonus_lain) }}</td>
-                                            <td>{{ number_format($d->baju_esd) }}</td>
-                                            <td>{{ number_format($d->gelas) }}</td>
-                                            <td>{{ number_format($d->sandal) }}</td>
-                                            <td>{{ number_format($d->seragam) }}</td>
-                                            <td>{{ number_format($d->sport_bra) }}</td>
-                                            <td>{{ number_format($d->hijab_instan) }}</td>
-                                            <td>{{ number_format($d->id_card_hilang) }}</td>
-                                            <td>{{ number_format($d->masker_hijau) }}</td>
-                                            <td>{{ number_format($d->potongan_lain) }}</td>
+                                            <td class="text-end">{{ number_format($d->uang_makan) }}</td>
+                                            <td class="text-end">{{ number_format($d->bonus_lain) }}</td>
+                                            <td class="text-end">{{ number_format($d->baju_esd) }}</td>
+                                            <td class="text-end">{{ number_format($d->gelas) }}</td>
+                                            <td class="text-end">{{ number_format($d->sandal) }}</td>
+                                            <td class="text-end">{{ number_format($d->seragam) }}</td>
+                                            <td class="text-end">{{ number_format($d->sport_bra) }}</td>
+                                            <td class="text-end">{{ number_format($d->hijab_instan) }}</td>
+                                            <td class="text-end">{{ number_format($d->id_card_hilang) }}</td>
+                                            <td class="text-end">{{ number_format($d->masker_hijau) }}</td>
+                                            <td class="text-end">{{ number_format($d->potongan_lain) }}</td>
 
                                             {{-- <td>
                                                 @if (ada_tambahan($d->id_karyawan))
