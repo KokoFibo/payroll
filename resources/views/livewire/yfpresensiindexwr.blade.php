@@ -71,7 +71,7 @@
 
 
 
-    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between px-3  pt-2">
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between px-3  pt-3">
 
         {{-- <div class="d-flex flex-column flex-xl-row  gap-2 gap-xl-0 "> --}}
         <div class="col-xl-4 col-12">
@@ -82,11 +82,14 @@
             </div>
         </div>
         <div>
-            <div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-dark btn-sm" wire:click="prev"> <i class="fa-solid fa-arrow-left"></i></button>
+
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
                     <input type="date" wire:model.live="tanggal" class="form-control">
                 </div>
+                <button class="btn btn-dark btn-sm" wire:click="next"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
         {{-- </div> --}}

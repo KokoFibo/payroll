@@ -59,6 +59,16 @@ class Yfpresensiindexwr extends Component
     public $tahun;
     public $lock_presensi;
 
+    public function prev()
+    {
+        $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->subDay();
+        $this->tanggal = $tanggal->format('Y-m-d');
+    }
+    public function next()
+    {
+        $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->addDay();
+        $this->tanggal = $tanggal->format('Y-m-d');
+    }
     public function mount()
     {
         $data = Yfrekappresensi::latest('date')->first();
