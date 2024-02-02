@@ -4,6 +4,7 @@
         <div class="card ">
             <div class="card-header bg-info">
                 <label class="col-sm-2  col-form-label">{{ __('Bonus dan Potongan') }}</label>
+
             </div>
             @if ($modal == true)
                 <div class="card-body">
@@ -108,9 +109,6 @@
 
                         {{-- </div> --}}
                     </div>
-
-
-
                     <div class="d-flex gap-5">
                         <button wire:click="save" class="btn btn-success">{{ __('Save') }}</button>
                         <button wire:click="cancel" class="btn btn-dark">{{ __('Cancel') }}</button>
@@ -140,6 +138,18 @@
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
+                        <div class="d-flex gap-2">
+                            <select class="form-select" wire:model.live="year">
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                            <select class="form-select" wire:model.live="month">
+                                <option value="11">{{ monthName(11) }}</option>
+                                <option value="12">{{ monthName(12) }}</option>
+                                <option value="1">{{ monthName(1) }}</option>
+                                <option value="2">{{ monthName(2) }}</option>
+                            </select>
+                        </div>
                         <div class="mt-2 mt-lg-0">
                             <button wire:click="add"
                                 class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }}"
@@ -156,21 +166,22 @@
                                     <tr>
                                         <th></th>
                                         {{-- <th>{{ __('id') }}</th> --}}
-                                        <th>{{ __('ID Karyawan') }}</th>
-                                        <th>{{ __('Nama Karyawan') }}</th>
-                                        <th>{{ __('Jabatan') }}</th>
-                                        <th>{{ __('Tanggal') }}</th>
-                                        <th>{{ __('Uang Makan') }}</th>
-                                        <th>{{ __('Bonus Lain') }}</th>
-                                        <th>{{ __('Baju ESD') }}</th>
-                                        <th>{{ __('Gelas') }}</th>
-                                        <th>{{ __('Sandal') }}</th>
-                                        <th>{{ __('Seragam') }}</th>
-                                        <th>{{ __('Sport Bra') }}</th>
-                                        <th>{{ __('Hijab Instan') }}</th>
-                                        <th>{{ __('ID Card Hilang') }}</th>
-                                        <th>{{ __('Masker Hijau') }}</th>
-                                        <th>{{ __('Seragam') }}</th>
+                                        <th wire:click="sortColumnName('user_id')">{{ __('ID Karyawan') }}</th>
+                                        <th wire:click="sortColumnName('nama')">{{ __('Nama Karyawan') }}</th>
+                                        <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }}</th>
+                                        <th wire:click="sortColumnName('tanggal')">{{ __('Tanggal') }}</th>
+                                        <th wire:click="sortColumnName('uang_makan')">{{ __('Uang Makan') }}</th>
+                                        <th wire:click="sortColumnName('bonus_lain')">{{ __('Bonus Lain') }}</th>
+                                        <th wire:click="sortColumnName('baju_esd')">{{ __('Baju ESD') }}</th>
+                                        <th wire:click="sortColumnName('gelas')">{{ __('Gelas') }}</th>
+                                        <th wire:click="sortColumnName('sandal')">{{ __('Sandal') }}</th>
+                                        <th wire:click="sortColumnName('seragam')">{{ __('Seragam') }}</th>
+                                        <th wire:click="sortColumnName('sport_bra')">{{ __('Sport Bra') }}</th>
+                                        <th wire:click="sortColumnName('hijab_instan')">{{ __('Hijab Instan') }}</th>
+                                        <th wire:click="sortColumnName('id_card_hilang')">{{ __('ID Card Hilang') }}
+                                        </th>
+                                        <th wire:click="sortColumnName('masker_hijau')">{{ __('Masker Hijau') }}</th>
+                                        <th wire:click="sortColumnName('potongan_lain')">{{ __('Seragam') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
