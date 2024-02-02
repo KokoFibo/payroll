@@ -67,16 +67,22 @@
                         <div class="h-12 flex justify-evenly items-center">
                             <div>
                                 <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
+                                    @foreach ($select_year as $sy)
+                                        <option value="{{ $sy }}">{{ $sy }}</option>
+                                    @endforeach
+                                    {{-- <option value="2023">2023</option>
+                                    <option value="2024">2024</option> --}}
                                 </select>
                             </div>
                             <div>
                                 <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
                                     {{-- <option value="11">November</option> --}}
-                                    <option value="12">Desember</option>
+                                    @foreach ($select_month as $sm)
+                                        <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                                    @endforeach
+                                    {{-- <option value="12">Desember</option>
                                     <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
+                                    <option value="2">Februari</option> --}}
                                 </select>
                             </div>
                             <div class="{{ auth()->user()->role <= 3 && $is_slipGaji == false ? 'invisible' : '' }}">
@@ -151,9 +157,16 @@
                 @if ($is_slipGaji == true && $is_detail == true)
                     @if ($data_payroll != null)
                         <div>
+                            {{-- Jika BOLEH tampil slip gaji bulan lalu --}}
                             <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
                                 {{ monthName($selectedMonth) }}
                                 {{ $selectedYear }}</h2>
+
+                            {{-- Jika TIDAK BOLEH tampil slip gaji bulan lalu --}}
+                            {{-- <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
+                                {{ monthName($latest_month) }}
+                                {{ $latest_year }}</h2> --}}
+
                             <table class="mx-auto text-sm ">
                                 <tbody>
 

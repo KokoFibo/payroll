@@ -5,8 +5,9 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Bonuspotongan;
 use Livewire\WithPagination;
+use App\Models\Bonuspotongan;
+use Illuminate\Support\Facades\DB;
 
 class Tambahanwr extends Component
 {
@@ -19,6 +20,7 @@ class Tambahanwr extends Component
     public $year, $month;
     public $columnName = 'id_karyawan';
     public $direction = 'desc';
+    public $select_month, $select_year;
 
 
     public function sortColumnName($namaKolom)
@@ -38,6 +40,16 @@ class Tambahanwr extends Component
         $this->year = now()->year;
         $this->month = now()->month;
         $this->tanggal = now()->toDateString();
+
+
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
     }
 
     public function add()

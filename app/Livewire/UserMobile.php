@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\WithPagination;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\DB;
 
 class UserMobile extends Component
 {
@@ -28,6 +29,8 @@ class UserMobile extends Component
     public $tambahan_shift_malam;
     public $cx;
     public $isEmergencyContact;
+    public $select_month, $select_year;
+    public $latest_month, $latest_year;
 
     public $is_detail;
 
@@ -44,7 +47,8 @@ class UserMobile extends Component
             ->whereYear('date', $this->selectedYear)
             ->where('id_karyawan', $this->user_id)->first();
         $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
-        // dd($this->data_karyawan);
+        // plk
+
 
         if ($this->data_payroll != null) {
             $this->is_slipGaji = true;
@@ -73,6 +77,22 @@ class UserMobile extends Component
         $this->selectedMonth = Carbon::now()->month;
         $this->selectedYear = Carbon::now()->year;
         $this->isEmergencyContact = false;
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        $dataYfrekappresensi = Yfrekappresensi::orderBy('date', 'desc')->first();
+        $this->selectedMonth = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('m');
+        $this->selectedYear = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('Y');
+        $this->selectedMonth = (int)$this->selectedMonth;
+
+        $this->latest_month = $this->selectedMonth;
+        $this->latest_year = $this->selectedYear;
     }
 
     public function clear_data()
@@ -105,9 +125,6 @@ class UserMobile extends Component
         $data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
         if ($data_karyawan != null)
             if ($data_karyawan->kontak_darurat && $data_karyawan->hp1)  $this->isEmergencyContact = true;
-
-
-
 
         $data = Yfrekappresensi::where('user_id', $this->user_id)
             ->whereMonth('date', $this->selectedMonth)
@@ -186,6 +203,21 @@ class UserMobile extends Component
                 $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
             }
         }
+
+        $this->data_payroll = Payroll::with('jamkerjaid')
+
+            // block code dibawah ini untuk BISA tampilkan slip gaji bulan lalu
+            ->whereMonth('date', $this->selectedMonth)
+            ->whereYear('date', $this->selectedYear)
+
+            // block code dibawah ini untuk TIDAK BISA tampilkan slip gaji bulan lalu
+            // ->whereMonth('date', $this->latest_month)
+            // ->whereYear('date', $this->latest_year)
+
+            ->where('id_karyawan', $this->user_id)->first();
+        $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
+
+
         return view('livewire.user-mobile', compact('data'))->layout('layouts.polos');
     }
 }
