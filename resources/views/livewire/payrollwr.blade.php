@@ -1,5 +1,6 @@
 <div>
     @section('title', 'Payroll')
+    <p>lock_presensi: {{ $lock_presensi }}</p>
     <style>
         td,
         th {

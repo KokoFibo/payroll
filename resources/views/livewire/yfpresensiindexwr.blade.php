@@ -1,6 +1,7 @@
 <div>
     @section('title', 'Presensi')
-
+    {{-- <p>lock_presensi: {{ $lock_presensi }}</p>
+    <p>tanggal: {{ $tanggal }}</p> --}}
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
@@ -144,7 +145,6 @@
             </style>
             <div class="card-body ">
                 <div class="table-responsive">
-
                     <table class="table table-sm table-hover mb-4">
                         <thead>
                             <tr>
@@ -202,10 +202,13 @@
                                         <td>
 
                                             @if ($btnEdit == true)
+                                                {{-- @if ($lock_presensi == true && Auth::user()->role <= 3) --}}
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}"><i
+                                                    class="btn btn-success btn-sm"
+                                                    {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
+                                                {{-- @endif --}}
                                             @else
                                                 @if ($data->id == $selectedId)
                                                     <button @click="edit = !edit" wire:click="save"
