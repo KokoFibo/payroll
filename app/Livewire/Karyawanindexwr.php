@@ -119,7 +119,7 @@ class Karyawanindexwr extends Component
         $this->search_etnis = "";
 
         $dateToCheck = now(); // Replace this with your actual date
-        if ($dateToCheck->day >= 1 && $dateToCheck->day <= 10)
+        if ($dateToCheck->day >= 1 && $dateToCheck->day <= 8)
             $this->is_tanggal_gajian = true;
         else
             $this->is_tanggal_gajian = false;

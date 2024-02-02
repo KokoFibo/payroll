@@ -1,54 +1,34 @@
 <div>
     @section('title', 'Payroll')
-
-    <div class="pt-2">
-        <div class="">
-            <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
-
-            <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
-
-                <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
-                <div class="col-xl-3 d-flex gap-2 flex-column flex-xl-row ">
-
-                    <div class="col-xl-6">
-                        <select class="form-select" wire:model.live="year">
-                            {{-- <option selected>Open this select menu</option> --}}
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
+    <style>
+        td,
+        th {
+            white-space: nowrap;
+        }
+    </style>
+    <div class="p-2">
+        <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
+            <div class="col">
+                @if (auth()->user()->role > 4)
+                    <div class="form-check form-switch">
+                        <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
+                            id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                            @if ($lock_slip_gaji)
+                                {{ __('Slip Gaji is locked') }}
+                            @else
+                                {{ __('Slip Gaji is unlocked') }}
+                            @endif
+                        </label>
                     </div>
-                    <div class="col-xl-6">
-                        <select class="form-select" wire:model.live="month">
-                            {{-- <option selected>Open this select menu</option> --}}
-                            <option value="11">{{ monthName(11) }}</option>
-                            <option value="12">{{ monthName(12) }}</option>
-                            <option value="1">{{ monthName(1) }}</option>
-                            <option value="2">{{ monthName(2) }}</option>
-                        </select>
-                    </div>
-                </div>
+                @endif
+            </div>
+            <div class="col">
+                <h4 class="text-center text-bold ">Yifang Payroll</h4>
+            </div>
+            <div class="col">
+                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
 
-                <div wire:loading>
-                    <button class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
-                    </button>
-                </div>
-                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center">
-                    @if (auth()->user()->role > 4)
-                        <div class="form-check form-switch">
-                            <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox"
-                                role="switch" id="flexSwitchCheckChecked" value=1
-                                {{ $lock_slip_gaji ? 'checked' : '' }}>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">
-                                @if ($lock_slip_gaji)
-                                    {{ __('Slip Gaji is locked') }}
-                                @else
-                                    {{ __('Slip Gaji is unlocked') }}
-                                @endif
-                            </label>
-                        </div>
-                    @endif
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
@@ -72,118 +52,111 @@
                             @endif
                         </label>
                     </div>
-
-                    <div>
-                        <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2"
-                                wire:loading.remove>{{ __('Report for bank') }}</button></a>
-
-                    </div>
-
-                    <div>
-                        {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                        <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                            class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
-                        {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
-                        {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
-                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
+            <button class="btn btn-info">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
+            <div class="d-flex gap-2">
+                <div>
+                    <select class="form-select" wire:model.live="year">
+                        {{-- <option selected>Open this select menu</option> --}}
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="form-select" wire:model.live="month">
+                        {{-- <option selected>Open this select menu</option> --}}
+                        <option value="11">{{ monthName(11) }}</option>
+                        <option value="12">{{ monthName(12) }}</option>
+                        <option value="1">{{ monthName(1) }}</option>
+                        <option value="2">{{ monthName(2) }}</option>
+                    </select>
+                </div>
+            </div>
+            <div wire:loading>
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
+                </button>
+            </div>
+            <a href="/reportindex"><button class="btn btn-success"
+                    wire:loading.remove>{{ __('Report for bank') }}</button></a>
+            <button wire:click="export" class="btn btn-success">Excel Company</button>
+            <button wire:click="exportPlacement" class="btn btn-success">Excel Placement</button>
+            <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                class="btn btn-primary">{{ __('Rebuild') }}</button>
+        </div>
+
         <div class="card">
             <div class="card-header">
-                {{-- <div class="d-flex justify-content-between align-items-center"> --}}
-                <div class="d-flex flex-xl-row flex-column col-xl-12 justify-content-between align-items-center ">
-                    <div class="col-xl-4 d-flex flex-xl-row flex-column gap-2">
-                        <div class="input-group col-xl-6 col-12">
+                <div class="d-flex flex-xl-row flex-column justify-content-between align-items-center gap-2 gap-xl-0">
+                    <div class="col-xl-4">
+                        <div class="input-group">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
-                        {{-- Company --}}
-                        <div class="col-xl-6 col-12">
-                            <select wire:model.live="selected_company" class="form-select"
-                                aria-label="Default select example">
-                                <option value="0"selected>{{ __('All Companies') }}</option>
-                                {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                    </div>
+                    {{-- Company --}}
+                    <div>
+                        <select wire:model.live="selected_company" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Companies') }}</option>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option> --}}
-                                <option value="4">ASB</option>
-                                <option value="5">DPA</option>
-                                <option value="6">YCME</option>
-                                <option value="7">YEV</option>
-                                <option value="8">YIG</option>
-                                <option value="9">YSM</option>
-                                <option value="10">YAM</option>
-                            </select>
-                        </div>
-                        {{-- placement --}}
-                        <div class="col-xl-6 col-12">
-                            <select wire:model.live="selected_placement" class="form-select"
-                                aria-label="Default select example">
-                                <option value="0"selected>{{ __('All Placement') }}</option>
-                                <option value="6">YCME</option>
-                                <option value="7">YEV</option>
-                                <option value="10">YAM</option>
-                                <option value="8">YIG</option>
-                                <option value="9">YSM</option>
-                                {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                            <option value="4">ASB</option>
+                            <option value="5">DPA</option>
+                            <option value="6">YCME</option>
+                            <option value="7">YEV</option>
+                            <option value="8">YIG</option>
+                            <option value="9">YSM</option>
+                            <option value="10">YAM</option>
+                        </select>
+                    </div>
+                    {{-- placement --}}
+                    <div>
+                        <select wire:model.live="selected_placement" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Placement') }}</option>
+                            <option value="6">YCME</option>
+                            <option value="7">YEV</option>
+                            <option value="10">YAM</option>
+                            <option value="8">YIG</option>
+                            <option value="9">YSM</option>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>
                                 <option value="4">ASB</option>
                                 <option value="5">DPA</option> --}}
-                            </select>
-
-                        </div>
+                        </select>
                     </div>
 
-
-
-                    <div class="col-xl-6  gap-2 mt-2 mt-xl-0 d-flex flex-xl-row flex-column justify-content-between">
-                        <div>
-                            <select class="form-select" wire:model.live="perpage">
-                                {{-- <option selected>Open this select menu</option> --}}
-                                <option value="10">10 {{ __('rows perpage') }}</option>
-                                <option value="15">15 {{ __('rows perpage') }}</option>
-                                <option value="20">20 {{ __('rows perpage') }}</option>
-                                <option value="25">25 {{ __('rows perpage') }}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select class="form-select" wire:model.live="status">
-                                <option value="0">{{ __('Semua') }}</option>
-                                <option value="1">{{ __('Status Aktif') }}</option>
-                                <option value="2">{{ __('Status Non Aktif') }}</option>
-                            </select>
-                        </div>
-                        <div
-                            class=" mt-xl-0  mt-2 d-flex align-items-center justify-content-between justify-content-xl-end gap-2 ">
-                            <div class="">
-                                <button wire:click="export" class="btn btn-success">Excel Company</button>
-                            </div>
-                            <div class="">
-                                <button wire:click="exportPlacement" class="btn btn-success">Excel Placement</button>
-                            </div>
-                            {{-- <div>
-                                <button class="btn btn-danger">PDF</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-dark">Print</button>
-                            </div> --}}
-                        </div>
+                    <div>
+                        <select class="form-select" wire:model.live="perpage">
+                            {{-- <option selected>Open this select menu</option> --}}
+                            <option value="10">10 {{ __('rows perpage') }}</option>
+                            <option value="15">15 {{ __('rows perpage') }}</option>
+                            <option value="20">20 {{ __('rows perpage') }}</option>
+                            <option value="25">25 {{ __('rows perpage') }}</option>
+                        </select>
                     </div>
+                    <div>
+                        <select class="form-select" wire:model.live="status">
+                            <option value="0">{{ __('Semua') }}</option>
+                            <option value="1">{{ __('Status Aktif') }}</option>
+                            <option value="2">{{ __('Status Non Aktif') }}</option>
+                        </select>
+                    </div>
+
+                    {{-- </div> --}}
                 </div>
-
             </div>
 
-
-
-            <style>
-                td,
-                th {
-                    white-space: nowrap;
-                }
-            </style>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">

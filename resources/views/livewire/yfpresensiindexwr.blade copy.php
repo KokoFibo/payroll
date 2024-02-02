@@ -1,26 +1,40 @@
 <div>
     @section('title', 'Presensi')
 
-
-    <div class="d-flex col-10  justify-content-between gap-5 px-4 pt-4">
-        <div class="col-3 bg-success p-2" style=" border-radius: 10px;">
-            <div class="d-flex flex-row">
-                <div class="col-4 text-center">Hadir</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
-            </div>
-            <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ $totalHadir }}</div>
-                <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
-                <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
-            </div>
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
+        <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
+            @if ($absensiKosong == 0)
+                <div class="d-flex flex-row">
+                    <div class="col-4 text-center">{{ __('Hadir') }}</div>
+                    <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                    <div class="col-4 text-center">{{ __('Malam') }}</div>
+                </div>
+                <div class="d-flex flex-row ">
+                    <div class="col-4 text-center">{{ $totalHadir }}</div>
+                    <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
+                    <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                </div>
+            @else
+                <div class="d-flex flex-row">
+                    <div class="col-3 text-center">{{ __('Hadir') }}</div>
+                    <div class="col-3 text-center">{{ __('Pagi') }}</div>
+                    <div class="col-3 text-center">{{ __('Malam') }}</div>
+                    <div class="col-3 text-center">{{ __('Kosong') }}</div>
+                </div>
+                <div class="d-flex flex-row ">
+                    <div class="col-3 text-center">{{ $totalHadir }}</div>
+                    <div class="col-3 text-center">{{ $totalHadirPagi }}</div>
+                    <div class="col-3 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                    <div class="col-3 text-center text-danger text-bold">{{ $absensiKosong }}</div>
+                </div>
+            @endif
         </div>
 
-        <div class="col-3 bg-warning p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-warning py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">No scan</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('No scan') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
@@ -28,11 +42,11 @@
                 <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
-        <div class="col-3 bg-info p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-info py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">Late</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('Late') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $totalLate }}</div>
@@ -40,11 +54,11 @@
                 <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
-        <div class="col-3 bg-primary p-2" style=" border-radius: 10px;">
+        <div class="col-12 col-xl-3 bg-primary py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">Overtime</div>
-                <div class="col-4 text-center">Pagi</div>
-                <div class="col-4 text-center">Malam</div>
+                <div class="col-4 text-center">{{ __('Overtime') }}</div>
+                <div class="col-4 text-center">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
                 <div class="col-4 text-center">{{ $overtime }}</div>
@@ -53,60 +67,78 @@
             </div>
         </div>
     </div>
-    <div class="col-12 p-4 d-flex align-items-center">
-        <div class="col-3">
-            <div class="input-group">
-                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="search" wire:model.live="search" class="form-control" placeholder="Search ...">
-            </div>
-        </div>
-        <div class="col-2">
-            <div>
+
+
+    {{-- <div
+        class=" gap-3  p-xl-4 d-flex  flex-column flex-xl-row align-items-center justify-content-xl-between mt-xl-0 mt-2 "> --}}
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between   pt-2">
+
+        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row  gap-2 gap-xl-0 ">
+            <div class="col-xl-7 col-12">
                 <div class="input-group">
-                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
-                    <input type="date" wire:model.live="tanggal" class="form-control">
+                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <input type="search" wire:model.live="search" class="form-control"
+                        placeholder="{{ __('Search') }} ...">
+                </div>
+            </div>
+            <div class="col-xl-5 col-12">
+                <div>
+                    <div class="input-group">
+                        <button class="btn btn-primary" type="button"><i
+                                class="fa-solid fa-calendar-days"></i></button>
+                        <input type="date" wire:model.live="tanggal" class="form-control">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-7  d-flex gap-3">
+        <div class="col-xl-3 col-12 gap-3 text-center     ">
             {{-- <div class="col-2"> --}}
-            <button wire:click="resetTanggal" class="btn btn-success" type="button">Reset</button>
-            <button wire:click="filterNoScan" class="btn btn-warning" type="button">No Scan</button>
-            <button wire:click="filterLate" class="btn btn-info" type="button">Late</button>
-            {{-- </div> --}}
-            <div class="col-3 d-flex align-items-center gap-3"
-                style="border-radius: 10px; padding: 3px 10px 3px 10px; background-color: #9246FF; color: white">
+            <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
+            <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
+            <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
+        </div>
+
+        <div class="col-xl-3 col-12 d-flex flex-row  ">
+            <div class="col-6 ">
                 <select class="form-select" wire:model.live="perpage">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
+                    <option value="10">10 {{ __('rows perpage') }}</option>
+                    <option value="15">15 {{ __('rows perpage') }}</option>
+                    <option value="20">20 {{ __('rows perpage') }}</option>
+                    <option value="25">25 {{ __('rows perpage') }}</option>
                 </select>
-                Perpage
+
             </div>
-            <div class="col-3 d-flex align-items-center gap-3"
-                style="border-radius: 10px; padding: 3px 10px 3px 10px;
-                background-color: skyblue; color: white">
+            <div class="col-6 ">
                 <select class="form-select" wire:model.live="location">
                     {{-- <option selected>Open this select menu</option> --}}
-                    <option value="All">All</option>
-                    <option value="Kantor">Kantor</option>
-                    <option value="Pabrik 1">Pabrik 1</option>
-                    <option value="Pabrik 2">Pabrik 2</option>
+                    <option value="All">{{ __('All') }}</option>
+                    <option value="Kantor">{{ __('Kantor') }}</option>
+                    <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
+                    <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
                 </select>
             </div>
         </div>
     </div>
 
-    <div class="px-4">
+    <div class="p-3 px-xl-4">
         <div class="card">
             <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
-                <h4>
-                    Data Presensi {{ format_tgl_hari($tanggal) }}
-                    <a href="/yfupload">
-                        <button class="btn btn-primary float-end">Upload Presensi</button></a>
-                </h4>
+                <div class="d-flex flex-column flex-xl-row justify-content-xl-between align-items-center">
+                    <h3 class="fw-semibold fs-5 fwfs-3-xl">
+                        {{ __('Data Presensi') }} {{ format_tgl_hari($tanggal) }}
+                    </h3>
+                    <div>
+                        @if (auth()->user()->role == 5)
+                            <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
+                                <button class="btn btn-warning">{{ __('Delete Tgl Presensi') }}</button></a>
+                            <a href="/addpresensi">
+                                <button class="btn btn-success">{{ __('Add Presensi') }}</button></a>
+                        @endif
+                        <a href="/yfupload">
+                            <button class="btn btn-primary">{{ __('Upload Presensi') }}</button></a>
+                    </div>
+                </div>
             </div>
             <style>
                 td,
@@ -121,35 +153,44 @@
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th wire:click="sortColumnName('user_id')">ID <i class=" fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('nama')">Nama <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('placement')">Placement <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('jabatan')">Jabatan <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('date')">Working Date <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('first_in')">First in <i class="fa-solid fa-sort"></i>
-                                </th>
-                                <th wire:click="sortColumnName('first_out')">First out <i
+                                <th wire:click="sortColumnName('user_id')">{{ __('ID') }} <i
+                                        class=" fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('second_in')">Second in <i
+                                <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('second_out')">Second out <i
+                                <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('overtime_in')">Overtime in <i
+                                <th wire:click="sortColumnName('first_in')">{{ __('First in') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('overtime_out')">Overtime out <i
+                                <th wire:click="sortColumnName('first_out')">{{ __('First out') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('late')">Late <i class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('no_scan')">No scan <i class="fa-solid fa-sort"></i>
+                                <th wire:click="sortColumnName('second_in')">{{ __('Second in') }} <i
+                                        class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('shift')">Shift <i class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('second_out')">{{ __('Second out') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('overtime_in')">{{ __('Overtime in') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('overtime_out')">{{ __('Overtime out') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('late')">{{ __('Late') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('no_scan')">{{ __('No scan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('shift')">{{ __('Shift') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -159,6 +200,7 @@
 
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
+
                                     <tr x-data="{ edit: false }"
                                         class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
                                         <td>
@@ -166,7 +208,7 @@
                                             @if ($btnEdit == true)
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm"><i
+                                                    class="btn btn-success btn-sm {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
                                             @else
                                                 @if ($data->id == $selectedId)
@@ -184,17 +226,10 @@
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
 
-
-                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
-                                                      class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square">
-                                                      </i></button> --}}
-
-
-                                            {{-- <button @click="edit = !edit" wire:click="update({{ $data->id }})"
-                                                      class="btn btn-success btn-sm"><i class="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#update-form-modal"></i></button> --}}
                                             @if (Auth::user()->role > 2)
                                                 <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                    {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
                                                     class="btn btn-danger btn-sm"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
@@ -308,7 +343,7 @@
                                             @endif
 
                                         </td>
-                                        <td>
+                                        <td x-show="!edit">
                                             @if ($data->no_scan_history == 'No Scan' && $data->no_scan == 'No Scan')
                                                 <h6><span class="badge bg-warning">No Scan</span></h6>
                                             @elseif ($data->no_scan_history == 'No Scan' && $data->no_scan == null)
@@ -319,6 +354,16 @@
                                                 {{ $data->no_scan }}
                                             @endif
                                             </i>
+                                        </td>
+                                        <td x-show="edit">
+                                            @if ($data->no_scan_history == 'No Scan' && $data->no_scan == '')
+                                                <button wire:click="delete_no_scan({{ $data->id }})"
+                                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                    class="btn btn-danger btn-sm"><i
+                                                        class="fa-solid fa-trash-can confirm-delete"></i>
+                                                </button>
+                                            @endif
+                                        </td>
                                         <td>{{ $data->shift }}</td>
                                     </tr>
                                 @endforeach
@@ -327,9 +372,9 @@
                             @endif
                         </tbody>
                     </table>
+                    {{ $datas->onEachSide(0)->links() }}
                 </div>
 
-                {{ $datas->links() }}
             </div>
         </div>
     </div>
@@ -339,71 +384,9 @@
         }
     </style> --}}
 
-
+    @include('modals.presensi')
     {{-- Modal ook --}}
-    <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Data Presensi Karyawan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>November 2023</h4>
-                    <p>User ID : {{ $user_id }}</p>
-                    <p>Nama : {{ $name }}</p>
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Jam Kerja</th>
-                                <th>Jam Lembur</th>
-                                <th>Terlambat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @foreach ($this->dataArr as $d)
-                                <tr>
-                                    <td class="text-center">{{ $d['tgl'] }}</td>
-                                    <td class="text-center">{{ $d['jam_kerja'] }}</td>
-                                    <td class="text-center">{{ $d['jam_lembur'] }}</td>
-                                    <td class="text-center">{{ $d['terlambat'] }}</td>
-                                </tr>
-                            @endforeach
-                            {{-- @foreach ($dataArr as $d)
-                                <tr>
-                                    <td class="text-center">{{ $d->tgl }}</td>
-                                    <td class="text-center">{{ $d->jam_kerja }}</td>
-                                    <td class="text-center">{{ $d->jam_lembur }}</td>
-                                    <td class="text-center">{{ $d->terlambat }}</td>
-                                </tr>
-                            @endforeach --}}
-
-
-                            <tr>
-                                <th class="text-center">{{ $total_hari_kerja }}</th>
-                                <th class="text-center">{{ $total_jam_kerja }}</th>
-                                <th class="text-center">{{ $total_jam_lembur }}</th>
-                                <th class="text-center">{{ $total_keterlambatan }}</th>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-
-
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
     {{-- End  --}}
     {{-- <script>
         window.addEventListener("swal:confirm_delete_presensi", (event) => {

@@ -21,7 +21,8 @@
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
         @if ($is_tanggal_gajian || auth()->user()->role == 5)
-            <a href="/iuranlocker"><button class="btn btn-primary">Hapus Iuran Locker</button></a>
+            <a href="/iuranlocker"><button class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus Iuran
+                    Locker</button></a>
         @endif
         <div class="col-xl-2 col-12">
             @if (Auth::user()->role > 3)
@@ -57,11 +58,11 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
-                    <div class="col-12 col-xl-4">
+                    <div class="col-12 col-xl-3">
                         <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
                     </div>
-                    <div
-                        class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6">
+                    <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
+                        class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2  col-xl-9">
 
                         <div class="col-12 col-xl-3">
                             <select class="form-select" wire:model.live="perpage">
@@ -86,8 +87,7 @@
                                 class="btn btn-success col-12">{{ __('Refresh') }}</button>
                         </div>
                         <div class="col-12 col-xl-3">
-                            <a href="/karyawancreate"><button
-                                    class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }}"><i
+                            <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
                                         class="fa-solid fa-plus"></i>
                                     {{ __('Karyawan baru') }}</button></a>
                         </div>
