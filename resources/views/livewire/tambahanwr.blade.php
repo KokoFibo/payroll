@@ -138,7 +138,7 @@
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 col-12 col-xl-4">
                             <select class="form-select" wire:model.live="year">
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
