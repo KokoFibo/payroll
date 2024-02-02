@@ -61,20 +61,16 @@ class Yfpresensiindexwr extends Component
 
     public function mount()
     {
+        $data = Yfrekappresensi::latest('date')->first();
+        $month = \Carbon\Carbon::parse($data->date)->month;
+        $year = \Carbon\Carbon::parse($data->date)->year;
+        // dd($data->date, $month, $year);
         $this->year = now()->year;
         $this->month = now()->month;
         $this->bulan = now()->month;
         $this->tahun = now()->year;
-        // $this->lock_presensi = $lock->presensi;
-        if (
-            $this->year == now()->year &&
-            $this->month == now()->month
-        ) {
-            $this->lock_presensi = 0;
-        } else {
-            $lock = Lock::find(1);
-            $this->lock_presensi = $lock->presensi;
-        }
+
+        $this->lock_presensi = $this->getLockPresensi($data->date);
     }
 
     public function delete_no_scan($id)
@@ -88,21 +84,48 @@ class Yfpresensiindexwr extends Component
             $this->dispatch('error', message: 'No Scan harus di bersihkan dulu');
         }
     }
+    public function getLockPresensi($tanggal1)
+    {
+        $tanggal = Carbon::parse($tanggal1);
 
+        $currentDate = now();
+        // Calculate the start of the last month
+        $startLastMonth = $currentDate->copy()->subMonthNoOverflow()->firstOfMonth();
+        // Calculate the end of the last month
+        $endLastMonth = $currentDate->copy()->subMonthNoOverflow()->lastOfMonth();
+
+        if ($tanggal->lessThan($startLastMonth)) {
+            $this->lock_presensi = true;
+        } else {
+            $lock = Lock::find(1);
+            if (now()->day < 10 && $lock->presensi == false) $this->lock_presensi = 0;
+            else $this->lock_presensi = $lock->presensi;
+        }
+        return  $this->lock_presensi;
+    }
 
     public function updatedTanggal($nilai_tanggal)
     {
-        $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
-        $this->tahun = Carbon::parse($nilai_tanggal)->format('Y');
-        if (
-            $this->tahun == now()->year &&
-            $this->bulan == now()->month
-        ) {
-            $this->lock_presensi = 0;
-        } else {
-            $lock = Lock::find(1);
-            $this->lock_presensi = $lock->presensi;
-        }
+        $this->lock_presensi = $this->getLockPresensi($nilai_tanggal);
+        return;
+        // $this->lock_presensi = true;
+        // $twoMonthsAgo = now()->subMonths(1);
+        // if ($nilai_tanggal < $twoMonthsAgo) {
+        //     $this->lock_presensi = true;
+        //     dd($nilai_tanggal, $twoMonthsAgo, $this->lock_presensi);
+        // }
+        // $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
+        // $this->tahun = Carbon::parse($nilai_tanggal)->format('Y');
+        // if (
+        //     $this->tahun == now()->year &&
+        //     $this->bulan == now()->month
+
+        // ) {
+        //     $this->lock_presensi = 0;
+        // } else {
+        //     $lock = Lock::find(1);
+        //     $this->lock_presensi = $lock->presensi;
+        // }
     }
 
     public function updatedLockPresensi()
