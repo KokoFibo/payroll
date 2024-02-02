@@ -69,55 +69,51 @@
     </div>
 
 
-    {{-- <div
-        class=" gap-3  p-xl-4 d-flex  flex-column flex-xl-row align-items-center justify-content-xl-between mt-xl-0 mt-2 "> --}}
-    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between   pt-2">
 
-        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row  gap-2 gap-xl-0 ">
-            <div class="col-xl-7 col-12">
-                <div class="input-group">
-                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <input type="search" wire:model.live="search" class="form-control"
-                        placeholder="{{ __('Search') }} ...">
-                </div>
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between px-3  pt-2">
+
+        {{-- <div class="d-flex flex-column flex-xl-row  gap-2 gap-xl-0 "> --}}
+        <div class="col-xl-4 col-12">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="search" wire:model.live="search" class="form-control"
+                    placeholder="{{ __('Search') }} ...">
             </div>
-            <div class="col-xl-5 col-12">
-                <div>
-                    <div class="input-group">
-                        <button class="btn btn-primary" type="button"><i
-                                class="fa-solid fa-calendar-days"></i></button>
-                        <input type="date" wire:model.live="tanggal" class="form-control">
-                    </div>
+        </div>
+        <div>
+            <div>
+                <div class="input-group">
+                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
+                    <input type="date" wire:model.live="tanggal" class="form-control">
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-12 gap-3 text-center     ">
+        {{-- </div> --}}
+        <div class="text-center">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
         </div>
 
-        <div class="col-xl-3 col-12 d-flex flex-row  ">
-            <div class="col-6 ">
-                <select class="form-select" wire:model.live="perpage">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 {{ __('rows perpage') }}</option>
-                    <option value="15">15 {{ __('rows perpage') }}</option>
-                    <option value="20">20 {{ __('rows perpage') }}</option>
-                    <option value="25">25 {{ __('rows perpage') }}</option>
-                </select>
 
-            </div>
-            <div class="col-6 ">
-                <select class="form-select" wire:model.live="location">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="All">{{ __('All') }}</option>
-                    <option value="Kantor">{{ __('Kantor') }}</option>
-                    <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
-                    <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
-                </select>
-            </div>
+        <div>
+            <select class="form-select" wire:model.live="perpage">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="10">10 {{ __('rows perpage') }}</option>
+                <option value="15">15 {{ __('rows perpage') }}</option>
+                <option value="20">20 {{ __('rows perpage') }}</option>
+                <option value="25">25 {{ __('rows perpage') }}</option>
+            </select>
+        </div>
+        <div>
+            <select class="form-select" wire:model.live="location">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="All">{{ __('All') }}</option>
+                <option value="Kantor">{{ __('Kantor') }}</option>
+                <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
+                <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
+            </select>
         </div>
     </div>
 

@@ -2,69 +2,52 @@
 
     @section('title', 'Presensi Detail')
     <h4 class="text-center text-bold pt-2">{{ __('Presensi Detail') }}</h4>
-    <div class="col-12 d-flex flex-xl-row flex-column justify-content-xl-between">
-        <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2">
-            <div class="col-xl-6 col-12">
-                <div class="input-group">
-                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <input type="search" wire:model.live="search" class="form-control"
-                        placeholder="{{ __('Search') }} ...">
-                </div>
-            </div>
-            <div class="col-xl-2 col-12 ">
-                <select class="form-select" wire:model.live="perpage">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 {{ __('rows perpage') }}</option>
-                    <option value="15">15 {{ __('rows perpage') }}</option>
-                    <option value="20">20 {{ __('rows perpage') }}</option>
-                    <option value="25">25 {{ __('rows perpage') }}</option>
-                </select>
-            </div>
-            <div class="col-xl-2 col-12  ">
-                <select class="form-select" wire:model.live="year">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                </select>
-            </div>
-            <div class="col-xl-2 col-12">
-                <select class="form-select" wire:model.live="month">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="11">{{ monthName(11) }}</option>
-                    <option value="12">{{ monthName(12) }}</option>
-                    <option value="1">{{ monthName(1) }}</option>
-                    <option value="2">{{ monthName(2) }}</option>
-                </select>
+    <div class="d-flex flex-xl-row flex-column justify-content-xl-between gap-lg-0 gap-2 px-4">
+        {{-- <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2"> --}}
+        <div class="col-xl-4 col-12">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="search" wire:model.live="search" class="form-control" placeholder="{{ __('Search') }} ...">
             </div>
         </div>
-
-        <div
-            class="col-xl-4 col-12 gap-3 gap-xl-0 p-xl-4 d-flex justify-content-evenly  flex-xl-row text-center {{ auth()->user()->role < 3 ? 'invisible' : '' }} ">
-            <div class="d-flex text-center">
-                <div class="col-12" wire:loading>
-                    <button class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
-                    </button>
-                </div>
-                <div wire:loading.class="invisible" class="d-flex mt-2 mt-lg-0">
-                    <div class="col-6">
-                        <a href="/presensisummaryindex"><button
-                                class="btn btn-success text-end mb-2 mr-2">Excel</button></a>
-                    </div>
-
-                    <div class=" col-6">
-                        <button wire:click="buat_payroll" class="btn btn-primary"
-                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
-                    </div>
-                </div>
-
-
-
-            </div>
-
+        <div>
+            <select class="form-select" wire:model.live="perpage">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="10">10 {{ __('rows perpage') }}</option>
+                <option value="15">15 {{ __('rows perpage') }}</option>
+                <option value="20">20 {{ __('rows perpage') }}</option>
+                <option value="25">25 {{ __('rows perpage') }}</option>
+            </select>
         </div>
+        <div>
+            <select class="form-select" wire:model.live="year">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+        </div>
+        <div class="col-xl-2 col-12">
+            <select class="form-select" wire:model.live="month">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="11">{{ monthName(11) }}</option>
+                <option value="12">{{ monthName(12) }}</option>
+                <option value="1">{{ monthName(1) }}</option>
+                <option value="2">{{ monthName(2) }}</option>
+            </select>
+        </div>
+        <div wire:loading class="{{ auth()->user()->role < 3 ? 'invisible' : '' }}">
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
+            </button>
+        </div>
+        <a href="/presensisummaryindex"><button
+                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
+                wire:loading.class='invisible'>Excel</button></a>
 
+        <button wire:click="buat_payroll" class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
+            wire:loading.class='invisible'
+            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
     </div>
 
     <div class="p-4">
