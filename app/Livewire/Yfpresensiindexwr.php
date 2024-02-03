@@ -63,12 +63,20 @@ class Yfpresensiindexwr extends Component
     {
         $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->subDay();
         $this->tanggal = $tanggal->format('Y-m-d');
+        $this->lock_presensi = $this->getLockPresensi($tanggal);
+        $this->bulan = Carbon::parse($tanggal)->format('m');
+        $this->tahun = Carbon::parse($tanggal)->format('Y');
     }
     public function next()
     {
         $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->addDay();
         $this->tanggal = $tanggal->format('Y-m-d');
+        $this->lock_presensi = $this->getLockPresensi($tanggal);
+        $this->bulan = Carbon::parse($tanggal)->format('m');
+        $this->tahun = Carbon::parse($tanggal)->format('Y');
     }
+
+
     public function mount()
     {
         $data = Yfrekappresensi::latest('date')->first();
@@ -111,39 +119,20 @@ class Yfpresensiindexwr extends Component
             if (now()->day < 10 && $lock->presensi == false) $this->lock_presensi = 0;
             else $this->lock_presensi = $lock->presensi;
         }
+        // if ($tanggal->month == now()->month && $tanggal->year == now()->year) dd('ok');
+        // $this->lock_presensi == false;
+        $parsedTanggal = Carbon::parse($tanggal);
+        if ($parsedTanggal->isSameMonth(now()) && $parsedTanggal->isSameYear(now())) $this->lock_presensi = false;
+
         return  $this->lock_presensi;
     }
 
     public function updatedTanggal($nilai_tanggal)
     {
         $this->lock_presensi = $this->getLockPresensi($nilai_tanggal);
-        return;
-        // $this->lock_presensi = true;
-        // $twoMonthsAgo = now()->subMonths(1);
-        // if ($nilai_tanggal < $twoMonthsAgo) {
-        //     $this->lock_presensi = true;
-        //     dd($nilai_tanggal, $twoMonthsAgo, $this->lock_presensi);
-        // }
-        // $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
-        // $this->tahun = Carbon::parse($nilai_tanggal)->format('Y');
-        // if (
-        //     $this->tahun == now()->year &&
-        //     $this->bulan == now()->month
-
-        // ) {
-        //     $this->lock_presensi = 0;
-        // } else {
-        //     $lock = Lock::find(1);
-        //     $this->lock_presensi = $lock->presensi;
-        // }
+        $this->bulan = Carbon::parse($nilai_tanggal)->format('m');
+        $this->tahun = Carbon::parse($nilai_tanggal)->format('Y');
     }
-
-    public function updatedLockPresensi()
-    {
-        dd('updatedLockPresensi');
-    }
-
-
 
     // ok1
     public function submitPresensiDetail($user_id)
@@ -500,7 +489,6 @@ class Yfpresensiindexwr extends Component
                         ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
                     // ->whereMonth('date', $this->month)
                     // ->whereYear('date', $this->year);
-
                 });
             })
 

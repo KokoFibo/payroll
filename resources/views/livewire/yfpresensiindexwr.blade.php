@@ -1,7 +1,7 @@
 <div>
     @section('title', 'Presensi')
-    {{-- <p>lock_presensi: {{ $lock_presensi }}</p>
-    <p>tanggal: {{ $tanggal }}</p> --}}
+    <p>lock_presensi: {{ $lock_presensi }}</p>
+    <p>tanggal: {{ $tanggal }}</p>
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
@@ -83,13 +83,15 @@
         </div>
         <div>
             <div class="d-flex gap-2">
-                <button class="btn btn-dark btn-sm" wire:click="prev"> <i class="fa-solid fa-arrow-left"></i></button>
+                <button class="btn btn-outline-dark btn-sm" wire:click="prev"> <i
+                        class="fa-solid fa-arrow-left"></i></button>
 
                 <div class="input-group">
                     <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
                     <input type="date" wire:model.live="tanggal" class="form-control">
                 </div>
-                <button class="btn btn-dark btn-sm" wire:click="next"><i class="fa-solid fa-arrow-right"></i></button>
+                <button class="btn btn-outline-dark btn-sm" wire:click="next"><i
+                        class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
         {{-- </div> --}}
