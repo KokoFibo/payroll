@@ -160,6 +160,15 @@
                                             </td>
                                         </tr>
                                     @endif
+                                    @if ($data_payroll->tanggungan != 0)
+                                        <tr>
+                                            <td>BPJS Tanggungan
+                                            </td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->tanggungan) }}
+                                            </td>
+                                        </tr>
+                                    @endif
                                     @if ($data_karyawan->ptkp != 0)
                                         <tr>
                                             <td>PTKP</td>
