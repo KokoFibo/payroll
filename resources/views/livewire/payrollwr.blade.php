@@ -8,6 +8,8 @@
         }
     </style>
     <div class="p-2">
+        {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
+            {{ jumlah_libur_nasional($month, $year) }}</p> --}}
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
                 @if (auth()->user()->role > 4)
@@ -23,6 +25,7 @@
                         </label>
                     </div>
                 @endif
+
             </div>
             <div class="col">
                 <h4 class="text-center text-bold ">Yifang Payroll</h4>
@@ -185,7 +188,7 @@
                                 </th>
                                 <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Hari Kerja') }} <i
+                                <th wire:click="sortColumnName('hari_kerja')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('jam_kerja')">{{ __('Jam Kerja Bersih') }} <i
@@ -209,8 +212,8 @@
                                 <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
-                                        class="fa-solid fa-sort"></i>
+                                {{-- <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
+                                        class="fa-solid fa-sort"></i> --}}
                                 </th>
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">
                                     {{ __('Tambahan Shift Malam') }} <i class="fa-solid fa-sort"></i>
@@ -290,9 +293,9 @@
                                                 {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
                                             </td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
-                                            <td class="text-end">
+                                            {{-- <td class="text-end">
                                                 {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
-                                            </td>
+                                            </td> --}}
                                             <td class="text-end">
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
@@ -350,6 +353,10 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
+            <p class="px-3">Total {{ countWorkingDays($month, $year, [0]) - jumlah_libur_nasional($month, $year) }}
+                working days
+                with
+                {{ jumlah_libur_nasional($month, $year) }} Holidays</p>
             <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>
