@@ -9,6 +9,28 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function jumlah_libur_nasional($month, $year)
+{
+    return Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+        ->whereYear('tanggal_mulai_hari_libur', $year)
+        ->sum('jumlah_hari_libur');
+}
+
+function countWorkingDays($month, $year, $ignore)
+{
+    // $ignore = 0-6 = sunday - saturday, ex. countDays(2024, 1, array(0,6))-> exclude saturday and sunday
+    $count = 0;
+    $counter = mktime(0, 0, 0, $month, 1, $year);
+    while (date("n", $counter) == $month) {
+        if (in_array(date("w", $counter), $ignore) == false) {
+            $count++;
+        }
+        $counter = strtotime("+1 day", $counter);
+    }
+    return $count;
+}
+
+
 function acakPassword($nama)
 {
     $arrNama = explode(' ', $nama);

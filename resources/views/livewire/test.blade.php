@@ -1,46 +1,4 @@
 <div>
-    <div class="card">
-        <div class="card-header">
-            <h4>Karyawan bekerja lebih dari 1 tahun</h4>
-        </div>
-        <div class="card-body">
 
-
-            <table class="table table-hover mb-2">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Lama Bekerja</th>
-                        <th>Company</th>
-                        <th>Placement</th>
-                        <th>Departemen</th>
-                        <th>Jabatana</th>
-                        <th>Iuran Locker</th>
-                        <th>Status Karyawan</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $d)
-                        <tr>
-                            <td>{{ $d->id_karyawan }}</td>
-                            <td>{{ $d->nama }}</td>
-                            <td>{{ $d->company }}</td>
-                            <td>{{ $d->placement }}</td>
-                            <td>{{ $d->departemen }}</td>
-                            <td>{{ $d->jabatan }}</td>
-                            <td>{{ lamaBekerja($d->tanggal_bergabung) }}</td>
-                            <td>{{ number_format($d->iuran_locker) }}</td>
-                            <td>{{ $d->status_karyawan }}</td>
-                            <td><button class="btn btn-warning" wire:click="delete(`{{ $d->id }}`)">Kosongkan Iuran
-                                    Locker</button></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {{ $data->links() }}
-        </div>
-    </div>
 
 </div>

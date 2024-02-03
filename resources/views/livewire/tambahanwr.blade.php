@@ -148,7 +148,6 @@
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
-
                             </select>
                         </div>
                         <div class="mt-2 mt-lg-0">
@@ -157,7 +156,6 @@
                                 {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Add New') }}</button>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-12">
                     <div class="card-body">

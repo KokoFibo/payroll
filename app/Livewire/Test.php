@@ -44,11 +44,22 @@ class Test extends Component
     $data->save();
     $this->dispatch('success', message: 'Iuran Locker ' . $data->nama . ' sudah di kosongkan');
   }
+
+
+
+
+
+
+
   public function render()
   {
-    $data = Karyawan::where('iuran_locker', '>', 0)
-      ->where('tanggal_bergabung', '<', Carbon::now()->subDays(365))->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
-      ->paginate(10);
-    return view('livewire.test', compact('data'));
+
+
+
+
+    dd(countWorkingDays(2, 2024, array(0)), jumlah_libur_nasional(1, 2024)); // 23
+
+
+    return view('livewire.test');
   }
 }
