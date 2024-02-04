@@ -18,7 +18,7 @@
                                  document.getElementById('logout-form').submit();">
 
                                         <button
-                                            class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">Logout</button>
+                                            class="rounded-xl shadow bg-blue-500 text-sm text-white px-3 py-1">Logout</button>
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <h2 class="bg-purple-500 text-center text-white text-xl rounded-xl px-5 mt-3">
+                    <h2 class="bg-blue-500 text-center text-white text-xl rounded-xl px-5 mt-3">
                         {{ __('User Profile') }}</h2>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <button wire:click="changePassword"
-                        class="bg-purple-500 text-sm text-white px-1 py-1 w-full rounded shadow">{{ __('Ubah Password') }}</button>
+                        class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow">{{ __('Ubah Password') }}</button>
                 </div>
 
                 {{-- Ubah Email --}}
@@ -106,7 +106,7 @@
                         </div>
                     </div>
 
-                    <button class="bg-purple-500 text-sm text-white px-1 py-1 w-full rounded shadow"
+                    <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="changeEmail">{{ __('Ubah Email') }}</button>
                 </div>
 
@@ -124,10 +124,39 @@
                             <label class="form-check-label" for="flexRadioDefault1">中文</label>
                         </div>
                     </div>
-                    <button class="bg-purple-500 text-sm text-white px-1 py-1 w-full rounded shadow"
+                    <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="changeLanguage">{{ __('Ubah Bahasa') }}</button>
                 </div>
 
+                {{-- Update Etnis --}}
+                <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+
+                    {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
+                    <div class="flex gap-5">
+                        <div>
+                            <input wire:model="etnis" value="China" type="radio">
+                            <label class="form-check-label" for="flexRadioDefault1">{{ __('China') }}</label>
+                        </div>
+                        <div>
+                            <input wire:model="etnis" value="Jawa" type="radio">
+                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Jawa') }}</label>
+                        </div>
+                        <div>
+                            <input wire:model="etnis" value="Sunda" type="radio">
+                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Sunda') }}</label>
+                        </div>
+                        <div>
+                            <input wire:model="etnis" value="Tionghoa" type="radio">
+                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Tionghoa') }}</label>
+                        </div>
+                        <div>
+                            <input wire:model="etnis" value="lainnnya" type="radio">
+                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Lainnya') }}</label>
+                        </div>
+                    </div>
+                    <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
+                        wire:click="updateEtnis">{{ __('Update Etnis') }}</button>
+                </div>
                 {{-- Update Kontak Darurat --}}
                 <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
@@ -163,7 +192,7 @@
                         </div>
                     </div>
 
-                    <button class="bg-purple-500 text-sm text-white px-1 py-1 w-full rounded shadow"
+                    <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="update_kontak_darurat">{{ __('Update Data Kontak Darurat') }}</button>
                 </div>
             </div>

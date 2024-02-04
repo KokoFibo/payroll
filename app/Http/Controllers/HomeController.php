@@ -320,6 +320,14 @@ class HomeController extends Controller
         // $user = User::find(auth()->user()->id);
         // $user = 1112;
 
+        $belum_isi_etnis = 0;
+        $belum_isi_kontak_darurat = 0;
+        $belum_isi_etnis = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->where('etnis', null)->count();
+        $belum_isi_kontak_darurat = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->where('kontak_darurat', null)->count();
+        // dd($isi_etnis);
+
+        // kkk
+
         if ($desktop) {
             $user->device = 1;
             $user->save();
@@ -339,7 +347,7 @@ class HomeController extends Controller
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini'
+                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
 
                 ]));
             } else {
@@ -368,7 +376,8 @@ class HomeController extends Controller
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini'
+                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini',
+                    'belum_isi_etnis', 'belum_isi_kontak_darurat'
 
                 ]));
             }

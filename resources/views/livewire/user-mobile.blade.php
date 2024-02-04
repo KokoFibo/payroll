@@ -94,93 +94,109 @@
                                 @endif
 
                             </div>
+
+
                         </div>
                     </div>
                 </div>
-                {{-- end selection --}}
-
-                {{-- Summary --}}
                 <div>
-                    <div class="flex px-3 pt-2 justify-center  ">
-                        <div
-                            class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
-                            <h1 class="pt-1 font-semibold">{{ __('Presensi Bulan') }}
-                                {{ monthName($selectedMonth) }}
-                                {{ $selectedYear }}</h1>
-                            <div class="flex justify-around text-center pb-1">
+                    @if (!$isEmergencyContact && !$isEtnis)
+                        <p class="bg-red-600 text-white text-center p-2 mt-3 ">
+                            {{ __('Silakan update data kontak darurat & data Etnis anda di menu profile') }} <i
+                                class="fa-solid fa-user"></i></p>
+                    @elseif(!$isEmergencyContact)
+                        <p class="bg-red-600 text-white text-center p-2 mt-3 ">
+                            {{ __('Silakan update data kontak darurat anda di menu profile') }} <i
+                                class="fa-solid fa-user"></i></p>
+                    @elseif(!$isEtnis)
+                        <p class="bg-red-600 text-white text-center p-2 mt-3 ">
+                            {{ __('Silakan update data etnis anda di menu profile') }} <i class="fa-solid fa-user"></i>
+                        </p>
+                    @endif
+                </div>
+                {{-- end selection --}}
+                @if ($show)
+                    {{-- Summary --}}
+                    <div>
+                        <div class="flex px-3 pt-2 justify-center  ">
+                            <div
+                                class="w-screen h-30 bg-red-200 text-gray-600  px-3  flex flex-col rounded-lg shadow text-center justify-center">
+                                <h1 class="pt-1 font-semibold">{{ __('Presensi Bulan') }}
+                                    {{ monthName($selectedMonth) }}
+                                    {{ $selectedYear }}</h1>
+                                <div class="flex justify-around text-center pb-1">
 
-                                <div>
-                                    <p class="text-sm">{{ __('Hari') }}</p>
-                                    <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p>
-                                </div>
+                                    <div>
+                                        <p class="text-sm">{{ __('Hari') }}</p>
+                                        <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p>
+                                    </div>
 
-                                <div>
-                                    <p class="text-sm">{{ __('J. Kerja') }}</p>
-                                    <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
-                                </div>
+                                    <div>
+                                        <p class="text-sm">{{ __('J. Kerja') }}</p>
+                                        <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
+                                    </div>
 
-                                <div>
-                                    <p class="text-sm">{{ __('J. Lembur') }}</p>
-                                    <p class="font-bold text-green-500 text-lg">{{ $total_jam_lembur }}</p>
-                                </div>
+                                    <div>
+                                        <p class="text-sm">{{ __('J. Lembur') }}</p>
+                                        <p class="font-bold text-green-500 text-lg">{{ $total_jam_lembur }}</p>
+                                    </div>
 
-                                <div>
-                                    <p class="text-sm">{{ __('Terlambat') }}</p>
-                                    <p class="font-bold text-green-500 text-lg">{{ $total_keterlambatan }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm">{{ __('S. Malam') }}</p>
-                                    <p class="font-bold text-green-500 text-lg">
-                                        {{ $total_tambahan_shift_malam }}
-                                    </p>
+                                    <div>
+                                        <p class="text-sm">{{ __('Terlambat') }}</p>
+                                        <p class="font-bold text-green-500 text-lg">{{ $total_keterlambatan }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm">{{ __('S. Malam') }}</p>
+                                        <p class="font-bold text-green-500 text-lg">
+                                            {{ $total_tambahan_shift_malam }}
+                                        </p>
+                                    </div>
+
+
                                 </div>
 
 
                             </div>
-
-
                         </div>
                     </div>
-                </div>
-                {{-- End Summary --}}
-                @if (!$isEmergencyContact)
-                    <p class="bg-red-600 text-white text-center p-2 mt-3 ">
-                        {{ __('Silakan update data kontak darurat anda di menu profile') }}</p>
+                    {{-- End Summary --}}
                 @endif
+
             </div>
+            @if ($show)
 
-            {{-- Main Table --}}
-            <div class="main  flex-1 overflow-y-auto ">
-                {{-- Slip Gaji --}}
-                @if ($is_slipGaji == true && $is_detail == true)
-                    @if ($data_payroll != null)
-                        <div>
-                            {{-- Jika BOLEH tampil slip gaji bulan lalu --}}
-                            <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
-                                {{ monthName($selectedMonth) }}
-                                {{ $selectedYear }}</h2>
+                {{-- Main Table --}}
+                <div class="main  flex-1 overflow-y-auto ">
+                    {{-- Slip Gaji --}}
+                    @if ($is_slipGaji == true && $is_detail == true)
+                        @if ($data_payroll != null)
+                            <div>
+                                {{-- Jika BOLEH tampil slip gaji bulan lalu --}}
+                                <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
+                                    {{ monthName($selectedMonth) }}
+                                    {{ $selectedYear }}</h2>
 
-                            {{-- Jika TIDAK BOLEH tampil slip gaji bulan lalu --}}
-                            {{-- <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
+                                {{-- Jika TIDAK BOLEH tampil slip gaji bulan lalu --}}
+                                {{-- <h2 class="text-gray-900 text-lg text-center my-2">{{ __('Slip Gaji') }}
                                 {{ monthName($latest_month) }}
                                 {{ $latest_year }}</h2> --}}
 
-                            <table class="mx-auto text-sm ">
-                                <tbody>
+                                <table class="mx-auto text-sm ">
+                                    <tbody>
 
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Id</td>
+                                        <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Id</td>
 
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ $data_payroll->id_karyawan }}</td>
-                                    </tr>
-                                    {{-- <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ $data_payroll->id_karyawan }}</td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Nama') }}</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_payroll->nama }}</td>
                                     </tr> --}}
-                                    {{-- @if ($data_karyawan->no_npwp != null)
+                                        {{-- @if ($data_karyawan->no_npwp != null)
                                         <tr>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                 {{ __('No. NPWP') }}
@@ -189,13 +205,13 @@
                                                 {{ $data_karyawan->no_npwp }}</td>
                                         </tr>
                                     @endif --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Nama Bank') }}</td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_karyawan->nama_bank }}</td>
                                     </tr> --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('No. Rekening') }}
                                         </td>
@@ -203,132 +219,132 @@
                                             {{ $data_karyawan->nomor_rekening }}</td>
                                     </tr> --}}
 
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('T. Hari Kerja') }}
-                                        </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ $data_payroll->hari_kerja }} {{ __('hari') }}</td>
-                                    </tr>
-                                    @if ($data_payroll->gaji_lembur != 0)
                                         <tr>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('T. Jam Kerja') }}</td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $data_payroll->jam_kerja }} {{ __('jam') }}</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('T. Jam Lembur') }}
+                                                {{ __('T. Hari Kerja') }}
                                             </td>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
+                                                {{ $data_payroll->hari_kerja }} {{ __('hari') }}</td>
                                         </tr>
-                                    @endif
+                                        @if ($data_payroll->gaji_lembur != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('T. Jam Kerja') }}</td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ $data_payroll->jam_kerja }} {{ __('jam') }}</td>
+                                            </tr>
 
-                                    {{-- <tr>
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('T. Jam Lembur') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
+                                            </tr>
+                                        @endif
+
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Gaji Pokok') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->gaji_pokok) }}</td>
                                     </tr> --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Gaji Lembur') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->gaji_lembur) }}</td>
                                     </tr> --}}
-                                    {{-- <tr>
+                                        {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Subtotal') }}
                                         </td>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                     </tr> --}}
-                                    @if ($data_payroll->tambahan_shift_malam != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Bonus Shift Malam') }}
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->tambahan_shift_malam) }}
-                                            </td>
-                                        </tr>
-                                    @endif
+                                        @if ($data_payroll->tambahan_shift_malam != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Bonus Shift Malam') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->tambahan_shift_malam) }}
+                                                </td>
+                                            </tr>
+                                        @endif
 
-                                    @if ($data_karyawan->iuran_air != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Iuran air minum') }}
+                                        @if ($data_karyawan->iuran_air != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Iuran air minum') }}
 
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_karyawan->iuran_air) }}</td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_karyawan->iuran_locker != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Iuran Locker') }}
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_karyawan->iuran_locker) }}</td>
-                                        </tr>
-                                    @endif
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_karyawan->iuran_air) }}</td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_karyawan->iuran_locker != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Iuran Locker') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_karyawan->iuran_locker) }}</td>
+                                            </tr>
+                                        @endif
 
-                                    @if ($data_payroll->bonus1x != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Bonus') }}
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->bonus1x) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Potongan') }}
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->potongan1x) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_payroll->denda_lupa_absen != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ __('Denda Lupa Absen') }}
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->denda_lupa_absen) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    {{-- @if ($data_payroll->gaji_pokok >= 4500000) --}}
-                                    @if ($data_payroll->jht != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->jht) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_payroll->jp != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->jp) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    {{-- @if ($data_payroll->jkk != 0)
+                                        @if ($data_payroll->bonus1x != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Bonus') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->bonus1x) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->potongan1x - ($data_karyawan->iuran_air + $data_karyawan->iuran_locker) != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Potongan') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->potongan1x) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->denda_lupa_absen != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    {{ __('Denda Lupa Absen') }}
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->denda_lupa_absen) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        {{-- @if ($data_payroll->gaji_pokok >= 4500000) --}}
+                                        @if ($data_payroll->jht != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->jht) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->jp != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->jp) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        {{-- @if ($data_payroll->jkk != 0)
                                     <tr>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JKK</td>
                                         <td  class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Rp. {{ number_format($data_payroll->jkk) }}
@@ -342,164 +358,166 @@
                                             </td>
                                         </tr>
                                     @endif --}}
-                                    @if ($data_payroll->kesehatan != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
-                                                Kesehatan
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->kesehatan) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($data_payroll->tanggungan != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
-                                                Tanggungan
-                                            </td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_payroll->tanggungan) }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    {{-- @endif --}}
-                                    @if ($data_karyawan->ptkp != 0)
-                                        <tr>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP</td>
-                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                Rp. {{ number_format($data_karyawan->ptkp) }}</td>
-                                        </tr>
-                                    @endif
+                                        @if ($data_payroll->kesehatan != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                    Kesehatan
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->kesehatan) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->tanggungan != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                    Tanggungan
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->tanggungan) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        {{-- @endif --}}
+                                        @if ($data_karyawan->ptkp != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP</td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_karyawan->ptkp) }}</td>
+                                            </tr>
+                                        @endif
 
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('Total Terima') }}
-                                        </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            Rp. {{ number_format($data_payroll->total) }}
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ __('Total Terima') }}
+                                            </td>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                Rp. {{ number_format($data_payroll->total) }}
+                                            </td>
+                                        </tr>
 
+                                    </tbody>
+
+                                </table>
+                                <div class="mt-20"></div>
+
+
+                                {{-- <button wire:click="close" class="bg-black text-white px-2 py-1 mt-2">Close</button> --}}
+                            </div>
+
+                        @endif
+                    @endif
+                    {{-- @else --}}
+                    {{-- End slip gajiGaji --}}
+                    {{-- presensi harian --}}
+                    @if ($is_detail == false)
+
+                        <div class="w-screen flex px-3  mt-3 flex flex-col ">
+                            <table>
+                                <tbody>
+
+                                    @foreach ($data as $index => $d)
+                                        <tr
+                                            class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
+
+                                            <td class="text-center">
+                                                <p
+                                                    class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
+                                                    {{ tgl_doang($d->date) }}
+                                                </p>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-gray-500 text-sm">{{ __('J. Kerja') }}</p>
+                                                <p class="font-bold text-blue-500">
+                                                    @php
+                                                        $tgl = tgl_doang($d->date);
+                                                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                                                        $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+
+                                                        if ($d->karyawan->jabatan === 'Satpam') {
+                                                            $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
+                                                        }
+
+                                                        $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+
+                                                        if (is_sunday($d->date)) {
+                                                            $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
+                                                        } else {
+                                                            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                                                        }
+
+                                                        $tambahan_shift_malam = 0;
+
+                                                        if ($d->shift == 'Malam') {
+                                                            if (is_saturday($d->date)) {
+                                                                if ($jam_kerja >= 6) {
+                                                                    // $jam_lembur = $jam_lembur + 1;
+                                                                    $tambahan_shift_malam = 1;
+                                                                }
+                                                            } elseif (is_sunday($d->date)) {
+                                                                if ($jam_kerja >= 16) {
+                                                                    // $jam_lembur = $jam_lembur + 2;
+                                                                    $tambahan_shift_malam = 2;
+                                                                }
+                                                            } else {
+                                                                if ($jam_kerja >= 8) {
+                                                                    // $jam_lembur = $jam_lembur + 1;
+                                                                    $tambahan_shift_malam = 1;
+                                                                }
+                                                            }
+                                                        }
+                                                        if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+                                                            $jam_lembur = 0;
+                                                        }
+                                                        if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                                                            if (is_friday($d->date)) {
+                                                                $jam_kerja = 7.5;
+                                                            } elseif (is_saturday($d->date)) {
+                                                                $jam_kerja = 6;
+                                                            } else {
+                                                                $jam_kerja = 8;
+                                                            }
+                                                        }
+
+                                                        if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                                                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                                                        }
+
+                                                        if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                                                            $jam_lembur = 0;
+                                                        }
+                                                    @endphp
+                                                    {{ $jam_kerja }}
+                                                </p>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-gray-500 text-sm">{{ __('J. Lembur') }}</p>
+                                                <p class="font-bold text-blue-500">
+                                                    {{ $jam_lembur }}
+                                                </p>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
+                                                <p class="font-bold text-blue-500">
+                                                    {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
+                                                </p>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-gray-500 text-sm">{{ __('S. Malam') }}</p>
+                                                <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
 
                             </table>
-                            <div class="mt-20"></div>
-
-
-                            {{-- <button wire:click="close" class="bg-black text-white px-2 py-1 mt-2">Close</button> --}}
                         </div>
-
                     @endif
-                @endif
-                {{-- @else --}}
-                {{-- End slip gajiGaji --}}
-                {{-- presensi harian --}}
-                @if ($is_detail == false)
+                    {{-- @endif --}}
+                    {{-- End Presensi Harian --}}
+                </div>.
+            @endif
 
-                    <div class="w-screen flex px-3  mt-3 flex flex-col ">
-                        <table>
-                            <tbody>
-
-                                @foreach ($data as $index => $d)
-                                    <tr
-                                        class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
-
-                                        <td class="text-center">
-                                            <p
-                                                class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
-                                                {{ tgl_doang($d->date) }}
-                                            </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-gray-500 text-sm">{{ __('J. Kerja') }}</p>
-                                            <p class="font-bold text-blue-500">
-                                                @php
-                                                    $tgl = tgl_doang($d->date);
-                                                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                                                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-
-                                                    if ($d->karyawan->jabatan === 'Satpam') {
-                                                        $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
-                                                    }
-
-                                                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-
-                                                    if (is_sunday($d->date)) {
-                                                        $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
-                                                    } else {
-                                                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
-                                                    }
-
-                                                    $tambahan_shift_malam = 0;
-
-                                                    if ($d->shift == 'Malam') {
-                                                        if (is_saturday($d->date)) {
-                                                            if ($jam_kerja >= 6) {
-                                                                // $jam_lembur = $jam_lembur + 1;
-                                                                $tambahan_shift_malam = 1;
-                                                            }
-                                                        } elseif (is_sunday($d->date)) {
-                                                            if ($jam_kerja >= 16) {
-                                                                // $jam_lembur = $jam_lembur + 2;
-                                                                $tambahan_shift_malam = 2;
-                                                            }
-                                                        } else {
-                                                            if ($jam_kerja >= 8) {
-                                                                // $jam_lembur = $jam_lembur + 1;
-                                                                $tambahan_shift_malam = 1;
-                                                            }
-                                                        }
-                                                    }
-                                                    if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
-                                                        $jam_lembur = 0;
-                                                    }
-                                                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                                                        if (is_friday($d->date)) {
-                                                            $jam_kerja = 7.5;
-                                                        } elseif (is_saturday($d->date)) {
-                                                            $jam_kerja = 6;
-                                                        } else {
-                                                            $jam_kerja = 8;
-                                                        }
-                                                    }
-
-                                                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                                                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                                                    }
-
-                                                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                                                        $jam_lembur = 0;
-                                                    }
-                                                @endphp
-                                                {{ $jam_kerja }}
-                                            </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-gray-500 text-sm">{{ __('J. Lembur') }}</p>
-                                            <p class="font-bold text-blue-500">
-                                                {{ $jam_lembur }}
-                                            </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
-                                            <p class="font-bold text-blue-500">
-                                                {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
-                                            </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-gray-500 text-sm">{{ __('S. Malam') }}</p>
-                                            <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-
-                        </table>
-                    </div>
-                @endif
-                {{-- @endif --}}
-                {{-- End Presensi Harian --}}
-            </div>.
             {{-- End Main Table --}}
 
 

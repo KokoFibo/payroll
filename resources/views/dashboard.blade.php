@@ -737,6 +737,10 @@
 
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
+        @if (auth()->user()->role == 5)
+            <h1>Belum isi etnis : {{ $belum_isi_etnis }}</h1>
+            <h1>Belum isi Kontak Darurat : {{ $belum_isi_kontak_darurat }}</h1>
+        @endif
         <div class="container pt-5">
             <div class="row align-items-stretch">
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
@@ -1131,8 +1135,8 @@
 
             <canvas id="chart_company"></canvas>
         </div>
-    </div>
 
+    </div>
 
 
 
