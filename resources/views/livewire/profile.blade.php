@@ -81,7 +81,6 @@
                             @error('confirm_password')
                                 <div class="text-red-500">
                                     {{ $message }}
-
                                 </div>
                             @enderror
                         </div>
@@ -134,25 +133,33 @@
                     {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
                     <div class="flex gap-5">
                         <div>
-                            <input wire:model="etnis" value="China" type="radio">
-                            <label class="form-check-label" for="flexRadioDefault1">{{ __('China') }}</label>
+                            <div>
+                                <input wire:model="etnis" value="China" type="radio">
+                                <label class="form-check-label" for="flexRadioDefault1">{{ __('China') }}</label>
+                            </div>
+                            <div>
+                                <input wire:model="etnis" value="Jawa" type="radio">
+                                <label class="form-check-label" for="flexRadioDefault1">{{ __('Jawa') }}</label>
+                            </div>
+
                         </div>
                         <div>
-                            <input wire:model="etnis" value="Jawa" type="radio">
-                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Jawa') }}</label>
+                            <div>
+                                <input wire:model="etnis" value="Sunda" type="radio">
+                                <label class="form-check-label" for="flexRadioDefault1">{{ __('Sunda') }}</label>
+                            </div>
+                            <div>
+                                <input wire:model="etnis" value="Tionghoa" type="radio">
+                                <label class="form-check-label" for="flexRadioDefault1">{{ __('Tionghoa') }}</label>
+                            </div>
                         </div>
                         <div>
-                            <input wire:model="etnis" value="Sunda" type="radio">
-                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Sunda') }}</label>
+                            <div>
+                                <input wire:model="etnis" value="lainnnya" type="radio">
+                                <label class="form-check-label" for="flexRadioDefault1">{{ __('Lainnya') }}</label>
+                            </div>
                         </div>
-                        <div>
-                            <input wire:model="etnis" value="Tionghoa" type="radio">
-                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Tionghoa') }}</label>
-                        </div>
-                        <div>
-                            <input wire:model="etnis" value="lainnnya" type="radio">
-                            <label class="form-check-label" for="flexRadioDefault1">{{ __('Lainnya') }}</label>
-                        </div>
+
                     </div>
                     <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="updateEtnis">{{ __('Update Etnis') }}</button>
