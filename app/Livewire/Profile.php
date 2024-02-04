@@ -23,6 +23,19 @@ class Profile extends Component
     public function updateEtnis()
     {
         // $user = User::find(Auth::user()->id);
+        if (auth()->user()->language == 'Cn') {
+            $this->validate([
+                'etnis' => 'required',
+            ], [
+                'etnis.required' => '必填项',
+            ]);
+        } else {
+            $this->validate([
+                'etnis' => 'required',
+            ], [
+                'etnis.required' => 'Wajib diisi',
+            ]);
+        }
         $user = Karyawan::where('id_karyawan', auth()->user()->username)->first();
         $user->etnis = $this->etnis;
         $user->save();
@@ -128,11 +141,37 @@ class Profile extends Component
 
     public function update_kontak_darurat()
     {
-        $this->validate([
-            'kontak_darurat' => 'nullable',
-            'hp1' => 'nullable',
-            'hp2' => 'nullable',
-        ]);
+        if (auth()->user()->language == 'Cn') {
+            $this->validate([
+                'kontak_darurat' => 'required',
+                'hp1' => 'required|numeric|min_digits:10',
+                'hp2' => 'nullable|numeric|min_digits:10',
+            ], [
+                'kontak_darurat.required' => '必填项',
+                'hp1.required' => '必填项',
+                'hp1.numeric' => '这应该是数字0到9',
+                'hp1.min_digits' => '最少需要10位数字',
+                'hp2.numeric' => '这应该是数字0到9',
+                'hp2.min_digits' => '最少需要10位数字',
+
+            ]);
+        } else {
+
+            $this->validate([
+                'kontak_darurat' => 'required',
+                'hp1' => 'required|numeric|min_digits:10',
+                'hp2' => 'nullable|numeric|min_digits:10',
+            ], [
+                'kontak_darurat.required' => 'Wajib diisi',
+                'hp1.required' => 'Wajib diisi',
+                'hp1.numeric' => 'Harus berupa angka 0..9',
+                'hp1.min_digits' => 'Minimal 10 digit',
+                'hp2.numeric' => 'Harus berupa angka 0..9',
+                'hp2.min_digits' => 'Minimal 10 digit',
+
+            ]);
+        }
+
         $data = Karyawan::find($this->id);
         if ($data == null) {
             $this->dispatch('error', message: 'Data Karyawan tidak ada');
