@@ -213,7 +213,7 @@
     "Data Kepegawaian": "员工资料",
     "Create New": "创建新的",
     "Exit": "退出",
-    "Update": " 更新",
+    "Update": "更新",
     "Data Pribadi": "个人信息",
     "Update Data Karyawan": "更新员工数据",
 
@@ -313,5 +313,16 @@
     "Password Baru": "新密码",
     "Konfirmasi": "确认密码",
     "User Profile": "用户档案",
-    "Silakan update data kontak darurat anda di menu profile": "请在个人资料菜单中更新您的紧急联系信息"
+    "Etnis": "民族",
+    "China": "中方",
+    "Tionghoa": "华人",
+    "Jawa": "爪哇",
+    "Sunda": "巽他",
+    "Etnis berhasil di update": "民族已成功更改",
+    "Lainnya": "其他民族",
+    "Update Etnis": "更新民族",
+    "Nama kontak darurat": "紧急联系人姓名",
+    "Silakan update data kontak darurat anda di menu profile": "请在个人资料菜单中更新您的紧急联系人信息",
+    "Silakan update data kontak darurat & data Etnis anda di menu profile": "请在个人资料菜单中更新您的紧急联系人和民族信息",
+    "Silakan update data etnis anda di menu profile": "请在个人资料菜单中更新您的民族信息"
 }

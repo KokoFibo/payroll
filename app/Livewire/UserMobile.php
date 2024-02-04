@@ -29,10 +29,11 @@ class UserMobile extends Component
     public $tambahan_shift_malam;
     public $cx;
     public $isEmergencyContact;
+    public $isEtnis;
     public $select_month, $select_year;
     public $latest_month, $latest_year;
-
     public $is_detail;
+    public $show;
 
 
     // public function close () {
@@ -77,6 +78,8 @@ class UserMobile extends Component
         $this->selectedMonth = Carbon::now()->month;
         $this->selectedYear = Carbon::now()->year;
         $this->isEmergencyContact = false;
+        $this->isEtnis = false;
+
         $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))
             ->distinct()
             ->pluck('month')
@@ -93,6 +96,8 @@ class UserMobile extends Component
 
         $this->latest_month = $this->selectedMonth;
         $this->latest_year = $this->selectedYear;
+
+        $this->show = false;
     }
 
     public function clear_data()
@@ -106,6 +111,9 @@ class UserMobile extends Component
 
     public function render()
     {
+        if ($this->isEmergencyContact && $this->isEtnis) {
+            $this->show = true;
+        }
         $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
@@ -123,8 +131,11 @@ class UserMobile extends Component
         $this->clear_data();
 
         $data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
-        if ($data_karyawan != null)
+        if ($data_karyawan != null) {
             if ($data_karyawan->kontak_darurat && $data_karyawan->hp1)  $this->isEmergencyContact = true;
+            if ($data_karyawan->etnis)  $this->isEtnis = true;
+        }
+        if ($this->isEmergencyContact && $this->isEtnis) $this->show = true;
 
         $data = Yfrekappresensi::where('user_id', $this->user_id)
             ->whereMonth('date', $this->selectedMonth)

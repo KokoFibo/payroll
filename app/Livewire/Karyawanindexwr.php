@@ -96,7 +96,7 @@ class Karyawanindexwr extends Component
             case 'Tionghoa':
                 $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
-            case 'Lainnya':
+            case 'lainnya':
                 $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
             case 'kosong':

@@ -18,6 +18,18 @@ class Profile extends Component
     public $confirm_password;
     public $language;
     public $kontak_darurat, $hp1, $hp2, $id;
+    public $etnis;
+
+    public function updateEtnis()
+    {
+        // $user = User::find(Auth::user()->id);
+        $user = Karyawan::where('id_karyawan', auth()->user()->username)->first();
+        $user->etnis = $this->etnis;
+        $user->save();
+        if (auth()->user()->language == 'Id')
+            $this->dispatch('success', message: 'Etnis berhasil di update');
+        else $this->dispatch('success', message: '语言已成功更改');
+    }
 
     public function changeLanguage()
     {
@@ -106,11 +118,11 @@ class Profile extends Component
         $this->language = auth()->user()->language;
         $data = Karyawan::where('id_karyawan', auth()->user()->username)->first();
         if ($data != null) {
-
             $this->kontak_darurat = $data->kontak_darurat;
             $this->hp1 = $data->hp1;
             $this->hp2 = $data->hp2;
             $this->id = $data->id;
+            $this->etnis = $data->etnis;
         }
     }
 
