@@ -109,8 +109,8 @@ class UserMobile extends Component
         $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        $this->user_id = 1070;
-        // $this->user_id = auth()->user()->username;
+        // $this->user_id = 1070;
+        $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
