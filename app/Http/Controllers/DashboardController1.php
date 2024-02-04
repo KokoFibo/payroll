@@ -17,6 +17,7 @@ class DashboardController extends Controller
 
     public function index()
     {
+        dd('index dashboard ');
         $year = now()->year;
         $month = now()->month;
         $jumlah_total_karyawan = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
