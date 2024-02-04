@@ -114,6 +114,16 @@ class UserMobile extends Component
         if ($this->isEmergencyContact && $this->isEtnis) {
             $this->show = true;
         }
+        if (
+            auth()->user()->role == 10000 ||
+            auth()->user()->role == 20000 ||
+            auth()->user()->role == 30000 ||
+            auth()->user()->role == 40000 ||
+            auth()->user()->role == 50000
+        ) {
+            $this->show = true;
+        }
+
         $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
