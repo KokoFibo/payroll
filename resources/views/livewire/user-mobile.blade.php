@@ -42,11 +42,9 @@
                                 </div>
                             @else
                                 <div>
-                                    <a href="/dashboard"><button
+                                    <a href="/"><button
                                             class="rounded-xl shadow bg-green-500 text-sm text-white px-3 py-1">{{ __('Dasboard') }}</button>
                                     </a>
-
-
                                 </div>
                             @endif
                             @if ($is_slipGaji != true)

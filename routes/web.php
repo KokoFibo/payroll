@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->back();
         });
         // DASHBOARD
-        Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+        // Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
         Route::get('/userinfo', function () {
             return view('user_information');
