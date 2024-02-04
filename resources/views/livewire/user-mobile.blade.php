@@ -202,6 +202,7 @@
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_karyawan->nomor_rekening }}</td>
                                     </tr> --}}
+
                                     <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('T. Hari Kerja') }}
@@ -209,19 +210,23 @@
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ $data_payroll->hari_kerja }} {{ __('hari') }}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('T. Jam Kerja') }}</td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ $data_payroll->jam_kerja }} {{ __('jam') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ __('T. Jam Lembur') }}
-                                        </td>
-                                        <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                            {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
-                                    </tr>
+                                    @if ($data_payroll->gaji_lembur != 0)
+                                        <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ __('T. Jam Kerja') }}</td>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ $data_payroll->jam_kerja }} {{ __('jam') }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ __('T. Jam Lembur') }}
+                                            </td>
+                                            <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
+                                        </tr>
+                                    @endif
+
                                     {{-- <tr>
                                         <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                             {{ __('Gaji Pokok') }}
