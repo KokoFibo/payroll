@@ -146,7 +146,6 @@ class UserMobile extends Component
             if ($data_karyawan->etnis)  $this->isEtnis = true;
         }
         if ($this->isEmergencyContact && $this->isEtnis) $this->show = true;
-
         $data = Yfrekappresensi::where('user_id', $this->user_id)
             ->whereMonth('date', $this->selectedMonth)
             ->whereYear('date', $this->selectedYear)
@@ -224,6 +223,10 @@ class UserMobile extends Component
                 $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
             }
         }
+        $lanjut = false;
+        foreach ($data1 as $d) {
+            if ($d->no_scan != 'No Scan') $lanjut = true;
+        }
 
         $this->data_payroll = Payroll::with('jamkerjaid')
 
@@ -239,6 +242,6 @@ class UserMobile extends Component
         $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
 
 
-        return view('livewire.user-mobile', compact('data'))->layout('layouts.polos');
+        return view('livewire.user-mobile', compact(['data', 'lanjut']))->layout('layouts.polos');
     }
 }
