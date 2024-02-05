@@ -3,23 +3,20 @@
 use Carbon\Carbon;
 use App\Models\Payroll;
 use App\Models\Karyawan;
-use App\Models\Tambahan;
+use App\Models\Bonuspotongan;
 use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
-//ok1
+//ok 1
+
 function build_payroll($month, $year)
 {
-    $jumlah_libur_nasional = 0;
-    $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
-        ->whereYear('tanggal_mulai_hari_libur', $year)
-        ->sum('jumlah_hari_libur');
+    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
     // $jamKerjaKosong = Jamkerjaid::count();
     $adaPresensi = Yfrekappresensi::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->count();
-
     // if ($jamKerjaKosong == null || $adaPresensi == null) {
     if ($adaPresensi == null) {
         return 0;
@@ -33,12 +30,10 @@ function build_payroll($month, $year)
         ->whereYear('date', $year)
         ->orderBy('date', 'desc')
         ->first();
-
     //     delete jamkerjaid yg akan di build
     Jamkerjaid::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->delete();
-
     $jumlah_jam_terlambat = null;
     $jumlah_menit_lembur = null;
     $dt_name = null;
@@ -70,11 +65,13 @@ function build_payroll($month, $year)
 
     //     foreach ($filteredData as $data) {
     foreach ($filterArray as $data) {
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan') 
-        // $dataId = Yfrekappresensi::where('user_id', $data)
+        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan')
+
+            ->where('user_id', $data)
             ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
             ->orderBy('date', 'desc')
             ->get();
+
         // ambil data per user id
         $n_noscan = 0;
         $total_hari_kerja = 0;
@@ -150,10 +147,8 @@ function build_payroll($month, $year)
         if ($n_noscan == 0) {
             $n_noscan = null;
         }
-        if($d->karyawan->status_karyawan != 'Blacklist') {
-            if($d->karyawan->status_karyawan != 'Blacklist'){
-                dd($d->karyawan->status_karyawan);
-            }
+
+        if ($d->karyawan->status_karyawan != 'Blacklist') {
             $dataArr[] = [
                 'user_id' => $data,
                 'total_hari_kerja' => $total_hari_kerja,
@@ -169,14 +164,12 @@ function build_payroll($month, $year)
                 'updated_at' => now()->toDateTimeString(),
             ];
         }
-    
     }
     $chunks = array_chunk($dataArr, 100);
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
-    
-    // ok2
+    // ok 2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
         ->get();
@@ -191,11 +184,10 @@ function build_payroll($month, $year)
     Payroll::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->delete();
-
     foreach ($datas as $data) {
         //   $payroll = new Payroll();
 
-        if ($data->total_noscan > 3 && $data->karyawan->metode_penggajian == 'Perjam') {
+        if ($data->total_noscan > 3 && trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $denda_noscan = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
         } else {
             $denda_noscan = 0;
@@ -225,6 +217,14 @@ function build_payroll($month, $year)
             $kesehatan = 0;
         }
 
+        if ($data->karyawan->tanggungan >= 1) {
+            $tanggungan = $data->karyawan->tanggungan * $data->karyawan->gaji_bpjs * 0.01;
+        } else {
+            $tanggungan = 0;
+        }
+
+
+
         $pajak = 0;
         if ($data->karyawan->potongan_JKK == 1) {
             $jkk = 1;
@@ -247,7 +247,7 @@ function build_payroll($month, $year)
             }
         }
         // hapus ini jika sdh kelar
-        $denda_lupa_absen = 0;
+        // $denda_lupa_absen = 0;
 
         $total_bonus_dari_karyawan = 0;
         $total_potongan_dari_karyawan = 0;
@@ -255,30 +255,40 @@ function build_payroll($month, $year)
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
-        if ($data->karyawan->metode_penggajian == 'Perjam') {
+
+        $jumlah_hari_absen = countWorkingDays($month, $year, array(0)) - jumlah_libur_nasional($month, $year) - $data->total_hari_kerja;
+        if ($jumlah_hari_absen < 0) $jumlah_hari_absen = 0;
+        $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($jumlah_hari_absen * ($data->karyawan->gaji_pokok / 26));
+
+
+
+        if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         } else {
-            $subtotal = $data->total_hari_kerja * ($data->karyawan->gaji_pokok / 26) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
+            $subtotal = $gaji_karyawan_bulanan + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         }
 
         $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_overtime;
         if ($data->karyawan->jabatan == 'Satpam') {
-            $tambahan_shift_malam = 0;
+            $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_shift_malam_satpam;
         }
-        $hari_kerja_cuti = 0;
-        if ($data->karyawan->metode_penggajian == 'Perbulan') {
-            $hari_kerja_cuti = $data->total_hari_kerja + $jumlah_libur_nasional;
-        } else {
-            $hari_kerja_cuti = $data->total_hari_kerja;
-        }
+
+        $libur_nasional = 0;
+        // if (trim($data->karyawan->metode_penggajian) == 'Perbulan' && countWorkingDays($year, $month, array(0)) <= 26) {
+        //     $libur_nasional = $jumlah_libur_nasional * $data->karyawan->gaji_pokok / 26;
+        // } else {
+        //     $libur_nasional = 0;
+        // }
 
         $payrollArr[] = [
             'jp' => $jp,
             'jht' => $jht,
             'kesehatan' => $kesehatan,
+            'tanggungan' => $tanggungan,
             'jkk' => $jkk,
             'jkm' => $jkm,
             'denda_lupa_absen' => $denda_lupa_absen,
+
             'jamkerjaid_id' => $data->id,
             'nama' => $data->karyawan->nama,
             'id_karyawan' => $data->karyawan->id_karyawan,
@@ -292,9 +302,12 @@ function build_payroll($month, $year)
             'gaji_pokok' => $data->karyawan->gaji_pokok,
             'gaji_lembur' => $data->karyawan->gaji_overtime,
             'gaji_bpjs' => $data->karyawan->gaji_bpjs,
+            // oll
+            'libur_nasional' => $libur_nasional,
+
             'jkk' => $data->karyawan->jkk,
             'jkm' => $data->karyawan->jkm,
-            'hari_kerja' => $hari_kerja_cuti,
+            'hari_kerja' => $data->total_hari_kerja,
             'jam_kerja' => $data->jumlah_jam_kerja,
             'jam_lembur' => $data->jumlah_menit_lembur,
             'jumlah_jam_terlambat' => $data->jumlah_jam_terlambat,
@@ -311,30 +324,28 @@ function build_payroll($month, $year)
             'tambahan_shift_malam' => $tambahan_shift_malam,
             'subtotal' => $subtotal,
             'date' => buatTanggal($data->date),
-            'total' => $subtotal + $total_bonus_dari_karyawan + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $denda_lupa_absen,
+            'total' => $subtotal + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ];
     }
-
     $chunks = array_chunk($payrollArr, 100);
     foreach ($chunks as $chunk) {
         Payroll::insert($chunk);
     }
 
-    // ok3
-
+    // ok 3
     // Bonus dan Potongan
 
     $bonus = 0;
     $potongaan = 0;
     $all_bonus = 0;
     $all_potongan = 0;
-    $tambahan = Tambahan::whereMonth('tanggal', $month)
+    $bonuspotongan = Bonuspotongan::whereMonth('tanggal', $month)
         ->whereYear('tanggal', $year)
         ->get();
 
-    foreach ($tambahan as $d) {
+    foreach ($bonuspotongan as $d) {
         $all_bonus = $d->uang_makan + $d->bonus_lain;
         $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
         $id_payroll = Payroll::whereMonth('date', $month)
@@ -350,8 +361,51 @@ function build_payroll($month, $year)
         }
     }
 
+
     // ok 4
     // perhitungan untuk karyawan yg resign sebelum 3 bulan
+
+    $data = Karyawan::where('tanggal_resigned', '!=', null)
+        ->whereMonth('tanggal_resigned', $month)
+        ->whereYear('tanggal_resigned', $year)
+        ->get();
+
+    foreach ($data as $d) {
+        // $cuti = JumlahHariCuti($d->id_karyawan, $d->tanggal_resigned, $month, $year);
+        $lama_bekerja = lama_bekerja($d->tanggal_bergabung, $d->tanggal_resigned);
+        if ($lama_bekerja <= 90) {
+            $data_payrolls = Payroll::where('id_karyawan', $d->id_karyawan)
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->first();
+
+            // try {
+            //     $data_payroll = Payroll::find($data_payrolls->id);
+            // } catch (\Exception $e) {
+            //     dd($e->getMessage(), $d->id_karyawan, $lama_bekerja);
+            //     return $e->getMessage();
+            // }
+
+            if ($data_payrolls != null) {
+                $data_payroll = Payroll::find($data_payrolls->id);
+            } else {
+                $data_payroll = null;
+            }
+
+            if ($data_payroll != null) {
+                if (trim($data_payroll->metode_penggajian) == 'Perbulan') {
+                    $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / 26);
+                } else {
+                    $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
+                }
+                $data_payroll->total = $data_payroll->total - $data_payroll->denda_resigned;
+                if ($data_payroll->total < 0) {
+                    $data_payroll->total = 0;
+                }
+                $data_payroll->save();
+            }
+        }
+    }
 
     // ok 5
     //  Zheng Guixin 1
@@ -359,7 +413,7 @@ function build_payroll($month, $year)
     // Yang Xiwen 3
     // Rudy Chan 4
     // Yin kai 5
-    // Li meilian 25
+    // Li meilian 25
 
     $idArrTKA = [1, 3, 5, 25];
     $idArrTionghoa = [4, 2];
@@ -367,11 +421,14 @@ function build_payroll($month, $year)
     foreach ($idArrTKA as $id) {
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
-
-        $is_exist = Payroll::where('id_karyawan', $id)->first();
+        //ook
+        $is_exist = Payroll::where('id_karyawan', $id)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->first();
         if ($is_exist) {
+            dd($is_exist->id);
             $data = Payroll::find($is_exist->id);
-
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = $data_karyawan->jabatan;
@@ -389,7 +446,6 @@ function build_payroll($month, $year)
             $data->save();
         } else {
             $data = new Payroll();
-
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = $data_karyawan->jabatan;
@@ -429,7 +485,8 @@ function build_payroll($month, $year)
         } else {
             $kesehatan = 0;
         }
-        $is_exist = Payroll::where('id_karyawan', $id)->first();
+        $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
+            ->whereYear('date', $year)->first();
         if ($is_exist) {
             $data = Payroll::find($is_exist->id);
             $data->jp = $jp;
@@ -474,8 +531,7 @@ function build_payroll($month, $year)
             $data->save();
         }
     }
-
-    // ok 5
+    // ok 6
     // Libur nasional dan resigned sebelum 3 bulan kerja
 
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
@@ -483,6 +539,7 @@ function build_payroll($month, $year)
         ->sum('jumlah_hari_libur');
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
+
 
     return 1;
 }
