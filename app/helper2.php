@@ -65,7 +65,7 @@ function build_payroll($month, $year)
 
     //     foreach ($filteredData as $data) {
     foreach ($filterArray as $data) {
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan')
+        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
 
             ->where('user_id', $data)
             ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
@@ -116,6 +116,7 @@ function build_payroll($month, $year)
                 if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
                     $jam_lembur = 0;
                 }
+
                 if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
                     if (is_friday($d->date)) {
                         $jam_kerja = 7.5;
@@ -132,6 +133,12 @@ function build_payroll($month, $year)
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                     $jam_lembur = 0;
+                }
+
+                // lop
+                if (trim($d->karyawan->metode_penggajian) == 'Perbulan' && is_sunday($d->date)) {
+                    $jam_lembur += $jam_kerja;
+                    $jam_kerja = 0;
                 }
 
                 $total_hari_kerja++;
@@ -165,10 +172,13 @@ function build_payroll($month, $year)
             ];
         }
     }
+
     $chunks = array_chunk($dataArr, 100);
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
+
+
     // ok 2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
