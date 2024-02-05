@@ -168,7 +168,9 @@
                 {{-- Main Table --}}
                 <div class="main  flex-1 overflow-y-auto ">
                     {{-- Slip Gaji --}}
+
                     @if ($is_slipGaji == true && $is_detail == true)
+
                         @if ($data_payroll != null)
                             <div>
                                 {{-- Jika BOLEH tampil slip gaji bulan lalu --}}
@@ -406,7 +408,9 @@
                             </div>
 
                         @endif
+
                     @endif
+
                     {{-- @else --}}
                     {{-- End slip gajiGaji --}}
                     {{-- presensi harian --}}
@@ -415,104 +419,105 @@
                         <div class="w-screen flex px-3  mt-3 flex flex-col ">
                             <table>
                                 <tbody>
+                                    @if ($lanjut)
+                                        @foreach ($data as $index => $d)
+                                            <tr
+                                                class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
 
-                                    @foreach ($data as $index => $d)
-                                        <tr
-                                            class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
-
-                                            <td class="text-center">
-                                                <p
-                                                    class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
-                                                    {{ tgl_doang($d->date) }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-gray-500 text-sm">{{ __('J. Kerja') }}</p>
-                                                <p class="font-bold text-blue-500">
-                                                    @php
-                                                        $tgl = tgl_doang($d->date);
-                                                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                                                        $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-
-                                                        if ($d->karyawan->jabatan === 'Satpam') {
-                                                            $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
-                                                        }
-
-                                                        $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-
-                                                        if (is_sunday($d->date)) {
-                                                            $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
-                                                        } else {
-                                                            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
-                                                        }
-
-                                                        $tambahan_shift_malam = 0;
-
-                                                        if ($d->shift == 'Malam') {
-                                                            if (is_saturday($d->date)) {
-                                                                if ($jam_kerja >= 6) {
-                                                                    // $jam_lembur = $jam_lembur + 1;
-                                                                    $tambahan_shift_malam = 1;
-                                                                }
-                                                            } elseif (is_sunday($d->date)) {
-                                                                if ($jam_kerja >= 16) {
-                                                                    // $jam_lembur = $jam_lembur + 2;
-                                                                    $tambahan_shift_malam = 2;
-                                                                }
-                                                            } else {
-                                                                if ($jam_kerja >= 8) {
-                                                                    // $jam_lembur = $jam_lembur + 1;
-                                                                    $tambahan_shift_malam = 1;
-                                                                }
-                                                            }
-                                                        }
-                                                        if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
-                                                            $jam_lembur = 0;
-                                                        }
-                                                        if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                                                            if (is_friday($d->date)) {
-                                                                $jam_kerja = 7.5;
-                                                            } elseif (is_saturday($d->date)) {
-                                                                $jam_kerja = 6;
-                                                            } else {
-                                                                $jam_kerja = 8;
-                                                            }
-                                                        }
-
-                                                        if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                                                <td class="text-center">
+                                                    <p
+                                                        class="rounded-full bg-white w-10 h-10 flex justify-center items-center font-bold text-xl text-green-500">
+                                                        {{ tgl_doang($d->date) }}
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-gray-500 text-sm">{{ __('J. Kerja') }}</p>
+                                                    <p class="font-bold text-blue-500">
+                                                        @php
+                                                            $tgl = tgl_doang($d->date);
                                                             $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                                                        }
+                                                            $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
 
-                                                        if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                                                            $jam_lembur = 0;
-                                                        }
-                                                    @endphp
-                                                    {{ $jam_kerja }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-gray-500 text-sm">{{ __('J. Lembur') }}</p>
-                                                <p class="font-bold text-blue-500">
-                                                    {{ $jam_lembur }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
-                                                <p class="font-bold text-blue-500">
-                                                    {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-gray-500 text-sm">{{ __('S. Malam') }}</p>
-                                                <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                            if ($d->karyawan->jabatan === 'Satpam') {
+                                                                $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
+                                                            }
+
+                                                            $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+
+                                                            if (is_sunday($d->date)) {
+                                                                $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
+                                                            } else {
+                                                                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                                                            }
+
+                                                            $tambahan_shift_malam = 0;
+
+                                                            if ($d->shift == 'Malam') {
+                                                                if (is_saturday($d->date)) {
+                                                                    if ($jam_kerja >= 6) {
+                                                                        // $jam_lembur = $jam_lembur + 1;
+                                                                        $tambahan_shift_malam = 1;
+                                                                    }
+                                                                } elseif (is_sunday($d->date)) {
+                                                                    if ($jam_kerja >= 16) {
+                                                                        // $jam_lembur = $jam_lembur + 2;
+                                                                        $tambahan_shift_malam = 2;
+                                                                    }
+                                                                } else {
+                                                                    if ($jam_kerja >= 8) {
+                                                                        // $jam_lembur = $jam_lembur + 1;
+                                                                        $tambahan_shift_malam = 1;
+                                                                    }
+                                                                }
+                                                            }
+                                                            if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+                                                                $jam_lembur = 0;
+                                                            }
+                                                            if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                                                                if (is_friday($d->date)) {
+                                                                    $jam_kerja = 7.5;
+                                                                } elseif (is_saturday($d->date)) {
+                                                                    $jam_kerja = 6;
+                                                                } else {
+                                                                    $jam_kerja = 8;
+                                                                }
+                                                            }
+
+                                                            if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                                                                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                                                            }
+
+                                                            if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                                                                $jam_lembur = 0;
+                                                            }
+                                                        @endphp
+                                                        {{ $jam_kerja }}
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-gray-500 text-sm">{{ __('J. Lembur') }}</p>
+                                                    <p class="font-bold text-blue-500">
+                                                        {{ $jam_lembur }}
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
+                                                    <p class="font-bold text-blue-500">
+                                                        {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-gray-500 text-sm">{{ __('S. Malam') }}</p>
+                                                    <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
-
                             </table>
                         </div>
                     @endif
+
                     {{-- @endif --}}
                     {{-- End Presensi Harian --}}
                 </div>.
