@@ -37,7 +37,7 @@ class Payrollwr extends Component
     public $lock_presensi;
     public $lock_slip_gaji;
     public $lock_data;
-    public $select_month, $select_year, $add_month;
+    public $select_month, $select_year;
 
 
     public function exportPlacement()
@@ -207,11 +207,6 @@ class Payrollwr extends Component
             ->distinct()
             ->pluck('year')
             ->toArray();
-        $this->add_month = false;
-        foreach ($this->select_month as $sm) {
-            if ($sm == $this->month)
-                $this->add_month = true;
-        }
     }
     public function updatedLockPresensi()
     {

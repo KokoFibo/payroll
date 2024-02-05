@@ -72,14 +72,16 @@
                 </div>
                 <div>
                     <select class="form-select" wire:model.live="month">
-                        {{-- <option selected>Open this select menu</option> --}}
-                        @foreach ($select_month as $sm)
+                        <option selected>Open this select menu</option> --}}
+                        {{-- @foreach ($select_month as $sm)
                             <option value="{{ $sm }}">{{ monthName($sm) }}</option>
-                        @endforeach
-                        {{-- code dibawah ini utk tambah 1 bulan dari database --}}
-                        @if ($add_month)
-                            <option value="{{ $sm + 1 }}">{{ monthName($sm + 1) }}</option>
-                        @endif
+                        @endforeach --}}
+
+                        <option value="11">{{ monthName(11) }}</option>
+                        <option value="12">{{ monthName(12) }}</option>
+                        <option value="1">{{ monthName(1) }}</option>
+                        <option value="2">{{ monthName(2) }}</option>
+
 
                     </select>
                 </div>
