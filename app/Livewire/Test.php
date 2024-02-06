@@ -24,6 +24,7 @@ class Test extends Component
   public $today;
   public $status_karyawan;
   public $cx;
+  public $etnis;
 
 
 
@@ -35,6 +36,7 @@ class Test extends Component
     $this->year = now()->year;
     $this->month = now()->month;
     $this->status_karyawan = "Resigned";
+    $this->etnis = "lainnya";
   }
 
   public function delete($id)
@@ -49,17 +51,27 @@ class Test extends Component
 
 
 
+  public function change()
+  {
 
+    $data = Karyawan::where('etnis', $this->etnis)->get();
+
+    foreach ($data as $d) {
+      $data_karyawan = Karyawan::find($d->id);
+      $data_karyawan->etnis = 'Lainnya';
+      $data_karyawan->save();
+      $this->dispatch('success', message: 'data berhasil dirubah');
+    }
+  }
 
   public function render()
   {
+    $this->resetPage();
 
+    $data = Karyawan::where('etnis', $this->etnis)->paginate(10);
 
-
-
-    dd(countWorkingDays(2, 2024, array(0)), jumlah_libur_nasional(1, 2024)); // 23
-
-
-    return view('livewire.test');
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }

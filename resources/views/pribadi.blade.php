@@ -159,7 +159,7 @@
                         <option value="Jawa">{{ __('Jawa') }}</option>
                         <option value="Sunda">{{ __('Sunda') }}</option>
                         <option value="Tionghoa">{{ __('Tionghoa') }}</option>
-                        <option value="lainnya">{{ __('lainnya') }}</option>
+                        <option value="Lainnya">{{ __('Lainnya') }}</option>
                     </select>
                     @error('etnis')
                         <div class="invalid-feedback">
