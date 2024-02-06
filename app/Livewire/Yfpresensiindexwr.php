@@ -58,6 +58,9 @@ class Yfpresensiindexwr extends Component
     public $bulan;
     public $tahun;
     public $lock_presensi;
+    public $showAbsensiKosong;
+    public $showLate;
+    public $showNoscan;
 
     public function prev()
     {
@@ -89,6 +92,10 @@ class Yfpresensiindexwr extends Component
         $this->tahun = now()->year;
 
         $this->lock_presensi = $this->getLockPresensi($data->date);
+
+        $this->showAbsensiKosong = false;
+        $this->showLate = false;
+        $this->showNoscan = false;
     }
 
     public function delete_no_scan($id)
@@ -164,8 +171,6 @@ class Yfpresensiindexwr extends Component
         $langsungLembur = 0;
         $tambahan_shift_malam = 0;
         $total_tambahan_shift_malam = 0;
-
-
 
         $data = Yfrekappresensi::with('karyawan')->where('user_id', $user_id)
             ->whereMonth('date', $this->month)
@@ -260,25 +265,26 @@ class Yfpresensiindexwr extends Component
 
     public function filterNoScan()
     {
-        // $this->columnName = 'no_scan_history';
-        $this->columnName = 'no_scan';
-        $this->direction = 'desc';
-        $this->search = null;
-        $this->resetPage();
-        $this->render();
+        $this->showNoscan = true;
     }
     public function filterLate()
     {
-        $this->columnName = 'late_history';
-        $this->direction = 'desc';
-        $this->search = null;
-        $this->resetPage();
-        $this->render();
+        $this->showLate = true;
+    }
+
+    public function filterKosong()
+    {
+        $this->showAbsensiKosong = true;
     }
 
     public function resetTanggal()
     {
         // ini harus di reset ke tanggal terakhir ver d M Y
+        $this->showAbsensiKosong = false;
+        $this->showLate = false;
+        $this->showNoscan = false;
+
+
         $this->tanggal = null;
         $this->columnName = 'no_scan_history';
         $this->direction = 'desc';
@@ -448,52 +454,79 @@ class Yfpresensiindexwr extends Component
             ->where('overtime_out', null)
             ->count();
 
-
-        $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
-            ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+        //  kkkk
 
 
-            ->when($this->location == 'Pabrik 1', function ($query) {
-                return $query->where('placement', 'YCME');
-            })
-            ->when($this->location == 'Pabrik 2', function ($query) {
-                return $query->where('placement', 'YEV');
-            })
-            ->when($this->location == 'Kantor', function ($query) {
-                return $query->whereIn('placement', ['YIG', 'YSM']);
-            })
-            ->orderBy($this->columnName, $this->direction)
-            ->orderBy('user_id', 'asc')
-            ->orderBy('date', 'asc')
-            ->when($this->search == "", function ($query) {
-                $query
-                    ->whereDate('date',  $this->tanggal);
-            })
-            ->when($this->search, function ($query) {
-                $query
-                    ->whereMonth('date', $this->bulan)
-                    ->whereYear('date', $this->tahun);
-            })
+        if ($this->showAbsensiKosong) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->where('first_in', null)
+                ->where('first_out', null)
+                ->where('second_in', null)
+                ->where('second_out', null)
+                ->where('overtime_in', null)
+                ->where('overtime_out', null)
+                ->paginate($this->perpage);
+        } elseif ($this->showLate) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->where('late', 1)
+                ->whereDate('date',  $this->tanggal)
+                ->paginate($this->perpage);
+        } elseif ($this->showNoscan) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->where('no_scan', 'No Scan')
+                ->paginate($this->perpage);
+        } else {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->when($this->location == 'Pabrik 1', function ($query) {
+                    return $query->where('placement', 'YCME');
+                })
+                ->when($this->location == 'Pabrik 2', function ($query) {
+                    return $query->where('placement', 'YEV');
+                })
+                ->when($this->location == 'Kantor', function ($query) {
+                    return $query->whereIn('placement', ['YIG', 'YSM']);
+                })
+                ->orderBy($this->columnName, $this->direction)
+                ->orderBy('user_id', 'asc')
+                ->orderBy('date', 'asc')
+                ->when($this->search == "", function ($query) {
+                    $query
+                        ->whereDate('date',  $this->tanggal);
+                })
+                ->when($this->search, function ($query) {
+                    $query
+                        ->whereMonth('date', $this->bulan)
+                        ->whereYear('date', $this->tahun);
+                })
 
 
 
-            ->where(function ($query) {
-                $query->when($this->search, function ($subQuery) {
-                    $subQuery
-                        ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('user_id', trim($this->search))
-                        // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
-                    // ->whereMonth('date', $this->month)
-                    // ->whereYear('date', $this->year);
-                });
-            })
+                ->where(function ($query) {
+                    $query->when($this->search, function ($subQuery) {
+                        $subQuery
+                            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('user_id', trim($this->search))
+                            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+                        // ->whereMonth('date', $this->month)
+                        // ->whereYear('date', $this->year);
+                    });
+                })
 
-            ->paginate($this->perpage);
-        // dd($datas[0]->user_id);
+                ->paginate($this->perpage);
+            // dd($datas[0]->user_id);
+        }
+        $this->showAbsensiKosong = false;
+        $this->showLate = false;
+        $this->showNoscan = false;
+        $this->resetPage();
 
         return view('livewire.yfpresensiindexwr', compact([
             'datas', 'totalHadir', 'totalHadirPagi',
