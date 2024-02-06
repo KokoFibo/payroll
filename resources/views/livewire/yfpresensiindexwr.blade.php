@@ -100,9 +100,6 @@
             <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
-            @if ($absensiKosong > 0)
-                <button wire:click="filterKosong" class="btn btn-danger" type="button">{{ __('Kosong') }}</button>
-            @endif
         </div>
 
 

@@ -1,6 +1,7 @@
 <div>
     @section('title', 'Presensi')
-
+    {{-- <p>lock_presensi: {{ $lock_presensi }}</p>
+    <p>tanggal: {{ $tanggal }}</p> --}}
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
@@ -69,55 +70,61 @@
     </div>
 
 
-    {{-- <div
-        class=" gap-3  p-xl-4 d-flex  flex-column flex-xl-row align-items-center justify-content-xl-between mt-xl-0 mt-2 "> --}}
-    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between   pt-2">
 
-        <div class="col-xl-6 col-12 d-flex flex-column flex-xl-row  gap-2 gap-xl-0 ">
-            <div class="col-xl-7 col-12">
-                <div class="input-group">
-                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <input type="search" wire:model.live="search" class="form-control"
-                        placeholder="{{ __('Search') }} ...">
-                </div>
-            </div>
-            <div class="col-xl-5 col-12">
-                <div>
-                    <div class="input-group">
-                        <button class="btn btn-primary" type="button"><i
-                                class="fa-solid fa-calendar-days"></i></button>
-                        <input type="date" wire:model.live="tanggal" class="form-control">
-                    </div>
-                </div>
+    <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12 gap-2 gap-xl-0 justify-content-xl-between px-3  pt-3">
+
+        {{-- <div class="d-flex flex-column flex-xl-row  gap-2 gap-xl-0 "> --}}
+        <div class="col-xl-4 col-12">
+            <div class="input-group">
+                <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="search" wire:model.live="search" class="form-control"
+                    placeholder="{{ __('Search') }} ...">
             </div>
         </div>
-        <div class="col-xl-3 col-12 gap-3 text-center     ">
+        <div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-dark btn-sm" wire:click="prev"> <i
+                        class="fa-solid fa-arrow-left"></i></button>
+
+                <div class="input-group">
+                    <button class="btn btn-primary" type="button"><i class="fa-solid fa-calendar-days"></i></button>
+                    <input type="date" wire:model.live="tanggal" class="form-control">
+                </div>
+                <button class="btn btn-outline-dark btn-sm" wire:click="next"><i
+                        class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+        {{-- </div> --}}
+        <div class="text-center">
             {{-- <div class="col-2"> --}}
             <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
-            <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
+            @if ($overallNoScan > 0)
+                <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
+            @endif
             <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
+            @if ($absensiKosong > 0)
+                <button wire:click="filterKosong" class="btn btn-danger" type="button">{{ __('Kosong') }}</button>
+            @endif
         </div>
 
-        <div class="col-xl-3 col-12 d-flex flex-row  ">
-            <div class="col-6 ">
-                <select class="form-select" wire:model.live="perpage">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="10">10 {{ __('rows perpage') }}</option>
-                    <option value="15">15 {{ __('rows perpage') }}</option>
-                    <option value="20">20 {{ __('rows perpage') }}</option>
-                    <option value="25">25 {{ __('rows perpage') }}</option>
-                </select>
 
-            </div>
-            <div class="col-6 ">
-                <select class="form-select" wire:model.live="location">
-                    {{-- <option selected>Open this select menu</option> --}}
-                    <option value="All">{{ __('All') }}</option>
-                    <option value="Kantor">{{ __('Kantor') }}</option>
-                    <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
-                    <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
-                </select>
-            </div>
+        <div>
+            <select class="form-select" wire:model.live="perpage">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="10">10 {{ __('rows perpage') }}</option>
+                <option value="15">15 {{ __('rows perpage') }}</option>
+                <option value="20">20 {{ __('rows perpage') }}</option>
+                <option value="25">25 {{ __('rows perpage') }}</option>
+            </select>
+        </div>
+        <div>
+            <select class="form-select" wire:model.live="location">
+                {{-- <option selected>Open this select menu</option> --}}
+                <option value="All">{{ __('All') }}</option>
+                <option value="Kantor">{{ __('Kantor') }}</option>
+                <option value="Pabrik 1">{{ __('Pabrik 1') }}</option>
+                <option value="Pabrik 2">{{ __('Pabrik 2') }}</option>
+            </select>
         </div>
     </div>
 
@@ -148,7 +155,6 @@
             </style>
             <div class="card-body ">
                 <div class="table-responsive">
-
                     <table class="table table-sm table-hover mb-4">
                         <thead>
                             <tr>
@@ -194,9 +200,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             @if ($datas->isNotEmpty())
-
 
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
@@ -206,10 +210,13 @@
                                         <td>
 
                                             @if ($btnEdit == true)
+                                                {{-- @if ($lock_presensi == true && Auth::user()->role <= 3) --}}
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}"><i
+                                                    class="btn btn-success btn-sm"
+                                                    {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
+                                                {{-- @endif --}}
                                             @else
                                                 @if ($data->id == $selectedId)
                                                     <button @click="edit = !edit" wire:click="save"
