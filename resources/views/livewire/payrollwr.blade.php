@@ -61,45 +61,42 @@
         </div>
 
         <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
-            <button class="btn btn-info">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
+            <div class="d-flex gap-2 flex-lg-row flex-column">
+                <button class="btn btn-info">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
+                <div class="d-flex gap-2">
+                    <div>
+                        <select class="form-select" wire:model.live="year">
+                            @foreach ($select_year as $sy)
+                                <option value="{{ $sy }}">{{ $sy }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select" wire:model.live="month">
+                            {{-- <option selected>Open this select menu</option>  --}}
+                            @foreach ($select_month as $sm)
+                                <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div wire:loading.delay.longest>
+                    <button class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
+                    </button>
+                </div>
+
+            </div>
+
+
             <div class="d-flex gap-2">
-                <div>
-                    <select class="form-select" wire:model.live="year">
-                        @foreach ($select_year as $sy)
-                            <option value="{{ $sy }}">{{ $sy }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <select class="form-select" wire:model.live="month">
-                        <option selected>Open this select menu</option> --}}
-                        {{-- @foreach ($select_month as $sm)
-                            <option value="{{ $sm }}">{{ monthName($sm) }}</option>
-                        @endforeach --}}
-
-                        <option value="11">{{ monthName(11) }}</option>
-                        <option value="12">{{ monthName(12) }}</option>
-                        <option value="1">{{ monthName(1) }}</option>
-                        <option value="2">{{ monthName(2) }}</option>
-
-
-                    </select>
-                </div>
+                <button class="btn btn-success" wire:click="bankexcel">{{ __('Report for bank') }}</button>
+                <button wire:click="export" class="btn btn-success">Excel</button>
+                <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                    class="btn btn-primary">{{ __('Rebuild') }}</button>
             </div>
-            <div wire:loading>
-                <button class="btn btn-primary" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
-                </button>
-            </div>
-            <a href="/reportindex"><button class="btn btn-success"
-                    wire:loading.remove>{{ __('Report for bank') }}</button></a>
-            <button wire:click="export" class="btn btn-success">Excel Company</button>
-            <button wire:click="exportPlacement" class="btn btn-success">Excel Placement</button>
-            <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                class="btn btn-primary">{{ __('Rebuild') }}</button>
         </div>
-
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-xl-row flex-column justify-content-between align-items-center gap-2 gap-xl-0">
@@ -188,8 +185,9 @@
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }} <i
-                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('hari_kerja')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -330,7 +328,8 @@
 
                                             </td>
 
-                                            <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
+                                            <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}
+                                            </td>
                                             <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
                                             <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
                                             <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
@@ -355,7 +354,8 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3">Total {{ countWorkingDays($month, $year, [0]) - jumlah_libur_nasional($month, $year) }}
+            <p class="px-3">Total
+                {{ countWorkingDays($month, $year, [0]) - jumlah_libur_nasional($month, $year) }}
                 working days
                 with
                 {{ jumlah_libur_nasional($month, $year) }} Holidays</p>

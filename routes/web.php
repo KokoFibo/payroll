@@ -8,6 +8,7 @@ use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
+use App\Livewire\BankReport;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
@@ -131,6 +132,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payroll', Payrollwr::class);
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
+                Route::get('/bankreport', BankReport::class);
 
                 // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
                 // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);

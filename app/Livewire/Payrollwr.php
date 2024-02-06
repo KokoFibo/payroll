@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Jobs\BuildPayrollJob;
 use App\Exports\PayrollExport;
 use App\Models\Yfrekappresensi;
+use App\Exports\BankReportExcel;
 use App\Exports\PlacementExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,108 +41,267 @@ class Payrollwr extends Component
     public $select_month, $select_year;
 
 
-    public function exportPlacement()
-    {
-        switch ($this->selected_placement) {
-            case 0:
-                $nama_file = 'semua_placement_payroll.xlsx';
-                break;
 
-                // case 1:
-                //     $nama_file = 'payroll_placement_pabrik1.xlsx';
-                //     break;
-
-                // case 2:
-                //     $nama_file = 'payroll_placement_pabrik2.xlsx';
-                //     break;
-
-                // case 3:
-                //     $nama_file = 'payroll_placement_kantor.xlsx';
-                //     break;
-
-                // case 4:
-                //     $nama_file = 'payroll_placement_ASB.xlsx';
-                //     break;
-
-                // case 5:
-                //     $nama_file = 'payroll_placement_DPA.xlsx';
-                //     break;
-
-            case 6:
-                $nama_file = 'payroll_placement_YCME.xlsx';
-                break;
-
-            case 7:
-                $nama_file = 'payroll_placement_YEV.xlsx';
-                break;
-
-            case 8:
-                $nama_file = 'payroll_placement_YIG.xlsx';
-                break;
-
-            case 9:
-                $nama_file = 'payroll_placement_YSM.xlsx';
-                break;
-            case 10:
-                $nama_file = 'payroll_placement_YAM.xlsx';
-                break;
-        }
-        $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
-        return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
-    }
     public function export()
     {
         $nama_file = '';
+        if ($this->selected_company != 0) {
+            switch ($this->selected_company) {
+                case 0:
+                    $nama_file = 'semua_company_payroll.xlsx';
+                    break;
 
-        switch ($this->selected_company) {
-            case 0:
-                $nama_file = 'semua_company_payroll.xlsx';
-                break;
+                case 4:
+                    $nama_file = 'payroll_company_ASB.xlsx';
+                    break;
 
-                // case 1:
-                //     $nama_file = 'payroll_company_pabrik1.xlsx';
-                //     break;
+                case 5:
+                    $nama_file = 'payroll_company_DPA.xlsx';
+                    break;
 
-                // case 2:
-                //     $nama_file = 'payroll_company_pabrik2.xlsx';
-                //     break;
+                case 6:
+                    $nama_file = 'payroll_company_YCME.xlsx';
+                    break;
 
-                // case 3:
-                //     $nama_file = 'payroll_company_kantor.xlsx';
-                //     break;
+                case 7:
+                    $nama_file = 'payroll_company_YEV.xlsx';
+                    break;
 
-            case 4:
-                $nama_file = 'payroll_company_ASB.xlsx';
-                break;
+                case 8:
+                    $nama_file = 'payroll_company_YIG.xlsx';
+                    break;
 
-            case 5:
-                $nama_file = 'payroll_company_DPA.xlsx';
-                break;
+                case 9:
+                    $nama_file = 'payroll_company_YSM.xlsx';
+                    break;
 
-            case 6:
-                $nama_file = 'payroll_company_YCME.xlsx';
-                break;
+                case 10:
+                    $nama_file = 'payroll_company_YAM.xlsx';
+                    break;
+            }
+        } else {
+            switch ($this->selected_placement) {
+                case 0:
+                    $nama_file = 'semua_payroll.xlsx';
+                    break;
 
-            case 7:
-                $nama_file = 'payroll_company_YEV.xlsx';
-                break;
+                    // case 1:
+                    //     $nama_file = 'payroll_placement_pabrik1.xlsx';
+                    //     break;
 
-            case 8:
-                $nama_file = 'payroll_company_YIG.xlsx';
-                break;
+                    // case 2:
+                    //     $nama_file = 'payroll_placement_pabrik2.xlsx';
+                    //     break;
 
-            case 9:
-                $nama_file = 'payroll_company_YSM.xlsx';
-                break;
-            case 10:
-                $nama_file = 'payroll_company_YAM.xlsx';
-                break;
+                    // case 3:
+                    //     $nama_file = 'payroll_placement_kantor.xlsx';
+                    //     break;
+
+                    // case 4:
+                    //     $nama_file = 'payroll_placement_ASB.xlsx';
+                    //     break;
+
+                    // case 5:
+                    //     $nama_file = 'payroll_placement_DPA.xlsx';
+                    //     break;
+
+                case 6:
+                    $nama_file = 'payroll_placement_YCME.xlsx';
+                    break;
+
+                case 7:
+                    $nama_file = 'payroll_placement_YEV.xlsx';
+                    break;
+
+                case 8:
+                    $nama_file = 'payroll_placement_YIG.xlsx';
+                    break;
+
+                case 9:
+                    $nama_file = 'payroll_placement_YSM.xlsx';
+                    break;
+                case 10:
+                    $nama_file = 'payroll_placement_YAM.xlsx';
+                    break;
+            }
         }
 
-        // return Excel::download(new PayrollExport($payroll), $nama_file);
-        // $nama_file = "payroll.xlsx";
+
+
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
-        return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+        if ($this->selected_company != 0) {
+            return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+        } else {
+            return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
+        }
+    }
+    public function bankexcel()
+    {
+        $nama_file = '';
+        if ($this->selected_company != 0) {
+            switch ($this->selected_company) {
+                case '0':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'semua_karyawan_Bank.xlsx';
+                    break;
+                    // case '2':
+                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    //         ->whereMonth('date', $this->month)
+                    //         ->whereYear('date', $this->year)
+                    //         ->orderBy('id_karyawan', 'asc')
+                    //         ->where('placement', 'YCME')
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //     $nama_file = 'Pabrik-1_Bank.xlsx';
+                    //     break;
+                    // case '3':
+                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    //         ->whereMonth('date', $this->month)
+                    //         ->whereYear('date', $this->year)
+                    //         ->orderBy('id_karyawan', 'asc')
+                    //         ->where('placement', 'YEV')
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //     $nama_file = 'Pabrik-2_Bank.xlsx';
+                    //     break;
+                    // case '4':
+                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    //         ->whereMonth('date', $this->month)
+                    //         ->whereYear('date', $this->year)
+                    //         ->orderBy('id_karyawan', 'asc')
+                    //         ->whereIn('placement', ['YIG', 'YSM'])
+
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //     $nama_file = 'Kantor_Bank.xlsx';
+                    //     break;
+
+                case '4':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'ASB')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'ASB_Company_Bank.xlsx';
+                    break;
+                case '5':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'DPA')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'DPA_Company_Bank.xlsx';
+                    break;
+                case '6':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'YCME')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YCME_Company_Bank.xlsx';
+                    break;
+                case '7':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'YEV')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YEV_Company_Bank.xlsx';
+                    break;
+                case '8':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'YIG')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YIG_Company_Bank.xlsx';
+                    break;
+                case '9':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'YSM')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YSM_Company_Bank.xlsx';
+                    break;
+                case '10':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('company', 'YAM')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YAM_Company_Bank.xlsx';
+                    break;
+            }
+        } else {
+            switch ($this->selected_placement) {
+                case '0':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'semua_karyawan_Bank.xlsx';
+                    break;
+                case '6':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YCME')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YCME_Placement_Bank.xlsx';
+                    break;
+                case '7':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YEV')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YEV_Placement_Bank.xlsx';
+                    break;
+                case '8':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YIG')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YIG_Placement_Bank.xlsx';
+                    break;
+                case '9':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YSM')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YSM_Placement_Bank.xlsx';
+                    break;
+                case '10':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YAM')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YAM_Placement_Bank.xlsx';
+                    break;
+            }
+        }
+
+
+        $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+        return Excel::download(new BankReportExcel($payroll), $nama_file);
     }
 
     public function showDetail($id_karyawan)
@@ -198,15 +358,6 @@ class Payrollwr extends Component
         $this->lock_presensi = $lock->presensi;
         $this->lock_slip_gaji = $lock->slip_gaji;
         $this->lock_data = $lock->data;
-
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
-            ->distinct()
-            ->pluck('month')
-            ->toArray();
-        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
-            ->distinct()
-            ->pluck('year')
-            ->toArray();
     }
     public function updatedLockPresensi()
     {
@@ -240,14 +391,14 @@ class Payrollwr extends Component
     public function buat_payroll()
     {
         // supaya tidak dilakukan bersamaan
-        //     $lock = Lock::find(1);
-        //     if ($lock->build) {
-        //         $lock->build = 0;
-        //         return back()->with('error', 'Mohon dicoba sebentar lagi');
-        //     } else {
-        //         $lock->build = 1;
-        //         $lock->save();
-        //     }
+        $lock = Lock::find(1);
+        if ($lock->build == 1) {
+            $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+            return;
+        } else {
+            $lock->build = 1;
+            $lock->save();
+        }
 
         $result  = build_payroll($this->month, $this->year);
         if ($result == 0) {
@@ -257,9 +408,9 @@ class Payrollwr extends Component
         }
 
 
-        //     $lock->build = false;
-        //     $lock->save();
-        return redirect()->to('/payroll');
+        $lock->build = 0;
+        $lock->save();
+        // return redirect()->to('/payroll');
     }
 
 
@@ -665,9 +816,29 @@ class Payrollwr extends Component
         $this->selected_company = 0;
     }
 
+    public function updatedYear()
+    {
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        $this->month = $this->select_month[0];
+    }
+
     public function render()
     {
         $this->cx++;
+
+        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
 
 
         if ($this->status == 1) {
@@ -1022,8 +1193,6 @@ class Payrollwr extends Component
                     break;
             }
         }
-
-
 
         $tgl = Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)

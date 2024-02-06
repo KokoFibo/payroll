@@ -191,9 +191,28 @@ class Tambahanwr extends Component
         $this->dispatch('success', message: 'Data sudah di Delete');
     }
 
+    public function updatedYear()
+    {
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))->whereYear('tanggal', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        $this->month = $this->select_month[0];
+    }
+
     public function render()
     {
 
+        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))->whereYear('tanggal', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
 
         // $month_start = Carbon::now()
         //     ->startOfMonth()
