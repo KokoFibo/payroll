@@ -155,7 +155,7 @@
                         </div>
                         <div>
                             <div>
-                                <input wire:model="etnis" value="lainnnya" type="radio">
+                                <input wire:model="etnis" value="Lainnya" type="radio">
                                 <label class="form-check-label" for="flexRadioDefault1">{{ __('Lainnya') }}</label>
                             </div>
                         </div>
