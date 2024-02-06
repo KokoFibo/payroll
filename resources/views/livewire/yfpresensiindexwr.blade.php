@@ -1,6 +1,7 @@
 <div>
     @section('title', 'Presensi')
     {{-- <p>lock_presensi: {{ $lock_presensi }}</p>
+    
     <p>tanggal: {{ $tanggal }}</p> --}}
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
@@ -122,7 +123,11 @@
             </select>
         </div>
     </div>
-
+    @if ($data_kosong != '')
+        <div class="bg-danger text-light pt-1 mt-3 px-3  text-center text-align-center">
+            <h5>Data kosong ID : {{ $data_kosong }}</h5>
+        </div>
+    @endif
     <div class="p-3 px-xl-4">
         <div class="card">
             <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
