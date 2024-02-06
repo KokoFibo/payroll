@@ -80,13 +80,12 @@
                         </select>
                     </div>
                 </div>
-                <div wire:loading.delay.longest>
-                    <button class="btn btn-primary" type="button" disabled>
+                <div>
+                    <button wire:loading.delay.longest class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                     </button>
                 </div>
-
             </div>
 
 

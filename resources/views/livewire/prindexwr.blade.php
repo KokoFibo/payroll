@@ -31,28 +31,24 @@
         </div>
         <div class="col-xl-2 col-12">
             <select class="form-select" wire:model.live="month">
-                {{-- <option selected>Open this select menu</option> --}}
-                {{-- <option value="11">{{ monthName(11) }}</option>
-                <option value="12">{{ monthName(12) }}</option>
-                <option value="1">{{ monthName(1) }}</option>
-                <option value="2">{{ monthName(2) }}</option> --}}
                 @foreach ($select_month as $sm)
                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                 @endforeach
             </select>
         </div>
-        <div wire:loading.delay.longest class="{{ auth()->user()->role < 3 ? 'invisible' : '' }}">
-            <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
-            </button>
-        </div>
+
         <a href="/presensisummaryindex"><button
                 class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }}">Excel</button></a>
 
         <button wire:click="buat_payroll" class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
             wire:loading.class='invisible'
             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
+    </div>
+    <div class="{{ auth()->user()->role < 3 ? 'invisible' : '' }} text-center mt-3">
+        <button wire:loading.delay.longest class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
+        </button>
     </div>
 
     <div class="p-4">
