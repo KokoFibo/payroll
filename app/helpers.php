@@ -328,7 +328,7 @@ function check_bulan($tgl, $bulan, $tahun)
 function nama_file_excel($nama_file, $month, $year)
 {
     $arrNamaFile = explode('.', $nama_file);
-    return $arrNamaFile[0] . '_' . $month . '_' . $year . '.' . $arrNamaFile[1];
+    return $arrNamaFile[0] . '_' . monthName($month) . '_' . $year . '.' . $arrNamaFile[1];
 }
 
 function ada_tambahan($id)

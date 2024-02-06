@@ -26,6 +26,8 @@ class Prindexwr extends Component
     public $perpage = 10;
     public $year;
     public $month;
+    public $select_month, $select_year;
+
 
     public function sortColumnName($namaKolom)
     {
@@ -68,14 +70,14 @@ class Prindexwr extends Component
     public function buat_payroll()
     {
         // supaya tidak dilakukan bersamaan
-        //     $lock = Lock::find(1);
-        //     if ($lock->build) {
-        //         $lock->build = 0;
-        //         return back()->with('error', 'Mohon dicoba sebentar lagi');
-        //     } else {
-        //         $lock->build = 1;
-        //         $lock->save();
-        //     }
+        $lock = Lock::find(1);
+        if ($lock->build == 1) {
+            $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+            return;
+        } else {
+            $lock->build = 1;
+            $lock->save();
+        }
 
 
         $result = build_payroll($this->month, $this->year);
@@ -85,8 +87,8 @@ class Prindexwr extends Component
             $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
         }
 
-        //     $lock->build = false;
-        //     $lock->save();
+        $lock->build = 0;
+        $lock->save();
         return redirect()->to('/payrollindex');
     }
 
@@ -457,8 +459,27 @@ class Prindexwr extends Component
         $this->dispatch('success', message: 'Bonus dan Potangan added');
     }
 
+    public function updatedYear()
+    {
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        $this->month = $this->select_month[0];
+    }
+
     public function render()
     {
+        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
         $periodePayroll = DB::table('yfrekappresensis')
             ->select(DB::raw('YEAR(date) year, MONTH(date) month, MONTHNAME(date) month_name'))
             ->distinct()

@@ -22,28 +22,33 @@
         <div>
             <select class="form-select" wire:model.live="year">
                 {{-- <option selected>Open this select menu</option> --}}
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
+                {{-- <option value="2023">2023</option>
+                <option value="2024">2024</option> --}}
+                @foreach ($select_year as $sy)
+                    <option value="{{ $sy }}">{{ $sy }}</option>
+                @endforeach
             </select>
         </div>
         <div class="col-xl-2 col-12">
             <select class="form-select" wire:model.live="month">
                 {{-- <option selected>Open this select menu</option> --}}
-                <option value="11">{{ monthName(11) }}</option>
+                {{-- <option value="11">{{ monthName(11) }}</option>
                 <option value="12">{{ monthName(12) }}</option>
                 <option value="1">{{ monthName(1) }}</option>
-                <option value="2">{{ monthName(2) }}</option>
+                <option value="2">{{ monthName(2) }}</option> --}}
+                @foreach ($select_month as $sm)
+                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                @endforeach
             </select>
         </div>
-        <div wire:loading class="{{ auth()->user()->role < 3 ? 'invisible' : '' }}">
+        <div wire:loading.delay.longest class="{{ auth()->user()->role < 3 ? 'invisible' : '' }}">
             <button class="btn btn-primary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
             </button>
         </div>
         <a href="/presensisummaryindex"><button
-                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
-                wire:loading.class='invisible'>Excel</button></a>
+                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }}">Excel</button></a>
 
         <button wire:click="buat_payroll" class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
             wire:loading.class='invisible'
