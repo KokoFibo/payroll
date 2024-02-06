@@ -58,6 +58,7 @@ class Yfpresensiindexwr extends Component
     public $bulan;
     public $tahun;
     public $lock_presensi;
+    public $data_kosong;
 
     public function prev()
     {
@@ -447,6 +448,27 @@ class Yfpresensiindexwr extends Component
             ->where('overtime_in', null)
             ->where('overtime_out', null)
             ->count();
+
+        if ($absensiKosong > 0) {
+            $id_kosong = Yfrekappresensi::select('user_id')
+                ->whereNull('first_in')
+                ->whereNull('first_out')
+                ->whereNull('second_in')
+                ->whereNull('second_out')
+                ->whereNull('overtime_in')
+                ->whereNull('overtime_out')
+                ->pluck('user_id')
+                ->toArray();
+            $this->data_kosong = implode(', ', $id_kosong);
+        } else {
+            $this->data_kosong = '';
+        }
+
+
+
+
+
+
 
 
         $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
