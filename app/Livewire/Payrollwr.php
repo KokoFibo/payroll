@@ -410,7 +410,7 @@ class Payrollwr extends Component
 
         $lock->build = 0;
         $lock->save();
-        // return redirect()->to('/payroll');
+        $this->mount();
     }
 
 
@@ -828,6 +828,7 @@ class Payrollwr extends Component
 
     public function render()
     {
+
         $this->cx++;
 
         $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
