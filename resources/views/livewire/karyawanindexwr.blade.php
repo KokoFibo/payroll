@@ -179,13 +179,12 @@
                                                 <option value="Lainnya">{{ __('Lainnya') }}</option>
                                                 <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
                                                 @foreach ($etnises as $j)
-                                                    @if ($j == '')
-                                                        <option value="kosong">{{ __('Masih Kosong') }}</option>
-                                                    @else
+                                                    @if ($j != '')
                                                         <option value="{{ $j }}">{{ $j }}
                                                         </option>
                                                     @endif
                                                 @endforeach
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
                                             </select>
                                         </div>
                                     </th>

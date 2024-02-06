@@ -6,6 +6,7 @@ use App\Models\Payroll;
 // use Maatwebsite\Excel\Excel;
 use Illuminate\Http\Request;
 use App\Exports\BankReportExcel;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PresensiSummaryExport;
 
@@ -13,7 +14,18 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('reports.index');
+        $select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $select_year = Payroll::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+        return view('reports.index', [
+            'select_month' => $select_month,
+            'select_year' => $select_year
+        ]);
     }
 
     public function presensi_summary_index()

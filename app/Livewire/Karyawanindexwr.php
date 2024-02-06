@@ -96,7 +96,7 @@ class Karyawanindexwr extends Component
             case 'Tionghoa':
                 $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
-            case 'lainnya':
+            case 'Lainnya':
                 $nama_file = "Etnis_" . $this->search_etnis . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
             case 'kosong':
@@ -373,7 +373,9 @@ class Karyawanindexwr extends Component
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan', trim($this->search_jabatan));
             })
-            ->pluck('etnis')->unique();
+            ->pluck('etnis')
+            ->unique()
+            ->sort();
 
 
 
