@@ -59,6 +59,7 @@ class Yfpresensiindexwr extends Component
     public $tahun;
     public $lock_presensi;
     public $data_kosong;
+    public $is_noscan, $is_kosong;
 
     public function prev()
     {
@@ -90,6 +91,9 @@ class Yfpresensiindexwr extends Component
         $this->tahun = now()->year;
 
         $this->lock_presensi = $this->getLockPresensi($data->date);
+
+        $this->is_noscan = false;
+        $this->is_kosong = false;
     }
 
     public function delete_no_scan($id)
@@ -269,13 +273,31 @@ class Yfpresensiindexwr extends Component
 
     public function filterNoScan()
     {
-        // $this->columnName = 'no_scan_history';
-        $this->columnName = 'no_scan';
-        $this->direction = 'desc';
-        $this->search = null;
-        $this->resetPage();
-        $this->render();
+
+
+        // $this->columnName = 'no_scan';
+        // $this->direction = 'desc';
+        // $this->search = null;
+        // $this->resetPage();
+        // $this->render();
+
+        $this->is_kosong = false;
+        $this->is_noscan = true;
     }
+
+    public function filterKosong()
+    {
+        // $this->columnName = 'no_scan';
+        // $this->direction = 'desc';
+        // $this->search = null;
+        // $this->resetPage();
+        // $this->render();
+        $this->is_noscan = false;
+        $this->is_kosong = true;
+        $this->resetPage();
+    }
+
+
     public function filterLate()
     {
         $this->columnName = 'late_history';
@@ -283,17 +305,23 @@ class Yfpresensiindexwr extends Component
         $this->search = null;
         $this->resetPage();
         $this->render();
+        $this->is_noscan = false;
+        $this->is_kosong = false;
+        $this->resetPage();
     }
 
     public function resetTanggal()
     {
         // ini harus di reset ke tanggal terakhir ver d M Y
+        $this->is_noscan = false;
+        $this->is_kosong = false;
+
         $this->tanggal = null;
         $this->columnName = 'no_scan_history';
         $this->direction = 'desc';
         $this->search = null;
         $this->resetPage();
-        $this->render();
+        // $this->render();
     }
 
     public function update($id)
@@ -410,6 +438,7 @@ class Yfpresensiindexwr extends Component
 
     public function render()
     {
+
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -475,56 +504,74 @@ class Yfpresensiindexwr extends Component
 
 
 
+        // fil
+
+        if ($this->is_noscan) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->where('no_scan', 'No Scan')
+                ->paginate($this->perpage);
+        } elseif ($this->is_kosong) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->whereNull('first_in')
+                ->whereNull('first_out')
+                ->whereNull('second_in')
+                ->whereNull('second_out')
+                ->whereNull('overtime_in')
+                ->whereNull('overtime_out')
+                ->paginate($this->perpage);
+        } else {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->when($this->location == 'Pabrik 1', function ($query) {
+                    return $query->where('placement', 'YCME');
+                })
+                ->when($this->location == 'Pabrik 2', function ($query) {
+                    return $query->where('placement', 'YEV');
+                })
+                ->when($this->location == 'Kantor', function ($query) {
+                    return $query->whereIn('placement', ['YIG', 'YSM']);
+                })
+                ->orderBy($this->columnName, $this->direction)
+                // hilangin ini kalau ngaco            
+                ->orderBy('user_id', 'asc')
+                ->orderBy('date', 'asc')
+                ->when($this->search == "", function ($query) {
+                    $query
+                        ->whereDate('date',  $this->tanggal);
+                })
+                ->when($this->search, function ($query) {
+                    $query
+                        ->whereMonth('date', $this->bulan)
+                        ->whereYear('date', $this->tahun);
+                })
+                // ->when($this->is_noscan, function ($query) {
+                //     $query
+                //         ->where('no_scan', 'No Scan');
+                // })
 
 
 
-
-        $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
-            ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-
-
-            ->when($this->location == 'Pabrik 1', function ($query) {
-                return $query->where('placement', 'YCME');
-            })
-            ->when($this->location == 'Pabrik 2', function ($query) {
-                return $query->where('placement', 'YEV');
-            })
-            ->when($this->location == 'Kantor', function ($query) {
-                return $query->whereIn('placement', ['YIG', 'YSM']);
-            })
-            ->orderBy($this->columnName, $this->direction)
-            ->orderBy('user_id', 'asc')
-            ->orderBy('date', 'asc')
-            ->when($this->search == "", function ($query) {
-                $query
-                    ->whereDate('date',  $this->tanggal);
-            })
-            ->when($this->search, function ($query) {
-                $query
-                    ->whereMonth('date', $this->bulan)
-                    ->whereYear('date', $this->tahun);
-            })
-
-
-
-            ->where(function ($query) {
-                $query->when($this->search, function ($subQuery) {
-                    $subQuery
-                        ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('user_id', trim($this->search))
-                        // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
-                    // ->whereMonth('date', $this->month)
-                    // ->whereYear('date', $this->year);
-                });
-            })
-
-            ->paginate($this->perpage);
+                ->where(function ($query) {
+                    $query->when($this->search, function ($subQuery) {
+                        $subQuery
+                            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('user_id', trim($this->search))
+                            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+                        // ->whereMonth('date', $this->month)
+                        // ->whereYear('date', $this->year);
+                    });
+                })
+                ->paginate($this->perpage);
+        }
+        // $this->resetPage();
         // dd($datas[0]->user_id);
-
+        // $this->is_noscan = false;
         return view('livewire.yfpresensiindexwr', compact([
             'datas', 'totalHadir', 'totalHadirPagi',
             'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi', 'absensiKosong'
