@@ -273,25 +273,13 @@ class Yfpresensiindexwr extends Component
 
     public function filterNoScan()
     {
-
-
-        // $this->columnName = 'no_scan';
-        // $this->direction = 'desc';
-        // $this->search = null;
-        // $this->resetPage();
-        // $this->render();
-
+        $this->resetPage();
         $this->is_kosong = false;
         $this->is_noscan = true;
     }
 
     public function filterKosong()
     {
-        // $this->columnName = 'no_scan';
-        // $this->direction = 'desc';
-        // $this->search = null;
-        // $this->resetPage();
-        // $this->render();
         $this->is_noscan = false;
         $this->is_kosong = true;
         $this->resetPage();
@@ -569,7 +557,6 @@ class Yfpresensiindexwr extends Component
                 })
                 ->paginate($this->perpage);
         }
-        // $this->resetPage();
         // dd($datas[0]->user_id);
         // $this->is_noscan = false;
         return view('livewire.yfpresensiindexwr', compact([
