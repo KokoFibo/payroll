@@ -9,6 +9,17 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function is_halfday($first_in, $first_out, $second_in, $second_out)
+{
+    if ($first_in != null  && $first_out != null && $second_in == null && $second_out == null) {
+        return 1;
+    } else if ($first_in == null  && $first_out == null && $second_in != null && $second_out != null) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
 function jumlah_libur_nasional($month, $year)
 {
     return Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
@@ -930,7 +941,7 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
 
     // if(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)){
     if (($second_in === '' && $second_out === '') || ($first_in === '' && $first_out === '')) {
-        $data->late = 1;
+        // $data->late = 1;
         // dd($data->late, $data->user_id);
         return $late = 1;
     }
@@ -1244,7 +1255,8 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan)
     if (is_jabatan_khusus($jabatan) == 1) {
         $late = null;
     } else {
-        $groupIstirahat;
+        // jangan remark ini kalau ada error
+        // $groupIstirahat;
 
         if ($second_in != null) {
             if ($shift == 'Pagi') {

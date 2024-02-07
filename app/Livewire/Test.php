@@ -50,25 +50,40 @@ class Test extends Component
 
 
 
-
-  public function change()
+  public function is_halfday($first_in, $first_out, $second_in, $second_out)
   {
-
-    $data = Karyawan::where('etnis', $this->etnis)->get();
-
-    foreach ($data as $d) {
-      $data_karyawan = Karyawan::find($d->id);
-      $data_karyawan->etnis = 'Lainnya';
-      $data_karyawan->save();
-      $this->dispatch('success', message: 'data berhasil dirubah');
+    if ($first_in != null  && $first_out != null && $second_in == null && $second_out == null) {
+      return 1;
+    } else if ($first_in == null  && $first_out == null && $second_in != null && $second_out != null) {
+      return 2;
+    } else {
+      return 0;
     }
   }
 
   public function render()
   {
-    $this->resetPage();
+    $date = '2024-02-06';
+    // $data = Yfrekappresensi::where('date',  $date)
+    //   ->where('first_in', '!=', null)
+    //   ->where('first_out', '!=', null)
+    //   ->where('second_out', null)
+    //   ->where('second_out', null)
+    //   ->paginate(10);
+    $data = Yfrekappresensi::where('date',  $date)
+      ->where('first_in',  null)
+      ->where('first_out',  null)
+      ->where('second_out', '!=', null)
+      ->where('second_out', '!=', null)
+      ->paginate(10);
 
-    $data = Karyawan::where('etnis', $this->etnis)->paginate(10);
+    $id = 123833;
+    $d = Yfrekappresensi::find($id);
+    dd(is_halfday($d->first_in, $d->first_out, $d->second_in, $d->second_out));
+
+    //   ->paginate(10);
+
+
 
     return view('livewire.test', [
       'data' => $data
