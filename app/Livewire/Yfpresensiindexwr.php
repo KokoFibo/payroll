@@ -249,6 +249,7 @@ class Yfpresensiindexwr extends Component
                         'terlambat' => $terlambat,
                         'jam_lembur' => $jam_lembur,
                         'tambahan_shift_malam' => $tambahan_shift_malam,
+                        'is_sunday' => is_sunday($d->date)
                     ]);
 
                     $total_hari_kerja++;
