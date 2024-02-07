@@ -127,7 +127,7 @@ class UserMobile extends Component
         $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 1070;
+        // $this->user_id = 1082;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -215,6 +215,10 @@ class UserMobile extends Component
                     if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                         $jam_lembur = 0;
                     }
+                }
+                if (is_sunday($d->date) && $d->karyawan->metode_penggajian == 'Perbulan') {
+                    $jam_lembur = $jam_kerja;
+                    $jam_kerja = 0;
                 }
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;

@@ -197,6 +197,8 @@ class Yfpresensiindexwr extends Component
                     }
 
 
+
+
                     if ($d->shift == 'Malam') {
                         if (is_saturday($d->date)) {
                             if ($jam_kerja >= 6) {
@@ -234,6 +236,11 @@ class Yfpresensiindexwr extends Component
                     }
                     if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                         $jam_lembur = 0;
+                    }
+
+                    if (is_sunday($d->date) && $d->karyawan->metode_penggajian == 'Perbulan') {
+                        $jam_lembur = $jam_kerja;
+                        $jam_kerja = 0;
                     }
 
                     $this->dataArr->push([
