@@ -101,6 +101,9 @@
             <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
             <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
             <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
+            @if ($absensiKosong > 0)
+                <button wire:click="filterKosong" class="btn btn-danger" type="button">{{ __('Kosong') }}</button>
+            @endif
         </div>
 
 
@@ -123,11 +126,11 @@
             </select>
         </div>
     </div>
-    @if ($data_kosong != '')
+    {{-- @if ($data_kosong != '')
         <div class="bg-danger text-light pt-1 mt-3 px-3  text-center text-align-center">
             <h5>Data kosong ID : {{ $data_kosong }}</h5>
         </div>
-    @endif
+    @endif --}}
     <div class="p-3 px-xl-4">
         <div class="card">
             <div class="card-header" @if (is_sunday($tanggal)) style="background-color: #EEB8C5" @endif>
@@ -207,7 +210,7 @@
                                 @foreach ($datas as $data)
                                     {{-- {{ dd($data) }} --}}
 
-                                    <tr x-data="{ edit: false }"
+                                    <tr x-data="{ edit: false }" wire:key="{{ $data->id }}"
                                         class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
                                         <td>
 
@@ -236,7 +239,8 @@
                                                     class="fa-solid fa-magnifying-glass"></i></button>
 
                                             @if (Auth::user()->role > 2)
-                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
+                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}}
+                                                    wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
                                                     class="btn btn-danger btn-sm"><i
