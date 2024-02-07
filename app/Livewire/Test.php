@@ -77,9 +77,9 @@ class Test extends Component
       ->where('second_out', '!=', null)
       ->paginate(10);
 
-    $id = 123833;
-    $d = Yfrekappresensi::find($id);
-    dd(is_halfday($d->first_in, $d->first_out, $d->second_in, $d->second_out));
+    // $id = 123833;
+    // $d = Yfrekappresensi::find($id);
+    // dd(is_halfday($d->first_in, $d->first_out, $d->second_in, $d->second_out));
 
     //   ->paginate(10);
 
