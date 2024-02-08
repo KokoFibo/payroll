@@ -7,6 +7,7 @@
                 <h5>Yesterday's Login : {{ $yesterday_log }} </h5>
                 <h5>Total Login : {{ $total_logs }} </h5>
                 <h5>Total Created Log : {{ $total_created_logs }} </h5>
+                <h5>Number of Admin Login : {{ $cx }} </h5>
             </div>
             <div class="card-body">
                 <table class="table">
@@ -18,11 +19,15 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach ($data as $d)
                             <tr>
+                                @php
+                                    $contains = Str::contains($d->description, ['Admin', 'Senior Admin', 'Super Admin', 'BOD', 'Developer']);
+                                @endphp
                                 <td>{{ $d->id }}</td>
                                 <td>{{ $d->created_at }}</td>
-                                <td>{{ $d->description }}</td>
+                                <td class="{{ $contains ? 'table-warning' : '' }}">{{ $d->description }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -738,8 +738,12 @@
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
         @if (auth()->user()->role == 5)
-            <h1>Belum isi etnis : {{ $belum_isi_etnis }}</h1>
-            <h1>Belum isi Kontak Darurat : {{ $belum_isi_kontak_darurat }}</h1>
+            <div class="container">
+                <button class="bg-blue-500 text-white px-3 py-2 rounded-md shadow-sm">Tanpa Etnis :
+                    {{ $belum_isi_etnis }}</button>
+                <button class="bg-violet-500 text-white px-3 py-2 rounded-md shadow-sm">Tanpa Kontak Darurat :
+                    {{ $belum_isi_kontak_darurat }}</button>
+            </div>
         @endif
         <div class="container pt-5">
             <div class="row align-items-stretch">
