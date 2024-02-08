@@ -121,7 +121,9 @@ class Yfpresensiindexwr extends Component
             $this->lock_presensi = true;
         } else {
             $lock = Lock::find(1);
-            if (now()->day < 10 && $lock->presensi == false) $this->lock_presensi = 0;
+            // if (now()->day < 7 && $lock->presensi == false) $this->lock_presensi = 0;
+            // Rubah angka tgl 10 utk menentukan batas akhir lock bulan lalu otomatis
+            if (now()->day > 10 && $lock->presensi == false) $this->lock_presensi = 1;
             else $this->lock_presensi = $lock->presensi;
         }
         // if ($tanggal->month == now()->month && $tanggal->year == now()->year) dd('ok');

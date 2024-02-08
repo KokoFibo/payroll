@@ -1,8 +1,8 @@
 <div>
     @section('title', 'Presensi')
-    {{-- <p>lock_presensi: {{ $lock_presensi }}</p>
-    
-    <p>tanggal: {{ $tanggal }}</p> --}}
+    <p>lock_presensi: {{ $lock_presensi }}</p>
+
+    <p>tanggal: {{ $tanggal }}</p>
     <div class="d-flex  flex-column flex-xl-row  col-12 col-xl-12  justify-content-xl-between gap-1 px-4  pt-4">
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
@@ -239,8 +239,7 @@
                                                     class="fa-solid fa-magnifying-glass"></i></button>
 
                                             @if (Auth::user()->role > 2)
-                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}}
-                                                    wire:click="delete({{ $data->id }})"
+                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
                                                     class="btn btn-danger btn-sm"><i
