@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
 
@@ -18,6 +19,12 @@ class UserLog extends Component
         $today_logs = Activity::whereDate('created_at', Carbon::today())->select('description')->distinct('description')->count();
         $yesterday_log = Activity::whereDate('created_at', Carbon::yesterday())->select('description')->distinct('description')->count();
         $total_created_logs = Activity::select('description')->count();
-        return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log', 'total_created_logs']));
+        $data_activity = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
+        $cx = 0;
+        foreach ($data_activity as $d) {
+            $contains = Str::contains($d->description, ['Admin', 'Senior Admin', 'Super Admin', 'BOD', 'Developer']);
+            if ($contains) $cx++;
+        }
+        return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log', 'total_created_logs', 'cx']));
     }
 }
