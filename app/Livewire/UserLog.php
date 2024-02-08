@@ -24,6 +24,8 @@ class UserLog extends Component
         foreach ($data_activity as $d) {
             $contains = Str::contains($d->description, ['Admin', 'Senior Admin', 'Super Admin', 'BOD']);
             if ($contains) $cx++;
+            $contains = Str::contains($d->description, ['10000', '20000', '30000', '40000', '50000']);
+            if ($contains) $cx--;
         }
         return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log', 'total_created_logs', 'cx']));
     }
