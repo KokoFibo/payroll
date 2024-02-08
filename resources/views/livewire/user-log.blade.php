@@ -3,11 +3,11 @@
         <div class="card">
             <div class="card-header bg-success">
                 <h3>Yifang Payroll Activity Logs </h3>
-                <h5>Today's Login : {{ $today_logs }} </h5>
-                <h5>Yesterday's Login : {{ $yesterday_log }} </h5>
-                <h5>Total Login : {{ $total_logs }} </h5>
-                <h5>Total Created Log : {{ $total_created_logs }} </h5>
-                <h5>Number of Admin Login : {{ $cx }} </h5>
+                <h5>Today's Logins : {{ $today_logs }} </h5>
+                <h5>Yesterday's Logins : {{ $yesterday_log }} </h5>
+                <h5>Total Logins : {{ $total_logs }} </h5>
+                <h5>Total Created Logs : {{ $total_created_logs }} </h5>
+                <h5>Number of Admin Logins : {{ $cx }} </h5>
             </div>
             <div class="card-body">
                 <table class="table">
