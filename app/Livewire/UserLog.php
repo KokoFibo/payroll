@@ -22,7 +22,7 @@ class UserLog extends Component
         $data_activity = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
         $cx = 0;
         foreach ($data_activity as $d) {
-            $contains = Str::contains($d->description, ['Admin', 'Senior Admin', 'Super Admin', 'BOD', 'Developer']);
+            $contains = Str::contains($d->description, ['Admin', 'Senior Admin', 'Super Admin', 'BOD']);
             if ($contains) $cx++;
         }
         return view('livewire.user-log', compact(['data', 'total_logs', 'today_logs', 'yesterday_log', 'total_created_logs', 'cx']));
