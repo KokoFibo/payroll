@@ -135,6 +135,34 @@
         th {
             white-space: nowrap;
         }
+
+        @media (min-width : 600px) {
+
+            table th {
+                z-index: 2;
+            }
+
+            td:first-child,
+            th:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            td:nth-child(2),
+            th:nth-child(2) {
+                position: sticky;
+                left: 92px;
+                z-index: 1;
+            }
+
+
+
+            th:first-child,
+            th:nth-child(2) {
+                z-index: 3;
+            }
+        }
     </style>
     <script>
         window.addEventListener("confirm", (event) => {

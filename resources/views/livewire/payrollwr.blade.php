@@ -6,6 +6,46 @@
         th {
             white-space: nowrap;
         }
+
+        @media (min-width : 600px) {
+
+            table th {
+                z-index: 2;
+            }
+
+            td:first-child,
+            th:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            td:nth-child(2),
+            th:nth-child(2) {
+                position: sticky;
+                left: 56px;
+                z-index: 1;
+            }
+
+            td:nth-child(3),
+            th:nth-child(3) {
+                position: sticky;
+                left: 110px;
+                z-index: 1;
+            }
+
+            td:nth-child(4),
+            th:nth-child(4) {
+                position: sticky;
+                left: 241px;
+                z-index: 1;
+            }
+
+            th:first-child,
+            th:nth-child(2) {
+                z-index: 3;
+            }
+        }
     </style>
     <div class="p-2">
         {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
