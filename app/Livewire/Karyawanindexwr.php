@@ -411,7 +411,7 @@ class Karyawanindexwr extends Component
             })
             ->when($this->search_etnis, function ($query) {
                 if ($this->search_etnis == 'kosong') {
-                    $query->where('etnis', null);
+                    $query->where('etnis', null)->orWhere('etnis', '');
                 } else {
                     $query->where('etnis', $this->search_etnis);
                 }
