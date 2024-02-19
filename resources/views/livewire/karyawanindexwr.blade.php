@@ -219,7 +219,10 @@
                                                     </option>
                                                 @endif
                                             @endforeach
-                                            <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                            @if ($j == '')
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                            @endif
+
                                         </select>
                                     </div>
                                 </th>
@@ -253,12 +256,12 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jabatan')">
                                     {{ __('Jabatan') }} </th>
-                                @if (Auth::user()->role > 3)
-                                    <th class="text-center" wire:click="sortColumnName('etnis')">
-                                        {{ __('Etnis') }}
-                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">
-                                        {{ __('Level Jabatan') }}
-                                @endif
+                                <th class="text-center" wire:click="sortColumnName('etnis')">
+                                    {{ __('Etnis') }}
+                                    @if (Auth::user()->role > 3)
+                                <th class="text-center" wire:click="sortColumnName('level_jabatan')">
+                                    {{ __('Level Jabatan') }}
+                                    @endif
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">
                                     {{ __('Status') }}
@@ -316,8 +319,8 @@
                                     <td class="text-center">{{ $data->placement }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan }}</td>
+                                    <td class="text-center">{{ $data->etnis }}</td>
                                     @if (Auth::user()->role > 3)
-                                        <td class="text-center">{{ $data->etnis }}</td>
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
