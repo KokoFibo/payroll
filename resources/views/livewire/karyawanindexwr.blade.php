@@ -23,16 +23,17 @@
             td:nth-child(2),
             th:nth-child(2) {
                 position: sticky;
-                left: 11px;
+                left: 76px;
                 z-index: 1;
             }
 
             td:nth-child(3),
             th:nth-child(3) {
                 position: sticky;
-                left: 112px;
+                left: 178px;
                 z-index: 1;
             }
+
 
 
 
