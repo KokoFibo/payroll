@@ -201,39 +201,39 @@
                                         </select>
                                     </div>
                                 </th>
-                                @if (auth()->user()->role >= 4)
-                                    <th style="width: 220px; border-style: none;">
-                                        <div style="width: 130px">
-                                            <select wire:model.live="search_etnis" class="form-select"
-                                                aria-label="Default select example">
-                                                <option value="">{{ __('Etnis') }}</option>
-                                                {{-- <option value="Jawa">{{ __('Jawa') }}</option>
+                                {{-- @if (auth()->user()->role >= 4) --}}
+                                <th style="width: 220px; border-style: none;">
+                                    <div style="width: 130px">
+                                        <select wire:model.live="search_etnis" class="form-select"
+                                            aria-label="Default select example">
+                                            <option value="">{{ __('Etnis') }}</option>
+                                            {{-- <option value="Jawa">{{ __('Jawa') }}</option>
                                                 <option value="Sunda">{{ __('Sunda') }}</option>
                                                 <option value="Tionghoa">{{ __('Tionghoa') }}</option>
                                                 <option value="China">{{ __('China') }}</option>
                                                 <option value="Lainnya">{{ __('Lainnya') }}</option>
                                                 <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
-                                                @foreach ($etnises as $j)
-                                                    @if ($j != '')
-                                                        <option value="{{ $j }}">{{ $j }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
-                                            </select>
-                                        </div>
-                                    </th>
-                                    <th style="width: 150px; border-style: none;">
-                                        <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
-                                            @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
-                                            Departement</button>
-                                    </th>
-                                    <th style="width: 150px; border-style: none;">
-                                        <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
-                                            @if ($search_etnis == null) disabled @endif>Excel by
-                                            Etnis</button>
-                                    </th>
-                                @endif
+                                            @foreach ($etnises as $j)
+                                                @if ($j != '')
+                                                    <option value="{{ $j }}">{{ $j }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                            <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th style="width: 150px; border-style: none;">
+                                    <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                        @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
+                                        Departement</button>
+                                </th>
+                                <th style="width: 150px; border-style: none;">
+                                    <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
+                                        @if ($search_etnis == null) disabled @endif>Excel by
+                                        Etnis</button>
+                                </th>
+                                {{-- @endif --}}
 
                             </tr>
 
