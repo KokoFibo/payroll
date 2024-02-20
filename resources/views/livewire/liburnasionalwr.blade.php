@@ -21,7 +21,7 @@
 
 
                     <div class="mb-3">
-                        <label for="tanggalmulailibur" class="form-label">Tanggal mulai libur</label>
+                        <label for="tanggalmulailibur" class="form-label">Tanggal libur</label>
                         <input wire:model.live="tanggal_mulai_hari_libur" type="date"
                             class="form-control @error('tanggal_mulai_hari_libur') is-invalid @enderror""
                             id="tanggalmulailibur">
@@ -33,7 +33,7 @@
                     </div>
 
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="tanggalselesailibur" class="form-label">Tanggal selesai libur <span
                                 class="text-sm text-danger">(kosongkan jika hanya
                                 libur 1 hari)</span></label>
@@ -45,12 +45,12 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
-                    <div class="mb-3">
+                    </div> --}}
+                    {{-- <div class="mb-3">
                         <label for="jumlah_hari_libur" class="form-label">Jumlah Hari libur</label>
                         <input wire:model.live="jumlah_hari_libur" type="text" class="form-control"
                             id="jumlah_hari_libur" disabled>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="m-3">
@@ -61,9 +61,9 @@
                         @endif
                         <button wire:click="cancel" class="btn btn-dark">Cancel</button>
                     </div>
-                    <div class="m-3">
+                    {{-- <div class="m-3">
                         <button wire:click="exit" class="btn btn-success">Exit</button>
-                    </div>
+                    </div> --}}
                 </div>
 
             </div>
@@ -103,8 +103,8 @@
                 <tr>
                     <th>#</th>
                     <th>Nama Hari libur</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Akhir</th>
+                    <th>Tanggal Libur</th>
+                    {{-- <th>Tanggal Akhir</th> --}}
                     <th>Jumlah Hari libur</th>
                     <th></th>
                 </tr>
@@ -116,7 +116,7 @@
                         <td>{{ $d->nama_hari_libur }}</td>
                         {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
                         <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
-                        <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td>
+                        {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
                         <td>{{ $d->jumlah_hari_libur }}</td>
                         <td>
                             <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>

@@ -244,9 +244,17 @@ class Yfpresensiindexwr extends Component
                         $jam_lembur = 0;
                     }
 
-                    if (is_sunday($d->date) && $d->karyawan->metode_penggajian == 'Perbulan') {
+                    if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $jam_lembur = $jam_kerja;
                         $jam_kerja = 0;
+                    }
+
+                    // Jika hari libur nasional
+                    if (
+                        is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
+                    ) {
+                        $jam_kerja *= 2;
+                        $jam_lembur *= 2;
                     }
 
                     $this->dataArr->push([

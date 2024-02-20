@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $d)
+            {{-- @foreach ($data as $d)
                 <tr>
                     <td>{{ $d->id }}</td>
                     <td></td>
@@ -27,7 +27,7 @@
                     <td>{{ $d->overtime_out }}</td>
                     <td>{{ is_halfday($d->first_in, $d->first_out, $d->second_in, $d->second_out) }}</td>
                 </tr>
-            @endforeach
+            @endforeach --}}
         </tbody>
     </table>
     {{ $data->links() }}

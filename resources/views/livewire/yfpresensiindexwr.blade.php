@@ -165,6 +165,11 @@
                                         class=" fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                @if (auth()->user()->role == 5)
+                                    <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
+                                        <i class="fa-solid fa-sort"></i>
+                                    </th>
+                                @endif
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -251,6 +256,9 @@
                                         <td>{{ $data->karyawan->nama }}</td>
 
                                         {{-- <td>{{ $data->karyawan->departemen }}</td> --}}
+                                        @if (auth()->user()->role == 5)
+                                            <td>{{ $data->karyawan->metode_penggajian }}</td>
+                                        @endif
                                         <td>{{ $data->karyawan->placement }}</td>
                                         <td>{{ $data->karyawan->jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>

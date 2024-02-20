@@ -495,6 +495,11 @@
                                                                 $jam_lembur = $jam_kerja;
                                                                 $jam_kerja = 0;
                                                             }
+                                                            // Jika hari libur nasional
+                                                            if (is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)) {
+                                                                $jam_kerja *= 2;
+                                                                $jam_lembur *= 2;
+                                                            }
                                                         @endphp
                                                         {{ $jam_kerja }}
                                                     </p>
