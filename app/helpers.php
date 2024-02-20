@@ -9,6 +9,13 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function is_libur_nasional($tanggal)
+{
+    $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
+    if ($data != null) return true;
+    return false;
+}
+
 function is_halfday($first_in, $first_out, $second_in, $second_out)
 {
     if ($first_in != null  && $first_out != null && $second_in == null && $second_out == null) {

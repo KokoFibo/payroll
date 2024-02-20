@@ -61,32 +61,22 @@ class Test extends Component
     }
   }
 
+  public function is_libur_nasional($tanggal)
+  {
+    $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
+    if ($data != null) return true;
+    return false;
+  }
+
   public function render()
   {
-    $date = '2024-02-06';
-    // $data = Yfrekappresensi::where('date',  $date)
-    //   ->where('first_in', '!=', null)
-    //   ->where('first_out', '!=', null)
-    //   ->where('second_out', null)
-    //   ->where('second_out', null)
-    //   ->paginate(10);
-    $data = Yfrekappresensi::where('date',  $date)
-      ->where('first_in',  null)
-      ->where('first_out',  null)
-      ->where('second_out', '!=', null)
-      ->where('second_out', '!=', null)
-      ->paginate(10);
+    $date = '2024-02-11';
 
-    // $id = 123833;
-    // $d = Yfrekappresensi::find($id);
-    // dd(is_halfday($d->first_in, $d->first_out, $d->second_in, $d->second_out));
-
-    //   ->paginate(10);
+    dd($this->is_libur_nasional($date));
 
 
 
-    return view('livewire.test', [
-      'data' => $data
-    ]);
+
+    return view('livewire.test');
   }
 }
