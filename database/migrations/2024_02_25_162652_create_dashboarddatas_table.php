@@ -70,10 +70,6 @@ return new class extends Migration
             $table->integer('jabatan_QC_Aging')->nullable();
             $table->integer('jabatan_Driver')->nullable();
             $table->integer('countLatestHadir')->nullable();
-            $table->integer('latestDate')->nullable();
-            $table->integer('dataCountLatestHadir')->nullable();
-            $table->integer('average7Hari')->nullable();
-            $table->integer('average30Hari')->nullable();
             $table->integer('bd')->nullable();
             $table->integer('engineering')->nullable();
             $table->integer('exim')->nullable();
