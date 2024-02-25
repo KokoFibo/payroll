@@ -211,6 +211,7 @@ class Karyawanwr extends Component
 
             // $this->reset();
         }
+        get_data_karyawan();
     }
 
     public function update()

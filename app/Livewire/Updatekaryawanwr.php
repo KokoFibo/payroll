@@ -272,6 +272,7 @@ class Updatekaryawanwr extends Component
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
             $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
         }
+        get_data_karyawan();
     }
 
 
