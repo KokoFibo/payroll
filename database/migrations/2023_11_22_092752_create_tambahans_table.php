@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('tambahans', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-
             $table->integer('uang_makan')->nullable();
             $table->integer('bonus_lain')->nullable();
-
             $table->integer('baju_esd')->nullable();
             $table->integer('gelas')->nullable();
             $table->integer('sandal')->nullable();

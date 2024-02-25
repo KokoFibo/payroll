@@ -70,9 +70,9 @@ class Test extends Component
 
   public function render()
   {
-    $date = '2024-02-11';
+    // get_data_karyawan();
+    // $this->dispatch('success', message: 'data karyawan queried');
 
-    dd($this->is_libur_nasional($date));
 
 
 
