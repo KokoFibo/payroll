@@ -11,6 +11,15 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function is_puasa($tgl)
+{
+    // Start date dan end date = tanggal mulai dan akhir puasa
+    $start_date = '2022-02-20';
+    $end_date = '2022-02-25';
+    if ($tgl >= $start_date && $tgl <= $end_date) return true;
+    return false;
+}
+
 function get_data_karyawan()
 {
     $year = now()->year;
@@ -1255,15 +1264,24 @@ function hoursToMinutes($jam)
 
 function checkFirstInLate($check_in, $shift, $tgl)
 {
+    // rubah angka ini utk bulan puasa
+
+    if (is_puasa($tgl)) {
+        $jam_mulai_pagi = '07:03';
+        $strtime_pagi = '07:03:00';
+    } else {
+        $jam_mulai_pagi = '08:03';
+        $strtime_pagi = '08:03:00';
+    }
     $perJam = 60;
     $late = null;
     if ($check_in != null) {
         if ($shift == 'Pagi') {
             // Shift Pagi
-            if (Carbon::parse($check_in)->betweenIncluded('05:30', '08:03')) {
+            if (Carbon::parse($check_in)->betweenIncluded('05:30', $jam_mulai_pagi)) {
                 $late = null;
             } else {
-                $t1 = strtotime('08:03:00');
+                $t1 = strtotime($strtime_pagi);
                 $t2 = strtotime($check_in);
                 $diff = gmdate('H:i:s', $t2 - $t1);
                 $late = ceil(hoursToMinutes($diff) / $perJam);
