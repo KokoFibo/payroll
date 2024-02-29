@@ -1097,6 +1097,8 @@
                         <h2 class="text-center   text-gray-600">YIG</h2>
                         <h2 class="text-center   text-gray-600">YSM</h2>
                         <h2 class="text-center   text-gray-600">YAM</h2>
+                        <h2 class="text-center   text-gray-600">GAMA</h2>
+                        <h2 class="text-center   text-gray-600">WAS</h2>
                         <h2 class="text-center font-semibold  text-gray-600 text-lg">{{ __('Total') }}</h2>
                     </div>
                     <div class="flex flex-column gap-2">
@@ -1120,6 +1122,10 @@
                         <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_YSM) }}
                         </h2>
                         <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_YAM) }}
+                        </h2>
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_GAMA) }}
+                        </h2>
+                        <h2 class="text-right  font-semibold text-gray-600">{{ number_format($jumlah_WAS) }}
                         </h2>
                         <h2 class="text-right  font-semibold text-gray-600 text-lg">{{ number_format($jumlah_company) }}
                         </h2>

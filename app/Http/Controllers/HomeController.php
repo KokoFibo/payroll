@@ -71,6 +71,8 @@ class HomeController extends Controller
             $jumlah_YIG = $data->jumlah_YIG;
             $jumlah_YSM = $data->jumlah_YSM;
             $jumlah_YAM = $data->jumlah_YAM;
+            $jumlah_GAMA = $data->jumlah_GAMA;
+            $jumlah_WAS = $data->jumlah_WAS;
             $jumlah_Pabrik_1 = $data->jumlah_Pabrik_1;
             $jumlah_Pabrik_2 = $data->jumlah_Pabrik_2;
             $jumlah_Kantor = $data->jumlah_Kantor;
@@ -101,10 +103,12 @@ class HomeController extends Controller
                 $jumlah_DPA,
                 $jumlah_YIG,
                 $jumlah_YAM,
+                $jumlah_GAMA,
+                $jumlah_WAS,
 
             ];
             $companyLabelArr = [
-                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM'
+                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM', 'GAMA', 'WAS'
             ];
 
             // Department
@@ -284,7 +288,7 @@ class HomeController extends Controller
             if (auth()->user()->role != 1) {
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_GAMA', 'jumlah_WAS', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
@@ -312,7 +316,8 @@ class HomeController extends Controller
 
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM',
+                    'jumlah_GAMA', 'jumlah_WAS', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',

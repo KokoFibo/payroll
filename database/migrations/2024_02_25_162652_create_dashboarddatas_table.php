@@ -30,6 +30,8 @@ return new class extends Migration
             $table->integer('jumlah_YIG')->nullable();
             $table->integer('jumlah_YSM')->nullable();
             $table->integer('jumlah_YAM')->nullable();
+            $table->integer('jumlah_GAMA')->nullable();
+            $table->integer('jumlah_WAS')->nullable();
             $table->integer('jumlah_Pabrik_1')->nullable();
             $table->integer('jumlah_Pabrik_2')->nullable();
             $table->integer('jumlah_Kantor')->nullable();
