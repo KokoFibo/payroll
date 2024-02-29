@@ -71,6 +71,8 @@ class HomeController extends Controller
             $jumlah_YIG = $data->jumlah_YIG;
             $jumlah_YSM = $data->jumlah_YSM;
             $jumlah_YAM = $data->jumlah_YAM;
+            $jumlah_GAMA = $data->jumlah_GAMA;
+            $jumlah_WAS = $data->jumlah_WAS;
             $jumlah_Pabrik_1 = $data->jumlah_Pabrik_1;
             $jumlah_Pabrik_2 = $data->jumlah_Pabrik_2;
             $jumlah_Kantor = $data->jumlah_Kantor;
@@ -101,10 +103,12 @@ class HomeController extends Controller
                 $jumlah_DPA,
                 $jumlah_YIG,
                 $jumlah_YAM,
+                $jumlah_GAMA,
+                $jumlah_WAS,
 
             ];
             $companyLabelArr = [
-                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM'
+                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM', 'GAMA', 'WAS'
             ];
 
             // Department
@@ -203,6 +207,8 @@ class HomeController extends Controller
                 $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
                 $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
                 $YAM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YAM')->sum('total');
+                $GAMA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'GAMA')->sum('total');
+                $WAS = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'WAS')->sum('total');
                 $dataPayroll[] = [
                     'tgl' => month_year($uniqueDates[$i]),
                     'All' => $all,
@@ -212,7 +218,9 @@ class HomeController extends Controller
                     'YEV' => $YEV,
                     'YIG' => $YIG,
                     'YSM' => $YSM,
-                    'YAM' => $YAM
+                    'YAM' => $YAM,
+                    'GAMA' => $GAMA,
+                    'WAS' => $WAS
                 ];
                 $dataTgl[] = month_year($uniqueDates[$i]);
                 $dataAll[] =  $all;
@@ -223,6 +231,8 @@ class HomeController extends Controller
                 $dataYIG[] =  $YIG;
                 $dataYSM[] =  $YSM;
                 $dataYAM[] =  $YAM;
+                $dataGAMA[] =  $GAMA;
+                $dataWAS[] =  $WAS;
             }
 
             // Shift Pagi dan Shift Malam
@@ -284,7 +294,7 @@ class HomeController extends Controller
             if (auth()->user()->role != 1) {
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_GAMA', 'jumlah_WAS', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
@@ -293,7 +303,7 @@ class HomeController extends Controller
                     'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
@@ -312,7 +322,8 @@ class HomeController extends Controller
 
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM',
+                    'jumlah_GAMA', 'jumlah_WAS', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
@@ -322,7 +333,8 @@ class HomeController extends Controller
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM',
+                    'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
