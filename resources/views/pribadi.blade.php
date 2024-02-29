@@ -155,9 +155,12 @@
                     <select wire:model="etnis" class="form-select @error('etnis') is-invalid @enderror""
                         aria-label="Default select example">
                         <option value=" ">{{ __('Pilih Etnis') }}</option>
+                        <option value="Batak">{{ __('Batak') }}</option>
                         <option value="China">{{ __('China') }}</option>
                         <option value="Jawa">{{ __('Jawa') }}</option>
                         <option value="Sunda">{{ __('Sunda') }}</option>
+                        <option value="Lampung">{{ __('Lampung') }}</option>
+                        <option value="Palembang">{{ __('Palembang') }}</option>
                         <option value="Tionghoa">{{ __('Tionghoa') }}</option>
                         <option value="Lainnya">{{ __('Lainnya') }}</option>
                     </select>

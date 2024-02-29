@@ -215,15 +215,21 @@
                                                 <option value="Lainnya">{{ __('Lainnya') }}</option>
                                                 <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
                                             @foreach ($etnises as $j)
-                                                @if ($j != '')
+                                                @if ($j != '' && $j != 'Lainnya')
                                                     <option value="{{ $j }}">{{ $j }}
                                                     </option>
                                                 @endif
                                             @endforeach
-                                            @if ($j == '')
-                                                <option value="kosong">{{ __('Masih Kosong') }}</option>
-                                            @endif
-
+                                            @foreach ($etnises as $j)
+                                                @if ($j == 'Lainnya')
+                                                    <option value="Lainnya">{{ __('Lainnya') }}</option>
+                                                @endif
+                                            @endforeach
+                                            @foreach ($etnises as $j)
+                                                @if ($j == '')
+                                                    <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </th>
