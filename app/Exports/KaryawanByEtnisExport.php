@@ -54,6 +54,18 @@ class KaryawanByEtnisExport implements FromQuery, WithHeadings, WithColumnFormat
                 return Karyawan::whereIn('status_karyawan', $statuses)
                     ->where('etnis', $this->search_etnis);
                 break;
+            case 'Batak':
+                return Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('etnis', $this->search_etnis);
+                break;
+            case 'Palembang':
+                return Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('etnis', $this->search_etnis);
+                break;
+            case 'Lampung':
+                return Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('etnis', $this->search_etnis);
+                break;
             case 'Lainnya':
                 return Karyawan::whereIn('status_karyawan', $statuses)
                     ->where('etnis', $this->search_etnis);
