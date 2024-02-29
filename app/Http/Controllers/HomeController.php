@@ -207,6 +207,8 @@ class HomeController extends Controller
                 $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
                 $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
                 $YAM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YAM')->sum('total');
+                $GAMA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'GAMA')->sum('total');
+                $WAS = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'WAS')->sum('total');
                 $dataPayroll[] = [
                     'tgl' => month_year($uniqueDates[$i]),
                     'All' => $all,
@@ -216,7 +218,9 @@ class HomeController extends Controller
                     'YEV' => $YEV,
                     'YIG' => $YIG,
                     'YSM' => $YSM,
-                    'YAM' => $YAM
+                    'YAM' => $YAM,
+                    'GAMA' => $GAMA,
+                    'WAS' => $WAS
                 ];
                 $dataTgl[] = month_year($uniqueDates[$i]);
                 $dataAll[] =  $all;
@@ -227,6 +231,8 @@ class HomeController extends Controller
                 $dataYIG[] =  $YIG;
                 $dataYSM[] =  $YSM;
                 $dataYAM[] =  $YAM;
+                $dataGAMA[] =  $GAMA;
+                $dataWAS[] =  $WAS;
             }
 
             // Shift Pagi dan Shift Malam
@@ -297,7 +303,7 @@ class HomeController extends Controller
                     'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
@@ -327,7 +333,8 @@ class HomeController extends Controller
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM',
+                    'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',

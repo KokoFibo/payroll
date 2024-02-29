@@ -724,6 +724,86 @@
             borderWidth: 1
         });
     </script>
+    {{-- Barchart Payroll payrolGAMA --}}
+    <script>
+        var dataGAMA = <?php echo json_encode($dataGAMA); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx52 = document.getElementById('payrollGAMA');
+
+        new Chart(ctx52, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll GAMA ',
+                    data: dataGAMA,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrolWAS --}}
+    <script>
+        var dataWAS = <?php echo json_encode($dataWAS); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx53 = document.getElementById('payrollWAS');
+
+        new Chart(ctx53, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll WAS ',
+                    data: dataWAS,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
 
 
 @endsection
@@ -1166,6 +1246,8 @@
                             <th scope="col" class="px-6 py-3 text-center">YIG</th>
                             <th scope="col" class="px-6 py-3 text-center">YSM</th>
                             <th scope="col" class="px-6 py-3 text-center">YAM</th>
+                            <th scope="col" class="px-6 py-3 text-center">GAMA</th>
+                            <th scope="col" class="px-6 py-3 text-center">WAS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1181,6 +1263,8 @@
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YIG']) }}</td>
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YSM']) }}</td>
                                 <td class="px-6 py-4 text-right">{{ number_format($dp['YAM']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['GAMA']) }}</td>
+                                <td class="px-6 py-4 text-right">{{ number_format($dp['WAS']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -1219,6 +1303,15 @@
             <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
                 <canvas id="payrollYAM"></canvas>
             </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollGAMA"></canvas>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollWAS"></canvas>
+            </div>
+
         </div>
 
     @endif
