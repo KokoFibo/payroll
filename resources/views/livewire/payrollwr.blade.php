@@ -162,6 +162,8 @@
                             <option value="8">YIG</option>
                             <option value="9">YSM</option>
                             <option value="10">YAM</option>
+                            <option value="11">GAMA</option>
+                            <option value="12">WAS</option>
                         </select>
                     </div>
                     {{-- placement --}}
@@ -345,7 +347,13 @@
                                                 $total_potongan_dari_karyawan = 0;
                                                 $total_bonus_dari_karyawan = 0;
                                                 $total_potongan_dari_karyawan = $p->iuran_air + $p->iuran_locker;
-                                                $total_bonus_dari_karyawan = $p->thr + $p->tunjangan_jabatan + $p->tunjangan_bahasa + $p->tunjangan_skill + $p->tunjangan_lembur_sabtu + $p->tunjangan_lama_kerja;
+                                                $total_bonus_dari_karyawan =
+                                                    $p->thr +
+                                                    $p->tunjangan_jabatan +
+                                                    $p->tunjangan_bahasa +
+                                                    $p->tunjangan_skill +
+                                                    $p->tunjangan_lembur_sabtu +
+                                                    $p->tunjangan_lama_kerja;
 
                                             @endphp
                                             <td class="text-end">

@@ -18,9 +18,9 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
 {
     protected $payroll;
 
-    public function __construct (object $payroll) {
+    public function __construct(object $payroll)
+    {
         $this->payroll = $payroll;
-       
     }
 
 
@@ -30,7 +30,8 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
         return $this->payroll;
     }
 
-    public function title(): string {
+    public function title(): string
+    {
         return 'Laporan Gaji Karyawan';
     }
 
@@ -60,9 +61,10 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
         ];
     }
 
-    
 
-    public function styles (Worksheet $sheet) {
+
+    public function styles(Worksheet $sheet)
+    {
         return [
             '1' => ['font' => ['bold' => true]],
             '2' => ['font' => ['bold' => true]],
@@ -75,4 +77,3 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
 
     }
 }
-
