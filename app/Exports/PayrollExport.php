@@ -135,6 +135,20 @@ class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, Sh
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc');
                 break;
+            case 11:
+                return Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('company', 'GAMA')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
+                break;
+            case 12:
+                return Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('company', 'WAS')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
+                break;
         }
     }
 
