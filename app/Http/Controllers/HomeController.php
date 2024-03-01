@@ -241,10 +241,15 @@ class HomeController extends Controller
             $shift_malam = $data->shift_malam;
             $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
             $total = $shift_pagi + $shift_malam;
-
-            if ($shift_pagi != null && $shift_malam != null) {
-                // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
-                $shiftPagiMalam = [round($shift_pagi / $uniqueDates->count()), round($shift_malam / $uniqueDates->count())];
+            if ($uniqueDates->isNotEmpty()) {
+                if ($shift_pagi != null && $shift_malam != null) {
+                    // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
+                    $shiftPagiMalam = [round($shift_pagi / $uniqueDates->count()), round($shift_malam / $uniqueDates->count())];
+                } else {
+                    $shiftPagiMalam = 0;
+                    $shiftPagi = 0;
+                    $shiftMalam = 0;
+                }
             } else {
                 $shiftPagiMalam = 0;
                 $shiftPagi = 0;
