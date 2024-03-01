@@ -68,7 +68,7 @@ function get_data_karyawan()
     $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
     $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM', 'YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
     $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor;
-    $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM + $jumlah_YAM;
+    $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM + $jumlah_YAM + $jumlah_GAMA + $jumlah_WAS;
 
 
     // Department
@@ -202,6 +202,8 @@ function get_data_karyawan()
     $data->jumlah_YIG = $jumlah_YIG;
     $data->jumlah_YSM = $jumlah_YSM;
     $data->jumlah_YAM = $jumlah_YAM;
+    $data->jumlah_GAMA = $jumlah_GAMA;
+    $data->jumlah_WAS = $jumlah_WAS;
     $data->jumlah_Pabrik_1 = $jumlah_Pabrik_1;
     $data->jumlah_Pabrik_2 = $jumlah_Pabrik_2;
     $data->jumlah_Kantor = $jumlah_Kantor;
