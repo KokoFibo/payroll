@@ -45,7 +45,7 @@
             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
     </div>
     <div class="{{ auth()->user()->role < 3 ? 'invisible' : '' }} text-center mt-3">
-        <button wire:loading.delay.longest class="btn btn-primary" type="button" disabled>
+        <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
         </button>
