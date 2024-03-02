@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 <div>
-                    <button wire:loading.delay.longest class="btn btn-primary" type="button" disabled>
+                    <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
                     </button>
@@ -129,7 +129,7 @@
             </div>
 
 
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2" wire:loading.class='invisible'>
                 <button class="btn btn-success" wire:click="bankexcel">{{ __('Report for bank') }}</button>
                 <button wire:click="export" class="btn btn-success">Excel</button>
                 <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
