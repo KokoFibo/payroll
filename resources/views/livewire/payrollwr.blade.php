@@ -402,7 +402,7 @@
                 </div>
             </div>
             <p class="px-3">Total
-                {{ countWorkingDays($month, $year, [0]) - jumlah_libur_nasional($month, $year) }}
+                {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
                 working days
                 with
                 {{ jumlah_libur_nasional($month, $year) }} Holidays</p>

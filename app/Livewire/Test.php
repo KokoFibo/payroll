@@ -68,8 +68,11 @@ class Test extends Component
     return false;
   }
 
+
   public function render()
   {
+
+
     // get_data_karyawan();
     // $this->dispatch('success', message: 'data karyawan queried');
 

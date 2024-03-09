@@ -11,6 +11,21 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function getTotalWorkingDays($year, $month)
+{
+    $totalDays = Carbon::createFromDate($year, $month, 1)->daysInMonth;
+    $workingDays = 0;
+
+    for ($day = 1; $day <= $totalDays; $day++) {
+        $date = Carbon::createFromDate($year, $month, $day);
+        // Check if it's not Sunday (0 represents Sunday)
+        if ($date->dayOfWeek != Carbon::SUNDAY) {
+            $workingDays++;
+        }
+    }
+    return $workingDays;
+}
+
 function is_puasa($tgl)
 {
     // Start date dan end date = tanggal mulai dan akhir puasa
