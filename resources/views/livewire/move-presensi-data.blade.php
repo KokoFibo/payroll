@@ -28,11 +28,19 @@
                 {{-- <p>Tahun: {{ $getYear }}, Bulan : {{ $getMonth }}</p> --}}
                 {{-- @endif --}}
                 @if ($getMonth != null && $getYear != null)
-                    <p>Total data {{ $getMonth }} - {{ $getYear }} : {{ $totalData }} Data</p>
-                    <p>Pastikan table "rekapbackup" tersedia</p>
-                    <button class="btn btn-warning" wire:click="move">Move Data {{ $getMonth }} -
-                        {{ $getYear }}</button>
-                    <button class="btn btn-dark" wire:click="cancel">Cancel</button>
+                    <div>
+                        <button wire:loading wire:target='move' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Moving...') }}</span>
+                        </button>
+                    </div>
+                    <div wire:loading.class='invisible'>
+                        <p>Total data {{ $getMonth }} - {{ $getYear }} : {{ $totalData }} Data</p>
+                        <p>Pastikan table "rekapbackup" tersedia</p>
+                        <button class="btn btn-warning" wire:click="move">Move Data {{ $getMonth }} -
+                            {{ $getYear }}</button>
+                        <button class="btn btn-dark" wire:click="cancel">Cancel</button>
+                    </div>
                 @endif
             </div>
         </div>
