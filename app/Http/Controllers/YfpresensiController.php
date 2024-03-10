@@ -208,143 +208,282 @@ class YfpresensiController extends Controller
                 ->get();
 
             $is_saturday = is_saturday($kh->date);
-
-            if ($is_saturday) {
-                // JIKA HARI SABTU kkk
-                if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
-                    $shift = 'Pagi';
-                } else {
-                    $shift = 'Malam';
-                }
-
-                if ($shift == 'Pagi') {
-                    // SHIFT PAGI
-                    $flag = 0;
-                    foreach ($tablePresensi as $tp) {
-                        if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
-                            $first_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
-                            if ($flag == 0) {
-                                $first_out = $tp->time;
-                                if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
-                                    $flag = 1;
-                                } else {
-                                    $flag = 2;
-                                }
-                            }
-                            // ook
-                            if ($flag == 1) {
-                                $second_in = $tp->time;
-                            }
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
-                            $second_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
-                            $second_out = $tp->time;
-                        } else {
-                            // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
-                            $overtime_out = $tp->time;
-                        }
+            // Batasanm Puasa
+            if (is_puasa($kh->date)) {
+                if ($is_saturday) {
+                    // JIKA HARI SABTU kkk
+                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
+                        $shift = 'Pagi';
+                    } else {
+                        $shift = 'Malam';
                     }
-                }
-                if ($shift == 'Malam') {
-                    // SHIFT MALAM
 
-                    foreach ($tablePresensi as $tp) {
-                        switch ($tp->time) {
-                            case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
+                    if ($shift == 'Pagi') {
+                        // SHIFT PAGI
+                        $flag = 0;
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
                                 $first_in = $tp->time;
-                                break;
-                            case Carbon::parse($tp->time)->betweenIncluded('20:01', '21:30'):
-                                if ($first_out == null) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
+                                if ($flag == 0) {
                                     $first_out = $tp->time;
-                                } else {
+                                    if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                                        $flag = 1;
+                                    } else {
+                                        $flag = 2;
+                                    }
+                                }
+                                // ook
+                                if ($flag == 1) {
                                     $second_in = $tp->time;
                                 }
-                                break;
-                            case Carbon::parse($tp->time)->betweenIncluded('21:31', '23:59'):
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 $second_in = $tp->time;
-                                break;
-
-                            default:
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
                                 $second_out = $tp->time;
-                                break;
+                            } else {
+                                // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
+                                $overtime_out = $tp->time;
+                            }
                         }
                     }
-                }
-                if ($shift == 'Pagi') {
-                    if ($second_out == null && $overtime_out == null && $overtime_in != null) {
-                        $second_out = $overtime_in;
-                        $overtime_in = null;
+                    if ($shift == 'Malam') {
+                        foreach ($tablePresensi as $tp) {
+                            switch ($tp->time) {
+                                case Carbon::parse($tp->time)->betweenIncluded('14:00', '19:00'):
+                                    $first_in = $tp->time;
+                                    break;
+                                case Carbon::parse($tp->time)->betweenIncluded('19:01', '20:30'):
+                                    if ($first_out == null) {
+                                        $first_out = $tp->time;
+                                    } else {
+                                        $second_in = $tp->time;
+                                    }
+                                    break;
+                                case Carbon::parse($tp->time)->betweenIncluded('20:31', '22:59'):
+                                    $second_in = $tp->time;
+                                    break;
+
+                                default:
+                                    $second_out = $tp->time;
+                                    break;
+                            }
+                        }
                     }
-                    if ($second_out == null && $overtime_in == null && $overtime_out != null) {
-                        $second_out = $overtime_out;
-                        $overtime_out = null;
+                    if ($shift == 'Pagi') {
+                        if ($second_out == null && $overtime_out == null && $overtime_in != null) {
+                            $second_out = $overtime_in;
+                            $overtime_in = null;
+                        }
+                        if ($second_out == null && $overtime_in == null && $overtime_out != null) {
+                            $second_out = $overtime_out;
+                            $overtime_out = null;
+                        }
+                    }
+                } else {
+                    // JIKA BUKAN HARI SABTU
+                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
+                        $shift = 'Pagi';
+                    } else {
+                        $shift = 'Malam';
+                    }
+
+                    if ($shift == 'Pagi') {
+                        // SHIFT PAGI
+                        $flag = 0;
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
+                                $first_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
+                                if ($flag == 0) {
+                                    $first_out = $tp->time;
+                                    if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                                        $flag = 1;
+                                    } else {
+                                        $flag = 2;
+                                    }
+                                }
+                                if ($flag == 1) {
+                                    $second_in = $tp->time;
+                                }
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
+                                $second_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:29')) {
+                                $second_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('17:30', '18:59')) {
+                                $overtime_in = $tp->time;
+                            } else {
+                                // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
+                                $overtime_out = $tp->time;
+                            }
+                        }
+                    }
+                    if ($shift == 'Malam') {
+                        // SHIFT MALAM
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('16:00', '22:00')) {
+                                $first_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('01:01', '03:15')) {
+                                $first_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('03:16', '04:00')) {
+                                $second_in = $tp->time;
+                            } else {
+                                // } else if ( Carbon::parse( $tp->time )->betweenIncluded( '03:01', '08:30' ) ) {
+                                $second_out = $tp->time;
+                            }
+                        }
+                    }
+                    if ($shift == 'Pagi') {
+                        if ($second_out == null && $overtime_out == null && $overtime_in != null) {
+                            $second_out = $overtime_in;
+                            $overtime_in = null;
+                        }
+                        if ($second_out == null && $overtime_in == null && $overtime_out != null) {
+                            $second_out = $overtime_out;
+                            $overtime_out = null;
+                        }
                     }
                 }
             } else {
-                // JIKA BUKAN HARI SABTU
-                if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
-                    $shift = 'Pagi';
-                } else {
-                    $shift = 'Malam';
-                }
 
-                if ($shift == 'Pagi') {
-                    // SHIFT PAGI
-                    $flag = 0;
-                    foreach ($tablePresensi as $tp) {
-                        if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
-                            $first_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
-                            if ($flag == 0) {
-                                $first_out = $tp->time;
-                                if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
-                                    $flag = 1;
-                                } else {
-                                    $flag = 2;
+
+
+                if ($is_saturday) {
+                    // JIKA HARI SABTU kkk
+                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
+                        $shift = 'Pagi';
+                    } else {
+                        $shift = 'Malam';
+                    }
+
+                    if ($shift == 'Pagi') {
+                        // SHIFT PAGI
+                        $flag = 0;
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
+                                $first_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
+                                if ($flag == 0) {
+                                    $first_out = $tp->time;
+                                    if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                                        $flag = 1;
+                                    } else {
+                                        $flag = 2;
+                                    }
                                 }
-                            }
-                            if ($flag == 1) {
+                                // ook
+                                if ($flag == 1) {
+                                    $second_in = $tp->time;
+                                }
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 $second_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
+                                $second_out = $tp->time;
+                            } else {
+                                // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
+                                $overtime_out = $tp->time;
                             }
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
-                            $second_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:29')) {
-                            $second_out = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('17:30', '18:59')) {
-                            $overtime_in = $tp->time;
-                        } else {
-                            // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
-                            $overtime_out = $tp->time;
                         }
                     }
-                }
-                if ($shift == 'Malam') {
-                    // SHIFT MALAM
-                    foreach ($tablePresensi as $tp) {
-                        if (Carbon::parse($tp->time)->betweenIncluded('16:00', '22:00')) {
-                            $first_in = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('22:01', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:00', '00:15')) {
-                            $first_out = $tp->time;
-                        } elseif (Carbon::parse($tp->time)->betweenIncluded('00:16', '03:00')) {
-                            $second_in = $tp->time;
-                        } else {
-                            // } else if ( Carbon::parse( $tp->time )->betweenIncluded( '03:01', '08:30' ) ) {
-                            $second_out = $tp->time;
+                    if ($shift == 'Malam') {
+                        foreach ($tablePresensi as $tp) {
+                            switch ($tp->time) {
+                                case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
+                                    $first_in = $tp->time;
+                                    break;
+                                case Carbon::parse($tp->time)->betweenIncluded('20:01', '21:30'):
+                                    if ($first_out == null) {
+                                        $first_out = $tp->time;
+                                    } else {
+                                        $second_in = $tp->time;
+                                    }
+                                    break;
+                                case Carbon::parse($tp->time)->betweenIncluded('21:31', '23:59'):
+                                    $second_in = $tp->time;
+                                    break;
+
+                                default:
+                                    $second_out = $tp->time;
+                                    break;
+                            }
                         }
                     }
-                }
-                if ($shift == 'Pagi') {
-                    if ($second_out == null && $overtime_out == null && $overtime_in != null) {
-                        $second_out = $overtime_in;
-                        $overtime_in = null;
+                    if ($shift == 'Pagi') {
+                        if ($second_out == null && $overtime_out == null && $overtime_in != null) {
+                            $second_out = $overtime_in;
+                            $overtime_in = null;
+                        }
+                        if ($second_out == null && $overtime_in == null && $overtime_out != null) {
+                            $second_out = $overtime_out;
+                            $overtime_out = null;
+                        }
                     }
-                    if ($second_out == null && $overtime_in == null && $overtime_out != null) {
-                        $second_out = $overtime_out;
-                        $overtime_out = null;
+                } else {
+                    // JIKA BUKAN HARI SABTU
+                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
+                        $shift = 'Pagi';
+                    } else {
+                        $shift = 'Malam';
+                    }
+
+                    if ($shift == 'Pagi') {
+                        // SHIFT PAGI
+                        $flag = 0;
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
+                                $first_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
+                                if ($flag == 0) {
+                                    $first_out = $tp->time;
+                                    if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                                        $flag = 1;
+                                    } else {
+                                        $flag = 2;
+                                    }
+                                }
+                                if ($flag == 1) {
+                                    $second_in = $tp->time;
+                                }
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
+                                $second_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:29')) {
+                                $second_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('17:30', '18:59')) {
+                                $overtime_in = $tp->time;
+                            } else {
+                                // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
+                                $overtime_out = $tp->time;
+                            }
+                        }
+                    }
+                    if ($shift == 'Malam') {
+                        // SHIFT MALAM
+                        foreach ($tablePresensi as $tp) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('16:00', '22:00')) {
+                                $first_in = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('22:01', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:00', '00:15')) {
+                                $first_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('00:16', '03:00')) {
+                                $second_in = $tp->time;
+                            } else {
+                                // } else if ( Carbon::parse( $tp->time )->betweenIncluded( '03:01', '08:30' ) ) {
+                                $second_out = $tp->time;
+                            }
+                        }
+                    }
+                    if ($shift == 'Pagi') {
+                        if ($second_out == null && $overtime_out == null && $overtime_in != null) {
+                            $second_out = $overtime_in;
+                            $overtime_in = null;
+                        }
+                        if ($second_out == null && $overtime_in == null && $overtime_out != null) {
+                            $second_out = $overtime_out;
+                            $overtime_out = null;
+                        }
                     }
                 }
             }
+            // Batasana Akhir Puasa
 
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);

@@ -29,8 +29,8 @@ function getTotalWorkingDays($year, $month)
 function is_puasa($tgl)
 {
     // Start date dan end date = tanggal mulai dan akhir puasa
-    $start_date = '2022-02-20';
-    $end_date = '2022-02-25';
+    $start_date = '2024-03-08';
+    $end_date = '2024-04-06';
     if ($tgl >= $start_date && $tgl <= $end_date) return true;
     return false;
 }

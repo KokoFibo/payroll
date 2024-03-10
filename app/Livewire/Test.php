@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\DB;
 
 class Test extends Component
 {
@@ -27,6 +28,9 @@ class Test extends Component
   public $etnis;
 
 
+  public $tahun, $bulan, $getYear, $getMonth, $dataBulan, $dataTahun;
+
+
 
   public function mount()
   {
@@ -37,6 +41,28 @@ class Test extends Component
     $this->month = now()->month;
     $this->status_karyawan = "Resigned";
     $this->etnis = "lainnya";
+
+    $this->getYear = "";
+    $this->getMonth = "";
+    $this->dataTahun = Yfrekappresensi::selectRaw('YEAR(date) as year')
+      ->groupByRaw('YEAR(date)')
+      ->pluck('year')
+      ->all();
+  }
+
+  public function updatedGetYear()
+  {
+
+
+    $currentMonth = $this->month;
+    $lastMonth = ($currentMonth - 1) == 0 ? 12 : ($currentMonth - 1);
+
+    $this->dataBulan = Yfrekappresensi::whereYear('date', $this->getYear)
+      ->whereNotIn(DB::raw('MONTH(date)'), [$currentMonth, $lastMonth])
+      ->selectRaw('MONTH(date) as month')
+      ->groupByRaw('MONTH(date)')
+      ->pluck('month')
+      ->all();
   }
 
   public function delete($id)
@@ -73,10 +99,18 @@ class Test extends Component
   {
 
 
-    // get_data_karyawan();
-    // $this->dispatch('success', message: 'data karyawan queried');
+    // $this->dataTahun = Yfrekappresensi::selectRaw('YEAR(date) as year')
+    //   ->groupByRaw('YEAR(date)')
+    //   ->pluck('year')
+    //   ->all();
 
+    // $dataBulan = Yfrekappresensi::whereYear('date', '2023')
+    //   ->selectRaw('MONTH(date) as month')
+    //   ->groupByRaw('MONTH(date)')
+    //   ->pluck('month')
+    //   ->all();
 
+    // dd($dataTahun);
 
 
 
