@@ -72,14 +72,19 @@ class MovePresensiData extends Component
         // }
 
 
-        try {
-            foreach (array_chunk($Yfpresensidata, 200) as $item) {
-                Rekapbackup::insert($item);
-            }
-        } catch (\Exception $e) {
-            dd('eror lho');
-            return back()->with('error', $e);
+
+        foreach (array_chunk($Yfpresensidata, 200) as $item) {
+            Rekapbackup::insert($item);
         }
+
+        // try {
+        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Rekapbackup::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     dd('eror lho');
+        //     return back()->with('error', $e);
+        // }
 
 
 
