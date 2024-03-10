@@ -48,6 +48,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 
 // Middleware
@@ -167,6 +168,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/addpresensi', AddPresensi::class);
                     Route::get('/usernotfound', UserNotFound::class);
                     Route::get('/movepresensidata', MovePresensiData::class);
+                    Route::get('/moveback', Moveback::class);
 
 
                     // TEST
