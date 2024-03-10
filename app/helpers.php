@@ -11,11 +11,26 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function getTotalWorkingDays($year, $month)
+{
+    $totalDays = Carbon::createFromDate($year, $month, 1)->daysInMonth;
+    $workingDays = 0;
+
+    for ($day = 1; $day <= $totalDays; $day++) {
+        $date = Carbon::createFromDate($year, $month, $day);
+        // Check if it's not Sunday (0 represents Sunday)
+        if ($date->dayOfWeek != Carbon::SUNDAY) {
+            $workingDays++;
+        }
+    }
+    return $workingDays;
+}
+
 function is_puasa($tgl)
 {
     // Start date dan end date = tanggal mulai dan akhir puasa
-    $start_date = '2022-02-20';
-    $end_date = '2022-02-25';
+    $start_date = '2024-03-08';
+    $end_date = '2024-04-06';
     if ($tgl >= $start_date && $tgl <= $end_date) return true;
     return false;
 }
