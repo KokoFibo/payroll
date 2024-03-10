@@ -73,7 +73,7 @@ class MovePresensiData extends Component
 
 
 
-        foreach (array_chunk($Yfpresensidata, 50) as $item) {
+        foreach (array_chunk($Yfpresensidata, 100) as $item) {
             Rekapbackup::insert($item);
         }
 
