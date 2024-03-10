@@ -40,10 +40,55 @@ class UserMobile extends Component
     //     $this->is_slipGaji = false;
     // }
 
+
+    public function UpdatedSelectedYear()
+    {
+
+        if ($this->is_detail) {
+
+            $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+                ->whereYear('date', $this->selectedYear)
+                ->distinct()
+                ->pluck('month')
+                ->toArray();
+            $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
+                ->distinct()
+                ->pluck('year')
+                ->toArray();
+        } else {
+            $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))
+                ->whereYear('date', $this->selectedYear)
+                ->distinct()
+                ->pluck('month')
+                ->toArray();
+            $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+                ->distinct()
+                ->pluck('year')
+                ->toArray();
+        }
+    }
+
     public function slip_gaji()
     {
         // dd($this->selectedMonth, $this->selectedYear);
+        // kkk
+        $dataPayroll = Payroll::orderBy('date', 'desc')->first();
+        $this->selectedMonth = \Carbon\Carbon::parse($dataPayroll->date)->format('m');
+        $this->selectedYear = \Carbon\Carbon::parse($dataPayroll->date)->format('Y');
+        $this->selectedMonth = (int)$this->selectedMonth;
 
+
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->selectedYear)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        // kll
         $this->data_payroll = Payroll::with('jamkerjaid')->whereMonth('date', $this->selectedMonth)
             ->whereYear('date', $this->selectedYear)
             ->where('id_karyawan', $this->user_id)->first();
@@ -63,8 +108,24 @@ class UserMobile extends Component
 
     public function detail_gaji()
     {
+        $dataYfrekappresensi = Yfrekappresensi::orderBy('date', 'desc')->first();
+        $this->selectedMonth = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('m');
+        $this->selectedYear = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('Y');
+        $this->selectedMonth = (int)$this->selectedMonth;
+
         $this->is_detail = false;
+        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->selectedYear)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
     }
+
+
     public function mount()
     {
         $data_lock = Lock::find(1);
@@ -88,7 +149,6 @@ class UserMobile extends Component
             ->distinct()
             ->pluck('year')
             ->toArray();
-
         $dataYfrekappresensi = Yfrekappresensi::orderBy('date', 'desc')->first();
         $this->selectedMonth = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('m');
         $this->selectedYear = \Carbon\Carbon::parse($dataYfrekappresensi->date)->format('Y');
@@ -124,11 +184,10 @@ class UserMobile extends Component
             $this->show = true;
         }
 
-        $this->cx++;
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 3235;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 3235;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
