@@ -93,7 +93,7 @@ class MovePresensiData extends Component
             Yfrekappresensi::where('id', $data->id)->delete();
         }
 
-        $this->dispatch('success', message: '{{ $totalData }} Data rekap presensi sudah di move');
+        $this->dispatch('success', message: $this->totalData . ' Data rekap presensi sudah di move');
     }
 
     public function mount()
