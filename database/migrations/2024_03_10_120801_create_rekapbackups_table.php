@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rekapbackups', function (Blueprint $table) {
-            $table->id()->nullable();
+            $table->id();
             $table->foreignUuid('karyawan_id')->nullable();
             $table->integer('user_id')->nullable();
-            $table->index(['user_id'])->nullable();
-            $table->index(['karyawan_id'])->nullable();
             $table->date('date')->nullable();
             $table->time('first_in')->nullable();
             $table->time('first_out')->nullable();
@@ -29,7 +27,7 @@ return new class extends Migration
             $table->string('shift')->nullable();
             $table->string('no_scan_history')->nullable();
             $table->string('late_history')->nullable();
-            $table->timestamps()->nullable();
+            $table->timestamps();
         });
     }
 

@@ -28,6 +28,7 @@
                 {{-- <p>Tahun: {{ $getYear }}, Bulan : {{ $getMonth }}</p> --}}
                 {{-- @endif --}}
                 @if ($getMonth != null && $getYear != null)
+                    <p>Pastikan table "rekapbackup" tersedia</p>
                     <button class="btn btn-warning" wire:click="move">Move Data {{ $getMonth }} -
                         {{ $getYear }}</button>
                     <button class="btn btn-dark" wire:click="cancel">Cancel</button>
