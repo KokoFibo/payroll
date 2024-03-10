@@ -77,6 +77,7 @@ class MovePresensiData extends Component
                 Rekapbackup::insert($item);
             }
         } catch (\Exception $e) {
+            dd('eror lho');
             return back()->with('error', $e);
         }
 
@@ -87,7 +88,7 @@ class MovePresensiData extends Component
             Yfrekappresensi::where('id', $data->id)->delete();
         }
 
-        $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
+        $this->dispatch('success', message: 'Data rekap presensi sudah di move');
     }
 
     public function mount()
