@@ -1,4 +1,5 @@
 <div>
+    <p>selectedMonth: {{ $selectedMonth }}. selectedYear: {{ $selectedYear }}, CX = {{ $cx }}</p>
     <div>
         <div class="flex flex-col h-screen">
             <div class=header>
@@ -36,7 +37,8 @@
                                         <button
                                             class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">{{ __('Logout') }}</button>
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
                                         @csrf
                                     </form>
                                 </div>
@@ -59,12 +61,14 @@
                         </div>
                     </div>
                 </div>
+
                 {{-- selection --}}
                 <div class="flex px-3  justify-center ">
                     <div class="w-screen bg-teal-500 h-12 shadow-xl rounded-3xl mt-2 ">
                         <div class="h-12 flex justify-evenly items-center">
                             <div>
                                 <select wire:model.live="selectedYear" class="bg-teal-500 text-white text-sm">
+                                    <option value=" ">Pilih Tahun</option>
                                     @foreach ($select_year as $sy)
                                         <option value="{{ $sy }}">{{ $sy }}</option>
                                     @endforeach
@@ -74,7 +78,8 @@
                             </div>
                             <div>
                                 <select wire:model.live="selectedMonth" class="bg-teal-500 text-white text-sm">
-                                    {{-- <option value="11">November</option> --}}
+                                    <option value=" ">Pilih Bulan</option>
+
                                     @foreach ($select_month as $sm)
                                         <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                     @endforeach
@@ -435,19 +440,47 @@
                                                     <p class="font-bold text-blue-500">
                                                         @php
                                                             $tgl = tgl_doang($d->date);
-                                                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                                                            $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                                                            $jam_kerja = hitung_jam_kerja(
+                                                                $d->first_in,
+                                                                $d->first_out,
+                                                                $d->second_in,
+                                                                $d->second_out,
+                                                                $d->late,
+                                                                $d->shift,
+                                                                $d->date,
+                                                                $d->karyawan->jabatan,
+                                                            );
+                                                            $terlambat = late_check_jam_kerja_only(
+                                                                $d->first_in,
+                                                                $d->first_out,
+                                                                $d->second_in,
+                                                                $d->second_out,
+                                                                $d->shift,
+                                                                $d->date,
+                                                                $d->karyawan->jabatan,
+                                                            );
 
                                                             if ($d->karyawan->jabatan === 'Satpam') {
                                                                 $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
                                                             }
 
-                                                            $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                                                            $langsungLembur = langsungLembur(
+                                                                $d->second_out,
+                                                                $d->date,
+                                                                $d->shift,
+                                                                $d->karyawan->jabatan,
+                                                            );
 
                                                             if (is_sunday($d->date)) {
-                                                                $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
+                                                                $jam_lembur =
+                                                                    (hitungLembur($d->overtime_in, $d->overtime_out) /
+                                                                        60) *
+                                                                    2;
                                                             } else {
-                                                                $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
+                                                                $jam_lembur =
+                                                                    hitungLembur($d->overtime_in, $d->overtime_out) /
+                                                                        60 +
+                                                                    $langsungLembur;
                                                             }
 
                                                             $tambahan_shift_malam = 0;
@@ -470,10 +503,18 @@
                                                                     }
                                                                 }
                                                             }
-                                                            if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+                                                            if (
+                                                                $jam_lembur >= 9 &&
+                                                                is_sunday($d->date) == false &&
+                                                                $d->karyawan->jabatan != 'Driver'
+                                                            ) {
                                                                 $jam_lembur = 0;
                                                             }
-                                                            if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                                                            if (
+                                                                $d->karyawan->placement == 'YIG' ||
+                                                                $d->karyawan->placement == 'YSM' ||
+                                                                $d->karyawan->jabatan == 'Satpam'
+                                                            ) {
                                                                 if (is_friday($d->date)) {
                                                                     $jam_kerja = 7.5;
                                                                 } elseif (is_saturday($d->date)) {
@@ -483,20 +524,42 @@
                                                                 }
                                                             }
 
-                                                            if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                                                                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                                                            if (
+                                                                $d->karyawan->jabatan == 'Satpam' &&
+                                                                is_sunday($d->date)
+                                                            ) {
+                                                                $jam_kerja = hitung_jam_kerja(
+                                                                    $d->first_in,
+                                                                    $d->first_out,
+                                                                    $d->second_in,
+                                                                    $d->second_out,
+                                                                    $d->late,
+                                                                    $d->shift,
+                                                                    $d->date,
+                                                                    $d->karyawan->jabatan,
+                                                                );
                                                             }
 
-                                                            if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                                                            if (
+                                                                $d->karyawan->jabatan == 'Satpam' &&
+                                                                is_saturday($d->date)
+                                                            ) {
                                                                 $jam_lembur = 0;
                                                             }
 
-                                                            if (is_sunday($d->date) && $d->karyawan->metode_penggajian == 'Perbulan') {
+                                                            if (
+                                                                is_sunday($d->date) &&
+                                                                $d->karyawan->metode_penggajian == 'Perbulan'
+                                                            ) {
                                                                 $jam_lembur = $jam_kerja;
                                                                 $jam_kerja = 0;
                                                             }
                                                             // Jika hari libur nasional
-                                                            if (is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)) {
+                                                            if (
+                                                                is_libur_nasional($d->date) &&
+                                                                trim($d->karyawan->metode_penggajian) == 'Perjam' &&
+                                                                !is_sunday($d->date)
+                                                            ) {
                                                                 $jam_kerja *= 2;
                                                                 $jam_lembur *= 2;
                                                             }
