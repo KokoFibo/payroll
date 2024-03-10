@@ -112,6 +112,8 @@ class Test extends Component
 
     // dd($dataTahun);
 
+    $data = Yfrekappresensi::whereYear('date', '2023')->whereMonth('date', '11')->count();
+    dd($data);
 
 
     return view('livewire.test');

@@ -11,7 +11,7 @@ class MovePresensiData extends Component
 {
     public $month, $year, $today;
 
-    public $tahun, $bulan, $getYear, $getMonth, $dataBulan, $dataTahun;
+    public $tahun, $bulan, $getYear, $getMonth, $dataBulan, $dataTahun, $totalData;
 
     public function cancel()
     {
@@ -97,10 +97,16 @@ class MovePresensiData extends Component
         $this->month = now()->month;
         $this->getYear = "";
         $this->getMonth = "";
+        $this->totalData = 0;
         $this->dataTahun = Yfrekappresensi::selectRaw('YEAR(date) as year')
             ->groupByRaw('YEAR(date)')
             ->pluck('year')
             ->all();
+    }
+
+    public function updatedGetMonth()
+    {
+        $this->totalData = Yfrekappresensi::whereYear('date', $this->getYear)->whereMonth('date', $this->getMonth)->count();
     }
     public function updatedGetYear()
     {
