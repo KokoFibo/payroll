@@ -1,5 +1,5 @@
 <div>
-    <p>selectedMonth: {{ $selectedMonth }}. selectedYear: {{ $selectedYear }}, CX = {{ $cx }}</p>
+    {{-- <p>selectedMonth: {{ $selectedMonth }}. selectedYear: {{ $selectedYear }}, CX = {{ $cx }}</p> --}}
     <div>
         <div class="flex flex-col h-screen">
             <div class=header>
@@ -37,8 +37,7 @@
                                         <button
                                             class="rounded-xl shadow bg-purple-500 text-sm text-white px-3 py-1">{{ __('Logout') }}</button>
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
