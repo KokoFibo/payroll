@@ -842,7 +842,7 @@ class Payrollwr extends Component
 
     public function updatedYear()
     {
-        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();
@@ -855,12 +855,12 @@ class Payrollwr extends Component
 
         $this->cx++;
 
-        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
             ->distinct()
             ->pluck('year')
             ->toArray();
 
-        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();

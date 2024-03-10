@@ -461,7 +461,7 @@ class Prindexwr extends Component
 
     public function updatedYear()
     {
-        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();
@@ -471,21 +471,22 @@ class Prindexwr extends Component
 
     public function render()
     {
-        $this->select_year = Yfrekappresensi::select(DB::raw('YEAR(date) as year'))
+        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
             ->distinct()
             ->pluck('year')
             ->toArray();
 
-        $this->select_month = Yfrekappresensi::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();
-        $periodePayroll = DB::table('yfrekappresensis')
-            ->select(DB::raw('YEAR(date) year, MONTH(date) month, MONTHNAME(date) month_name'))
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
+
+        // $periodePayroll = DB::table('yfrekappresensis')
+        //     ->select(DB::raw('YEAR(date) year, MONTH(date) month, MONTHNAME(date) month_name'))
+        //     ->distinct()
+        //     ->orderBy('year', 'desc')
+        //     ->orderBy('month', 'desc')
+        //     ->get();
         $this->cx++;
 
 
@@ -535,6 +536,7 @@ class Prindexwr extends Component
             $last_build = 0;
         }
 
-        return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData', 'last_build']));
+        // return view('livewire.prindexwr', compact(['filteredData', 'periodePayroll', 'lastData', 'last_build']));
+        return view('livewire.prindexwr', compact(['filteredData',  'lastData', 'last_build']));
     }
 }

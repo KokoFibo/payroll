@@ -36,8 +36,9 @@
 
             td:nth-child(4),
             th:nth-child(4) {
+
                 position: sticky;
-                left: 241px;
+                left: 200px;
                 z-index: 1;
             }
 
@@ -213,8 +214,8 @@
                                 <th></th>
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Date') }} <i
-                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('id_karyawan')">
+                                    {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
