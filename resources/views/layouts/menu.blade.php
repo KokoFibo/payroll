@@ -143,26 +143,7 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ 'moveback' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/moveback" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Move presensi data') }}</p>
-                    </a> --}}
-                    <a href="/moveback" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Move Back data') }}</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ 'movepresensidata' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/movepresensidata" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Move presensi data') }}</p>
-                    </a> --}}
-                    <a href="/movepresensidata" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Move presensi data') }}</p>
-                    </a>
-                </li>
+
                 <li
                     class="nav-item {{ 'yfdeletetanggalpresensiwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"
@@ -202,6 +183,27 @@ with font-awesome or any other icon font library -->
                                 class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>{{ __('') }}Delete Tgl Presensi</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ 'moveback' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/moveback" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Move presensi data') }}</p>
+                    </a> --}}
+                            <a href="/moveback" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Move Back data') }}</p>
+                            </a>
+                        </li>
+                        <li
+                            class="nav-item {{ 'movepresensidata' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/movepresensidata" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Move presensi data') }}</p>
+                    </a> --}}
+                            <a href="/movepresensidata" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Move presensi data') }}</p>
                             </a>
                         </li>
                         <li

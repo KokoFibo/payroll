@@ -209,7 +209,9 @@ class YfpresensiController extends Controller
 
             $is_saturday = is_saturday($kh->date);
             // Batasanm Puasa
-            if (is_puasa($kh->date)) {
+
+
+            if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
@@ -250,17 +252,17 @@ class YfpresensiController extends Controller
                     if ($shift == 'Malam') {
                         foreach ($tablePresensi as $tp) {
                             switch ($tp->time) {
-                                case Carbon::parse($tp->time)->betweenIncluded('14:00', '19:00'):
+                                case Carbon::parse($tp->time)->betweenIncluded('14:00', '17:00'):
                                     $first_in = $tp->time;
                                     break;
-                                case Carbon::parse($tp->time)->betweenIncluded('19:01', '20:30'):
+                                case Carbon::parse($tp->time)->betweenIncluded('17:01', '18:30'):
                                     if ($first_out == null) {
                                         $first_out = $tp->time;
                                     } else {
                                         $second_in = $tp->time;
                                     }
                                     break;
-                                case Carbon::parse($tp->time)->betweenIncluded('20:31', '22:59'):
+                                case Carbon::parse($tp->time)->betweenIncluded('18:31', '20:59'):
                                     $second_in = $tp->time;
                                     break;
 
@@ -345,8 +347,6 @@ class YfpresensiController extends Controller
                     }
                 }
             } else {
-
-
 
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
