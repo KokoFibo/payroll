@@ -181,21 +181,18 @@ class Yfpresensiindexwr extends Component
             ->get();
         //ok2
         if ($data != null) {
-
-
             foreach ($data as $d) {
                 $tambahan_shift_malam = 0;
                 if ($d->no_scan === null) {
                     $tgl = tgl_doang($d->date);
-
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     //evaluasi ini
                     // if ($d->karyawan->jabatan === 'Satpam') {
                     //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
                     // }
 
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
                     } else {
@@ -238,7 +235,7 @@ class Yfpresensiindexwr extends Component
                         }
                     }
                     if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     }
                     if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                         $jam_lembur = 0;
@@ -437,6 +434,7 @@ class Yfpresensiindexwr extends Component
     public function render()
     {
 
+
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -483,7 +481,6 @@ class Yfpresensiindexwr extends Component
             ->where('overtime_in', null)
             ->where('overtime_out', null)
             ->count();
-
         if ($absensiKosong > 0) {
             $id_kosong = Yfrekappresensi::select('user_id')
                 ->whereNull('first_in')
@@ -569,6 +566,7 @@ class Yfpresensiindexwr extends Component
         }
         // dd($datas[0]->user_id);
         // $this->is_noscan = false;
+
         return view('livewire.yfpresensiindexwr', compact([
             'datas', 'totalHadir', 'totalHadirPagi',
             'totalNoScan', 'totalNoScanPagi', 'totalLate', 'totalLatePagi', 'overallNoScan', 'overtime', 'overtimePagi', 'absensiKosong'
