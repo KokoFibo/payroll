@@ -310,9 +310,9 @@ class YfpresensiController extends Controller
                                 }
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
                                 $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:29')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59')) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('17:30', '18:59')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('18:00', '18:59')) {
                                 $overtime_in = $tp->time;
                             } else {
                                 // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
@@ -446,9 +446,9 @@ class YfpresensiController extends Controller
                                 }
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
                                 $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:29')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59')) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('17:30', '18:59')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('18:00', '18:59')) {
                                 $overtime_in = $tp->time;
                             } else {
                                 // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
