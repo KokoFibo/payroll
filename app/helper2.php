@@ -86,9 +86,9 @@ function build_payroll($month, $year)
             if ($d->no_scan === null) {
                 $jam_lembur = 0;
                 $tambahan_shift_malam = 0;
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
 
                 if (is_sunday($d->date)) {
                     $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
@@ -128,7 +128,7 @@ function build_payroll($month, $year)
                 }
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                 }
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {

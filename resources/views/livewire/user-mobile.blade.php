@@ -1,4 +1,5 @@
 <div>
+
     {{-- <p>selectedMonth: {{ $selectedMonth }}. selectedYear: {{ $selectedYear }}, CX = {{ $cx }}</p> --}}
     <div>
         <div class="flex flex-col h-screen">
@@ -448,6 +449,7 @@
                                                                 $d->shift,
                                                                 $d->date,
                                                                 $d->karyawan->jabatan,
+                                                                get_placement($d->user_id),
                                                             );
                                                             $terlambat = late_check_jam_kerja_only(
                                                                 $d->first_in,
@@ -457,6 +459,7 @@
                                                                 $d->shift,
                                                                 $d->date,
                                                                 $d->karyawan->jabatan,
+                                                                get_placement($d->user_id),
                                                             );
 
                                                             if ($d->karyawan->jabatan === 'Satpam') {
@@ -468,6 +471,7 @@
                                                                 $d->date,
                                                                 $d->shift,
                                                                 $d->karyawan->jabatan,
+                                                                get_placement($d->user_id),
                                                             );
 
                                                             if (is_sunday($d->date)) {
@@ -536,6 +540,7 @@
                                                                     $d->shift,
                                                                     $d->date,
                                                                     $d->karyawan->jabatan,
+                                                                    get_placement($d->user_id),
                                                                 );
                                                             }
 
@@ -575,7 +580,7 @@
                                                 <td class="text-center">
                                                     <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
                                                     <p class="font-bold text-blue-500">
-                                                        {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan) }}
+                                                        {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id)) }}
                                                     </p>
                                                 </td>
                                                 <td class="text-center">
