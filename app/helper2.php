@@ -34,6 +34,9 @@ function build_payroll($month, $year)
     Jamkerjaid::whereMonth('date', $month)
         ->whereYear('date', $year)
         ->delete();
+
+    // dd('ok1 sampai sini');
+
     $jumlah_jam_terlambat = null;
     $jumlah_menit_lembur = null;
     $dt_name = null;
@@ -65,12 +68,26 @@ function build_payroll($month, $year)
 
     //     foreach ($filteredData as $data) {
     foreach ($filterArray as $data) {
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
+        // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
 
+        //     ->where('user_id', $data)
+        //     ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
+        //     ->orderBy('date', 'desc')
+        //     ->get();
+
+        $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
             ->where('user_id', $data)
-            ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
+            ->where('date', '>=', $startOfMonth)
+            ->where('date', '<=', $endOfMonth)
             ->orderBy('date', 'desc')
             ->get();
+
+
+
+
 
         // ambil data per user id
         $n_noscan = 0;
@@ -185,7 +202,6 @@ function build_payroll($month, $year)
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
-
 
     // ok 2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
