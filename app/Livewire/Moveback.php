@@ -53,7 +53,7 @@ class Moveback extends Component
 
 
 
-        foreach (array_chunk($Yfpresensidata, 100) as $item) {
+        foreach (array_chunk($Yfpresensidata, 50) as $item) {
             Yfrekappresensi::insert($item);
         }
 
