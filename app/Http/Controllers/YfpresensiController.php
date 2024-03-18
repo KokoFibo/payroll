@@ -223,9 +223,8 @@ class YfpresensiController extends Controller
             // Batasanm Puasa
 
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
-
+            //plk
             if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
-
                 // JIKA BUKAN HARI SABTU
                 if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
                     $shift = 'Pagi';
