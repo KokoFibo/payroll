@@ -3,7 +3,7 @@
      <!-- Brand Logo -->
      {{-- <a href="index3.html" class="brand-link text-center "> --}}
 
-     <a href="index3.html" class="brand-link">
+     <a href="/" class="brand-link">
          <img src="{{ asset('images/logo-only.png') }}" width="60px" alt="Yifang Logo" style="opacity: .8">
          {{-- class="brand-image img-circle elevation-3" --}}
          {{-- <span class="brand-text font-weight-light">Yifang CME</span> --}}
