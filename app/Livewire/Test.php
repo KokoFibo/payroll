@@ -55,12 +55,13 @@ class Test extends Component
     return $late;
   }
 
+
   public function render()
   {
-    $overtime_in = '19:30';
-    $shift = 'Pagi';
-    dd(get_placement(2746));
 
-    return view('livewire.test');
+
+    // return view('livewire.test', [
+    //   'data' => $data
+    // ]);
   }
 }

@@ -59,6 +59,7 @@ class Yfpresensiindexwr extends Component
     public $tahun;
     public $lock_presensi;
     public $data_kosong;
+    public $is_noscan, $is_kosong;
 
     public function prev()
     {
@@ -90,6 +91,9 @@ class Yfpresensiindexwr extends Component
         $this->tahun = now()->year;
 
         $this->lock_presensi = $this->getLockPresensi($data->date);
+
+        $this->is_noscan = false;
+        $this->is_kosong = false;
     }
 
     public function delete_no_scan($id)
@@ -117,7 +121,9 @@ class Yfpresensiindexwr extends Component
             $this->lock_presensi = true;
         } else {
             $lock = Lock::find(1);
-            if (now()->day < 10 && $lock->presensi == false) $this->lock_presensi = 0;
+            // if (now()->day < 7 && $lock->presensi == false) $this->lock_presensi = 0;
+            // Rubah angka tgl 10 utk menentukan batas akhir lock bulan lalu otomatis
+            if (now()->day > 10 && $lock->presensi == false) $this->lock_presensi = 1;
             else $this->lock_presensi = $lock->presensi;
         }
         // if ($tanggal->month == now()->month && $tanggal->year == now()->year) dd('ok');
@@ -175,21 +181,18 @@ class Yfpresensiindexwr extends Component
             ->get();
         //ok2
         if ($data != null) {
-
-
             foreach ($data as $d) {
                 $tambahan_shift_malam = 0;
                 if ($d->no_scan === null) {
                     $tgl = tgl_doang($d->date);
-
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     //evaluasi ini
                     // if ($d->karyawan->jabatan === 'Satpam') {
                     //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
                     // }
 
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
                     } else {
@@ -232,15 +235,23 @@ class Yfpresensiindexwr extends Component
                         }
                     }
                     if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     }
                     if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                         $jam_lembur = 0;
                     }
 
-                    if (is_sunday($d->date) && $d->karyawan->metode_penggajian == 'Perbulan') {
+                    if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $jam_lembur = $jam_kerja;
                         $jam_kerja = 0;
+                    }
+
+                    // Jika hari libur nasional
+                    if (
+                        is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
+                    ) {
+                        $jam_kerja *= 2;
+                        $jam_lembur *= 2;
                     }
 
                     $this->dataArr->push([
@@ -269,13 +280,19 @@ class Yfpresensiindexwr extends Component
 
     public function filterNoScan()
     {
-        // $this->columnName = 'no_scan_history';
-        $this->columnName = 'no_scan';
-        $this->direction = 'desc';
-        $this->search = null;
         $this->resetPage();
-        $this->render();
+        $this->is_kosong = false;
+        $this->is_noscan = true;
     }
+
+    public function filterKosong()
+    {
+        $this->is_noscan = false;
+        $this->is_kosong = true;
+        $this->resetPage();
+    }
+
+
     public function filterLate()
     {
         $this->columnName = 'late_history';
@@ -283,17 +300,23 @@ class Yfpresensiindexwr extends Component
         $this->search = null;
         $this->resetPage();
         $this->render();
+        $this->is_noscan = false;
+        $this->is_kosong = false;
+        $this->resetPage();
     }
 
     public function resetTanggal()
     {
         // ini harus di reset ke tanggal terakhir ver d M Y
+        $this->is_noscan = false;
+        $this->is_kosong = false;
+
         $this->tanggal = null;
         $this->columnName = 'no_scan_history';
         $this->direction = 'desc';
         $this->search = null;
         $this->resetPage();
-        $this->render();
+        // $this->render();
     }
 
     public function update($id)
@@ -347,6 +370,7 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
         $data->late_history = $data->late;
 
+
         // ================================
         $is_saturday = is_saturday($data->date);
         if ($is_saturday) {
@@ -378,7 +402,6 @@ class Yfpresensiindexwr extends Component
                 if (Carbon::parse($data->second_in)->betweenIncluded('11:00', '15:00')) {
                     $data->shift = 'Pagi';
                     // dd($data->shift, $is_saturday );
-
                 }
             }
         }
@@ -410,6 +433,8 @@ class Yfpresensiindexwr extends Component
 
     public function render()
     {
+
+
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -456,7 +481,6 @@ class Yfpresensiindexwr extends Component
             ->where('overtime_in', null)
             ->where('overtime_out', null)
             ->count();
-
         if ($absensiKosong > 0) {
             $id_kosong = Yfrekappresensi::select('user_id')
                 ->whereNull('first_in')
@@ -475,55 +499,73 @@ class Yfpresensiindexwr extends Component
 
 
 
+        // fil
+
+        if ($this->is_noscan) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->where('no_scan', 'No Scan')
+                ->paginate($this->perpage);
+        } elseif ($this->is_kosong) {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->whereNull('first_in')
+                ->whereNull('first_out')
+                ->whereNull('second_in')
+                ->whereNull('second_out')
+                ->whereNull('overtime_in')
+                ->whereNull('overtime_out')
+                ->paginate($this->perpage);
+        } else {
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+                ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->when($this->location == 'Pabrik 1', function ($query) {
+                    return $query->where('placement', 'YCME');
+                })
+                ->when($this->location == 'Pabrik 2', function ($query) {
+                    return $query->where('placement', 'YEV');
+                })
+                ->when($this->location == 'Kantor', function ($query) {
+                    return $query->whereIn('placement', ['YIG', 'YSM']);
+                })
+                ->orderBy($this->columnName, $this->direction)
+                // hilangin ini kalau ngaco            
+                ->orderBy('user_id', 'asc')
+                ->orderBy('date', 'asc')
+                ->when($this->search == "", function ($query) {
+                    $query
+                        ->whereDate('date',  $this->tanggal);
+                })
+                ->when($this->search, function ($query) {
+                    $query
+                        ->whereMonth('date', $this->bulan)
+                        ->whereYear('date', $this->tahun);
+                })
+                // ->when($this->is_noscan, function ($query) {
+                //     $query
+                //         ->where('no_scan', 'No Scan');
+                // })
 
 
 
-
-        $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
-            ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-
-
-            ->when($this->location == 'Pabrik 1', function ($query) {
-                return $query->where('placement', 'YCME');
-            })
-            ->when($this->location == 'Pabrik 2', function ($query) {
-                return $query->where('placement', 'YEV');
-            })
-            ->when($this->location == 'Kantor', function ($query) {
-                return $query->whereIn('placement', ['YIG', 'YSM']);
-            })
-            ->orderBy($this->columnName, $this->direction)
-            // hilangin ini kalau ngaco            // ->orderBy('user_id', 'asc')
-            // ->orderBy('date', 'asc')
-            ->when($this->search == "", function ($query) {
-                $query
-                    ->whereDate('date',  $this->tanggal);
-            })
-            ->when($this->search, function ($query) {
-                $query
-                    ->whereMonth('date', $this->bulan)
-                    ->whereYear('date', $this->tahun);
-            })
-
-
-
-            ->where(function ($query) {
-                $query->when($this->search, function ($subQuery) {
-                    $subQuery
-                        ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('user_id', trim($this->search))
-                        // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
-                        ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
-                    // ->whereMonth('date', $this->month)
-                    // ->whereYear('date', $this->year);
-                });
-            })
-
-            ->paginate($this->perpage);
+                ->where(function ($query) {
+                    $query->when($this->search, function ($subQuery) {
+                        $subQuery
+                            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('user_id', trim($this->search))
+                            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+                        // ->whereMonth('date', $this->month)
+                        // ->whereYear('date', $this->year);
+                    });
+                })
+                ->paginate($this->perpage);
+        }
         // dd($datas[0]->user_id);
+        // $this->is_noscan = false;
 
         return view('livewire.yfpresensiindexwr', compact([
             'datas', 'totalHadir', 'totalHadirPagi',

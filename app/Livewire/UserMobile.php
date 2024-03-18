@@ -208,6 +208,7 @@ class UserMobile extends Component
         $data = Yfrekappresensi::where('user_id', $this->user_id)
             ->whereMonth('date', $this->selectedMonth)
             ->whereYear('date', $this->selectedYear)
+            ->where('no_scan', null)
             // ->orderBy('date', 'desc')->simplePaginate(5);
             ->orderBy('date', 'desc')->get();
 
