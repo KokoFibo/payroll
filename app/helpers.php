@@ -1530,34 +1530,57 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
         if ($second_out != null) {
             if ($shift == 'Pagi') {
                 // Shift Pagi
-
-                if (Carbon::parse($second_out)->betweenIncluded('12:00', '16:59')) {
-                    $t1 = strtotime('17:00:00');
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                if (is_saturday($tgl)) {
+                    if (Carbon::parse($second_out)->betweenIncluded('12:00', '14:59')) {
+                        $t1 = strtotime('15:00:00');
+                        $t2 = strtotime($second_out);
+                        //kkk
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 } else {
-                    $late = null;
+                    if (Carbon::parse($second_out)->betweenIncluded('12:00', '16:59')) {
+                        $t1 = strtotime('17:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 }
             } else {
+                if (is_saturday($tgl)) {
+                    // if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
+                    if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+                        $t1 = strtotime('00:00:00');
+                        $t2 = strtotime($second_out);
 
-                if (Carbon::parse($second_out)->betweenIncluded('00:00', '05:29')) {
-                    $t1 = strtotime('05:30:00');
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
-
-                    // ook
-                } elseif (Carbon::parse($second_out)->betweenIncluded('18:00', '22:59')) {
-                    $t1 = strtotime('22:59:00');
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam) + 4;
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else {
+                        $late = null;
+                    }
                 } else {
-                    $late = null;
+                    if (Carbon::parse($second_out)->betweenIncluded('00:00', '04:59')) {
+                        $t1 = strtotime('05:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam);
+
+                        // ook
+                    } elseif (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+                        $t1 = strtotime('23:59:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam) + 4;
+                    } else {
+                        $late = null;
+                    }
                 }
             }
         }
