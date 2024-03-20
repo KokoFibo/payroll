@@ -747,6 +747,9 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
 
                             return $lembur = 0;
                         } else {
+                            // $t2 = strtotime($second_out);
+                            // sini
+
                             // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
                             return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00')) / 60;
                         }
@@ -756,11 +759,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
                             return $lembur = 0;
                         } else {
                             if ($t2 <= strtotime('23:59:00') && $t2 >= strtotime('20:30:00')) {
-
-
                                 return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00')) / 60;
                             } else {
-
                                 return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60 + 3.5;
                             }
                         }

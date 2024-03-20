@@ -149,7 +149,7 @@ function build_payroll($month, $year)
                 }
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                    $jam_lembur = 0;
+                    // $jam_lembur = 0;
                 }
 
                 // lop
