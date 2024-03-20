@@ -534,14 +534,14 @@ class Payrollwr extends Component
                         // $tgl = tgl_doang($d->date);
                         $jam_lembur = 0;
                         $tambahan_shift_malam = 0;
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                        $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $d->placement);
+                        $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $d->placement);
                         //evaluasi ini
                         // if ($d->karyawan->jabatan === 'Satpam') {
                         //     $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
                         // }
 
-                        $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                        $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->placement);
 
                         if (is_sunday($d->date)) {
                             $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
@@ -580,7 +580,7 @@ class Payrollwr extends Component
                         }
 
                         if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
+                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $d->placement);
                         }
 
                         if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
