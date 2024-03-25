@@ -21,7 +21,7 @@ function check_id_presensi()
 
     $no_id = [];
     foreach ($karyawanHadir as $k) {
-        $data = User::where('username', $k->user_id)->first();
+        $data = User::where('username', trim($k->user_id))->first();
 
         if ($data == null) {
             $no_id[] = $k->user_id; // Use [] to append to the array instead of overwriting it
@@ -1046,11 +1046,13 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     }
     // lolo
     if (is_sunday($tgl)) {
-        // $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
-        // $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
 
         $t1 = strtotime($first_in);
         $t2 = strtotime($second_out);
+        $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
+        $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
+
+
 
         $diff = gmdate('H:i:s', $t2 - $t1);
 
