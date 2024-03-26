@@ -177,6 +177,9 @@
                                             <option value="6">YAM</option>
                                             <option value="4">YIG</option>
                                             <option value="5">YSM</option>
+                                            <option value="7">YEV SMOOT</option>
+                                            <option value="8">YEV OFFERO</option>
+                                            <option value="9">YEV SUNRA</option>
                                         </select>
                                     </div>
                                 </th>

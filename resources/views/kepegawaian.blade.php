@@ -206,10 +206,13 @@
                                 <option value="YCME">YCME</option>
                                 <option value="YIG">YIG</option>
                                 <option value="YSM">YSM</option>
-                                <option value="YEV">YEV</option>
                                 <option value="YAM">YAM</option>
                                 <option value="GAMA">GAMA</option>
                                 <option value="WAS">WAS</option>
+                                <option value="YEV">YEV</option>
+                                <option value="YEV SMOOT">YEV SMOOT</option>
+                                <option value="YEV OFFERO">YEV OFFERO</option>
+                                <option value="YEV SUNRA">YEV SUNRA</option>
 
                             </select>
                             @error('placement')
