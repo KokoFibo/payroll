@@ -131,6 +131,27 @@ class PlacementExport implements FromQuery, WithHeadings, WithColumnFormatting, 
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc');
                 break;
+            case 11:
+                return Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV SMOOT')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
+                break;
+            case 12:
+                return Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV OFFERO')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
+                break;
+            case 13:
+                return Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV SUNRA')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc');
+                break;
         }
     }
 

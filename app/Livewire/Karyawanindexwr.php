@@ -411,6 +411,12 @@ class Karyawanindexwr extends Component
                     $query->where('placement', 'YSM');
                 } elseif ($this->search_placement == 6) {
                     $query->where('placement', 'YAM');
+                } elseif ($this->search_placement == 7) {
+                    $query->where('placement', 'YEV SMOOT');
+                } elseif ($this->search_placement == 8) {
+                    $query->where('placement', 'YEV OFFERO');
+                } elseif ($this->search_placement == 9) {
+                    $query->where('placement', 'YEV SUNRA');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }

@@ -178,6 +178,9 @@
                             <option value="10">YAM</option>
                             <option value="8">YIG</option>
                             <option value="9">YSM</option>
+                            <option value="11">YEV SMOOT</option>
+                            <option value="12">YEV OFFERO</option>
+                            <option value="13">YEV SUNRA</option>
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>
