@@ -39,33 +39,56 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
     public function query()
     {
         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
-        
+
 
         switch ($this->search_placement) {
-          
-
             case 1:
                 return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YCME')
-                ->where('departemen', $this->search_department);
+                    ->where('departemen', $this->search_department);
                 break;
 
             case 2:
                 return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV')
-                ->where('departemen', $this->search_department);
+                    ->where('departemen', $this->search_department);
                 break;
 
             case 3:
                 return Karyawan::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM'])
-                ->where('departemen', $this->search_department);
+                    ->where('departemen', $this->search_department);
                 break;
-            
+            case 4:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YIG')
+                    ->where('departemen', $this->search_department);
+                break;
+            case 5:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YSM')
+                    ->where('departemen', $this->search_department);
+                break;
+            case 6:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YAM')
+                    ->where('departemen', $this->search_department);
+                break;
+            case 7:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV SMOOT')
+                    ->where('departemen', $this->search_department);
+                break;
+            case 8:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV OFFERO')
+                    ->where('departemen', $this->search_department);
+                break;
+            case 9:
+                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV SUNRA')
+                    ->where('departemen', $this->search_department);
+                break;
         }
     }
 
     public function map($karyawan): array
     {
-        return [$karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan, 
-        $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs];
+        return [
+            $karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan,
+            $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs
+        ];
     }
 
     public function columnFormats(): array
@@ -73,21 +96,22 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
         return [
             // 'C' => NumberFormat::FORMAT_TEXT,
             // 'D' => '0',
-           
+
             'G' => NumberFormat::FORMAT_DATE_XLSX15,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-          
-           
+
+
         ];
     }
 
     public function headings(): array
     {
-        return [['Data Karyawan'], ['ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
-        'Status Karyawan', 'Tanggal Bergabung','Metode Penggajian','Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS', 
-         ]];
+        return [['Data Karyawan'], [
+            'ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
+            'Status Karyawan', 'Tanggal Bergabung', 'Metode Penggajian', 'Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS',
+        ]];
     }
 
     public function title(): string
@@ -107,5 +131,4 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
         // $sheet->getStyle('1')->getFont()->setBold(true);
         // $sheet->getStyle('2')->getFont()->setBold(true);
     }
-
 }

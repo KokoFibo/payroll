@@ -77,8 +77,26 @@ class Karyawanindexwr extends Component
             case '3':
                 $nama_file = "kantor_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
+            case '4':
+                $nama_file = "YIG_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case '5':
+                $nama_file = "YSM_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case '6':
+                $nama_file = "YAM_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case '7':
+                $nama_file = "YEV_SMOOT_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case '8':
+                $nama_file = "YEV_OFFERO_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
+            case '9':
+                $nama_file = "YEV_SUNRA_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
         }
-        // dd($nama_file);
+
         return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
     }
     public function excelByEtnis()
@@ -303,6 +321,18 @@ class Karyawanindexwr extends Component
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
+        // =================================
+        //  <option value="1">YCME</option>
+        // <option value="2">YEV</option>
+        // {{-- <option value="3">Kantor</option> --}}
+        // <option value="6">YAM</option>
+        // <option value="4">YIG</option>
+        // <option value="5">YSM</option>
+        // <option value="7">YEV SMOOT</option>
+        // <option value="8">YEV OFFERO</option>
+        // <option value="9">YEV SUNRA</option>
+
+        // ================================
 
         $departments = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
@@ -310,6 +340,18 @@ class Karyawanindexwr extends Component
                     $query->where('placement', 'YCME');
                 } elseif ($this->search_placement == 2) {
                     $query->where('placement', 'YEV');
+                } elseif ($this->search_placement == 4) {
+                    $query->where('placement', 'YIG');
+                } elseif ($this->search_placement == 5) {
+                    $query->where('placement', 'YSM');
+                } elseif ($this->search_placement == 6) {
+                    $query->where('placement', 'YAM');
+                } elseif ($this->search_placement == 7) {
+                    $query->where('placement', 'YEV SMOOT');
+                } elseif ($this->search_placement == 8) {
+                    $query->where('placement', 'YEV OFFERO');
+                } elseif ($this->search_placement == 9) {
+                    $query->where('placement', 'YEV SUNRA');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }
