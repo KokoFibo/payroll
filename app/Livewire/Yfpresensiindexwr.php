@@ -264,6 +264,11 @@ class Yfpresensiindexwr extends Component
                     ]);
 
                     $total_hari_kerja++;
+
+                    if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                        $total_hari_kerja--;
+                    }
+
                     $total_jam_kerja += $jam_kerja;
                     $total_jam_lembur += $jam_lembur;
                     $total_keterlambatan += $terlambat;
