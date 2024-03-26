@@ -186,7 +186,7 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 3235;
+        // $this->user_id = 1072;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -288,11 +288,15 @@ class UserMobile extends Component
                     $jam_kerja *= 2;
                     $jam_lembur *= 2;
                 }
+                $this->total_hari_kerja++;
+
+                if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                    $this->total_hari_kerja--;
+                }
 
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;
-                $this->total_hari_kerja++;
                 $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
             }
         }
