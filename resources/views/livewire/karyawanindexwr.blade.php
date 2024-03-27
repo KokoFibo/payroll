@@ -5,6 +5,7 @@
         td,
         th {
             white-space: nowrap;
+            cursor: pointer;
         }
 
         /* @media (min-width : 600px) {
@@ -62,35 +63,12 @@
 
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
+
         @if ($is_tanggal_gajian || auth()->user()->role == 5)
             <a href="/iuranlocker"><button class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus Iuran
                     Locker</button></a>
         @endif
-        <div class="col-xl-2 col-12">
-            @if (Auth::user()->role > 3)
-                <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
-                    <option value="0"selected>{{ __('All Companies') }}</option>
-                    <option value="1">{{ __('Pabrik 1') }}</option>
-                    <option value="2">{{ __('Pabrik 2') }}</option>
-                    <option value="3">{{ __('Kantor') }}</option>
-                    <option value="4">ASB</option>
-                    <option value="5">DPA</option>
-                    <option value="6">YCME</option>
-                    <option value="7">YEV</option>
-                    <option value="8">YIG</option>
-                    <option value="9">YSM</option>
-                    <option value="10">YAM</option>
-                </select>
-            @endif
 
-        </div>
-        <div class="col-12 col-xl-1">
-            @if (Auth::user()->role > 3)
-                <div class="col-12">
-                    <button wire:click="excel" class="btn btn-success col-12">Excel</button></a>
-                </div>
-            @endif
-        </div>
     </div>
     <div class="px-4">
         <div class="card">
@@ -152,17 +130,19 @@
                                     <div style="width: 130px">
                                         <select wire:model.live="search_company" class="form-select"
                                             aria-label="Default select example">
-                                            <option value="">{{ __('Company') }}</option>
-                                            {{-- <option value="ASB">ASB</option>
+                                            <option value="">{{ __('All Companies') }}</option>
+                                            <option value="ASB">ASB</option>
                                             <option value="DPA">DPA</option>
                                             <option value="YCME">YCME</option>
                                             <option value="YEV">YEV</option>
                                             <option value="YIG">YIG</option>
                                             <option value="YSM">YSM</option>
-                                            <option value="YAM">YAM</option> --}}
-                                            @foreach ($companies as $j)
+                                            <option value="YAM">YAM</option>
+                                            <option value="GAMA">GAMA</option>
+                                            <option value="WAS">WAS</option>
+                                            {{-- @foreach ($companies as $j)
                                                 <option value="{{ $j }}">{{ $j }}</option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                     </div>
                                 </th>
@@ -237,16 +217,18 @@
                                     </div>
                                 </th>
                                 <th style="width: 150px; border-style: none;">
-                                    <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                    {{-- <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
                                         @if ($search_placement == null) disabled @endif>Excel by
-                                        Placement</button>
+                                        Placement</button> --}}
 
+                                    <button wire:click="excelByDepartment"
+                                        class="btn btn-success btn-sm mb-1">Excel</button>
                                 </th>
-                                <th style="width: 150px; border-style: none;">
+                                {{-- <th style="width: 150px; border-style: none;">
                                     <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
                                         @if ($search_etnis == null) disabled @endif>Excel by
                                         Etnis</button>
-                                </th>
+                                </th> --}}
                                 {{-- @endif --}}
 
                             </tr>
