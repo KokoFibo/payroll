@@ -237,9 +237,9 @@
                                     </div>
                                 </th>
                                 <th style="width: 150px; border-style: none;">
-                                    <button wire:click="excelByPlacement" class="btn btn-success btn-sm mb-1"
+                                    <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
                                         @if ($search_placement == null) disabled @endif>Excel by
-                                        Departement</button>
+                                        Placement</button>
 
                                 </th>
                                 <th style="width: 150px; border-style: none;">
