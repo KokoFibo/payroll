@@ -187,7 +187,7 @@
                                     <div style="width: 130px">
                                         <select wire:model.live="search_department" class="form-select"
                                             aria-label="Default select example">
-                                            <option value="">{{ __('All Department') }}</option>
+                                            <option value="">{{ __('All Departments') }}</option>
                                             @foreach ($departments as $j)
                                                 <option value="{{ $j }}">{{ $j }}</option>
                                             @endforeach
@@ -237,7 +237,7 @@
                                     </div>
                                 </th>
                                 <th style="width: 150px; border-style: none;">
-                                    <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                    <button wire:click="excelByPlacement" class="btn btn-success btn-sm mb-1"
                                         @if ($search_placement == null) disabled @endif>Excel by
                                         Departement</button>
 
