@@ -98,7 +98,13 @@ class Karyawanindexwr extends Component
                 break;
         }
 
-        return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
+        $nama_file =
+            'data_karyawan' . "_" . $this->month . "_" . $this->year . ".xlsx";
+
+
+        // return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
+
+        return Excel::download(new KaryawanByDepartmentExport($this->search_nama, $this->search_id_karyawan, $this->search_company, $this->search_placement, $this->search_department, $this->search_jabatan, $this->search_etnis), $nama_file);
     }
     public function excelByEtnis()
     {
@@ -139,7 +145,7 @@ class Karyawanindexwr extends Component
         $this->year = now()->year;
         $this->month = now()->month;
         $this->selected_company = 0;
-        $this->search_department = '';
+
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
@@ -485,6 +491,7 @@ class Karyawanindexwr extends Component
             ->paginate($this->perpage);
         $this->cx++;
         // return view('livewire.karyawanindexwr', compact(['datas', 'departments', 'jabatans', 'etnises', 'companies', 'jabatans']));
+
         return view('livewire.karyawanindexwr', [
             'datas' => $datas,
             'departments' => $departments,
