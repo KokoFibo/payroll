@@ -68,6 +68,7 @@ class Karyawanindexwr extends Component
         $nama_file = "";
         switch ($this->search_placement) {
 
+
             case '1':
                 $nama_file = "pabrik_1_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
@@ -138,6 +139,7 @@ class Karyawanindexwr extends Component
         $this->year = now()->year;
         $this->month = now()->month;
         $this->selected_company = 0;
+        $this->search_department = '';
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
@@ -168,6 +170,8 @@ class Karyawanindexwr extends Component
         $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
     }
+
+
 
     // #[On('delete')]
     public function delete($id)

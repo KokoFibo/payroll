@@ -7,7 +7,7 @@
             white-space: nowrap;
         }
 
-        @media (min-width : 600px) {
+        /* @media (min-width : 600px) {
 
             table th {
                 z-index: 2;
@@ -41,7 +41,7 @@
             th:nth-child(2) {
                 z-index: 3;
             }
-        }
+        } */
     </style>
     @if (auth()->user()->role == 2 || auth()->user()->role == 3)
         <div x-data="{
@@ -187,7 +187,7 @@
                                     <div style="width: 130px">
                                         <select wire:model.live="search_department" class="form-select"
                                             aria-label="Default select example">
-                                            <option value="">{{ __('Department') }}</option>
+                                            <option value="">{{ __('All Department') }}</option>
                                             @foreach ($departments as $j)
                                                 <option value="{{ $j }}">{{ $j }}</option>
                                             @endforeach
@@ -238,8 +238,9 @@
                                 </th>
                                 <th style="width: 150px; border-style: none;">
                                     <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
-                                        @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
+                                        @if ($search_placement == null) disabled @endif>Excel by
                                         Departement</button>
+
                                 </th>
                                 <th style="width: 150px; border-style: none;">
                                     <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"

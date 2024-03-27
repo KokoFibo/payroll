@@ -40,46 +40,73 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
     {
         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
 
-
         switch ($this->search_placement) {
             case 1:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YCME')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YCME');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
 
             case 2:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
 
             case 3:
-                return Karyawan::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM'])
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->whereIn('placement', ['YIG', 'YSM']);
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
+
             case 4:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YIG')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YIG');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
             case 5:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YSM')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YSM');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
             case 6:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YAM')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YAM');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
             case 7:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV SMOOT')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV SMOOT');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
             case 8:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV OFFERO')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV OFFERO');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
             case 9:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV SUNRA')
-                    ->where('departemen', $this->search_department);
-                break;
+                $query = Karyawan::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV SUNRA');
+                if ($this->search_department != '') {
+                    $query->where('departemen', $this->search_department);
+                }
+                return $query;
         }
     }
 
