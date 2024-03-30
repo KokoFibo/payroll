@@ -300,7 +300,7 @@ class UserMobile extends Component
                     $total_hari_kerja--;
                 }
 
-                if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
+                if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && $d->karyawan->jabatan == 'Translator') {
                     $jam_kerja = 0;
                     $jam_lembur = 0;
                 }
