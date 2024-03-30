@@ -257,11 +257,13 @@ class Yfpresensiindexwr extends Component
                     //     $jam_lembur *= 2;
                     // }
                     if (
-                        is_libur_nasional($d->date) &&  !is_sunday($d->date) && $d->karyawan->jabatan != 'Translator' && $d->karyawan->etnis != 'Tionghoa'
+                        is_libur_nasional($d->date) &&  !is_sunday($d->date)
                     ) {
                         $jam_kerja *= 2;
                         $jam_lembur *= 2;
                     }
+
+
 
                     $this->dataArr->push([
                         'tgl' => $tgl,
@@ -276,6 +278,11 @@ class Yfpresensiindexwr extends Component
 
                     if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $total_hari_kerja--;
+                    }
+
+                    if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
+                        $jam_kerja = 0;
+                        $jam_lembur = 0;
                     }
 
                     $total_jam_kerja += $jam_kerja;
