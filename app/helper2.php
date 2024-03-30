@@ -11,6 +11,7 @@ use App\Models\Yfrekappresensi;
 
 function build_payroll($month, $year)
 {
+
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
     // $jamKerjaKosong = Jamkerjaid::count();

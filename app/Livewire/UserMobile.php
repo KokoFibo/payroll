@@ -300,10 +300,10 @@ class UserMobile extends Component
                     $total_hari_kerja--;
                 }
 
-                // if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
-                //     $jam_kerja = 0;
-                //     $jam_lembur = 0;
-                // }
+                if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
+                    $jam_kerja = 0;
+                    $jam_lembur = 0;
+                }
 
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;

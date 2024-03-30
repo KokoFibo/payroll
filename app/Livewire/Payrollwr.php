@@ -451,6 +451,11 @@ class Payrollwr extends Component
     public function buat_payroll()
     {
         // supaya tidak dilakukan bersamaan
+        if (check_absensi_kosong()) {
+            clear_locks();
+            $this->dispatch('error', message: 'Masih ada data kosong di presensi');
+            return;
+        }
         $lock = Lock::find(1);
         if ($lock->build == 1) {
             $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');

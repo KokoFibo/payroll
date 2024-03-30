@@ -12,6 +12,20 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+
+function check_absensi_kosong()
+{
+    $absensiKosong =
+        $data = Yfrekappresensi::where('first_in', null)
+        ->where('first_out', null)
+        ->where('second_in', null)
+        ->where('second_out', null)
+        ->where('overtime_in', null)
+        ->where('overtime_out', null)
+        ->count();
+    return $absensiKosong;
+}
+
 function check_id_presensi()
 {
     $karyawanHadir = DB::table('yfpresensis')
