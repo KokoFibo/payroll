@@ -179,10 +179,10 @@ function build_payroll($month, $year)
                     $total_hari_kerja--;
                 }
 
-                // if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
-                //     $jam_kerja = 0;
-                //     $jam_lembur = 0;
-                // }
+                if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
+                    $jam_kerja = 0;
+                    $jam_lembur = 0;
+                }
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_jam_lembur = $total_jam_lembur + $jam_lembur;
                 $total_keterlambatan = $total_keterlambatan + $terlambat;
