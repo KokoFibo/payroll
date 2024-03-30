@@ -1204,29 +1204,34 @@ function buatTanggal($tgl)
 
 function pembulatanJamOvertimeIn($jam)
 {
-    $arrJam = explode(':', $jam);
-    if ((int) $arrJam[1] <= 3) {
-        $tambahJam = (int) $arrJam[0];
-        if ($tambahJam < 10) {
-            $strJam = '0' . strval($tambahJam) . ':';
+    try {
+
+        $arrJam = explode(':', $jam);
+        if ((int) $arrJam[1] <= 3) {
+            $tambahJam = (int) $arrJam[0];
+            if ($tambahJam < 10) {
+                $strJam = '0' . strval($tambahJam) . ':';
+            } else {
+                $strJam = strval($tambahJam) . ':';
+            }
+            return $strJam . '00:00';
+        } elseif ((int) $arrJam[1] <= 33) {
+            if ((int) $arrJam[0] < 10) {
+                return $menit = '0' . $arrJam[0] . ':30:00';
+            } else {
+                return $menit = $arrJam[0] . ':30:00';
+            }
         } else {
-            $strJam = strval($tambahJam) . ':';
+            $tambahJam = (int) $arrJam[0] + 1;
+            if ($tambahJam < 10) {
+                $strJam = '0' . strval($tambahJam) . ':';
+            } else {
+                $strJam = strval($tambahJam) . ':';
+            }
+            return $strJam . '00:00';
         }
-        return $strJam . '00:00';
-    } elseif ((int) $arrJam[1] <= 33) {
-        if ((int) $arrJam[0] < 10) {
-            return $menit = '0' . $arrJam[0] . ':30:00';
-        } else {
-            return $menit = $arrJam[0] . ':30:00';
-        }
-    } else {
-        $tambahJam = (int) $arrJam[0] + 1;
-        if ($tambahJam < 10) {
-            $strJam = '0' . strval($tambahJam) . ':';
-        } else {
-            $strJam = strval($tambahJam) . ':';
-        }
-        return $strJam . '00:00';
+    } catch (\Exception $e) {
+        return $e->getMessage();
     }
 }
 

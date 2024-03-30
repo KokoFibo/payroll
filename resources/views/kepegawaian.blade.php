@@ -164,6 +164,7 @@
                                 <option value="Dapur Pabrik">Dapur Pabrik</option>
                                 <option value="QC Aging">QC Aging</option>
                                 <option value="Driver">Driver</option>
+                                <option value="Translator">Translator</option>
 
                             </select>
                             @error('jabatan')

@@ -241,14 +241,23 @@ class Yfpresensiindexwr extends Component
                         // $jam_lembur = 0;
                     }
 
-                    if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                        $jam_lembur = $jam_kerja;
-                        $jam_kerja = 0;
-                    }
+                    // if ((is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') || (is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan')) {
+
+                    //     // $jam_lembur = $jam_kerja;
+                    //     // $jam_kerja = 0;
+                    //     $jam_kerja *= 2;
+                    //     $jam_lembur *= 2;
+                    // }
 
                     // Jika hari libur nasional
+                    // if (
+                    //     is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
+                    // ) {
+                    //     $jam_kerja *= 2;
+                    //     $jam_lembur *= 2;
+                    // }
                     if (
-                        is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
+                        is_libur_nasional($d->date) &&  !is_sunday($d->date) && $d->karyawan->jabatan != 'Translator' && $d->karyawan->etnis != 'Tionghoa'
                     ) {
                         $jam_kerja *= 2;
                         $jam_lembur *= 2;
@@ -265,7 +274,7 @@ class Yfpresensiindexwr extends Component
 
                     $total_hari_kerja++;
 
-                    if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                    if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $total_hari_kerja--;
                     }
 
