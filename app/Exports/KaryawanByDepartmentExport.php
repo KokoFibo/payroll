@@ -118,7 +118,8 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
     {
         return [
             $karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->departemen, $karyawan->jabatan, $karyawan->etnis,
-            $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs
+            $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs,
+            $karyawan->nama_bank, $karyawan->nomor_rekening
         ];
     }
 
@@ -132,6 +133,7 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
             'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
             'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
+            'O' => "0",
 
 
         ];
@@ -141,7 +143,7 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
     {
         return [['Data Karyawan'], [
             'ID Karyawan', 'Nama', 'Company', 'Placement', 'Department', 'Jabatan', 'Etnis',
-            'Status Karyawan', 'Tanggal Bergabung', 'Metode Penggajian', 'Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS',
+            'Status Karyawan', 'Tanggal Bergabung', 'Metode Penggajian', 'Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS', 'Bank', 'No rekening'
         ]];
     }
 
