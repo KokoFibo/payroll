@@ -56,39 +56,13 @@ class Test extends Component
   }
 
 
+
   public function render()
   {
-
-    $jam_kerja = 0;
-    $first_in = '07:53:00';
-    $second_out = '14:37:00';
-
-    $t1 = strtotime($first_in);
-    $t2 = strtotime($second_out);
-    $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
-    $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
+    dd(check_absensi_kosong());
 
 
 
-    $diff = gmdate('H:i:s', $t2 - $t1);
-
-    $diff = explode(':', $diff);
-    $jam = (int) $diff[0];
-    $menit = (int) $diff[1];
-
-    if ($menit >= 45) {
-      $jam = $jam + 1;
-    } elseif ($menit < 45 && $menit > 15) {
-      $jam = $jam + 0.5;
-    } else {
-      $jam;
-    }
-    $jam_kerja = $jam * 2;
-    dd($jam_kerja);
-
-
-    // return view('livewire.test', [
-    //   'data' => $data
-    // ]);
+    return view('livewire.test');
   }
 }
