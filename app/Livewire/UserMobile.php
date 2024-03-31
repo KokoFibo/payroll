@@ -186,7 +186,7 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 101;
+        // $this->user_id = 1072;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -278,21 +278,20 @@ class UserMobile extends Component
                 }
 
 
-                if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                    $jam_lembur = $jam_kerja;
-                    $jam_kerja = 0;
-                }
+                // if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                //     $jam_lembur = $jam_kerja;
+                //     $jam_kerja = 0;
+                // }
 
 
                 if (
-                    is_libur_nasional($d->date) ||  is_sunday($d->date)
+                    is_libur_nasional($d->date) &&  !is_sunday($d->date)
                 ) {
-
                     $jam_kerja *= 2;
                     $jam_lembur *= 2;
                 }
 
-                if ((is_libur_nasional($d->date) || is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
+                if ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
                     $jam_kerja = 0;
                     $jam_lembur = 0;
                 }
