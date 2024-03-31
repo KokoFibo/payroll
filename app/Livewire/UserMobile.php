@@ -186,8 +186,8 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 1067;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 101;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
@@ -276,22 +276,18 @@ class UserMobile extends Component
                         // $jam_lembur = 0;
                     }
                 }
+
+
                 if (is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                     $jam_lembur = $jam_kerja;
                     $jam_kerja = 0;
                 }
 
-                // Jika hari libur nasional
-                // if (
-                //     is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
-                // ) {
-                //     $jam_kerja *= 2;
-                //     $jam_lembur *= 2;
-                // }
-                // is_libur_nasional($d->date) &&  !is_sunday($d->date)
+
                 if (
                     is_libur_nasional($d->date) ||  is_sunday($d->date)
                 ) {
+
                     $jam_kerja *= 2;
                     $jam_lembur *= 2;
                 }
@@ -303,7 +299,7 @@ class UserMobile extends Component
                 $this->total_hari_kerja++;
 
                 if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                    $total_hari_kerja--;
+                    $this->total_hari_kerja--;
                 }
 
 
