@@ -167,22 +167,23 @@ function build_payroll($month, $year)
                 //     $jam_lembur *= 2;
                 // }
                 if (
-                    is_libur_nasional($d->date) &&  !is_sunday($d->date)
+                    is_libur_nasional($d->date) ||  is_sunday($d->date)
                 ) {
                     $jam_kerja *= 2;
                     $jam_lembur *= 2;
                 }
 
+                if ((is_libur_nasional($d->date) || is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
+                    $jam_kerja = 0;
+                    $jam_lembur = 0;
+                }
                 $total_hari_kerja++;
 
                 if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                     $total_hari_kerja--;
                 }
 
-                if (is_libur_nasional($d->date) &&  !is_sunday($d->date) && ($d->karyawan->jabatan == 'Translator' || $d->karyawan->etnis == 'Tionghoa')) {
-                    $jam_kerja = 0;
-                    $jam_lembur = 0;
-                }
+
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_jam_lembur = $total_jam_lembur + $jam_lembur;
                 $total_keterlambatan = $total_keterlambatan + $terlambat;
