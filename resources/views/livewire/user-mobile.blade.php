@@ -559,13 +559,17 @@
                                                                 $jam_kerja = 0;
                                                             }
                                                             // Jika hari libur nasional
-                                                            if (
-                                                                is_libur_nasional($d->date) &&
-                                                                trim($d->karyawan->metode_penggajian) == 'Perjam' &&
-                                                                !is_sunday($d->date)
-                                                            ) {
+                                                            if (is_libur_nasional($d->date) || is_sunday($d->date)) {
                                                                 $jam_kerja *= 2;
                                                                 $jam_lembur *= 2;
+                                                            }
+
+                                                            if (
+                                                                (is_libur_nasional($d->date) || is_sunday($d->date)) &&
+                                                                $d->karyawan->jabatan == 'Translator'
+                                                            ) {
+                                                                $jam_kerja = 0;
+                                                                $jam_lembur = 0;
                                                             }
                                                         @endphp
                                                         {{ $jam_kerja }}
