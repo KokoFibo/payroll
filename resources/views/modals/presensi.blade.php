@@ -46,7 +46,7 @@
 
 
                          @foreach ($this->dataArr as $d)
-                             <tr class="{{ $d['is_sunday'] ? 'table-warning' : '' }}">
+                             <tr class="{{ $d['table_warning'] ? 'table-warning' : '' }}">
                                  <td class="text-center">{{ $d['tgl'] }}</td>
                                  <td class="text-center">{{ $d['jam_kerja'] }}</td>
                                  <td class="text-center">{{ $d['jam_lembur'] }}</td>
