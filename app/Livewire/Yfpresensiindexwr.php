@@ -270,13 +270,19 @@ class Yfpresensiindexwr extends Component
                         $jam_lembur = 0;
                     }
 
+                    $table_warning = false;
+                    if (is_sunday($d->date) || is_libur_nasional($d->date)) {
+                        $table_warning = true;
+                    }
+
                     $this->dataArr->push([
                         'tgl' => $tgl,
                         'jam_kerja' => $jam_kerja,
                         'terlambat' => $terlambat,
                         'jam_lembur' => $jam_lembur,
                         'tambahan_shift_malam' => $tambahan_shift_malam,
-                        'is_sunday' => is_sunday($d->date)
+                        'table_warning' => $table_warning,
+
                     ]);
 
                     $total_hari_kerja++;
