@@ -1317,7 +1317,7 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement);
     $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement);
 
-    if (is_sunday($tgl)) {
+    if (is_sunday($tgl) && (trim($jabatan) == 'Driver' || trim($jabatan) == 'Koki' || trim($jabatan) == 'Dapur Koki')) {
         return 0;
     } else {
         return $late1 + $late2 + $late3 + $late4;
@@ -1570,6 +1570,12 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
 
                         $diff = gmdate('H:i:s', $t1 - $t2);
                         $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else if (Carbon::parse($second_out)->betweenIncluded('09:00', '11:59')) {
+                        $t1 = strtotime('12:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam + 4);
                     } else {
                         $late = null;
                     }
@@ -1628,6 +1634,12 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
 
                         $diff = gmdate('H:i:s', $t1 - $t2);
                         $late = ceil(hoursToMinutes($diff) / $perJam);
+                    } else if (Carbon::parse($second_out)->betweenIncluded('09:00', '11:59')) {
+                        $t1 = strtotime('12:00:00');
+                        $t2 = strtotime($second_out);
+
+                        $diff = gmdate('H:i:s', $t1 - $t2);
+                        $late = ceil(hoursToMinutes($diff) / $perJam + 4);
                     } else {
                         $late = null;
                     }
@@ -1668,11 +1680,13 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
     }
 
 
-    if (is_sunday($tgl)) {
-        return 0;
-    } else {
-        return $late;
-    }
+    // if (is_sunday($tgl)) {
+    //     return 0;
+    // } else {
+    //     return $late;
+    // }
+
+    return $late;
 }
 
 function checkOvertimeInLate($overtime_in, $shift, $tgl)
