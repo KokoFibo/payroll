@@ -191,6 +191,9 @@ class Yfpresensiindexwr extends Component
                     // if ($d->karyawan->jabatan === 'Satpam') {
                     //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
                     // }
+                    // if ($d->user_id == '2610' && $d->date == '2024-03-31') {
+                    //     dd($jam_kerja, $terlambat);
+                    // }
 
                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
@@ -242,22 +245,6 @@ class Yfpresensiindexwr extends Component
                         // $jam_lembur = 0;
                     }
 
-                    // if ((is_sunday($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan') || (is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perbulan')) {
-
-                    //     // $jam_lembur = $jam_kerja;
-                    //     // $jam_kerja = 0;
-                    //     $jam_kerja *= 2;
-                    //     $jam_lembur *= 2;
-                    // }
-
-                    // Jika hari libur nasional
-                    // if (
-                    //     is_libur_nasional($d->date) && trim($d->karyawan->metode_penggajian) == 'Perjam' && !is_sunday($d->date)
-                    // ) {
-                    //     $jam_kerja *= 2;
-                    //     $jam_lembur *= 2;
-                    // }
-                    // is_libur_nasional($d->date) &&  !is_sunday($d->date)
 
                     if (
                         is_libur_nasional($d->date) &&  !is_sunday($d->date)
