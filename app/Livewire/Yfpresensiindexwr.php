@@ -194,7 +194,8 @@ class Yfpresensiindexwr extends Component
 
                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
-                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
+                            + $langsungLembur * 2;
                     } else {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                     }

@@ -109,7 +109,8 @@ function build_payroll($month, $year)
                 $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
 
                 if (is_sunday($d->date)) {
-                    $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
+                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
+                        + $langsungLembur * 2;
                 } else {
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 }

@@ -186,7 +186,7 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 1072;
+        // $this->user_id = 3988;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -233,7 +233,8 @@ class UserMobile extends Component
 
 
                 if (is_sunday($d->date)) {
-                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2;
+                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
+                        + $langsungLembur * 2;
                 } else {
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                 }
