@@ -567,8 +567,7 @@
                                                             }
 
                                                             if (
-                                                                is_libur_nasional($d->date) &&
-                                                                !is_sunday($d->date) &&
+                                                                (is_libur_nasional($d->date) || is_sunday($d->date)) &&
                                                                 $d->karyawan->jabatan == 'Translator'
                                                             ) {
                                                                 $jam_kerja = 0;

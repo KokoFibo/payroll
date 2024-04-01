@@ -186,7 +186,7 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 3988;
+        // $this->user_id = 101;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
@@ -292,7 +292,7 @@ class UserMobile extends Component
                     $jam_lembur *= 2;
                 }
 
-                if ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
+                if ((is_libur_nasional($d->date) || is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
                     $jam_kerja = 0;
                     $jam_lembur = 0;
                 }

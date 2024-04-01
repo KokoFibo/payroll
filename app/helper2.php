@@ -169,7 +169,7 @@ function build_payroll($month, $year)
                     $jam_lembur *= 2;
                 }
 
-                if ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
+                if ((is_libur_nasional($d->date) || is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
                     $jam_kerja = 0;
                     $jam_lembur = 0;
                 }
