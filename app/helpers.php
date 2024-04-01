@@ -1054,34 +1054,36 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     }
 
 
-    if ($jabatan == 'Satpam' && is_sunday($tgl) == false) {
-        $jam_kerja = 12;
-        // $jam_kerja = $jam_kerja - $total_late;
-    }
+
     // lolo
     if (is_sunday($tgl)) {
 
-        $t1 = strtotime($first_in);
-        $t2 = strtotime($second_out);
-        $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
-        $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
+        // $t1 = strtotime($first_in);
+        // $t2 = strtotime($second_out);
+        // $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
+        // $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
 
 
 
-        $diff = gmdate('H:i:s', $t2 - $t1);
+        // $diff = gmdate('H:i:s', $t2 - $t1);
 
-        $diff = explode(':', $diff);
-        $jam = (int) $diff[0];
-        $menit = (int) $diff[1];
+        // $diff = explode(':', $diff);
+        // $jam = (int) $diff[0];
+        // $menit = (int) $diff[1];
 
-        if ($menit >= 45) {
-            $jam = $jam + 1;
-        } elseif ($menit < 45 && $menit > 15) {
-            $jam = $jam + 0.5;
-        } else {
-            $jam;
-        }
-        $jam_kerja = $jam * 2;
+        // if ($menit >= 45) {
+        //     $jam = $jam + 1;
+        // } elseif ($menit < 45 && $menit > 15) {
+        //     $jam = $jam + 0.5;
+        // } else {
+        //     $jam;
+        // }
+        // $jam_kerja = $jam * 2;
+        $jam_kerja *= 2;
+    }
+    if ($jabatan == 'Satpam' && is_sunday($tgl) == false) {
+        $jam_kerja = 12;
+        // $jam_kerja = $jam_kerja - $total_late;
     }
 
     return $jam_kerja;

@@ -478,7 +478,8 @@
                                                                 $jam_lembur =
                                                                     (hitungLembur($d->overtime_in, $d->overtime_out) /
                                                                         60) *
-                                                                    2;
+                                                                        2 +
+                                                                    $langsungLembur * 2;
                                                             } else {
                                                                 $jam_lembur =
                                                                     hitungLembur($d->overtime_in, $d->overtime_out) /
