@@ -1317,11 +1317,13 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement);
     $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement);
 
-    if (is_sunday($tgl) && (trim($jabatan) == 'Driver' || trim($jabatan) == 'Koki' || trim($jabatan) == 'Dapur Koki')) {
-        return 0;
-    } else {
-        return $late1 + $late2 + $late3 + $late4;
-    }
+    // if (is_sunday($tgl) && (trim($jabatan) == 'Driver' || trim($jabatan) == 'Koki' || trim($jabatan) == 'Dapur Koki')) {
+    //     return 0;
+    // } else {
+    //     return $late1 + $late2 + $late3 + $late4;
+    // }
+
+    return $late1 + $late2 + $late3 + $late4;
 }
 
 function late_check_jam_lembur_only($overtime_in, $shift, $date)
