@@ -216,8 +216,8 @@ function build_payroll($month, $year)
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
-    echo 'rekap done';
-    // dd('rekap done');
+    // echo 'rekap done';
+    dd('rekap done');
     // ok 2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
@@ -383,7 +383,7 @@ function build_payroll($month, $year)
         Payroll::insert($chunk);
     }
 
-    dd('payroll done');
+    // dd('payroll done');
     // ok 3
     // Bonus dan Potongan
 
