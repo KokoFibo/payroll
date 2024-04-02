@@ -73,14 +73,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/userinfo', function () {
             return view('user_information');
         });
-        Route::get('/userslipgaji', function () {
-            return view('user_slipgaji');
-        });
+        // ini yg diblok
+        // Route::get('/userslipgaji', function () {
+        //     return view('user_slipgaji');
+        // });
 
-        Route::get('/usermobile', UserMobile::class);
-        Route::get('/profile', Profile::class);
-        Route::get('/userinformation', UserInformation::class);
-        Route::get('/userregulation', UserRegulation::class);
+        // Route::get('/usermobile', UserMobile::class);
+        // Route::get('/profile', Profile::class);
+        // Route::get('/userinformation', UserInformation::class);
+        // Route::get('/userregulation', UserRegulation::class);
 
         Route::middleware(['Admin'])->group(function () {
             //Dashboard

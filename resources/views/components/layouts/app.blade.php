@@ -79,7 +79,6 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
-
             {{ $slot }}
 
         </div>
