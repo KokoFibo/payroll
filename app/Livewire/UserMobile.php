@@ -186,8 +186,8 @@ class UserMobile extends Component
 
         // $this->user_id = 103;
         // $this->user_id = 1008;
-        // $this->user_id = 101;
-        $this->user_id = auth()->user()->username;
+        $this->user_id = 1070;
+        // $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
 
         $total_hari_kerja = 0;
@@ -197,6 +197,8 @@ class UserMobile extends Component
         $tambahan_shift_malam = 0;
         $langsungLembur = 0;
         $total_tambahan_shift_malam = 0;
+
+
         $this->clear_data();
 
         $data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();

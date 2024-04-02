@@ -258,6 +258,9 @@
                                 <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('gaji_libur')">{{ __('Gaji Libur') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 {{-- <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
                                         class="fa-solid fa-sort"></i> --}}
                                 </th>
@@ -339,6 +342,7 @@
                                                 {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
                                             </td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
+                                            <td class="text-end">{{ number_format($p->gaji_libur) }}</td>
                                             {{-- <td class="text-end">
                                                 {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
                                             </td> --}}

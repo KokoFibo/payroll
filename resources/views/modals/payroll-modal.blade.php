@@ -82,6 +82,14 @@
                                         <td>
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                     </tr>
+                                    @if ($data_payroll->gaji_libur != 0)
+                                        <tr>
+                                            <td>Gaji Libur</td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->gaji_libur) }}</td>
+                                        </tr>
+                                    @endif
+
                                     @if ($data_payroll->tambahan_shift_malam != 0)
                                         <tr>
                                             <td>Bonus Shift Malam
