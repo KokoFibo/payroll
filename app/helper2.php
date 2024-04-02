@@ -123,7 +123,7 @@ function build_payroll($month, $year)
                     } elseif (is_sunday($d->date)) {
                         if ($jam_kerja >= 16) {
                             // $jam_lembur = $jam_lembur + 2;
-                            $tambahan_shift_malam = 2;
+                            $tambahan_shift_malam = 1;
                         }
                     } else {
                         if ($jam_kerja >= 8) {
