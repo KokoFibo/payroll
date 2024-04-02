@@ -1,4 +1,9 @@
 {
+  "resources/css/app.css": {
+    "file": "assets/app-292bad42.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
   "resources/js/app.js": {
     "file": "assets/app-d5ae2f25.js",
     "isEntry": true,
