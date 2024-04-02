@@ -57,11 +57,6 @@ class Moveback extends Component
             Yfrekappresensi::insert($item);
         }
 
-
-
-
-
-
         foreach ($datas as $data) {
             Rekapbackup::where('id', $data->id)->delete();
         }
