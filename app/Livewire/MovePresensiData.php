@@ -31,28 +31,8 @@ class MovePresensiData extends Component
     {
         $datas = Yfrekappresensi::whereYear('date', $this->getYear)->whereMonth('date', $this->getMonth)->get();
 
-        foreach ($datas as $data) {
-            $Yfpresensidata[] = [
-                'id' => $data->id,
-                'karyawan_id' => $data->karyawan_id,
-                'user_id' => $data->user_id,
-                'date' => $data->date,
-                'first_in' => $data->first_in,
-                'first_out' => $data->first_out,
-                'second_in' => $data->second_in,
-                'second_out' => $data->second_out,
-                'overtime_in' => $data->overtime_in,
-                'overtime_out' => $data->overtime_out,
-                'late' => $data->late,
-                'no_scan' => $data->no_scan,
-                'shift' => $data->shift,
-                'no_scan_history' => $data->no_scan_history,
-                'late_history' => $data->late_history,
-            ];
-        }
-
         // foreach ($datas as $data) {
-        //     DB::table('rekapbackups')->insert([
+        //     $Yfpresensidata[] = [
         //         'id' => $data->id,
         //         'karyawan_id' => $data->karyawan_id,
         //         'user_id' => $data->user_id,
@@ -68,14 +48,34 @@ class MovePresensiData extends Component
         //         'shift' => $data->shift,
         //         'no_scan_history' => $data->no_scan_history,
         //         'late_history' => $data->late_history,
-        //     ]);
+        //     ];
         // }
 
-
-
-        foreach (array_chunk($Yfpresensidata, 25) as $item) {
-            Rekapbackup::insert($item);
+        foreach ($datas as $data) {
+            DB::table('rekapbackups')->insert([
+                'id' => $data->id,
+                'karyawan_id' => $data->karyawan_id,
+                'user_id' => $data->user_id,
+                'date' => $data->date,
+                'first_in' => $data->first_in,
+                'first_out' => $data->first_out,
+                'second_in' => $data->second_in,
+                'second_out' => $data->second_out,
+                'overtime_in' => $data->overtime_in,
+                'overtime_out' => $data->overtime_out,
+                'late' => $data->late,
+                'no_scan' => $data->no_scan,
+                'shift' => $data->shift,
+                'no_scan_history' => $data->no_scan_history,
+                'late_history' => $data->late_history,
+            ]);
         }
+
+
+
+        // foreach (array_chunk($Yfpresensidata, 25) as $item) {
+        //     Rekapbackup::insert($item);
+        // }
 
         // try {
         //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
