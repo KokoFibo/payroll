@@ -217,7 +217,6 @@ function build_payroll($month, $year)
         Jamkerjaid::insert($chunk);
     }
     // echo 'rekap done';
-    dd('rekap done');
     // ok 2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
