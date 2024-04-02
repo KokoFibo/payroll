@@ -8,7 +8,7 @@
 
                     <div class="flex justify-between">
                         {{-- @if ($is_slipGaji != true) --}}
-                        <div class="{{ $is_slipGaji == true ? 'invisible' : '' }} ml-3 self-center">
+                        <div class="{{ $is_slipGaji == true ? 'hidden' : '' }} ml-3 self-center">
                             <img src="{{ asset('images/logo-only.png') }}" alt="Yifang Logo"
                                 style="opacity: .8; width:50px">
                         </div>
