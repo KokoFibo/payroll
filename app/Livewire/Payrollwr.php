@@ -480,11 +480,14 @@ class Payrollwr extends Component
 
 
 
+
+
     // ok1
     // #[On('getPayroll')]
 
     public function getPayroll()
     {
+
         // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
         if ($lock->build) {

@@ -9,14 +9,15 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 //ok 1
 
-function build_payroll($month, $year)
+function build_data($month, $year)
 {
+
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-    $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
-    $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
+    $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
+    $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
     // $jamKerjaKosong = Jamkerjaid::count();
     $adaPresensi = Yfrekappresensi::whereMonth('date', $month)
@@ -64,30 +65,18 @@ function build_payroll($month, $year)
         return 0;
     }
 
-    // $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
-    //     ->whereMonth('date', $month)
-    //     ->whereYear('date', $year)
-    //     ->get();
+
 
     // disini mulai prosesnya
-
-    //     foreach ($filteredData as $data) {
+    $cx = 0;
     foreach ($filterArray as $data) {
-        // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
-
-        //     ->where('user_id', $data)
-        //     ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
-        //     ->orderBy('date', 'desc')
-        //     ->get();
-
-
-
         $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
             ->where('user_id', $data)
             ->where('date', '>=', $startOfMonth)
             ->where('date', '<=', $endOfMonth)
             ->orderBy('date', 'desc')
             ->get();
+
 
 
 
@@ -104,14 +93,13 @@ function build_payroll($month, $year)
         $total_tambahan_shift_malam = 0;
         $jam_kerja_libur = 0;
         //loop ini utk 1 user selama 22 hari
-        $get_placement = get_placement($dataId[0]->user_id);
         foreach ($dataId as $d) {
             if ($d->no_scan === null) {
                 $jam_lembur = 0;
                 $tambahan_shift_malam = 0;
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $get_placement);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
 
                 if (is_sunday($d->date)) {
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
@@ -152,18 +140,10 @@ function build_payroll($month, $year)
                 }
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                 }
 
-                if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                    // $jam_lembur = 0;
-                }
 
-                // lop
-                // if (trim($d->karyawan->metode_penggajian) == 'Perbulan' && is_sunday($d->date)) {
-                //     $jam_lembur += $jam_kerja;
-                //     $jam_kerja = 0;
-                // }
 
                 // Jika hari libur nasional
 
@@ -189,7 +169,6 @@ function build_payroll($month, $year)
                     $total_hari_kerja--;
                     $jam_kerja_libur += $jam_kerja;
                 }
-
 
                 $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                 $total_jam_lembur = $total_jam_lembur + $jam_lembur;
@@ -230,9 +209,21 @@ function build_payroll($month, $year)
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
+
+    return 1;
     // echo 'rekap done';
 
+
+}
+
+function build_payroll_ok($month, $year)
+{
+
     // ok 2 perhitungan payroll
+    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
+    $total_n_hari_kerja = getTotalWorkingDays($year, $month);
+
+    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
         ->get();
