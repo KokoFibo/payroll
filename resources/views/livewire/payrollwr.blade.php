@@ -125,8 +125,9 @@
                     <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span
-                            role="status">{{ __('Building Payroll... sedikit lama (2,5 menit), jangan tekan apapun.') }}</span>
+                            role="status">{{ __('Building Data... sedikit lama (2,5 menit), jangan tekan apapun.') }}</span>
                     </button>
+
                 </div>
             </div>
 
@@ -136,6 +137,7 @@
                 <button wire:click="export" class="btn btn-success">Excel</button>
                 <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                     class="btn btn-primary">{{ __('Rebuild') }}</button>
+
             </div>
         </div>
         <div class="card">

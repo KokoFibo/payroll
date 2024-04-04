@@ -7,14 +7,11 @@ use App\Models\Bonuspotongan;
 use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
-//ok 1
 
-function build_payroll($month, $year)
+function build_payroll1($month, $year)
 {
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-    $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
-    $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
@@ -64,23 +61,18 @@ function build_payroll($month, $year)
         return 0;
     }
 
-    // $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
-    //     ->whereMonth('date', $month)
-    //     ->whereYear('date', $year)
-    //     ->get();
+    $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->get();
 
     // disini mulai prosesnya
 
     //     foreach ($filteredData as $data) {
     foreach ($filterArray as $data) {
-        // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
 
-        //     ->where('user_id', $data)
-        //     ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
-        //     ->orderBy('date', 'desc')
-        //     ->get();
-
-
+        $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
             ->where('user_id', $data)
@@ -103,15 +95,16 @@ function build_payroll($month, $year)
         $total_keterlambatan = 0;
         $total_tambahan_shift_malam = 0;
         $jam_kerja_libur = 0;
-        //loop ini utk 1 user selama 22 hari
-        $get_placement = get_placement($dataId[0]->user_id);
+
+        //begin
+        //loop ini utk 1 user selama 1 bulan
         foreach ($dataId as $d) {
             if ($d->no_scan === null) {
                 $jam_lembur = 0;
                 $tambahan_shift_malam = 0;
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $get_placement);
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
 
                 if (is_sunday($d->date)) {
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
@@ -152,18 +145,9 @@ function build_payroll($month, $year)
                 }
 
                 if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                 }
 
-                if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                    // $jam_lembur = 0;
-                }
-
-                // lop
-                // if (trim($d->karyawan->metode_penggajian) == 'Perbulan' && is_sunday($d->date)) {
-                //     $jam_lembur += $jam_kerja;
-                //     $jam_kerja = 0;
-                // }
 
                 // Jika hari libur nasional
 
@@ -200,6 +184,9 @@ function build_payroll($month, $year)
                 $n_noscan = $n_noscan + 1;
             }
         }
+        // end loop ini utk 1 user selama 1 bulan
+
+
         if ($n_noscan == 0) {
             $n_noscan = null;
         }
