@@ -12,6 +12,17 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function manfaat_libur($month, $year, $libur, $user_id)
+{
+    $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
+    $tgl_mulai_kerja = Carbon::parse($data->date)->day;
+    $manfaat_libur = 0;
+    foreach ($libur as $l) {
+        $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
+        if ($tgl_mulai_kerja < $tgl_libur) $manfaat_libur++;
+    }
+    return $manfaat_libur;
+}
 
 function check_absensi_kosong()
 {
