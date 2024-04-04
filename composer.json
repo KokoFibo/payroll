@@ -38,7 +38,8 @@
         },
         "files": [
             "app/helpers.php",
-            "app/helper2.php"
+            "app/helper2.php",
+            "app/helper3.php"
         ]
     },
     "autoload-dev": {

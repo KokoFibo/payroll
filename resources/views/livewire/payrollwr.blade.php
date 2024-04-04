@@ -134,8 +134,8 @@
             <div class="d-flex gap-2" wire:loading.class='invisible'>
                 <button class="btn btn-success" wire:click="bankexcel">{{ __('Report for bank') }}</button>
                 <button wire:click="export" class="btn btn-success">Excel</button>
-                {{-- <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                    class="btn btn-primary">{{ __('Rebuild') }}</button> --}}
+                <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                    class="btn btn-primary">{{ __('Rebuild') }}</button>
             </div>
         </div>
         <div class="card">
