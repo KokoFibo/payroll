@@ -125,7 +125,7 @@
                     <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span
-                            role="status">{{ __('Building Data... sedikit lama (2,5 menit), jangan tekan apapun.') }}</span>
+                            role="status">{{ __('Building Data... sedikit lama (3 menit), jangan tekan apapun.') }}</span>
                     </button>
 
                 </div>
