@@ -52,9 +52,9 @@ class Test extends Component
   }
   public function render()
   {
-    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', '03')->whereYear('tanggal_mulai_hari_libur', '2024')->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
+    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', '02')->whereYear('tanggal_mulai_hari_libur', '2024')->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
 
-    dd(manfaat_libur('03', '2024', $libur, 58));
+    // dd(manfaat_libur('03', '2024', $libur, 58));
 
     // $data = Yfrekappresensi::where('user_id', 5649)->whereMonth('date', '02')->whereYear('date', '2024')->orderBy('date', 'asc')->first();
     // $tgl_mulai_kerja = Carbon::parse($data->date)->day;
@@ -70,13 +70,15 @@ class Test extends Component
       ->whereMonth('date', '03')
       ->whereYear('date', '2024')
       ->where('metode_penggajian', 'Perbulan')
-      ->where('hari_kerja', '<', 21)
+      ->where('hari_kerja', '<', 24)
+      ->where('hari_kerja', '>', 0)
       ->orderBy('hari_kerja', 'asc')
       ->paginate(10);
 
 
     return view('livewire.test', [
-      'payroll' => $payroll
+      'payroll' => $payroll,
+      'libur' => $libur
     ]);
   }
 }

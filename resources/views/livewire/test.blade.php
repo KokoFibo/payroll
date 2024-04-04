@@ -16,6 +16,7 @@
                         <th>{{ __('Metode Penggajian') }} <i class="fa-solid fa-sort"></i>
                         <th>{{ __('Gaji Pokok') }} <i class="fa-solid fa-sort"></i>
                         <th>{{ __('Hari Kerja') }} <i class="fa-solid fa-sort"></i>
+                        <th>{{ __('Manfaat Libur') }} <i class="fa-solid fa-sort"></i>
                         <th>{{ __('Subtotal') }} <i class="fa-solid fa-sort"></i>
                         </th>
 
@@ -37,6 +38,10 @@
                                 <td>{{ $p->metode_penggajian }}</td>
                                 <td>{{ number_format($p->gaji_pokok) }}</td>
                                 <td>{{ $p->hari_kerja }}</td>
+                                @php
+                                    $manfaat_libur = manfaat_libur('03', '2024', $libur, $p->id_karyawan);
+                                @endphp
+                                <td>{{ $manfaat_libur }}</td>
                                 <td>{{ number_format($p->subtotal) }}</td>
                             </tr>
                         @endforeach
