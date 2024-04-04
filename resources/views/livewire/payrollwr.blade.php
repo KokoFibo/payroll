@@ -125,7 +125,15 @@
                     <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span
-                            role="status">{{ __('Building Data... sedikit lama (3 menit), jangan tekan apapun.') }}</span>
+                            role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
+                    </button>
+                    <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">{{ __('Building Excel ... PLease wait') }}</span>
+                    </button>
+                    <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
                     </button>
 
                 </div>
