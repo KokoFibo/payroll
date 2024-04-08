@@ -85,7 +85,7 @@ function is_puasa($tgl)
 {
     // Start date dan end date = tanggal mulai dan akhir puasa
     $start_date = '2024-03-12';
-    $end_date = '2024-04-06';
+    $end_date = '2024-04-09';
     if ($tgl >= $start_date && $tgl <= $end_date) return true;
     return false;
 }
