@@ -39,46 +39,29 @@ class Test extends Component
     build_payroll1('03', '2024');
   }
 
-  public function manfaat_libur($month, $year, $libur, $user_id)
-  {
-    $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
-    $tgl_mulai_kerja = Carbon::parse($data->date)->day;
-    $manfaat_libur = 0;
-    foreach ($libur as $l) {
-      $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-      if ($tgl_mulai_kerja < $tgl_libur) $manfaat_libur++;
-    }
-    return $manfaat_libur;
-  }
+
   public function render()
   {
-    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', '02')->whereYear('tanggal_mulai_hari_libur', '2024')->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
-
-    // dd(manfaat_libur('03', '2024', $libur, 58));
-
-    // $data = Yfrekappresensi::where('user_id', 5649)->whereMonth('date', '02')->whereYear('date', '2024')->orderBy('date', 'asc')->first();
-    // $tgl_mulai_kerja = Carbon::parse($data->date)->day;
-    // $manfaat_libur = 0;
-    // foreach ($libur as $l) {
-    //   $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-    //   if ($tgl_mulai_kerja < $tgl_libur) $manfaat_libur++;
-    // }
-    // dd($manfaat_libur);
 
 
-    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-      ->whereMonth('date', '03')
-      ->whereYear('date', '2024')
-      ->where('metode_penggajian', 'Perbulan')
-      ->where('hari_kerja', '<', 24)
-      ->where('hari_kerja', '>', 0)
-      ->orderBy('hari_kerja', 'asc')
+    $bulan = '03';
+    $tahun = '2024';
+
+    $data = DB::table('karyawans')
+      ->join('jamkerjaids', 'karyawans.id_karyawan', '=', 'jamkerjaids.user_id')
+      ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+      ->whereMonth('date', $bulan)
+      ->whereYear('date', $tahun)
+      ->where('jumlah_jam_terlambat', '>', 0)
+      ->where('company', 'YSM')
       ->paginate(10);
 
 
+
     return view('livewire.test', [
-      'payroll' => $payroll,
-      'libur' => $libur
+      'data' => $data,
+      'bulan' => $bulan,
+      'tahun' => $tahun,
     ]);
   }
 }

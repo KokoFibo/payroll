@@ -1,7 +1,8 @@
 <div>
-    <button class="btn btn-primary" wire:click="build">Build</button>
+
     <div class="card-body">
         <div class="table-responsive">
+            <h4>Laporan Keterlambatan {{ $bulan }} {{ $tahun }}</h4>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -15,18 +16,16 @@
                         <th>{{ __('Placement') }} <i class="fa-solid fa-sort"></i>
                         <th>{{ __('Metode Penggajian') }} <i class="fa-solid fa-sort"></i>
                         <th>{{ __('Gaji Pokok') }} <i class="fa-solid fa-sort"></i>
-                        <th>{{ __('Hari Kerja') }} <i class="fa-solid fa-sort"></i>
-                        <th>{{ __('Manfaat Libur') }} <i class="fa-solid fa-sort"></i>
-                        <th>{{ __('Subtotal') }} <i class="fa-solid fa-sort"></i>
+                        <th>{{ __('Jumlah jam telambat') }} <i class="fa-solid fa-sort"></i>
                         </th>
 
 
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($payroll->isNotEmpty())
+                    @if ($data->isNotEmpty())
 
-                        @foreach ($payroll as $p)
+                        @foreach ($data as $p)
                             <tr>
                                 <td>{{ $p->id_karyawan }}</td>
                                 <td>{{ month_year($p->date) }}</td>
@@ -37,12 +36,8 @@
                                 <td>{{ $p->placement }}</td>
                                 <td>{{ $p->metode_penggajian }}</td>
                                 <td>{{ number_format($p->gaji_pokok) }}</td>
-                                <td>{{ $p->hari_kerja }}</td>
-                                @php
-                                    $manfaat_libur = manfaat_libur('03', '2024', $libur, $p->id_karyawan);
-                                @endphp
-                                <td>{{ $manfaat_libur }}</td>
-                                <td>{{ number_format($p->subtotal) }}</td>
+                                <td>{{ number_format($p->jumlah_jam_terlambat) }}</td>
+
                             </tr>
                         @endforeach
                     @else
@@ -50,7 +45,7 @@
                     @endif
                 </tbody>
             </table>
-            {{ $payroll->links() }}
+            {{ $data->links() }}
         </div>
     </div>
 </div>
