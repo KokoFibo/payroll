@@ -903,12 +903,22 @@ class Payrollwr extends Component
             ->distinct()
             ->pluck('year')
             ->toArray();
-
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        // ooo
+        // $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        //     ->distinct()
+        //     ->pluck('month')
+        //     ->toArray();
+        $months = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();
 
+        if (!in_array($this->month, $months)) {
+            $months[] = $this->month;
+        }
+
+        $this->select_month = $months;
 
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];

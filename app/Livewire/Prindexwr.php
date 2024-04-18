@@ -476,10 +476,17 @@ class Prindexwr extends Component
             ->pluck('year')
             ->toArray();
 
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        $months = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
             ->toArray();
+
+        if (!in_array($this->month, $months)) {
+            $months[] = $this->month;
+        }
+
+        $this->select_month = $months;
 
         // $periodePayroll = DB::table('yfrekappresensis')
         //     ->select(DB::raw('YEAR(date) year, MONTH(date) month, MONTHNAME(date) month_name'))
