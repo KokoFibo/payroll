@@ -758,6 +758,14 @@ function clear_locks()
 }
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
 {
+    $t2 = strtotime($second_out);
+    // betulin
+
+    if (!is_saturday($tgl) && $shift == 'Pagi' && $t2 < strtotime('04:00:00')) {
+        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60;
+        $diff = $diff + 7;
+        return $diff;
+    }
     if (is_puasa($tgl) && $placement == 'YCME') {
         if ($second_out != null) {
             $lembur = 0;
@@ -850,10 +858,6 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
     } else {
         if ($second_out != null) {
 
-
-            // if(is_sunday($tgl)){
-            //     return $lembur = 0;
-            // }
             $lembur = 0;
 
             $t2 = strtotime($second_out);
