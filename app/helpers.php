@@ -758,13 +758,15 @@ function clear_locks()
 }
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
 {
-    $t2 = strtotime($second_out);
-    // betulin
 
-    if (!is_saturday($tgl) && $shift == 'Pagi' && $t2 < strtotime('04:00:00')) {
-        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60;
-        $diff = $diff + 7;
-        return $diff;
+    // betulin
+    if ($second_out != null) {
+        $t2 = strtotime($second_out);
+        if (!is_saturday($tgl) && $shift == 'Pagi' && $t2 < strtotime('04:00:00')) {
+            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60;
+            $diff = $diff + 7;
+            return $diff;
+        }
     }
     if (is_puasa($tgl) && $placement == 'YCME') {
         if ($second_out != null) {
@@ -1269,23 +1271,26 @@ function pembulatanJamOvertimeIn($jam)
 function pembulatanJamOvertimeOut($jam)
 {
     $arrJam = explode(':', $jam);
-    // try {
-    if ((int) $arrJam[1] >= 30) {
-        if ((int) $arrJam[0] < 10) {
-            return $menit = '0' . (int) $arrJam[0] . ':30:00';
+    try {
+        // if (!$arrJam[1]) dd($jam);
+
+        if ((int) $arrJam[1] >= 30) {
+            if ((int) $arrJam[0] < 10) {
+                return $menit = '0' . (int) $arrJam[0] . ':30:00';
+            } else {
+                return $menit = $arrJam[0] . ':30:00';
+            }
         } else {
-            return $menit = $arrJam[0] . ':30:00';
+            if ((int) $arrJam[0] < 10) {
+                return $menit = '0' . (int) $arrJam[0] . ':00:00';
+            } else {
+                return $menit = $arrJam[0] . ':00:00';
+            }
         }
-    } else {
-        if ((int) $arrJam[0] < 10) {
-            return $menit = '0' . (int) $arrJam[0] . ':00:00';
-        } else {
-            return $menit = $arrJam[0] . ':00:00';
-        }
+    } catch (\Exception $e) {
+        // return $e->getMessage();
+        dd($jam);
     }
-    // } catch (\Exception $e) {
-    //     return $e->getMessage();
-    // }
 }
 
 function hitungLembur($overtime_in, $overtime_out)
