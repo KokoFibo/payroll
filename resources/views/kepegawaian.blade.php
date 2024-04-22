@@ -165,6 +165,7 @@
                                 <option value="QC Aging">QC Aging</option>
                                 <option value="Driver">Driver</option>
                                 <option value="Translator">Translator</option>
+                                <option value="Senior SPV">Senior SPV</option>
 
                             </select>
                             @error('jabatan')
