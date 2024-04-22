@@ -1288,8 +1288,7 @@ function pembulatanJamOvertimeOut($jam)
             }
         }
     } catch (\Exception $e) {
-        // return $e->getMessage();
-        dd($jam);
+        return $e->getMessage();
     }
 }
 
