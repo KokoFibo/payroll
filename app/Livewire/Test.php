@@ -38,10 +38,19 @@ class Test extends Component
   {
     build_payroll1('03', '2024');
   }
-
+  public function shortJam($jam)
+  {
+    if ($jam != null) {
+      $arrJam = explode(':', $jam);
+      return $arrJam[0] . ':' . $arrJam[1];
+    }
+  }
 
   public function render()
   {
+
+    $jam = "";
+    dd($this->shortJam($jam));
 
 
     $bulan = '03';

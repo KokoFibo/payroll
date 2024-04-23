@@ -318,10 +318,15 @@ class YfpresensiController extends Controller
                                 }
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
+                                // perubahan second_out dan overtime_in yg tidak terdeteksi,  untuk jam kerja sabtu 
+                                // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
+                                //     $second_out = $tp->time;
+
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
                                 $second_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
+                                $overtime_in = $tp->time;
                             } else {
-                                // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
                                 $overtime_out = $tp->time;
                             }
                         }

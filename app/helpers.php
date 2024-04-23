@@ -12,6 +12,14 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function shortJam($jam)
+{
+    if ($jam != null) {
+        $arrJam = explode(':', $jam);
+        return $arrJam[0] . ':' . $arrJam[1];
+    }
+}
+
 function manfaat_libur($month, $year, $libur, $user_id)
 {
     $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
