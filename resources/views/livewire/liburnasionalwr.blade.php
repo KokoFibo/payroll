@@ -93,9 +93,12 @@
                 <option value="12">Desember</option>
             </select>
         </div>
-        <div>
-            <button wire:click="create_new" class="btn btn-primary">Create New</button>
-        </div>
+        @if (auth()->user()->role == 5)
+            <div>
+                <button wire:click="create_new" class="btn btn-primary">Create New</button>
+            </div>
+        @endif
+
     </div>
     <div class="m-3">
         <table class="table table-hover">
@@ -105,8 +108,10 @@
                     <th>Nama Hari libur</th>
                     <th>Tanggal Libur</th>
                     {{-- <th>Tanggal Akhir</th> --}}
-                    <th>Jumlah Hari libur</th>
-                    <th></th>
+                    @if (auth()->user()->role == 5)
+                        <th>Jumlah Hari libur</th>
+                        <th></th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -117,12 +122,15 @@
                         {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
                         <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
                         {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
-                        <td>{{ $d->jumlah_hari_libur }}</td>
-                        <td>
-                            <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>
-                            <button wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                wire:click="delete({{ $d->id }})" class="btn-danger btn-sm">Delete</button>
-                        </td>
+                        @if (auth()->user()->role == 5)
+                            <td>{{ $d->jumlah_hari_libur }}</td>
+                            <td>
+                                <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>
+                                <button
+                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                    wire:click="delete({{ $d->id }})" class="btn-danger btn-sm">Delete</button>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
