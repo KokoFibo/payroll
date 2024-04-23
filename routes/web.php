@@ -124,6 +124,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
             Route::get('/payrollindex', Prindexwr::class);
             Route::get('/salaryadjustment', SalaryAdjustment::class);
+            Route::get('/liburnasional', Liburnasionalwr::class);
+
 
 
 
@@ -136,6 +138,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/reportindex', [ReportController::class, 'index']);
                 Route::post('/createexcel', [ReportController::class, 'createExcel']);
                 Route::get('/bankreport', BankReport::class);
+
 
                 // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
                 // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
@@ -164,7 +167,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/MissingId', MissingId::class);
                     Route::get('/UpdatedPresensi', UpdatedPresensi::class);
                     Route::get('/absensikosong', AbsensiKosong::class);
-                    Route::get('/liburnasional', Liburnasionalwr::class);
                     Route::get('/dataresigned', DataResigned::class);
                     Route::get('/addpresensi', AddPresensi::class);
                     Route::get('/usernotfound', UserNotFound::class);

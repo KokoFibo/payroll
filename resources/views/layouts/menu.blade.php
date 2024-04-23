@@ -95,6 +95,14 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Add Information') }}</p>
                 </a>
             </li>
+            <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/liburnasional" class="nav-link">
+                    <i class="nav-icon fa-solid fa-holly-berry"></i>
+                    <p>
+                        {{ __('Libur Nasional') }}
+                    </p>
+                </a>
+            </li>
             @if (Auth::user()->role > 3)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
@@ -134,16 +142,8 @@ with font-awesome or any other icon font library -->
                 </ul>
             </li>
 
-            @if (Auth::user()->role > 4)
-                <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/liburnasional" class="nav-link">
-                        <i class="nav-icon fa-solid fa-holly-berry"></i>
-                        <p>
-                            {{ __('Libur Nasional') }}
-                        </p>
-                    </a>
-                </li>
 
+            @if (Auth::user()->role > 4)
                 <li
                     class="nav-item {{ 'yfdeletetanggalpresensiwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"
