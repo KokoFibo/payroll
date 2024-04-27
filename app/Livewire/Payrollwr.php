@@ -465,11 +465,16 @@ class Payrollwr extends Component
             $lock->save();
         }
 
+        $startTime = microtime(true);
+
         $result  = build_payroll($this->month, $this->year);
+        // $time_end = microtime(true);
+        // $time_needed = $time_end - $time_start;
+
         if ($result == 0) {
             $this->dispatch('error', message: 'Data Presensi tidak ada');
         } else {
-            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built ' . number_format((microtime(true) - $startTime), 2) . ' seconds');
         }
 
 
