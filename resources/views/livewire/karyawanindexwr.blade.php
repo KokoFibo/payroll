@@ -63,6 +63,9 @@
 
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
+        @if (auth()->user()->role == 5)
+            <a href="/usernotfound"><button class="btn btn-primary">User Not Found (Create)</button></a>
+        @endif
 
         @if ($is_tanggal_gajian || auth()->user()->role == 5)
             <a href="/iuranlocker"><button class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus Iuran
