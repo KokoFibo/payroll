@@ -95,7 +95,7 @@ function is_puasa($tgl)
     $start_date = '2024-03-12';
     $end_date = '2024-04-09';
     // Jika ada tanggal spesial lainnya, tambahkan di array $special_dates
-    $special_dates = ['2024-04-20'];
+    $special_dates = ['2024-04-20', '2024-04-27'];
     if ($tgl >= $start_date && $tgl <= $end_date) return true;
     else if (in_array($tgl, $special_dates)) return true;
     return false;
