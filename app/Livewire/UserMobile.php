@@ -90,6 +90,7 @@ class UserMobile extends Component
 
         // kll
         $this->data_payroll = Payroll::with('jamkerjaid')->whereMonth('date', $this->selectedMonth)
+
             ->whereYear('date', $this->selectedYear)
             ->where('id_karyawan', $this->user_id)->first();
         $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
@@ -185,7 +186,7 @@ class UserMobile extends Component
         }
 
         // $this->user_id = 103;
-        // $this->user_id = 1008;
+        // $this->user_id = 3283;
         // $this->user_id = 1070;
         $this->user_id = auth()->user()->username;
         // $selectedMonth = 11;
@@ -302,6 +303,13 @@ class UserMobile extends Component
                         $jam_lembur /= 2;
                     }
                 }
+                // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
+                $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                if ($rule1) {
+                    $jam_kerja /= 2;
+                    $jam_lembur /= 2;
+                }
+
 
 
                 $this->total_hari_kerja++;

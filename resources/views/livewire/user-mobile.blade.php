@@ -430,13 +430,13 @@
                     {{-- presensi harian --}}
                     @if ($is_detail == false)
 
-                        <div class="w-screen flex px-3  mt-3 flex flex-col ">
+                        <div class="w-screen flex px-3  mt-3  flex-col ">
                             <table>
                                 <tbody>
                                     @if ($lanjut)
                                         @foreach ($data as $index => $d)
                                             <tr
-                                                class="flex justify-evenly border-pink-500 border-l-8 rounded-lg bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
+                                                class="flex justify-evenly border-pink-500 border-l-8  bg-blue-100 w-full h-18 items-center p-2 rounded-lg shadow mb-2">
 
                                                 <td class="text-center">
                                                     <p
@@ -584,6 +584,18 @@
                                                                     $jam_kerja /= 2;
                                                                     $jam_lembur /= 2;
                                                                 }
+                                                            }
+
+                                                            // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09
+                                                            $rule1 =
+                                                                ($d->date == '2024-04-07' ||
+                                                                    $d->date == '2024-04-09') &&
+                                                                (substr($d->karyawan->placement, 0, 3) == 'YEV' ||
+                                                                    $d->karyawan->placement == 'YAM');
+
+                                                            if ($rule1) {
+                                                                $jam_kerja /= 2;
+                                                                $jam_lembur /= 2;
                                                             }
                                                         @endphp
                                                         {{ $jam_kerja }}
