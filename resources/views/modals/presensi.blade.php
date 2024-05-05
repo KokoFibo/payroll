@@ -67,6 +67,7 @@
 
 
                          <tr class="table-success">
+                             <th class="text-center fs-5"></th>
                              <th class="text-center fs-5">{{ $total_hari_kerja }}</th>
                              <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
                              <th class="text-center fs-5">{{ $total_jam_lembur }}</th>
