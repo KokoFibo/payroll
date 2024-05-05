@@ -123,17 +123,9 @@ class YfpresensiController extends Controller
                     foreach ($tgl_sama as $data) {
                         if ($user_id == $data->user_id) {
                             clear_locks();
-                            return back()->with('error', 'The file has been uploaded.');
+                            return back()->with('error', 'The file has been uploaded. : ' . $data->user_id);
                         }
                     }
-
-                    // $check_data = DB::table( 'yfrekappresensis' )
-                    //     ->where( 'user_id', $user_id )
-                    //     ->where( 'date', $tgl )
-                    //     ->get();
-                    // if ( $check_data->isNotEmpty() ) {
-                    //     return back()->with( 'error', 'The file has been uploaded.' );
-                    // }
                 }
 
                 // $department = $importedData->getCell( 'C' . $i )->getValue();

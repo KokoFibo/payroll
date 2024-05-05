@@ -35,6 +35,7 @@
                  <table class="table table-hover  table-bordered">
                      <thead>
                          <tr>
+                             <th class="text-center">No.</th>
                              <th class="text-center">Tanggal</th>
                              <th class="text-center">Jam Kerja</th>
                              <th class="text-center">Jam Lembur</th>
@@ -45,8 +46,9 @@
                      <tbody>
 
 
-                         @foreach ($this->dataArr as $d)
+                         @foreach ($this->dataArr as $index => $d)
                              <tr class="{{ $d['table_warning'] ? 'table-warning' : '' }}">
+                                 <td class="text-center">{{ $index + 1 }}</td>
                                  <td class="text-center">{{ $d['tgl'] }}</td>
                                  <td class="text-center">{{ $d['jam_kerja'] }}</td>
                                  <td class="text-center">{{ $d['jam_lembur'] }}</td>

@@ -82,7 +82,7 @@ function build_payroll($month, $year)
 
 
 
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
+        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement')
             ->where('user_id', $data)
             ->where('date', '>=', $startOfMonth)
             ->where('date', '<=', $endOfMonth)
@@ -182,6 +182,14 @@ function build_payroll($month, $year)
                         $jam_lembur /= 2;
                     }
                 }
+
+                // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
+                $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                if ($rule1) {
+                    $jam_kerja /= 2;
+                    $jam_lembur /= 2;
+                }
+
 
                 $total_hari_kerja++;
 

@@ -49,28 +49,34 @@ class Test extends Component
   public function render()
   {
 
-    $jam = "";
-    dd($this->shortJam($jam));
 
 
-    $bulan = '03';
-    $tahun = '2024';
+    // $data = DB::table('karyawans')
+    //   ->join('jamkerjaids', 'karyawans.id_karyawan', '=', 'jamkerjaids.user_id')
+    //   ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+    //   ->whereMonth('date', $bulan)
+    //   ->whereYear('date', $tahun)
+    //   ->where('jumlah_jam_terlambat', '>', 0)
+    //   ->where('company', 'YSM')
+    //   ->paginate(10);
+
+
+
+    // return view('livewire.test', [
+    //   'data' => $data,
+    //   'bulan' => $bulan,
+    //   'tahun' => $tahun,
+    // ]);
 
     $data = DB::table('karyawans')
-      ->join('jamkerjaids', 'karyawans.id_karyawan', '=', 'jamkerjaids.user_id')
-      ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-      ->whereMonth('date', $bulan)
-      ->whereYear('date', $tahun)
-      ->where('jumlah_jam_terlambat', '>', 0)
-      ->where('company', 'YSM')
+      ->join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
+      ->where('yfrekappresensis.date', '2024-04-09')
+      ->whereIn('karyawans.placement', ['YEV', 'YEV SMOOT', 'YEV OFFERO', 'YEV SUNRA', 'YAM'])
+      // ->where('karyawans.placement', 'YAM')
+      // ->where('karyawans.gaji_overtime', '>', 0)
       ->paginate(10);
-
-
-
     return view('livewire.test', [
-      'data' => $data,
-      'bulan' => $bulan,
-      'tahun' => $tahun,
+      'data' => $data
     ]);
   }
 }

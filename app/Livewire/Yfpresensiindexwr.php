@@ -261,6 +261,16 @@ class Yfpresensiindexwr extends Component
                         }
                     }
 
+                    // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
+                    $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                    if ($rule1) {
+                        $jam_kerja /= 2;
+                        $jam_lembur /= 2;
+                    }
+
+
+
+
                     // elseif ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
                     //     $jam_kerja /= 2;
                     // }
@@ -285,8 +295,6 @@ class Yfpresensiindexwr extends Component
                     if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $total_hari_kerja--;
                     }
-
-
 
                     $total_jam_kerja += $jam_kerja;
                     $total_jam_lembur += $jam_lembur;
