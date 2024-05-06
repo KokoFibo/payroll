@@ -324,5 +324,14 @@
     "Nama kontak darurat": "紧急联系人姓名",
     "Silakan update data kontak darurat anda di menu profile": "请在个人资料菜单中更新您的紧急联系人信息",
     "Silakan update data kontak darurat & data Etnis anda di menu profile": "请在个人资料菜单中更新您的紧急联系人和民族信息",
-    "Silakan update data etnis anda di menu profile": "请在个人资料菜单中更新您的民族信息"
+    "Silakan update data etnis anda di menu profile": "请在个人资料菜单中更新您的民族信息",
+    "Data is locked": "数据已锁定",
+    "Data is unlocked": "数据已解锁",
+    "All Placement": "所有安置",
+    "All Department": "所有部门",
+    "working days with": "个工作日，包括",
+    "Holidays": "个假期",
+    "Libur Nasional": "国定假日",
+    "Tanggal Libur": "假日日期",
+    "Nama Hari Libur": "节假日名称"
 }
