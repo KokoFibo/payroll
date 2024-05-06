@@ -72,7 +72,7 @@
 
             </div>
             <div class="col">
-                <h4 class="text-center text-bold ">Yifang Payroll</h4>
+                <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
             </div>
             <div class="col">
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
@@ -445,11 +445,11 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3">Total
+            <p class="px-3">{{ __('Total') }}
                 {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
-                working days
-                with
-                {{ jumlah_libur_nasional($month, $year) }} Holidays</p>
+
+                {{ __('working days with') }}
+                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }}</p>
             <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>

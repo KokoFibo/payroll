@@ -69,6 +69,7 @@
             </div>
         </div>
     @endif
+    <h3 class="text-center pt-5 fw-semibold">{{ __('Libur Nasional') }}</h3>
     <div class="pt-5  d-flex flex-col flex-xl-row gap-xl-3 gap-2 justify-content-center align-items-center">
         <div>
             <select wire:model.live="year" class="form-select" aria-label="Default select example">
@@ -105,8 +106,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nama Hari libur</th>
-                    <th>Tanggal Libur</th>
+                    <th>{{ __('Nama Hari Libur') }}</th>
+                    <th>{{ __('Tanggal Libur') }}</th>
                     {{-- <th>Tanggal Akhir</th> --}}
                     @if (auth()->user()->role == 5)
                         <th>Jumlah Hari libur</th>
