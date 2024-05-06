@@ -103,6 +103,7 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+
             @if (Auth::user()->role > 3)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">

@@ -227,6 +227,10 @@
                                     <button wire:click="excelByDepartment"
                                         class="btn btn-success btn-sm mb-1">Excel</button>
                                 </th>
+                                <th style="width: 150px; border-style: none;">
+                                    <a href="/tanpaemergensicontact"><button class="btn btn-warning btn-sm mb-1">Tanpa
+                                            Kontak Darurat</button></a>
+                                </th>
                                 {{-- <th style="width: 150px; border-style: none;">
                                     <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
                                         @if ($search_etnis == null) disabled @endif>Excel by
