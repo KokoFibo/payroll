@@ -50,6 +50,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
+use App\Livewire\TanpaEmergencyContact;
 
 // Middleware
 Auth::routes([
@@ -125,6 +126,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/payrollindex', Prindexwr::class);
             Route::get('/salaryadjustment', SalaryAdjustment::class);
             Route::get('/liburnasional', Liburnasionalwr::class);
+            Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
 
 
 
