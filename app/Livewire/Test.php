@@ -67,6 +67,18 @@ class Test extends Component
     //   'bulan' => $bulan,
     //   'tahun' => $tahun,
     // ]);
+    $dept = 'board of director';
+    $arrDepts = explode(' ', $dept);
+    $department = '';
+    foreach ($arrDepts as $arrDept) {
+      $department .= $arrDept . '_';
+    }
+
+
+    // Remove the last underscore
+
+
+    dd(sambungKata('board of directodr dfg'));
 
     $data = DB::table('karyawans')
       ->join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')

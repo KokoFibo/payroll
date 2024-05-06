@@ -376,6 +376,7 @@ function build_payroll($month, $year)
             'jabatan' => $data->karyawan->jabatan,
             'company' => $data->karyawan->company,
             'placement' => $data->karyawan->placement,
+            'departemen' => $data->karyawan->departemen,
             'status_karyawan' => $data->karyawan->status_karyawan,
             'metode_penggajian' => $data->karyawan->metode_penggajian,
             'nomor_rekening' => $data->karyawan->nomor_rekening,

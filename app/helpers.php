@@ -12,6 +12,17 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function sambungKata($words)
+{
+    $arrDepts = explode(' ', $words);
+    $department = '';
+    foreach ($arrDepts as $arrDept) {
+        $department .= $arrDept . '_';
+    }
+    $department = rtrim($department, '_');
+    return $department;
+}
+
 function shortJam($jam)
 {
     if ($jam != null) {

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('company');
             $table->string('placement');
+            $table->string('departemen');
             $table->string('nama_bank')->nullable();
             $table->string('nomor_rekening')->nullable();
             $table->string('metode_penggajian');
