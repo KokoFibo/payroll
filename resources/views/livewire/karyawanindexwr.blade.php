@@ -219,14 +219,16 @@
                                         </select>
                                     </div>
                                 </th>
-                                <th style="width: 150px; border-style: none;">
-                                    {{-- <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
+                                @if (auth()->user()->role > 3)
+                                    <th style="width: 150px; border-style: none;">
+                                        {{-- <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
                                         @if ($search_placement == null) disabled @endif>Excel by
                                         Placement</button> --}}
 
-                                    <button wire:click="excelByDepartment"
-                                        class="btn btn-success btn-sm mb-1">Excel</button>
-                                </th>
+                                        <button wire:click="excelByDepartment"
+                                            class="btn btn-success btn-sm mb-1">Excel</button>
+                                    </th>
+                                @endif
                                 <th style="width: 150px; border-style: none;">
                                     <a href="/tanpaemergensicontact"><button class="btn btn-warning btn-sm mb-1">Tanpa
                                             Kontak Darurat</button></a>
