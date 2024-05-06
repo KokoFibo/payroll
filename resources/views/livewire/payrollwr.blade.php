@@ -49,6 +49,9 @@
         }
     </style>
     <div class="p-2">
+        {{-- <p>selected_company : {{ $selected_company }}</p>
+        <p>selected_placement : {{ $selected_placement }}</p>
+        <p>selected_departemen : {{ $selected_departemen }}</p> --}}
         {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
@@ -199,6 +202,22 @@
                                 <option value="5">DPA</option> --}}
                         </select>
                     </div>
+                    {{-- Departemen --}}
+                    <div>
+                        <select wire:model.live="selected_departemen" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Department') }}</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department }}">{{ $department }}</option>
+                            @endforeach
+
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                                <option value="2">{{ __('Pabrik 2') }}</option>
+                                <option value="3">{{ __('Kantor') }}</option>
+                                <option value="4">ASB</option>
+                                <option value="5">DPA</option> --}}
+                        </select>
+                    </div>
 
                     <div>
                         <select class="form-select" wire:model.live="perpage">
@@ -240,6 +259,9 @@
                                 <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('departemen')">{{ __('Department') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
@@ -341,6 +363,7 @@
                                             <td>{{ $p->jabatan }}</td>
                                             <td>{{ $p->company }}</td>
                                             <td>{{ $p->placement }}</td>
+                                            <td>{{ $p->departemen }}</td>
                                             <td>{{ $p->metode_penggajian }}</td>
                                             <td class="text-end">{{ $p->hari_kerja }}</td>
                                             <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>

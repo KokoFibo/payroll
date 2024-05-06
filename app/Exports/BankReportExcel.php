@@ -48,6 +48,7 @@ class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatt
                 'Total Pembayaran',
                 'Company',
                 'Placement',
+                'Department',
             ],
         ];
     }

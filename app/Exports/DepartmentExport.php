@@ -17,17 +17,13 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
-// class BankReportExcel implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
-class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
+class DepartmentExport implements FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
 {
     use Exportable;
-
-
-
-    protected $selected_company, $status, $month, $year;
-    public function __construct($selected_company, $status, $month, $year)
+    protected $selected_departemen, $status, $month, $year;
+    public function __construct($selected_departemen, $status, $month, $year)
     {
-        $this->selected_company = $selected_company;
+        $this->selected_departemen = $selected_departemen;
         $this->status = $status;
         $this->month = $month;
         $this->year = $year;
@@ -49,106 +45,18 @@ class PayrollExport implements FromQuery, WithHeadings, WithColumnFormatting, Sh
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
-        switch ($this->selected_company) {
-            case 0:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
 
-            case 1:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 2:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 3:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 4:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'ASB')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 5:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'DPA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 6:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 7:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 8:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YIG')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-
-            case 9:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YSM')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-            case 10:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YAM')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-            case 11:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'GAMA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
-            case 12:
-                return Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'WAS')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc');
-                break;
+        if ($this->selected_departemen == 0) {
+            return Payroll::whereIn('status_karyawan', $statuses)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->orderBy('id_karyawan', 'asc');
+        } else {
+            return Payroll::whereIn('status_karyawan', $statuses)
+                ->where('departemen', $this->selected_departemen)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->orderBy('id_karyawan', 'asc');
         }
     }
 
