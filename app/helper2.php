@@ -497,9 +497,12 @@ function build_payroll($month, $year)
     // Rudy Chan 4
     // Yin kai 5
     // Li meilian 25
+    // Wanto 6435
+    // Chan Kai Wan 6855
 
-    $idArrTKA = [1, 3, 5, 25];
-    $idArrTionghoa = [4, 2];
+
+    $idArrTKA = [1, 3, 5, 25, 6];
+    $idArrTionghoa = [4, 2, 6435];
 
     foreach ($idArrTKA as $id) {
         $data_id = Karyawan::where('id_karyawan', $id)->first();
