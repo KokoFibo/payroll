@@ -498,7 +498,7 @@ function build_payroll($month, $year)
     // Yin kai 5
     // Li meilian 25
     // Wanto 6435
-    // Chan Kai Wan 6855
+    // Chan Kai Wan 6
 
 
     $idArrTKA = [1, 3, 5, 25, 6];
