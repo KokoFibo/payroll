@@ -48,47 +48,28 @@ class Test extends Component
 
   public function render()
   {
+    $data = Yfrekappresensi::whereMonth('date', '04')
+      ->whereYear('date', '2024')->count();
+    dd($data);
 
 
 
-    // $data = DB::table('karyawans')
-    //   ->join('jamkerjaids', 'karyawans.id_karyawan', '=', 'jamkerjaids.user_id')
-    //   ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-    //   ->whereMonth('date', $bulan)
-    //   ->whereYear('date', $tahun)
-    //   ->where('jumlah_jam_terlambat', '>', 0)
-    //   ->where('company', 'YSM')
-    //   ->paginate(10);
+    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', '04')->whereYear('tanggal_mulai_hari_libur', '2024')->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
 
+    $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
+      ->whereMonth('payrolls.date', '04')->whereYear('payrolls.date', '2024')
 
+      ->where('karyawans.status_karyawan', 'Resigned')
+      ->whereMonth('tanggal_resigned', '04')
+      ->where('denda_resigned', '>', 0)
+      ->where('payrolls.metode_penggajian', 'Perbulan')
+      ->get();
+    // ->paginate(10);
 
-    // return view('livewire.test', [
-    //   'data' => $data,
-    //   'bulan' => $bulan,
-    //   'tahun' => $tahun,
-    // ]);
-    $dept = 'board of director';
-    $arrDepts = explode(' ', $dept);
-    $department = '';
-    foreach ($arrDepts as $arrDept) {
-      $department .= $arrDept . '_';
-    }
-
-
-    // Remove the last underscore
-
-
-    dd(sambungKata('board of directodr dfg'));
-
-    $data = DB::table('karyawans')
-      ->join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-      ->where('yfrekappresensis.date', '2024-04-09')
-      ->whereIn('karyawans.placement', ['YEV', 'YEV SMOOT', 'YEV OFFERO', 'YEV SUNRA', 'YAM'])
-      // ->where('karyawans.placement', 'YAM')
-      // ->where('karyawans.gaji_overtime', '>', 0)
-      ->paginate(10);
+    // dd($data->all());
     return view('livewire.test', [
-      'data' => $data
+      'data' => $data,
+      'libur' => $libur
     ]);
   }
 }

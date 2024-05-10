@@ -43,6 +43,25 @@ function manfaat_libur($month, $year, $libur, $user_id)
     return $manfaat_libur;
 }
 
+function manfaat_libur_resigned($month, $year, $libur, $user_id)
+{
+    $data = Karyawan::where('id_karyawan', $user_id)
+        ->where('metode_penggajian', 'Perbulan')
+        ->whereMonth('tanggal_resigned', $month)
+        ->whereYear('tanggal_resigned', $year)
+        ->first();
+    if ($data != null) {
+        $manfaat_libur_resigned = 0;
+
+        $tgl_resigned = Carbon::parse($data->tanggal_resigned)->day;
+        foreach ($libur as $l) {
+            $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
+            if ($tgl_resigned > $tgl_libur) $manfaat_libur_resigned++;
+        }
+        return $manfaat_libur_resigned;
+    }
+}
+
 function check_absensi_kosong()
 {
     $absensiKosong =
