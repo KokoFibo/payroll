@@ -121,6 +121,7 @@
                             @foreach ($select_month as $sm)
                                 <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                             @endforeach
+                            <option value="04">april</option>
 
                         </select>
                     </div>
@@ -147,6 +148,7 @@
             <div class="d-flex gap-2" wire:loading.class='invisible'>
                 <button class="btn btn-success" wire:click="bankexcel">{{ __('Report for bank') }}</button>
                 <button wire:click="export" class="btn btn-success">Excel</button>
+
                 <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                     class="btn btn-primary">{{ __('Rebuild') }}</button>
 
@@ -288,10 +290,10 @@
                                 <th wire:click="sortColumnName('gaji_bpjs')">{{ __('Gaji BPJS') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('gaji_libur')">{{ __('Gaji Libur') }} <i
+                                <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
+                                <th wire:click="sortColumnName('gaji_libur')">{{ __('Gaji Libur') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
@@ -376,8 +378,8 @@
                                             <td class="text-end">
                                                 {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
                                             </td>
-                                            <td class="text-end">{{ number_format($p->gaji_libur) }}</td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
+                                            <td class="text-end">{{ number_format($p->gaji_libur) }}</td>
                                             {{-- <td class="text-end">
                                                 {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
                                             </td> --}}

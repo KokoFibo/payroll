@@ -170,7 +170,7 @@ function build_payroll($month, $year)
                 if ($d->karyawan->jabatan != 'Translator') {
                     if (
                         is_libur_nasional($d->date) &&  !is_sunday($d->date)
-                        && $d->karyawan->jabatan != 'Translator'
+                        // && $d->karyawan->jabatan != 'Translator'
 
                     ) {
                         $jam_kerja *= 2;
@@ -211,7 +211,6 @@ function build_payroll($month, $year)
         if ($n_noscan == 0) {
             $n_noscan = null;
         }
-
 
         if ($d->karyawan->status_karyawan != 'Blacklist') {
             $dataArr[] = [
@@ -332,7 +331,14 @@ function build_payroll($month, $year)
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
         $manfaat_libur = 0;
+        // hehehe
         $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id);
+
+        if ($data->karyawan->status_karyawan == 'Resigned' && $data->karyawan->metode_penggajian == 'Perbulan' && $manfaat_libur > 0) {
+            $manfaat_libur = manfaat_libur_resigned($month, $year, $libur, $data->user_id);
+        }
+
+        // $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id);
 
         // $total_n_hari_kerja = getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year);
         // $total_n_hari_kerja = getTotalWorkingDays($year, $month);
