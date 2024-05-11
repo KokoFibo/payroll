@@ -48,9 +48,19 @@ class Test extends Component
 
   public function render()
   {
-    $data = Yfrekappresensi::whereMonth('date', '04')
-      ->whereYear('date', '2024')->count();
-    dd($data);
+    $month = '04';
+    $year = '2024';
+
+
+    $data = Karyawan::where('id_karyawan', '6151')->first();
+    $date1 = '2024-04-01';
+    $date2 = $data->tanggal_blacklist;
+
+
+    if ($date2 > $date1) dd('yes');
+    else dd('no');
+
+
 
 
 

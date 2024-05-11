@@ -1836,8 +1836,18 @@ function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement)
                             $late = null;
                         }
                     } else {
-                        if (Carbon::parse($first_out)->betweenIncluded('20:00', '23:59')) {
-                            $t1 = strtotime('00:00:00');
+                        // if (Carbon::parse($first_out)->betweenIncluded('20:00', '23:59')) {
+                        //     $t1 = strtotime('00:00:00');
+                        //     $t2 = strtotime($first_out);
+
+                        //     $diff = gmdate('H:i:s', $t1 - $t2);
+                        //     $late = ceil(hoursToMinutes($diff) / $perJam);
+                        // } else {
+                        //     $late = null;
+                        // }
+                        // Shift Pagi
+                        if (Carbon::parse($first_out)->betweenIncluded('20:00', '23:29')) {
+                            $t1 = strtotime('23:30:00');
                             $t2 = strtotime($first_out);
 
                             $diff = gmdate('H:i:s', $t1 - $t2);
@@ -2073,6 +2083,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
 
     return $late;
 }
+
 
 function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out)
 {
