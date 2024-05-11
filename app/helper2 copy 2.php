@@ -82,7 +82,7 @@ function build_payroll($month, $year)
 
 
 
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
+        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement')
             ->where('user_id', $data)
             ->where('date', '>=', $startOfMonth)
             ->where('date', '<=', $endOfMonth)
@@ -212,21 +212,6 @@ function build_payroll($month, $year)
             $n_noscan = null;
         }
 
-
-
-
-        // $blacklist_condition = $d->karyawan && $d->karyawan->status_karyawan != 'Blacklist'
-        //     || Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month;
-
-
-
-
-
-
-
-
-
-
         if ($d->karyawan->status_karyawan != 'Blacklist') {
             $dataArr[] = [
                 'user_id' => $data,
@@ -246,25 +231,6 @@ function build_payroll($month, $year)
                 'updated_at' => now()->toDateTimeString(),
             ];
         }
-        // else if (Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month) {
-        //     $dataArr[] = [
-        //         'user_id' => $data,
-        //         'total_hari_kerja' => $total_hari_kerja,
-        //         'jumlah_jam_kerja' => $total_jam_kerja,
-        //         'jumlah_menit_lembur' => $total_jam_lembur,
-        //         'jumlah_jam_terlambat' => $total_keterlambatan,
-        //         'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
-        //         'jam_kerja_libur' => $jam_kerja_libur,
-
-
-        //         'total_noscan' => $n_noscan,
-        //         'karyawan_id' => $d->karyawan->id,
-        //         'date' => buatTanggal($d->date),
-        //         'last_data_date' => $last_data_date->date,
-        //         'created_at' => now()->toDateTimeString(),
-        //         'updated_at' => now()->toDateTimeString(),
-        //     ];
-        // }
     }
 
     $chunks = array_chunk($dataArr, 100);

@@ -215,6 +215,7 @@
                                 <option value="YEV SMOOT">YEV SMOOT</option>
                                 <option value="YEV OFFERO">YEV OFFERO</option>
                                 <option value="YEV SUNRA">YEV SUNRA</option>
+                                <option value="YEV AIMA">YEV AIMA</option>
 
                             </select>
                             @error('placement')

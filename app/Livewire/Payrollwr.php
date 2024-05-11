@@ -141,6 +141,9 @@ class Payrollwr extends Component
                 case 13:
                     $nama_file = 'payroll_placement_YEV_SUNRA.xlsx';
                     break;
+                case 14:
+                    $nama_file = 'payroll_placement_YEV_AIMA.xlsx';
+                    break;
             }
         } else {
             if ($this->selected_departemen == 0) {
