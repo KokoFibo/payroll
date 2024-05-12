@@ -118,6 +118,7 @@ with font-awesome or any other icon font library -->
                     <i class="nav-icon fa-solid fa-gear nav-icon"></i>
                     <p>{{ __('Settings') }}<i class="right fas fa-angle-left"></i></p>
                 </a>
+
                 <ul class="nav nav-treeview">
                     <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                         <a href="/changeprofilewr" class="nav-link">
@@ -145,6 +146,18 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'addcompany' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/addcompany" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Add Company') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'addplacement' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/addplacement" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Add Placement') }}</p>
+                    </a>
+                </li>
                 <li
                     class="nav-item {{ 'yfdeletetanggalpresensiwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"

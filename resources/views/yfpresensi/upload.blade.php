@@ -61,17 +61,3 @@
 
 
 @endsection
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('form').submit(function() {
-            $('#loading').show(); // Display the loading element
-            $('#import-btn').hide();
-            $('#exit-btn').hide();
-        });
-
-        $('#loading').hide();
-        $('#import-btn').show();
-        $('#exit-btn').show();
-    });
-</script> --}}

@@ -48,6 +48,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\AddCompany;
+use App\Livewire\AddPlacement;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 use App\Livewire\TanpaEmergencyContact;
@@ -174,6 +176,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/usernotfound', UserNotFound::class);
                     Route::get('/movepresensidata', MovePresensiData::class);
                     Route::get('/moveback', Moveback::class);
+                    Route::get('/addcompany', AddCompany::class);
+                    Route::get('/addplacement', AddPlacement::class);
 
 
                     // TEST

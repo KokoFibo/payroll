@@ -596,6 +596,7 @@ class Yfpresensiindexwr extends Component
                 })
                 ->paginate($this->perpage);
         }
+
         // dd($datas[0]->user_id);
         // $this->is_noscan = false;
 

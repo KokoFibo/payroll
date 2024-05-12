@@ -50,6 +50,12 @@ class Test extends Component
   {
     $month = '04';
     $year = '2024';
+    $jam2 = '07:46:00';
+    $jam1 = '07:47:00';
+    $startTime = Carbon::createFromFormat('H:i:s', $jam1);
+    $endTime = Carbon::createFromFormat('H:i:s', $jam2);
+    $diffInMinutes = $endTime->diffInMinutes($startTime);
+    dd($diffInMinutes);
 
 
     $data = Karyawan::where('id_karyawan', '6151')->first();
