@@ -12,6 +12,14 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function bedaMenit($startTime, $endTime)
+{
+    $startTime = Carbon::createFromFormat('H:i:s', $startTime);
+    $endTime = Carbon::createFromFormat('H:i:s', $endTime);
+    $diffInMinutes = $endTime->diffInMinutes($startTime);
+    return $diffInMinutes;
+}
+
 function sambungKata($words)
 {
     $arrDepts = explode(' ', $words);
