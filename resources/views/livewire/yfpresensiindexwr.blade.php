@@ -277,7 +277,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit"
-                                            @if (is_jabatan_khusus($data->karyawan->jabatan) == 1) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->karyawan->jabatan) == 0) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->first_out) }} </td>
                                         <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('first_out') is-invalid @enderror"
