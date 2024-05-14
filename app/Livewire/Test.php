@@ -54,10 +54,16 @@ class Test extends Component
     $year = '2024';
     $startTime = '07:46';
     $endTime = '07:47';
+    $first_out = '11:30:00';
     // $startTime = Carbon::createFromFormat('H:i:s', $jam1);
     // $endTime = Carbon::createFromFormat('H:i:s', $jam2);
     // $diffInMinutes = $endTime->diffInMinutes($startTime);
-
+    $t1 = strtotime('11:30:00');
+    $t2 = strtotime($first_out);
+    $perJam = 60;
+    $diff = gmdate('H:i:s', $t1 - $t2);
+    $late = ceil(hoursToMinutes($diff) / $perJam);
+    dd($late);
     dd(bedaMenit($startTime, $endTime));
 
 
