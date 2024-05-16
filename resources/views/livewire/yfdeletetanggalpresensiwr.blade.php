@@ -9,7 +9,7 @@
             <input wire:model="tanggal" type="date" class="form-control">
             <div class="form-text">Masukkan tanggal yang akan di delete</div>
 
-            <button class="btn btn-danger mt-3" onclick="return confirm('Yakin data nya akan dihapus ?');"
+            <button class="btn btn-danger mt-3" wire:confirm='Yakin data nya akan dihapus ?'
                 wire:click="delete">Delete</button>
             <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
         </div>

@@ -50,6 +50,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
+use App\Livewire\Applicant;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 use App\Livewire\TanpaEmergencyContact;
@@ -61,6 +62,7 @@ Auth::routes([
 ]);
 
 Route::middleware(['guest'])->group(function () {
+    Route::get('/applicant', Applicant::class);
 });
 
 Route::middleware(['auth'])->group(function () {
