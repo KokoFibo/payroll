@@ -63,38 +63,65 @@ class Test extends Component
     $perJam = 60;
     $diff = gmdate('H:i:s', $t1 - $t2);
     $late = ceil(hoursToMinutes($diff) / $perJam);
-    dd($late);
-    dd(bedaMenit($startTime, $endTime));
 
+    $data = Yfrekappresensi::where('date', '2024-05-04')
+      // ->whereBetween('second_out', ['00:00:00', '04:59:00'])->orderBy('second_out', 'ASC')
+      ->whereBetween('first_in', ['18:00:00', '18:59:00'])->orderBy('first_in', 'ASC')
+      ->paginate(10);
 
-    $data = Karyawan::where('id_karyawan', '6151')->first();
-    $date1 = '2024-04-01';
-    $date2 = $data->tanggal_blacklist;
-
-
-    if ($date2 > $date1) dd('yes');
-    else dd('no');
-
-
-
-
-
-    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', '04')->whereYear('tanggal_mulai_hari_libur', '2024')->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
-
-    $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
-      ->whereMonth('payrolls.date', '04')->whereYear('payrolls.date', '2024')
-
-      ->where('karyawans.status_karyawan', 'Resigned')
-      ->whereMonth('tanggal_resigned', '04')
-      ->where('denda_resigned', '>', 0)
-      ->where('payrolls.metode_penggajian', 'Perbulan')
+    $data_first_in = Yfrekappresensi::where('date', '2024-05-04') // 511 data
+      ->whereBetween('first_in', ['19:00:00', '23:00:00'])->orderBy('first_in', 'ASC')
+      // ->paginate(10);
       ->get();
-    // ->paginate(10);
 
-    // dd($data->all());
+    // ->get();
+
+    $data_second_out = Yfrekappresensi::where('date', '2024-05-04') // second out telat 4 data
+      ->whereBetween('first_in', ['19:00:00', '21:00:00'])
+      ->whereBetween('second_out', ['00:00:00', '04:59:00'])
+      ->orderBy('second_out', 'ASC')
+      ->paginate(10);
+
+    $first_out = '01:30:00';
+    $result = date('H:i:s', strtotime($first_out) - 3 * 3600);
+    // dd($result);
+    $cx = 0;
+    if ($data_first_in->count() > 0) {
+      foreach ($data_first_in as $d) {
+        $cx++;
+        $data = Yfrekappresensi::find($d->id);
+        $data->first_in = date('H:i:s', strtotime($d->first_in) - 3 * 3600);
+        $data->second_out = date('H:i:s', strtotime($d->second_out) - 3 * 3600);
+        if ($data->overtime_in) {
+          $data->overtime_in = date('H:i:s', strtotime($d->overtime_in) - 3 * 3600);
+        }
+        if ($data->overtime_out) {
+          $data->overtime_out = date('H:i:s', strtotime($d->overtime_out) - 3 * 3600);
+        }
+        $data->first_out = null;
+        $data->second_in = null;
+        $data->late = null;
+        $noscan = '';
+        $noscan = noScan($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out);
+        if ($noscan == '') {
+          $data->no_scan = null;
+          $data->no_scan_history = null;
+        }
+        $data->save();
+      }
+      dd('done: ', $cx);
+    }
+
+
+    $data_first_in_paginate = Yfrekappresensi::where('date', '2024-05-04') // 511 data
+      ->whereBetween('first_in', ['15:00:00', '23:00:00'])->orderBy('first_in', 'ASC')
+      ->paginate(10);
+
+
+
+
     return view('livewire.test', [
-      'data' => $data,
-      'libur' => $libur
+      'data' => $data_first_in_paginate,
     ]);
   }
 }
