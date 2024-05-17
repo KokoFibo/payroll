@@ -67,12 +67,13 @@ class YfpresensiController extends Controller
                 if ($importedData->getCell('A' . $i)->getValue() != '') {
 
                     $user_id = $importedData->getCell('A' . $i)->getValue();
+                    $time = $importedData->getCell('D' . $i)->getValue();
 
                     if ($tgl_sama->isNotEmpty()) {
 
                         foreach ($tgl_sama as $data) {
                             $cx++;
-                            if ($user_id == $data->user_id) {
+                            if ($user_id == $data->user_id && $time != '') {
                                 $datasama[] = [
                                     'user_id' => $user_id,
                                 ];
@@ -122,6 +123,7 @@ class YfpresensiController extends Controller
 
     public function deleteByPabrik(Request $request)
     {
+        dd('masih ada bugs karena jika hapus maka akan kehapus semua');
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
