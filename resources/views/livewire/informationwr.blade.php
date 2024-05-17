@@ -38,9 +38,11 @@
                     @enderror
                 </div>
                 @if ($is_update == false)
-                    <button wire:click="add" class="btn btn-outline-success">{{ __('Simpan') }}</button>
+                    <button wire:click="add"
+                        class="btn btn-outline-success  nightowl-daylight">{{ __('Simpan') }}</button>
                 @else
-                    <button wire:click="save" class="btn btn-outline-success">{{ __('Update') }}</button>
+                    <button wire:click="save"
+                        class="btn btn-outline-success  nightowl-daylight">{{ __('Update') }}</button>
                 @endif
             </div>
         </div>
@@ -62,9 +64,11 @@
                         <td>{{ $d->title }}</td>
                         <td>{{ $d->description }}</td>
                         <td class="text-end">
-                            <button class="btn btn-warning" wire:click="update({{ $d->id }})"><i
-                                    class="fa-regular fa-pen-to-square"></i></button>
-                            <button class="btn btn-danger" onclick="return confirm('Delete Information?')"
+                            <button class="btn btn-warning  nightowl-daylight"
+                                wire:click="update({{ $d->id }})"><i
+                                    class="fa-regular fa-pen-to-square nightowl-daylight"></i></button>
+                            <button class="btn btn-danger nightowl-daylight"
+                                onclick="return confirm('Delete Information?')"
                                 wire:click="delete({{ $d->id }})"><i class="fa-solid fa-trash-can"></i></button>
                         </td>
                     </tr>

@@ -38,9 +38,10 @@
         </div>
 
         <a href="/presensisummaryindex"><button
-                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }}">Excel</button></a>
+                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }} nightowl-daylight">Excel</button></a>
 
-        <button wire:click="buat_payroll" class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }}"
+        <button wire:click="buat_payroll"
+            class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }} nightowl-daylight"
             wire:loading.class='invisible'
             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
     </div>

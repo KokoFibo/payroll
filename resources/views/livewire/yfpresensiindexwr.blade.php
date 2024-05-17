@@ -6,26 +6,26 @@
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
                 <div class="d-flex flex-row">
-                    <div class="col-4 text-center">{{ __('Hadir') }}</div>
-                    <div class="col-4 text-center">{{ __('Pagi') }}</div>
-                    <div class="col-4 text-center">{{ __('Malam') }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ __('Hadir') }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
                 </div>
                 <div class="d-flex flex-row ">
-                    <div class="col-4 text-center">{{ $totalHadir }}</div>
-                    <div class="col-4 text-center">{{ $totalHadirPagi }}</div>
-                    <div class="col-4 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ $totalHadir }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ $totalHadirPagi }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ $totalHadir - $totalHadirPagi }}</div>
                 </div>
             @else
                 <div class="d-flex flex-row">
-                    <div class="col-3 text-center">{{ __('Hadir') }}</div>
-                    <div class="col-3 text-center">{{ __('Pagi') }}</div>
-                    <div class="col-3 text-center">{{ __('Malam') }}</div>
-                    <div class="col-3 text-center">{{ __('Kosong') }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ __('Hadir') }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ __('Pagi') }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ __('Malam') }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ __('Kosong') }}</div>
                 </div>
                 <div class="d-flex flex-row ">
-                    <div class="col-3 text-center">{{ $totalHadir }}</div>
-                    <div class="col-3 text-center">{{ $totalHadirPagi }}</div>
-                    <div class="col-3 text-center">{{ $totalHadir - $totalHadirPagi }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ $totalHadir }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ $totalHadirPagi }}</div>
+                    <div class="col-3 text-center nightowl-daylight">{{ $totalHadir - $totalHadirPagi }}</div>
                     <div class="col-3 text-center text-danger text-bold">{{ $absensiKosong }}</div>
                 </div>
             @endif
@@ -33,38 +33,38 @@
 
         <div class="col-12 col-xl-3 bg-warning py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ __('No scan') }}</div>
-                <div class="col-4 text-center">{{ __('Pagi') }}</div>
-                <div class="col-4 text-center">{{ __('Malam') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('No scan') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
-                <div class="col-4 text-center">{{ $totalNoScanPagi }}</div>
-                <div class="col-4 text-center">{{ $totalNoScan - $totalNoScanPagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalNoScanPagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
         </div>
         <div class="col-12 col-xl-3 bg-info py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ __('Late') }}</div>
-                <div class="col-4 text-center">{{ __('Pagi') }}</div>
-                <div class="col-4 text-center">{{ __('Malam') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Late') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ $totalLate }}</div>
-                <div class="col-4 text-center">{{ $totalLatePagi }}</div>
-                <div class="col-4 text-center">{{ $totalLate - $totalLatePagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalLate }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalLatePagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $totalLate - $totalLatePagi }}</div>
             </div>
         </div>
         <div class="col-12 col-xl-3 bg-primary py-2" style=" border-radius: 10px;">
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ __('Overtime') }}</div>
-                <div class="col-4 text-center">{{ __('Pagi') }}</div>
-                <div class="col-4 text-center">{{ __('Malam') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Overtime') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center">{{ $overtime }}</div>
-                <div class="col-4 text-center">{{ $overtimePagi }}</div>
-                <div class="col-4 text-center">{{ $overtime - $overtimePagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $overtime }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $overtimePagi }}</div>
+                <div class="col-4 text-center nightowl-daylight">{{ $overtime - $overtimePagi }}</div>
             </div>
         </div>
     </div>
@@ -97,11 +97,15 @@
         {{-- </div> --}}
         <div class="text-center">
             {{-- <div class="col-2"> --}}
-            <button wire:click="resetTanggal" class="btn btn-success" type="button">{{ __('Refresh') }}</button>
-            <button wire:click="filterNoScan" class="btn btn-warning" type="button">{{ __('No Scan') }}</button>
-            <button wire:click="filterLate" class="btn btn-info" type="button">{{ __('Late') }}</button>
+            <button wire:click="resetTanggal" class="btn btn-success nightowl-daylight"
+                type="button">{{ __('Refresh') }}</button>
+            <button wire:click="filterNoScan" class="btn btn-warning nightowl-daylight"
+                type="button">{{ __('No Scan') }}</button>
+            <button wire:click="filterLate" class="btn btn-info nightowl-daylight"
+                type="button">{{ __('Late') }}</button>
             @if ($absensiKosong > 0)
-                <button wire:click="filterKosong" class="btn btn-danger" type="button">{{ __('Kosong') }}</button>
+                <button wire:click="filterKosong" class="btn btn-danger nightowl-daylight"
+                    type="button">{{ __('Kosong') }}</button>
             @endif
         </div>
 
@@ -140,12 +144,14 @@
                     <div>
                         @if (auth()->user()->role == 5)
                             <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
-                                <button class="btn btn-warning">{{ __('Delete Tgl Presensi') }}</button></a>
+                                <button
+                                    class="btn btn-warning nightowl-daylight">{{ __('Delete Tgl Presensi') }}</button></a>
                             <a href="/addpresensi">
-                                <button class="btn btn-success">{{ __('Add Presensi') }}</button></a>
+                                <button
+                                    class="btn btn-success nightowl-daylight">{{ __('Add Presensi') }}</button></a>
                         @endif
                         <a href="/yfupload">
-                            <button class="btn btn-primary">{{ __('Upload Presensi') }}</button></a>
+                            <button class="btn btn-primary nightowl-daylight">{{ __('Upload Presensi') }}</button></a>
                     </div>
                 </div>
             </div>
@@ -222,22 +228,22 @@
                                                 {{-- @if ($lock_presensi == true && Auth::user()->role <= 3) --}}
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm"
+                                                    class="btn btn-success btn-sm nightowl-daylight"
                                                     {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
                                                 {{-- @endif --}}
                                             @else
                                                 @if ($data->id == $selectedId)
                                                     <button @click="edit = !edit" wire:click="save"
-                                                        class="btn btn-primary btn-sm"><i
+                                                        class="btn btn-primary btn-sm nightowl-daylight"><i
                                                             class="fa-solid fa-floppy-disk"></i></button>
                                                 @else
                                                     <button @click="edit = !edit" disabled wire:click="save"
-                                                        class="btn btn-success btn-sm"><i
+                                                        class="btn btn-success btn-sm nightowl-daylight"><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
                                                 @endif
                                             @endif
-                                            <button type="button" class="btn btn-warning btn-sm"
+                                            <button type="button" class="btn btn-warning btn-sm nightowl-daylight"
                                                 wire:click="showDetail({{ $data->user_id }})" data-bs-toggle="modal"
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
@@ -247,7 +253,7 @@
                                                     wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
-                                                    class="btn btn-danger btn-sm"><i
+                                                    class="btn btn-danger btn-sm nightowl-daylight"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
 
@@ -350,10 +356,11 @@
                                             {{ format_jam($data->overtime_out) }}</td> --}}
                                         <td>
                                             @if ($data->late_history >= 1 && $data->late >= 1)
-                                                <h6><span class="badge bg-info">Late</span>
+                                                <h6><span class="badge bg-info nightowl-daylight">Late</span>
                                                 </h6>
                                             @elseif ($data->late_history >= 1 && $data->late == null)
-                                                <h6><span class="badge bg-success"><i class="fa-solid fa-check"></i>
+                                                <h6><span class="badge bg-success nightowl-daylight"><i
+                                                            class="fa-solid fa-check nightowl-daylight"></i>
                                                         {{ $data->late_history }}
                                                     </span>
                                                 </h6>

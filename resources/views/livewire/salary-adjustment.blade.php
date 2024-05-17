@@ -81,7 +81,8 @@
                                     </select>
                                 </div>
                             </th>
-                            <th><button class="btn btn-primary" wire:click="refresh">{{ __('Refresh') }}</button></th>
+                            <th><button class="btn btn-primary nightowl-daylight"
+                                    wire:click="refresh">{{ __('Refresh') }}</button></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -129,7 +130,7 @@
                                     @if (auth()->user()->role >= 3)
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                             wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                            class="btn btn-warning btn-sm"
+                                            class="btn btn-warning btn-sm nightowl-daylight"
                                             {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Edit') }}</button>
                                     @endif
                                 </td>
