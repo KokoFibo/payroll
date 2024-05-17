@@ -314,15 +314,12 @@ class YfpresensiController extends Controller
                 if ($importedData->getCell('A' . $i)->getValue() != '') {
 
                     $user_id = $importedData->getCell('A' . $i)->getValue();
-                    $time = $importedData->getCell('D' . $i)->getValue();
-
 
                     if ($tgl_sama->isNotEmpty()) {
 
                         foreach ($tgl_sama as $data) {
                             $cx++;
-                            if ($user_id == $data->user_id && $time != '') {
-                                // if ($user_id == $data->user_id) {
+                            if ($user_id == $data->user_id) {
                                 $datasama[] = [
                                     'user_id' => $user_id,
                                 ];
@@ -348,12 +345,10 @@ class YfpresensiController extends Controller
             if ($importedData->getCell('A' . $i)->getValue() != '') {
                 $user_id = $importedData->getCell('A' . $i)->getValue();
                 $name = $importedData->getCell('B' . $i)->getValue();
-                $time = $importedData->getCell('D' . $i)->getValue();
-
 
                 if ($tgl_sama->isNotEmpty()) {
                     foreach ($tgl_sama as $data) {
-                        if ($user_id == $data->user_id && $time != '') {
+                        if ($user_id == $data->user_id) {
                             clear_locks();
                             return back()->with('error', 'Gagal Upload, User ID kembar : ' . $data->user_id);
                         }
