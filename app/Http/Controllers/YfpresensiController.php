@@ -25,6 +25,195 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 class YfpresensiController extends Controller
 {
 
+    public function compare(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $spreadsheet = IOFactory::load($file);
+
+        $importedData = $spreadsheet->getActiveSheet();
+        $row_limit = $importedData->getHighestDataRow();
+        $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
+        $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
+        $tgl2 = trim(explode(':', $tgl1)[1]);
+        if ($tgl != $tgl2) {
+            clear_locks();
+            return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
+        }
+        $user_id = '';
+        $name = '';
+        $department = '';
+        $late = null;
+        $no_scan = null;
+        $tgl_delete = null;
+
+        // check Tanggal apakah ada yang sama
+        $tgl_sama = DB::table('yfrekappresensis')
+            ->where('date', $tgl)
+            ->get('user_id');
+
+        // check apakah tgl fresh
+
+        $freshDate = DB::table('yfrekappresensis')
+            ->where('date', $tgl)->first();
+        if ($freshDate != null) {
+            $cx = 0;
+            $datasama = [];
+            for ($i = 5; $i <= $row_limit; $i++) {
+
+                if ($importedData->getCell('A' . $i)->getValue() != '') {
+
+                    $user_id = $importedData->getCell('A' . $i)->getValue();
+
+                    if ($tgl_sama->isNotEmpty()) {
+
+                        foreach ($tgl_sama as $data) {
+                            $cx++;
+                            if ($user_id == $data->user_id) {
+                                $datasama[] = [
+                                    'user_id' => $user_id,
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+            if (count($datasama) > 0) {
+                // Generate formatted user IDs
+                $formattedIds = [];
+                foreach ($datasama as $d) {
+                    $formattedIds[] = $d['user_id'];
+                }
+                $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
+
+                return back()->with('error', $msg);
+            }
+        }
+
+
+        // if (collect($datasama)->count() > 0) {
+        //  $userid = [];
+        //     foreach ($datasama as $d) {
+        //         $userid = $userid + $userid.',';
+        //     }
+
+        //     $msg = ''Data Tidak bisa di upload karena terdapat user id yang sama :'
+        //     return back()->with('error', 'Data Tidak bisa di upload karena terdapat user id yang sama ' . $data->user_id);
+        // } else {
+
+        //     dd('aman');
+        // }
+
+        // try {
+        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Yfpresensi::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     clear_locks();
+        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        // }
+
+
+
+    }
+
+    public function deleteByPabrik(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $spreadsheet = IOFactory::load($file);
+
+        $importedData = $spreadsheet->getActiveSheet();
+        $row_limit = $importedData->getHighestDataRow();
+
+        $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
+        $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
+        $tgl2 = trim(explode(':', $tgl1)[1]);
+        if ($tgl != $tgl2) {
+            clear_locks();
+            return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
+        }
+        $user_id = '';
+        $name = '';
+        $department = '';
+        $late = null;
+        $no_scan = null;
+        $tgl_delete = null;
+
+        // check Tanggal apakah ada yang sama
+        $tgl_sama = DB::table('yfrekappresensis')
+            ->where('date', $tgl)
+            ->get('user_id');
+
+        for ($i = 5; $i <= $row_limit; $i++) {
+
+            if ($importedData->getCell('A' . $i)->getValue() != '') {
+                $user_id = $importedData->getCell('A' . $i)->getValue();
+                $name = $importedData->getCell('B' . $i)->getValue();
+
+                if ($tgl_sama->isEmpty()) {
+                    foreach ($tgl_sama as $data) {
+                        if ($user_id == $data->user_id) {
+                            clear_locks();
+                            return back()->with('error', 'Data presensi in belum pernah di upload');
+                        }
+                    }
+                }
+            }
+
+            if ($importedData->getCell('D' . $i)->getValue() != '') {
+                $time = date('H:i', strtotime($importedData->getCell('D' . $i)->getValue()));
+                if (strpos($importedData->getCell('D' . $i)->getValue(), '+') !== false) {
+                    $str = str_replace('+', '', $importedData->getCell('D' . $i)->getValue());
+                    $time = date('H:i', strtotime($str));
+                }
+
+
+
+                //  pakai Chunk
+                $Yfpresensidata[] = [
+                    'user_id' => $user_id,
+                    // 'name' => $name,
+                    // 'department' => $department,
+                    'date' => $tgl,
+                    'time' => $time,
+                    'day_number' => date('w', strtotime($tgl)),
+                ];
+            }
+        }
+
+        // try {
+        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Yfpresensi::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     clear_locks();
+        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        // }
+
+
+        $unique = collect($Yfpresensidata)->unique('user_id');
+        $cx = 0;
+        foreach ($unique as $d) {
+            try {
+                $data = Yfrekappresensi::where('user_id', $d['user_id'])->where('date', $d['date'])->delete();
+                $cx++;
+            } catch (\Exception $e) {
+                // Handle the exception, e.g., log it or notify someone
+                // For example:
+                dd($e->getMessage());
+            }
+        }
+        // dd('Data Deleted: ', $cx);
+        return back()->with('error', 'Data Deleted: ' . $cx);
+    }
+
     public function generateUsers()
     {
 
@@ -123,7 +312,7 @@ class YfpresensiController extends Controller
                     foreach ($tgl_sama as $data) {
                         if ($user_id == $data->user_id) {
                             clear_locks();
-                            return back()->with('error', 'The file has been uploaded. : ' . $data->user_id);
+                            return back()->with('error', 'Gagal Upload, User ID kembar : ' . $data->user_id);
                         }
                     }
                 }
