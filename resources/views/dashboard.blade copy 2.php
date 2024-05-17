@@ -346,6 +346,412 @@
         });
     </script>
 
+    {{-- Barchart Payroll All --}}
+    <script>
+        var dataAll = <?php echo json_encode($dataAll); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx7 = document.getElementById('payrollAll');
+
+        new Chart(ctx7, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll All ',
+                    data: dataAll,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollASB --}}
+    <script>
+        var dataASB = <?php echo json_encode($dataASB); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx8 = document.getElementById('payrollASB');
+
+        new Chart(ctx8, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll ASB ',
+                    data: dataASB,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollDPA --}}
+    <script>
+        var dataDPA = <?php echo json_encode($dataDPA); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx9 = document.getElementById('payrollDPA');
+
+        new Chart(ctx9, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll DPA ',
+                    data: dataDPA,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollYCME --}}
+    <script>
+        var dataYCME = <?php echo json_encode($dataYCME); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx10 = document.getElementById('payrollYCME');
+
+        new Chart(ctx10, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YCME ',
+                    data: dataYCME,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrollYIG --}}
+    <script>
+        var dataYIG = <?php echo json_encode($dataYIG); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx11 = document.getElementById('payrollYIG');
+
+        new Chart(ctx11, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YIG ',
+                    data: dataYIG,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrollYSM --}}
+    <script>
+        var dataYSM = <?php echo json_encode($dataYSM); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx12 = document.getElementById('payrollYSM');
+
+        new Chart(ctx12, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YSM ',
+                    data: dataYSM,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrolYEV --}}
+    <script>
+        var dataYEV = <?php echo json_encode($dataYEV); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx50 = document.getElementById('payrollYEV');
+
+        new Chart(ctx50, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YEV ',
+                    data: dataYEV,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
+    {{-- Barchart Payroll payrolYAM --}}
+    <script>
+        var dataYAM = <?php echo json_encode($dataYAM); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx51 = document.getElementById('payrollYAM');
+
+        new Chart(ctx51, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll YAM ',
+                    data: dataYAM,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrolGAMA --}}
+    <script>
+        var dataGAMA = <?php echo json_encode($dataGAMA); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx52 = document.getElementById('payrollGAMA');
+
+        new Chart(ctx52, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll GAMA ',
+                    data: dataGAMA,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+    {{-- Barchart Payroll payrolWAS --}}
+    <script>
+        var dataWAS = <?php echo json_encode($dataWAS); ?>;
+        var dataTgl = <?php echo json_encode($dataTgl); ?>;
+
+        const ctx53 = document.getElementById('payrollWAS');
+
+        new Chart(ctx53, {
+            type: 'bar',
+            data: {
+                {{-- labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], --}}
+                labels: dataTgl,
+                datasets: [{
+                    label: 'Payroll WAS ',
+                    data: dataWAS,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+
+            borderWidth: 1
+        });
+    </script>
+
 
 @endsection
 
@@ -784,7 +1190,7 @@
 
 
     @if (auth()->user()->role >= 4 || auth()->user()->role == 0)
-        <div class="w-full px-2 lg:w-5/6 mx-auto pb-12">
+        <div class="w-full px-2 lg:w-5/6 mx-auto">
             <div class="relative overflow-x-auto pb-2 mt-3">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-red-100 dark:bg-gray-700 dark:text-gray-400">
@@ -823,6 +1229,49 @@
                 </table>
             </div>
         </div>
+
+        <div class="flex flex-col lg:flex-row justify-evenly px-2">
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollAll"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollASB"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full lg:w-1/4  mt-2">
+                <canvas id="payrollDPA"></canvas>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYCME"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYEV"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYIG"></canvas>
+            </div>
+
+        </div>
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYSM"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollYAM"></canvas>
+            </div>
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollGAMA"></canvas>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row justify-evenly lg:mt-3 px-2 pb-5">
+            <div class="bg-white p-2 rounded shadow w-full xl:w-1/4  mt-2">
+                <canvas id="payrollWAS"></canvas>
+            </div>
+
+        </div>
+
     @endif
 
     {{-- <div style="display: none">
