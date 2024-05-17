@@ -94,6 +94,8 @@ class YfpresensiController extends Controller
             }
         }
 
+        return back()->with('success', 'Tidak ada data duplikat');
+
 
         // if (collect($datasama)->count() > 0) {
         //  $userid = [];
