@@ -180,6 +180,15 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/moveback', Moveback::class);
                     Route::get('/addcompany', AddCompany::class);
                     Route::get('/addplacement', AddPlacement::class);
+                    Route::get('/yfuploaddelete', function () {
+                        return view('yfpresensi.upload-delete');
+                    });
+                    Route::get('/yfuploadcompare', function () {
+                        return view('yfpresensi.upload-compare');
+                    });
+                    Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
+                    Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
+
 
 
                     // TEST
