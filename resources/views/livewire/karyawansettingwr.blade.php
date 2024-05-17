@@ -5,7 +5,7 @@
 
         <div class="container">
             <div class="mx-auto  pt-4">
-                <button class="mx-auto col-12 btn btn-primary btn-large">
+                <button class="mx-auto col-12 btn btn-primary btn-large nightowl-daylight">
                     <h3 class="px-3">{{ __('Karyawan Settings') }}</h3>
                 </button>
                 <div class="card mt-5  mx-auto">

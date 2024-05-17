@@ -106,7 +106,8 @@
 
         <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
             <div class="d-flex gap-2 flex-lg-row flex-column">
-                <button class="btn btn-info">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
+                <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
+                    {{ number_format($total) }}</button>
                 <div class="d-flex gap-2">
                     <div>
                         <select class="form-select" wire:model.live="year">
@@ -146,11 +147,12 @@
 
 
             <div class="d-flex gap-2" wire:loading.class='invisible'>
-                <button class="btn btn-success" wire:click="bankexcel">{{ __('Report for bank') }}</button>
-                <button wire:click="export" class="btn btn-success">Excel</button>
+                <button class="btn btn-success nightowl-daylight"
+                    wire:click="bankexcel">{{ __('Report for bank') }}</button>
+                <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
 
                 <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                    class="btn btn-primary">{{ __('Rebuild') }}</button>
+                    class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
 
             </div>
         </div>
@@ -351,10 +353,11 @@
                                     @if (check_bulan($p->date, $month, $year))
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-success btn-sm"
+                                                <button type="button"
+                                                    class="btn btn-success btn-sm nightowl-daylight"
                                                     wire:click="showDetail({{ $p->id_karyawan }})"
                                                     data-bs-toggle="modal" data-bs-target="#payroll"><i
-                                                        class="fa-solid fa-magnifying-glass"></i></button>
+                                                        class="fa-solid fa-magnifying-glass nightowl-daylight"></i></button>
 
                                             </td>
 

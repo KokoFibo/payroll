@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@bufferhead/nightowl@0.0.14/dist/nightowl.js"></script>
+
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -78,7 +80,10 @@
         @include('layouts.aside')
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
+        {{-- nyalakan ini jika mau pakai background texture --}}
+        {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
+        <div class="content-wrapper">
+
             {{ $slot }}
 
         </div>

@@ -20,6 +20,8 @@
     <!-- Fonts -->
     {{-- <link rel="dns-prefetch" href="//fonts.bunny.net"> --}}
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@bufferhead/nightowl@0.0.14/dist/nightowl.js"></script>
+
 
 
     <!-- Scripts -->

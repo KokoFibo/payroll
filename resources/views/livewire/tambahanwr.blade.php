@@ -2,7 +2,7 @@
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
         <div class="card ">
-            <div class="card-header bg-info">
+            <div class="card-header bg-info nightowl-daylight">
                 <label class="col-sm-2  col-form-label">{{ __('Bonus dan Potongan') }}</label>
 
             </div>
@@ -26,7 +26,7 @@
                         <input wire:model="tanggal" class="form-control" type="date">
                     </div>
                     <div class="card mt-lg-3 mt-2">
-                        <div class="card-header bg-success">
+                        <div class="card-header bg-success nightowl-daylight">
                             <h5>Bonus</h5>
                         </div>
                         <div class="card-body">
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="card mt-lg-3 mt-2">
-                        <div class="card-header bg-info">
+                        <div class="card-header bg-info nightowl-daylight">
                             <h5>Potongan</h5>
                         </div>
                         <div class="card-body ">
@@ -110,8 +110,9 @@
                         {{-- </div> --}}
                     </div>
                     <div class="d-flex gap-5">
-                        <button wire:click="save" class="btn btn-success">{{ __('Save') }}</button>
-                        <button wire:click="cancel" class="btn btn-dark">{{ __('Cancel') }}</button>
+                        <button wire:click="save"
+                            class="btn btn-success nightowl-daylight">{{ __('Save') }}</button>
+                        <button wire:click="cancel" class="btn btn-dark nightowl-daylight">{{ __('Cancel') }}</button>
                     </div>
                 </div>
             @endif
@@ -152,7 +153,7 @@
                         </div>
                         <div class="mt-2 mt-lg-0">
                             <button wire:click="add"
-                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }}"
+                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
                                 {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Add New') }}</button>
                         </div>
                     </div>
@@ -188,7 +189,7 @@
                                         <tr>
                                             <td>
                                                 <div class="text-center">
-                                                    <div class="btn-group  gap-2" role="group"
+                                                    <div class="btn-group  gap-2 nightowl-daylight" role="group"
                                                         aria-label="Basic mixed styles example">
                                                         <button wire:click="update({{ $d->id }})"
                                                             type="button"

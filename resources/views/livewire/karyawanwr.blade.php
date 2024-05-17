@@ -5,7 +5,8 @@
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">
                 <h5>Tambah Data Karyawan
-                    <button wire:click="clear" class="btn btn-primary float-end">{{ __('Create New') }}</button>
+                    <button wire:click="clear"
+                        class="btn btn-primary float-end nightowl-daylight">{{ __('Create New') }}</button>
                 </h5>
             </div>
             <div class="card-body">
@@ -49,8 +50,9 @@
 
                 </div>
                 <div class="d-flex gap-3 pb-3 px-3">
-                    <button wire:click="save" class="btn btn-primary mx-3">{{ __('Save') }}</button>
-                    <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
+                    <button wire:click="save"
+                        class="btn btn-primary mx-3 nightowl-daylight">{{ __('Save') }}</button>
+                    <button wire:click="exit" class="btn btn-dark mx-3 nightowl-daylight">{{ __('Exit') }}</button>
                 </div>
             </div>
         </div>

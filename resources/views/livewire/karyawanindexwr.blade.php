@@ -6,6 +6,7 @@
         th {
             white-space: nowrap;
             cursor: pointer;
+
         }
 
         /* @media (min-width : 600px) {
@@ -64,11 +65,12 @@
 
     <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
         @if (auth()->user()->role == 5)
-            <a href="/usernotfound"><button class="btn btn-primary">User Not Found (Create)</button></a>
+            <a href="/usernotfound"><button class="btn btn-primary nightowl-daylight">User Not Found (Create)</button></a>
         @endif
 
         @if ($is_tanggal_gajian || auth()->user()->role == 5)
-            <a href="/iuranlocker"><button class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus Iuran
+            <a href="/iuranlocker"><button
+                    class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight">Hapus Iuran
                     Locker</button></a>
         @endif
 
@@ -103,10 +105,10 @@
 
                         <div class="col-12 col-xl-3">
                             <button wire:click="reset_filter"
-                                class="btn btn-success col-12">{{ __('Refresh') }}</button>
+                                class="btn btn-success col-12 nightowl-daylight">{{ __('Refresh') }}</button>
                         </div>
                         <div class="col-12 col-xl-3">
-                            <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
+                            <a href="/karyawancreate"><button class="btn btn-primary col-12 nightowl-daylight"><i
                                         class="fa-solid fa-plus"></i>
                                     {{ __('Karyawan baru') }}</button></a>
                         </div>
@@ -116,6 +118,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
+
                     <table class="table  table-sm  table-hover mb-2 ">
                         <thead>
                             <tr>
@@ -226,11 +229,12 @@
                                         Placement</button> --}}
 
                                         <button wire:click="excelByDepartment"
-                                            class="btn btn-success btn-sm mb-1">Excel</button>
+                                            class="btn btn-success btn-sm mb-1 nightowl-daylight">Excel</button>
                                     </th>
                                 @endif
                                 <th style="width: 150px; border-style: none;">
-                                    <a href="/tanpaemergensicontact"><button class="btn btn-warning btn-sm mb-1">Tanpa
+                                    <a href="/tanpaemergensicontact"><button
+                                            class="btn btn-warning btn-sm mb-1 nightowl-daylight">Tanpa
                                             Kontak Darurat</button></a>
                                 </th>
                                 {{-- <th style="width: 150px; border-style: none;">
@@ -246,7 +250,9 @@
                                 <th></th>
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID Karyawan') }}
                                 </th>
-                                <th wire:click="sortColumnName('nama')">{{ __('Nama') }} </th>
+                                <th wire:click="sortColumnName('nama')">
+                                    {{ __('Nama') }}
+                                </th>
                                 <th class="text-center" wire:click="sortColumnName('company')">
                                     {{ __('Company') }} </th>
                                 <th class="text-center" wire:click="sortColumnName('placement')">
@@ -303,14 +309,14 @@
                                     <td>
                                         <div class="text-start">
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                    class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
 
 
                                             @if (Auth::user()->role > 4)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif
                                         </div>
@@ -339,6 +345,12 @@
                                         <td class="text-center">{{ number_format($data->iuran_air) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
+                                    @else
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
                                     @endif
                                     @if ($selectStatus == 2 && auth()->user()->role > 3)
                                         <td class="text-center">
