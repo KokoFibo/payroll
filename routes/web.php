@@ -62,9 +62,8 @@ Auth::routes([
 ]);
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/applicant', Applicant::class);
 });
-
+Route::get('/applicant', Applicant::class);
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
     Route::middleware(['User'])->group(function () {
