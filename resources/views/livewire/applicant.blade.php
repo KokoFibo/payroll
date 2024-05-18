@@ -59,7 +59,7 @@
                                 class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Pria</label>
                         </div>
                         <div class="flex w-1/2 items-center ps-4 border border-gray-200 rounded">
-                            <input checked id="bordered-radio-2" type="radio" value="" name="bordered-radio"
+                            <input id="bordered-radio-2" type="radio" value="" name="bordered-radio"
                                 class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <label for="bordered-radio-2"
                                 class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Wanita</label>
