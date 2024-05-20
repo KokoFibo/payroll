@@ -93,6 +93,8 @@ class KaryawanByDepartmentExport implements FromQuery, WithHeadings, WithColumnF
                     $query->where('placement', 'YEV OFFERO');
                 } elseif ($this->search_placement == 9) {
                     $query->where('placement', 'YEV SUNRA');
+                } elseif ($this->search_placement == 10) {
+                    $query->where('placement', 'YEV AIMA');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }
