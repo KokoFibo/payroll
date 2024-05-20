@@ -96,6 +96,9 @@ class Karyawanindexwr extends Component
             case '9':
                 $nama_file = "YEV_SUNRA_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;
+            case '10':
+                $nama_file = "YEV_AIMA_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
+                break;
         }
 
         $nama_file =
@@ -362,6 +365,8 @@ class Karyawanindexwr extends Component
                     $query->where('placement', 'YEV OFFERO');
                 } elseif ($this->search_placement == 9) {
                     $query->where('placement', 'YEV SUNRA');
+                } elseif ($this->search_placement == 10) {
+                    $query->where('placement', 'YEV AIMA');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }
@@ -469,6 +474,8 @@ class Karyawanindexwr extends Component
                     $query->where('placement', 'YEV OFFERO');
                 } elseif ($this->search_placement == 9) {
                     $query->where('placement', 'YEV SUNRA');
+                } elseif ($this->search_placement == 10) {
+                    $query->where('placement', 'YEV AIMA');
                 } else {
                     $query->whereIn('placement', ['YIG', 'YSM']);
                 }
