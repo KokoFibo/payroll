@@ -317,7 +317,7 @@
             </div>
         </div> --}}
 
-        <div class="flex lg:flex-row flex-col gap-3">
+        <div class="flex lg:flex-col flex-row gap-3">
             <div class="lg:w-1/3 w-full text-center">
                 <div class="card">
                     <div class="card-header" style="background-color: #608ed3; color: white">
