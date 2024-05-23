@@ -21,24 +21,7 @@
                     </div>
 
                 </div>
-                {{-- <div class="d-flex  flex-lg-row justify-content-evenly">
-                <div class="d-flex gap-5 gap-lg-0 flex-row flex-lg-column text-center">
-                    <h4 class="text-center">{{ __('Jumlah Karyawan') }}</h4>
-                    <h5 class="text-center">{{ $jumlah_karyawan }}</h5>
-                </div>
-                <div class="d-flex gap-5 gap-lg-0 flex-row flex-lg-column text-center">
-                    <h4 class="">{{ __('Laki laki') }}</h4>
-                    <h5 class="">{{ $jumlah_laki_laki }}</h5>
-                </div>
-                <div class="d-flex gap-5 gap-lg-0 flex-row flex-lg-column text-center">
-                    <h4 class="">{{ __('Perempuan') }}</h4>
-                    <h5 class="">{{ $jumlah_perempuan }}</h5>
-                </div>
-                <div class="d-flex gap-5 gap-lg-0 flex-row flex-lg-column text-center">
-                    <h4 class="">{{ __('Shift Malam') }}</h4>
-                    <h5 class="">{{ $jumlah_shift_malam }}</h5>
-                </div>
-            </div> --}}
+
             </div>
             <hr class="border border-primary  opacity-50">
         @endif
@@ -202,7 +185,7 @@
         <div class="card my-3">
             <div class="card-header" style="background-color: #608ed3; color: white">
                 <h2 class="py-1 px-3 text-center text-lg lg:text-2xl">{{ __('Posisi karyawan resign per tanggal') }}
-                    {{ $last_date }}
+                    {{ format_tgl($last_date) }}
                 </h2>
             </div>
             <div class="card-body">
@@ -249,7 +232,7 @@
         <div class="card my-3">
             <div class="card-header" style="background-color: #608ed3; color: white">
                 <h2 class="py-1 px-3 text-center text-lg lg:text-2xl">{{ __('Posisi karyawan baru per tanggal') }}
-                    {{ $last_date }} </h2>
+                    {{ format_tgl($last_date) }} </h2>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
