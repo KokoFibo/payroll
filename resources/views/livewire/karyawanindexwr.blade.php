@@ -166,7 +166,6 @@
                                             <option value="7">YEV SMOOT</option>
                                             <option value="8">YEV OFFERO</option>
                                             <option value="9">YEV SUNRA</option>
-                                            <option value="9">YEV SUNRA</option>
                                             <option value="10">YEV AIMA</option>
                                         </select>
                                     </div>

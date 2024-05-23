@@ -1,12 +1,13 @@
 <div>
-
+    <livewire:placementreport />
+    <br><br><br>
     <div class="card-body">
         <div class="table-responsive">
-
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>{{ __('ID') }} <i class="fa-solid fa-sort"></i></th>
+                        <th>{{ __('Nama') }} <i class="fa-solid fa-sort"></i></th>
                         <th>
                             {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
                         <th>{{ __('first_in') }} <i class="fa-solid fa-sort"></i></th>
@@ -25,10 +26,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($data->isNotEmpty())
-                        @foreach ($data as $p)
+                    @if ($datas->isNotEmpty())
+                        @foreach ($datas as $p)
                             <tr>
                                 <td>{{ $p->karyawan_id }}</td>
+                                <td>{{ $p->nama }}</td>
                                 <td>{{ $p->date }}</td>
                                 <td>{{ $p->first_in }}</td>
                                 <td>{{ $p->first_out }}</td>
@@ -48,7 +50,7 @@
                     @endif
                 </tbody>
             </table>
-            {{ $data->links() }}
+            {{ $datas->links() }}
         </div>
     </div>
 </div>
