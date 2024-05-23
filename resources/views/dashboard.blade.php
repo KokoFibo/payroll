@@ -358,6 +358,7 @@
 
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
+
         @if (auth()->user()->role == 5)
             <div class="container">
                 <button class="bg-blue-500 text-white px-3 py-2 rounded-md shadow-sm">Tanpa Etnis :
@@ -366,6 +367,7 @@
                     {{ $belum_isi_kontak_darurat }}</button>
             </div>
         @endif
+
         <div class="container pt-5">
             <div class="row align-items-stretch">
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
@@ -431,7 +433,10 @@
         </div>
     </div>
 
-    <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-3 lg:mb-5">
+    <livewire:placementreport />
+
+
+    <div class="d-flex gap-2 lg:gap-3 px-2 flex-column flex-xl-row justify-evenly mt-5 lg:mb-5">
         <div>
             <div class="h-3 rounded-t-lg w-full lg:w-96 bg-violet-500">
             </div>

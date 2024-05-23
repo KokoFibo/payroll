@@ -53,6 +53,7 @@ use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
+use App\Livewire\Placementreport;
 use App\Livewire\TanpaEmergencyContact;
 
 // Middleware
@@ -187,6 +188,8 @@ Route::middleware(['auth'])->group(function () {
                     });
                     Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
                     Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
+
+
 
 
 
