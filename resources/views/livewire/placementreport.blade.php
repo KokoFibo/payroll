@@ -317,8 +317,8 @@
             </div>
         </div> --}}
 
-        <div class="flex lg:flex-row flex-col ">
-            <div class="col-lg-4 col-12 text-center">
+        <div class="flex lg:flex-row flex-col gap-3">
+            <div class="lg:w-1/3 w-full text-center">
                 <div class="card">
                     <div class="card-header" style="background-color: #608ed3; color: white">
                         <p>{{ __('Karyawan masa kerja > 1 tahun') }}</p>
@@ -328,7 +328,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-12 text-center">
+            <div class="lg:w-1/3 w-full text-center">
                 <div class="card">
                     <div class="card-header" style="background-color: #608ed3; color: white">
                         <p>{{ __('Karyawan masa kerja 3-12 bulan') }}</p>
@@ -338,7 +338,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-12 text-center">
+            <div class="lg:w-1/3 w-full text-center">
                 <div class="card">
                     <div class="card-header" style="background-color: #608ed3; color: white">
                         <p>{{ __('Karyawan masa kerja < 3 bulan') }}</p>
