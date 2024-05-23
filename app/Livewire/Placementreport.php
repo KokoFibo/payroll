@@ -17,6 +17,7 @@ class Placementreport extends Component
     public $karyawan_lebih_1_tahun, $karyawan_3_12_bulan, $karyawan_dibawah_3_bulan;
     public function mount()
     {
+        $this->placement = 'YCME';
         $this->last_date = Yfrekappresensi::latest('date')->value('date');
     }
 

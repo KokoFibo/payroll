@@ -8,16 +8,16 @@
             <div class="card-body" style="background-color: #b7c6f8; color: black">
                 <div class="d-flex lg:gap-0 gap-3 flex-lg-column flex-row justify-content-center  ">
                     <div class="d-flex  flex-lg-row justify-content-lg-evenly  flex-column text-center">
-                        <h4 class="text-md lg:text-2xl">{{ __('Jumlah Karyawan') }}</h4>
-                        <h4 class="text-md lg:text-2xl">{{ __('Laki laki') }}</h4>
-                        <h4 class="text-md lg:text-2xl">{{ __('Perempuan') }}</h4>
-                        <h4 class="text-md lg:text-2xl">{{ __('Shift Malam') }}</h4>
+                        <p class="text-md lg:text-2xl">{{ __('Jumlah Karyawan') }}</p>
+                        <p class="text-md lg:text-2xl">{{ __('Laki laki') }}</p>
+                        <p class="text-md lg:text-2xl">{{ __('Perempuan') }}</p>
+                        <p class="text-md lg:text-2xl">{{ __('Shift Malam') }}</p>
                     </div>
                     <div class="d-flex flex-lg-row justify-content-lg-evenly  flex-column text-center">
-                        <p class="text-md lg:text-6xl">{{ $jumlah_karyawan }}</p>
-                        <p class="text-md lg:text-6xl">{{ $jumlah_laki_laki }}</p>
-                        <p class="text-md lg:text-6xl">{{ $jumlah_perempuan }}</p>
-                        <p class="text-md lg:text-6xl">{{ $jumlah_shift_malam }}</p>
+                        <p class="text-md  lg:text-2xl">{{ $jumlah_karyawan }}</p>
+                        <p class="text-md  lg:text-2xl">{{ $jumlah_laki_laki }}</p>
+                        <p class="text-md  lg:text-2xl">{{ $jumlah_perempuan }}</p>
+                        <p class="text-md  lg:text-2xl">{{ $jumlah_shift_malam }}</p>
                     </div>
 
                 </div>
@@ -317,7 +317,7 @@
             </div>
         </div> --}}
 
-        <div class="flex lg:flex-col flex-row gap-3">
+        <div class="flex lg:flex-row flex-col gap-3">
             <div class="lg:w-1/3 w-full text-center">
                 <div class="card">
                     <div class="card-header" style="background-color: #608ed3; color: white">
