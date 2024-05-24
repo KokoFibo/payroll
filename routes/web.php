@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicantController;
 use App\Livewire\Test;
 use App\Livewire\Profile;
 use App\Livewire\UserLog;
@@ -64,7 +65,17 @@ Auth::routes([
 
 Route::middleware(['guest'])->group(function () {
 });
+
+// Route::get('/applicant', function () {
+//     return view('applicant.login');
+// });
+// Route::get('/applicant/registration', function () {
+//     return view('applicant.registration');
+// });
+// Route::post('/applicant/register', [ApplicantController::class, 'register']);
+
 Route::get('/applicant', Applicant::class);
+
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
     Route::middleware(['User'])->group(function () {
