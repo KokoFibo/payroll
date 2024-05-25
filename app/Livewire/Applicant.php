@@ -2,23 +2,66 @@
 
 namespace App\Livewire;
 
-use App\Models\Applicantdata;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use App\Models\Applicantdata;
+use App\Models\Applicantfile;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
 
 class Applicant extends Component
 {
-    public $is_registered, $show, $registeredEmail;
+    use WithFileUploads;
+    // #[Validate('image|max:1024')]
+    public $files = [];
+
+    public $is_registered, $show, $registeredEmail, $registeredPassword, $is_update;
     public $nama, $email, $password, $confirm_password, $hp, $telp, $tempat_lahir, $tgl_lahir, $gender;
     public $status_pernikahan, $golongan_darah, $agama, $etnis, $nama_contact_darurat;
     public $contact_darurat_1, $contact_darurat_2, $jenis_identitas, $no_identitas;
-    public $alamat_identitas, $alamat_tinggal_sekarang, $file;
+    public $alamat_identitas, $alamat_tinggal_sekarang;
+    public $applicant_id, $originalName, $filename;
 
     public function submit()
     {
         // validate submit
-        $data = Applicantdata::where('email', $this->registeredEmail);
+        $data = Applicantdata::where('email', $this->registeredEmail)->where('password', $this->registeredPassword)->first();
+        if ($data != null) {
+
+            $this->show = true;
+            //    ==============================
+
+            $this->applicant_id = $data->applicant_id;
+            $this->nama = $data->nama;
+            $this->email = $data->email;
+            $this->password = $data->password;
+            $this->confirm_password = $data->password;
+            $this->hp = $data->hp;
+            $this->telp = $data->telp;
+            $this->tempat_lahir = $data->tempat_lahir;
+            $this->tgl_lahir = $data->tgl_lahir;
+            $this->gender = $data->gender;
+            $this->status_pernikahan = $data->status_pernikahan;
+            $this->golongan_darah = $data->golongan_darah;
+            $this->agama = $data->agama;
+            $this->etnis = $data->etnis;
+            $this->nama_contact_darurat = $data->nama_contact_darurat;
+            $this->contact_darurat_1 = $data->contact_darurat_1;
+            $this->contact_darurat_2 = $data->contact_darurat_2;
+            $this->jenis_identitas = $data->jenis_identitas;
+            $this->no_identitas = $data->no_identitas;
+            $this->alamat_identitas = $data->alamat_identitas;
+            $this->alamat_tinggal_sekarang = $data->alamat_tinggal_sekarang;
+            $this->originalFilename = $data->originalName;
+            $this->path = $data->filename;
+            //    ==============================
+
+
+        } else {
+            dd('Email Salah atau password salah');
+        }
     }
 
 
@@ -45,7 +88,8 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
-            // 'file.required' => 'Gender harus memiliki minimal 5 karakter.',
+            'files.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
+            'files.max' => 'Max file size 1Mb',
 
             'nama.min' => 'Nama minimal 5 karakter.',
             'password.min' => 'Password minimal 6 karakter.',
@@ -82,48 +126,110 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
-            'file' => 'nullable',
+            'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
+            // 'files' => 'image|max:1024'
         ];
     }
 
     public function save()
     {
         $validated = $this->validate();
-        // dd($validated);
-        Applicantdata::create([
-            'nama' => titleCase($this->nama),
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'hp' => $this->hp,
-            'telp' => $this->telp,
-            'tempat_lahir' => titleCase($this->tempat_lahir),
-            'tgl_lahir' => $this->tgl_lahir,
-            'gender' => $this->gender,
-            'status_pernikahan' => $this->status_pernikahan,
-            'golongan_darah' => $this->golongan_darah,
-            'agama' => $this->agama,
-            'etnis' => $this->etnis,
-            'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
-            'contact_darurat_1' => $this->contact_darurat_1,
-            'contact_darurat_2' => $this->contact_darurat_2,
-            'jenis_identitas' => $this->jenis_identitas,
-            'no_identitas' => $this->no_identitas,
-            'alamat_identitas' => titleCase($this->alamat_identitas),
-            'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
-        ]);
-        $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+
+        if ($this->is_update == false) {
+
+            $this->is_update = true;
+
+            $this->applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
+            // if ($this->files != null) {
+            $folder = 'Applicants/' . $this->applicant_id;
+            if ($this->files) {
+                foreach ($this->files as $file) {
+                    $this->path = $file->store($folder, 'google');
+                    $this->path = $file->store($folder, 'public');
+                    $this->originalFilename = $file->getClientOriginalName();
+                    Applicantfile::create([
+                        'id_karyawan' => $this->applicant_id,
+                        'originalName' => $this->originalFilename,
+                        'filename' => $this->path,
+                    ]);
+                }
+                Applicantdata::create([
+                    'applicant_id' => $this->applicant_id,
+                    'nama' => titleCase($this->nama),
+                    'email' => $this->email,
+                    'password' => $this->password,
+                    'hp' => $this->hp,
+                    'telp' => $this->telp,
+                    'tempat_lahir' => titleCase($this->tempat_lahir),
+                    'tgl_lahir' => $this->tgl_lahir,
+                    'gender' => $this->gender,
+                    'status_pernikahan' => $this->status_pernikahan,
+                    'golongan_darah' => $this->golongan_darah,
+                    'agama' => $this->agama,
+                    'etnis' => $this->etnis,
+                    'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
+                    'contact_darurat_1' => $this->contact_darurat_1,
+                    'contact_darurat_2' => $this->contact_darurat_2,
+                    'jenis_identitas' => $this->jenis_identitas,
+                    'no_identitas' => $this->no_identitas,
+                    'alamat_identitas' => titleCase($this->alamat_identitas),
+                    'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
+
+
+                ]);
+
+
+                $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+
+
+
+                // return response()->json(['success' => true]);
+            } else {
+
+                // Handle if no file is uploaded
+                Applicantdata::create([
+                    'applicant_id' => $this->applicant_id,
+                    'nama' => titleCase($this->nama),
+                    'email' => $this->email,
+                    'password' => Hash::make($this->password),
+                    'hp' => $this->hp,
+                    'telp' => $this->telp,
+                    'tempat_lahir' => titleCase($this->tempat_lahir),
+                    'tgl_lahir' => $this->tgl_lahir,
+                    'gender' => $this->gender,
+                    'status_pernikahan' => $this->status_pernikahan,
+                    'golongan_darah' => $this->golongan_darah,
+                    'agama' => $this->agama,
+                    'etnis' => $this->etnis,
+                    'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
+                    'contact_darurat_1' => $this->contact_darurat_1,
+                    'contact_darurat_2' => $this->contact_darurat_2,
+                    'jenis_identitas' => $this->jenis_identitas,
+                    'no_identitas' => $this->no_identitas,
+                    'alamat_identitas' => titleCase($this->alamat_identitas),
+                    'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
+                    // 'originalName' => $this->originalFilename,
+                    // 'filename' => $this->path,
+
+                ]);
+                $this->dispatch('success', message: 'Data Anda sudah berhasil di submit tanpa file');
+            }
+        } else {
+            dd('update');
+        }
     }
 
     public function mount()
     {
         $this->is_registered = false;
         $this->show = false;
+        $this->is_update = false;
     }
 
     public function alreadyRegistered()
     {
         $this->is_registered = true;
-        $this->show = true;
+        $this->show = false;
     }
     public function register()
     {
