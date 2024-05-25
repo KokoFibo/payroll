@@ -215,7 +215,7 @@ class Applicant extends Component
                 $this->dispatch('success', message: 'Data Anda sudah berhasil di submit tanpa file');
             }
         } else {
-            dd('update');
+            dd('updates');
         }
     }
 
