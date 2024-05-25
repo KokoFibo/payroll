@@ -12,6 +12,29 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 
+function makeApplicationId($nama, $date)
+{
+    if ($nama != '' && $date != '') {
+
+
+        $arrNamas = explode(' ', $nama);
+        $arrDates = explode('-', $date);
+        $nama_sambung = '';
+        $date_sambung = '';
+        foreach ($arrNamas as $arrNama) {
+            $nama_sambung .= $arrNama . '_';
+        }
+        $nama_sambung = rtrim($nama_sambung, '_');
+
+        foreach ($arrDates as $arrDate) {
+            $date_sambung .= $arrDate . '_';
+        }
+        $date_sambung = rtrim($date_sambung, '_');
+
+        return $nama_sambung . '_' . $date_sambung;
+    }
+}
+
 function bedaMenit($startTime, $endTime)
 {
     $startTime = Carbon::createFromFormat('H:i:s', $startTime);
