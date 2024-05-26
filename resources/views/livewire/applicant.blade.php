@@ -318,7 +318,7 @@
                                 (hanya menerima format jpg, png, pdf, zip, rar)<span
                                     class="text-red-500 ml-1">*</span></label>
                             <input wire:model='files' multiple
-                                class="block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                                class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                                 id="upload_files" type="file">
                             @error('files')
                                 <div class="text-red-500">
@@ -365,7 +365,19 @@
                     @endif
 
                 </form>
+                @if ($filenames)
+                    @foreach ($filenames as $fn)
+                        <p class="m-3">{{ $fn->originalName }}</p>
+                        <button class="px-3 py-1 bg-red-500 text-white"
+                            wire:click="deleteFile('{{ $fn->filename }}')">delete</button>
+                        <img class="w-[400px]" src="{{ getUrl($fn->filename) }}" alt="">
+                    @endforeach
+                @endif
             </div>
         </div>
     @endif
+    @section('links')
+    @endsection
+    @push('script')
+    @endpush
 </div>

@@ -6,16 +6,18 @@ use Livewire\Component;
 use Illuminate\Http\Request;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
-use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Applicant extends Component
 {
     use WithFileUploads;
     // #[Validate('image|max:1024')]
     public $files = [];
+    public $filenames = [];
 
     public $is_registered, $show, $registeredEmail, $registeredPassword, $is_update;
     public $nama, $email, $password, $confirm_password, $hp, $telp, $tempat_lahir, $tgl_lahir, $gender;
@@ -24,12 +26,36 @@ class Applicant extends Component
     public $alamat_identitas, $alamat_tinggal_sekarang;
     public $applicant_id, $originalName, $filename;
 
+    public function deleteFile($filename)
+    {
+        try {
+            $result = Storage::disk('google')->delete($filename);
+            $result2 = Storage::disk('public')->delete($filename);
+            dd($filename, $result2);
+            if ($result && $result2) {
+                // File was deleted successfully
+                $this->dispatch('success', message: 'File telah di delete');
+
+                return 'File deleted successfully.';
+            } else {
+                // File could not be deleted
+                // return 'Failed to delete file.';
+                $this->dispatch('errro', message: 'File GAGAL di delete');
+            }
+        } catch (\Exception $e) {
+            // An error occurred while deleting the file
+            return 'An error occurred: ' . $e->getMessage();
+        }
+    }
+
     public function submit()
     {
         // validate submit
-        $data = Applicantdata::where('email', $this->registeredEmail)->where('password', $this->registeredPassword)->first();
+        // $data = Applicantdata::where('email', $this->registeredEmail)->where('password', $this->registeredPassword)->first();
+        $data = Applicantdata::where('email', 'kokofibo@gmail.com')->where('password', '898989')->first();
         if ($data != null) {
-
+            $file_data = Applicantfile::where('id_karyawan', $data->applicant_id)->get();
+            $this->filenames = $file_data;
             $this->show = true;
             //    ==============================
 
@@ -54,8 +80,7 @@ class Applicant extends Component
             $this->no_identitas = $data->no_identitas;
             $this->alamat_identitas = $data->alamat_identitas;
             $this->alamat_tinggal_sekarang = $data->alamat_tinggal_sekarang;
-            $this->originalFilename = $data->originalName;
-            $this->path = $data->filename;
+
             //    ==============================
 
 

@@ -11,6 +11,37 @@ use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
+function getUrl($filename)
+{
+    if ($filename) {
+        $url = Storage::url($filename);
+        return $url;
+    }
+}
+
+function showImage($id)
+{
+    $data = Applicantfile::findOrFail($id);
+    if ($data != null) {
+
+
+        $fileId = $data->filename;
+
+        // $assetPath = Storage::disk('google')->url($fileId);
+        $url = Storage::url($fileId);
+
+        // $url = Storage::disk('google')->temporaryUrl(
+        //     $fileId,
+        //     now()->addMinutes(5)
+        // );
+        // $files = Storage::disk('google')->files();
+        // dd($files);
+
+        return $url;
+    }
+}
 
 function makeApplicationId($nama, $date)
 {

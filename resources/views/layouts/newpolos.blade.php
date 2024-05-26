@@ -28,6 +28,8 @@
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+
 
 
 
@@ -37,6 +39,10 @@
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+
+
+
 </head>
 
 <body style="font-family: 'nunito';">
@@ -56,6 +62,7 @@
             dateFormat: "d M Y",
         });
     </script>
+
 </body>
 <script>
     $(document).ready(function() {
@@ -116,5 +123,6 @@
 
     });
 </script>
+
 
 </html>
