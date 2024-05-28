@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicantController;
 use App\Livewire\Test;
 use App\Livewire\Profile;
 use App\Livewire\UserLog;
@@ -51,6 +52,7 @@ use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
+use App\Livewire\DeleteNoscan;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 use App\Livewire\Placementreport;
@@ -64,7 +66,18 @@ Auth::routes([
 
 Route::middleware(['guest'])->group(function () {
 });
-Route::get('/applicant', Applicant::class);
+
+// Route::get('/applicant', function () {
+//     return view('applicant.login');
+// });
+// Route::get('/applicant/registration', function () {
+//     return view('applicant.registration');
+// });
+// Route::post('/applicant/register', [ApplicantController::class, 'register']);
+
+// buka route ini untuk kerja applicant
+// Route::get('/applicant', Applicant::class);
+
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
     Route::middleware(['User'])->group(function () {
@@ -188,6 +201,9 @@ Route::middleware(['auth'])->group(function () {
                     });
                     Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
                     Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
+                    Route::get('/deletenoscan', DeleteNoscan::class);
+
+
 
 
 
