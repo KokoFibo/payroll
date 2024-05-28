@@ -3,6 +3,7 @@
     <p>Show: {{ $show }}</p>
     <p>Gender: {{ $gender }}</p>
     <p>is_update: {{ $is_update }}</p>
+    <p>applicant_id: {{ $applicant_id }}</p>
     @if (!$show)
         <button class="bg-green-500 text-white px-3 py-2 rounded-xl" wire:click="register">Register</button>
         <button class="bg-blue-500 text-white px-3 py-2 rounded-xl" wire:click="alreadyRegistered">Sudah Pernah
@@ -358,26 +359,27 @@
                     </div>
                     @if ($files)
                         @foreach ($files as $file)
-                            <div class='mb-10'>
-                                <img src="{{ $file->temporaryUrl() }}" style="width:300px">
-                            </div>
+                            @if ($file->getClientOriginalExtension() != 'pdf')
+                                <div class='mb-10'>
+                                    <img src="{{ $file->temporaryUrl() }}" style="width:300px">
+                                </div>
+                            @endif
                         @endforeach
                     @endif
 
                 </form>
                 @if ($filenames)
                     @foreach ($filenames as $fn)
-                        <p class="m-3">{{ $fn->originalName }}</p>
-                        <button class="px-3 py-1 bg-red-500 text-white"
-                            wire:click="deleteFile('{{ $fn->filename }}')">delete</button>
-                        <img class="w-[400px]" src="{{ getUrl($fn->filename) }}" alt="">
+                        @if ($file->getClientOriginalExtension() != 'pdf')
+                            <p class="m-3">{{ $fn->originalName }}</p>
+                            <button class="px-3 py-1 bg-red-500 text-white"
+                                wire:click="deleteFile('{{ $fn->filename }}')">delete</button>
+                            <img class="w-[400px]" src="{{ getUrl($fn->filename) }}" alt="">
+                        @endif
                     @endforeach
                 @endif
             </div>
         </div>
     @endif
-    @section('links')
-    @endsection
-    @push('script')
-    @endpush
+
 </div>
