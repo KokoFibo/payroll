@@ -68,7 +68,7 @@
             <a href="/usernotfound"><button class="btn btn-primary nightowl-daylight">User Not Found (Create)</button></a>
         @endif
 
-        @if ($is_tanggal_gajian || auth()->user()->role == 5)
+        @if ($is_tanggal_gajian || auth()->user()->role >= 2)
             <a href="/iuranlocker"><button
                     class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight">Hapus Iuran
                     Locker</button></a>
@@ -335,7 +335,8 @@
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
                                     @if (
                                         (auth()->user()->role == 2 && $data->gaji_pokok <= 4500000) ||
-                                            (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
+                                            // (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
+                                            auth()->user()->role == 3 ||
                                             auth()->user()->role > 3)
                                         @if (Auth::user()->role > 3)
                                             <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>

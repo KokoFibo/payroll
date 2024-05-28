@@ -38,7 +38,7 @@
                             <td>{{ lamaBekerja($d->tanggal_bergabung) }}</td>
                             <td>{{ number_format($d->iuran_locker) }}</td>
                             <td>{{ $d->status_karyawan }}</td>
-                            <td><button class="btn btn-warning" wire:click="delete(`{{ $d->id }}`)" disabled>Hapus
+                            <td><button class="btn btn-warning" wire:click="delete(`{{ $d->id }}`)">Hapus
                                     Iuran
                                     Locker</button></td>
                         </tr>

@@ -1,7 +1,8 @@
 {{-- Gaji --}}
 @if (
     (auth()->user()->role == 2 && $gaji_pokok <= 4500000) ||
-        (auth()->user()->role == 3 && $gaji_pokok <= 10000000) ||
+        // (auth()->user()->role == 3 && $gaji_pokok <= 10000000) ||
+        auth()->user()->role == 3 ||
         auth()->user()->role > 3)
     <div wire:ignore.self class="card mt-2">
 
