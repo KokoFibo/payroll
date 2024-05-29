@@ -13,6 +13,7 @@ class Placementreport extends Component
     public $shift_pagi_produksi, $shift_pagi_quality_control, $shift_pagi_gudang, $shift_pagi_engineering, $shift_pagi_ga, $shift_pagi_exim, $shift_pagi_bd, $shift_pagi_procurement, $shift_pagi_total;
     public $shift_malam_produksi, $shift_malam_quality_control, $shift_malam_gudang, $shift_malam_engineering, $shift_malam_ga, $shift_malam_exim, $shift_malam_bd, $shift_malam_procurement, $shift_malam_total;
     public $resign_produksi, $resign_quality_control, $resign_gudang, $resign_engineering, $resign_ga, $resign_exim, $resign_bd, $resign_procurement, $resign_total;
+    public $blacklist_produksi, $blacklist_quality_control, $blacklist_gudang, $blacklist_engineering, $blacklist_ga, $blacklist_exim, $blacklist_bd, $blacklist_procurement, $blacklist_total;
     public $baru_produksi, $baru_quality_control, $baru_gudang, $baru_engineering, $baru_ga, $baru_exim, $baru_bd, $baru_procurement, $baru_total;
     public $karyawan_lebih_1_tahun, $karyawan_3_12_bulan, $karyawan_dibawah_3_bulan;
     public function mount()
@@ -191,7 +192,42 @@ class Placementreport extends Component
             ->count();
         $this->resign_total = $this->resign_produksi + $this->resign_quality_control + $this->resign_gudang + $this->resign_engineering + $this->resign_ga + $this->resign_exim + $this->resign_bd + $this->resign_procurement + $this->resign_total;
 
-        // Karywawan Resign
+        // Karywawan Blacklist
+        $this->blacklist_produksi = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Produksi')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_quality_control = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Quality Control')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_gudang = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Gudang')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_engineering = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Engineering')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_ga = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'GA')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_exim = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Exim')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_bd = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'BD')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_procurement = Karyawan::where('placement', $this->placement)
+            ->where('departemen', 'Procurement')
+            ->where('tanggal_blacklist', $this->last_date)
+            ->count();
+        $this->blacklist_total = $this->blacklist_produksi + $this->blacklist_quality_control + $this->blacklist_gudang + $this->blacklist_engineering + $this->blacklist_ga + $this->blacklist_exim + $this->blacklist_bd + $this->blacklist_procurement + $this->blacklist_total;
+
+        // Karywawan Baru
         $this->baru_produksi = Karyawan::where('placement', $this->placement)
             ->where('departemen', 'Produksi')
             ->where('tanggal_bergabung', $this->last_date)
