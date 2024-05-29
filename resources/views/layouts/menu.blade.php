@@ -147,6 +147,12 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'developer-dashboard' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/developer-dashboard" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Developer Dashboard') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/deletenoscan" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
