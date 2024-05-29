@@ -227,6 +227,53 @@
             </div>
         </div>
 
+        {{-- Posisi karyawan blacklist Harian --}}
+        <div class="card my-3">
+            <div class="card-header" style="background-color: #608ed3; color: white">
+                <h2 class="py-1 px-3 text-center text-lg lg:text-2xl">
+                    {{ __('Posisi karyawan blacklist per tanggal') }}
+                    {{ format_tgl($last_date) }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-end">{{ __('Produksi') }}</th>
+                                <th class="text-end">{{ __('Quality Control') }}</th>
+                                <th class="text-end">{{ __('Gudang') }}</th>
+                                <th class="text-end">{{ __('Engineering') }}</th>
+                                <th class="text-end">{{ __('GA') }}</th>
+                                <th class="text-end">{{ __('Exim') }}</th>
+                                <th class="text-end">{{ __('BD') }}</th>
+                                <th class="text-end">{{ __('Procurement') }}</th>
+                                <th class="text-end">{{ __('Total') }}</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-end">{{ $blacklist_produksi }}</td>
+                                <td class="text-end">{{ $blacklist_quality_control }}</td>
+                                <td class="text-end">{{ $blacklist_gudang }}</td>
+                                <td class="text-end">{{ $blacklist_engineering }}</td>
+                                <td class="text-end">{{ $blacklist_ga }}</td>
+                                <td class="text-end">{{ $blacklist_exim }}</td>
+                                <td class="text-end">{{ $blacklist_bd }}</td>
+                                <td class="text-end">{{ $blacklist_procurement }}</td>
+                                <td class="text-end">{{ $blacklist_total }}</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
 
         {{-- Posisi karyawan baru harian --}}
         <div class="card my-3">
