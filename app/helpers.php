@@ -13,6 +13,19 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function getFilenameExtension($filename)
+{
+
+    $arrNamas = explode('.', $filename);
+    return $arrNamas[1];
+}
+
+function getFilename($filename)
+{
+    $arrNamas = explode('/', $filename);
+    return $arrNamas[2];
+}
+
 function getUrl($filename)
 {
     if ($filename) {

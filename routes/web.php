@@ -52,6 +52,7 @@ use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
+use App\Livewire\DataApplicant;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Moveback;
@@ -77,7 +78,7 @@ Route::middleware(['guest'])->group(function () {
 // Route::post('/applicant/register', [ApplicantController::class, 'register']);
 
 // buka route ini untuk kerja applicant
-Route::get('/applicant', Applicant::class);
+// Route::get('/applicant', Applicant::class);
 
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
@@ -121,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/informationwr', Informationwr::class);
             Route::get('/tambahan', Tambahanwr::class);
             Route::get('/iuranlocker', IuranLocker::class);
+            Route::get('/dataapplicant', DataApplicant::class);
 
             // YF PRESENSI
             Route::get('/yfupload', function () {
