@@ -631,7 +631,7 @@ class YfpresensiController extends Controller
                         foreach ($tablePresensi as $tp) {
                             if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
                                 if ($first_in == '') $first_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('22:01', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:01', '00:30')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('22:01', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:00', '00:30')) {
 
                                 if ($first_out == '') $first_out = $tp->time;
                                 else $second_in = $tp->time;

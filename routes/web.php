@@ -52,7 +52,9 @@ use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
+use App\Livewire\DataApplicant;
 use App\Livewire\DeleteNoscan;
+use App\Livewire\DeveloperDashboard;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 use App\Livewire\Placementreport;
@@ -120,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/informationwr', Informationwr::class);
             Route::get('/tambahan', Tambahanwr::class);
             Route::get('/iuranlocker', IuranLocker::class);
+            Route::get('/dataapplicant', DataApplicant::class);
 
             // YF PRESENSI
             Route::get('/yfupload', function () {
@@ -202,6 +205,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
                     Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
                     Route::get('/deletenoscan', DeleteNoscan::class);
+                    Route::get('/developer-dashboard', DeveloperDashboard::class);
 
 
 

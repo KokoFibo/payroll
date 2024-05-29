@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('no_identitas');
             $table->string('alamat_identitas');
             $table->string('alamat_tinggal_sekarang');
+            $table->string('status')->default('Terdaftar');
             $table->timestamps();
         });
     }

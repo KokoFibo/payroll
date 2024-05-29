@@ -1,20 +1,91 @@
 <div>
-    <p>is_registered: {{ $is_registered }}</p>
+    {{-- <p>is_registered: {{ $is_registered }}</p>
     <p>Show: {{ $show }}</p>
     <p>Gender: {{ $gender }}</p>
     <p>is_update: {{ $is_update }}</p>
-    <p>applicant_id: {{ $applicant_id }}</p>
-    @if (!$show)
-        <button class="bg-green-500 text-white px-3 py-2 rounded-xl" wire:click="register">Register</button>
-        <button class="bg-blue-500 text-white px-3 py-2 rounded-xl" wire:click="alreadyRegistered">Sudah Pernah
-            Register</button>
+    <p>applicant_id: {{ $applicant_id }}</p> --}}
+
+    @if ($showMenu)
+        <div class='h-screen flex  flex-col  justify-center items-center w-2/3 mx-auto gap-10'>
+            <div>
+                <h3 class="text-4xl font-bold text-center mb-5">Formulir Pendaftaran Karyawan Baru</h3>
+                <p class="text-lg mb-3">Selamat datang,</p>
+                <p class="text-lg">jika anda belum pernah mendaftar sebelumnya, silakan pilih menu
+                    "Register",</p>
+                <p class="text-lg">
+                    jika anda ingin merubah data atau mengupload file, silakan pilih menu "Sudah Pernah Register".
+                </p>
+                <p class="text-lg mb-3 mt-3">
+                    Silakan siapkan softcopy :
+                <ul>
+                    <li class="text-lg">1 Passfoto (jpg/png)</li>
+                    <li class="text-lg">2. KTP / Pasport (jpg/png)</li>
+                    <li class="text-lg"> 3. CV (pdf)</li>
+                    <li class="text-lg">4. Ijasah (pdf)</li>
+                </ul>
+
+
+
+
+                </p>
+
+            </div>
+
+            <div class="flex  lg:flex-row flex-col w-full justify-center items-center  gap-3">
+                <button
+                    class="text-lg lg:text-2xl hover:bg-green-700 bg-green-500 text-white px-3 py-2 rounded-xl w-full lg:h-20"
+                    wire:click="register">Register</button>
+                <button
+                    class="text-lg lg:text-2xl hover:bg-blue-700 bg-blue-500 text-white px-3 py-2 rounded-xl w-full lg:h-20"
+                    wire:click="alreadyRegistered">Sudah
+                    Pernah
+                    Register</button>
+            </div>
+        </div>
     @endif
 
-    @if ($is_registered)
-        <label for="">Email</label>
-        <input type="email" wire:model="registeredEmail">
-        <input type="password" wire:model="registeredPassword">
-        <button wire:click="submit">Submit</button>
+    @if ($is_registered && $showSubmit)
+        <div>
+            <div class="h-screen flex flex-col justify-center items-center bg-blue-100  px-3 ">
+                <div class="bg-gray-50 p-5 rounded-lg shadow-lg flex flex-col gap-5 w-full lg:w-1/4">
+                    <h3 class="text-xl py-3 text-center">Silakan login
+                        untuk
+                        merubah data
+                        anda</h3>
+                    <div>
+                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
+                                <input type="text" for="email" wire:model="registeredEmail"
+                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                            </div>
+                            @error('registeredEmail')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <input type="password" for="password" wire:model="registeredPassword"
+                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
+                            </div>
+                            @error('registeredPassword')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <button class="bg-blue-500 text-white py-2 rounded-lg lg:text-lg" wire:click="submit">Masuk</button>
+                </div>
+            </div>
+        </div>
     @endif
 
     @if ($show)
@@ -127,15 +198,15 @@
                                     class="text-red-500 ml-1">*</span></label>
                             <div class="flex w-full gap-3">
                                 <div class="flex w-1/2 items-center ps-4 border border-gray-200 rounded">
-                                    <input wire:model='gender' id="bordered-radio-1" type="radio" value="Laki-laki"
-                                        name="bordered-radio"
+                                    <input wire:model='gender' id="bordered-radio-1" type="radio"
+                                        value="Laki-laki" name="bordered-radio"
                                         class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                                     <label for="bordered-radio-1"
                                         class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Pria</label>
                                 </div>
                                 <div class="flex w-1/2 items-center ps-4 border border-gray-200 rounded">
-                                    <input wire:model='gender' id="bordered-radio-2" type="radio" value="Perempuan"
-                                        name="bordered-radio"
+                                    <input wire:model='gender' id="bordered-radio-2" type="radio"
+                                        value="Perempuan" name="bordered-radio"
                                         class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                                     <label for="bordered-radio-2"
                                         class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Wanita</label>
@@ -344,6 +415,12 @@
                                 </button>
                             @endif
                         </div>
+                        <div>
+                            <button type="button" wire:click='keluar'
+                                class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
+                                <span>Keluar</span>
+                            </button>
+                        </div>
                         <div role="status" wire:loading wire:target='save'>
                             <svg aria-hidden="true"
                                 class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -370,12 +447,18 @@
                 </form>
                 @if ($filenames)
                     @foreach ($filenames as $fn)
-                        @if ($file->getClientOriginalExtension() != 'pdf')
-                            <p class="m-3">{{ $fn->originalName }}</p>
-                            <button class="px-3 py-1 bg-red-500 text-white"
-                                wire:click="deleteFile('{{ $fn->filename }}')">delete</button>
-                            <img class="w-[400px]" src="{{ getUrl($fn->filename) }}" alt="">
-                        @endif
+                        <div class="lg:my-5 my-3 w-full lg:w-1/2">
+                            <div class="d-flex justify-content-between px-3 pb-2">
+                                <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ $fn->originalName }}</p>
+                                <button class="bg-red-500 py-0 px-3 text-white rounded-xl"
+                                    wire:click="deleteFile('{{ $fn->id }}')">Hapus</button>
+                            </div>
+                            @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                                <img class="w-full" src="{{ getUrl($fn->filename) }}" alt="">
+                            @else
+                                <iframe src="{{ getUrl($fn->filename) }}" width="100%" height="600px"></iframe>
+                            @endif
+                        </div>
                     @endforeach
                 @endif
             </div>

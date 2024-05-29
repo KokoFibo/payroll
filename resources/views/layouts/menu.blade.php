@@ -24,6 +24,16 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+            @if (Auth::user()->role == 5)
+                <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/dataapplicant" class="nav-link">
+                        <i class="nav-icon fa-solid fa-people-group"></i>
+                        <p>
+                            {{ __('Data Applicant') }}
+                        </p>
+                    </a>
+                </li>
+            @endif
             @if (Auth::user()->role > 4)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
@@ -147,6 +157,12 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'developer-dashboard' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/developer-dashboard" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Developer Dashboard') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/deletenoscan" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>

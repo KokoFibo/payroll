@@ -20,43 +20,65 @@ class Applicant extends Component
     public $files = [];
     public $filenames = [];
 
-    public $is_registered, $show, $registeredEmail, $registeredPassword, $is_update;
+    public $is_registered, $show, $showMenu, $showSubmit, $registeredEmail, $registeredPassword, $is_update;
     public $nama, $email, $password, $confirm_password, $hp, $telp, $tempat_lahir, $tgl_lahir, $gender;
     public $status_pernikahan, $golongan_darah, $agama, $etnis, $nama_contact_darurat;
     public $contact_darurat_1, $contact_darurat_2, $jenis_identitas, $no_identitas;
     public $alamat_identitas, $alamat_tinggal_sekarang;
     public $applicant_id, $originalName, $filename;
 
-    public function deleteFile($filename)
-    {
-        try {
-            $result = Storage::disk('google')->delete($filename);
-            $result2 = Storage::disk('public')->delete($filename);
-            dd($filename, $result2);
-            if ($result && $result2) {
-                // File was deleted successfully
-                $this->dispatch('success', message: 'File telah di delete');
 
-                return 'File deleted successfully.';
-            } else {
-                // File could not be deleted
-                // return 'Failed to delete file.';
-                $this->dispatch('errro', message: 'File GAGAL di delete');
+    public function deleteFile($id)
+    {
+        // $data = Applicantfile::where('filename', $filename)->first();
+        $data = Applicantfile::find($id);
+        if ($data != null) {
+
+
+            try {
+
+                // $result = Storage::disk('google')->delete($data->filename);
+                $result = Storage::disk('public')->delete($data->filename);
+                if ($result) {
+                    // File was deleted successfully
+                    $data->delete();
+                    $this->dispatch('success', message: 'File telah di delete');
+
+                    return 'File deleted successfully.';
+                } else {
+                    // File could not be deleted
+                    // return 'Failed to delete file.';
+
+
+                    $this->dispatch('error', message: 'File GAGAL di delete');
+                }
+            } catch (\Exception $e) {
+                // An error occurred while deleting the file
+                return 'An error occurred: ' . $e->getMessage();
             }
-        } catch (\Exception $e) {
-            // An error occurred while deleting the file
-            return 'An error occurred: ' . $e->getMessage();
+        } else {
+            $this->dispatch('error', message: 'File tidak ketemu');
         }
     }
 
     public function submit()
     {
-        // validate submit
-        // $data = Applicantdata::where('email', $this->registeredEmail)->where('password', $this->registeredPassword)->first();
-        $data = Applicantdata::where('email', 'kokofibo@gmail.com')->where('password', '898989')->first();
+
+        $this->validate([
+            'registeredEmail' => 'required|email',
+            'registeredPassword' => 'required|min:6',
+        ], [
+            'registeredEmail.required' => 'Email wajib diisi',
+            'registeredEmail.email' => 'Format email harus benar',
+            'registeredPassword.required' => 'Password wajib diisi',
+            'registeredPassword.min' => 'Password minimal 6 karakter',
+        ]);
+        $data = Applicantdata::where('email', $this->registeredEmail)->where('password', $this->registeredPassword)->first();
         if ($data != null) {
             $file_data = Applicantfile::where('id_karyawan', $data->applicant_id)->get();
+            // dd($file_data);
             $this->filenames = $file_data;
+            $this->showMenu = false;
             $this->show = true;
             //    ==============================
 
@@ -83,11 +105,12 @@ class Applicant extends Component
             $this->alamat_tinggal_sekarang = $data->alamat_tinggal_sekarang;
 
             //    ==============================
-
-
+            $this->showSubmit = false;
         } else {
-            dd('Email Salah atau password salah');
+            $this->dispatch('error', message: 'Email atau password salah');
+            $this->showSubmit = true;
         }
+        $this->is_update = true;
     }
 
 
@@ -170,13 +193,14 @@ class Applicant extends Component
                     $fileExension = $file->getClientOriginalExtension();
 
                     if ($fileExension != 'pdf') {
-                        $folder = 'Applicants/' . $this->applicant_id . '/' . random_int(1000, 9000) . '.' . $fileExension;
+                        $folder = 'Applicants/' . $this->applicant_id . '/' . random_int(100000, 900000) . '.' . $fileExension;
                         $manager = ImageManager::gd();
 
                         // resize gif image
                         $image = $manager
                             ->read($file)
                             ->scale(width: 800);
+
                         $imagedata = (string) $image->toJpeg();
 
                         // Storage::disk('google')->put($folder, $imagedata);
@@ -221,6 +245,8 @@ class Applicant extends Component
 
 
             ]);
+
+
             $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
         } else {
             // update data
@@ -261,15 +287,25 @@ class Applicant extends Component
                     ]);
                 }
             }
-            // if ($data->nama != $this->nama || $data->tgl_lahir != $this->tgl_lahir) {
-            //     $old_folder = 'Applicants/' . $this->applicant_id;
-            //     $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
-            //     $new_folder = 'Applicants/' . $new_applicant_id;
-            //     Storage::disk('public')->move($old_folder, $new_folder);
-            //     // Storage::disk('google')->move($old_folder, $new_folder);
+            if ($data->nama != $this->nama || $data->tgl_lahir != $this->tgl_lahir) {
+                $old_folder = 'Applicants/' . $this->applicant_id;
+                $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
+                $new_folder = 'Applicants/' . $new_applicant_id;
+                Storage::disk('public')->move($old_folder, $new_folder);
+                // Storage::disk('google')->move($old_folder, $new_folder);
 
-            //     $this->applicant_id = $new_applicant_id;
-            // }
+                $old_applicant_id = $this->applicant_id;
+                $this->applicant_id = $new_applicant_id;
+
+                // dd($old_applicant_id, $this->applicant_id, $new_folder);
+                // update data applicant files 
+                $data_file = Applicantfile::where('id_karyawan', $old_applicant_id)->get();
+                foreach ($data_file as $d) {
+                    $d->id_karyawan = $this->applicant_id;
+                    $d->filename = $new_folder . '/' . getFilename($d->filename);
+                    $d->save();
+                }
+            }
 
             $data->applicant_id = $this->applicant_id;
             $data->nama = titleCase($this->nama);
@@ -292,33 +328,56 @@ class Applicant extends Component
             $data->alamat_identitas = titleCase($this->alamat_identitas);
             $data->alamat_tinggal_sekarang = titleCase($this->alamat_tinggal_sekarang);
             $data->save();
+
+
+
+
+
             $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
         }
+        $this->files = [];
     }
 
     public function mount()
     {
         $this->is_registered = false;
         $this->show = false;
+        $this->showMenu = true;
         $this->is_update = false;
+        $this->showSubmit = false;
     }
 
     public function alreadyRegistered()
     {
+
         $this->is_registered = true;
-        $this->show = false;
+        $this->showMenu = false;
+        $this->showSubmit = true;
     }
     public function register()
     {
         $this->is_registered = false;
         $this->show = true;
+        $this->showMenu = false;
     }
+
+    public function keluar()
+    {
+        $this->reset();
+        $this->is_registered = false;
+        $this->show = false;
+        $this->showMenu = true;
+    }
+
+
 
     public function updatedIsRegistered()
     {
     }
     public function render()
     {
+        $file_data = Applicantfile::where('id_karyawan', $this->applicant_id)->get();
+        $this->filenames = $file_data;
         return view('livewire.applicant')->layout('layouts.newpolos');
     }
 }
