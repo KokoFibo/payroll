@@ -54,8 +54,42 @@
 
                     <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
+                    @if (!$show_arsip)
+                        <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
+                    @endif
                 </div>
             </div>
+            @if ($show_arsip)
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h3>File Arsip {{ $nama }}</h3>
+
+                    </div>
+                    <div class="card-body">
+                        @foreach ($personal_files as $fn)
+                            @if (strtolower(getFilenameExtension($fn->originalName)) == 'pdf')
+                                <li class="list-group-item ">
+                                    <h4> {{ $fn->originalName }}</h4>
+                                    <iframe class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" width="100%"
+                                        height="600px"></iframe>
+
+                                </li>
+                            @endif
+                        @endforeach
+                        @foreach ($personal_files as $key => $fn)
+                            @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                                <li class="list-group-item">
+                                    <div class="flex flex-col">
+                                        <h4> {{ $fn->originalName }}</h4>
+                                        <img class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" alt="">
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                        <button class="btn btn-dark" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Rules\FileSizeLimit;
 
 class Applicant extends Component
 {
@@ -137,8 +138,8 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
-            'files.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
-            'files.max' => 'Max file size 1Mb',
+            'files.*.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
+            'files.*.max' => 'Max file size 1Mb',
 
             'nama.min' => 'Nama minimal 5 karakter.',
             'password.min' => 'Password minimal 6 karakter.',
@@ -148,7 +149,10 @@ class Applicant extends Component
             'contact_darurat_2.min' => 'Kontak Darurat 2 minimal 10 karakter.',
             'confirm_password.min' => 'Konfirmasi Password minimal 6 karakter.',
             'confirm_password.same' => 'Konfirmasi Password Berbeda',
-            'email.unique' => 'Email ini sudah terdaftar dalam database'
+            'email.unique' => 'Email ini sudah terdaftar dalam database',
+            'tgl_lahir.date' => 'Harus berupa format tanggal yang bear.',
+            'tgl_lahir.before' => 'Tanggal Lahir anda salah.',
+
         ];
     }
 
@@ -162,7 +166,7 @@ class Applicant extends Component
             'hp' => 'required|min:10',
             'telp' => 'required|min:9',
             'tempat_lahir' => 'required',
-            'tgl_lahir' => 'required',
+            'tgl_lahir' => 'date|before:today|required',
             'gender' => 'required',
             'status_pernikahan' => 'required',
             'golongan_darah' => 'required',
@@ -175,11 +179,18 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
-            'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+            // 'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
             // 'files' => 'image|max:1024'
         ];
     }
 
+    public function updatedFiles()
+    {
+        $this->validate([
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+        ]);
+    }
     public function save()
     {
         $validated = $this->validate();
@@ -201,7 +212,8 @@ class Applicant extends Component
                             ->read($file)
                             ->scale(width: 800);
 
-                        $imagedata = (string) $image->toJpeg();
+                        // $imagedata = (string) $image->toJpeg();
+                        $imagedata = (string) $image->toWebp(60);
 
                         // Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);
@@ -269,7 +281,8 @@ class Applicant extends Component
                         $image = $manager
                             ->read($file)
                             ->scale(width: 800);
-                        $imagedata = (string) $image->toJpeg();
+                        // $imagedata = (string) $image->toJpeg();
+                        $imagedata = (string) $image->toWebp(60);
 
                         // Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);
@@ -287,7 +300,7 @@ class Applicant extends Component
                     ]);
                 }
             }
-            if ($data->nama != $this->nama || $data->tgl_lahir != $this->tgl_lahir) {
+            if (strtolower($data->nama) != strtolower($this->nama) || $data->tgl_lahir != $this->tgl_lahir) {
                 $old_folder = 'Applicants/' . $this->applicant_id;
                 $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
                 $new_folder = 'Applicants/' . $new_applicant_id;

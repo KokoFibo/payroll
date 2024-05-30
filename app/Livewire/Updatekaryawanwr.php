@@ -8,7 +8,10 @@ use App\Models\Karyawan;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use App\Livewire\Karyawanindexwr;
+use App\Models\Applicantfile;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
 
 class Updatekaryawanwr extends Component
@@ -22,12 +25,22 @@ class Updatekaryawanwr extends Component
     public  $potongan_kesehatan, $update;
     public  $no_npwp, $ptkp, $status_off;
     public $kontak_darurat, $hp1, $hp2;
-    public $tanggungan;
+    public $tanggungan, $id_file_karyawan;
+    public $show_arsip, $personal_files;
 
+    public function arsip()
+    {
+        $this->show_arsip = true;
+    }
 
+    public function tutup_arsip()
+    {
+        $this->show_arsip = false;
+    }
 
     public function mount($id)
     {
+        $this->show_arsip = false;
         $this->status_off = false;
         $this->update = true;
         $this->id = $id;
@@ -95,6 +108,10 @@ class Updatekaryawanwr extends Component
         $this->tanggungan = $data->tanggungan;
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
+        $this->id_file_karyawan = $data->id_file_karyawan;
+
+        // data Applicant files
+        $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
     }
 
     // Cara benerin email unique agar bisa di update
@@ -184,6 +201,28 @@ class Updatekaryawanwr extends Component
         $this->tanggal_lahir = date('Y-m-d', strtotime($this->tanggal_lahir));
         $this->tanggal_bergabung = date('Y-m-d', strtotime($this->tanggal_bergabung));
         $data = Karyawan::find($this->id);
+
+        if ((strtolower($data->nama) != strtolower($this->nama)) || ($data->tanggal_lahir != $this->tanggal_lahir)) {
+            // rubah folder storage
+            $old_folder = 'Applicants/' . $data->id_file_karyawan;
+            $new_applicant_id = makeApplicationId($this->nama, $this->tanggal_lahir);
+            $new_folder = 'Applicants/' . $new_applicant_id;
+            Storage::disk('public')->move($old_folder, $new_folder);
+            // Storage::disk('google')->move($old_folder, $new_folder);
+            $this->id_file_karyawan = $new_applicant_id;
+            // rubah id karyawan di appplicantfile
+
+            $data_files = Applicantfile::where('id_karyawan', $data->id_file_karyawan)->get();
+            if ($data_files != null) {
+                foreach ($data_files as $df) {
+                    $df->id_karyawan = $new_applicant_id;
+                    $df->filename = $new_folder . '/' . getFilename($df->filename);
+                    $df->save();
+                }
+            } else {
+                dd('not found', $data->id_file_karyawan);
+            }
+        }
         $data->id_karyawan = $this->id_karyawan;
         $data->nama = titleCase($this->nama);
         $data->email = trim($this->email, ' ');
@@ -250,12 +289,11 @@ class Updatekaryawanwr extends Component
         $data->tanggungan = $this->tanggungan;
         $data->no_npwp = $this->no_npwp;
         $data->ptkp = $this->ptkp;
-
-
-
-
         $data->denda = $this->denda;
+        $data->id_file_karyawan = $this->id_file_karyawan;
+
         $data->save();
+
 
         $dataUser = User::where('username', $data->id_karyawan)->first();
         // if ( $dataUser->id != null ) {
