@@ -54,7 +54,9 @@
 
                     <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
-                    <button wire:click="arsip" class="btn btn-dark mx-3">{{ __('Lihat File Arsip') }}</button>
+                    @if (!$show_arsip)
+                        <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
+                    @endif
                 </div>
             </div>
             @if ($show_arsip)
@@ -84,7 +86,7 @@
                                 </li>
                             @endif
                         @endforeach
-                        <button class="btn btn-dark" wire:click='tutup_arsip'>Close</button>
+                        <button class="btn btn-dark" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
                     </div>
                 </div>
             @endif

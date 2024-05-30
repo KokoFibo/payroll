@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Rules\FileSizeLimit;
 
 class Applicant extends Component
 {
@@ -137,8 +138,8 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
-            'files.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
-            'files.max' => 'Max file size 1Mb',
+            'files.*.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
+            'files.*.max' => 'Max file size 1Mb',
 
             'nama.min' => 'Nama minimal 5 karakter.',
             'password.min' => 'Password minimal 6 karakter.',
@@ -178,11 +179,18 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
-            'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+            // 'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
             // 'files' => 'image|max:1024'
         ];
     }
 
+    public function updatedFiles()
+    {
+        $this->validate([
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+        ]);
+    }
     public function save()
     {
         $validated = $this->validate();
@@ -204,7 +212,8 @@ class Applicant extends Component
                             ->read($file)
                             ->scale(width: 800);
 
-                        $imagedata = (string) $image->toJpeg();
+                        // $imagedata = (string) $image->toJpeg();
+                        $imagedata = (string) $image->toWebp(60);
 
                         // Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);
@@ -272,7 +281,8 @@ class Applicant extends Component
                         $image = $manager
                             ->read($file)
                             ->scale(width: 800);
-                        $imagedata = (string) $image->toJpeg();
+                        // $imagedata = (string) $image->toJpeg();
+                        $imagedata = (string) $image->toWebp(60);
 
                         // Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);

@@ -387,12 +387,12 @@
 
                             <label class="block mb-2 text-sm font-medium text-gray-900" for="upload_files">Upload
                                 Dokumen
-                                (hanya menerima format jpg, png, pdf, zip, rar)<span
-                                    class="text-red-500 ml-1">*</span></label>
+                                (hanya menerima format jpg, png, pdf)<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='files' multiple
                                 class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                                 id="upload_files" type="file">
-                            @error('files')
+
+                            @error('files.*')
                                 <div class="text-red-500">
                                     {{ $message }}
                                 </div>
@@ -434,7 +434,7 @@
                             </svg>
                         </div>
                     </div>
-                    @if ($files)
+                    {{-- @if ($files)
                         @foreach ($files as $file)
                             @if ($file->getClientOriginalExtension() != 'pdf')
                                 <div class='mb-10'>
@@ -442,7 +442,7 @@
                                 </div>
                             @endif
                         @endforeach
-                    @endif
+                    @endif --}}
 
                 </form>
                 @if ($filenames)
