@@ -385,9 +385,12 @@
                         </div>
                         <div>
 
-                            <label class="block mb-2 text-sm font-medium text-gray-900" for="upload_files">Upload
-                                Dokumen
-                                (hanya menerima format jpg, png, pdf)<span class="text-red-500 ml-1">*</span></label>
+                            <label class="block mb-2 text-sm font-medium text-gray-900" for="upload_files">
+                                <p>Upload Dokumen <span class="text-red-500 ml-1">*</span> (hanya menerima format jpg,
+                                    png dan pdf)</p>
+                                <p>Khusus untuk file PDF, tidak boleh melebihi 1,024Kb</p>
+
+                            </label>
                             <input wire:model='files' multiple
                                 class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                                 id="upload_files" type="file">
