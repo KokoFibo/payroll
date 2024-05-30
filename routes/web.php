@@ -80,6 +80,11 @@ Route::middleware(['guest'])->group(function () {
 // buka route ini untuk kerja applicant
 Route::get('/applicant', Applicant::class);
 
+Route::get('generate', function () {
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    echo 'ok';
+});
+
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
     Route::middleware(['User'])->group(function () {
