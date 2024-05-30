@@ -20,8 +20,8 @@
                 <ul>
                     <li class="text-lg">1 Passfoto (jpg/png)</li>
                     <li class="text-lg">2. KTP / Pasport (jpg/png)</li>
-                    <li class="text-lg"> 3. CV (pdf)</li>
-                    <li class="text-lg">4. Ijasah (pdf)</li>
+                    <li class="text-lg"> 3. CV (jpg/png/pdf)</li>
+                    <li class="text-lg">4. Ijasah (jpg/png/pdf)</li>
                 </ul>
 
 
