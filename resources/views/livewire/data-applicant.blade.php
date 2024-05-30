@@ -63,7 +63,8 @@
                                             btn-sm btn-warning"
                                                 wire:click='show({{ $d->id }})'>Show</button>
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='delete({{ $d->id }})'>Delete</button>
+                                                wire:click='delete({{ $d->id }})'
+                                                wire:confirm='Apakah data applicant ini akan di delete?'>Delete</button>
                                             <button class="btn btn-sm btn-success"
                                                 wire:click='diterima({{ $d->id }})'>Diterima</button>
                                             <button class="btn btn-sm btn-primary"

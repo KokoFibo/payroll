@@ -148,7 +148,10 @@ class Applicant extends Component
             'contact_darurat_2.min' => 'Kontak Darurat 2 minimal 10 karakter.',
             'confirm_password.min' => 'Konfirmasi Password minimal 6 karakter.',
             'confirm_password.same' => 'Konfirmasi Password Berbeda',
-            'email.unique' => 'Email ini sudah terdaftar dalam database'
+            'email.unique' => 'Email ini sudah terdaftar dalam database',
+            'tgl_lahir.date' => 'Harus berupa format tanggal yang bear.',
+            'tgl_lahir.before' => 'Tanggal Lahir anda salah.',
+
         ];
     }
 
@@ -162,7 +165,7 @@ class Applicant extends Component
             'hp' => 'required|min:10',
             'telp' => 'required|min:9',
             'tempat_lahir' => 'required',
-            'tgl_lahir' => 'required',
+            'tgl_lahir' => 'date|before:today|required',
             'gender' => 'required',
             'status_pernikahan' => 'required',
             'golongan_darah' => 'required',
@@ -287,7 +290,7 @@ class Applicant extends Component
                     ]);
                 }
             }
-            if ($data->nama != $this->nama || $data->tgl_lahir != $this->tgl_lahir) {
+            if (strtolower($data->nama) != strtolower($this->nama) || $data->tgl_lahir != $this->tgl_lahir) {
                 $old_folder = 'Applicants/' . $this->applicant_id;
                 $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
                 $new_folder = 'Applicants/' . $new_applicant_id;

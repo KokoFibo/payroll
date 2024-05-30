@@ -78,7 +78,7 @@ Route::middleware(['guest'])->group(function () {
 // Route::post('/applicant/register', [ApplicantController::class, 'register']);
 
 // buka route ini untuk kerja applicant
-// Route::get('/applicant', Applicant::class);
+Route::get('/applicant', Applicant::class);
 
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
