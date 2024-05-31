@@ -49,7 +49,6 @@
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
-
                 </div>
                 {{-- Show Errors --}}
                 <ul>

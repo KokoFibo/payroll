@@ -113,8 +113,7 @@
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email<span
                                     class="text-red-500 ml-1">*</span></label>
                             <input wire:model='email' type="email" id="email"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('email')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -125,8 +124,7 @@
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password<span
                                     class="text-red-500 ml-1">*</span></label>
                             <input wire:model='password' type="password" id="password"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('password')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -137,8 +135,7 @@
                             <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900">Confirm
                                 Password<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='confirm_password' type="password" id="confirm_password"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('confirm_password')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -149,8 +146,7 @@
                             <label for="hp" class="block mb-2 text-sm font-medium text-gray-900">Handphone<span
                                     class="text-red-500 ml-1">*</span></label>
                             <input wire:model='hp' type="text" id="hp"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                placeholder="087812345678" required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('hp')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -172,8 +168,7 @@
                             <label for="tempat_lahir" class="block mb-2 text-sm font-medium text-gray-900">Kota
                                 Kelahiran<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='tempat_lahir' type="text" id="tempat_lahir"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('tempat_lahir')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -184,8 +179,7 @@
                             <label for="tgl_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tanggal
                                 Lahir<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='tgl_lahir' type="date" id="tgl_lahir"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('tgl_lahir')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -297,8 +291,7 @@
                                 Kontak
                                 Darurat<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='nama_contact_darurat' type="text" id="nama_contact_darurat"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('nama_contact_darurat')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -310,8 +303,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900">Handphone
                                 Kontak Darurat 1<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='contact_darurat_1' type="text" id="contact_darurat_1"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('contact_darurat_1')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -349,8 +341,7 @@
                             <label for="no_identitas" class="block mb-2 text-sm font-medium text-gray-900">Nomor
                                 Identitas<span class="text-red-500 ml-1">*</span></label>
                             <input wire:model='no_identitas' type="text" id="no_identitas"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('no_identitas')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -383,9 +374,9 @@
                         </div>
                         <div>
 
-                            <label class="block mb-2 text-sm font-medium text-gray-900" for="upload_files">
-                                <p>Upload Dokumen <span class="text-red-500 ml-1">*</span> (hanya menerima format jpg,
-                                    png dan pdf)</p>
+                            <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                                <p>Upload Dokumen <span class="text-red-500 ml-1">*</span> ( hanya menerima format jpg,
+                                    png dan pdf )</p>
                                 <p>Khusus untuk file PDF, tidak boleh melebihi 1,024Kb</p>
 
                             </label>
@@ -402,7 +393,7 @@
                         </div>
 
                     </div>
-                    <div class="flex justify-evenly w-full lg:w-1/2 mb-3">
+                    <div class="flex justify-evenly w-full lg:w-1/2 ">
                         <div role="status" wire:loading wire:target='save'>
                             <div class="flex justify-evenly items-center w-full mb-2 gap-5 px-3">
                                 <p class='lg:text-xl text-normal'>Mohon ditunggu sampai proses loading selesai</p>
@@ -421,8 +412,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-evenly w-full lg:w-1/2">
-
+                    <div class='px-3 w-full lg:w-1/2 mt-3'>
+                        <ul class="list-group">
+                            @foreach ($errors->all() as $error)
+                                <li class="list-group-item"><span class='text-danger'>* {{ $error }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="flex justify-evenly w-full lg:w-1/2 mt-3">
                         <div class="md:px-0 px-3">
                             @if ($is_update == false)
                                 <button type="submit"
