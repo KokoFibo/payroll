@@ -87,7 +87,7 @@
                                                     wire:click='show({{ $d->id }})'>Show</button>
                                                 <button class="btn btn-sm btn-danger"
                                                     wire:click='delete({{ $d->id }})'
-                                                    wire:confirm='Apakah data applicant ini akan di delete?'>Delete</button>
+                                                    wire:confirm='Apakah yakin data applicant ini akan di delete?'>Delete</button>
 
                                                 <button class="btn btn-sm btn-primary"
                                                     wire:click='rubahstatus({{ $d->id }}, {{ $d->status }})'>Rubah
