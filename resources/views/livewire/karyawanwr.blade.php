@@ -18,15 +18,18 @@
                         <button class="nav-link " id="nav-identitas-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-identitas" type="button" role="tab" aria-controls="nav-identitas"
                             aria-selected="false"><span class="fs-5">{{ __('Identitas') }}</span></button>
+
                         <button class="nav-link " id="nav-kepegawaian-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-kepegawaian" type="button" role="tab"
                             aria-controls="nav-kepegawaian" aria-selected="false"><span
                                 class="fs-5">{{ __('Data Kepegawaian') }}</span></button>
+
                         @if (Auth::user()->role != 1)
                             <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
                                 aria-selected="false"><span class="fs-5">{{ __('Payroll') }}</span></button>
                         @endif
+
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -46,7 +49,6 @@
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
-
 
                 </div>
                 <div class="d-flex gap-3 pb-3 px-3">

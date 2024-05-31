@@ -6,16 +6,22 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
+use App\Rules\FileSizeLimit;
 use Livewire\Attributes\Url;
-use App\Livewire\Karyawanindexwr;
 use App\Models\Applicantfile;
-use Google\Service\YouTube\ThirdPartyLinkStatus;
+use Livewire\WithFileUploads;
+use App\Livewire\Karyawanindexwr;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Updatekaryawanwr extends Component
 {
+    use WithFileUploads;
+
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
@@ -27,6 +33,98 @@ class Updatekaryawanwr extends Component
     public $kontak_darurat, $hp1, $hp2;
     public $tanggungan, $id_file_karyawan;
     public $show_arsip, $personal_files;
+    public $files = [];
+    public $filenames = [];
+
+    public function updatedFiles()
+    {
+        $this->validate([
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+        ]);
+    }
+
+    public function deleteFile($id)
+    {
+        // $data = Applicantfile::where('filename', $filename)->first();
+        $data = Applicantfile::find($id);
+        if ($data != null) {
+            try {
+                $result = Storage::disk('google')->delete($data->filename);
+                $result = Storage::disk('public')->delete($data->filename);
+                if ($result) {
+                    // File was deleted successfully
+                    $data->delete();
+                    $this->dispatch('success', message: 'File telah di delete');
+
+                    return 'File deleted successfully.';
+                } else {
+                    // File could not be deleted
+                    // return 'Failed to delete file.';
+
+
+                    $this->dispatch('error', message: 'File GAGAL di delete');
+                }
+            } catch (\Exception $e) {
+                // An error occurred while deleting the file
+                return 'An error occurred: ' . $e->getMessage();
+            }
+        } else {
+            $this->dispatch('error', message: 'File tidak ketemu');
+        }
+    }
+
+    public function uploadfile()
+    {
+        $this->validate([
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+        ], [
+            'files.*.mimes' => ['Hanya menerima file png, jpg, jpeg dan pdf'],
+        ]);
+
+
+        if ($this->files) {
+            if (!$this->id_file_karyawan) {
+                $this->id_file_karyawan = makeApplicationId($this->nama, $this->tanggal_lahir);
+                $data = Karyawan::find($this->id);
+                $data->id_file_karyawan = $this->id_file_karyawan;
+                $data->save();
+            }
+
+            foreach ($this->files as $file) {
+                $folder = 'Applicants/' . $this->id_file_karyawan;
+                $fileExension = $file->getClientOriginalExtension();
+
+                if ($fileExension != 'pdf') {
+                    $folder = 'Applicants/' . $this->id_file_karyawan . '/' . random_int(1000, 9000) . '.' . $fileExension;
+
+                    $manager = ImageManager::gd();
+
+                    // resize gif image
+                    $image = $manager
+                        ->read($file)
+                        ->scale(width: 800);
+                    // $imagedata = (string) $image->toJpeg();
+                    $imagedata = (string) $image->toWebp(60);
+
+                    Storage::disk('google')->put($folder, $imagedata);
+                    Storage::disk('public')->put($folder, $imagedata);
+                    $this->path = $folder;
+                } else {
+                    $this->path = Storage::disk('google')->put($folder, $file);
+                    $this->path = Storage::disk('public')->put($folder, $file);
+                }
+
+                $this->originalFilename = $file->getClientOriginalName();
+                Applicantfile::create([
+                    'id_karyawan' => $this->id_file_karyawan,
+                    'originalName' => $this->originalFilename,
+                    'filename' => $this->path,
+                ]);
+            }
+            $this->files = [];
+            $this->dispatch('success', message: 'file berhasil di upload');
+        }
+    }
 
     public function arsip()
     {
@@ -202,27 +300,28 @@ class Updatekaryawanwr extends Component
         $this->tanggal_bergabung = date('Y-m-d', strtotime($this->tanggal_bergabung));
         $data = Karyawan::find($this->id);
 
-        if ((strtolower($data->nama) != strtolower($this->nama)) || ($data->tanggal_lahir != $this->tanggal_lahir)) {
-            // rubah folder storage
-            $old_folder = 'Applicants/' . $data->id_file_karyawan;
-            $new_applicant_id = makeApplicationId($this->nama, $this->tanggal_lahir);
-            $new_folder = 'Applicants/' . $new_applicant_id;
-            Storage::disk('public')->move($old_folder, $new_folder);
-            // Storage::disk('google')->move($old_folder, $new_folder);
-            $this->id_file_karyawan = $new_applicant_id;
-            // rubah id karyawan di appplicantfile
+        // Ini untuk merubah nama folder menyesuaikan dengan nama dan tanggal lahir yang dirubah
+        // if ((strtolower($data->nama) != strtolower($this->nama)) || ($data->tanggal_lahir != $this->tanggal_lahir)) {
+        //     // rubah folder storage
+        //     $old_folder = 'Applicants/' . $data->id_file_karyawan;
+        //     $new_applicant_id = makeApplicationId($this->nama, $this->tanggal_lahir);
+        //     $new_folder = 'Applicants/' . $new_applicant_id;
+        //     Storage::disk('public')->move($old_folder, $new_folder);
+        //     // Storage::disk('google')->move($old_folder, $new_folder);
+        //     $this->id_file_karyawan = $new_applicant_id;
+        //     // rubah id karyawan di appplicantfile
 
-            $data_files = Applicantfile::where('id_karyawan', $data->id_file_karyawan)->get();
-            if ($data_files != null) {
-                foreach ($data_files as $df) {
-                    $df->id_karyawan = $new_applicant_id;
-                    $df->filename = $new_folder . '/' . getFilename($df->filename);
-                    $df->save();
-                }
-            } else {
-                dd('not found', $data->id_file_karyawan);
-            }
-        }
+        //     $data_files = Applicantfile::where('id_karyawan', $data->id_file_karyawan)->get();
+        //     if ($data_files != null) {
+        //         foreach ($data_files as $df) {
+        //             $df->id_karyawan = $new_applicant_id;
+        //             $df->filename = $new_folder . '/' . getFilename($df->filename);
+        //             $df->save();
+        //         }
+        //     } else {
+        //         dd('not found', $data->id_file_karyawan);
+        //     }
+        // }
         $data->id_karyawan = $this->id_karyawan;
         $data->nama = titleCase($this->nama);
         $data->email = trim($this->email, ' ');
@@ -322,6 +421,7 @@ class Updatekaryawanwr extends Component
 
     public function render()
     {
+        $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
 
         return view('livewire.updatekaryawanwr')
             ->layout('layouts.appeloe');
