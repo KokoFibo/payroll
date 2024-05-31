@@ -17,6 +17,33 @@ class DataApplicant extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $show_data, $show_table, $personal_data, $personal_files;
+    public $id_status, $is_rubah_status, $status, $modal_show;
+
+    public function cancelUpdateStatus()
+    {
+        $this->is_rubah_status = false;
+    }
+
+
+    public function rubah()
+    {
+        $data = Applicantdata::find($this->id_status);
+        $data->status = $this->status;
+        $data->save();
+        if ($this->status == 8) {
+            $this->diterima($this->id_status);
+        }
+        $this->dispatch('success', message: 'Status sudah berhasil di rubah');
+        $this->is_rubah_status = false;
+    }
+
+    public function rubahstatus($id, $status)
+    {
+        $this->is_rubah_status = true;
+        $this->status = $status;
+        $this->id_status = $id;
+        $this->modal_show = true;
+    }
 
     public function diterima($id)
     {
@@ -62,7 +89,7 @@ class DataApplicant extends Component
         ]);
 
         // hapus data applicant
-        $dataApplicant->delete();
+        // $dataApplicant->delete();
 
 
         // $dataApplicant->status_karyawan = $this->status_karyawan;
@@ -79,6 +106,8 @@ class DataApplicant extends Component
     {
         $this->show_table = true;
         $this->show_data = false;
+        $this->is_rubah_status = false;
+        $this->modal_show = false;
     }
 
 

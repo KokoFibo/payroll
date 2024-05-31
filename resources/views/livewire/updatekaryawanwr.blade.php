@@ -101,7 +101,7 @@
                     @if (!$show_arsip)
                         <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
                     @else
-                        <button class="btn btn-dark" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                        <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
                     @endif
                 </div>
             </div>
@@ -113,56 +113,62 @@
                         <h3>File Arsip {{ $nama }}</h3>
                     </div>
                     <div class="card-body">
-                        @foreach ($personal_files as $fn)
-                            @if (strtolower(getFilenameExtension($fn->originalName)) == 'pdf')
-                                {{-- <li class="list-group-item "> --}}
-                                <div class="d-flex flex-row justify-content-between align-items-center">
-                                    <h4> {{ $fn->originalName }}</h4>
-                                    <button class="btn btn-danger"
-                                        wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
-                                    <div wire:loading wire:target='deleteFile'>
-                                        <div class="text-center">
-                                            <h5>Mohon tunggu sampai proses delete selesai</h5>
-                                            <div class="spinner-border text-dark mt-2" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        @if ($personal_files->isNotEmpty())
 
-                                </div>
-                                <div>
-                                    <iframe class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" width="100%"
-                                        height="600px"></iframe>
-                                </div>
 
-                                {{-- </li> --}}
-                            @endif
-                        @endforeach
-                        @foreach ($personal_files as $key => $fn)
-                            @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                                {{-- <li class="list-group-item"> --}}
-                                <div class="d-flex flex-row gap-5 align-items-center">
-                                    <div class="flex flex-col">
+                            @foreach ($personal_files as $fn)
+                                @if (strtolower(getFilenameExtension($fn->originalName)) == 'pdf')
+                                    {{-- <li class="list-group-item "> --}}
+                                    <div class="d-flex flex-row justify-content-between align-items-center">
                                         <h4> {{ $fn->originalName }}</h4>
+                                        <button class="btn btn-danger"
+                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
+                                        <div wire:loading wire:target='deleteFile'>
+                                            <div class="text-center">
+                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
+                                                <div class="spinner-border text-dark mt-2" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
 
-
-                                        <img class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" alt="">
                                     </div>
-                                    <button class="btn btn-danger"
-                                        wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
-                                    <div wire:loading wire:target='deleteFile'>
-                                        <div class="text-center">
-                                            <h5>Mohon tunggu sampai proses delete selesai</h5>
-                                            <div class="spinner-border text-dark mt-2" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                    <div>
+                                        <iframe class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" width="100%"
+                                            height="600px"></iframe>
+                                    </div>
+
+                                    {{-- </li> --}}
+                                @endif
+                            @endforeach
+                            @foreach ($personal_files as $key => $fn)
+                                @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                                    {{-- <li class="list-group-item"> --}}
+                                    <div class="d-flex flex-row gap-5 align-items-center">
+                                        <div class="flex flex-col">
+                                            <h4> {{ $fn->originalName }}</h4>
+
+
+                                            <img class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" alt="">
+                                        </div>
+                                        <button class="btn btn-danger"
+                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
+                                        <div wire:loading wire:target='deleteFile'>
+                                            <div class="text-center">
+                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
+                                                <div class="spinner-border text-dark mt-2" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                {{-- </li> --}}
-                            @endif
-                        @endforeach
-                        <button class="btn btn-dark" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                                    {{-- </li> --}}
+                                @endif
+                            @endforeach
+                            <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                        @else
+                            <h3>File tidak ditemukan</h3>
+                        @endif
                     </div>
                 </div>
             @endif

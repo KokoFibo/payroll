@@ -254,8 +254,7 @@ class Applicant extends Component
                 'no_identitas' => $this->no_identitas,
                 'alamat_identitas' => titleCase($this->alamat_identitas),
                 'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
-
-
+                'status' => 1
             ]);
 
 

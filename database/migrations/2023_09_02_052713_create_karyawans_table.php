@@ -71,7 +71,7 @@ return new class extends Migration
             $table->string('hp1')->nullable();
             $table->string('hp1')->nullable();
             $table->integer('tanggungan')->nullable();
-            $table->integer('id_file_karyawan')->nullable();
+            $table->string('id_file_karyawan')->nullable();
 
 
             $table->timestamps();

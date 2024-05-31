@@ -13,6 +13,72 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function getStatusColor($kode_status)
+{
+
+    $status_color = '';
+    switch ($kode_status) {
+        case 1:
+            $status_color = 'text-bg-primary';
+            break;
+        case 2:
+            $status_color = 'text-bg-secondary';
+            break;
+        case 3:
+            $status_color = 'text-warning';
+            break;
+        case 4:
+            $status_color = 'text-bg-danger';
+            break;
+        case 5:
+            $status_color = 'text-bg-dark';
+            break;
+        case 6:
+            $status_color = 'text-bg-warning';
+            break;
+        case 7:
+            $status_color = 'text-bg-info';
+            break;
+        case 8:
+            $status_color = 'text-bg-success';
+            break;
+    }
+    return $status_color;
+}
+function getNamaStatus($kode_status)
+{
+
+    $nama_status = '';
+    switch ($kode_status) {
+        case 1:
+            $nama_status = 'Melamar';
+            break;
+        case 2:
+            $nama_status = 'Sedang Komunikasi';
+            break;
+        case 3:
+            $nama_status = 'Psikotest';
+            break;
+        case 4:
+            $nama_status = 'Interview';
+            break;
+        case 5:
+            $nama_status = 'Ditolak';
+            break;
+        case 6:
+            $nama_status = 'Cadangan';
+            break;
+        case 7:
+            $nama_status = 'Onboarding';
+            break;
+        case 8:
+            $nama_status = 'Diterima';
+            break;
+    }
+    return $nama_status;
+}
+
+
 function getFilenameExtension($filename)
 {
 
