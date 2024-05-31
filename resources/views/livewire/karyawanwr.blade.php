@@ -51,6 +51,12 @@
                     </div>
 
                 </div>
+                {{-- Show Errors --}}
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li><span class='text-danger'>{{ $error }}</span></li>
+                    @endforeach
+                </ul>
                 <div class="d-flex gap-3 pb-3 px-3">
                     <button wire:click="save"
                         class="btn btn-primary mx-3 nightowl-daylight">{{ __('Save') }}</button>

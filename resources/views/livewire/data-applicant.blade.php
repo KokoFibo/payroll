@@ -150,8 +150,8 @@
                         <li class="list-group-item">{{ $personal_data->status }}</li>
                         @foreach ($personal_files as $f)
                             @if (strtolower(getFilenameExtension($f->originalName)) == 'pdf')
-                                <li class="list-group-item"><button
-                                        class="btn btn-success">{{ $f->originalName }}</button>
+                                <li class="list-group-item">
+                                    <div>{{ $f->originalName }}</div>
                                     <iframe class="my-3 rounded-4" src="{{ getUrl($f->filename) }}" width="100%"
                                         height="600px"></iframe>
 
