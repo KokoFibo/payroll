@@ -1,7 +1,7 @@
 <div>
-    <p>is_rubah_status = {{ $is_rubah_status }}</p>
+    {{-- <p>is_rubah_status = {{ $is_rubah_status }}</p>
     <p>status = {{ $status }}</p>
-    <p>id_status : {{ $id_status }}</p>
+    <p>id_status : {{ $id_status }}</p> --}}
     <div class="p-3">
         <div class="card">
             <div class="card-header">
@@ -152,7 +152,8 @@
                             @if (strtolower(getFilenameExtension($f->originalName)) == 'pdf')
                                 <li class="list-group-item"><button
                                         class="btn btn-success">{{ $f->originalName }}</button>
-                                    <iframe src="{{ getUrl($f->filename) }}" width="100%" height="600px"></iframe>
+                                    <iframe class="my-3 rounded-4" src="{{ getUrl($f->filename) }}" width="100%"
+                                        height="600px"></iframe>
 
                                 </li>
                             @endif
@@ -162,7 +163,7 @@
                                 <li class="list-group-item">
                                     <div class="flex flex-col">
                                         <div> {{ $fn->originalName }}</div>
-                                        <img class="my-3" src="{{ getUrl($fn->filename) }}" alt="">
+                                        <img class="my-3 rounded-4" src="{{ getUrl($fn->filename) }}" alt="">
                                     </div>
                                 </li>
                             @endif

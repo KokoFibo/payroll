@@ -134,8 +134,8 @@
 
                                     </div>
                                     <div>
-                                        <iframe class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" width="100%"
-                                            height="600px"></iframe>
+                                        <iframe class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
+                                            width="100%" height="600px"></iframe>
                                     </div>
 
                                     {{-- </li> --}}
@@ -149,7 +149,8 @@
                                             <h4> {{ $fn->originalName }}</h4>
 
 
-                                            <img class="mt-1 mb-3" src="{{ getUrl($fn->filename) }}" alt="">
+                                            <img class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
+                                                alt="">
                                         </div>
                                         <button class="btn btn-danger"
                                             wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
