@@ -118,7 +118,7 @@ Route::middleware(['auth'])->group(function () {
             // Route::get('/karyawanupdate', Updatekaryawanwr::class)->name('karyawanupdate');
             Route::get('/karyawanindex', Karyawanindexwr::class)->name('karyawanindex');
             // Route::resource('karyawan', KaryawanController::class);
-            Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+            // Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
             // Route::get('/karyawan/hapus/{$id}', [KaryawanController::class,'hapus']);
             Route::delete('/karyawan/{id}/destroy', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
             Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');

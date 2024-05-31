@@ -69,7 +69,7 @@ return new class extends Migration
             $table->date('tanggal_blacklist')->nullable();
             $table->string('kontak_darurat')->nullable();
             $table->string('hp1')->nullable();
-            $table->string('hp1')->nullable();
+            $table->string('hp2')->nullable();
             $table->integer('tanggungan')->nullable();
             $table->integer('id_file_karyawan')->nullable();
 

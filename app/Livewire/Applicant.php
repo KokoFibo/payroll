@@ -38,7 +38,7 @@ class Applicant extends Component
 
             try {
 
-                // $result = Storage::disk('google')->delete($data->filename);
+                $result = Storage::disk('google')->delete($data->filename);
                 $result = Storage::disk('public')->delete($data->filename);
                 if ($result) {
                     // File was deleted successfully
@@ -215,11 +215,11 @@ class Applicant extends Component
                         // $imagedata = (string) $image->toJpeg();
                         $imagedata = (string) $image->toWebp(60);
 
-                        // Storage::disk('google')->put($folder, $imagedata);
+                        Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);
                         $this->path = $folder;
                     } else {
-                        // $this->path = Storage::disk('google')->put($folder, $file);
+                        $this->path = Storage::disk('google')->put($folder, $file);
                         $this->path = Storage::disk('public')->put($folder, $file);
                     }
 
@@ -254,8 +254,7 @@ class Applicant extends Component
                 'no_identitas' => $this->no_identitas,
                 'alamat_identitas' => titleCase($this->alamat_identitas),
                 'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
-
-
+                'status' => 1
             ]);
 
 
@@ -284,11 +283,11 @@ class Applicant extends Component
                         // $imagedata = (string) $image->toJpeg();
                         $imagedata = (string) $image->toWebp(60);
 
-                        // Storage::disk('google')->put($folder, $imagedata);
+                        Storage::disk('google')->put($folder, $imagedata);
                         Storage::disk('public')->put($folder, $imagedata);
                         $this->path = $folder;
                     } else {
-                        // $this->path = Storage::disk('google')->put($folder, $file);
+                        $this->path = Storage::disk('google')->put($folder, $file);
                         $this->path = Storage::disk('public')->put($folder, $file);
                     }
 
@@ -300,25 +299,26 @@ class Applicant extends Component
                     ]);
                 }
             }
-            if (strtolower($data->nama) != strtolower($this->nama) || $data->tgl_lahir != $this->tgl_lahir) {
-                $old_folder = 'Applicants/' . $this->applicant_id;
-                $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
-                $new_folder = 'Applicants/' . $new_applicant_id;
-                Storage::disk('public')->move($old_folder, $new_folder);
-                // Storage::disk('google')->move($old_folder, $new_folder);
+            // ini untuk rubah nama folder disesuaikan dengan nama dan tanggal lahir jika berubah
+            // if (strtolower($data->nama) != strtolower($this->nama) || $data->tgl_lahir != $this->tgl_lahir) {
+            //     $old_folder = 'Applicants/' . $this->applicant_id;
+            //     $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
+            //     $new_folder = 'Applicants/' . $new_applicant_id;
+            //     Storage::disk('public')->move($old_folder, $new_folder);
+            //     // Storage::disk('google')->move($old_folder, $new_folder);
 
-                $old_applicant_id = $this->applicant_id;
-                $this->applicant_id = $new_applicant_id;
+            //     $old_applicant_id = $this->applicant_id;
+            //     $this->applicant_id = $new_applicant_id;
 
-                // dd($old_applicant_id, $this->applicant_id, $new_folder);
-                // update data applicant files 
-                $data_file = Applicantfile::where('id_karyawan', $old_applicant_id)->get();
-                foreach ($data_file as $d) {
-                    $d->id_karyawan = $this->applicant_id;
-                    $d->filename = $new_folder . '/' . getFilename($d->filename);
-                    $d->save();
-                }
-            }
+            //     // dd($old_applicant_id, $this->applicant_id, $new_folder);
+            //     // update data applicant files 
+            //     $data_file = Applicantfile::where('id_karyawan', $old_applicant_id)->get();
+            //     foreach ($data_file as $d) {
+            //         $d->id_karyawan = $this->applicant_id;
+            //         $d->filename = $new_folder . '/' . getFilename($d->filename);
+            //         $d->save();
+            //     }
+            // }
 
             $data->applicant_id = $this->applicant_id;
             $data->nama = titleCase($this->nama);
