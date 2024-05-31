@@ -161,8 +161,7 @@
                             <label for="telp" class="block mb-2 text-sm font-medium text-gray-900">Telepon<span
                                     class="text-red-500 ml-1">*</span></label>
                             <input wire:model='telp' type="text" id="telp"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                placeholder="021569612341234" />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('telp')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -324,8 +323,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900">Handphone
                                 Kontak Darurat 2</label>
                             <input wire:model='contact_darurat_2' type="text" id="contact_darurat_2"
-                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                required />
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                             @error('contact_darurat_2')
                                 <div class="text-red-500">
                                     {{ $message }}
