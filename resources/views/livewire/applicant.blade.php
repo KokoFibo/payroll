@@ -396,7 +396,7 @@
                     <div class="flex justify-evenly w-full lg:w-1/2 ">
                         <div role="status" wire:loading wire:target='save'>
                             <div class="flex justify-evenly items-center w-full mb-2 gap-5 px-3">
-                                <p class='lg:text-xl text-normal'>Mohon ditunggu sampai proses loading selesai</p>
+                                <p class='lg:text-xl text-normal'>Mohon ditunggu sampai proses upload selesai</p>
 
                                 <svg aria-hidden="true"
                                     class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

@@ -19,89 +19,92 @@
             @if ($show_table)
                 <div class="card-body">
                     <div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>HP</th>
-                                    <th>Gender</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Status Penerimaan</th>
-                                    <th>Submitted</th>
-                                    @if ($is_rubah_status)
-                                        <th>
-                                            <div>
+                        <div class="table-responsive">
 
-                                                <select class="form-select" aria-label="Default select example"
-                                                    wire:model.live='status'>
-                                                    <option value="1">1. Melamar</option>
-                                                    <option value="2">2. Sedang Komunikasi</option>
-                                                    <option value="3">3. Psikotest</option>
-                                                    <option value="4">4. Interview</option>
-                                                    <option value="5">5. Ditolak</option>
-                                                    <option value="6">6. Cadangan</option>
-                                                    <option value="7">7. Onboarding</option>
-                                                    <option value="8">8. Diterima</option>
-                                                </select>
-
-                                                <button class="btn btn-sm btn-primary mt-2"
-                                                    wire:click="rubah({{ $id_status }})">Rubah
-                                                    Status
-                                                </button>
-
-                                                <button class="btn btn-sm btn-success mt-2"
-                                                    wire:click='cancelUpdateStatus'>Cancel</button>
-
-                                            </div>
-                                        </th>
-                                    @else
-                                        <th></th>
-                                    @endif
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $key => $d)
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        {{-- <td>{{ $key + 1 }}</td> --}}
-                                        <td>{{ $d->id }}</td>
-                                        <td>{{ $d->nama }}</td>
-                                        <td>{{ $d->email }}</td>
-                                        <td>{{ $d->hp }}</td>
-                                        <td>{{ $d->gender }}</td>
-                                        <td>{{ $d->tgl_lahir }}</td>
+                                        <th>id</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>HP</th>
+                                        <th>Gender</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>Status Penerimaan</th>
+                                        <th>Submitted</th>
+                                        @if ($is_rubah_status)
+                                            <th>
+                                                <div>
 
-                                        <td>
-                                            <span
-                                                class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
-                                        </td>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        wire:model.live='status'>
+                                                        <option value="1">1. Melamar</option>
+                                                        <option value="2">2. Sedang Komunikasi</option>
+                                                        <option value="3">3. Psikotest</option>
+                                                        <option value="4">4. Interview</option>
+                                                        <option value="5">5. Ditolak</option>
+                                                        <option value="6">6. Cadangan</option>
+                                                        <option value="7">7. Onboarding</option>
+                                                        <option value="8">8. Diterima</option>
+                                                    </select>
 
-                                        <td>{{ $d->created_at }}</td>
-                                        @if (!$is_rubah_status)
-                                            <td>
-                                                <button
-                                                    class="btn
-                                            btn-sm btn-warning"
-                                                    wire:click='show({{ $d->id }})'>Show</button>
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:click='delete({{ $d->id }})'
-                                                    wire:confirm='Apakah yakin data applicant ini akan di delete?'>Delete</button>
+                                                    <button class="btn btn-sm btn-primary mt-2"
+                                                        wire:click="rubah({{ $id_status }})">Rubah
+                                                        Status
+                                                    </button>
 
-                                                <button class="btn btn-sm btn-primary"
-                                                    wire:click='rubahstatus({{ $d->id }}, {{ $d->status }})'>Rubah
-                                                    Status</button>
-                                            </td>
+                                                    <button class="btn btn-sm btn-success mt-2"
+                                                        wire:click='cancelUpdateStatus'>Cancel</button>
+
+                                                </div>
+                                            </th>
                                         @else
-                                            <td></td>
+                                            <th></th>
                                         @endif
 
-
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $key => $d)
+                                        <tr>
+                                            {{-- <td>{{ $key + 1 }}</td> --}}
+                                            <td>{{ $d->id }}</td>
+                                            <td>{{ $d->nama }}</td>
+                                            <td>{{ $d->email }}</td>
+                                            <td>{{ $d->hp }}</td>
+                                            <td>{{ $d->gender }}</td>
+                                            <td>{{ $d->tgl_lahir }}</td>
+
+                                            <td>
+                                                <span
+                                                    class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
+                                            </td>
+
+                                            <td>{{ $d->created_at }}</td>
+                                            @if (!$is_rubah_status)
+                                                <td>
+                                                    <button
+                                                        class="btn
+                                            btn-sm btn-warning"
+                                                        wire:click='show({{ $d->id }})'>Show</button>
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:click='delete({{ $d->id }})'
+                                                        wire:confirm='Apakah yakin data applicant ini akan di delete?'>Delete</button>
+
+                                                    <button class="btn btn-sm btn-primary"
+                                                        wire:click='rubahstatus({{ $d->id }}, {{ $d->status }})'>Rubah
+                                                        Status</button>
+                                                </td>
+                                            @else
+                                                <td></td>
+                                            @endif
+
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     {{ $data->links() }}
                 </div>
@@ -148,38 +151,60 @@
                         <li class="list-group-item">{{ $personal_data->alamat_identitas }}</li>
                         <li class="list-group-item">{{ $personal_data->alamat_tinggal_sekarang }}</li>
                         <li class="list-group-item">{{ $personal_data->status }}</li>
-                        @foreach ($personal_files as $f)
-                            @if (strtolower(getFilenameExtension($f->originalName)) == 'pdf')
-                                <li class="list-group-item">
-                                    <div>{{ $f->originalName }}</div>
-                                    <iframe class="my-3 rounded-4" src="{{ getUrl($f->filename) }}" width="100%"
-                                        height="600px"></iframe>
 
-                                </li>
-                            @endif
-                        @endforeach
-                        @foreach ($personal_files as $key => $fn)
-                            @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                                <li class="list-group-item">
-                                    <div class="flex flex-col">
-                                        <div> {{ $fn->originalName }}</div>
-                                        <img class="my-3 rounded-4" src="{{ getUrl($fn->filename) }}" alt="">
-                                    </div>
-                                </li>
-                            @endif
-                        @endforeach
-                        <li class=" list-group-item" style="text-decoration: none">
-                            <div class='w-1/5 text-center '>
-                                <button class="btn btn-dark" wire:click='kembali'>Kembali</button>
-                            </div>
-                        </li>
 
                     </ul>
+                </div>
+                {{-- Tampil gambar --}}
+                <div class='col-lg-6 col-12 mt-3'>
+                    @foreach ($personal_files as $f)
+                        @if (strtolower(getFilenameExtension($f->originalName)) == 'pdf')
+                            {{-- <li class="list-group-item"> --}}
+                            <div>{{ $f->originalName }}</div>
+                            <iframe class="my-3 rounded-4" src="{{ getUrl($f->filename) }}" width="100%"
+                                height="600px"></iframe>
+
+                            {{-- </li> --}}
+                        @endif
+                    @endforeach
+                    @foreach ($personal_files as $key => $fn)
+                        @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                            {{-- <li class="list-group-item"> --}}
+                            <div class="flex flex-col">
+                                <div class='responsive-container'>
+                                    <div> {{ $fn->originalName }}</div>
+                                    <img class="my-3 rounded-4" src="{{ getUrl($fn->filename) }}" alt="">
+                                </div>
+                            </div>
+                            {{-- </li> --}}
+                        @endif
+                    @endforeach
+
+                    <div class='w-1/5 text-center mb-5 '>
+                        <button class="btn btn-dark" wire:click='kembali'>Kembali</button>
+                    </div>
                 </div>
 
             @endif
 
         </div>
     </div>
+    <style>
+        /* Container for the responsive image */
+        .responsive-container {
+            width: 100%;
+            max-width: 800px;
+            /* Optional: Set a max-width for the container */
+            margin: 0 auto;
+            /* Center the container */
+        }
 
+        /* Make the image responsive */
+        .responsive-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Remove any extra space below the image */
+        }
+    </style>
 </div>
