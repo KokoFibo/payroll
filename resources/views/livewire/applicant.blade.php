@@ -1,9 +1,5 @@
 <div>
-    {{-- <p>is_registered: {{ $is_registered }}</p>
-    <p>Show: {{ $show }}</p>
-    <p>Gender: {{ $gender }}</p>
-    <p>is_update: {{ $is_update }}</p>
-    <p>applicant_id: {{ $applicant_id }}</p> --}}
+
 
     @if ($showMenu)
         <div class='h-screen flex  flex-col  justify-center items-center w-2/3 mx-auto gap-10'>
