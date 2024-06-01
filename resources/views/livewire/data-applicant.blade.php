@@ -1,7 +1,7 @@
 <div>
-    {{-- <p>is_rubah_status = {{ $is_rubah_status }}</p>
-    <p>status = {{ $status }}</p>
-    <p>id_status : {{ $id_status }}</p> --}}
+
+
+
     <div class="p-3">
         <div class="card">
             <div class="card-header">
@@ -32,10 +32,24 @@
                                         <th>Tanggal Lahir</th>
                                         <th>Status Penerimaan</th>
                                         <th>Submitted</th>
-                                        @if ($is_rubah_status)
-                                            <th>
-                                                <div>
+                                        <th></th>
 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $d)
+                                        <tr>
+                                            {{-- <td>{{ $key + 1 }}</td> --}}
+                                            <td>{{ $d->id }}</td>
+                                            <td>{{ $d->nama }}</td>
+                                            <td>{{ $d->email }}</td>
+                                            <td>{{ $d->hp }}</td>
+                                            <td>{{ $d->gender }}</td>
+                                            <td>{{ $d->tgl_lahir }}</td>
+
+                                            <td>
+                                                @if ($editId === $d->id)
+                                                    {{-- selkect --}}
                                                     <select class="form-select" aria-label="Default select example"
                                                         wire:model.live='status'>
                                                         <option value="1">1. Melamar</option>
@@ -47,57 +61,40 @@
                                                         <option value="7">7. Onboarding</option>
                                                         <option value="8">8. Diterima</option>
                                                     </select>
-
-                                                    <button class="btn btn-sm btn-primary mt-2"
-                                                        wire:click="rubah({{ $id_status }})">Rubah
-                                                        Status
-                                                    </button>
-
-                                                    <button class="btn btn-sm btn-success mt-2"
-                                                        wire:click='cancelUpdateStatus'>Cancel</button>
-
-                                                </div>
-                                            </th>
-                                        @else
-                                            <th></th>
-                                        @endif
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $key => $d)
-                                        <tr>
-                                            {{-- <td>{{ $key + 1 }}</td> --}}
-                                            <td>{{ $d->id }}</td>
-                                            <td>{{ $d->nama }}</td>
-                                            <td>{{ $d->email }}</td>
-                                            <td>{{ $d->hp }}</td>
-                                            <td>{{ $d->gender }}</td>
-                                            <td>{{ $d->tgl_lahir }}</td>
-
-                                            <td>
-                                                <span
-                                                    class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
+                                                @endif
                                             </td>
 
                                             <td>{{ $d->created_at }}</td>
-                                            @if (!$is_rubah_status)
-                                                <td>
-                                                    <button
-                                                        class="btn
-                                            btn-sm btn-warning"
+                                            <td>
+
+                                                @if ($editId === $d->id)
+                                                    @if ($status == 8)
+                                                        <button class="btn btn-sm btn-primary"
+                                                            wire:confirm="Jika status diterima, maka data akan dipindahkan ke database karyawan, setuju?"
+                                                            wire:key="{{ $d->id }}-save"
+                                                            wire:click='save'>Simpan</button>
+                                                    @else
+                                                        <button class="btn btn-sm btn-primary"
+                                                            wire:click='save'>Simpan</button>
+                                                    @endif
+                                                    <button class="btn btn-sm btn-warning"
+                                                        wire:click='cancel'>Cancel</button>
+                                                @else
+                                                    <button class="btn btn-sm btn-warning"
                                                         wire:click='show({{ $d->id }})'>Show</button>
                                                     <button class="btn btn-sm btn-danger"
-                                                        wire:click='delete({{ $d->id }})'
-                                                        wire:confirm='Apakah yakin data applicant ini akan di delete?'>Delete</button>
-
+                                                        wire:confirm="Apakah yakin data applicant ini akan di delete?"
+                                                        wire:key="{{ $d->id }}-delete"
+                                                        wire:click='delete({{ $d->id }})'>Delete</button>
                                                     <button class="btn btn-sm btn-primary"
-                                                        wire:click='rubahstatus({{ $d->id }}, {{ $d->status }})'>Rubah
+                                                        wire:click='edit({{ $d->id }})'>Rubah
                                                         Status</button>
-                                                </td>
-                                            @else
-                                                <td></td>
-                                            @endif
+                                                @endif
+                                            </td>
+
 
 
                                         </tr>
