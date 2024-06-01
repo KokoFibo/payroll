@@ -32,8 +32,10 @@ class DataApplicant extends Component
         $data->save();
         if ($this->status == 8) {
             $this->diterima($this->id_status);
+            $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
+        } else {
+            $this->dispatch('success', message: 'Status sudah berhasil di rubah');
         }
-        $this->dispatch('success', message: 'Status sudah berhasil di rubah');
         $this->is_rubah_status = false;
     }
 
@@ -99,7 +101,6 @@ class DataApplicant extends Component
 
 
 
-        $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
     }
 
     public function mount()
