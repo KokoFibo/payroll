@@ -61,12 +61,11 @@ class Test extends Component
     $filename = 'Applicants/Obcaecati_aliquam_cu_2000_11_21/217749.jpg';
 
     $currentDate = Carbon::now()->toDateString();
-    dd($currentDate);
+
 
 
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan_history', 'No Scan')->orWhere('no_scan', 'No Scan')->paginate(10);
-    $datas = Yfrekappresensi::join('karyawans', 'yfrekappresensis.user_id', 'karyawans.id_karyawan')
-      ->where('date', '2024-05-14')->where('no_scan_history', 'No Scan')->paginate(10);
+    $datas = Yfrekappresensi::whereMonth('date', '03')->whereYear('date', '2024')->paginate(10);
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
 
 

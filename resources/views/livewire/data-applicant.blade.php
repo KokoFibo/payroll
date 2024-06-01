@@ -45,7 +45,7 @@
                                             <td>{{ $d->email }}</td>
                                             <td>{{ $d->hp }}</td>
                                             <td>{{ $d->gender }}</td>
-                                            <td>{{ $d->tgl_lahir }}</td>
+                                            <td>{{ format_tgl($d->tgl_lahir) }}</td>
 
                                             <td>
                                                 @if ($editId === $d->id)
@@ -67,7 +67,7 @@
                                                 @endif
                                             </td>
 
-                                            <td>{{ $d->created_at }}</td>
+                                            <td>{{ dateTimeFormat($d->created_at) }}</td>
                                             <td>
 
                                                 @if ($editId === $d->id)

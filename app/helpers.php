@@ -13,6 +13,16 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function dateTimeFormat($tgl)
+{
+    return date('d-M-Y, H:i:s', strtotime($tgl));
+}
+
+function convertTgl($tanggal)
+{
+    return date('Y-m-d', strtotime($tanggal));
+}
+
 function getStatusColor($kode_status)
 {
 
