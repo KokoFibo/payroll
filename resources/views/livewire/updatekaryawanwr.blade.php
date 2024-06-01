@@ -159,7 +159,8 @@
                                                     <h4> {{ $fn->originalName }}</h4>
                                                     <div>
                                                         <button class="btn btn-danger"
-                                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
+                                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove
+                                                            wire:confirm='Sudah yakin mau di delete?'>Remove</button>
                                                         <div wire:loading wire:target='deleteFile'>
                                                             <div class="text-center">
                                                                 <h5>Mohon tunggu sampai proses delete selesai</h5>
