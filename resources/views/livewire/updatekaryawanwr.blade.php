@@ -127,7 +127,7 @@
                                     {{-- <li class="list-group-item "> --}}
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <h4> {{ $fn->originalName }}</h4>
-                                        <button class="btn btn-danger"
+                                        <button class="btn btn-danger" wire:confirm='Sudah yakin mau di delete?'
                                             wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
                                         <div wire:loading wire:target='deleteFile'>
                                             <div class="text-center">
