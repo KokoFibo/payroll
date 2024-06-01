@@ -110,7 +110,7 @@
                 </div>
             @endif
             @if ($show_data)
-                <div class="d-flex">
+                <div class="d-flex mt-3">
                     <ul class="list-group">
                         <li class="list-group-item">Nama</li>
                         <li class="list-group-item">Email</li>
