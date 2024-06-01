@@ -150,24 +150,35 @@
                             @foreach ($personal_files as $key => $fn)
                                 @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
                                     {{-- <li class="list-group-item"> --}}
-                                    <div class="d-flex flex-row gap-5 align-items-center">
+                                    <div class="d-flex flex-column-reverse flex-lg-row   ">
                                         <div class="flex flex-col">
-                                            <h4> {{ $fn->originalName }}</h4>
+                                            <div class="responsive-container">
+
+                                                <div
+                                                    class="d-flex flex-row justify-content-between align-items-center mt-3 px-2">
+                                                    <h4> {{ $fn->originalName }}</h4>
+                                                    <div>
+                                                        <button class="btn btn-danger"
+                                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
+                                                        <div wire:loading wire:target='deleteFile'>
+                                                            <div class="text-center">
+                                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
+                                                                <div class="spinner-border text-dark mt-2"
+                                                                    role="status">
+                                                                    <span class="visually-hidden">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
 
-                                            <img class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
-                                                alt="">
-                                        </div>
-                                        <button class="btn btn-danger"
-                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
-                                        <div wire:loading wire:target='deleteFile'>
-                                            <div class="text-center">
-                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
-                                                <div class="spinner-border text-dark mt-2" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
                                                 </div>
+
+                                                <img class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
+                                                    alt="">
                                             </div>
                                         </div>
+
                                     </div>
                                     {{-- </li> --}}
                                 @endif
@@ -181,5 +192,22 @@
             @endif
         </div>
     </div>
+    <style>
+        /* Container for the responsive image */
+        .responsive-container {
+            width: 100%;
+            max-width: 600px;
+            /* Optional: Set a max-width for the container */
+            margin: 0 auto;
+            /* Center the container */
+        }
 
+        /* Make the image responsive */
+        .responsive-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Remove any extra space below the image */
+        }
+    </style>
 </div>
