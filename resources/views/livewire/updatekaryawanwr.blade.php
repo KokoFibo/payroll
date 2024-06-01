@@ -196,7 +196,7 @@
         /* Container for the responsive image */
         .responsive-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             /* Optional: Set a max-width for the container */
             margin: 0 auto;
             /* Center the container */
