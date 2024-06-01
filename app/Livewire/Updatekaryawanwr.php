@@ -84,7 +84,8 @@ class Updatekaryawanwr extends Component
 
         if ($this->files) {
             if (!$this->id_file_karyawan) {
-                $this->id_file_karyawan = makeApplicationId($this->nama, $this->tanggal_lahir);
+                // convertTgl adalah fungsi untuk merubah format tanggal menjadi format sesuai system
+                $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
                 $data = Karyawan::find($this->id);
                 $data->id_file_karyawan = $this->id_file_karyawan;
                 $data->save();

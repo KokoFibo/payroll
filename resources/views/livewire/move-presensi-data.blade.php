@@ -1,4 +1,6 @@
 <div>
+    <p>getYear: {{ $getYear }}</p>
+    <p>getMonth : {{ $getMonth }}</p>
     <div class="col-xl-4 mx-auto pt-5">
         <div class="card">
             <div class="card-header bg-primary">
