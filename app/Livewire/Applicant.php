@@ -26,7 +26,7 @@ class Applicant extends Component
     public $status_pernikahan, $golongan_darah, $agama, $etnis, $nama_contact_darurat;
     public $contact_darurat_1, $contact_darurat_2, $jenis_identitas, $no_identitas;
     public $alamat_identitas, $alamat_tinggal_sekarang;
-    public $applicant_id, $originalName, $filename;
+    public $applicant_id, $originalName, $filename, $cx = 0;
 
 
     public function deleteFile($id)
@@ -389,8 +389,10 @@ class Applicant extends Component
     }
     public function render()
     {
+        $this->cx++;
         $file_data = Applicantfile::where('id_karyawan', $this->applicant_id)->get();
         $this->filenames = $file_data;
+        $this->files = [];
         return view('livewire.applicant')->layout('layouts.newpolos');
     }
 }

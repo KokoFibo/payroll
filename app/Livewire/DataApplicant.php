@@ -17,98 +17,94 @@ class DataApplicant extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $show_data, $show_table, $personal_data, $personal_files;
-    public $id_status, $is_rubah_status, $status, $modal_show;
+    public  $status, $editId = null;
 
-    public function cancelUpdateStatus()
+
+
+
+    public function cancel()
     {
-        $this->is_rubah_status = false;
+        $this->editId = null;
     }
 
 
-    public function rubah()
+    public function save()
     {
-        $data = Applicantdata::find($this->id_status);
+        $data = Applicantdata::find($this->editId);
         $data->status = $this->status;
         $data->save();
         if ($this->status == 8) {
-            $this->diterima($this->id_status);
-            $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
+            $this->diterima($this->editId);
         } else {
             $this->dispatch('success', message: 'Status sudah berhasil di rubah');
         }
-        $this->is_rubah_status = false;
+        $this->editId = null;
     }
 
-    public function rubahstatus($id, $status)
+    public function edit($id)
     {
-        $this->is_rubah_status = true;
-        $this->status = $status;
-        $this->id_status = $id;
-        $this->modal_show = true;
+        $this->editId = $id;
+        $data = Applicantdata::find($this->editId);
+        $this->status = $data->status;
     }
 
     public function diterima($id)
     {
 
         $dataApplicant = Applicantdata::find($id);
-        // ambil ID karyawan
-        $id_karyawan_terbaru = getNextIdKaryawan();
+        $dataKaryawan = Karyawan::where('id_file_karyawan', $dataApplicant->applicant_id)->first();
+        if ($dataKaryawan == null) {
+            // ambil ID karyawan
+            $id_karyawan_terbaru = getNextIdKaryawan();
 
-        // data yg mau di entry ke karyawan
-
-
-        Karyawan::create([
-            'id_karyawan' => $id_karyawan_terbaru,
-            'nama' => $dataApplicant->nama,
-            'email' => $dataApplicant->email,
-            'hp' => $dataApplicant->hp,
-            'telepon' => $dataApplicant->telp,
-            'tempat_lahir' => $dataApplicant->tempat_lahir,
-            'tanggal_lahir' => $dataApplicant->tgl_lahir,
-            'gender' => $dataApplicant->gender,
-            'status_pernikahan' => $dataApplicant->status_pernikahan,
-            'golongan_darah' => $dataApplicant->golongan_darah,
-            'agama' => $dataApplicant->agama,
-            'etnis' => $dataApplicant->etnis,
-            'kontak_darurat' => $dataApplicant->nama_contact_darurat,
-            'hp1' => $dataApplicant->contact_darurat_1,
-            'hp2' => $dataApplicant->contact_darurat_2,
-            'jenis_identitas' => $dataApplicant->jenis_identitas,
-            'no_identitas' => $dataApplicant->no_identitas,
-            'alamat_identitas' => $dataApplicant->alamat_identitas,
-            'alamat_tinggal' => $dataApplicant->alamat_tinggal_sekarang,
-            'id_file_karyawan' => $dataApplicant->applicant_id,
-            'status_karyawan' => 'PKWT',
-            'tanggal_bergabung' => Carbon::now()->toDateString()
-        ]);
-
-        User::create([
-            'name' => titleCase($dataApplicant->nama),
-            'email' => trim($dataApplicant->email, ' '),
-            'username' => $id_karyawan_terbaru,
-            'role' => 1,
-            'password' => Hash::make($dataApplicant->password),
-        ]);
-
-        // hapus data applicant
-        // $dataApplicant->delete();
+            // data yg mau di entry ke karyawan
 
 
-        // $dataApplicant->status_karyawan = $this->status_karyawan;
-        // $dataApplicant->tanggal_bergabung = $this->tanggal_bergabung;
+            Karyawan::create([
+                'id_karyawan' => $id_karyawan_terbaru,
+                'nama' => $dataApplicant->nama,
+                'email' => $dataApplicant->email,
+                'hp' => $dataApplicant->hp,
+                'telepon' => $dataApplicant->telp,
+                'tempat_lahir' => $dataApplicant->tempat_lahir,
+                'tanggal_lahir' => $dataApplicant->tgl_lahir,
+                'gender' => $dataApplicant->gender,
+                'status_pernikahan' => $dataApplicant->status_pernikahan,
+                'golongan_darah' => $dataApplicant->golongan_darah,
+                'agama' => $dataApplicant->agama,
+                'etnis' => $dataApplicant->etnis,
+                'kontak_darurat' => $dataApplicant->nama_contact_darurat,
+                'hp1' => $dataApplicant->contact_darurat_1,
+                'hp2' => $dataApplicant->contact_darurat_2,
+                'jenis_identitas' => $dataApplicant->jenis_identitas,
+                'no_identitas' => $dataApplicant->no_identitas,
+                'alamat_identitas' => $dataApplicant->alamat_identitas,
+                'alamat_tinggal' => $dataApplicant->alamat_tinggal_sekarang,
+                'id_file_karyawan' => $dataApplicant->applicant_id,
+                'status_karyawan' => 'PKWT',
+                'tanggal_bergabung' => Carbon::now()->toDateString()
+            ]);
 
+            User::create([
+                'name' => titleCase($dataApplicant->nama),
+                'email' => trim($dataApplicant->email, ' '),
+                'username' => $id_karyawan_terbaru,
+                'role' => 1,
+                'password' => Hash::make($dataApplicant->password),
+            ]);
 
-
-
-
+            // hapus data applicant
+            // $dataApplicant->delete();
+            $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
+        } else {
+            $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
+        }
     }
 
     public function mount()
     {
         $this->show_table = true;
         $this->show_data = false;
-        $this->is_rubah_status = false;
-        $this->modal_show = false;
     }
 
 
@@ -135,13 +131,6 @@ class DataApplicant extends Component
         $this->show_table = false;
     }
 
-    public function waitingList($id)
-    {
-        $this->personal_data = Applicantdata::find($id);
-        $this->personal_data->status = 'Waiting List';
-        $this->personal_data->save();
-        $this->dispatch('success', message: 'Status Telah di rubah menjadi "Waiting List"');
-    }
 
 
 

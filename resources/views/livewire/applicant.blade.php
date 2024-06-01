@@ -423,12 +423,12 @@
                     <div class="flex justify-evenly w-full lg:w-1/2 mt-3">
                         <div class="md:px-0 px-3">
                             @if ($is_update == false)
-                                <button type="submit"
+                                <button type="submit" onClick="clear_file()"
                                     class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
                                     <span>Submit</span>
                                 </button>
                             @else
-                                <button type="submit"
+                                <button type="submit" onClick="clear_file()"
                                     class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-orange-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
                                     <span>Update</span>
                                 </button>
