@@ -24,16 +24,14 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role == 5)
-                <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/dataapplicant" class="nav-link">
-                        <i class="nav-icon fa-solid fa-people-group"></i>
-                        <p>
-                            {{ __('Data Applicant') }}
-                        </p>
-                    </a>
-                </li>
-            @endif
+            <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/dataapplicant" class="nav-link">
+                    <i class="nav-icon fa-solid fa-people-group"></i>
+                    <p>
+                        {{ __('Data Applicant') }}
+                    </p>
+                </a>
+            </li>
             @if (Auth::user()->role > 4)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
