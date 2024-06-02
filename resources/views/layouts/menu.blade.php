@@ -241,14 +241,7 @@ with font-awesome or any other icon font library -->
                                 <p>{{ __('Move presensi data') }}</p>
                             </a>
                         </li>
-                        <li
-                            class="nav-item {{ 'yfdeletepresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a onclick="return confirm('Mau Truncate table Rekappresensi dan presensi?')"
-                                href="/yfdeletepresensi" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p class="text-danger">Truncate Table</p>
-                            </a>
-                        </li>
+
                         <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau delete No Scan?')" href="/deletenoscan" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
