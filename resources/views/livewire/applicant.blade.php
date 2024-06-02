@@ -2,7 +2,7 @@
 
 
     @if ($showMenu)
-        <div class='h-screen flex  flex-col  justify-center items-center w-2/3 mx-auto gap-10'>
+        <div class='h-screen flex  flex-col  justify-center items-center px-5 mx-auto gap-10'>
             <div>
                 <h3 class="text-4xl font-bold text-center mb-5">Formulir Pendaftaran Karyawan Baru</h3>
                 <p class="text-lg mb-3">Selamat datang,</p>
@@ -90,7 +90,7 @@
                 Calon Karyawan
             </h1>
             <h3 class="text-center lg:text-2xl my-2 mb-4">Mohon dilengkapi dan diperiksa sebelum tekan submit</h3>
-            <div class="lg:w-2/3 w-full mx-auto">
+            <div class="lg:w-2/3 w-full px-2 mx-auto">
                 <form wire:submit='save'>
                     <div class="p-3 grid gap-6 mb-6 md:grid-cols-2">
                         {{-- <div class="lg:w-[800px]"> --}}
