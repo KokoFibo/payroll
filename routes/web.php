@@ -57,6 +57,7 @@ use App\Livewire\DeleteNoscan;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
+use App\Livewire\PermohonanPersonnel;
 use App\Livewire\Placementreport;
 use App\Livewire\TanpaEmergencyContact;
 
@@ -211,6 +212,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
                     Route::get('/deletenoscan', DeleteNoscan::class);
                     Route::get('/developer-dashboard', DeveloperDashboard::class);
+                    Route::get('permohonan-personnel', PermohonanPersonnel::class);
 
 
 
