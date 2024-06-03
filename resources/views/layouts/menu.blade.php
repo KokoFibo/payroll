@@ -33,6 +33,14 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
             @if (Auth::user()->role > 4)
+                <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/permohonan-personnel" class="nav-link">
+                        <i class="nav-icon fa-solid fa-person-walking"></i>
+                        <p>
+                            {{ __('Permohonan Personnel') }}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
                         <i class="nav-icon fa-solid fa-person-walking"></i>

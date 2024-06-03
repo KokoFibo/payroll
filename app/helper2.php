@@ -184,11 +184,11 @@ function build_payroll($month, $year)
                 }
 
                 // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
-                $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
-                if ($rule1) {
-                    $jam_kerja /= 2;
-                    $jam_lembur /= 2;
-                }
+                // $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                // if ($rule1) {
+                //     $jam_kerja /= 2;
+                //     $jam_lembur /= 2;
+                // }
 
 
                 $total_hari_kerja++;
@@ -542,53 +542,55 @@ function build_payroll($month, $year)
 
 
     $idArrTKA = [1, 3, 5, 25, 6];
-    $idArrTionghoa = [4, 2, 6435];
+    $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511]; //TKA hanya 3 no didepan
 
-    foreach ($idArrTKA as $id) {
-        $data_id = Karyawan::where('id_karyawan', $id)->first();
-        $data_karyawan = Karyawan::find($data_id->id);
-        //ook
-        $is_exist = Payroll::where('id_karyawan', $id)
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->first();
-        if ($is_exist) {
-            dd($is_exist->id);
-            $data = Payroll::find($is_exist->id);
-            $data->nama = $data_karyawan->nama;
-            $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = $data_karyawan->jabatan;
-            $data->company = $data_karyawan->company;
-            $data->placement = $data_karyawan->placement;
-            $data->status_karyawan = $data_karyawan->status_karyawan;
-            $data->metode_penggajian = $data_karyawan->metode_penggajian;
-            $data->nomor_rekening = $data_karyawan->nomor_rekening;
-            $data->nama_bank = $data_karyawan->nama_bank;
-            $data->gaji_pokok = $data_karyawan->gaji_pokok;
+    // foreach ($idArrTKA as $id) {
+    //     $data_id = Karyawan::where('id_karyawan', $id)->first();
+    //     $data_karyawan = Karyawan::find($data_id->id);
+    //     //ook
+    //     $is_exist = Payroll::where('id_karyawan', $id)
+    //         ->whereMonth('date', $month)
+    //         ->whereYear('date', $year)
+    //         ->first();
+    //     if ($is_exist) {
+    //         dd($is_exist->id);
+    //         $data = Payroll::find($is_exist->id);
+    //         $data->nama = $data_karyawan->nama;
+    //         $data->id_karyawan = $data_karyawan->id_karyawan;
+    //         $data->jabatan = $data_karyawan->jabatan;
+    //         $data->company = $data_karyawan->company;
+    //         $data->placement = $data_karyawan->placement;
+    //         $data->status_karyawan = $data_karyawan->status_karyawan;
+    //         $data->metode_penggajian = $data_karyawan->metode_penggajian;
+    //         $data->nomor_rekening = $data_karyawan->nomor_rekening;
+    //         $data->nama_bank = $data_karyawan->nama_bank;
+    //         $data->gaji_pokok = $data_karyawan->gaji_pokok;
 
-            $data->date = $year . '-' . $month . '-01';
-            $data->total = $data_karyawan->gaji_pokok;
+    //         $data->date = $year . '-' . $month . '-01';
+    //         $data->total = $data_karyawan->gaji_pokok;
 
-            $data->save();
-        } else {
-            $data = new Payroll();
-            $data->nama = $data_karyawan->nama;
-            $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = $data_karyawan->jabatan;
-            $data->company = $data_karyawan->company;
-            $data->placement = $data_karyawan->placement;
-            $data->status_karyawan = $data_karyawan->status_karyawan;
-            $data->metode_penggajian = $data_karyawan->metode_penggajian;
-            $data->nomor_rekening = $data_karyawan->nomor_rekening;
-            $data->nama_bank = $data_karyawan->nama_bank;
-            $data->gaji_pokok = $data_karyawan->gaji_pokok;
+    //         $data->save();
+    //     } else {
+    //         $data = new Payroll();
+    //         $data->nama = $data_karyawan->nama;
+    //         $data->id_karyawan = $data_karyawan->id_karyawan;
+    //         $data->jabatan = $data_karyawan->jabatan;
+    //         $data->company = $data_karyawan->company;
+    //         $data->placement = $data_karyawan->placement;
+    //         $data->status_karyawan = $data_karyawan->status_karyawan;
+    //         $data->metode_penggajian = $data_karyawan->metode_penggajian;
+    //         $data->nomor_rekening = $data_karyawan->nomor_rekening;
+    //         $data->nama_bank = $data_karyawan->nama_bank;
+    //         $data->gaji_pokok = $data_karyawan->gaji_pokok;
 
-            $data->date = $year . '-' . $month . '-01';
-            $data->total = $data_karyawan->gaji_pokok;
-            $data->save();
-        }
-    }
-    foreach ($idArrTionghoa as $id) {
+    //         $data->date = $year . '-' . $month . '-01';
+    //         $data->total = $data_karyawan->gaji_pokok;
+    //         $data->save();
+    //     }
+    // }
+    // foreach ($idArrTionghoa as $id) {
+    foreach ($idKhusus as $id) {
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
         if ($data_karyawan->potongan_JP == 1) {
@@ -665,7 +667,6 @@ function build_payroll($month, $year)
         ->sum('jumlah_hari_libur');
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
-
 
     return 1;
 }
