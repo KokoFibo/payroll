@@ -175,18 +175,7 @@ with font-awesome or any other icon font library -->
                         <p>{{ __('Delete Noscan') }}</p>
                     </a>
                 </li>
-                <li class="nav-item {{ 'addcompany' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/addcompany" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Add Company') }}</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ 'addplacement' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/addplacement" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Add Placement') }}</p>
-                    </a>
-                </li>
+
                 <li
                     class="nav-item {{ 'yfdeletetanggalpresensiwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"

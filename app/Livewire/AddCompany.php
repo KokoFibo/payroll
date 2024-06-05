@@ -4,26 +4,38 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Company;
-use Livewire\Attributes\Rule;
+use Livewire\WithPagination;
+
 
 class AddCompany extends Component
 {
-    #[Rule('required')]
-    public $company_name;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $company_name, $id, $is_update = false;
 
-    public $is_add, $id;
-
-    public function mount()
+    public function cancel()
     {
-        $this->is_add = true;
+        $this->is_update = true;
+        $this->reset();
+    }
+    public function add()
+    {
+        $this->validate([
+            'company_name' => 'required'
+        ]);
+        $data = new Company();
+        $data->company_name = $this->company_name;
+        $data->save();
+        $this->reset();
+        $this->dispatch('success', message: 'Company added');
     }
 
     public function edit($id)
     {
-        $this->is_add = false;
-        $data = Company::find($id);
-        $this->id = $data->id;
-        $this->company_name =  $data->company_name;
+        $this->is_update = true;
+        $company = Company::find($id);
+        $this->id = $company->id;
+        $this->company_name = $company->company_name;
     }
 
     public function update()
@@ -31,36 +43,23 @@ class AddCompany extends Component
         $data = Company::find($this->id);
         $data->company_name = $this->company_name;
         $data->save();
-        $this->is_add = true;
-        $this->company_name =  '';
-
-        session()->flash('message', 'Company successfully updated.');
+        $this->is_update = false;
+        $this->reset();
+        $this->dispatch('success', message: 'Company updated');
     }
 
     public function delete($id)
     {
         $data = Company::find($id);
         $data->delete();
+        $this->dispatch('success', message: 'Company deleted');
     }
 
-    public function save()
-    {
-        // $validatedData = $this->validate([
-        //     'company_name' => 'required'
-        // ]);
-        $this->validate();
-        Company::create([
-            'company_name' => $this->company_name
-        ]);
-        $this->company_name =  '';
-
-        session()->flash('message', 'Company successfully created.');
-    }
     public function render()
     {
-        $data = Company::all();
+        $datas = Company::paginate(10);
         return view('livewire.add-company', [
-            'data' => $data
+            'datas' => $datas
         ]);
     }
 }

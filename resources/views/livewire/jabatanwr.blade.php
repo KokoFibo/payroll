@@ -2,14 +2,14 @@
     <div>
         <div class="card col-6 mx-auto mt-5">
             <div class="card-header">
-                <h3>Placement</h3>
+                <h3>Jabatan</h3>
             </div>
             <div class="card-body ">
                 <div class="mb-3 ">
-                    <label for="placement_name" class="form-label">Nama Placement</label>
-                    <input type="text" class="form-control @error('placement_name') is-invalid @enderror"
-                        id="placement_name" wire:model='placement_name'>
-                    @error('placement_name')
+                    <label for="nama_jabatan" class="form-label">Nama Jabatan</label>
+                    <input type="text" class="form-control @error('nama_jabatan') is-invalid @enderror"
+                        id="nama_jabatan" wire:model='nama_jabatan'>
+                    @error('nama_jabatan')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -22,7 +22,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Placement</th>
+                            <th>Nama Jabatan</th>
                             <th>
                                 @if ($is_update)
                                     <button class="btn btn-success btn-sm" wire:click="update">Update</button>
@@ -39,7 +39,7 @@
                             @foreach ($datas as $key => $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{ $d->placement_name }}</td>
+                                    <td>{{ $d->nama_jabatan }}</td>
                                     <td><button class="btn btn-warning btn-sm"
                                             wire:click='edit({{ $d->id }})'>Edit</button><button
                                             class="btn btn-danger btn-sm" wire:confirm='Yakin mau di delete?'

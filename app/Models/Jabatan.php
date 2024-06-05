@@ -9,5 +9,4 @@ class Jabatan extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
 }

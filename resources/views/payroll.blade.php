@@ -30,7 +30,7 @@
                 {{-- ====================================================== --}}
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label class="form-label">{{ __('Gaji pokok') }} <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ __('Gaji pokok') }} </label>
                         <input wire:model="gaji_pokok" type="text" type-currency="IDR"
                             class="form-control @error('gaji_pokok') is-invalid @enderror">
                         @error('gaji_pokok')
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label class="form-label">{{ __('Gaji Overtime') }} <span class="text-danger">*</span></label>
+                        <label class="form-label">{{ __('Gaji Overtime') }} </label>
                         <input wire:model="gaji_overtime" type="text" type-currency="IDR"
                             class="form-control @error('gaji_overtime') is-invalid @enderror">
                         @error('gaji_overtime')
