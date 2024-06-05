@@ -381,6 +381,9 @@ function build_payroll($month, $year)
         // $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($jumlah_hari_absen * ($data->karyawan->gaji_pokok / 26));
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
+        // if ($data->karyawan->id_karyawan == 58) {
+        //     dd($total_n_hari_kerja, $data->total_hari_kerja, $manfaat_libur);
+        // }
 
         if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
