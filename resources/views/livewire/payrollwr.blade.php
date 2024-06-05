@@ -122,7 +122,6 @@
                             @foreach ($select_month as $sm)
                                 <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                             @endforeach
-                            <option value="5">mei</option>
 
 
                         </select>
