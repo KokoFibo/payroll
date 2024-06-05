@@ -4,26 +4,38 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Placement;
-use Livewire\Attributes\Rule;
+use Livewire\WithPagination;
+
 
 class AddPlacement extends Component
 {
-    #[Rule('required')]
-    public $placement_name;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $placement_name, $id, $is_update = false;
 
-    public $is_add, $id;
-
-    public function mount()
+    public function cancel()
     {
-        $this->is_add = true;
+        $this->is_update = true;
+        $this->reset();
+    }
+    public function add()
+    {
+        $this->validate([
+            'placement_name' => 'required'
+        ]);
+        $data = new Placement;
+        $data->placement_name = $this->placement_name;
+        $data->save();
+        $this->reset();
+        $this->dispatch('success', message: 'Placement added');
     }
 
     public function edit($id)
     {
-        $this->is_add = false;
-        $data = Placement::find($id);
-        $this->id = $data->id;
-        $this->placement_name =  $data->placement_name;
+        $this->is_update = true;
+        $placement = Placement::find($id);
+        $this->id = $placement->id;
+        $this->placement_name = $placement->placement_name;
     }
 
     public function update()
@@ -31,36 +43,23 @@ class AddPlacement extends Component
         $data = Placement::find($this->id);
         $data->placement_name = $this->placement_name;
         $data->save();
-        $this->is_add = true;
-        $this->placement_name =  '';
-
-        session()->flash('message', 'Placement successfully updated.');
+        $this->is_update = false;
+        $this->reset();
+        $this->dispatch('success', message: 'Placement updated');
     }
 
     public function delete($id)
     {
         $data = Placement::find($id);
         $data->delete();
+        $this->dispatch('success', message: 'Placement deleted');
     }
 
-    public function save()
-    {
-        // $validatedData = $this->validate([
-        //     'placement_name' => 'required'
-        // ]);
-        $this->validate();
-        Placement::create([
-            'placement_name' => $this->placement_name
-        ]);
-        $this->placement_name =  '';
-
-        session()->flash('message', 'Placement successfully created.');
-    }
     public function render()
     {
-        $data = Placement::all();
+        $datas = Placement::paginate(10);
         return view('livewire.add-placement', [
-            'data' => $data
+            'datas' => $datas
         ]);
     }
 }

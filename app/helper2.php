@@ -484,7 +484,6 @@ function build_payroll($month, $year)
         }
     }
 
-
     // ok 4
     // perhitungan untuk karyawan yg resign sebelum 3 bulan
 

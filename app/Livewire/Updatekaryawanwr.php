@@ -73,59 +73,7 @@ class Updatekaryawanwr extends Component
         }
     }
 
-    public function uploadfile()
-    {
-        $this->validate([
-            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
-        ], [
-            'files.*.mimes' => ['Hanya menerima file png, jpg, jpeg dan pdf'],
-        ]);
 
-
-        if ($this->files) {
-            if (!$this->id_file_karyawan) {
-                // convertTgl adalah fungsi untuk merubah format tanggal menjadi format sesuai system
-                $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
-                $data = Karyawan::find($this->id);
-                $data->id_file_karyawan = $this->id_file_karyawan;
-                $data->save();
-            }
-
-            foreach ($this->files as $file) {
-                $folder = 'Applicants/' . $this->id_file_karyawan;
-                $fileExension = $file->getClientOriginalExtension();
-
-                if ($fileExension != 'pdf') {
-                    $folder = 'Applicants/' . $this->id_file_karyawan . '/' . random_int(1000, 9000) . '.' . $fileExension;
-
-                    $manager = ImageManager::gd();
-
-                    // resize gif image
-                    $image = $manager
-                        ->read($file)
-                        ->scale(width: 800);
-                    // $imagedata = (string) $image->toJpeg();
-                    $imagedata = (string) $image->toWebp(60);
-
-                    Storage::disk('google')->put($folder, $imagedata);
-                    Storage::disk('public')->put($folder, $imagedata);
-                    $this->path = $folder;
-                } else {
-                    $this->path = Storage::disk('google')->put($folder, $file);
-                    $this->path = Storage::disk('public')->put($folder, $file);
-                }
-
-                $this->originalFilename = $file->getClientOriginalName();
-                Applicantfile::create([
-                    'id_karyawan' => $this->id_file_karyawan,
-                    'originalName' => $this->originalFilename,
-                    'filename' => $this->path,
-                ]);
-            }
-            $this->files = [];
-            $this->dispatch('success', message: 'file berhasil di upload');
-        }
-    }
 
     public function arsip()
     {
@@ -214,10 +162,11 @@ class Updatekaryawanwr extends Component
     }
 
     // Cara benerin email unique agar bisa di update
+
     public function rules()
     {
         return [
-
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
             'id_karyawan' => 'required',
             'nama' => 'required',
             'email' => 'email|nullable|unique:karyawans,email,' . $this->id,
@@ -280,6 +229,57 @@ class Updatekaryawanwr extends Component
         ];
     }
 
+    public function uploadfile()
+    {
+        $this->validate([
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+        ], [
+            'files.*.mimes' => ['Hanya menerima file png, jpg, jpeg dan pdf'],
+        ]);
+        if ($this->files) {
+            if (!$this->id_file_karyawan) {
+                // convertTgl adalah fungsi untuk merubah format tanggal menjadi format sesuai system
+                $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
+                $data = Karyawan::find($this->id);
+                $data->id_file_karyawan = $this->id_file_karyawan;
+                $data->save();
+            }
+
+            foreach ($this->files as $file) {
+                $folder = 'Applicants/' . $this->id_file_karyawan;
+                $fileExension = $file->getClientOriginalExtension();
+
+                if ($fileExension != 'pdf') {
+                    $folder = 'Applicants/' . $this->id_file_karyawan . '/' . random_int(1000, 9000) . '.' . $fileExension;
+
+                    $manager = ImageManager::gd();
+
+                    // resize gif image
+                    $image = $manager
+                        ->read($file)
+                        ->scale(width: 800);
+                    // $imagedata = (string) $image->toJpeg();
+                    $imagedata = (string) $image->toWebp(60);
+
+                    Storage::disk('google')->put($folder, $imagedata);
+                    Storage::disk('public')->put($folder, $imagedata);
+                    $this->path = $folder;
+                } else {
+                    $this->path = Storage::disk('google')->put($folder, $file);
+                    $this->path = Storage::disk('public')->put($folder, $file);
+                }
+
+                $this->originalFilename = $file->getClientOriginalName();
+                Applicantfile::create([
+                    'id_karyawan' => $this->id_file_karyawan,
+                    'originalName' => $this->originalFilename,
+                    'filename' => $this->path,
+                ]);
+            }
+            $this->files = [];
+            $this->dispatch('success', message: 'file berhasil di upload');
+        }
+    }
 
     public function update1()
     {
@@ -409,6 +409,50 @@ class Updatekaryawanwr extends Component
             $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
             $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
+        }
+
+        if ($this->files) {
+            if (!$this->id_file_karyawan) {
+                // convertTgl adalah fungsi untuk merubah format tanggal menjadi format sesuai system
+                $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
+                $data = Karyawan::find($this->id);
+                $data->id_file_karyawan = $this->id_file_karyawan;
+                $data->save();
+            }
+
+            foreach ($this->files as $file) {
+                $folder = 'Applicants/' . $this->id_file_karyawan;
+                $fileExension = $file->getClientOriginalExtension();
+
+                if ($fileExension != 'pdf') {
+                    $folder = 'Applicants/' . $this->id_file_karyawan . '/' . random_int(1000, 9000) . '.' . $fileExension;
+
+                    $manager = ImageManager::gd();
+
+                    // resize gif image
+                    $image = $manager
+                        ->read($file)
+                        ->scale(width: 800);
+                    // $imagedata = (string) $image->toJpeg();
+                    $imagedata = (string) $image->toWebp(60);
+
+                    Storage::disk('google')->put($folder, $imagedata);
+                    Storage::disk('public')->put($folder, $imagedata);
+                    $this->path = $folder;
+                } else {
+                    $this->path = Storage::disk('google')->put($folder, $file);
+                    $this->path = Storage::disk('public')->put($folder, $file);
+                }
+
+                $this->originalFilename = $file->getClientOriginalName();
+                Applicantfile::create([
+                    'id_karyawan' => $this->id_file_karyawan,
+                    'originalName' => $this->originalFilename,
+                    'filename' => $this->path,
+                ]);
+            }
+            $this->files = [];
+            // $this->dispatch('success', message: 'Data berhasil di update');
         }
         get_data_karyawan();
     }

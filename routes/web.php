@@ -55,6 +55,7 @@ use App\Livewire\Applicant;
 use App\Livewire\DataApplicant;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\DeveloperDashboard;
+use App\Livewire\Jabatanwr;
 use App\Livewire\Moveback;
 use App\Livewire\MovePresensiData;
 use App\Livewire\PermohonanPersonnel;
@@ -213,6 +214,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/deletenoscan', DeleteNoscan::class);
                     Route::get('/developer-dashboard', DeveloperDashboard::class);
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
+                    Route::get('/jabatan', Jabatanwr::class);
 
 
 

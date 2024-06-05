@@ -194,162 +194,145 @@ class Applicant extends Component
     public function save()
     {
         $validated = $this->validate();
-        if ($this->is_update == false) {
-            $this->is_update = true;
-            $this->applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
-            // if ($this->files != null) {
-            if ($this->files) {
-                foreach ($this->files as $file) {
-                    $folder = 'Applicants/' . $this->applicant_id;
-                    $fileExension = $file->getClientOriginalExtension();
+        $this->is_update = true;
+        $this->applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
+        // if ($this->files != null) {
+        if ($this->files) {
+            foreach ($this->files as $file) {
+                $folder = 'Applicants/' . $this->applicant_id;
+                $fileExension = $file->getClientOriginalExtension();
 
-                    if ($fileExension != 'pdf') {
-                        $folder = 'Applicants/' . $this->applicant_id . '/' . random_int(100000, 900000) . '.' . $fileExension;
-                        $manager = ImageManager::gd();
+                if ($fileExension != 'pdf') {
+                    $folder = 'Applicants/' . $this->applicant_id . '/' . random_int(100000, 900000) . '.' . $fileExension;
+                    $manager = ImageManager::gd();
 
-                        // resize gif image
-                        $image = $manager
-                            ->read($file)
-                            ->scale(width: 800);
+                    // resize gif image
+                    $image = $manager
+                        ->read($file)
+                        ->scale(width: 800);
 
-                        // $imagedata = (string) $image->toJpeg();
-                        $imagedata = (string) $image->toWebp(60);
+                    // $imagedata = (string) $image->toJpeg();
+                    $imagedata = (string) $image->toWebp(60);
 
-                        Storage::disk('google')->put($folder, $imagedata);
-                        Storage::disk('public')->put($folder, $imagedata);
-                        $this->path = $folder;
-                    } else {
-                        $this->path = Storage::disk('google')->put($folder, $file);
-                        $this->path = Storage::disk('public')->put($folder, $file);
-                    }
-
-                    $this->originalFilename = $file->getClientOriginalName();
-                    Applicantfile::create([
-                        'id_karyawan' => $this->applicant_id,
-                        'originalName' => $this->originalFilename,
-                        'filename' => $this->path,
-                    ]);
+                    Storage::disk('google')->put($folder, $imagedata);
+                    Storage::disk('public')->put($folder, $imagedata);
+                    $this->path = $folder;
+                } else {
+                    $this->path = Storage::disk('google')->put($folder, $file);
+                    $this->path = Storage::disk('public')->put($folder, $file);
                 }
-                $this->files = '';
-                // return response()->json(['success' => true]);
+
+                $this->originalFilename = $file->getClientOriginalName();
+                Applicantfile::create([
+                    'id_karyawan' => $this->applicant_id,
+                    'originalName' => $this->originalFilename,
+                    'filename' => $this->path,
+                ]);
             }
-            Applicantdata::create([
-                'applicant_id' => $this->applicant_id,
-                'nama' => titleCase($this->nama),
-                'email' => $this->email,
-                'password' => $this->password,
-                'hp' => $this->hp,
-                'telp' => $this->telp,
-                'tempat_lahir' => titleCase($this->tempat_lahir),
-                'tgl_lahir' => $this->tgl_lahir,
-                'gender' => $this->gender,
-                'status_pernikahan' => $this->status_pernikahan,
-                'golongan_darah' => $this->golongan_darah,
-                'agama' => $this->agama,
-                'etnis' => $this->etnis,
-                'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
-                'contact_darurat_1' => $this->contact_darurat_1,
-                'contact_darurat_2' => $this->contact_darurat_2,
-                'jenis_identitas' => $this->jenis_identitas,
-                'no_identitas' => $this->no_identitas,
-                'alamat_identitas' => titleCase($this->alamat_identitas),
-                'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
-                'status' => 1
-            ]);
-
-
-            $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
-        } else {
-            // update data
-
-            $data = Applicantdata::where('applicant_id', $this->applicant_id)->first();
-            if ($this->files) {
-                foreach ($this->files as $file) {
-                    $folder = 'Applicants/' . $data->applicant_id;
-                    $fileExension = $file->getClientOriginalExtension();
-                    // $folder = 'Applicants/' . $this->applicant_id;
-
-                    if ($fileExension != 'pdf') {
-                        // $folder = 'Applicants/' . $this->applicant_id . '/' . time() . '.' . $fileExension;
-                        // $folder = 'Applicants/' . $data->applicant_id . '/' . time() . '.' . $fileExension;
-                        $folder = 'Applicants/' . $data->applicant_id . '/' . random_int(1000, 9000) . '.' . $fileExension;
-
-                        $manager = ImageManager::gd();
-
-                        // resize gif image
-                        $image = $manager
-                            ->read($file)
-                            ->scale(width: 800);
-                        // $imagedata = (string) $image->toJpeg();
-                        $imagedata = (string) $image->toWebp(60);
-
-                        Storage::disk('google')->put($folder, $imagedata);
-                        Storage::disk('public')->put($folder, $imagedata);
-                        $this->path = $folder;
-                    } else {
-                        $this->path = Storage::disk('google')->put($folder, $file);
-                        $this->path = Storage::disk('public')->put($folder, $file);
-                    }
-
-                    $this->originalFilename = $file->getClientOriginalName();
-                    Applicantfile::create([
-                        'id_karyawan' => $this->applicant_id,
-                        'originalName' => $this->originalFilename,
-                        'filename' => $this->path,
-                    ]);
-                }
-            }
-            // ini untuk rubah nama folder disesuaikan dengan nama dan tanggal lahir jika berubah
-            // if (strtolower($data->nama) != strtolower($this->nama) || $data->tgl_lahir != $this->tgl_lahir) {
-            //     $old_folder = 'Applicants/' . $this->applicant_id;
-            //     $new_applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
-            //     $new_folder = 'Applicants/' . $new_applicant_id;
-            //     Storage::disk('public')->move($old_folder, $new_folder);
-            //     // Storage::disk('google')->move($old_folder, $new_folder);
-
-            //     $old_applicant_id = $this->applicant_id;
-            //     $this->applicant_id = $new_applicant_id;
-
-            //     // dd($old_applicant_id, $this->applicant_id, $new_folder);
-            //     // update data applicant files 
-            //     $data_file = Applicantfile::where('id_karyawan', $old_applicant_id)->get();
-            //     foreach ($data_file as $d) {
-            //         $d->id_karyawan = $this->applicant_id;
-            //         $d->filename = $new_folder . '/' . getFilename($d->filename);
-            //         $d->save();
-            //     }
-            // }
-
-            $data->applicant_id = $this->applicant_id;
-            $data->nama = titleCase($this->nama);
-            $data->email = $this->email;
-            $data->password = $this->password;
-            $data->hp = $this->hp;
-            $data->telp = $this->telp;
-            $data->tempat_lahir = titleCase($this->tempat_lahir);
-            $data->tgl_lahir = $this->tgl_lahir;
-            $data->gender = $this->gender;
-            $data->status_pernikahan = $this->status_pernikahan;
-            $data->golongan_darah = $this->golongan_darah;
-            $data->agama = $this->agama;
-            $data->etnis = $this->etnis;
-            $data->nama_contact_darurat = titleCase($this->nama_contact_darurat);
-            $data->contact_darurat_1 = $this->contact_darurat_1;
-            $data->contact_darurat_2 = $this->contact_darurat_2;
-            $data->jenis_identitas = $this->jenis_identitas;
-            $data->no_identitas = $this->no_identitas;
-            $data->alamat_identitas = titleCase($this->alamat_identitas);
-            $data->alamat_tinggal_sekarang = titleCase($this->alamat_tinggal_sekarang);
-            $data->save();
-
-
-
-
-
-            $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
+            $this->files = '';
+            // return response()->json(['success' => true]);
         }
+        Applicantdata::create([
+            'applicant_id' => $this->applicant_id,
+            'nama' => titleCase($this->nama),
+            'email' => $this->email,
+            'password' => $this->password,
+            'hp' => $this->hp,
+            'telp' => $this->telp,
+            'tempat_lahir' => titleCase($this->tempat_lahir),
+            'tgl_lahir' => $this->tgl_lahir,
+            'gender' => $this->gender,
+            'status_pernikahan' => $this->status_pernikahan,
+            'golongan_darah' => $this->golongan_darah,
+            'agama' => $this->agama,
+            'etnis' => $this->etnis,
+            'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
+            'contact_darurat_1' => $this->contact_darurat_1,
+            'contact_darurat_2' => $this->contact_darurat_2,
+            'jenis_identitas' => $this->jenis_identitas,
+            'no_identitas' => $this->no_identitas,
+            'alamat_identitas' => titleCase($this->alamat_identitas),
+            'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
+            'status' => 1
+        ]);
+
+
+        $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+
         $this->files = [];
     }
+    public function update()
+    {
+        $validated = $this->validate();
+
+        // update data
+
+        $data = Applicantdata::where('applicant_id', $this->applicant_id)->first();
+        if ($this->files) {
+            foreach ($this->files as $file) {
+                $folder = 'Applicants/' . $data->applicant_id;
+                $fileExension = $file->getClientOriginalExtension();
+                // $folder = 'Applicants/' . $this->applicant_id;
+
+                if ($fileExension != 'pdf') {
+                    // $folder = 'Applicants/' . $this->applicant_id . '/' . time() . '.' . $fileExension;
+                    // $folder = 'Applicants/' . $data->applicant_id . '/' . time() . '.' . $fileExension;
+                    $folder = 'Applicants/' . $data->applicant_id . '/' . random_int(1000, 9000) . '.' . $fileExension;
+
+                    $manager = ImageManager::gd();
+
+                    // resize gif image
+                    $image = $manager
+                        ->read($file)
+                        ->scale(width: 800);
+                    // $imagedata = (string) $image->toJpeg();
+                    $imagedata = (string) $image->toWebp(60);
+
+                    Storage::disk('google')->put($folder, $imagedata);
+                    Storage::disk('public')->put($folder, $imagedata);
+                    $this->path = $folder;
+                } else {
+                    $this->path = Storage::disk('google')->put($folder, $file);
+                    $this->path = Storage::disk('public')->put($folder, $file);
+                }
+
+                $this->originalFilename = $file->getClientOriginalName();
+                Applicantfile::create([
+                    'id_karyawan' => $this->applicant_id,
+                    'originalName' => $this->originalFilename,
+                    'filename' => $this->path,
+                ]);
+            }
+        }
+
+
+        $data->applicant_id = $this->applicant_id;
+        $data->nama = titleCase($this->nama);
+        $data->email = $this->email;
+        $data->password = $this->password;
+        $data->hp = $this->hp;
+        $data->telp = $this->telp;
+        $data->tempat_lahir = titleCase($this->tempat_lahir);
+        $data->tgl_lahir = $this->tgl_lahir;
+        $data->gender = $this->gender;
+        $data->status_pernikahan = $this->status_pernikahan;
+        $data->golongan_darah = $this->golongan_darah;
+        $data->agama = $this->agama;
+        $data->etnis = $this->etnis;
+        $data->nama_contact_darurat = titleCase($this->nama_contact_darurat);
+        $data->contact_darurat_1 = $this->contact_darurat_1;
+        $data->contact_darurat_2 = $this->contact_darurat_2;
+        $data->jenis_identitas = $this->jenis_identitas;
+        $data->no_identitas = $this->no_identitas;
+        $data->alamat_identitas = titleCase($this->alamat_identitas);
+        $data->alamat_tinggal_sekarang = titleCase($this->alamat_tinggal_sekarang);
+        $data->save();
+
+        $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
+        $this->files = [];
+    }
+
+
 
     public function mount()
     {

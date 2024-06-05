@@ -4,5 +4,8 @@
         <a href="/yfdeletetanggalpresensiwr"><button class="btn btn-primary">Delete Tanggal Presensi</button></a>
         <a href="/movepresensidata"><button class="btn btn-primary">Move Presensi Data (backup)</button></a>
         <a href="/moveback"><button class="btn btn-primary">Move Back Data</button></a>
+        <a href="/jabatan"><button class="btn btn-primary">Add Jabatan</button></a>
+        <a href="/addcompany"><button class="btn btn-primary">Add Company</button></a>
+        <a href="/addplacement"><button class="btn btn-primary">Add Placement</button></a>
     </div>
 </div>

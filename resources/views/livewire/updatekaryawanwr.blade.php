@@ -79,15 +79,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <button class="btn btn-primary " wire:click="uploadfile" wire:loading.remove>Upload</button>
-                            <div wire:loading wire:target='uploadfile'>
-                                <div class="d-flex flex-row gap-3">
-                                    <h4>Mohon tunggu sampai proses upload selesai</h4>
-                                    <div class="spinner-border text-dark" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -100,7 +92,16 @@
                 </ul>
 
 
-                <div class="d-flex gap-3 pb-3 px-3">
+                <div wire:loading wire:target='update1'>
+                    <div class="text-center">
+                        <h5>Mohon tunggu sampai proses update selesai</h5>
+                        <div class="spinner-border text-dark mt-2" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 pb-3 px-3" wire:loading.remove>
 
                     <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>

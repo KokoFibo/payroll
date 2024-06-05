@@ -54,7 +54,7 @@
                             <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
                             <div>
                                 <input type="date"
-                                    class="date form-control @error('tanggal_blacklist') is-invalid @enderror""
+                                    class="date form-control @error('tanggal_blacklist') is-invalid @enderror"
                                     placeholder="mm-dd-yyyy" wire:model="tanggal_blacklist">
                                 @error('tanggal_blacklist')
                                     <div class="invalid-feedback">
