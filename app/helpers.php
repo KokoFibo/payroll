@@ -189,6 +189,7 @@ function manfaat_libur($month, $year, $libur, $user_id)
     $manfaat_libur = 0;
     foreach ($libur as $l) {
         $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
+        if ($tgl_libur == 1) $manfaat_libur++;
         if ($tgl_mulai_kerja < $tgl_libur) $manfaat_libur++;
     }
     return $manfaat_libur;
