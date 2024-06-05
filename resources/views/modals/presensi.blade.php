@@ -1,6 +1,6 @@
  <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-     <div class="modal-dialog modal-lg">
+     <div class="modal-dialog modal-lg" style="padding-bottom: 200px;">
          <div class="modal-content">
              <div class="modal-header">
                  <h1 class="modal-title fs-4" id="staticBackdropLabel">Data Presensi Karyawan</h1>

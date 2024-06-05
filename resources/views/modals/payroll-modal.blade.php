@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div wire:ignore.self class="modal fade" id="payroll" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog  modal-lg">
+    <div class="modal-dialog  modal-lg" style="padding-bottom: 200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Slip Gaji</h1>
@@ -205,4 +205,5 @@
             </div>
         </div>
     </div>
+
 </div>
