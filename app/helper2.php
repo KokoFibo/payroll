@@ -290,7 +290,6 @@ function build_payroll($month, $year)
         ->whereYear('date', $year)
         ->delete();
     foreach ($datas as $data) {
-        //   $payroll = new Payroll();
 
         if ($data->total_noscan > 3 && trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $denda_noscan = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
@@ -372,18 +371,10 @@ function build_payroll($month, $year)
             $manfaat_libur = manfaat_libur_resigned($month, $year, $libur, $data->user_id);
         }
 
-        // $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id);
 
-        // $total_n_hari_kerja = getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year);
-        // $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-        // $jumlah_hari_absen = countWorkingDays($month, $year, array(0)) - jumlah_libur_nasional($month, $year) - $data->total_hari_kerja;
-        // if ($jumlah_hari_absen < 0) $jumlah_hari_absen = 0;
-        // $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($jumlah_hari_absen * ($data->karyawan->gaji_pokok / 26));
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
-        // if ($data->karyawan->id_karyawan == 58) {
-        //     dd($total_n_hari_kerja, $data->total_hari_kerja, $manfaat_libur);
-        // }
+
 
         if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
@@ -397,11 +388,6 @@ function build_payroll($month, $year)
         }
 
         $libur_nasional = 0;
-        // if (trim($data->karyawan->metode_penggajian) == 'Perbulan' && countWorkingDays($year, $month, array(0)) <= 26) {
-        //     $libur_nasional = $jumlah_libur_nasional * $data->karyawan->gaji_pokok / 26;
-        // } else {
-        //     $libur_nasional = 0;
-        // }
 
         $payrollArr[] = [
             'jp' => $jp,

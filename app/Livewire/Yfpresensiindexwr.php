@@ -551,15 +551,15 @@ class Yfpresensiindexwr extends Component
         } else {
             $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-                ->when($this->location == 'Pabrik 1', function ($query) {
-                    return $query->where('placement', 'YCME');
-                })
-                ->when($this->location == 'Pabrik 2', function ($query) {
-                    return $query->where('placement', 'YEV');
-                })
-                ->when($this->location == 'Kantor', function ($query) {
-                    return $query->whereIn('placement', ['YIG', 'YSM']);
-                })
+                // ->when($this->location == 'Pabrik 1', function ($query) {
+                //     return $query->where('placement', 'YCME');
+                // })
+                // ->when($this->location == 'Pabrik 2', function ($query) {
+                //     return $query->where('placement', 'YEV');
+                // })
+                // ->when($this->location == 'Kantor', function ($query) {
+                //     return $query->whereIn('placement', ['YIG', 'YSM']);
+                // })
                 ->orderBy($this->columnName, $this->direction)
                 // hilangin ini kalau ngaco            
                 ->orderBy('user_id', 'asc')
@@ -570,13 +570,11 @@ class Yfpresensiindexwr extends Component
                 })
                 ->when($this->search, function ($query) {
                     $query
+                        // ->whereDate('date',  $this->tanggal);
+                        // kedua ini diatur tergantung kebutuhan
                         ->whereMonth('date', $this->bulan)
                         ->whereYear('date', $this->tahun);
                 })
-                // ->when($this->is_noscan, function ($query) {
-                //     $query
-                //         ->where('no_scan', 'No Scan');
-                // })
 
 
 
@@ -589,7 +587,8 @@ class Yfpresensiindexwr extends Component
                             // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%');
+                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
                         // ->whereMonth('date', $this->month)
                         // ->whereYear('date', $this->year);
                     });
