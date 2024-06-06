@@ -64,8 +64,8 @@ class Test extends Component
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan_history', 'No Scan')->orWhere('no_scan', 'No Scan')->paginate(10);
     $datas = Yfrekappresensi::whereMonth('date', '03')->whereYear('date', '2024')->paginate(10);
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
-
-    $datas = Karyawan::where('gaji_bpjs', '>',  0)->count();
+    // Blacklist
+    $datas = Payroll::where('status_karyawan', 'Resigned')->whereDate('created_at', '2024-06-06')->where('metode_penggajian', 'Perbulan')->count();
     dd($datas);
 
 
