@@ -293,10 +293,10 @@ function build_payroll($month, $year)
         //   hitung BPJS
 
         if ($data->karyawan->potongan_JP == 1) {
-            if ($data->karyawan->gaji_bpjs <= 10042300) {
+            if ($data->karyawan->gaji_bpjs <= 9559600) {
                 $jp = $data->karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 10042300 * 0.01;
+                $jp = 9559600 * 0.01;
             }
         } else {
             $jp = 0;
@@ -375,8 +375,7 @@ function build_payroll($month, $year)
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
         $manfaat_libur = 0;
-        // $beginning_date = new DateTime("$year-$month-01");
-        $beginning_date = buat_tanggal($month, $year);
+        $beginning_date = new DateTime("$year-$month-01");
         // hehehe
         if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
             $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
@@ -666,10 +665,10 @@ function build_payroll($month, $year)
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
         if ($data_karyawan->potongan_JP == 1) {
-            if ($data_karyawan->gaji_bpjs <= 10042300) {
+            if ($data_karyawan->gaji_bpjs <= 9559600) {
                 $jp = $data_karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 10042300 * 0.01;
+                $jp = 9559600 * 0.01;
             }
         } else {
             $jp = 0;

@@ -52,11 +52,14 @@ class Test extends Component
 
   public function render()
   {
-    $month = '04';
+
+    $month = '10';
     $year = '2024';
-    $startTime = '07:46';
-    $endTime = '07:47';
-    $first_out = '11:30:00';
+
+    // dd(buat_tanggal($month, $year));
+
+
+
 
 
 
@@ -65,11 +68,13 @@ class Test extends Component
     $datas = Yfrekappresensi::whereMonth('date', '03')->whereYear('date', '2024')->paginate(10);
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
     // Blacklist
-    $datas = Payroll::where('status_karyawan', 'Resigned')->whereDate('created_at', '2024-06-06')->where('metode_penggajian', 'Perbulan')->paginate(10);
+    $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
+      ->where('karyawans.status_karyawan', 'Resigned')->whereDate('payrolls.created_at', '2024-06-06')->where('payrolls.metode_penggajian', 'Perbulan')
+      ->orderBy('karyawans.tanggal_resigned', 'desc')
+      ->paginate(10);
 
 
-    $date1 = '2023-06-10';
-    $date2 = '2023-10-10';
+
 
 
 

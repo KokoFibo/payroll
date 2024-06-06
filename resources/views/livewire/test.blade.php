@@ -8,6 +8,10 @@
                     <tr>
                         <th>{{ __('ID') }} <i class="fa-solid fa-sort"></i></th>
                         <th>{{ __('Nama') }} <i class="fa-solid fa-sort"></i></th>
+                        <th>Tanggal bergabung</th>
+                        <th>Tanggal resign</th>
+                        <th>jam lembur</th>
+                        <th>gaji lembur</th>
                         <th>
                             {{ __('status') }} <i class="fa-solid fa-sort"></i></th>
                         <th>Gaji pokok</th>
@@ -23,10 +27,14 @@
                         <tr>
                             <td>{{ $p->id_karyawan }}</td>
                             <td>{{ $p->nama }}</td>
+                            <td>{{ $p->tanggal_bergabung }}</td>
+                            <td>{{ $p->tanggal_resigned }}</td>
+                            <td>{{ number_format($p->jam_lembur, 1) }}</td>
+                            <td>{{ number_format($p->gaji_lembur) }}</td>
                             <td>{{ $p->status_karyawan }}</td>
-                            <td>{{ $p->gaji_pokok }}</td>
+                            <td>{{ number_format($p->gaji_pokok) }}</td>
                             <td>{{ $p->hari_kerja }}</td>
-                            <td>{{ $p->subtotal }}</td>
+                            <td>{{ number_format($p->subtotal) }}</td>
 
                         </tr>
                         {{-- @endif --}}

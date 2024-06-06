@@ -77,14 +77,19 @@
                                                             wire:key="{{ $d->id }}-save"
                                                             wire:click='save'>Simpan</button>
                                                     @else
-                                                        <button class="btn btn-sm btn-primary"
+                                                        <button class="btn btn-sm btn-primary "
                                                             wire:click='save'>Simpan</button>
                                                     @endif
                                                     <button class="btn btn-sm btn-warning"
                                                         wire:click='cancel'>Cancel</button>
                                                 @else
-                                                    <button class="btn btn-sm btn-warning"
-                                                        wire:click='show({{ $d->id }})'>Show</button>
+                                                    @if (check_storage($d->applicant_id))
+                                                        <button class="btn btn-sm btn-success"
+                                                            wire:click='show({{ $d->id }})'>Show</button>
+                                                    @else
+                                                        <button class="btn btn-sm btn-warning"
+                                                            wire:click='show({{ $d->id }})'>Show</button>
+                                                    @endif
                                                     <button class="btn btn-sm btn-danger"
                                                         wire:confirm="Apakah yakin data applicant ini akan di delete?"
                                                         wire:key="{{ $d->id }}-delete"
