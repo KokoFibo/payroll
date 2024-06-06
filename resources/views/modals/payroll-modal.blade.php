@@ -184,6 +184,21 @@
                                                 Rp. {{ number_format($data_karyawan->ptkp) }}</td>
                                         </tr>
                                     @endif
+                                    @if ($data_payroll->denda_resigned != 0)
+                                        <tr>
+                                            <td>Lama Bekerja</td>
+                                            <td>
+
+                                                {{ selisih_hari($data_karyawan->tanggal_bergabung, $data_karyawan->tanggal_resigned) }}
+                                                Hari
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Denda Resigned</td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->denda_resigned) }}</td>
+                                        </tr>
+                                    @endif
 
                                     <tr>
                                         <td>Total Gaji</td>
