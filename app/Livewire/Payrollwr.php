@@ -163,6 +163,8 @@ class Payrollwr extends Component
             return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
         }
     }
+
+
     public function bankexcel()
     {
         $nama_file = '';

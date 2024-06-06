@@ -65,10 +65,15 @@ class Test extends Component
     $datas = Yfrekappresensi::whereMonth('date', '03')->whereYear('date', '2024')->paginate(10);
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
     // Blacklist
-    $datas = Payroll::where('status_karyawan', 'Resigned')->whereDate('created_at', '2024-06-06')->where('metode_penggajian', 'Perbulan')->count();
-    dd($datas);
+    $datas = Payroll::where('status_karyawan', 'Resigned')->whereDate('created_at', '2024-06-06')->where('metode_penggajian', 'Perbulan')->paginate(10);
 
 
+    $date1 = '2023-06-10';
+    $date2 = '2023-10-10';
+
+
+
+    // dd(selisih_hari($date1, $date2));
 
     return view('livewire.test', [
       'datas' => $datas,

@@ -13,6 +13,14 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function selisih_hari($date1, $date2)
+{
+    $date1_obj = Carbon::createFromFormat('Y-m-d', $date1);
+    $date2_obj = Carbon::createFromFormat('Y-m-d', $date2);
+    $difference = $date2_obj->diffInDays($date1_obj);
+    return $difference;
+}
+
 function dateTimeFormat($tgl)
 {
     return date('d-M-Y, H:i:s', strtotime($tgl));
@@ -209,7 +217,7 @@ function manfaat_libur_resigned($month, $year, $libur, $user_id)
         foreach ($libur as $l) {
 
             $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-            if ($tgl_libur == 1) $manfaat_libur_resigned++;
+            // if ($tgl_libur == 1) $manfaat_libur_resigned++;
             if ($tgl_resigned > $tgl_libur) $manfaat_libur_resigned++;
         }
         return $manfaat_libur_resigned;

@@ -390,7 +390,9 @@ function build_payroll($month, $year)
 
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
-
+        // if ($data->user_id == 1026) {
+        //     dd($manfaat_libur, $data->karyawan->status);
+        // }
 
         if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
