@@ -38,7 +38,7 @@ class Applicant extends Component
 
             try {
 
-                $result = Storage::disk('google')->delete($data->filename);
+                // $result = Storage::disk('google')->delete($data->filename);
                 $result = Storage::disk('public')->delete($data->filename);
                 if ($result) {
                     // File was deleted successfully
@@ -214,11 +214,11 @@ class Applicant extends Component
                     // $imagedata = (string) $image->toJpeg();
                     $imagedata = (string) $image->toWebp(60);
 
-                    Storage::disk('google')->put($folder, $imagedata);
+                    // Storage::disk('google')->put($folder, $imagedata);
                     Storage::disk('public')->put($folder, $imagedata);
                     $this->path = $folder;
                 } else {
-                    $this->path = Storage::disk('google')->put($folder, $file);
+                    // $this->path = Storage::disk('google')->put($folder, $file);
                     $this->path = Storage::disk('public')->put($folder, $file);
                 }
 
@@ -288,11 +288,11 @@ class Applicant extends Component
                     // $imagedata = (string) $image->toJpeg();
                     $imagedata = (string) $image->toWebp(60);
 
-                    Storage::disk('google')->put($folder, $imagedata);
+                    // Storage::disk('google')->put($folder, $imagedata);
                     Storage::disk('public')->put($folder, $imagedata);
                     $this->path = $folder;
                 } else {
-                    $this->path = Storage::disk('google')->put($folder, $file);
+                    // $this->path = Storage::disk('google')->put($folder, $file);
                     $this->path = Storage::disk('public')->put($folder, $file);
                 }
 

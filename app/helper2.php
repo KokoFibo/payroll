@@ -72,6 +72,7 @@ function build_payroll($month, $year)
     // disini mulai prosesnya
 
     //     foreach ($filteredData as $data) {
+    // proses ini yg lama1
     foreach ($filterArray as $data) {
         // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
 
@@ -88,10 +89,6 @@ function build_payroll($month, $year)
             ->where('date', '<=', $endOfMonth)
             ->orderBy('date', 'desc')
             ->get();
-
-
-
-
 
         // ambil data per user id
         $n_noscan = 0;
@@ -266,11 +263,16 @@ function build_payroll($month, $year)
         //     ];
         // }
     }
+    // dd('sini');
+
+
 
     $chunks = array_chunk($dataArr, 100);
     foreach ($chunks as $chunk) {
         Jamkerjaid::insert($chunk);
     }
+
+
     // echo 'rekap done';
 
     // ok 2 perhitungan payroll
@@ -291,11 +293,7 @@ function build_payroll($month, $year)
         ->delete();
     foreach ($datas as $data) {
 
-        if ($data->total_noscan > 3 && trim($data->karyawan->metode_penggajian) == 'Perjam') {
-            $denda_noscan = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
-        } else {
-            $denda_noscan = 0;
-        }
+
 
         //   hitung BPJS
 
@@ -329,7 +327,6 @@ function build_payroll($month, $year)
 
 
 
-        $pajak = 0;
         if ($data->karyawan->potongan_JKK == 1) {
             $jkk = 1;
         } else {
@@ -341,6 +338,22 @@ function build_payroll($month, $year)
             $jkm = 0;
         }
 
+        // end of bpjs
+
+        $pajak = 0;
+
+        // denda no scan
+
+        if ($data->total_noscan > 3 && trim($data->karyawan->metode_penggajian) == 'Perjam') {
+            $denda_noscan = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
+        } else {
+            $denda_noscan = 0;
+        }
+
+
+
+        // denda lupa absen
+
         if ($data->total_noscan == null) {
             $denda_lupa_absen = 0;
         } else {
@@ -350,15 +363,18 @@ function build_payroll($month, $year)
                 $denda_lupa_absen = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
             }
         }
+
+
         // hapus ini jika sdh kelar
         // $denda_lupa_absen = 0;
+        // $denda_noscan = 0;
+
 
         $total_bonus_dari_karyawan = 0;
         $total_potongan_dari_karyawan = 0;
         $gaji_libur = 0;
 
         $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
-
 
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
@@ -389,7 +405,57 @@ function build_payroll($month, $year)
 
         $libur_nasional = 0;
 
-        $payrollArr[] = [
+        // $payrollArr[] = [
+        //     'jp' => $jp,
+        //     'jht' => $jht,
+        //     'kesehatan' => $kesehatan,
+        //     'tanggungan' => $tanggungan,
+        //     'jkk' => $jkk,
+        //     'jkm' => $jkm,
+        //     'denda_lupa_absen' => $denda_lupa_absen,
+        //     'gaji_libur' => $gaji_libur,
+
+        //     'jamkerjaid_id' => $data->id,
+        //     'nama' => $data->karyawan->nama,
+        //     'id_karyawan' => $data->karyawan->id_karyawan,
+        //     'jabatan' => $data->karyawan->jabatan,
+        //     'company' => $data->karyawan->company,
+        //     'placement' => $data->karyawan->placement,
+        //     'departemen' => $data->karyawan->departemen,
+        //     'status_karyawan' => $data->karyawan->status_karyawan,
+        //     'metode_penggajian' => $data->karyawan->metode_penggajian,
+        //     'nomor_rekening' => $data->karyawan->nomor_rekening,
+        //     'nama_bank' => $data->karyawan->nama_bank,
+        //     'gaji_pokok' => $data->karyawan->gaji_pokok,
+        //     'gaji_lembur' => $data->karyawan->gaji_overtime,
+        //     'gaji_bpjs' => $data->karyawan->gaji_bpjs,
+        //     // oll
+        //     'libur_nasional' => $libur_nasional,
+
+        //     'jkk' => $data->karyawan->jkk,
+        //     'jkm' => $data->karyawan->jkm,
+        //     'hari_kerja' => $data->total_hari_kerja,
+        //     'jam_kerja' => $data->jumlah_jam_kerja,
+        //     'jam_lembur' => $data->jumlah_menit_lembur,
+        //     'jumlah_jam_terlambat' => $data->jumlah_jam_terlambat,
+        //     'total_noscan' => $data->total_noscan,
+        //     'thr' => $data->karyawan->bonus,
+        //     'tunjangan_jabatan' => $data->karyawan->tunjangan_jabatan,
+        //     'tunjangan_bahasa' => $data->karyawan->tunjangan_bahasa,
+        //     'tunjangan_skill' => $data->karyawan->tunjangan_skill,
+        //     'tunjangan_lama_kerja' => $data->karyawan->tunjangan_lama_kerja,
+        //     'tunjangan_lembur_sabtu' => $data->karyawan->tunjangan_lembur_sabtu,
+        //     'iuran_air' => $data->karyawan->iuran_air,
+        //     'iuran_locker' => $data->karyawan->iuran_locker,
+        //     'tambahan_jam_shift_malam' => $data->tambahan_jam_shift_malam,
+        //     'tambahan_shift_malam' => $tambahan_shift_malam,
+        //     'subtotal' => $subtotal,
+        //     'date' => buatTanggal($data->date),
+        //     'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
+        //     'created_at' => now()->toDateTimeString(),
+        //     'updated_at' => now()->toDateTimeString(),
+        // ];
+        Payroll::create([
             'jp' => $jp,
             'jht' => $jht,
             'kesehatan' => $kesehatan,
@@ -436,14 +502,15 @@ function build_payroll($month, $year)
             'subtotal' => $subtotal,
             'date' => buatTanggal($data->date),
             'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
-            'created_at' => now()->toDateTimeString(),
-            'updated_at' => now()->toDateTimeString(),
-        ];
+            // 'created_at' => now()->toDateTimeString(),
+            // 'updated_at' => now()->toDateTimeString()
+        ]);
     }
-    $chunks = array_chunk($payrollArr, 100);
-    foreach ($chunks as $chunk) {
-        Payroll::insert($chunk);
-    }
+
+    // $chunks = array_chunk($payrollArr, 100);
+    // foreach ($chunks as $chunk) {
+    //     Payroll::insert($chunk);
+    // }
 
     // dd('payroll done');
     // ok 3
