@@ -499,6 +499,10 @@ class Payrollwr extends Component
             $lock->save();
         }
 
+        // hapus ini kalau sudah kelar develop
+        $lock->build = 1;
+        $lock->save();
+
         $startTime = microtime(true);
 
         $result  = build_payroll($this->month, $this->year);
