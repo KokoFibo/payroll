@@ -129,7 +129,6 @@
                         <li class="list-group-item">Identitas/No</li>
                         <li class="list-group-item">Alamat Identitas</li>
                         <li class="list-group-item">Alamat Tinggal Sekarang</li>
-                        <li class="list-group-item">Status</li>
 
                     </ul>
                     <ul class="list-group">
@@ -152,7 +151,6 @@
                             {{ $personal_data->no_identitas }}</li>
                         <li class="list-group-item">{{ $personal_data->alamat_identitas }}</li>
                         <li class="list-group-item">{{ $personal_data->alamat_tinggal_sekarang }}</li>
-                        <li class="list-group-item">{{ $personal_data->status }}</li>
 
 
                     </ul>
