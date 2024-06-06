@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Applicantfile;
 use Carbon\Carbon;
 use App\Models\Lock;
 use App\Models\User;
@@ -12,6 +13,33 @@ use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function check_storage($id_karyawan)
+{
+    $data = Applicantfile::where('id_karyawan', $id_karyawan)->first();
+    if ($data == null) return false;
+    else return true;
+}
+
+function buat_tanggal($month, $year)
+{
+    if ($month < 10) $month = '0' . $month;
+    return $year . '-' . $month . '-01';
+}
+
+function check_resigned_validity($month, $year, $tgl_resigned)
+
+{
+    // Convert the resignation date to a timestamp
+    $resigned_timestamp = strtotime($tgl_resigned);
+
+    // Get the start and end timestamps for the specified month and year
+    $start_date = strtotime("$year-$month-01");
+    $end_date = strtotime("$year-$month-01 +1 month");
+
+    $valid = $resigned_timestamp >= $start_date && $resigned_timestamp <= $end_date;
+    return $valid;
+}
 
 function selisih_hari($date1, $date2)
 {
@@ -190,38 +218,118 @@ function shortJam($jam)
     }
 }
 
-function manfaat_libur($month, $year, $libur, $user_id)
+// function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
+// {
+//     $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
+//     $tgl_mulai_kerja = Carbon::parse($data->date)->day;
+//     dd($tgl_mulai_kerja);
+//     $manfaat_libur = 0;
+//     foreach ($libur as $l) {
+//         $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
+//         if ($tgl_libur == 1)  $manfaat_libur++;
+//         if (
+//             $tgl_mulai_kerja < $tgl_libur || $tgl_bergabung
+//             < $tgl_libur
+//         ) $manfaat_libur++;
+//     }
+
+
+//     return $manfaat_libur;
+// }
+
+function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 {
-    $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
-    $tgl_mulai_kerja = Carbon::parse($data->date)->day;
-    $manfaat_libur = 0;
-    foreach ($libur as $l) {
-        $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-        if ($tgl_libur == 1) $manfaat_libur++;
-        if ($tgl_mulai_kerja < $tgl_libur) $manfaat_libur++;
+    $data_awal = Yfrekappresensi::where('user_id', $user_id)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->orderBy('date', 'asc')
+        ->first();
+    $data_akhir = Yfrekappresensi::where('user_id', $user_id)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->orderBy('date', 'desc')
+        ->first();
+
+    // Check if $data is null
+    if (!$data_awal) {
+        return 0; // No data found, so no benefit from holidays
     }
+
+    $tgl_mulai_kerja = $data_awal->date;
+    $tgl_akhir_kerja = $data_akhir->date;
+
+
+    $manfaat_libur = 0;
+    // dd($libur->count());
+    $is_tgl_1 = false;
+    foreach ($libur as $l) {
+        $tgl_libur = $l->tanggal_mulai_hari_libur;
+
+        // Check if the holiday falls on the first day of the month
+        $tgl_libur_obj = Carbon::parse($tgl_libur);
+
+        if ($tgl_mulai_kerja <= $tgl_libur && $tgl_akhir_kerja >= $tgl_libur) {
+            $manfaat_libur++;
+        }
+
+        if ($tgl_libur_obj->day == 1) {
+            $is_tgl_1 = true;
+        }
+
+
+        // Check if the holiday falls after the start date of work or joining date
+    }
+    $is_karyawan_lama = false;
+    // $beginning_date = new DateTime("$year-$month-01");
+
+    $beginning_date = buat_tanggal($month, $year);
+    $is_karyawan_lama = $tgl_bergabung < $beginning_date;
+
+    if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
+        $manfaat_libur++;
+    } else {
+        $manfaat_libur = 0;
+    }
+    // if ($user_id == '7503') dd($is_karyawan_lama, $manfaat_libur);
+
+    // $beginning_date = new DateTime("$year-$month-01");
+    // if (($libur->count() == 1) && ($tgl_libur_obj->day == 1) && ($tgl_bergabung < $beginning_date)) {
+    //     $manfaat_libur = 0;
+    //     dd('hanya 1 tanggal libur dan tanggal 1');
+    // } else {
+    //     dd('hanya 1 tanggal libur dan tanggal 1');
+    //     $manfaat_libur++;
+    // }
+
+
+    //   && $tgl_bergabung < $tgl_libur
+
     return $manfaat_libur;
 }
 
-function manfaat_libur_resigned($month, $year, $libur, $user_id)
+function manfaat_libur_resigned($month, $year, $libur, $user_id, $tanggal_resigned)
 {
-    $data = Karyawan::where('id_karyawan', $user_id)
-        ->where('metode_penggajian', 'Perbulan')
-        ->whereMonth('tanggal_resigned', $month)
-        ->whereYear('tanggal_resigned', $year)
-        ->first();
-    if ($data != null) {
-        $manfaat_libur_resigned = 0;
 
-        $tgl_resigned = Carbon::parse($data->tanggal_resigned)->day;
-        foreach ($libur as $l) {
+    // $data = Karyawan::where('id_karyawan', $user_id)
+    //     ->where('metode_penggajian', 'Perbulan')
+    //     ->whereMonth('tanggal_resigned', $month)
+    //     ->whereYear('tanggal_resigned', $year)
+    //     ->first();
+    $manfaat_libur_resigned = 0;
 
-            $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-            // if ($tgl_libur == 1) $manfaat_libur_resigned++;
-            if ($tgl_resigned > $tgl_libur) $manfaat_libur_resigned++;
-        }
-        return $manfaat_libur_resigned;
+    $tgl_resigned = Carbon::parse($tanggal_resigned);
+    foreach ($libur as $l) {
+        $tgl_libur = $l->tanggal_mulai_hari_libur;
+        // Check if the holiday falls on the first day of the month
+        $tgl_libur_obj = Carbon::parse($tgl_libur);
+        // $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
+        if ($tgl_libur == 1 && $tanggal_resigned < $tgl_libur) $manfaat_libur_resigned++;
+
+        if ($tgl_resigned > $tgl_libur) $manfaat_libur_resigned++;
     }
+    // dd($user_id, $manfaat_libur_resigned);
+    // if ($user_id == '1145') dd($user_id, $manfaat_libur_resigned);
+    return $manfaat_libur_resigned;
 }
 
 function check_absensi_kosong()
