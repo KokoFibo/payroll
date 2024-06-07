@@ -35,7 +35,9 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     {{-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> --}}
     {{-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script> --}}
@@ -66,6 +68,8 @@
 {{-- <body style="font-family: 'nunito';"> --}}
 
 <body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
+
+    {{-- <body class="hold-transition sidebar-mini" style="font-family: 'Noto Sans';"> --}}
     <div class="wrapper">
 
         @include('layouts.navbar')

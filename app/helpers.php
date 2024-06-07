@@ -285,11 +285,16 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
     $beginning_date = buat_tanggal($month, $year);
     $is_karyawan_lama = $tgl_bergabung < $beginning_date;
 
-    if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
+    if (($is_tgl_1 && $manfaat_libur != 0 && $is_karyawan_lama) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
         $manfaat_libur++;
-    } else {
-        $manfaat_libur = 0;
     }
+
+
+
+    // if ($user_id == 7415) {
+    //     dd($manfaat_libur, $is_karyawan_lama);
+    // }
+
     // if ($user_id == '7503') dd($is_karyawan_lama, $manfaat_libur);
 
     // $beginning_date = new DateTime("$year-$month-01");
