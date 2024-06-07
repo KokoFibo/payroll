@@ -314,7 +314,7 @@ class Karyawanwr extends Component
     public function clear()
     {
         $this->reset();
-        $this->id_karyawan = getNextIdKaryawan();
+        // $this->id_karyawan = getNextIdKaryawan();
     }
 
     public function exit()
