@@ -44,7 +44,11 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
     {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 
 
@@ -68,11 +72,13 @@
         background-color: #F4F6F9;
         /* background-color: #f7f7f7;
         background-image: url("https://www.transparenttextures.com/patterns/dimension.png"); */
-
+        font-family: "Noto Sans", sans-serif;
     }
 </style>
 
 <body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
+
+    {{-- <body class="hold-transition sidebar-mini" style="font-family: 'Noto Sans';"> --}}
 
     <div class="wrapper">
 

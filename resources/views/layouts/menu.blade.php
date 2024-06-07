@@ -37,7 +37,7 @@ with font-awesome or any other icon font library -->
                     <a href="/permohonan-personnel" class="nav-link">
                         <i class="nav-icon fa-solid fa-person-walking"></i>
                         <p>
-                            {{ __('Permohonan Personnel') }}
+                            {{ __('Personnel Request') }}
                         </p>
                     </a>
                 </li>
