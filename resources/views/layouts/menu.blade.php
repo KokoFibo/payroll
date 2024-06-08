@@ -169,6 +169,13 @@ with font-awesome or any other icon font library -->
                         <p>{{ __('Developer Dashboard') }}</p>
                     </a>
                 </li>
+
+                <li class="nav-item {{ 'logging' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/logging" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Logging Dashboard') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/deletenoscan" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>

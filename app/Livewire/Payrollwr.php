@@ -371,6 +371,15 @@ class Payrollwr extends Component
                         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
                     $nama_file = 'YEV_SUNRA_Placement_Bank.xlsx';
                     break;
+                case '14':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YEV AIMA')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YEV_AIMA_Placement_Bank.xlsx';
+                    break;
             }
         } else {
             if ($this->selected_departemen == 0) {
@@ -1386,6 +1395,19 @@ class Payrollwr extends Component
                         ->sum('total');
                     $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV SUNRA', '')
                         ->where('placement', 'YEV SUNRA')
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy($this->columnName, $this->direction)
+                        ->paginate($this->perpage);
+                    break;
+                case 14:
+                    $total = Payroll::whereIn('status_karyawan', $statuses)
+                        ->where('placement', 'YEV AIMA')
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->sum('total');
+                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV AIMA', '')
+                        ->where('placement', 'YEV AIMA')
                         ->whereMonth('date', $this->month)
                         ->whereYear('date', $this->year)
                         ->orderBy($this->columnName, $this->direction)

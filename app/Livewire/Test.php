@@ -56,16 +56,6 @@ class Test extends Component
     $month = '10';
     $year = '2024';
 
-    // dd(buat_tanggal($month, $year));
-
-
-
-
-
-
-
-    // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan_history', 'No Scan')->orWhere('no_scan', 'No Scan')->paginate(10);
-    $datas = Yfrekappresensi::whereMonth('date', '03')->whereYear('date', '2024')->paginate(10);
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
     // Blacklist
     // $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
