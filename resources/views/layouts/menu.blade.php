@@ -170,10 +170,10 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
 
-                <li class="nav-item {{ 'logging' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/logging" class="nav-link">
+                <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/data-log" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Logging Dashboard') }}</p>
+                        <p>{{ __('Data Logs Dashboard') }}</p>
                     </a>
                 </li>
                 <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
