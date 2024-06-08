@@ -49,6 +49,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Http\Controllers\LoggingController;
 use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
@@ -215,6 +216,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/developer-dashboard', DeveloperDashboard::class);
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/jabatan', Jabatanwr::class);
+                    Route::get('/logging', [LoggingController::class, 'index'])->name('logging.index');
 
 
 

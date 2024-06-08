@@ -200,7 +200,6 @@
                             <option value="11">YEV SMOOT</option>
                             <option value="12">YEV OFFERO</option>
                             <option value="13">YEV SUNRA</option>
-                            <option value="13">YEV SUNRA</option>
                             <option value="14">YEV AIMA</option>
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>

@@ -39,7 +39,7 @@ class Karyawanwr extends Component
 
     protected $rules = [
 
-        'id_karyawan' => 'required',
+        'id_karyawan' => 'nullable',
         'nama' => 'required',
         'email' => 'email|nullable',
         'tanggal_lahir' => 'date|before:today|required',
@@ -62,7 +62,7 @@ class Karyawanwr extends Component
         'alamat_tinggal' => 'required',
         // KEPEGAWAIAN
         'status_karyawan' => 'required',
-        'tanggal_bergabung' => 'date|required',
+        'tanggal_bergabung' => 'date|nullable',
         'company' => 'required',
         'placement' => 'required',
         'departemen' => 'required',
