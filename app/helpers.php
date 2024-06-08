@@ -14,6 +14,25 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function getCauserName($id)
+{
+    if ($id != null) {
+        $data = User::find($id);
+        if ($data == null) return $id;
+        else return $data->name;
+    }
+}
+
+function getSubjectName($id)
+{
+    if ($id != null) {
+        $data = Karyawan::find($id);
+        if ($data == null) return $id;
+        else return $data->nama;
+    }
+}
+
+
 function check_storage($id_karyawan)
 {
     $data = Applicantfile::where('id_karyawan', $id_karyawan)->first();

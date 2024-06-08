@@ -54,6 +54,7 @@ use App\Livewire\AddCompany;
 use App\Livewire\AddPlacement;
 use App\Livewire\Applicant;
 use App\Livewire\DataApplicant;
+use App\Livewire\DataLog;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Jabatanwr;
@@ -216,7 +217,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/developer-dashboard', DeveloperDashboard::class);
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/jabatan', Jabatanwr::class);
-                    Route::get('/logging', [LoggingController::class, 'index'])->name('logging.index');
+                    Route::get('/data-log', DataLog::class)->name('datalog');
 
 
 

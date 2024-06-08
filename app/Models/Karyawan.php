@@ -23,7 +23,6 @@ class Karyawan extends Model
             ->logOnly(['gaji_pokok', 'gaji_overtime', 'bonus'])
             ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnlyDirty()
-            // ->causedBy(Auth::user()->id)
             ->dontSubmitEmptyLogs();
         // Chain fluent methods for configuration options
     }
