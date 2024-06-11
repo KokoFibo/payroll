@@ -64,13 +64,16 @@ use App\Livewire\PermohonanPersonnel;
 use App\Livewire\Placementreport;
 use App\Livewire\TanpaEmergencyContact;
 
+
 // Middleware
 Auth::routes([
     'register' => false, // Register Routes...
     'verify' => false, // Email Verification Routes...
 ]);
 
+//Guest
 Route::middleware(['guest'])->group(function () {
+    Route::get('/applicant', Applicant::class);
 });
 
 // Route::get('/applicant', function () {
@@ -82,7 +85,7 @@ Route::middleware(['guest'])->group(function () {
 // Route::post('/applicant/register', [ApplicantController::class, 'register']);
 
 // buka route ini untuk kerja applicant
-Route::get('/applicant', Applicant::class);
+
 
 Route::get('generate', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
@@ -91,6 +94,8 @@ Route::get('generate', function () {
 
 Route::middleware(['auth'])->group(function () {
     // Route::post('logout', LogoutController::class)->name('logout1');
+
+
     Route::middleware(['User'])->group(function () {
         Route::get('locale/{locale}', function ($locale) {
             Session::put('locale', $locale);
@@ -112,139 +117,146 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/userinformation', UserInformation::class);
         Route::get('/userregulation', UserRegulation::class);
 
-        Route::middleware(['Admin'])->group(function () {
-            //Dashboard
-            Route::get('/dashboard', [DashboardController::class, 'index']);
-            Route::get('/mobile', [DashboardController::class, 'mobile']);
-            // KARYAWAN
-            Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
-            Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
-            // Route::get('/karyawanupdate', Updatekaryawanwr::class)->name('karyawanupdate');
-            Route::get('/karyawanindex', Karyawanindexwr::class)->name('karyawanindex');
-            // Route::resource('karyawan', KaryawanController::class);
-            // Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
-            // Route::get('/karyawan/hapus/{$id}', [KaryawanController::class,'hapus']);
-            Route::delete('/karyawan/{id}/destroy', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
-            Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');
-            Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
-            Route::get('/informasi', Informasiwr::class);
-            Route::get('/informationwr', Informationwr::class);
-            Route::get('/tambahan', Tambahanwr::class);
-            Route::get('/iuranlocker', IuranLocker::class);
+        // Junior Admin
+        Route::middleware(['JuniorAdmin'])->group(function () {
             Route::get('/dataapplicant', DataApplicant::class);
 
-            // YF PRESENSI
-            Route::get('/yfupload', function () {
-                return view('yfpresensi.upload');
-            });
-            Route::get('/yfindex', [YfpresensiController::class, 'index']);
-            Route::post('/yfstore', [YfpresensiController::class, 'store']);
-            Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
-            Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
-            Route::get('/presensidetailwr', Presensidetailwr::class);
 
-            // Presensi Summary Excel
-            Route::get('/presensisummaryindex', [ReportController::class, 'presensi_summary_index']);
-            Route::post('/createexcelpresensisummary', [ReportController::class, 'createExcelPresensiSummary']);
+            Route::middleware(['Admin'])->group(function () {
+                //Dashboard
+                Route::get('/dashboard', [DashboardController::class, 'index']);
+                Route::get('/mobile', [DashboardController::class, 'mobile']);
+                // KARYAWAN
+                Route::get('/karyawancreate', Karyawanwr::class)->name('karyawancreate');
+                Route::get('/karyawanupdate/{id}', Updatekaryawanwr::class)->name('karyawanupdate');
+                // Route::get('/karyawanupdate', Updatekaryawanwr::class)->name('karyawanupdate');
+                Route::get('/karyawanindex', Karyawanindexwr::class)->name('karyawanindex');
+                // Route::resource('karyawan', KaryawanController::class);
+                // Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+                // Route::get('/karyawan/hapus/{$id}', [KaryawanController::class,'hapus']);
+                Route::delete('/karyawan/{id}/destroy', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+                Route::post('/cari', [KaryawanController::class, 'cari'])->name('karyawan.cari');
+                Route::get('/resettable', [KaryawanController::class, 'resetTable'])->name('karyawan.resettable');
+                Route::get('/informasi', Informasiwr::class);
+                Route::get('/informationwr', Informationwr::class);
+                Route::get('/tambahan', Tambahanwr::class);
+                Route::get('/iuranlocker', IuranLocker::class);
 
+                // YF PRESENSI
+                Route::get('/yfupload', function () {
+                    return view('yfpresensi.upload');
+                });
+                Route::get('/yfindex', [YfpresensiController::class, 'index']);
+                Route::post('/yfstore', [YfpresensiController::class, 'store']);
+                Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
+                Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
+                Route::get('/presensidetailwr', Presensidetailwr::class);
 
-            // USER SETTING
-
-            Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
-            Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
-            Route::get('/payrollindex', Prindexwr::class);
-            Route::get('/salaryadjustment', SalaryAdjustment::class);
-            Route::get('/liburnasional', Liburnasionalwr::class);
-            Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
-
-
-
-
-            // KHUSUS Super Admin
-            Route::middleware(['SuperAdmin'])->group(function () {
-                Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
-                Route::get('/changeuserrolewr', Changeuserrolewr::class);
-                // PAYROLL
-                Route::get('/payroll', Payrollwr::class);
-                Route::get('/reportindex', [ReportController::class, 'index']);
-                Route::post('/createexcel', [ReportController::class, 'createExcel']);
-                Route::get('/bankreport', BankReport::class);
+                // Presensi Summary Excel
+                Route::get('/presensisummaryindex', [ReportController::class, 'presensi_summary_index']);
+                Route::post('/createexcelpresensisummary', [ReportController::class, 'createExcelPresensiSummary']);
 
 
-                // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
-                // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
+                // USER SETTING
+
+                Route::get('/changeprofilewr', Changeprofilewr::class)->name('changeprofile');
+                Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
+                Route::get('/payrollindex', Prindexwr::class);
+                Route::get('/salaryadjustment', SalaryAdjustment::class);
+                Route::get('/liburnasional', Liburnasionalwr::class);
+                Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
+
+                //Khusus Senior Admin
+                Route::middleware(['SeniorAdmin'])->group(function () {
+                    Route::get('/payroll', Payrollwr::class);
 
 
-                // KHUSUS DEVELOPER
-                Route::middleware(['Developer'])->group(function () {
-                    Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
-                    Route::get('/importKaryawanExcel', [KaryawanController::class, 'importKaryawanExcel']);
-                    Route::get('/karyawanviewimport', function () {
-                        return view('karyawan.importview');
-                    });
-                    Route::get('/erasedatakarayawan', [KaryawanController::class, 'erase'])->name('karyawan.erase');
-                    Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
-                    Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
-                    Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
-                    Route::get('/testto', [YfpresensiController::class, 'testto']);
-                    Route::get('/rubahid', Rubahidwr::class);
-                    Route::get('/editpresensi', Editpresensiwr::class);
-                    Route::get('/removepresensi', Removepresensiwr::class);
-                    Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);
-                    Route::get('/exceluploader', [ExcelUploaderController::class, 'index']);
-                    Route::post('/xlstore', [ExcelUploaderController::class, 'store']);
-                    Route::get('/UserLog', UserLog::class);
-
-                    Route::get('/MissingId', MissingId::class);
-                    Route::get('/UpdatedPresensi', UpdatedPresensi::class);
-                    Route::get('/absensikosong', AbsensiKosong::class);
-                    Route::get('/dataresigned', DataResigned::class);
-                    Route::get('/addpresensi', AddPresensi::class);
-                    Route::get('/usernotfound', UserNotFound::class);
-                    Route::get('/movepresensidata', MovePresensiData::class);
-                    Route::get('/moveback', Moveback::class);
-                    Route::get('/addcompany', AddCompany::class);
-                    Route::get('/addplacement', AddPlacement::class);
-                    Route::get('/yfuploaddelete', function () {
-                        return view('yfpresensi.upload-delete');
-                    });
-                    Route::get('/yfuploadcompare', function () {
-                        return view('yfpresensi.upload-compare');
-                    });
-                    Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
-                    Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
-                    Route::get('/deletenoscan', DeleteNoscan::class);
-                    Route::get('/developer-dashboard', DeveloperDashboard::class);
-                    Route::get('permohonan-personnel', PermohonanPersonnel::class);
-                    Route::get('/jabatan', Jabatanwr::class);
-                    Route::get('/data-log', DataLog::class)->name('datalog');
+                    // KHUSUS Super Admin
+                    Route::middleware(['SuperAdmin'])->group(function () {
+                        Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
+                        Route::get('/changeuserrolewr', Changeuserrolewr::class);
+                        // PAYROLL
+                        Route::get('/reportindex', [ReportController::class, 'index']);
+                        Route::post('/createexcel', [ReportController::class, 'createExcel']);
+                        Route::get('/bankreport', BankReport::class);
 
 
+                        // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
+                        // Route::post('/karyawan/createexcel', [KaryawanExcelController::class, 'createExcel']);
+
+
+                        // KHUSUS DEVELOPER
+                        Route::middleware(['Developer'])->group(function () {
+                            Route::post('/karyawanimport', [KaryawanController::class, 'import'])->name('karyawan.import');
+                            Route::get('/importKaryawanExcel', [KaryawanController::class, 'importKaryawanExcel']);
+                            Route::get('/karyawanviewimport', function () {
+                                return view('karyawan.importview');
+                            });
+                            Route::get('/erasedatakarayawan', [KaryawanController::class, 'erase'])->name('karyawan.erase');
+                            Route::get('/deletenoscan', [YfpresensiController::class, 'deleteNoScan']);
+                            Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
+                            Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
+                            Route::get('/testto', [YfpresensiController::class, 'testto']);
+                            Route::get('/rubahid', Rubahidwr::class);
+                            Route::get('/editpresensi', Editpresensiwr::class);
+                            Route::get('/removepresensi', Removepresensiwr::class);
+                            Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);
+                            Route::get('/exceluploader', [ExcelUploaderController::class, 'index']);
+                            Route::post('/xlstore', [ExcelUploaderController::class, 'store']);
+                            Route::get('/UserLog', UserLog::class);
+
+                            Route::get('/MissingId', MissingId::class);
+                            Route::get('/UpdatedPresensi', UpdatedPresensi::class);
+                            Route::get('/absensikosong', AbsensiKosong::class);
+                            Route::get('/dataresigned', DataResigned::class);
+                            Route::get('/addpresensi', AddPresensi::class);
+                            Route::get('/usernotfound', UserNotFound::class);
+                            Route::get('/movepresensidata', MovePresensiData::class);
+                            Route::get('/moveback', Moveback::class);
+                            Route::get('/addcompany', AddCompany::class);
+                            Route::get('/addplacement', AddPlacement::class);
+                            Route::get('/yfuploaddelete', function () {
+                                return view('yfpresensi.upload-delete');
+                            });
+                            Route::get('/yfuploadcompare', function () {
+                                return view('yfpresensi.upload-compare');
+                            });
+                            Route::post('/yfdeletebypabrik', [YfpresensiController::class, 'deleteByPabrik']);
+                            Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
+                            Route::get('/deletenoscan', DeleteNoscan::class);
+                            Route::get('/developer-dashboard', DeveloperDashboard::class);
+                            Route::get('permohonan-personnel', PermohonanPersonnel::class);
+                            Route::get('/jabatan', Jabatanwr::class);
+                            Route::get('/data-log', DataLog::class)->name('datalog');
 
 
 
 
 
-                    // TEST
-                    Route::get('/test', Test::class)->name('test');
-                    Route::get('/testaja', [Testaja::class, 'index']);
-                    Route::get('/testok', function () {
-                        return view('test');
+
+
+                            // TEST
+                            Route::get('/test', Test::class)->name('test');
+                            Route::get('/testaja', [Testaja::class, 'index']);
+                            Route::get('/testok', function () {
+                                return view('test');
+                            });
+                        });
                     });
                 });
             });
         });
+
+        // PRESENSI
+        // Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
+        // Route::get('/presensiupload', function() {
+        //     return view('content.presensi.import');
+        // });
+        // Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
+        // Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');
+        // Route::resource('/presensi', PresensiController::class);
+
+        // Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
     });
-
-    // PRESENSI
-    // Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
-    // Route::get('/presensiupload', function() {
-    //     return view('content.presensi.import');
-    // });
-    // Route::post('/presensi-update/{user_id}', [PresensiController::class, 'update_presensi'])->name('presensi.updatedata');
-    // Route::delete('/presensi-delete/{user_id}/{date}', [PresensiController::class, 'delete_presensi'])->name('presensi.deletedata');
-    // Route::resource('/presensi', PresensiController::class);
-
-    // Route::get('/presensinormalize', [PresensiController::class, 'normalize'])->name('karyawan.normalize');
 });
 // end of middleware auth

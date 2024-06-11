@@ -57,6 +57,13 @@
 
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input nightowl-daylight"
+                                                type="radio" value="-1">
+                                            <label class="form-check-label">
+                                                <h5>{{ __('Junior Admin') }}</h5>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input wire:model="role" class="form-check-input nightowl-daylight"
                                                 type="radio" value="2">
                                             <label class="form-check-label">
                                                 <h5>{{ __('Admin') }}</h5>

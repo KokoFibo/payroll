@@ -24,6 +24,9 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+        @endif
+
+        @if (Auth::user()->role > 1 || Auth::user()->role == -1)
             <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/dataapplicant" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
@@ -32,6 +35,8 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+        @endif
+        @if (Auth::user()->role > 1)
             @if (Auth::user()->role > 4)
                 <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/permohonan-personnel" class="nav-link">
@@ -94,7 +99,7 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->role > 3)
+            @if (Auth::user()->role >= 3)
                 <li class="nav-item {{ 'payroll' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payroll" class="nav-link">
                         <i class="nav-icon fas fa-dollar-sign"></i>

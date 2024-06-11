@@ -250,6 +250,9 @@ class HomeController extends Controller
 
 
         switch (auth()->user()->role) {
+            case -1:
+                $role_name = 'Junior Admin';
+                break;
             case 0:
                 $role_name = 'BOD';
                 break;
@@ -287,7 +290,7 @@ class HomeController extends Controller
         if ($desktop) {
             $user->device = 1;
             $user->save();
-            if (auth()->user()->role != 1) {
+            if (auth()->user()->role != 1 && auth()->user()->role != -1) {
                 return view('dashboard', compact([
                     'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita',  'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
                     'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_GAMA', 'jumlah_WAS',
