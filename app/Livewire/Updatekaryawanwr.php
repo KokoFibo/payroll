@@ -49,12 +49,18 @@ class Updatekaryawanwr extends Component
         $data = Applicantfile::find($id);
         if ($data != null) {
             try {
-                $result = Storage::disk('google')->delete($data->filename);
+                // $result = Storage::disk('google')->delete($data->filename);
                 $result = Storage::disk('public')->delete($data->filename);
                 if ($result) {
                     // File was deleted successfully
                     $data->delete();
-                    $this->dispatch('success', message: 'File telah di delete');
+                    // $this->dispatch('success', message: 'File telah di delete');
+                    $this->dispatch(
+                        'message',
+                        type: 'success',
+                        title: 'File telah di delete',
+                        position: 'center'
+                    );
 
                     return 'File deleted successfully.';
                 } else {
@@ -62,14 +68,26 @@ class Updatekaryawanwr extends Component
                     // return 'Failed to delete file.';
 
 
-                    $this->dispatch('error', message: 'File GAGAL di delete');
+                    // $this->dispatch('error', message: 'File GAGAL di delete');
+                    $this->dispatch(
+                        'message',
+                        type: 'error',
+                        title: 'File GAGAL di delete',
+                        position: 'center'
+                    );
                 }
             } catch (\Exception $e) {
                 // An error occurred while deleting the file
                 return 'An error occurred: ' . $e->getMessage();
             }
         } else {
-            $this->dispatch('error', message: 'File tidak ketemu');
+            // $this->dispatch('error', message: 'File tidak ketemu');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'File tidak ketemu',
+                position: 'center'
+            );
         }
     }
 
@@ -261,11 +279,11 @@ class Updatekaryawanwr extends Component
                     // $imagedata = (string) $image->toJpeg();
                     $imagedata = (string) $image->toWebp(60);
 
-                    Storage::disk('google')->put($folder, $imagedata);
+                    // Storage::disk('google')->put($folder, $imagedata);
                     Storage::disk('public')->put($folder, $imagedata);
                     $this->path = $folder;
                 } else {
-                    $this->path = Storage::disk('google')->put($folder, $file);
+                    // $this->path = Storage::disk('google')->put($folder, $file);
                     $this->path = Storage::disk('public')->put($folder, $file);
                 }
 
@@ -277,7 +295,13 @@ class Updatekaryawanwr extends Component
                 ]);
             }
             $this->files = [];
-            $this->dispatch('success', message: 'file berhasil di upload');
+            // $this->dispatch('success', message: 'file berhasil di upload');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'file berhasil di upload',
+                position: 'center'
+            );
         }
     }
 
@@ -404,11 +428,23 @@ class Updatekaryawanwr extends Component
             $user->save();
             $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
+            // $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Karyawan Sudah di Update',
+                position: 'center'
+            );
         } else {
             $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
+            // $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Karyawan Sudah di Update, User tidak terupdate',
+                position: 'center'
+            );
         }
 
         if ($this->files) {
@@ -436,11 +472,11 @@ class Updatekaryawanwr extends Component
                     // $imagedata = (string) $image->toJpeg();
                     $imagedata = (string) $image->toWebp(60);
 
-                    Storage::disk('google')->put($folder, $imagedata);
+                    // Storage::disk('google')->put($folder, $imagedata);
                     Storage::disk('public')->put($folder, $imagedata);
                     $this->path = $folder;
                 } else {
-                    $this->path = Storage::disk('google')->put($folder, $file);
+                    // $this->path = Storage::disk('google')->put($folder, $file);
                     $this->path = Storage::disk('public')->put($folder, $file);
                 }
 

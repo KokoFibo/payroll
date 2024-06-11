@@ -102,9 +102,19 @@ class Yfpresensiindexwr extends Component
         if ($data->no_scan == "") {
             $data->no_scan_history = null;
             $data->save();
-            $this->dispatch('Success', message: 'No Scan History sudah di delete');
+            // $this->dispatch('success', message: 'No Scan History sudah di delete');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'No Scan History sudah di delete',
+            );
         } else {
-            $this->dispatch('error', message: 'No Scan harus di bersihkan dulu');
+            // $this->dispatch('error', message: 'No Scan harus di bersihkan dulu');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'No Scan harus di bersihkan dulu',
+            );
         }
     }
     public function getLockPresensi($tanggal1)
@@ -152,7 +162,12 @@ class Yfpresensiindexwr extends Component
     public function delete($id)
     {
         Yfrekappresensi::find($id)->delete();
-        $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
+        // $this->dispatch('success', message: 'Data Presensi Sudah di Delete');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Presensi Sudah di Delete',
+        );
     }
 
     //ok1
@@ -441,7 +456,12 @@ class Yfpresensiindexwr extends Component
         $data->save();
         $this->btnEdit = true;
 
-        $this->dispatch('success', message: 'Data sudah di update');
+        // $this->dispatch('success', message: 'Data sudah di update');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data sudah di update',
+        );
         // $this->dispatch('hide-form');
 
     }

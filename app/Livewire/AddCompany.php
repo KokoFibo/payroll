@@ -27,7 +27,12 @@ class AddCompany extends Component
         $data->company_name = $this->company_name;
         $data->save();
         $this->reset();
-        $this->dispatch('success', message: 'Company added');
+        // $this->dispatch('success', message: 'Company added');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan added',
+        );
     }
 
     public function edit($id)
@@ -45,14 +50,24 @@ class AddCompany extends Component
         $data->save();
         $this->is_update = false;
         $this->reset();
-        $this->dispatch('success', message: 'Company updated');
+        // $this->dispatch('success', message: 'Company updated');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan updated',
+        );
     }
 
     public function delete($id)
     {
         $data = Company::find($id);
         $data->delete();
-        $this->dispatch('success', message: 'Company deleted');
+        // $this->dispatch('success', message: 'Company deleted');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan deleted',
+        );
     }
 
     public function render()

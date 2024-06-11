@@ -201,11 +201,22 @@ class Karyawanwr extends Component
                 ]);
                 $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
                 $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-                $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
+                // $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Data Karyawan Sudah di Save',
+                    position: 'center'
+                );
             } catch (\Exception $e) {
                 $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
                 $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-                $this->dispatch('error', message: $e->getMessage());
+                // $this->dispatch('error', message: $e->getMessage());
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: $e->getMessage(),
+                );
                 return $e->getMessage();
             }
 
@@ -302,11 +313,21 @@ class Karyawanwr extends Component
 
             $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
+            // $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Karyawan Sudah di Save',
+            );
         } catch (\Exception $e) {
             $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
             $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            $this->dispatch('error', message: $e->getMessage());
+            // $this->dispatch('error', message: $e->getMessage());
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: $e->getMessage(),
+            );
             return $e->getMessage();
         }
     }

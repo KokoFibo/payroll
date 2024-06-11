@@ -1,5 +1,17 @@
 import "./bootstrap";
 
+// Event listener for swal
+document.addEventListener("message", (event) => {
+    const data = event.detail;
+    Swal.fire({
+        position: "center",
+        icon: data.type,
+        title: data.title,
+        showConfirmButton: false,
+        timer: 1500,
+    });
+});
+
 $(document).ready(function () {
     toastr.options = {
         progressBar: true,

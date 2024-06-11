@@ -1,6 +1,7 @@
 <div>
     <livewire:placementreport />
     <br><br><br>
+    <button class="btn btn-primary" wire:click='like'>Like</button>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">

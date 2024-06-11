@@ -26,7 +26,12 @@ class Jabatanwr extends Component
         $data->nama_jabatan = $this->nama_jabatan;
         $data->save();
         $this->reset();
-        $this->dispatch('success', message: 'Jabatan added');
+        // $this->dispatch('success', message: 'Jabatan added');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan added',
+        );
     }
 
     public function edit($id)
@@ -44,14 +49,24 @@ class Jabatanwr extends Component
         $data->save();
         $this->is_update = false;
         $this->reset();
-        $this->dispatch('success', message: 'Jabatan updated');
+        // $this->dispatch('success', message: 'Jabatan updated');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan updated',
+        );
     }
 
     public function delete($id)
     {
         $data = Jabatan::find($id);
         $data->delete();
-        $this->dispatch('success', message: 'Jabatan deleted');
+        // $this->dispatch('success', message: 'Jabatan deleted');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Jabatan deleted',
+        );
     }
 
     public function render()

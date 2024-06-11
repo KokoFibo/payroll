@@ -27,7 +27,12 @@ class AddPlacement extends Component
         $data->placement_name = $this->placement_name;
         $data->save();
         $this->reset();
-        $this->dispatch('success', message: 'Placement added');
+        // $this->dispatch('success', message: 'Placement added');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Placement added',
+        );
     }
 
     public function edit($id)
@@ -45,14 +50,24 @@ class AddPlacement extends Component
         $data->save();
         $this->is_update = false;
         $this->reset();
-        $this->dispatch('success', message: 'Placement updated');
+        // $this->dispatch('success', message: 'Placement updated');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Placement updated',
+        );
     }
 
     public function delete($id)
     {
         $data = Placement::find($id);
         $data->delete();
-        $this->dispatch('success', message: 'Placement deleted');
+        // $this->dispatch('success', message: 'Placement deleted');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Placement deleted',
+        );
     }
 
     public function render()

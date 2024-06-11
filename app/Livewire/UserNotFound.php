@@ -29,7 +29,12 @@ class UserNotFound extends Component
         $this->is_save = false;
 
 
-        $this->dispatch('success', message: 'User created successfully');
+        // $this->dispatch('success', message: 'User created successfully');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'User created successfully',
+        );
     }
 
 

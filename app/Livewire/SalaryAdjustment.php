@@ -81,7 +81,12 @@ class SalaryAdjustment extends Component
 
         if ($this->gaji < $this->gaji_pokok || $this->gaji > $this->gaji_rekomendasi) {
 
-            $this->dispatch('error', message: 'Gaji tidak sesuai rekomendasi');
+            // $this->dispatch('error', message: 'Gaji tidak sesuai rekomendasi');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Gaji tidak sesuai rekomendasi',
+            );
             return;
         }
         $data = Karyawan::find($this->id);
@@ -89,7 +94,12 @@ class SalaryAdjustment extends Component
         $data->save();
         $this->gaji = 0;
 
-        $this->dispatch('success', message: 'Data Gaji Karyawan Sudah di Sesuaikan');
+        // $this->dispatch('success', message: 'Data Gaji Karyawan Sudah di Sesuaikan');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Gaji Karyawan Sudah di Sesuaikan',
+        );
     }
     public function refresh()
     {

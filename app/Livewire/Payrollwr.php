@@ -498,12 +498,22 @@ class Payrollwr extends Component
         // supaya tidak dilakukan bersamaan
         if (check_absensi_kosong()) {
             clear_locks();
-            $this->dispatch('error', message: 'Masih ada data kosong di presensi');
+            // $this->dispatch('error', message: 'Masih ada data kosong di presensi');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Masih ada data kosong di presensi',
+            );
             return;
         }
         $lock = Lock::find(1);
         if ($lock->build == 1) {
-            $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+            // $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Mohon dicoba sebentar lagi',
+            );
             return;
         } else {
             $lock->build = 1;
@@ -521,9 +531,19 @@ class Payrollwr extends Component
         // $time_needed = $time_end - $time_start;
 
         if ($result == 0) {
-            $this->dispatch('error', message: 'Data Presensi tidak ada');
+            // $this->dispatch('error', message: 'Data Presensi tidak ada');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data Presensi tidak ada',
+            );
         } else {
-            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )');
+            // $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )',
+            );
         }
 
 
@@ -556,7 +576,12 @@ class Payrollwr extends Component
         $adaPresensi = Yfrekappresensi::count();
         if ($jamKerjaKosong == null && $adaPresensi == null) {
             clear_locks();
-            $this->dispatch('error', message: 'Data Presensi Masih Kosong');
+            // $this->dispatch('error', message: 'Data Presensi Masih Kosong');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data Presensi Masih Kosong',
+            );
             return back();
         }
 
@@ -742,7 +767,12 @@ class Payrollwr extends Component
         $lock->build = false;
         $lock->save();
 
-        $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+        // $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Payroll Karyawan Sudah di Built',
+        );
         $this->rebuild();
     }
 
@@ -755,7 +785,12 @@ class Payrollwr extends Component
             ->get();
 
         if ($datas->isEmpty()) {
-            $this->dispatch('error', message: 'Data Tidak Ditemukan');
+            // $this->dispatch('error', message: 'Data Tidak Ditemukan');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data Tidak Ditemukan',
+            );
             return back();
         }
 
@@ -870,7 +905,12 @@ class Payrollwr extends Component
             $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan + $payroll->tambahan_shift_malam - $total_potongan_dari_karyawan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
             $payroll->save();
         }
-        $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
+        // $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Payrol succesfully Rebuild',
+        );
         $this->bonus_potongan();
     }
 
@@ -901,7 +941,12 @@ class Payrollwr extends Component
             }
         }
 
-        $this->dispatch('success', message: 'Bonus dan Potangan added');
+        // $this->dispatch('success', message: 'Bonus dan Potangan added');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Bonus dan Potangan added',
+        );
     }
 
     public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null, $departemen = null)

@@ -63,6 +63,7 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     {{-- @livewireStyles --}}
 
@@ -90,7 +91,6 @@
         {{-- nyalakan ini jika mau pakai background texture --}}
         {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
         <div class="content-wrapper">
-
             {{ $slot }}
 
         </div>
@@ -99,7 +99,7 @@
         @include('layouts.footer')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
         {{-- @livewireScripts --}}
         {{-- flat picker bagus --}}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

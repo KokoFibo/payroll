@@ -43,7 +43,12 @@ class Applicant extends Component
                 if ($result) {
                     // File was deleted successfully
                     $data->delete();
-                    $this->dispatch('success', message: 'File telah di delete');
+                    // $this->dispatch('success', message: 'File telah di delete');
+                    $this->dispatch(
+                        'message',
+                        type: 'success',
+                        title: 'File telah di delete',
+                    );
 
                     return 'File deleted successfully.';
                 } else {
@@ -51,14 +56,24 @@ class Applicant extends Component
                     // return 'Failed to delete file.';
 
 
-                    $this->dispatch('error', message: 'File GAGAL di delete');
+                    // $this->dispatch('error', message: 'File GAGAL di delete');
+                    $this->dispatch(
+                        'message',
+                        type: 'error',
+                        title: 'File GAGAL di delete',
+                    );
                 }
             } catch (\Exception $e) {
                 // An error occurred while deleting the file
                 return 'An error occurred: ' . $e->getMessage();
             }
         } else {
-            $this->dispatch('error', message: 'File tidak ketemu');
+            // $this->dispatch('error', message: 'File tidak ketemu');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'File tidak ketemu',
+            );
         }
     }
 
@@ -108,7 +123,12 @@ class Applicant extends Component
             //    ==============================
             $this->showSubmit = false;
         } else {
-            $this->dispatch('error', message: 'Email atau password salah');
+            // $this->dispatch('error', message: 'Email atau password salah');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Email atau password salah',
+            );
             $this->showSubmit = true;
         }
         $this->is_update = true;
@@ -257,7 +277,12 @@ class Applicant extends Component
         ]);
 
 
-        $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+        // $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Anda sudah berhasil di submit',
+        );
 
         $this->files = [];
     }
@@ -328,7 +353,12 @@ class Applicant extends Component
         $data->alamat_tinggal_sekarang = titleCase($this->alamat_tinggal_sekarang);
         $data->save();
 
-        $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
+        // $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Anda sudah berhasil di update',
+        );
         $this->files = [];
     }
 
