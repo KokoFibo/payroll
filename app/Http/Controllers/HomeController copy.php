@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dashboarddata;
 use App\Models\User;
 use App\Models\Payroll;
 use App\Models\Karyawan;
@@ -47,46 +48,32 @@ class HomeController extends Controller
         $user = User::find(auth()->user()->id);
 
         if (!((auth()->user()->role <= 3 && auth()->user()->role > 0) && $desktop == false)) {
-            $jumlah_total_karyawan = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+            $data = Dashboarddata::find(1);
 
-            $jumlah_karyawan_baru_hari_ini = Karyawan::where('tanggal_bergabung', today())->count();
-            $jumlah_karyawan_Resigned_hari_ini = Karyawan::where('tanggal_resigned', today())->count();
-            $jumlah_karyawan_blacklist_hari_ini = Karyawan::where('tanggal_blacklist', today())->count();
+            $jumlah_total_karyawan = $data->jumlah_total_karyawan;
+            $jumlah_karyawan_pria = $data->jumlah_karyawan_pria;
+            $jumlah_karyawan_wanita = $data->jumlah_karyawan_wanita;
 
-            $karyawan_baru_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                ->whereMonth('tanggal_bergabung', $month)
-                ->whereYear('tanggal_bergabung', $year)
-                ->count();
+            $jumlah_karyawan_baru_hari_ini = $data->jumlah_karyawan_baru_hari_ini;
+            $jumlah_karyawan_Resigned_hari_ini = $data->jumlah_karyawan_Resigned_hari_ini;
+            $jumlah_karyawan_blacklist_hari_ini = $data->jumlah_karyawan_blacklist_hari_ini;
 
-            $karyawan_resigned_mtd = Karyawan::where('status_karyawan', 'Resigned')
-                ->whereMonth('tanggal_resigned', $month)
-                ->whereYear('tanggal_resigned', $year)
-                ->count();
-
-            $karyawan_blacklist_mtd = Karyawan::where('status_karyawan', 'Blacklist')
-                ->whereMonth('tanggal_blacklist', $month)
-                ->whereYear('tanggal_blacklist', $year)
-                ->count();
-
-            $karyawan_aktif_mtd = Payroll::whereMonth('date', $month)
-                ->whereYear('date', $year)
-                ->count();
+            $karyawan_baru_mtd =  $data->karyawan_baru_mtd;
+            $karyawan_resigned_mtd = $data->karyawan_resigned_mtd;
+            $karyawan_blacklist_mtd = $data->karyawan_blacklist_mtd;
+            $karyawan_aktif_mtd = $data->karyawan_aktif_mtd;
 
             // Jumlah Karyawan
-            $jumlah_ASB = Karyawan::where('company', 'ASB')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_DPA = Karyawan::where('company', 'DPA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_YCME = Karyawan::where('company', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_YEV = Karyawan::where('company', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_YIG = Karyawan::where('company', 'YIG')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_YSM = Karyawan::where('company', 'YSM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_YAM = Karyawan::where('company', 'YAM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_Pabrik_1 = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM', 'YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor;
-            $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM + $jumlah_YAM;
+            $jumlah_ASB = $data->jumlah_ASB;
+            $jumlah_DPA = $data->jumlah_DPA;
+            $jumlah_YCME = $data->jumlah_YCME;
+            $jumlah_YEV = $data->jumlah_YEV;
+            $jumlah_YIG = $data->jumlah_YIG;
+            $jumlah_YSM = $data->jumlah_YSM;
+            $jumlah_YAM = $data->jumlah_YAM;
+            $jumlah_GAMA = $data->jumlah_GAMA;
+            $jumlah_WAS = $data->jumlah_WAS;
+            $jumlah_company = $data->jumlah_company;
 
             $jumlah_karyawanArr = [
                 $jumlah_karyawan_pria, $jumlah_karyawan_wanita
@@ -97,12 +84,7 @@ class HomeController extends Controller
             ];
 
 
-            $placementArr = [
-                $jumlah_Pabrik_1, $jumlah_Pabrik_2,  $jumlah_Kantor
-            ];
-            $placementLabelArr = [
-                'Pabrik 1 工厂1', 'Pabrik 2 工厂2',  'Kantor 办公室'
-            ];
+
             $companyArr = [
 
                 $jumlah_ASB,
@@ -112,52 +94,54 @@ class HomeController extends Controller
                 $jumlah_DPA,
                 $jumlah_YIG,
                 $jumlah_YAM,
+                $jumlah_GAMA,
+                $jumlah_WAS,
 
             ];
             $companyLabelArr = [
-                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM'
+                'ASB', 'YCME', 'YEV',  'YSM', 'DPA', 'YIG', 'YAM', 'GAMA', 'WAS'
             ];
 
             // Department
-            $department_BD = Karyawan::where('departemen', 'BD')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Engineering = Karyawan::where('departemen', 'Engineering')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_EXIM = Karyawan::where('departemen', 'EXIM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Finance_Accounting = Karyawan::where('departemen', 'Finance Accounting')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_GA = Karyawan::where('departemen', 'GA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Gudang = Karyawan::where('departemen', 'Gudang')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_HR = Karyawan::where('departemen', 'HR')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Legal = Karyawan::where('departemen', 'Legal')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Procurement = Karyawan::where('departemen', 'Procurement')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Produksi = Karyawan::where('departemen', 'Produksi')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Quality_Control = Karyawan::where('departemen', 'Quality Control')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $department_Board_of_Director = Karyawan::where('departemen', 'Board of Director')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+            $department_BD = $data->department_BD;
+            $department_Engineering = $data->department_Engineering;
+            $department_EXIM = $data->department_EXIM;
+            $department_Finance_Accounting = $data->department_Finance_Accounting;
+            $department_GA = $data->department_GA;
+            $department_Gudang = $data->department_Gudang;
+            $department_HR = $data->department_HR;
+            $department_Legal = $data->department_Legal;
+            $department_Procurement = $data->department_Procurement;
+            $department_Produksi = $data->department_Produksi;
+            $department_Quality_Control = $data->department_Quality_Control;
+            $department_Board_of_Director = $data->department_Board_of_Director;
 
             // Jabatan
-            $jabatan_Admin = Karyawan::where('jabatan', 'Admin')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Asisten_Direktur = Karyawan::where('jabatan', 'Asisten Direktur')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Asisten_Kepala = Karyawan::where('jabatan', 'Asisten Kepala')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Asisten_Manager = Karyawan::where('jabatan', 'Asisten Manager')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Asisten_Pengawas = Karyawan::where('jabatan', 'Asisten Pengawas')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Asisten_Wakil_Presiden = Karyawan::where('jabatan', 'Asisten Wakil Presiden')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Design_grafis = Karyawan::where('jabatan', 'Design grafis')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Director = Karyawan::where('jabatan', 'Director')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Kepala = Karyawan::where('jabatan', 'Kepala')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Manager = Karyawan::where('jabatan', 'Manager')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Pengawas = Karyawan::where('jabatan', 'Pengawas')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_President = Karyawan::where('jabatan', 'President')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Senior_staff = Karyawan::where('jabatan', 'Senior staff')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Staff = Karyawan::where('jabatan', 'Staff')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Supervisor = Karyawan::where('jabatan', 'Supervisor')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Vice_President = Karyawan::where('jabatan', 'Vice President')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Satpam = Karyawan::where('jabatan', 'Satpam')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Koki = Karyawan::where('jabatan', 'Koki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Dapur_Kantor = Karyawan::where('jabatan', 'Dapur Kantor')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Dapur_Pabrik = Karyawan::where('jabatan', 'Dapur Pabrik')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_QC_Aging = Karyawan::where('jabatan', 'QC Aging')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-            $jabatan_Driver = Karyawan::where('jabatan', 'Driver')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+            $jabatan_Admin = $data->jabatan_Admin;
+            $jabatan_Asisten_Direktur = $data->jabatan_Asisten_Direktur;
+            $jabatan_Asisten_Kepala = $data->jabatan_Asisten_Kepala;
+            $jabatan_Asisten_Manager = $data->jabatan_Asisten_Manager;
+            $jabatan_Asisten_Pengawas = $data->jabatan_Asisten_Pengawas;
+            $jabatan_Asisten_Wakil_Presiden = $data->jabatan_Asisten_Wakil_Presiden;
+            $jabatan_Design_grafis = $data->jabatan_Design_grafis;
+            $jabatan_Director = $data->jabatan_Director;
+            $jabatan_Kepala = $data->jabatan_Kepala;
+            $jabatan_Manager = $data->jabatan_Manager;
+            $jabatan_Pengawas = $data->jabatan_Pengawas;
+            $jabatan_President = $data->jabatan_President;
+            $jabatan_Senior_staff = $data->jabatan_Senior_staff;
+            $jabatan_Staff = $data->jabatan_Staff;
+            $jabatan_Supervisor = $data->jabatan_Supervisor;
+            $jabatan_Vice_President = $data->jabatan_Vice_President;
+            $jabatan_Satpam = $data->jabatan_Satpam;
+            $jabatan_Koki = $data->jabatan_Koki;
+            $jabatan_Dapur_Kantor = $data->jabatan_Dapur_Kantor;
+            $jabatan_Dapur_Pabrik = $data->jabatan_Dapur_Pabrik;
+            $jabatan_QC_Aging = $data->jabatan_QC_Aging;
+            $jabatan_Driver = $data->jabatan_Driver;
 
             //    Kehadiran
-            $countLatestHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->count();
+            $countLatestHadir = $data->countLatestHadir;
             $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
 
             $dataCountLatestHadir = [$countLatestHadir, $jumlah_total_karyawan - $countLatestHadir];
@@ -169,63 +153,29 @@ class HomeController extends Controller
             $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
 
             //  Presensi by Depertemen
-            $bd = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'BD')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $bd = $data->bd;
 
-            $engineering = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Engineering')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $engineering = $data->engineering;
 
-            $exim = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'EXIM')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $exim = $data->exim;
 
-            $finance_accounting = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Finance Accounting')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $finance_accounting = $data->finance_accounting;
 
-            $ga = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'GA')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $ga = $data->ga;
 
-            $gudang = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Gudang')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $gudang = $data->gudang;
 
-            $hr = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'HR')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $hr = $data->hr;
 
-            $legal = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Legal')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $legal = $data->legal;
 
-            $procurement = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Procurement')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $procurement = $data->procurement;
 
-            $produksi = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Produksi')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $produksi = $data->produksi;
 
-            $quality_control = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-                ->select('karyawans.*', 'yfrekappresensis.*')
-                ->where('departemen', 'Quality Control')
-                ->where('date', Yfrekappresensi::max('date'))->count();
+            $quality_control = $data->quality_control;
 
-            $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
-                $procurement + $produksi + $quality_control;
+            $total_presensi_by_departemen = $data->total_presensi_by_departemen;
 
             $presensi_by_departement_Arr = [
                 $bd, $engineering, $exim, $finance_accounting, $ga, $gudang, $hr, $legal,
@@ -235,10 +185,6 @@ class HomeController extends Controller
                 'BD 业务拓展', 'Engineering 工程', 'EXIM 出口进口',  'Finance Accounting 财务会计', 'GA 综合行政', 'Gudang 仓库', 'HR 人力资源',
                 'Legal 法务', 'Procurement 采购', 'Produksi 生产', 'Quality Control 质量控制'
             ];
-
-
-
-
 
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
             $uniqueDates = Payroll::orderBy('date', 'asc')->distinct()->pluck('date');
@@ -252,6 +198,8 @@ class HomeController extends Controller
                 $YIG = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YIG')->sum('total');
                 $YSM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YSM')->sum('total');
                 $YAM = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'YAM')->sum('total');
+                $GAMA = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'GAMA')->sum('total');
+                $WAS = Payroll::where('date', $uniqueDates[$i])->whereIn('status_karyawan', $statuses)->where('company', 'WAS')->sum('total');
                 $dataPayroll[] = [
                     'tgl' => month_year($uniqueDates[$i]),
                     'All' => $all,
@@ -261,7 +209,9 @@ class HomeController extends Controller
                     'YEV' => $YEV,
                     'YIG' => $YIG,
                     'YSM' => $YSM,
-                    'YAM' => $YAM
+                    'YAM' => $YAM,
+                    'GAMA' => $GAMA,
+                    'WAS' => $WAS
                 ];
                 $dataTgl[] = month_year($uniqueDates[$i]);
                 $dataAll[] =  $all;
@@ -272,18 +222,25 @@ class HomeController extends Controller
                 $dataYIG[] =  $YIG;
                 $dataYSM[] =  $YSM;
                 $dataYAM[] =  $YAM;
+                $dataGAMA[] =  $GAMA;
+                $dataWAS[] =  $WAS;
             }
 
             // Shift Pagi dan Shift Malam
 
-            $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
-            $shift_malam = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Malam')->count();
+            $shift_pagi = $data->shift_pagi;
+            $shift_malam = $data->shift_malam;
             $uniqueDates = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->distinct()->pluck('date');
             $total = $shift_pagi + $shift_malam;
-
-            if ($shift_pagi != null && $shift_malam != null) {
-                // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
-                $shiftPagiMalam = [round($shift_pagi / $uniqueDates->count()), round($shift_malam / $uniqueDates->count())];
+            if ($uniqueDates->isNotEmpty()) {
+                if ($shift_pagi != null && $shift_malam != null) {
+                    // $shiftPagiMalam = [round($shift_pagi / $total * 100, 1), round(100 - $shift_pagi / $total * 100, 1)];
+                    $shiftPagiMalam = [round($shift_pagi / $uniqueDates->count()), round($shift_malam / $uniqueDates->count())];
+                } else {
+                    $shiftPagiMalam = 0;
+                    $shiftPagi = 0;
+                    $shiftMalam = 0;
+                }
             } else {
                 $shiftPagiMalam = 0;
                 $shiftPagi = 0;
@@ -293,6 +250,9 @@ class HomeController extends Controller
 
 
         switch (auth()->user()->role) {
+            case -1:
+                $role_name = 'Junior Admin';
+                break;
             case 0:
                 $role_name = 'BOD';
                 break;
@@ -314,7 +274,6 @@ class HomeController extends Controller
         }
         activity()->log(auth()->user()->name . ', ' . $role_name . ', ID : ' . auth()->user()->username . ' Login');
 
-
         // $agent = new Agent();
         // $desktop = $agent->isDesktop();
         // $user = User::find(auth()->user()->id);
@@ -331,19 +290,19 @@ class HomeController extends Controller
         if ($desktop) {
             $user->device = 1;
             $user->save();
-            if (auth()->user()->role != 1) {
+            if (auth()->user()->role != 1 && auth()->user()->role != -1) {
                 return view('dashboard', compact([
-                    'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita',  'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_GAMA', 'jumlah_WAS',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
                     'jabatan_Design_grafis', 'jabatan_Director', 'jabatan_Kepala', 'jabatan_Manager', 'jabatan_Pengawas', 'jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
                     'jabatan_Supervisor', 'jabatan_Vice_President', 'jabatan_Satpam', 'jabatan_Koki', 'jabatan_Dapur_Kantor',
-                    'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver', 'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
+                    'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',  'companyLabelArr', 'companyArr', 'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
@@ -361,18 +320,20 @@ class HomeController extends Controller
                 $user->save();
 
                 return view('dashboard', compact([
-                    'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita', 'jumlah_placement', 'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM', 'jumlah_Kantor', 'jumlah_Pabrik_1', 'jumlah_Pabrik_2',
+                    'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita',  'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
+                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM',
+                    'jumlah_GAMA', 'jumlah_WAS',
                     'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
                     'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
                     'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
                     'jabatan_Design_grafis', 'jabatan_Director', 'jabatan_Kepala', 'jabatan_Manager', 'jabatan_Pengawas', 'jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
                     'jabatan_Supervisor', 'jabatan_Vice_President', 'jabatan_Satpam', 'jabatan_Koki', 'jabatan_Dapur_Kantor',
-                    'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',  'placementArr', 'placementLabelArr', 'companyLabelArr', 'companyArr',
+                    'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',   'companyLabelArr', 'companyArr',
                     'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM', 'latestDate', 'shiftPagiMalam',
+                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM',
+                    'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
                     'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
                     'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
                     'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
@@ -408,10 +369,10 @@ class HomeController extends Controller
             foreach ($data as $d) {
                 if ($d->no_scan == null) {
                     $tgl = tgl_doang($d->date);
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     // if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
                     // }
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                     $total_jam_kerja = $total_jam_kerja + $jam_kerja;
