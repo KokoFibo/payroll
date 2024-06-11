@@ -116,8 +116,8 @@
                 </div>
                 <div class="form-check mb-4">
                     <input wire:model="language" value="Cn" class="form-check-input" type="radio"
-                        name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">{{ __('Mandarin') }}</label>
+                        name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">{{ __('Mandarin') }}</label>
                 </div>
 
                 <button wire:click="changeLanguage"

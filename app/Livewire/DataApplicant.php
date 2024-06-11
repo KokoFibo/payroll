@@ -36,7 +36,12 @@ class DataApplicant extends Component
         if ($this->status == 8) {
             $this->diterima($this->editId);
         } else {
-            $this->dispatch('success', message: 'Status sudah berhasil di rubah');
+            // $this->dispatch('success', message: 'Status sudah berhasil di rubah');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Status sudah berhasil di rubah',
+            );
         }
         $this->editId = null;
     }
@@ -95,9 +100,19 @@ class DataApplicant extends Component
 
             // hapus data applicant
             // $dataApplicant->delete();
-            $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
+            // $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan',
+            );
         } else {
-            $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
+            // $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data karyawan ini sudah di berada dalam database karyawan',
+            );
         }
     }
 
@@ -121,7 +136,12 @@ class DataApplicant extends Component
         foreach ($applicant_files as $d) {
             $d->delete();
         }
-        $this->dispatch('success', message: 'Data telah di hapus');
+        // $this->dispatch('success', message: 'Data telah di hapus');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data telah di hapus',
+        );
     }
     public function show($id)
     {

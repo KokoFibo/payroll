@@ -28,7 +28,12 @@ class Changeuserrolewr extends Component
             $user->language = 'Id';
         }
         $user->save();
-        $this->dispatch('success', message: 'Role Karyawan berhasil di ganti');
+        // $this->dispatch('success', message: 'Role Karyawan berhasil di ganti');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . ' Role Karyawan berhasil di ganti',
+        );
     }
 
     public function render()

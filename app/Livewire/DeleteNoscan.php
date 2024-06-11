@@ -40,7 +40,12 @@ class DeleteNoscan extends Component
             $item->save();
             $cx++;
         }
-        $this->dispatch('success', message: $cx . ' Data no scan history sudah di delete');
+        // $this->dispatch('success', message: $cx . ' Data no scan history sudah di delete');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . 'Data no scan history sudah di delete',
+        );
     }
 
     //function ini sengaja di non aktifkan

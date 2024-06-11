@@ -48,6 +48,15 @@ class Test extends Component
     }
   }
 
+  public function like()
+  {
+    $this->dispatch(
+      'message',
+      type: 'success',
+      title: 'Data Karyawan Sudah di Save',
+    );
+  }
+
 
 
   public function render()

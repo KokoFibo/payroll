@@ -17,7 +17,12 @@ class IuranLocker extends Component
         $data = Karyawan::find($id);
         $data->iuran_locker = 0;
         $data->save();
-        $this->dispatch('success', message: 'Iuran Locker ' . $data->nama . ' sudah di kosongkan');
+        // $this->dispatch('success', message: 'Iuran Locker ' . $data->nama . ' sudah di kosongkan');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Iuran Locker ' . $data->nama . ' sudah di kosongkan',
+        );
     }
     public function render()
     {

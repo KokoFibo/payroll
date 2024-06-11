@@ -91,7 +91,12 @@ class Liburnasionalwr extends Component
         $data->save();
         $this->cancel();
 
-        $this->dispatch('success', message: 'Hari libur nasional berhasil di update');
+        // $this->dispatch('success', message: 'Hari libur nasional berhasil di update');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Hari libur nasional berhasil di update',
+        );
     }
 
 
@@ -114,13 +119,23 @@ class Liburnasionalwr extends Component
         $data->jumlah_hari_libur = $this->jumlah_hari_libur;
         $data->save();
         $this->cancel();
-        $this->dispatch('success', message: 'Hari libur nasional berhasil disimpan');
+        // $this->dispatch('success', message: 'Hari libur nasional berhasil disimpan');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Hari libur nasional berhasil disimpan',
+        );
     }
     public function delete($id)
     {
         $data = Liburnasional::find($id);
         $data->delete();
-        $this->dispatch('success', message: 'Hari libur nasional berhasil di delete');
+        // $this->dispatch('success', message: 'Hari libur nasional berhasil di delete');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Hari libur nasional berhasil di delete',
+        );
     }
     public function render()
     {

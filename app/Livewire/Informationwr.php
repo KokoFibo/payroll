@@ -12,51 +12,65 @@ class Informationwr extends Component
     public $date, $id;
     public $is_update = false;
 
-    public function mount () {
-        $this->date =  date( 'd M Y', strtotime( now()->toDateString() ) );
+    public function mount()
+    {
+        $this->date =  date('d M Y', strtotime(now()->toDateString()));
     }
 
-    public function update ($id) {
+    public function update($id)
+    {
         $this->id = $id;
         $data = Mobileinformation::find($id);
         // $this->date = $data->date ;
-        $this->date =  date( 'd M Y', strtotime( $data->date ) );
+        $this->date =  date('d M Y', strtotime($data->date));
 
-        $this->title = $data->title ;
-        $this->description = $data->description ;
+        $this->title = $data->title;
+        $this->description = $data->description;
         $this->is_update = true;
     }
 
-    public function save () {
+    public function save()
+    {
         $data = Mobileinformation::find($this->id);
-        $this->date = date( 'Y-m-d', strtotime( $this->date ) );
+        $this->date = date('Y-m-d', strtotime($this->date));
 
         $data->date = $this->date;
         $data->title = $this->title;
         $data->description = $this->description;
         $data->save();
         $this->is_update = false;
-        $this->date =  date( 'd M Y', strtotime( now()->toDateString() ) );
+        $this->date =  date('d M Y', strtotime(now()->toDateString()));
 
         $this->reset();
-        $this->dispatch( 'success', message: 'Informasi berhasil di Update' );
-
+        // $this->dispatch( 'success', message: 'Informasi berhasil di Update' );
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Informasi berhasil di Update',
+        );
     }
 
-    public function delete ($id) {
+    public function delete($id)
+    {
         $data = Mobileinformation::find($id);
         $data->delete();
         $this->reset();
-        $this->dispatch( 'success', message: 'Informasi berhasil di delete' );
+        // $this->dispatch( 'success', message: 'Informasi berhasil di delete' );
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Informasi berhasil di delete',
+        );
     }
 
-    public function add () {
+    public function add()
+    {
 
         $this->validate([
             'title' => 'required|max:30',
             'description' => 'required',
         ]);
-        $this->date = date( 'Y-m-d', strtotime( $this->date ) );
+        $this->date = date('Y-m-d', strtotime($this->date));
 
         Mobileinformation::create([
             'title' => $this->title,
@@ -69,15 +83,16 @@ class Informationwr extends Component
         // $data->description = $this->description;
         // $data->save();
 
-        $this->date =  date( 'd M Y', strtotime( now()->toDateString() ) );
+        $this->date =  date('d M Y', strtotime(now()->toDateString()));
 
         $this->reset();
 
-        $this->dispatch( 'success', message: 'Informasi berhasil di tambah' );
-
-
-
-
+        // $this->dispatch( 'success', message: 'Informasi berhasil di tambah' );
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Informasi berhasil di tambah',
+        );
     }
     public function render()
     {
