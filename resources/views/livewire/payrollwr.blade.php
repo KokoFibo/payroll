@@ -76,30 +76,32 @@
             </div>
             <div class="col">
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
-
-                    <div class="form-check form-switch">
-                        <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
-                            id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">
-                            @if ($lock_data)
-                                {{ __('Data is locked') }}
-                            @else
-                                {{ __('Data is unlocked') }}
-                            @endif
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
-                            id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">
-                            {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
-                            @if ($lock_presensi)
-                                {{ __('Presensi is locked') }}
-                            @else
-                                {{ __('Presensi is unlocked') }}
-                            @endif
-                        </label>
-                    </div>
+                    @if (auth()->user()->role > 3)
+                        <div class="form-check form-switch">
+                            <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">
+                                @if ($lock_data)
+                                    {{ __('Data is locked') }}
+                                @else
+                                    {{ __('Data is unlocked') }}
+                                @endif
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox"
+                                role="switch" id="flexSwitchCheckChecked" value=1
+                                {{ $lock_presensi ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">
+                                {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
+                                @if ($lock_presensi)
+                                    {{ __('Presensi is locked') }}
+                                @else
+                                    {{ __('Presensi is unlocked') }}
+                                @endif
+                            </label>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
