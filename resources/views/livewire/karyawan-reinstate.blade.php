@@ -27,7 +27,10 @@
                         </div>
                     @enderror
                 </div>
-                <button wire:click="reinstate" class="btn btn-primary">Reinstate</button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button wire:click="reinstate" class="btn btn-primary">Reinstate</button>
+                    <button wire:click="cancel" class="btn btn-dark">Cancel/Exit</button>
+                </div>
             </div>
         </div>
     </div>
