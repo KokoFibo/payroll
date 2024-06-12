@@ -35,6 +35,7 @@ class Updatekaryawanwr extends Component
     public $show_arsip, $personal_files;
     public $files = [];
     public $filenames = [];
+    public $is_update;
 
     public function updatedFiles()
     {
@@ -105,6 +106,7 @@ class Updatekaryawanwr extends Component
 
     public function mount($id)
     {
+        $this->is_update = true;
         $this->show_arsip = false;
         $this->status_off = false;
         $this->update = true;
@@ -211,7 +213,7 @@ class Updatekaryawanwr extends Component
             'status_karyawan' => 'required',
             'tanggal_resigned' => new RequiredIf($this->status_karyawan == 'Resigned'),
             'tanggal_blacklist' => new RequiredIf($this->status_karyawan == 'Blacklist'),
-            'tanggal_bergabung' => 'date|required',
+            'tanggal_bergabung' => 'date|required|after:yesterday',
             'company' => 'required',
             'placement' => 'required',
             'departemen' => 'required',

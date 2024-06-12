@@ -74,6 +74,7 @@ return new class extends Migration
             $table->integer('id_file_karyawan')->nullable();
 
 
+
             $table->timestamps();
         });
     }

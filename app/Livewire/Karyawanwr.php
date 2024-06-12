@@ -24,9 +24,11 @@ class Karyawanwr extends Component
     public $tanggungan;
 
     public $id_karyawan_ini, $update, $status_off;
+    public $is_update;
 
     public function mount()
     {
+        $this->is_update = false;
         $this->update = false;
         // $this->id_karyawan = getNextIdKaryawan();
         $this->id_karyawan = '000000';
@@ -62,7 +64,7 @@ class Karyawanwr extends Component
         'alamat_tinggal' => 'required',
         // KEPEGAWAIAN
         'status_karyawan' => 'required',
-        'tanggal_bergabung' => 'date|nullable',
+        'tanggal_bergabung' => 'date|required|after:yesterday',
         'company' => 'required',
         'placement' => 'required',
         'departemen' => 'required',

@@ -190,6 +190,10 @@
                         <option value="TK1">TK/1</option>
                         <option value="TK2">TK/2</option>
                         <option value="TK3">TK/3</option>
+                        <option value="K0">K/0</option>
+                        <option value="K1">K/1</option>
+                        <option value="K2">K/2</option>
+                        <option value="K3">K/3</option>
                     </select @error('ptkp') <div class="invalid-feedback">
                         {{ $message }}
                     </div>

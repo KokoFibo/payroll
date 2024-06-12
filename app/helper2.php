@@ -501,6 +501,7 @@ function build_payroll($month, $year)
             'gaji_pokok' => $data->karyawan->gaji_pokok,
             'gaji_lembur' => $data->karyawan->gaji_overtime,
             'gaji_bpjs' => $data->karyawan->gaji_bpjs,
+            'ptkp' => $data->karyawan->ptkp,
             // oll
             'libur_nasional' => $libur_nasional,
 
@@ -707,6 +708,7 @@ function build_payroll($month, $year)
             $data->nama_bank = $data_karyawan->nama_bank;
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
+            $data->ptkp = $data_karyawan->ptkp;
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';
@@ -728,6 +730,7 @@ function build_payroll($month, $year)
             $data->nama_bank = $data_karyawan->nama_bank;
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
+            $data->ptkp = $data_karyawan->ptkp;
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';

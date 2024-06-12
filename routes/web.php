@@ -1,14 +1,19 @@
 <?php
 
-use App\Http\Controllers\ApplicantController;
 use App\Livewire\Test;
+use App\Models\Payroll;
+use App\Livewire\DataLog;
 use App\Livewire\Profile;
 use App\Livewire\UserLog;
+use App\Livewire\Moveback;
+use App\Livewire\Applicant;
 use App\Livewire\Developer;
+use App\Livewire\Jabatanwr;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
+use App\Livewire\AddCompany;
 use App\Livewire\BankReport;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
@@ -16,9 +21,12 @@ use App\Livewire\UserMobile;
 use App\Livewire\AddPresensi;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
+use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
+use App\Livewire\DeleteNoscan;
 use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
+use App\Livewire\DataApplicant;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
 use App\Livewire\UserRegulation;
@@ -27,43 +35,39 @@ use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
 use App\Livewire\Liburnasionalwr;
+use App\Livewire\Placementreport;
 use App\Livewire\UpdatedPresensi;
 use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
+use App\Livewire\MovePresensiData;
 use App\Livewire\Presensidetailwr;
 use App\Livewire\Removepresensiwr;
 use App\Livewire\SalaryAdjustment;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
+use App\Livewire\DeveloperDashboard;
+use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PphController;
+use App\Livewire\TanpaEmergencyContact;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
+use App\Http\Controllers\LoggingController;
 use App\Livewire\Yfdeletetanggalpresensiwr;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Http\Controllers\LoggingController;
-use App\Livewire\AddCompany;
-use App\Livewire\AddPlacement;
-use App\Livewire\Applicant;
-use App\Livewire\DataApplicant;
-use App\Livewire\DataLog;
-use App\Livewire\DeleteNoscan;
-use App\Livewire\DeveloperDashboard;
-use App\Livewire\Jabatanwr;
-use App\Livewire\Moveback;
-use App\Livewire\MovePresensiData;
-use App\Livewire\PermohonanPersonnel;
-use App\Livewire\Placementreport;
-use App\Livewire\TanpaEmergencyContact;
-
+use App\Http\Controllers\TerControler;
+use App\Livewire\Gajibpjs;
+use App\Livewire\Terwr;
 
 // Middleware
 Auth::routes([
@@ -169,6 +173,13 @@ Route::middleware(['auth'])->group(function () {
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
                     Route::get('/payroll', Payrollwr::class);
+                    Route::get('getexcel', [TerControler::class, 'index']);
+                    Route::post('upload/ter', [TerControler::class, 'upload']);
+                    Route::get('ter', Terwr::class);
+                    Route::get('gajibpjs', Gajibpjs::class);
+
+
+
 
 
                     // KHUSUS Super Admin

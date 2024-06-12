@@ -1,18 +1,97 @@
 <?php
 
-use App\Models\Applicantfile;
 use Carbon\Carbon;
+use App\Models\Ter;
 use App\Models\Lock;
 use App\Models\User;
 use App\Models\Payroll;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
 use Illuminate\Support\Str;
+use App\Models\Applicantfile;
 use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function get_rate_ter_pph21($ptkp, $total_bpjs_company)
+{
+
+    if ($ptkp != '' && $total_bpjs_company != 0) {
+        switch ($ptkp) {
+            case 'TK0':
+                $ter = 'A';
+                break;
+            case 'TK1':
+                $ter = 'A';
+                break;
+            case 'TK2':
+                $ter = 'B';
+                break;
+            case 'TK3':
+                $ter = 'B';
+                break;
+            case 'K0':
+                $ter = 'A';
+                break;
+            case 'K1':
+                $ter = 'B';
+                break;
+            case 'K2':
+                $ter = 'B';
+                break;
+            case 'K3':
+                $ter = 'C';
+                break;
+        }
+        $data_ter = Ter::where('ter', $ter)->where('to', '>=', $total_bpjs_company)->orderBy('to', 'asc')->first();
+        return $data_ter->rate;
+    }
+}
+
+function nama_bulan($bulan)
+{
+    switch ($bulan) {
+        case 1:
+            $monthNama = 'Januari';
+            break;
+        case 2:
+            $monthNama = 'Februari';
+            break;
+        case 3:
+            $monthNama = 'Maret';
+            break;
+        case 4:
+            $monthNama = 'April';
+            break;
+        case 5:
+            $monthNama = 'Mei';
+            break;
+        case 6:
+            $monthNama = 'Juni';
+            break;
+        case 7:
+            $monthNama = 'Juli';
+            break;
+        case 8:
+            $monthNama = 'Agustus';
+            break;
+        case 9:
+            $monthNama = 'September';
+            break;
+        case 10:
+            $monthNama = 'Oktober';
+            break;
+        case 11:
+            $monthNama = 'November';
+            break;
+        case 12:
+            $monthNama = 'Desember';
+            break;
+    }
+    return $monthNama;
+}
 
 function getCauserName($id)
 {

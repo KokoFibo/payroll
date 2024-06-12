@@ -133,26 +133,8 @@ class HomeController extends Controller
                 $user->save();
 
                 return view('dashboard', compact([
-                    'jumlah_total_karyawan', 'jumlah_karyawan_pria', 'jumlah_karyawan_wanita',  'jumlah_company', 'jumlah_ASB', 'jumlah_DPA', 'jumlah_YCME', 'jumlah_YEV',
-                    'jumlah_YIG', 'jumlah_YSM', 'jumlah_YAM',
-                    'jumlah_GAMA', 'jumlah_WAS',
-                    'department_BD', 'department_Engineering', 'department_EXIM', 'department_Finance_Accounting', 'department_GA', 'department_Gudang',
-                    'department_HR', 'department_Legal', 'department_Procurement', 'department_Produksi', 'department_Quality_Control', 'department_Board_of_Director',
-                    'jabatan_Admin', 'jabatan_Asisten_Direktur', 'jabatan_Asisten_Kepala', 'jabatan_Asisten_Manager', 'jabatan_Asisten_Pengawas', 'jabatan_Asisten_Wakil_Presiden',
-                    'jabatan_Design_grafis', 'jabatan_Director', 'jabatan_Kepala', 'jabatan_Manager', 'jabatan_Pengawas', 'jabatan_President', 'jabatan_Senior_staff', 'jabatan_Staff',
-                    'jabatan_Supervisor', 'jabatan_Vice_President', 'jabatan_Satpam', 'jabatan_Koki', 'jabatan_Dapur_Kantor',
-                    'jabatan_Dapur_Pabrik', 'jabatan_QC_Aging', 'jabatan_Driver',   'companyLabelArr', 'companyArr',
-                    'jumlah_karyawan_labelArr', 'jumlah_karyawanArr',
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-                    'countLatestHadir', 'latestDate', 'dataCountLatestHadir', 'average7Hari', 'average30Hari', 'dataPayroll', 'dataTgl', 'dataAll',
-                    'dataASB', 'dataDPA', 'dataYCME', 'dataYEV', 'dataYAM', 'dataYIG', 'dataYSM',
-                    'dataGAMA', 'dataWAS', 'latestDate', 'shiftPagiMalam',
-                    'bd', 'engineering', 'exim', 'finance_accounting', 'ga', 'gudang', 'hr', 'legal',
-                    'procurement', 'produksi', 'quality_control', 'total_presensi_by_departemen',
-                    'presensi_by_departement_Arr', 'presensi_by_departement_LabelArr',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini',
-                    'belum_isi_etnis', 'belum_isi_kontak_darurat'
-
+                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
                 ]));
             }
             $user->device = 0;

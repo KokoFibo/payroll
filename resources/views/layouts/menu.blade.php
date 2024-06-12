@@ -108,6 +108,14 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+                <li class="nav-item {{ 'gajibpjs' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/gajibpjs" class="nav-link">
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
+                            {{ __('BPJS/PTKP') }}
+                        </p>
+                    </a>
+                </li>
             @endif
 
 
