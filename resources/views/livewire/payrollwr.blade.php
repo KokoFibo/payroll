@@ -150,6 +150,8 @@
 
 
             <div class="d-flex gap-2" wire:loading.class='invisible'>
+                <a href="/ter"><button
+                        class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
                 <button class="btn btn-success nightowl-daylight"
                     wire:click="bankexcel">{{ __('Report for bank') }}</button>
                 <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>

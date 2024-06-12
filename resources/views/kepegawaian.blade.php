@@ -66,20 +66,32 @@
                         {{-- @endif --}}
 
                     </div>
-                    <div class="col-md-4 {{ auth()->user()->role < 4 ? 'visually-hidden' : '' }}">
+                    <div class="col-md-4">
                         {{-- <div class="col-md-4"> --}}
                         <div class="mb-3">
                             <label class="form-label">{{ __('Tanggal Bergabung') }} <span
                                     class="text-danger">*</span></label>
                             <div>
-                                <input type="datetime:local" id="tanggal"
-                                    class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
-                                    placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
-                                @error('tanggal_bergabung')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+
+                                @if (auth()->user()->role > 2)
+                                    <input type="datetime:local" id="tanggal"
+                                        class="date form-control @error('tanggal_bergabung') is-invalid @enderror"
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                                    @error('tanggal_bergabung')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                @else
+                                    <input type="datetime:local" id="tanggal" {{ $is_update ? 'disabled' : '' }}
+                                        class="date form-control @error('tanggal_bergabung') is-invalid @enderror"
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                                    @error('tanggal_bergabung')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                @endif
                             </div>
                         </div>
                     </div>

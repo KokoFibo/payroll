@@ -69,7 +69,7 @@ return new class extends Migration
             $table->double('total', 12, 1);
             $table->date('date');
             $table->string('status_karyawan');
-
+            $table->string('ptkp');
             $table->timestamps();
         });
     }

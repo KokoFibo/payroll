@@ -8,6 +8,7 @@ use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Exports\PphExport;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Jobs\BuildPayrollJob;
@@ -153,8 +154,9 @@ class Payrollwr extends Component
             }
         }
 
-
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+
+
         if ($this->selected_company != 0) {
             return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
         } else if ($this->selected_placement != 0) {

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Ter;
 use App\Models\User;
 use App\Models\Payroll;
 use Livewire\Component;
@@ -76,6 +77,47 @@ class Test extends Component
     //   ->where('payrolls.metode_penggajian', 'Perbulan')
     //   ->orderBy('karyawans.tanggal_resigned', 'desc')
     //   ->paginate(10);
+
+    $gaji_bpjs = 10000000;
+    $ptkp = 'K3';
+
+    $jkk_company = ($gaji_bpjs * 0.24) / 100;
+    $jkm_company = ($gaji_bpjs * 0.3) / 100;
+    $kesehatan_company = ($gaji_bpjs * 0.4) / 100;
+    $total_bpjs_company = $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+
+    switch ($ptkp) {
+      case 'TK0':
+        $ter = 'A';
+        break;
+      case 'TK1':
+        $ter = 'A';
+        break;
+      case 'TK2':
+        $ter = 'B';
+        break;
+      case 'TK3':
+        $ter = 'B';
+        break;
+      case 'K0':
+        $ter = 'A';
+        break;
+      case 'K1':
+        $ter = 'B';
+        break;
+      case 'K2':
+        $ter = 'B';
+        break;
+      case 'K3':
+        $ter = 'C';
+        break;
+    }
+    $total_bpjs_company = 26200000;
+
+
+    $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
+    $pph21 = $total_bpjs_company * $rate_pph21 / 100;
+
 
     $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
       ->where('karyawans.status_karyawan', 'Resigned')
