@@ -38,14 +38,14 @@
         </div>
 
         <a href="/presensisummaryindex"><button
-                class="btn btn-success {{ auth()->user()->role < 3 ? 'invisible' : '' }} nightowl-daylight">Excel</button></a>
+                class="btn btn-success {{ auth()->user()->role < 6 ? 'invisible' : '' }} nightowl-daylight">Excel</button></a>
 
         <button wire:click="buat_payroll"
-            class="btn btn-primary {{ auth()->user()->role < 3 ? 'invisible' : '' }} nightowl-daylight"
+            class="btn btn-primary {{ auth()->user()->role < 6 ? 'invisible' : '' }} nightowl-daylight"
             wire:loading.class='invisible'
             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
     </div>
-    <div class="{{ auth()->user()->role < 3 ? 'invisible' : '' }} text-center mt-3">
+    <div class="{{ auth()->user()->role < 6 ? 'invisible' : '' }} text-center mt-3">
         <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span role="status">{{ __('Building Payroll... sedikit lama (2,5 menit), jangan tekan apapun.') }}</span>

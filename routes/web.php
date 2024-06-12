@@ -67,6 +67,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Http\Controllers\TerControler;
 use App\Livewire\Gajibpjs;
+use App\Livewire\KaryawanReinstate;
 use App\Livewire\Terwr;
 
 // Middleware
@@ -145,6 +146,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/informationwr', Informationwr::class);
                 Route::get('/tambahan', Tambahanwr::class);
                 Route::get('/iuranlocker', IuranLocker::class);
+                Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
+
 
                 // YF PRESENSI
                 Route::get('/yfupload', function () {
@@ -169,6 +172,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/salaryadjustment', SalaryAdjustment::class);
                 Route::get('/liburnasional', Liburnasionalwr::class);
                 Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
+                Route::get('permohonan-personnel', PermohonanPersonnel::class);
 
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
@@ -177,10 +181,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('upload/ter', [TerControler::class, 'upload']);
                     Route::get('ter', Terwr::class);
                     Route::get('gajibpjs', Gajibpjs::class);
-
-
-
-
 
                     // KHUSUS Super Admin
                     Route::middleware(['SuperAdmin'])->group(function () {
@@ -236,7 +236,6 @@ Route::middleware(['auth'])->group(function () {
                             Route::post('/yfcompare', [YfpresensiController::class, 'compare']);
                             Route::get('/deletenoscan', DeleteNoscan::class);
                             Route::get('/developer-dashboard', DeveloperDashboard::class);
-                            Route::get('permohonan-personnel', PermohonanPersonnel::class);
                             Route::get('/jabatan', Jabatanwr::class);
                             Route::get('/data-log', DataLog::class)->name('datalog');
 

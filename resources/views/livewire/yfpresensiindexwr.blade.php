@@ -142,7 +142,7 @@
                         {{ __('Data Presensi') }} {{ format_tgl_hari($tanggal) }}
                     </h3>
                     <div>
-                        @if (auth()->user()->role == 5)
+                        @if (auth()->user()->role == 8)
                             <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
                                 <button
                                     class="btn btn-warning nightowl-daylight">{{ __('Delete Tgl Presensi') }}</button></a>
@@ -171,7 +171,7 @@
                                         class=" fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                @if (auth()->user()->role == 5)
+                                @if (auth()->user()->role == 8)
                                     <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
                                         <i class="fa-solid fa-sort"></i>
                                     </th>
@@ -225,13 +225,11 @@
                                         <td>
 
                                             @if ($btnEdit == true)
-                                                {{-- @if ($lock_presensi == true && Auth::user()->role <= 3) --}}
                                                 <button @click="edit = !edit"
                                                     wire:click="update({{ $data->id }})"
                                                     class="btn btn-success btn-sm nightowl-daylight"
-                                                    {{ $lock_presensi == true && Auth::user()->role <= 3 ? 'disabled' : '' }}><i
+                                                    {{ $lock_presensi == true && Auth::user()->role <= 6 ? 'disabled' : '' }}><i
                                                         class="fa-regular fa-pen-to-square"></i></button>
-                                                {{-- @endif --}}
                                             @else
                                                 @if ($data->id == $selectedId)
                                                     <button @click="edit = !edit" wire:click="save"
@@ -248,11 +246,10 @@
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
 
-                                            @if (Auth::user()->role > 2)
-                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}}
-                                                    wire:click="delete({{ $data->id }})"
+                                            @if (Auth::user()->role > 5)
+                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    {{ Auth::user()->role == 3 && $lock_presensi == true ? 'disabled' : '' }}
+                                                    {{ Auth::user()->role == 6 && $lock_presensi == true ? 'disabled' : '' }}
                                                     class="btn btn-danger btn-sm nightowl-daylight"><i
                                                         class="fa-solid fa-trash-can confirm-delete"></i></button>
                                             @endif
@@ -261,10 +258,8 @@
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>
 
-                                        {{-- <td>{{ $data->karyawan->departemen }}</td> --}}
-                                        @if (auth()->user()->role == 5)
-                                            <td>{{ $data->karyawan->metode_penggajian }}</td>
-                                        @endif
+
+                                        <td>{{ $data->karyawan->metode_penggajian }}</td>
                                         <td>{{ $data->karyawan->placement }}</td>
                                         <td>{{ $data->karyawan->jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>

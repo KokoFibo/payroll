@@ -57,21 +57,21 @@
 
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input nightowl-daylight"
-                                                type="radio" value="-1">
+                                                type="radio" value="4">
                                             <label class="form-check-label">
                                                 <h5>{{ __('Junior Admin') }}</h5>
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input nightowl-daylight"
-                                                type="radio" value="2">
+                                                type="radio" value="5">
                                             <label class="form-check-label">
                                                 <h5>{{ __('Admin') }}</h5>
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input wire:model="role" class="form-check-input nightowl-daylight"
-                                                type="radio" value="3">
+                                                type="radio" value="6">
                                             <label class="form-check-label">
                                                 <h5>{{ __('Senior Admin') }}</h5>
                                             </label>
@@ -79,7 +79,7 @@
                                         @if (auth()->user()->role > 3)
                                             <div class="form-check">
                                                 <input wire:model="role" class="form-check-input nightowl-daylight"
-                                                    type="radio" value="4">
+                                                    type="radio" value="7">
                                                 <label class="form-check-label">
                                                     <h5>{{ __('Super Admin') }}</h5>
                                                 </label>
@@ -131,11 +131,18 @@
                                     @if ($d->role == 0)
                                         <badge class="badge badge-primary nightowl-daylight">{{ role_name($d->role) }}
                                         </badge>
-                                    @elseif($d->role == 2)
+                                    @elseif($d->role == 4)
+                                        <badge class="badge badge-secondary nightowl-daylight">
+                                            {{ role_name($d->role) }}
+                                        </badge>
+                                    @elseif($d->role == 5)
                                         <badge class="badge badge-warning nightowl-daylight">{{ role_name($d->role) }}
                                         </badge>
-                                    @elseif($d->role == 3)
-                                        <badge class="badge badge-dark nightowl-daylight">{{ role_name($d->role) }}
+                                    @elseif($d->role == 6)
+                                        <badge class="badge badge-danger nightowl-daylight">{{ role_name($d->role) }}
+                                        </badge>
+                                    @elseif($d->role == 7)
+                                        <badge class="badge badge-info nightowl-daylight">{{ role_name($d->role) }}
                                         </badge>
                                     @else
                                         <badge class="badge badge-success nightowl-daylight">{{ role_name($d->role) }}

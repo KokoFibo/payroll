@@ -94,7 +94,7 @@
                 <option value="12">Desember</option>
             </select>
         </div>
-        @if (auth()->user()->role == 5)
+        @if (auth()->user()->role == 8)
             <div>
                 <button wire:click="create_new" class="btn btn-primary">Create New</button>
             </div>
@@ -109,7 +109,7 @@
                     <th>{{ __('Nama Hari Libur') }}</th>
                     <th>{{ __('Tanggal Libur') }}</th>
                     {{-- <th>Tanggal Akhir</th> --}}
-                    @if (auth()->user()->role == 5)
+                    @if (auth()->user()->role == 8)
                         <th>Jumlah Hari libur</th>
                         <th></th>
                     @endif
@@ -123,7 +123,7 @@
                         {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
                         <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
                         {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
-                        @if (auth()->user()->role == 5)
+                        @if (auth()->user()->role == 8)
                             <td>{{ $d->jumlah_hari_libur }}</td>
                             <td>
                                 <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>

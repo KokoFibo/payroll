@@ -4,7 +4,6 @@
         <div class="card ">
             <div class="card-header bg-info nightowl-daylight">
                 <label class="col-sm-2  col-form-label">{{ __('Bonus dan Potongan') }}</label>
-
             </div>
             @if ($modal == true)
                 <div class="card-body">

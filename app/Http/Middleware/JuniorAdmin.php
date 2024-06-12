@@ -16,7 +16,7 @@ class JuniorAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ((Auth::user()->role > 1 && Auth::user()->device == 1) || Auth::user()->role > 3 || Auth::user()->role == -1) {
+        if ((Auth::user()->role >= 4 && Auth::user()->device == 1) || Auth::user()->role >= 4) {
 
             // if ((Auth::user()->role == -1 && Auth::user()->device == 1) || Auth::user()->role == -1) {
 
