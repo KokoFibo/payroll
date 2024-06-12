@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
 
     <title>Payroll Excel View</title>
 </head>
@@ -66,71 +66,53 @@
             </tr>
             {{-- TR untuk title --}}
             <tr>
-                <th>ID Karyawan</th>
-                <th>Nama Karyawan</th>
-                <th>Bank</th>
-                <th>No. Rekening</th>
-                <th>Jabatan</th>
-                <th>Company</th>
-                <th>Placement</th>
-                <th>Department</th>
-                <th>Metode Penggajian</th>
-                <th>Total Hari Kerja</th>
-                <th>Total Jam Kerja (Bersih)</th>
-                <th>Total Jam Lembur</th>
-                <th>Jumlah Jam Terlambat</th>
-                <th>Tambahan Shift Malam</th>
-                <th>Gaji Pokok</th>
-                <th>Gaji Lembur</th>
-                <th>Gaji Libur</th>
-                <th>Bonus/U.Makan</th>
-                <th>Potongan 1X</th>
-                <th>Total NoScan</th>
-                <th>Denda Lupa Absen</th>
-                <th>Denda Resigned</th>
-                <th>Tanggungan</th>
-                <th>Iuran Air</th>
-                <th>Iuran Locker</th>
-                <th>Status Karyawan</th>
-                <th>Gaji BPJS</th>
-                <th>JHT</th>
-                <th>JP</th>
-                <th>JKK</th>
-                <th>JKM</th>
-                <th>Kesehatan</th>
-                <th>JKK</th>
-                <th>JKM</th>
-                <th>Kesehatan</th>
-                <th>Total BPJS</th>
-                <th>PTKP</th>
-                <th>TER</th>
-                <th>Rate</th>
-                <th>Pph21</th>
-                <th>Total</th>
+                <th style="text-align: center;">ID Karyawan</th>
+                <th style="text-align: center;">Nama Karyawan</th>
+                <th style="text-align: center;">Bank</th>
+                <th style="text-align: center;">No. Rekening</th>
+                <th style="text-align: center;">Jabatan</th>
+                <th style="text-align: center;">Company</th>
+                <th style="text-align: center;">Placement</th>
+                <th style="text-align: center;">Department</th>
+                <th style="text-align: center;">Metode Penggajian</th>
+                <th style="text-align: center;">Total Hari Kerja</th>
+                <th style="text-align: center;">Total Jam Kerja (Bersih)</th>
+                <th style="text-align: center;">Total Jam Lembur</th>
+                <th style="text-align: center;">Jumlah Jam Terlambat</th>
+                <th style="text-align: center;">Tambahan Shift Malam</th>
+                <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji Lembur</th>
+                <th style="text-align: center;">Gaji Libur</th>
+                <th style="text-align: center;">Bonus/U.Makan</th>
+                <th style="text-align: center;">Potongan 1X</th>
+                <th style="text-align: center;">Total NoScan</th>
+                <th style="text-align: center;">Denda Lupa Absen</th>
+                <th style="text-align: center;">Denda Resigned</th>
+                <th style="text-align: center;">Tanggungan</th>
+                <th style="text-align: center;">Iuran Air</th>
+                <th style="text-align: center;">Iuran Locker</th>
+                <th style="text-align: center;">Status Karyawan</th>
+                <th style="text-align: center;">Gaji BPJS</th>
+                <th style="text-align: center;">JHT</th>
+                <th style="text-align: center;">JP</th>
+                <th style="text-align: center;">JKK</th>
+                <th style="text-align: center;">JKM</th>
+                <th style="text-align: center;">Kesehatan</th>
+                <th style="text-align: center;">JKK</th>
+                <th style="text-align: center;">JKM</th>
+                <th style="text-align: center;">Kesehatan</th>
+                <th style="text-align: center;">Total BPJS</th>
+                <th style="text-align: center;">PTKP</th>
+                <th style="text-align: center;">TER</th>
+                <th style="text-align: center;">Rate</th>
+                <th style="text-align: center;">Pph21</th>
+                <th style="text-align: center;">Total</th>
 
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $key => $d)
                 @php
-                    // if ($d->jkk != null) {
-                    //     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
-                    // } else {
-                    //     $jkk_company = 0;
-                    // }
-
-                    // if ($d->jkm != null) {
-                    //     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
-                    // } else {
-                    //     $jkm_company = 0;
-                    // }
-
-                    // if ($d->kesehatan != null) {
-                    //     $kesehatan_company = ($d->gaji_bpjs * 0.4) / 100;
-                    // } else {
-                    //     $kesehatan_company = 0;
-                    // }
-
                     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
                     $kesehatan_company = ($d->gaji_bpjs * 0.4) / 100;
