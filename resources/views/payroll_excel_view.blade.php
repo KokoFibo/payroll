@@ -20,6 +20,51 @@
                     <h3>{{ $header_text }}</h3>
                 </th>
             </tr>
+            {{-- TR baris atas utk colspan --}}
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="5" style="text-align: center; background-color: green; color:black">
+                    <h4>Karyawan</h4>
+                </th>
+
+                <th colspan="3" style="text-align: center; background-color: blue; color:white">
+                    <h4>Company</h4>
+                </th>
+
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            {{-- TR untuk title --}}
             <tr>
                 <th>ID Karyawan</th>
                 <th>Nama Karyawan</th>
@@ -38,24 +83,24 @@
                 <th>Gaji Pokok</th>
                 <th>Gaji Lembur</th>
                 <th>Gaji Libur</th>
-                <th>Gaji BPJS</th>
                 <th>Bonus/U.Makan</th>
                 <th>Potongan 1X</th>
                 <th>Total NoScan</th>
                 <th>Denda Lupa Absen</th>
                 <th>Denda Resigned</th>
+                <th>Tanggungan</th>
+                <th>Iuran Air</th>
+                <th>Iuran Locker</th>
+                <th>Status Karyawan</th>
+                <th>Gaji BPJS</th>
                 <th>JHT</th>
                 <th>JP</th>
                 <th>JKK</th>
                 <th>JKM</th>
                 <th>Kesehatan</th>
-                <th>Tanggungan</th>
-                <th>Iuran Air</th>
-                <th>Iuran Locker</th>
-                <th>Status Karyawan</th>
-                <th>JKK Company</th>
-                <th>JKM Company</th>
-                <th>Kesehatan Company</th>
+                <th>JKK</th>
+                <th>JKM</th>
+                <th>Kesehatan</th>
                 <th>Total BPJS</th>
                 <th>PTKP</th>
                 <th>TER</th>
@@ -140,21 +185,22 @@
                     <td style="text-align: right"> {{ number_format($d->gaji_pokok) }}</td>
                     <td style="text-align: right"> {{ number_format($d->gaji_lembur) }}</td>
                     <td style="text-align: right"> {{ number_format($d->gaji_libur) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->gaji_bpjs) }}</td>
                     <td style="text-align: right"> {{ number_format($d->bonus1x) }}</td>
                     <td style="text-align: right"> {{ number_format($d->potongan1x) }}</td>
                     <td> {{ $d->total_noscan }}</td>
                     <td style="text-align: right"> {{ number_format($d->denda_lupa_absen) }}</td>
                     <td style="text-align: right"> {{ number_format($d->denda_resigned) }}</td>
+
+                    <td> {{ $d->tanggungan }}</td>
+                    <td style="text-align: right"> {{ number_format($d->iuran_air) }}</td>
+                    <td style="text-align: right"> {{ number_format($d->iuran_locker) }}</td>
+                    <td style="text-align: center"> {{ $d->status_karyawan }}</td>
+                    <td style="text-align: right"> {{ number_format($d->gaji_bpjs) }}</td>
                     <td style="text-align: right"> {{ number_format($d->jht) }}</td>
                     <td style="text-align: right"> {{ number_format($d->jp) }}</td>
                     <td style="text-align: right"> {{ number_format($d->jkk) }}</td>
                     <td style="text-align: right"> {{ number_format($d->jkm) }}</td>
                     <td style="text-align: right"> {{ number_format($d->kesehatan) }}</td>
-                    <td> {{ $d->tanggungan }}</td>
-                    <td style="text-align: right"> {{ number_format($d->iuran_air) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->iuran_locker) }}</td>
-                    <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     <td style="text-align: right"> {{ number_format($jkk_company) }}</td>
                     <td style="text-align: right"> {{ number_format($jkm_company) }}</td>
                     <td style="text-align: right"> {{ number_format($kesehatan_company) }}</td>
