@@ -48,6 +48,11 @@ class KaryawanReinstate extends Component
         return redirect()->to('/karyawanindex');
     }
 
+    public function cancel()
+    {
+        return redirect()->to('/karyawanindex');
+    }
+
     public function render()
     {
 
