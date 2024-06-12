@@ -56,7 +56,7 @@
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
-                @if (auth()->user()->role > 4)
+                @if (auth()->user()->role > 7)
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
@@ -76,7 +76,7 @@
             </div>
             <div class="col">
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
-                    @if (auth()->user()->role > 3)
+                    @if (auth()->user()->role > 6)
                         <div class="form-check form-switch">
                             <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
                                 id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>

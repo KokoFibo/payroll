@@ -47,7 +47,7 @@ class HomeController extends Controller
         $desktop = $agent->isDesktop();
         $user = User::find(auth()->user()->id);
 
-        if (!((auth()->user()->role <= 3 && auth()->user()->role > 0) && $desktop == false)) {
+        if (!((auth()->user()->role <= 6 && auth()->user()->role > 0) && $desktop == false)) {
             $data = Dashboarddata::find(1);
 
             // $jumlah_total_karyawan = $data->jumlah_total_karyawan;
@@ -69,7 +69,7 @@ class HomeController extends Controller
 
 
         switch (auth()->user()->role) {
-            case -1:
+            case 4:
                 $role_name = 'Junior Admin';
                 break;
             case 0:
@@ -78,16 +78,16 @@ class HomeController extends Controller
             case 1:
                 $role_name = 'User';
                 break;
-            case 2:
+            case 5:
                 $role_name = 'Admin';
                 break;
-            case 3:
+            case 6:
                 $role_name = 'Senior Admin';
                 break;
-            case 4:
+            case 7:
                 $role_name = 'Super Admin';
                 break;
-            case 5:
+            case 8:
                 $role_name = 'Developer';
                 break;
         }
@@ -109,7 +109,7 @@ class HomeController extends Controller
         if ($desktop) {
             $user->device = 1;
             $user->save();
-            if (auth()->user()->role != 1 && auth()->user()->role != -1) {
+            if (auth()->user()->role != 1 && auth()->user()->role != 4) {
                 $karyawan_baru_mtd =  $data->karyawan_baru_mtd;
                 $karyawan_resigned_mtd = $data->karyawan_resigned_mtd;
                 $karyawan_blacklist_mtd = $data->karyawan_blacklist_mtd;
@@ -128,7 +128,7 @@ class HomeController extends Controller
         } else {
             $user->device = 1;
             $user->save();
-            if (auth()->user()->role >= 4 || auth()->user()->role == 0) {
+            if (auth()->user()->role >= 7 || auth()->user()->role == 0) {
                 $user->device = 1;
                 $user->save();
 

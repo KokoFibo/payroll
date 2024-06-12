@@ -15,7 +15,7 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
 
-        @if (Auth::user()->role > 1)
+        @if (Auth::user()->role >= 5)
             <li class="nav-item {{ 'karyawanindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/karyawanindex" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
@@ -26,7 +26,7 @@ with font-awesome or any other icon font library -->
             </li>
         @endif
 
-        @if (Auth::user()->role > 1 || Auth::user()->role == -1)
+        @if (Auth::user()->role >= 4)
             <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/dataapplicant" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
@@ -36,8 +36,8 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
         @endif
-        @if (Auth::user()->role > 1)
-            @if (Auth::user()->role > 4)
+        @if (Auth::user()->role >= 5)
+            @if (Auth::user()->role > 5)
                 <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/permohonan-personnel" class="nav-link">
                         <i class="nav-icon fa-solid fa-person-walking"></i>
@@ -46,6 +46,9 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+            @endif
+
+            @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
                         <i class="nav-icon fa-solid fa-person-walking"></i>
@@ -64,7 +67,7 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role >= 3)
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/salaryadjustment" class="nav-link">
                         <i class="nav-icon fa-solid fa-sliders"></i>
@@ -80,7 +83,7 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 4)
+            @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'absensikosong' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/absensikosong" class="nav-link">
                         <i class="nav-icon fas fa-clipboard-check"></i>
@@ -89,7 +92,7 @@ with font-awesome or any other icon font library -->
                 </li>
             @endif
 
-            @if (Auth::user()->role > 1)
+            @if (Auth::user()->role >= 5)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -99,7 +102,7 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->role >= 3)
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'payroll' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payroll" class="nav-link">
                         <i class="nav-icon fas fa-dollar-sign"></i>
@@ -134,7 +137,7 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
 
-            @if (Auth::user()->role > 3)
+            @if (Auth::user()->role > 6)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
                         <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
@@ -162,7 +165,7 @@ with font-awesome or any other icon font library -->
                             <p>{{ __('Karyawan Settings') }}</p>
                         </a>
                     </li>
-                    @if (Auth::user()->role > 3)
+                    @if (Auth::user()->role > 6)
                         <li
                             class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a href="/changeuserrolewr" class="nav-link">
@@ -175,7 +178,7 @@ with font-awesome or any other icon font library -->
             </li>
 
 
-            @if (Auth::user()->role > 4)
+            @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'developer-dashboard' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/developer-dashboard" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -388,7 +391,6 @@ with font-awesome or any other icon font library -->
 
         </li>
     </ul>
-
 
 
 

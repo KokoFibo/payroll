@@ -23,7 +23,6 @@
 
 
                         {{-- baris dibawah ini jangan dihapus --}}
-                        {{-- @if (!((auth()->user()->role < 4 && $gaji_pokok > 4500000) || auth()->user()->role < 3)) --}}
                         <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
                             aria-selected="false"><span class="fs-5">{{ __('Payroll') }}</span></button>
@@ -51,7 +50,6 @@
 
 
                     {{-- baris dibawah ini jangan dihapus --}}
-                    {{-- @if (!((auth()->user()->role < 4 && $gaji_pokok > 4500000) || auth()->user()->role < 3)) --}}
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>

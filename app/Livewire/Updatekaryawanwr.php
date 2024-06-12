@@ -213,7 +213,7 @@ class Updatekaryawanwr extends Component
             'status_karyawan' => 'required',
             'tanggal_resigned' => new RequiredIf($this->status_karyawan == 'Resigned'),
             'tanggal_blacklist' => new RequiredIf($this->status_karyawan == 'Blacklist'),
-            'tanggal_bergabung' => 'date|required|after:yesterday',
+            'tanggal_bergabung' => 'date|required',
             'company' => 'required',
             'placement' => 'required',
             'departemen' => 'required',

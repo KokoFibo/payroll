@@ -919,13 +919,16 @@ function role_name($role)
         case 1:
             $roleName = "User";
             break;
-        case 2:
+        case 4:
+            $roleName = "Junior Admin";
+            break;
+        case 5:
             $roleName = "Admin";
             break;
-        case 3:
+        case 6:
             $roleName = "Senior Admin";
             break;
-        case 4:
+        case 7:
             $roleName = "Super Admin";
             break;
     }

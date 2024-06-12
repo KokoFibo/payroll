@@ -16,7 +16,7 @@ class SeniorAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role == 0 || (Auth::user()->role > 2 && Auth::user()->device == 1) || Auth::user()->role > 2) {
+        if (Auth::user()->role == 0 || (Auth::user()->role > 5 && Auth::user()->device == 1) || Auth::user()->role > 5) {
             return $next($request);
         } else {
             return redirect()->back();

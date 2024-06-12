@@ -152,7 +152,7 @@ class Karyawanindexwr extends Component
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
-        $this->columnName = 'id_karyawan';
+        $this->columnName = 'tanggal_bergabung';
         $this->direction = 'desc';
         $this->search_etnis = "";
 
@@ -176,7 +176,7 @@ class Karyawanindexwr extends Component
         $this->search_tanggal_bergabung = "";
         $this->search_gaji_pokok = "";
         $this->search_gaji_overtime = "";
-        $this->columnName = 'id_karyawan';
+        $this->columnName = 'tanggal_bergabung';
         $this->direction = 'desc';
     }
 
@@ -330,7 +330,9 @@ class Karyawanindexwr extends Component
         if ($this->selectStatus == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
-            $statuses = ['Blacklist', 'Resigned'];
+            $statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 3) {
+            $statuses = ['Blacklist'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }

@@ -64,8 +64,8 @@ class Changeuserrolewr extends Component
                 $this->role = null;
             }
         }
-        $dataRole = User::whereIn('role', [0, 2, 3, 4])
-            ->whereNotIn('username', [20000, 30000, 40000])
+        $dataRole = User::whereIn('role', [0, 4, 5, 6, 7])
+            ->whereNotIn('username', [50000, 60000, 70000])
             ->orderBy('role', 'asc')->paginate(10);
 
         return view('livewire.changeuserrolewr', compact(['data', 'dataRole']));
