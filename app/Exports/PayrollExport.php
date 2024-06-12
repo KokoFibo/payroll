@@ -11,6 +11,8 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+
 
 class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
 
@@ -178,7 +180,34 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
         return [
             // 'C' => NumberFormat::FORMAT_TEXT,
             'D' => "0",
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'P' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'Q' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'R' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'S' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'T' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'U' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'V' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'W' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'X' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'Y' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
 
+            'AA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AE' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AF' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AG' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AH' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AI' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AJ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
         ];
     }
 }

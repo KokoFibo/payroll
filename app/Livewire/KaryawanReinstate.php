@@ -38,11 +38,13 @@ class KaryawanReinstate extends Component
             'status_karyawan' => 'required'
         ]);
         $data = Karyawan::find($this->id);
+        $user = User::where('username', $data->id_karyawan)->first();
         $data->status_karyawan = $this->status_karyawan;
         $data->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
+        $data->id_karyawan = getNextIdKaryawan();
         $data->save();
-        $user = User::where('username', $data->id_karyawan)->first();
         $user->password = Hash::make(generatePassword($data->tanggal_lahir));
+        $user->username = $data->id_karyawan;
         $user->save();
 
         return redirect()->to('/karyawanindex');

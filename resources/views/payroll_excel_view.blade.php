@@ -163,35 +163,35 @@
                     <td> {{ $d->jam_kerja }}</td>
                     <td> {{ $d->jam_lembur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
-                    <td style="text-align: right"> {{ number_format($d->tambahan_shift_malam) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->gaji_pokok) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->gaji_lembur) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->gaji_libur) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->bonus1x) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->potongan1x) }}</td>
+                    <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_libur }}</td>
+                    <td style="text-align: right"> {{ $d->bonus1x }}</td>
+                    <td style="text-align: right"> {{ $d->potongan1x }}</td>
                     <td> {{ $d->total_noscan }}</td>
-                    <td style="text-align: right"> {{ number_format($d->denda_lupa_absen) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->denda_resigned) }}</td>
+                    <td style="text-align: right"> {{ $d->denda_lupa_absen }}</td>
+                    <td style="text-align: right"> {{ $d->denda_resigned }}</td>
 
                     <td> {{ $d->tanggungan }}</td>
-                    <td style="text-align: right"> {{ number_format($d->iuran_air) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->iuran_locker) }}</td>
+                    <td style="text-align: right"> {{ $d->iuran_air }}</td>
+                    <td style="text-align: right"> {{ $d->iuran_locker }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
-                    <td style="text-align: right"> {{ number_format($d->gaji_bpjs) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->jht) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->jp) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->jkk) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->jkm) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->kesehatan) }}</td>
-                    <td style="text-align: right"> {{ number_format($jkk_company) }}</td>
-                    <td style="text-align: right"> {{ number_format($jkm_company) }}</td>
-                    <td style="text-align: right"> {{ number_format($kesehatan_company) }}</td>
-                    <td style="text-align: right"> {{ number_format($total_bpjs_company) }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
+                    <td style="text-align: right"> {{ $d->jht }}</td>
+                    <td style="text-align: right"> {{ $d->jp }}</td>
+                    <td style="text-align: right"> {{ $d->jkk }}</td>
+                    <td style="text-align: right"> {{ $d->jkm }}</td>
+                    <td style="text-align: right"> {{ $d->kesehatan }}</td>
+                    <td style="text-align: right"> {{ $jkk_company }}</td>
+                    <td style="text-align: right"> {{ $jkm_company }}</td>
+                    <td style="text-align: right"> {{ $kesehatan_company }}</td>
+                    <td style="text-align: right"> {{ $total_bpjs_company }}</td>
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
-                    <td style="text-align: right"> {{ number_format($pph21) }}</td>
-                    <td style="text-align: right"> {{ number_format($d->total) }}</td>
+                    <td style="text-align: right"> {{ $pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->total }}</td>
                 </tr>
             @endforeach
 

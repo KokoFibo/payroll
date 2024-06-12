@@ -152,7 +152,7 @@ class Karyawanindexwr extends Component
         $this->selectStatus = 1;
         // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
         // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
-        $this->columnName = 'tanggal_bergabung';
+        $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
         $this->search_etnis = "";
 
@@ -176,7 +176,7 @@ class Karyawanindexwr extends Component
         $this->search_tanggal_bergabung = "";
         $this->search_gaji_pokok = "";
         $this->search_gaji_overtime = "";
-        $this->columnName = 'tanggal_bergabung';
+        $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
     }
 
