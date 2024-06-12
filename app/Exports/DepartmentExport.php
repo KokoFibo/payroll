@@ -56,7 +56,11 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
                 ->whereYear('date', $this->year)
                 ->orderBy('id_karyawan', 'asc')->get();
         }
-        $header_text = 'Perincian Payroll untuk Department ' . $this->selected_departemen . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+        if ($this->selected_departemen != 0) {
+            $header_text = 'Perincian Payroll untuk Department ' . $this->selected_departemen . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+        } else {
+            $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
+        }
 
         return view('payroll_excel_view', [
             'data' => $data,
