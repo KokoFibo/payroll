@@ -9,8 +9,10 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting
+class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
 
 {
     /**
@@ -27,6 +29,22 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting
         $this->status = $status;
         $this->month = $month;
         $this->year = $year;
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Style the first row as bold text.
+            2    => ['font' => ['bold' => true]],
+            // Styling a specific cell by coordinate.
+
+            // Styling an entire column.
+            2  => ['font' => ['size' => 15]],
+            // 2 => ['font' => ['italic' => true]],
+            3  => ['font' => ['size' => 12]],
+
+
+        ];
     }
 
 
