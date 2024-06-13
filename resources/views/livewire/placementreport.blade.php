@@ -4,28 +4,6 @@
         <div class="card-header" style="background-color: #466deb; color: white">
             <p class="text-center lg:text-2xl">{{ __('Placement Report') }} </p>
         </div>
-        @if ($placement != '')
-            <div class="card-body" style="background-color: #b7c6f8; color: black">
-                <div class="d-flex lg:gap-0 gap-3 flex-lg-column flex-row justify-content-center  ">
-                    <div class="d-flex  flex-lg-row justify-content-lg-evenly  flex-column text-center">
-                        <p class="text-md lg:text-2xl">{{ __('Jumlah Karyawan') }}</p>
-                        <p class="text-md lg:text-2xl">{{ __('Laki laki') }}</p>
-                        <p class="text-md lg:text-2xl">{{ __('Perempuan') }}</p>
-                        <p class="text-md lg:text-2xl">{{ __('Shift Malam') }}</p>
-                    </div>
-                    <div class="d-flex flex-lg-row justify-content-lg-evenly  flex-column text-center">
-                        <p class="text-md  lg:text-2xl">{{ $jumlah_karyawan }}</p>
-                        <p class="text-md  lg:text-2xl">{{ $jumlah_laki_laki }}</p>
-                        <p class="text-md  lg:text-2xl">{{ $jumlah_perempuan }}</p>
-                        <p class="text-md  lg:text-2xl">{{ $jumlah_shift_malam }}</p>
-                    </div>
-
-                </div>
-
-            </div>
-            <hr class="border border-primary  opacity-50">
-        @endif
-
         <div class="mt-3">
             <div class="px-4 d-flex flex-lg-row flex-column align-items-center lg:gap-0 gap-3">
                 <input type="date" wire:model.live='last_date'
@@ -116,6 +94,62 @@
             </div>
         </div>
     </div>
+
+    @if ($placement != '')
+        <div class="card my-3">
+            <div class="card-header" style="background-color: #608ed3; color: white">
+                <h2 class="py-1 px-3 text-center text-lg lg:text-2xl">{{ __('Penempatan Bagian Karyawan Pabrik') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class='d-none d-lg-block'>
+                    <div class=' d-flex flex-lg-row justify-content-lg-evenly '>
+                        <div class='text-center col-3'>
+                            <p class="text-md lg:text-2xl">{{ __('Jumlah Karyawan') }}</p>
+                            <p class="fs-3 fw-semibold">{{ $jumlah_karyawan }}</p>
+                        </div>
+                        <div class='text-center col-3'>
+                            <p class="text-md lg:text-2xl">{{ __('Laki laki') }}</p>
+                            <p class="fs-3 fw-semibold">{{ $jumlah_laki_laki }}</p>
+                        </div>
+                        <div class='text-center col-3'>
+                            <p class="text-md lg:text-2xl">{{ __('Perempuan') }}</p>
+                            <p class="fs-3 fw-semibold">{{ $jumlah_perempuan }}</p>
+                        </div>
+                        <div class='col-3 text-center'>
+                            <p class="text-md lg:text-2xl ">{{ __('Shift Malam') }}</p>
+                            <p class="fs-3 fw-semibold ">{{ $jumlah_shift_malam }}</p>
+                        </div>
+                        <div class="d-flex lg:gap-0 gap-3 flex-lg-column flex-row justify-content-center  ">
+                            <div class="d-flex  flex-lg-row justify-content-lg-evenly  flex-column  ">
+                            </div>
+                            <div class="d-flex flex-lg-row justify-content-lg-evenly  flex-column">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- beda --}}
+                <div class="d-lg-none d-flex lg:gap-0 gap-3 flex-lg-column flex-row justify-content-center  ">
+                    <div class="d-flex  flex-lg-row justify-content-lg-evenly  flex-column  ">
+                        <p class="fs-5 fw-normal">{{ __('Jumlah Karyawan') }}</p>
+                        <p class="fs-5 fw-normal">{{ __('Laki laki') }}</p>
+                        <p class="fs-5 fw-normal">{{ __('Perempuan') }}</p>
+                        <p class="fs-5 fw-normal">{{ __('Shift Malam') }}</p>
+                    </div>
+                    <div class="d-flex flex-lg-row justify-content-lg-evenly  flex-column">
+                        <p class="fs-5 fw-semibold text-right">{{ $jumlah_karyawan }}</p>
+                        <p class="fs-5 fw-semibold text-right">{{ $jumlah_laki_laki }}</p>
+                        <p class="fs-5 fw-semibold text-right">{{ $jumlah_perempuan }}</p>
+                        <p class="fs-5 fw-semibold text-right">{{ $jumlah_shift_malam }}</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    @endif
+
+
 
 
     @if ($placement != '')
