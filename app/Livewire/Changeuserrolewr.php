@@ -64,7 +64,7 @@ class Changeuserrolewr extends Component
                 $this->role = null;
             }
         }
-        $dataRole = User::whereIn('role', [0, 4, 5, 6, 7])
+        $dataRole = User::whereIn('role', [0, 2, 4, 5, 6, 7])
             ->whereNotIn('username', [50000, 60000, 70000])
             ->orderBy('role', 'asc')->paginate(10);
 

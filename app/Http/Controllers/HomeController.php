@@ -69,14 +69,18 @@ class HomeController extends Controller
 
 
         switch (auth()->user()->role) {
-            case 4:
-                $role_name = 'Junior Admin';
-                break;
+
             case 0:
                 $role_name = 'BOD';
                 break;
             case 1:
                 $role_name = 'User';
+                break;
+            case 2:
+                $role_name = 'Request';
+                break;
+            case 4:
+                $role_name = 'Junior Admin';
                 break;
             case 5:
                 $role_name = 'Admin';
@@ -109,7 +113,7 @@ class HomeController extends Controller
         if ($desktop) {
             $user->device = 1;
             $user->save();
-            if (auth()->user()->role != 1 && auth()->user()->role != 4) {
+            if (auth()->user()->role != 1 && auth()->user()->role != 4 && auth()->user()->role != 2) {
                 $karyawan_baru_mtd =  $data->karyawan_baru_mtd;
                 $karyawan_resigned_mtd = $data->karyawan_resigned_mtd;
                 $karyawan_blacklist_mtd = $data->karyawan_blacklist_mtd;

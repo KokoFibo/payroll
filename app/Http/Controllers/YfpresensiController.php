@@ -251,7 +251,7 @@ class YfpresensiController extends Controller
         return back()->with('success', 'Data No scan telah berhasil di delete');
     }
 
-    public function deletepresensi()
+    public function deletepresensi_no_use()
     {
         Yfpresensi::query()->truncate();
         Yfrekappresensi::query()->truncate();

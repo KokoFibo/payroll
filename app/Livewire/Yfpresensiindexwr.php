@@ -81,19 +81,24 @@ class Yfpresensiindexwr extends Component
 
     public function mount()
     {
-        $data = Yfrekappresensi::latest('date')->first();
-        $month = \Carbon\Carbon::parse($data->date)->month;
-        $year = \Carbon\Carbon::parse($data->date)->year;
-        // dd($data->date, $month, $year);
-        $this->year = now()->year;
-        $this->month = now()->month;
-        $this->bulan = now()->month;
-        $this->tahun = now()->year;
+        try {
+            $data = Yfrekappresensi::latest('date')->first();
+            $month = \Carbon\Carbon::parse($data->date)->month;
+            $year = \Carbon\Carbon::parse($data->date)->year;
+            // dd($data->date, $month, $year);
+            $this->year = now()->year;
+            $this->month = now()->month;
+            $this->bulan = now()->month;
+            $this->tahun = now()->year;
 
-        $this->lock_presensi = $this->getLockPresensi($data->date);
+            $this->lock_presensi = $this->getLockPresensi($data->date);
 
-        $this->is_noscan = false;
-        $this->is_kosong = false;
+            $this->is_noscan = false;
+            $this->is_kosong = false;
+        } catch (\Exception $e) {
+            dd($data->karyawan_id);
+            return $e->getMessage();
+        }
     }
 
     public function delete_no_scan($id)
