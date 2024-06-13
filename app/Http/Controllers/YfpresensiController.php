@@ -702,13 +702,13 @@ class YfpresensiController extends Controller
 
             return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
         } else {
-            Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
+            // Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
             $missingUserId = null;
             foreach ($missingArray as $arr) {
                 $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
             }
             clear_locks();
-            return back()->with('error', 'Ada data ' . count($missingArray) . ' User ID yang tidak terdaftar di Database Karyawan (' . $missingUserId . ')');
+            return back()->with('error', 'Ada data ' . count($missingArray) . ' ID karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ')');
         }
     }
 }
