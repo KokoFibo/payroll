@@ -2,6 +2,11 @@
     {{-- Header --}}
     <div class="card mt-5 my-3">
         <div class="card-header" style="background-color: #466deb; color: white">
+            @if ($placement != '')
+                <div class='text-right'>
+                    <button wire:click='close' class='btn btn-sm btn-info'>Close Detail</button>
+                </div>
+            @endif
             <p class="text-center lg:text-2xl">{{ __('Placement Report') }} </p>
         </div>
         <div class="mt-3">
