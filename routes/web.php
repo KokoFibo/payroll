@@ -122,6 +122,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/userinformation', UserInformation::class);
         Route::get('/userregulation', UserRegulation::class);
 
+
+
+
         // Junior Admin
         Route::middleware(['JuniorAdmin'])->group(function () {
             Route::get('/dataapplicant', DataApplicant::class);
@@ -172,7 +175,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/salaryadjustment', SalaryAdjustment::class);
                 Route::get('/liburnasional', Liburnasionalwr::class);
                 Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
-                Route::get('permohonan-personnel', PermohonanPersonnel::class);
 
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
@@ -181,6 +183,9 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('upload/ter', [TerControler::class, 'upload']);
                     Route::get('ter', Terwr::class);
                     Route::get('gajibpjs', Gajibpjs::class);
+                    Route::get('permohonan-personnel', PermohonanPersonnel::class);
+
+
 
                     // KHUSUS Super Admin
                     Route::middleware(['SuperAdmin'])->group(function () {
@@ -256,6 +261,8 @@ Route::middleware(['auth'])->group(function () {
                 });
             });
         });
+        Route::get('permohonan-personnel', PermohonanPersonnel::class)->middleware('Requester');
+
 
         // PRESENSI
         // Route::get('/presensidelete', Deletepresensiwr::class)->name('presensidelete');
