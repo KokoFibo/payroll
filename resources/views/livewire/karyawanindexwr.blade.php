@@ -319,8 +319,11 @@
 
 
                                             @if (Auth::user()->role > 7)
-                                                <button wire:click="delete(`{{ $data->id }}`)"
+                                                {{-- <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"><i
+                                                        class="fa-solid fa-trash-can"></i></button> --}}
+                                                <button wire:click="deleteConfirmation(`{{ $data->id }}`)"
                                                     class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"><i
                                                         class="fa-solid fa-trash-can"></i></button>
                                             @endif
@@ -375,6 +378,27 @@
             </div>
         </div>
     </div>
+
+    @script
+        <script>
+            window.addEventListener("show-delete-confirmation", (event) => {
+                Swal.fire({
+                    title: "Yakin mau delete data?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>
 
 

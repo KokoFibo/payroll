@@ -90,10 +90,15 @@
                                                         <button class="btn btn-sm btn-warning"
                                                             wire:click='show({{ $d->id }})'>Show</button>
                                                     @endif
-                                                    <button class="btn btn-sm btn-danger"
+                                                    {{-- <button class="btn btn-sm btn-danger"
                                                         wire:confirm="Apakah yakin data applicant ini akan di delete?"
                                                         wire:key="{{ $d->id }}-delete"
-                                                        wire:click='delete({{ $d->id }})'>Delete</button>
+                                                        wire:click='delete({{ $d->id }})'>Delete</button> --}}
+
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:key="{{ $d->id }}-delete"
+                                                        wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
+
                                                     <button class="btn btn-sm btn-primary"
                                                         wire:click='edit({{ $d->id }})'>Rubah
                                                         Status</button>
@@ -207,4 +212,24 @@
             /* Remove any extra space below the image */
         }
     </style>
+    @script
+        <script>
+            window.addEventListener("show-delete-confirmation", (event) => {
+                Swal.fire({
+                    title: "Yakin mau delete data?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>

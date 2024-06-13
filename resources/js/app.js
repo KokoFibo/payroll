@@ -12,6 +12,14 @@ document.addEventListener("message", (event) => {
     });
 });
 
+// window.addEventListener("deleted", (event) => {
+//     Swal.fire({
+//         title: "Deleted!",
+//         text: "Data has been deleted.",
+//         icon: "success",
+//     });
+// });
+
 $(document).ready(function () {
     toastr.options = {
         progressBar: true,

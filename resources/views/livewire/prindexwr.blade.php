@@ -1,7 +1,7 @@
 <div>
 
     @section('title', 'Presensi Detail')
-    <h4 class="text-center text-bold pt-2">{{ __('Presensi Detail') }}</h4>
+    <h4 class="text-center text-bold pt-2 my-3">{{ __('Presensi Detail') }}</h4>
     <div class="d-flex flex-xl-row flex-column justify-content-xl-between gap-lg-0 gap-2 px-4">
         {{-- <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2"> --}}
         <div class="col-xl-4 col-12">

@@ -10,6 +10,8 @@ use Livewire\WithPagination;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\On;
+
 
 class DataApplicant extends Component
 {
@@ -18,8 +20,16 @@ class DataApplicant extends Component
 
     public $show_data, $show_table, $personal_data, $personal_files;
     public  $status, $editId = null;
+    public $delete_id;
 
 
+    public function deleteConfirmation($id)
+    {
+        $this->delete_id = $id;
+        $data = Applicantdata::find($id);
+
+        $this->dispatch('show-delete-confirmation', text: $data->nama);
+    }
 
 
     public function cancel()
@@ -125,10 +135,10 @@ class DataApplicant extends Component
 
 
 
-
-    public function delete($id)
+    #[On('delete-confirmed')]
+    public function delete()
     {
-
+        $id = $this->delete_id;
         $applicant_data = Applicantdata::find($id);
         $applicant_id = $applicant_data->applicant_id;
         $applicant_files = Applicantfile::where('id_karyawan', $applicant_id)->get();
@@ -140,7 +150,7 @@ class DataApplicant extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'Data telah di hapus',
+            title: 'Data telah di delete',
         );
     }
     public function show($id)
