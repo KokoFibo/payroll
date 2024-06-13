@@ -67,8 +67,6 @@ class Karyawanindexwr extends Component
     {
         $nama_file = "";
         switch ($this->search_placement) {
-
-
             case '1':
                 $nama_file = "pabrik_1_" . $this->search_department . "_" . $this->month . "_" . $this->year . ".xlsx";
                 break;

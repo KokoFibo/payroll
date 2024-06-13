@@ -37,14 +37,28 @@ class KaryawanReinstate extends Component
         $this->validate([
             'status_karyawan' => 'required'
         ]);
-        $data = Karyawan::find($this->id);
-        $user = User::where('username', $data->id_karyawan)->first();
-        $data->status_karyawan = $this->status_karyawan;
-        $data->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
-        $data->id_karyawan = getNextIdKaryawan();
-        $data->save();
-        $user->password = Hash::make(generatePassword($data->tanggal_lahir));
-        $user->username = $data->id_karyawan;
+
+        $data_lama =
+            Karyawan::find($this->id);
+        if (!$data_lama) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data Karyawan ' . $this->id . ' tidak ditemukan.',
+                position: 'center'
+            );
+            return;
+        }
+        $data_baru = $data_lama->replicate();
+        $data_baru->status_karyawan = $this->status_karyawan;
+        $data_baru->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
+        $new_id = getNextIdKaryawan();
+        $data_baru->id_karyawan = $new_id;
+        $data_baru->save();
+
+        $user = User::where('username', $data_lama->id_karyawan)->first();
+        $user->password = Hash::make(generatePassword($data_lama->tanggal_lahir));
+        $user->username = $new_id;
         $user->save();
 
         return redirect()->to('/karyawanindex');
@@ -57,8 +71,6 @@ class KaryawanReinstate extends Component
 
     public function render()
     {
-
-
         return view('livewire.karyawan-reinstate')
             ->layout('layouts.appeloe');
     }
