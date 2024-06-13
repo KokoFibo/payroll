@@ -266,6 +266,19 @@ class YfpresensiController extends Controller
 
     public function store(Request $request)
     {
+        // disini
+        $missingArray = [];
+        $missingArray = checkNonRegisterUser();
+        if ($missingArray != null) {
+            // Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
+            $missingUserId = null;
+            foreach ($missingArray as $arr) {
+                $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
+            }
+            clear_locks();
+            return back()->with('error', 'Ada ' . count($missingArray) . ' Id karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ') - Data Tidak di Upload');
+        }
+
 
         $lock = Lock::find(1);
         if ($lock->upload) {
@@ -693,22 +706,9 @@ class YfpresensiController extends Controller
             ]);
         }
 
+        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
 
         Yfpresensi::query()->truncate();
-        $missingArray = [];
-        $missingArray = checkNonRegisterUser();
         clear_locks();
-        if ($missingArray == null) {
-
-            return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
-        } else {
-            // Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
-            $missingUserId = null;
-            foreach ($missingArray as $arr) {
-                $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
-            }
-            clear_locks();
-            return back()->with('error', 'Ada data ' . count($missingArray) . ' ID karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ')');
-        }
     }
 }

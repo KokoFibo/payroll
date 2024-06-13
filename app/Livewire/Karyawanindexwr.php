@@ -45,7 +45,47 @@ class Karyawanindexwr extends Component
     public $search_gaji_pokok;
     public $search_gaji_overtime;
     public $is_tanggal_gajian;
+    public $delete_id;
+
+
     // public $departments, $companies, $etnises, $jabatans;
+
+    #[On('delete-confirmed')]
+    public function delete()
+    {
+        $id = $this->delete_id;
+        $Data_Karyawan = Karyawan::find($id);
+        $dataUser = User::where('username', $Data_Karyawan->id_karyawan)->first();
+        if ($dataUser->id) {
+            $user = User::find($dataUser->id);
+            $user->delete();
+            $Data_Karyawan->delete();
+
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Karyawan Sudah di delete',
+                position: 'center'
+            );
+        } else {
+            // $this->dispatch('info', message: 'Data Karyawan Sudah di Delete, User tidak terdelete');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data Karyawan Sudah di Delete, User tidak terdelete',
+                position: 'center'
+            );
+        }
+    }
+
+
+    public function deleteConfirmation($id)
+    {
+        $this->delete_id = $id;
+        $data = Karyawan::find($id);
+
+        $this->dispatch('show-delete-confirmation', text: $data->nama);
+    }
 
     public function updatedSearchTanggalBergabung()
     {
@@ -180,25 +220,17 @@ class Karyawanindexwr extends Component
 
 
 
-    // #[On('delete')]
-    public function delete($id)
-    {
 
-        $Data_Karyawan = Karyawan::find($id);
-        $dataUser = User::where('username', $Data_Karyawan->id_karyawan)->first();
-        if ($dataUser->id) {
-            $user = User::find($dataUser->id);
-            $user->delete();
-            $Data_Karyawan->delete();
-            $this->dispatch('success', message: 'Data Karyawan Sudah di delete');
-        } else {
-            $this->dispatch('info', message: 'Data Karyawan Sudah di Delete, User tidak terdelete');
-        }
-    }
 
     public function no_edit()
     {
-        $this->dispatch('error', message: 'Data Karyawan ini Tidak dapat di Update');
+        // $this->dispatch('error', message: 'Data Karyawan ini Tidak dapat di Update');
+        $this->dispatch(
+            'message',
+            type: 'error',
+            title: 'Data Karyawan ini Tidak dapat di Update',
+            position: 'center'
+        );
     }
 
     public function confirmDelete($id)
