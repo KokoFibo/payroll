@@ -171,11 +171,9 @@
                                         class=" fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                @if (auth()->user()->role == 8)
-                                    <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
-                                        <i class="fa-solid fa-sort"></i>
-                                    </th>
-                                @endif
+                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
