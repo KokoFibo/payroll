@@ -21,6 +21,10 @@ class Placementreport extends Component
         // $this->placement = 'YCME';
         $this->last_date = Yfrekappresensi::latest('date')->value('date');
     }
+    public function close()
+    {
+        $this->placement = '';
+    }
 
     public function doQuery()
     {
