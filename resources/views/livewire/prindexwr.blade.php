@@ -111,7 +111,7 @@
                                     class="{{ $item->karyawan->status_karyawan == 'Resigned' ? 'table-warning' : '' }}">
                                     <td>{{ $item->user_id }}</td>
                                     <td>{{ $item->karyawan->nama }}</td>
-                                    <td>{{ $item->karyawan->jabatan }}</td>
+                                    <td>{{ nama_jabatan($item->karyawan->jabatan_id) }}</td>
                                     <td>{{ $item->karyawan->metode_penggajian }}</td>
                                     <td>{{ $item->karyawan->status_karyawan }}</td>
                                     <td class="text-center">{{ $item->total_hari_kerja }}</td>

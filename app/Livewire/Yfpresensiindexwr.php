@@ -205,17 +205,17 @@ class Yfpresensiindexwr extends Component
                 $tambahan_shift_malam = 0;
                 if ($d->no_scan === null) {
                     $tgl = tgl_doang($d->date);
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     //evaluasi ini
-                    // if ($d->karyawan->jabatan === 'Satpam') {
+                    // if ($d->karyawan->jabatan_id === 17) {
                     //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
                     // }
                     // if ($d->user_id == '2610' && $d->date == '2024-03-31') {
                     //     dd($jam_kerja, $terlambat);
                     // }
 
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $d->karyawan->placement);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
                             + $langsungLembur * 2;
@@ -244,12 +244,12 @@ class Yfpresensiindexwr extends Component
                             }
                         }
                     }
-
-                    if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver')) {
+                    // 22 driver
+                    if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan_id != 22)) {
                         $jam_lembur = 0;
                     }
 
-                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan_id == 17) {
                         if (is_friday($d->date)) {
                             $jam_kerja = 7.5;
                         } elseif (is_saturday($d->date)) {
@@ -258,17 +258,17 @@ class Yfpresensiindexwr extends Component
                             $jam_kerja = 8;
                         }
                     }
-                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    if ($d->karyawan->jabatan_id == 17 && is_sunday($d->date)) {
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     }
-                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                    if ($d->karyawan->jabatan_id == 17 && is_saturday($d->date)) {
                         // $jam_lembur = 0;
                     }
-
-                    if ($d->karyawan->jabatan != 'Translator') {
+                    // 23 translator
+                    if ($d->karyawan->jabatan_id != 23) {
                         if (
                             is_libur_nasional($d->date) &&  !is_sunday($d->date)
-                            && $d->karyawan->jabatan != 'Translator'
+                            && $d->karyawan->jabatan_id != 23
 
                         ) {
                             $jam_kerja *= 2;
@@ -291,7 +291,7 @@ class Yfpresensiindexwr extends Component
 
 
 
-                    // elseif ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan == 'Translator') {
+                    // elseif ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan_id == 'Translator') {
                     //     $jam_kerja /= 2;
                     // }
 
@@ -559,7 +559,7 @@ class Yfpresensiindexwr extends Component
         // fil
 
         if ($this->is_noscan) {
-            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen', 'karyawans.jabatan.nama_jabatan'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->where('no_scan', 'No Scan')
                 ->paginate($this->perpage);
@@ -574,8 +574,9 @@ class Yfpresensiindexwr extends Component
                 ->whereNull('overtime_out')
                 ->paginate($this->perpage);
         } else {
-            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.jabatan_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+                ->join('jabatans', 'karyawans.jabatan_id', '=', 'jabatans.id')
                 // ->when($this->location == 'Pabrik 1', function ($query) {
                 //     return $query->where('placement', 'YCME');
                 // })
@@ -610,7 +611,8 @@ class Yfpresensiindexwr extends Component
                             ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('user_id', trim($this->search))
                             // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama_jabatan', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');

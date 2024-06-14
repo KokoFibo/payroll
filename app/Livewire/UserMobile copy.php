@@ -225,14 +225,14 @@ class UserMobile extends Component
 
                 $tgl = tgl_doang($d->date);
                 $tambahan_shift_malam = 0;
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
 
-                if ($d->karyawan->jabatan_id === 17) {
+                if ($d->karyawan->jabatan === 'Satpam') {
                     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
                 }
 
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
 
 
                 if (is_sunday($d->date)) {
@@ -260,11 +260,11 @@ class UserMobile extends Component
                         }
                     }
                 }
-                //22 driver
-                if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan_id != 22)) {
+
+                if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan != 'Driver')) {
                     $jam_lembur = 0;
                 }
-                if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan_id == 17) {
+                if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
                     if (is_friday($d->date)) {
                         $jam_kerja = 7.5;
                     } elseif (is_saturday($d->date)) {
@@ -273,10 +273,10 @@ class UserMobile extends Component
                         $jam_kerja = 8;
                     }
 
-                    if ($d->karyawan->jabatan_id == 17 && is_sunday($d->date)) {
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
                     }
-                    if ($d->karyawan->jabatan_id == 17 && is_saturday($d->date)) {
+                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
                         // $jam_lembur = 0;
                     }
                 }
@@ -287,11 +287,11 @@ class UserMobile extends Component
                 //     $jam_kerja = 0;
                 // }
 
-                //23 translator
-                if ($d->karyawan->jabatan_id != 23) {
+
+                if ($d->karyawan->jabatan != 'Translator') {
                     if (
                         is_libur_nasional($d->date) &&  !is_sunday($d->date)
-                        && $d->karyawan->jabatan_id != 23
+                        && $d->karyawan->jabatan != 'Translator'
 
                     ) {
                         $jam_kerja *= 2;

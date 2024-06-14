@@ -15,6 +15,11 @@ class Karyawan extends Model
     protected $guarded = [];
     protected static $recordEvents = ['updated', 'deleted'];
 
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
 

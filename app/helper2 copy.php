@@ -16,6 +16,8 @@ function build_payroll($month, $year)
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
     $endOfMonth = $startOfMonth->copy()->endOfMonth();
     $cx = 0;
+    $pass = true;
+
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
     // $jamKerjaKosong = Jamkerjaid::count();
@@ -36,9 +38,11 @@ function build_payroll($month, $year)
         ->orderBy('date', 'desc')
         ->first();
     //     delete jamkerjaid yg akan di build
-    Jamkerjaid::whereMonth('date', $month)
-        ->whereYear('date', $year)
-        ->delete();
+    if ($pass) {
+        Jamkerjaid::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->delete();
+    }
 
     // dd('ok1 sampai sini');
 
@@ -73,198 +77,198 @@ function build_payroll($month, $year)
 
     //     foreach ($filteredData as $data) {
     // proses ini yg lama1
-    foreach ($filterArray as $data) {
-        // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
+    if ($pass) {
+        foreach ($filterArray as $data) {
+            // $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian')
 
-        //     ->where('user_id', $data)
-        //     ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
-        //     ->orderBy('date', 'desc')
-        //     ->get();
+            //     ->where('user_id', $data)
+            //     ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
+            //     ->orderBy('date', 'desc')
+            //     ->get();
 
 
 
-        $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
-            ->where('user_id', $data)
-            ->where('date', '>=', $startOfMonth)
-            ->where('date', '<=', $endOfMonth)
-            ->orderBy('date', 'desc')
-            ->get();
+            $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
+                ->where('user_id', $data)
+                ->where('date', '>=', $startOfMonth)
+                ->where('date', '<=', $endOfMonth)
+                ->orderBy('date', 'desc')
+                ->get();
 
-        // ambil data per user id
-        $n_noscan = 0;
-        $total_hari_kerja = 0;
-        $total_jam_kerja = 0;
-        $total_jam_lembur = 0;
-        $langsungLembur = 0;
-        $tambahan_shift_malam = 0;
-        $total_keterlambatan = 0;
-        $total_tambahan_shift_malam = 0;
-        $jam_kerja_libur = 0;
-        //loop ini utk 1 user selama 22 hari
-        $get_placement = get_placement($dataId[0]->user_id);
-        foreach ($dataId as $d) {
-            if ($d->no_scan === null) {
-                $jam_lembur = 0;
-                $tambahan_shift_malam = 0;
-                $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $get_placement);
-
-                if (is_sunday($d->date)) {
-                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
-                        + $langsungLembur * 2;
-                } else {
-                    $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
-                }
-
-                if ($d->shift == 'Malam') {
-                    if (is_saturday($d->date)) {
-                        if ($jam_kerja >= 6) {
-                            $tambahan_shift_malam = 1;
-                        }
-                    } elseif (is_sunday($d->date)) {
-                        if ($jam_kerja >= 16) {
-                            // $jam_lembur = $jam_lembur + 2;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else {
-                        if ($jam_kerja >= 8) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
-                    }
-                }
-                if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+            // ambil data per user id
+            $n_noscan = 0;
+            $total_hari_kerja = 0;
+            $total_jam_kerja = 0;
+            $total_jam_lembur = 0;
+            $langsungLembur = 0;
+            $tambahan_shift_malam = 0;
+            $total_keterlambatan = 0;
+            $total_tambahan_shift_malam = 0;
+            $jam_kerja_libur = 0;
+            //loop ini utk 1 user selama 22 hari
+            $get_placement = get_placement($dataId[0]->user_id);
+            foreach ($dataId as $d) {
+                if ($d->no_scan === null) {
                     $jam_lembur = 0;
-                }
-
-                if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                    if (is_friday($d->date)) {
-                        $jam_kerja = 7.5;
-                    } elseif (is_saturday($d->date)) {
-                        $jam_kerja = 6;
-                    } else {
-                        $jam_kerja = 8;
-                    }
-                }
-
-                if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                    $tambahan_shift_malam = 0;
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                }
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $get_placement);
 
-                if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                    // $jam_lembur = 0;
-                }
-
-
-
-                // Jika hari libur nasional
-
-                if ($d->karyawan->jabatan != 'Translator') {
-                    if (
-                        is_libur_nasional($d->date) &&  !is_sunday($d->date)
-
-                    ) {
-                        $jam_kerja *= 2;
-                        $jam_lembur *= 2;
-                    }
-                } else {
                     if (is_sunday($d->date)) {
-                        $jam_kerja /= 2;
-                        $jam_lembur /= 2;
+                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
+                            + $langsungLembur * 2;
+                    } else {
+                        $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                     }
+
+                    if ($d->shift == 'Malam') {
+                        if (is_saturday($d->date)) {
+                            if ($jam_kerja >= 6) {
+                                $tambahan_shift_malam = 1;
+                            }
+                        } elseif (is_sunday($d->date)) {
+                            if ($jam_kerja >= 16) {
+                                // $jam_lembur = $jam_lembur + 2;
+                                $tambahan_shift_malam = 1;
+                            }
+                        } else {
+                            if ($jam_kerja >= 8) {
+                                // $jam_lembur = $jam_lembur + 1;
+                                $tambahan_shift_malam = 1;
+                            }
+                        }
+                    }
+                    if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+                        $jam_lembur = 0;
+                    }
+
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                        if (is_friday($d->date)) {
+                            $jam_kerja = 7.5;
+                        } elseif (is_saturday($d->date)) {
+                            $jam_kerja = 6;
+                        } else {
+                            $jam_kerja = 8;
+                        }
+                    }
+
+                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
+                    }
+
+                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                        // $jam_lembur = 0;
+                    }
+
+
+
+                    // Jika hari libur nasional
+
+                    if ($d->karyawan->jabatan != 'Translator') {
+                        if (
+                            is_libur_nasional($d->date) &&  !is_sunday($d->date)
+
+                        ) {
+                            $jam_kerja *= 2;
+                            $jam_lembur *= 2;
+                        }
+                    } else {
+                        if (is_sunday($d->date)) {
+                            $jam_kerja /= 2;
+                            $jam_lembur /= 2;
+                        }
+                    }
+
+                    // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
+                    // $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                    // if ($rule1) {
+                    //     $jam_kerja /= 2;
+                    //     $jam_lembur /= 2;
+                    // }
+
+
+                    $total_hari_kerja++;
+
+                    if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                        $total_hari_kerja--;
+                        $jam_kerja_libur += $jam_kerja;
+                    }
+
+
+                    $total_jam_kerja = $total_jam_kerja + $jam_kerja;
+                    $total_jam_lembur = $total_jam_lembur + $jam_lembur;
+                    $total_keterlambatan = $total_keterlambatan + $terlambat;
+                    $total_tambahan_shift_malam = $total_tambahan_shift_malam + $tambahan_shift_malam;
                 }
-
-                // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
-                // $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
-                // if ($rule1) {
-                //     $jam_kerja /= 2;
-                //     $jam_lembur /= 2;
-                // }
-
-
-                $total_hari_kerja++;
-
-                if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                    $total_hari_kerja--;
-                    $jam_kerja_libur += $jam_kerja;
+                if ($d->no_scan_history != null) {
+                    $n_noscan = $n_noscan + 1;
                 }
-
-
-                $total_jam_kerja = $total_jam_kerja + $jam_kerja;
-                $total_jam_lembur = $total_jam_lembur + $jam_lembur;
-                $total_keterlambatan = $total_keterlambatan + $terlambat;
-                $total_tambahan_shift_malam = $total_tambahan_shift_malam + $tambahan_shift_malam;
             }
-            if ($d->no_scan_history != null) {
-                $n_noscan = $n_noscan + 1;
+            if ($n_noscan == 0) {
+                $n_noscan = null;
             }
+
+
+
+
+            // $blacklist_condition = $d->karyawan && $d->karyawan->status_karyawan != 'Blacklist'
+            //     || Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month;
+
+
+
+
+
+
+
+
+
+
+            if ($d->karyawan->status_karyawan != 'Blacklist') {
+                $dataArr[] = [
+                    'user_id' => $data,
+                    'total_hari_kerja' => $total_hari_kerja,
+                    'jumlah_jam_kerja' => $total_jam_kerja,
+                    'jumlah_menit_lembur' => $total_jam_lembur,
+                    'jumlah_jam_terlambat' => $total_keterlambatan,
+                    'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
+                    'jam_kerja_libur' => $jam_kerja_libur,
+
+
+                    'total_noscan' => $n_noscan,
+                    'karyawan_id' => $d->karyawan->id,
+                    'date' => buatTanggal($d->date),
+                    'last_data_date' => $last_data_date->date,
+                    'created_at' => now()->toDateTimeString(),
+                    'updated_at' => now()->toDateTimeString(),
+                ];
+            }
+            // else if (Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month) {
+            //     $dataArr[] = [
+            //         'user_id' => $data,
+            //         'total_hari_kerja' => $total_hari_kerja,
+            //         'jumlah_jam_kerja' => $total_jam_kerja,
+            //         'jumlah_menit_lembur' => $total_jam_lembur,
+            //         'jumlah_jam_terlambat' => $total_keterlambatan,
+            //         'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
+            //         'jam_kerja_libur' => $jam_kerja_libur,
+
+
+            //         'total_noscan' => $n_noscan,
+            //         'karyawan_id' => $d->karyawan->id,
+            //         'date' => buatTanggal($d->date),
+            //         'last_data_date' => $last_data_date->date,
+            //         'created_at' => now()->toDateTimeString(),
+            //         'updated_at' => now()->toDateTimeString(),
+            //     ];
+            // }
         }
-        if ($n_noscan == 0) {
-            $n_noscan = null;
+
+        // dd('sini');
+        $chunks = array_chunk($dataArr, 100);
+        foreach ($chunks as $chunk) {
+            Jamkerjaid::insert($chunk);
         }
-
-
-
-
-        // $blacklist_condition = $d->karyawan && $d->karyawan->status_karyawan != 'Blacklist'
-        //     || Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month;
-
-
-
-
-
-
-
-
-
-
-        if ($d->karyawan->status_karyawan != 'Blacklist') {
-            $dataArr[] = [
-                'user_id' => $data,
-                'total_hari_kerja' => $total_hari_kerja,
-                'jumlah_jam_kerja' => $total_jam_kerja,
-                'jumlah_menit_lembur' => $total_jam_lembur,
-                'jumlah_jam_terlambat' => $total_keterlambatan,
-                'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
-                'jam_kerja_libur' => $jam_kerja_libur,
-
-
-                'total_noscan' => $n_noscan,
-                'karyawan_id' => $d->karyawan->id,
-                'date' => buatTanggal($d->date),
-                'last_data_date' => $last_data_date->date,
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
-            ];
-        }
-        // else if (Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month) {
-        //     $dataArr[] = [
-        //         'user_id' => $data,
-        //         'total_hari_kerja' => $total_hari_kerja,
-        //         'jumlah_jam_kerja' => $total_jam_kerja,
-        //         'jumlah_menit_lembur' => $total_jam_lembur,
-        //         'jumlah_jam_terlambat' => $total_keterlambatan,
-        //         'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
-        //         'jam_kerja_libur' => $jam_kerja_libur,
-
-
-        //         'total_noscan' => $n_noscan,
-        //         'karyawan_id' => $d->karyawan->id,
-        //         'date' => buatTanggal($d->date),
-        //         'last_data_date' => $last_data_date->date,
-        //         'created_at' => now()->toDateTimeString(),
-        //         'updated_at' => now()->toDateTimeString(),
-        //     ];
-        // }
-    }
-    // dd('sini');
-
-
-
-    $chunks = array_chunk($dataArr, 100);
-    foreach ($chunks as $chunk) {
-        Jamkerjaid::insert($chunk);
     }
 
 
@@ -293,10 +297,10 @@ function build_payroll($month, $year)
         //   hitung BPJS
 
         if ($data->karyawan->potongan_JP == 1) {
-            if ($data->karyawan->gaji_bpjs <= 9559600) {
+            if ($data->karyawan->gaji_bpjs <= 10042300) {
                 $jp = $data->karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 9559600 * 0.01;
+                $jp = 10042300 * 0.01;
             }
         } else {
             $jp = 0;
@@ -375,7 +379,8 @@ function build_payroll($month, $year)
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
         $manfaat_libur = 0;
-        $beginning_date = new DateTime("$year-$month-01");
+        // $beginning_date = new DateTime("$year-$month-01");
+        $beginning_date = buat_tanggal($month, $year);
         // hehehe
         if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
             $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
@@ -383,6 +388,8 @@ function build_payroll($month, $year)
             $manfaat_libur = $libur->count();
             $cx++;
         }
+
+
 
 
         // $status_resign = ($data->karyawan->status_karyawan == 'Resigned') && (check_resigned_validity($month, $year, $data->karyawan->tanggal_resigned));
@@ -401,9 +408,7 @@ function build_payroll($month, $year)
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
 
-        // if ($data->user_id == 1026) {
-        //     dd($manfaat_libur, $data->karyawan->status);
-        // }
+
 
         if (trim($data->karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
@@ -496,6 +501,7 @@ function build_payroll($month, $year)
             'gaji_pokok' => $data->karyawan->gaji_pokok,
             'gaji_lembur' => $data->karyawan->gaji_overtime,
             'gaji_bpjs' => $data->karyawan->gaji_bpjs,
+            'ptkp' => $data->karyawan->ptkp,
             // oll
             'libur_nasional' => $libur_nasional,
 
@@ -665,10 +671,10 @@ function build_payroll($month, $year)
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
         if ($data_karyawan->potongan_JP == 1) {
-            if ($data_karyawan->gaji_bpjs <= 9559600) {
+            if ($data_karyawan->gaji_bpjs <= 10042300) {
                 $jp = $data_karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 9559600 * 0.01;
+                $jp = 10042300 * 0.01;
             }
         } else {
             $jp = 0;
@@ -702,6 +708,7 @@ function build_payroll($month, $year)
             $data->nama_bank = $data_karyawan->nama_bank;
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
+            $data->ptkp = $data_karyawan->ptkp;
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';
@@ -723,6 +730,7 @@ function build_payroll($month, $year)
             $data->nama_bank = $data_karyawan->nama_bank;
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
+            $data->ptkp = $data_karyawan->ptkp;
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';

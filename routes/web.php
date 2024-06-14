@@ -66,6 +66,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Http\Controllers\TerControler;
+use App\Livewire\ChangeField;
 use App\Livewire\Gajibpjs;
 use App\Livewire\KaryawanReinstate;
 use App\Livewire\Terwr;
@@ -243,6 +244,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/developer-dashboard', DeveloperDashboard::class);
                             Route::get('/jabatan', Jabatanwr::class);
                             Route::get('/data-log', DataLog::class)->name('datalog');
+                            Route::get('/changefield', ChangeField::class)->name('changefield');
 
 
 
