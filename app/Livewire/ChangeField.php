@@ -85,6 +85,9 @@ class ChangeField extends Component
                 case 'Senior SPV':
                     $jabatan = '24';
                     break;
+                default:
+                    $jabatan = '';
+                    break;
             }
             $d->jabatan = $jabatan;
             $d->save();

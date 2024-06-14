@@ -335,7 +335,7 @@
                                     <td class="text-center">{{ $data->placement }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
                                     <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
-                                    <td class="text-center">{{ $data->etnis }}</td>
+                                    <td class="text-center">{{ $data->etnis }}</td>s
                                     @if (Auth::user()->role > 6)
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
