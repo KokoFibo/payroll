@@ -20,9 +20,16 @@ class DataApplicant extends Component
 
     public $show_data, $show_table, $personal_data, $personal_files;
     public  $status, $editId = null;
-    public $delete_id;
+    public $delete_id, $terima_id;
 
 
+    public function terimaConfirmation($id)
+    {
+        $this->terima_id = $id;
+        $data = Applicantdata::find($id);
+
+        $this->dispatch('show-terima-confirmation', text: $data->nama);
+    }
     public function deleteConfirmation($id)
     {
         $this->delete_id = $id;
@@ -42,9 +49,11 @@ class DataApplicant extends Component
     {
         $data = Applicantdata::find($this->editId);
         $data->status = $this->status;
-        $data->save();
+        // $data->save();
         if ($this->status == 8) {
-            $this->diterima($this->editId);
+            // $this->diterima();
+            // dispatch terima confirmation
+            $this->terimaConfirmation($this->editId);
         } else {
             // $this->dispatch('success', message: 'Status sudah berhasil di rubah');
             $data->save();
@@ -63,10 +72,11 @@ class DataApplicant extends Component
         $data = Applicantdata::find($this->editId);
         $this->status = $data->status;
     }
-
-    public function diterima($id)
+    #[On('terima-confirmed')]
+    public function diterima()
     {
-
+        // dd($this->terima_id);
+        $id = $this->terima_id;
         $dataApplicant = Applicantdata::find($id);
         $dataKaryawan = Karyawan::where('id_file_karyawan', $dataApplicant->applicant_id)->first();
         if ($dataKaryawan != null) {
@@ -144,7 +154,7 @@ class DataApplicant extends Component
 
 
             // hapus data applicant
-            // $dataApplicant->delete();
+            $dataApplicant->delete();
             // $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
             $this->dispatch(
                 'message',

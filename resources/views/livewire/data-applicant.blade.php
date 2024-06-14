@@ -73,9 +73,11 @@
                                                 @if ($editId === $d->id)
                                                     @if ($status == 8)
                                                         <button class="btn btn-sm btn-primary"
+                                                            wire:click='save'>Simpan</button>
+                                                        {{-- <button class="btn btn-sm btn-primary"
                                                             wire:confirm="Jika status diterima, maka data akan dipindahkan ke database karyawan, setuju?"
                                                             wire:key="{{ $d->id }}-save"
-                                                            wire:click='save'>Simpan</button>
+                                                            wire:click='save'>Simpan</button> --}}
                                                     @else
                                                         <button class="btn btn-sm btn-primary "
                                                             wire:click='save'>Simpan</button>
@@ -227,6 +229,22 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+            window.addEventListener("show-terima-confirmation", (event) => {
+                Swal.fire({
+                    title: "Pelamar ini akan diterima?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, terima",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("terima-confirmed");
                     }
                 });
             });
