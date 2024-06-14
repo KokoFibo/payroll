@@ -180,6 +180,12 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role > 7)
+                <li class="nav-item {{ 'applicantditerima' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/applicantditerima" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Applicant diterima') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'changefield' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/changefield" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>

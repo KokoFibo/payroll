@@ -16,6 +16,26 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function check_id_file_karyawan($id_file_karyawan)
+{
+    $data = Karyawan::where('id_file_karyawan', $id_file_karyawan)->first();
+    if ($data != null) return $id_file_karyawan;
+    else return 'false';
+}
+
+function check_di_user($email)
+{
+    $data = User::where('email', trim($email, ' '))->first();
+    if ($data != null) return $data->username;
+    else return '';
+}
+function check_di_karyawan($email)
+{
+    $data = Karyawan::where('email', trim($email, ' '))->first();
+    if ($data != null) return $data->id_karyawan;
+    else return false;
+}
+
 function nama_jabatan($id)
 {
     if ($id != null) {

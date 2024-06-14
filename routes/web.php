@@ -66,6 +66,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Http\Controllers\TerControler;
+use App\Livewire\ApplicantDiterima;
 use App\Livewire\ChangeField;
 use App\Livewire\Gajibpjs;
 use App\Livewire\KaryawanReinstate;
@@ -245,6 +246,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/jabatan', Jabatanwr::class);
                             Route::get('/data-log', DataLog::class)->name('datalog');
                             Route::get('/changefield', ChangeField::class)->name('changefield');
+                            Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
 
 
 
