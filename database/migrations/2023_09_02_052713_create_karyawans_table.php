@@ -36,7 +36,9 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('placement')->nullable();
             $table->string('departemen')->nullable();
-            $table->string('jabatan')->nullable();
+            // $table->string('jabatan')->nullable();
+            $table->foreignId('jabatan_id')->nullable();
+
             $table->string('level_jabatan')->nullable();
             $table->string('nama_bank')->nullable();
             $table->string('nomor_rekening')->nullable();

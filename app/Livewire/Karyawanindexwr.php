@@ -339,7 +339,7 @@ class Karyawanindexwr extends Component
 
                     ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('etnis', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
@@ -408,7 +408,7 @@ class Karyawanindexwr extends Component
                 $query->where('company', trim($this->search_company));
             })
             ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan', trim($this->search_jabatan));
+                $query->where('jabatan_id', trim($this->search_jabatan));
             })
             ->pluck('departemen')->unique();
 
@@ -430,7 +430,7 @@ class Karyawanindexwr extends Component
                 $query->where('departemen', trim($this->search_department));
             })
             ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan', trim($this->search_jabatan));
+                $query->where('jabatan_id', trim($this->search_jabatan));
             })
             ->pluck('company')->unique();
 
@@ -450,7 +450,7 @@ class Karyawanindexwr extends Component
             ->when($this->search_company, function ($query) {
                 $query->where('company', trim($this->search_company));
             })
-            ->pluck('jabatan')->unique();
+            ->pluck('jabatan_id')->unique();
 
         $etnises = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
@@ -469,7 +469,7 @@ class Karyawanindexwr extends Component
                 $query->where('company', trim($this->search_company));
             })
             ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan', trim($this->search_jabatan));
+                $query->where('jabatan_id', trim($this->search_jabatan));
             })
             ->pluck('etnis')
             ->unique()
@@ -513,7 +513,7 @@ class Karyawanindexwr extends Component
                 }
             })
             ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan', $this->search_jabatan);
+                $query->where('jabatan_id', $this->search_jabatan);
             })
             ->when($this->search_etnis, function ($query) {
                 if ($this->search_etnis == 'kosong') {

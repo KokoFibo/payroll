@@ -34,5 +34,6 @@
                 </td>
             @endforeach
         </table>
+        {{ $activity->links() }}
     </div>
 </div>

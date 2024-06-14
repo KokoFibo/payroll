@@ -152,6 +152,13 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Jabatan') }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('jabatan') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="jabatan_id">
+                                <option value=" ">{{ __('Pilih jabatan') }}</option>
+                                @foreach ($pilih_jabatan as $key => $nj)
+                                    <option value="{{ $nj->id }}">{{ $nj->nama_jabatan }}</option>
+                                @endforeach
+                            </select>
+                            {{-- <select class="form-select @error('jabatan') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="jabatan">
                                 <option value=" ">{{ __('Pilih jabatan') }}</option>
                                 <option value="Admin">{{ __('') }}Admin</option>
@@ -179,7 +186,7 @@
                                 <option value="Translator">Translator</option>
                                 <option value="Senior SPV">Senior SPV</option>
 
-                            </select>
+                            </select> --}}
                             @error('jabatan')
                                 <div class="invalid-feedback">
                                     {{ $message }}

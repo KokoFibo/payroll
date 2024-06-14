@@ -188,7 +188,7 @@
                                             aria-label="Default select example">
                                             <option value="">{{ __('Jabatan') }}</option>
                                             @foreach ($jabatans as $j)
-                                                <option value="{{ $j }}">{{ $j }}</option>
+                                                <option value="{{ $j }}">{{ nama_jabatan($j) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -334,7 +334,7 @@
                                     <td class="text-center">{{ $data->company }}</td>
                                     <td class="text-center">{{ $data->placement }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
-                                    <td class="text-center">{{ $data->jabatan }}</td>
+                                    <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
                                     <td class="text-center">{{ $data->etnis }}</td>
                                     @if (Auth::user()->role > 6)
                                         <td class="text-center">{{ $data->level_jabatan }}</td>

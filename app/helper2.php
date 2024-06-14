@@ -88,7 +88,7 @@ function build_payroll($month, $year)
 
 
 
-            $dataId = Yfrekappresensi::with('karyawan:id,jabatan,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
+            $dataId = Yfrekappresensi::with('karyawan:id,jabatan_id,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
                 ->where('user_id', $data)
                 ->where('date', '>=', $startOfMonth)
                 ->where('date', '<=', $endOfMonth)
@@ -111,9 +111,9 @@ function build_payroll($month, $year)
                 if ($d->no_scan === null) {
                     $jam_lembur = 0;
                     $tambahan_shift_malam = 0;
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, $get_placement);
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, $get_placement);
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, $get_placement);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $get_placement);
 
                     if (is_sunday($d->date)) {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
@@ -139,11 +139,11 @@ function build_payroll($month, $year)
                             }
                         }
                     }
-                    if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan != 'Driver') {
+                    if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan_id != 22) {
                         $jam_lembur = 0;
                     }
 
-                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan_id == 17) {
                         if (is_friday($d->date)) {
                             $jam_kerja = 7.5;
                         } elseif (is_saturday($d->date)) {
@@ -153,19 +153,19 @@ function build_payroll($month, $year)
                         }
                     }
 
-                    if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, $get_placement);
+                    if ($d->karyawan->jabatan_id == 17 && is_sunday($d->date)) {
+                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, $get_placement);
                     }
 
-                    if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
+                    if ($d->karyawan->jabatan_id == 17 && is_saturday($d->date)) {
                         // $jam_lembur = 0;
                     }
 
 
 
                     // Jika hari libur nasional
-
-                    if ($d->karyawan->jabatan != 'Translator') {
+                    // 23 = translator
+                    if ($d->karyawan->jabatan_id != 23) {
                         if (
                             is_libur_nasional($d->date) &&  !is_sunday($d->date)
 
@@ -421,7 +421,7 @@ function build_payroll($month, $year)
         // }
 
         $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_overtime;
-        if ($data->karyawan->jabatan == 'Satpam') {
+        if ($data->karyawan->jabatan_id == 17) {
             $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_shift_malam_satpam;
         }
 
@@ -440,7 +440,7 @@ function build_payroll($month, $year)
         //     'jamkerjaid_id' => $data->id,
         //     'nama' => $data->karyawan->nama,
         //     'id_karyawan' => $data->karyawan->id_karyawan,
-        //     'jabatan' => $data->karyawan->jabatan,
+        //     'jabatan' => $data->karyawan->jabatan_id,
         //     'company' => $data->karyawan->company,
         //     'placement' => $data->karyawan->placement,
         //     'departemen' => $data->karyawan->departemen,
@@ -490,7 +490,8 @@ function build_payroll($month, $year)
             'jamkerjaid_id' => $data->id,
             'nama' => $data->karyawan->nama,
             'id_karyawan' => $data->karyawan->id_karyawan,
-            'jabatan' => $data->karyawan->jabatan,
+            // 'jabatan' => $data->karyawan->jabatan_id,
+            'jabatan' => nama_jabatan($data->karyawan->jabatan_id),
             'company' => $data->karyawan->company,
             'placement' => $data->karyawan->placement,
             'departemen' => $data->karyawan->departemen,
@@ -699,7 +700,7 @@ function build_payroll($month, $year)
             $data->kesehatan = $kesehatan;
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = $data_karyawan->jabatan;
+            $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
             $data->company = $data_karyawan->company;
             $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;
@@ -721,7 +722,8 @@ function build_payroll($month, $year)
             $data->kesehatan = $kesehatan;
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = $data_karyawan->jabatan;
+            $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
+
             $data->company = $data_karyawan->company;
             $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;

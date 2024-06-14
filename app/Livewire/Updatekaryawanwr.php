@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\Attributes\On;
@@ -25,7 +26,7 @@ class Updatekaryawanwr extends Component
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company, $placement,  $departemen, $jabatan, $level_jabatan, $nama_bank, $nomor_rekening;
+    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company, $placement,  $departemen, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update;
@@ -36,6 +37,8 @@ class Updatekaryawanwr extends Component
     public $files = [];
     public $filenames = [];
     public $is_update;
+    public $pilih_jabatan;
+
 
     public function updatedFiles()
     {
@@ -106,6 +109,8 @@ class Updatekaryawanwr extends Component
 
     public function mount($id)
     {
+        $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
+
         $this->is_update = true;
         $this->show_arsip = false;
         $this->status_off = false;
@@ -146,7 +151,7 @@ class Updatekaryawanwr extends Component
         $this->company = trim($data->company);
         $this->placement = trim($data->placement);
         $this->departemen = trim($data->departemen);
-        $this->jabatan = trim($data->jabatan);
+        $this->jabatan_id = trim($data->jabatan_id);
         $this->level_jabatan = trim($data->level_jabatan);
         $this->nama_bank = trim($data->nama_bank);
         $this->nomor_rekening = $data->nomor_rekening;
@@ -217,7 +222,7 @@ class Updatekaryawanwr extends Component
             'company' => 'required',
             'placement' => 'required',
             'departemen' => 'required',
-            'jabatan' => 'required',
+            'jabatan_id' => 'required',
             'level_jabatan' => 'nullable',
             'nama_bank' => 'nullable',
             'nomor_rekening' => 'nullable',
@@ -388,7 +393,7 @@ class Updatekaryawanwr extends Component
         $data->company = $this->company;
         $data->placement = $this->placement;
         $data->departemen = $this->departemen;
-        $data->jabatan = $this->jabatan;
+        $data->jabatan_id = $this->jabatan_id;
         $data->level_jabatan = $this->level_jabatan;
         $data->nama_bank = $this->nama_bank;
         $data->nomor_rekening = $this->nomor_rekening;
@@ -492,7 +497,7 @@ class Updatekaryawanwr extends Component
             $this->files = [];
             // $this->dispatch('success', message: 'Data berhasil di update');
         }
-        get_data_karyawan();
+        // get_data_karyawan();
     }
 
 

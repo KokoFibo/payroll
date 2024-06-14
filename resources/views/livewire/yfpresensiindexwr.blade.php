@@ -177,7 +177,7 @@
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
+                                <th wire:click="sortColumnName('jabatan_id')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
@@ -259,7 +259,7 @@
 
                                         <td>{{ $data->karyawan->metode_penggajian }}</td>
                                         <td>{{ $data->karyawan->placement }}</td>
-                                        <td>{{ $data->karyawan->jabatan }}</td>
+                                        <td>{{ $data->karyawan->jabatan->nama_jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
                                         <td x-show="!edit"
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date, $data->karyawan->placement) ? 'text-danger' : '' }}">
@@ -276,7 +276,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit"
-                                            @if (is_jabatan_khusus($data->karyawan->jabatan) == 0) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->karyawan->jabatan_id) == 0) class="{{ checkFirstOutLate($data->first_out, $data->shift, $data->date, $data->karyawan->jabatan_id, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->first_out) }} </td>
                                         <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('first_out') is-invalid @enderror"
@@ -289,7 +289,7 @@
 
                                         </td>
                                         <td x-show="!edit"
-                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date, $data->karyawan->jabatan, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondInLate($data->second_in, $data->shift, $data->first_out, $data->date, $data->karyawan->jabatan_id, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_in) }} </td>
                                         <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('second_in') is-invalid @enderror"
@@ -301,7 +301,7 @@
                                             @enderror
                                         </td>
                                         <td x-show="!edit"
-                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date, $data->karyawan->jabatan, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
+                                            @if (is_jabatan_khusus($data->user_id) == 0) class="{{ checkSecondOutLate($data->second_out, $data->shift, $data->date, $data->karyawan->jabatan_id, $data->karyawan->placement) ? 'text-danger' : '' }}" @endif>
                                             {{ format_jam($data->second_out) }} </td>
                                         <td x-show="edit"><input style="width:100px; background-color: #ffeeba;"
                                                 class="form-control @error('second_out') is-invalid @enderror"

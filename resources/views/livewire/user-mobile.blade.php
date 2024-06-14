@@ -457,7 +457,7 @@
                                                                 $d->late,
                                                                 $d->shift,
                                                                 $d->date,
-                                                                $d->karyawan->jabatan,
+                                                                $d->karyawan->jabatan_id,
                                                                 get_placement($d->user_id),
                                                             );
                                                             $terlambat = late_check_jam_kerja_only(
@@ -467,11 +467,11 @@
                                                                 $d->second_out,
                                                                 $d->shift,
                                                                 $d->date,
-                                                                $d->karyawan->jabatan,
+                                                                $d->karyawan->jabatan_id,
                                                                 get_placement($d->user_id),
                                                             );
 
-                                                            if ($d->karyawan->jabatan === 'Satpam') {
+                                                            if ($d->karyawan->jabatan_id === 17) {
                                                                 $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
                                                             }
 
@@ -479,7 +479,7 @@
                                                                 $d->second_out,
                                                                 $d->date,
                                                                 $d->shift,
-                                                                $d->karyawan->jabatan,
+                                                                $d->karyawan->jabatan_id,
                                                                 get_placement($d->user_id),
                                                             );
 
@@ -519,14 +519,14 @@
                                                             if (
                                                                 $jam_lembur >= 9 &&
                                                                 is_sunday($d->date) == false &&
-                                                                $d->karyawan->jabatan != 'Driver'
+                                                                $d->karyawan->jabatan_id != 22
                                                             ) {
                                                                 $jam_lembur = 0;
                                                             }
                                                             if (
                                                                 $d->karyawan->placement == 'YIG' ||
                                                                 $d->karyawan->placement == 'YSM' ||
-                                                                $d->karyawan->jabatan == 'Satpam'
+                                                                $d->karyawan->jabatan_id == 17
                                                             ) {
                                                                 if (is_friday($d->date)) {
                                                                     $jam_kerja = 7.5;
@@ -537,10 +537,7 @@
                                                                 }
                                                             }
 
-                                                            if (
-                                                                $d->karyawan->jabatan == 'Satpam' &&
-                                                                is_sunday($d->date)
-                                                            ) {
+                                                            if ($d->karyawan->jabatan_id == 17 && is_sunday($d->date)) {
                                                                 $jam_kerja = hitung_jam_kerja(
                                                                     $d->first_in,
                                                                     $d->first_out,
@@ -549,13 +546,13 @@
                                                                     $d->late,
                                                                     $d->shift,
                                                                     $d->date,
-                                                                    $d->karyawan->jabatan,
+                                                                    $d->karyawan->jabatan_id,
                                                                     get_placement($d->user_id),
                                                                 );
                                                             }
 
                                                             if (
-                                                                $d->karyawan->jabatan == 'Satpam' &&
+                                                                $d->karyawan->jabatan_id == 17 &&
                                                                 is_saturday($d->date)
                                                             ) {
                                                                 $jam_lembur = 0;
@@ -570,11 +567,12 @@
                                                             // }
 
                                                             // Jika hari libur nasional
-                                                            if ($d->karyawan->jabatan != 'Translator') {
+                                                            // 23 translator
+                                                            if ($d->karyawan->jabatan_id != 23) {
                                                                 if (
                                                                     is_libur_nasional($d->date) &&
                                                                     !is_sunday($d->date) &&
-                                                                    $d->karyawan->jabatan != 'Translator'
+                                                                    $d->karyawan->jabatan_id != 23
                                                                 ) {
                                                                     $jam_kerja *= 2;
                                                                     $jam_lembur *= 2;
@@ -610,7 +608,7 @@
                                                 <td class="text-center">
                                                     <p class="text-gray-500 text-sm">{{ __('Terlambat') }}</p>
                                                     <p class="font-bold text-blue-500">
-                                                        {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id)) }}
+                                                        {{ late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id)) }}
                                                     </p>
                                                 </td>
                                                 <td class="text-center">

@@ -167,7 +167,7 @@
                                         {{-- <th>{{ __('id') }}</th> --}}
                                         <th wire:click="sortColumnName('user_id')">{{ __('ID Karyawan') }}</th>
                                         <th wire:click="sortColumnName('nama')">{{ __('Nama Karyawan') }}</th>
-                                        <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }}</th>
+                                        <th wire:click="sortColumnName('jabatan_id')">{{ __('Jabatan') }}</th>
                                         <th wire:click="sortColumnName('tanggal')">{{ __('Tanggal') }}</th>
                                         <th wire:click="sortColumnName('uang_makan')">{{ __('Uang Makan') }}</th>
                                         <th wire:click="sortColumnName('bonus_lain')">{{ __('Bonus Lain') }}</th>
@@ -205,7 +205,7 @@
                                             {{-- <td>{{ $d->id }}</td> --}}
                                             <td>{{ $d->user_id }}</td>
                                             <td>{{ $d->karyawan->nama }}</td>
-                                            <td>{{ $d->karyawan->jabatan }}</td>
+                                            <td>{{ $d->karyawan->jabatan->nama_jabatan }}</td>
                                             <td>{{ format_tgl($d->tanggal) }}</td>
                                             <td class="text-end">{{ number_format($d->uang_makan) }}</td>
                                             <td class="text-end">{{ number_format($d->bonus_lain) }}</td>

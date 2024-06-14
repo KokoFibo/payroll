@@ -18,7 +18,7 @@ class Tambahanwr extends Component
     public $tanggal, $uang_makan, $bonus_lain, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
     public $year, $month;
-    public $columnName = 'id_karyawan';
+    public $columnName = 'tanggal';
     public $direction = 'desc';
     public $select_month, $select_year;
 
@@ -238,7 +238,7 @@ class Tambahanwr extends Component
         //     ->startOfMonth()
         //     ->subMonth(1);
         // $month_end = Carbon::now()->endOfMonth();
-        $data = Bonuspotongan::select(['bonuspotongans.*', 'karyawans.nama', 'karyawans.jabatan'])
+        $data = Bonuspotongan::select(['bonuspotongans.*', 'karyawans.nama', 'karyawans.jabatan_id'])
             ->join('karyawans', 'bonuspotongans.karyawan_id', '=', 'karyawans.id')
             // ->whereBetween('bonuspotongans.tanggal', [$month_start, $month_end])
             ->whereMonth('bonuspotongans.tanggal', $this->month)
@@ -246,7 +246,7 @@ class Tambahanwr extends Component
 
             ->where(function ($query) {
                 $query->where('karyawans.nama', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('karyawans.jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('karyawans.jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('bonuspotongans.user_id', trim($this->search));
             })
 
