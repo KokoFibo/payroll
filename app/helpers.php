@@ -1840,7 +1840,7 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
 
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
-        $jabatan = $data_jabatan->jabatan;
+        $jabatan = $data_jabatan->jabatan_id;
         $jabatan_khusus = is_jabatan_khusus($jabatan);
     } catch (\Exception $e) {
         dd('ID karyawan tidak ada dalam database = ', $id);
