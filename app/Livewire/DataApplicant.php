@@ -47,6 +47,7 @@ class DataApplicant extends Component
             $this->diterima($this->editId);
         } else {
             // $this->dispatch('success', message: 'Status sudah berhasil di rubah');
+            $data->save();
             $this->dispatch(
                 'message',
                 type: 'success',
@@ -68,7 +69,39 @@ class DataApplicant extends Component
 
         $dataApplicant = Applicantdata::find($id);
         $dataKaryawan = Karyawan::where('id_file_karyawan', $dataApplicant->applicant_id)->first();
+        if ($dataKaryawan != null) {
+            // $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data karyawan ini sudah di berada dalam database karyawan',
+            );
+            return;
+        }
+
+        // chdeck email double di user
+        $email_user = User::where('email', $dataApplicant->email)->first();
+        // dd($email_user, $dataApplicant->email);
+        if ($email_user != null) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Email ini sudah terdaftar',
+            );
+            return;
+        }
         if ($dataKaryawan == null) {
+
+            $email_user = User::where('email', $dataApplicant->email)->first();
+            // dd($email_user);
+            if ($email_user != null) {
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: 'Email ini sudah terdaftar',
+                );
+                return;
+            }
             // ambil ID karyawan
             $id_karyawan_terbaru = getNextIdKaryawan();
 
@@ -78,7 +111,7 @@ class DataApplicant extends Component
             Karyawan::create([
                 'id_karyawan' => $id_karyawan_terbaru,
                 'nama' => $dataApplicant->nama,
-                'email' => $dataApplicant->email,
+                'email' => trim($dataApplicant->email, ' '),
                 'hp' => $dataApplicant->hp,
                 'telepon' => $dataApplicant->telp,
                 'tempat_lahir' => $dataApplicant->tempat_lahir,
@@ -97,6 +130,7 @@ class DataApplicant extends Component
                 'alamat_tinggal' => $dataApplicant->alamat_tinggal_sekarang,
                 'id_file_karyawan' => $dataApplicant->applicant_id,
                 'status_karyawan' => 'PKWT',
+                'jabatan_id' => 100,
                 'tanggal_bergabung' => Carbon::now()->toDateString()
             ]);
 
@@ -108,6 +142,7 @@ class DataApplicant extends Component
                 'password' => Hash::make($dataApplicant->password),
             ]);
 
+
             // hapus data applicant
             // $dataApplicant->delete();
             // $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
@@ -116,13 +151,7 @@ class DataApplicant extends Component
                 type: 'success',
                 title: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan',
             );
-        } else {
-            // $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Data karyawan ini sudah di berada dalam database karyawan',
-            );
+            return;
         }
     }
 

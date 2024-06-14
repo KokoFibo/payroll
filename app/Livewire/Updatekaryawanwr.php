@@ -151,7 +151,10 @@ class Updatekaryawanwr extends Component
         $this->company = trim($data->company);
         $this->placement = trim($data->placement);
         $this->departemen = trim($data->departemen);
-        $this->jabatan_id = trim($data->jabatan_id);
+        $this->jabatan_id = $data->jabatan_id;
+        if ($this->jabatan_id == 100) {
+            $this->jabatan_id = '';
+        }
         $this->level_jabatan = trim($data->level_jabatan);
         $this->nama_bank = trim($data->nama_bank);
         $this->nomor_rekening = $data->nomor_rekening;
