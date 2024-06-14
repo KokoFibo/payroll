@@ -354,7 +354,13 @@ class YfpresensiController extends Controller
                 foreach ($datasama as $d) {
                     $formattedIds[] = $d['user_id'];
                 }
-                $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
+                if (count($formattedIds) > 50) {
+
+                    $msg = 'Data Presensi ini sudah di pernah di upload';
+                } else {
+                    $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
+                }
+                clear_locks();
 
                 return back()->with('error', $msg);
             }

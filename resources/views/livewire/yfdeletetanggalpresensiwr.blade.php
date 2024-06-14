@@ -5,7 +5,7 @@
             <h3>Delete Tanggal Presensi</h3>
         </div>
         <div class="card-body">
-            <label class="form-label">Email address</label>
+            <label class="form-label">Tanggal</label>
             <input wire:model="tanggal" type="date" class="form-control">
             <div class="form-text">Masukkan tanggal yang akan di delete</div>
 

@@ -39,7 +39,7 @@ class Yfdeletetanggalpresensiwr extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Data pada tanggal tersebut telah di hapus',
+            title: 'Data pada tanggal tersebut telah di hapus',
         );
     }
 
@@ -51,7 +51,7 @@ class Yfdeletetanggalpresensiwr extends Component
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'ID: ' . $this->username . 'Data presensi tidak ditemukan',
+                title: 'Data presensi tidak ditemukan',
             );
         } else {
             Yfrekappresensi::whereDate('date', $this->tanggal)->delete();
@@ -59,7 +59,7 @@ class Yfdeletetanggalpresensiwr extends Component
             $this->dispatch(
                 'message',
                 type: 'success',
-                title: 'ID: ' . $this->username . 'Data pada tanggal tersebut telah di hapus',
+                title: 'Data pada tanggal tersebut telah di hapus',
             );
         }
     }

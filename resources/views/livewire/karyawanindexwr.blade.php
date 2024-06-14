@@ -1,7 +1,7 @@
 <div>
 
     @section('title', 'Karyawan')
-    @if (auth()->user()->role == 2 || auth()->user()->role == 3)
+    @if (auth()->user()->role == 5 || auth()->user()->role == 6)
         <div x-data="{
             search: $persist(@entangle('search').live),
             columnName: $persist(@entangle('columnName').live),
@@ -25,7 +25,7 @@
                     Locker</button></a>
         @endif
         <div class="col-xl-2 col-12">
-            @if (Auth::user()->role > 3)
+            @if (Auth::user()->role > 6)
                 <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
                     <option value="0"selected>{{ __('All Companies') }}</option>
                     <option value="1">{{ __('Pabrik 1') }}</option>
@@ -43,7 +43,7 @@
 
         </div>
         <div class="col-12 col-xl-1">
-            @if (Auth::user()->role > 3)
+            @if (Auth::user()->role > 6)
                 <div class="col-12">
                     <button wire:click="excel" class="btn btn-success col-12">Excel</button></a>
                 </div>
@@ -78,7 +78,8 @@
                                 aria-label="Default select example">
                                 <option value="0">{{ __('All Status') }}</option>
                                 <option value="1">{{ __('Aktif') }}</option>
-                                <option value="2">{{ __('Non Aktif') }}</option>
+                                <option value="2">{{ __('Resigned') }}</option>
+                                <option value="3">{{ __('Blacklist') }}</option>
                             </select>
                         </div>
 
@@ -173,7 +174,7 @@
                                         </select>
                                     </div>
                                 </th>
-                                @if (auth()->user()->role >= 4)
+                                @if (auth()->user()->role >= 7)
                                     <th style="width: 220px; border-style: none;">
                                         <div style="width: 130px">
                                             <select wire:model.live="search_etnis" class="form-select"
@@ -226,7 +227,7 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jabatan_id')">
                                     {{ __('Jabatan') }} </th>
-                                @if (Auth::user()->role > 3)
+                                @if (Auth::user()->role > 6)
                                     <th class="text-center" wire:click="sortColumnName('etnis')">
                                         {{ __('Etnis') }}
                                     <th class="text-center" wire:click="sortColumnName('level_jabatan')">
@@ -236,7 +237,7 @@
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">
                                     {{ __('Status') }}
                                 </th>
-                                @if (Auth::user()->role > 3)
+                                @if (Auth::user()->role > 5)
                                     <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">
                                         {{ __('Lama Bekerja') }}
                                     </th>
@@ -256,7 +257,7 @@
                                 <th class="text-center" wire:click="sortColumnName('iuran_locker')">
                                     {{ __('Iuran Locker') }}
                                 </th>
-                                @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                @if ($selectStatus == 2 && auth()->user()->role > 6)
                                     <th class="text-center">
                                         {{ __('Lama bekerja') }}
                                     </th>
@@ -273,9 +274,14 @@
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
                                                     class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
+                                            {{-- ok --}}
+                                            @if ($selectStatus == 2)
+                                                <a href="/karyawanreinstate/{{ $data->id }}"><button
+                                                        class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}">R</button></a>
+                                            @endif
 
 
-                                            @if (Auth::user()->role > 4)
+                                            @if (Auth::user()->role > 7)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
@@ -293,16 +299,14 @@
                                     @else
                                         <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
                                     @endif
-                                    @if (Auth::user()->role > 3)
+                                    @if (Auth::user()->role > 6)
                                         <td class="text-center">{{ $data->etnis }}</td>
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    @if (
-                                        (auth()->user()->role == 2 && $data->gaji_pokok <= 4500000) ||
-                                            (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
-                                            auth()->user()->role > 3)
-                                        @if (Auth::user()->role > 3)
+                                    {{-- @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) || auth()->user()->role > 6) --}}
+                                    @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || auth()->user()->role >= 6)
+                                        @if (Auth::user()->role > 5)
                                             <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
@@ -312,7 +316,7 @@
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
                                     @endif
-                                    @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                    @if ($selectStatus == 5 && auth()->user()->role > 6)
                                         <td class="text-center">
                                             {{ lama_resign($data->tanggal_bergabung, $data->tanggal_resigned, $data->tanggal_blacklist) }}
                                         </td>

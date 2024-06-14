@@ -38,8 +38,7 @@ class KaryawanReinstate extends Component
             'status_karyawan' => 'required'
         ]);
 
-        $data_lama =
-            Karyawan::find($this->id);
+        $data_lama = Karyawan::find($this->id);
         if (!$data_lama) {
             $this->dispatch(
                 'message',
@@ -50,6 +49,7 @@ class KaryawanReinstate extends Component
             return;
         }
         $data_baru = $data_lama->replicate();
+
         $data_baru->status_karyawan = $this->status_karyawan;
         $data_baru->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
         $new_id = getNextIdKaryawan();
