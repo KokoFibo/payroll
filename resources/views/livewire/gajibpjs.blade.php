@@ -22,7 +22,7 @@
                         <td>{{ $d->id_karyawan }}</td>
                         <td> {{ $d->nama }}</td>
                         <td> {{ $d->hp }}</td>
-                        <td> {{ $d->company }}</td>
+                        <td> {{ $d->company->company_name }}</td>
                         <td> {{ $d->placement }}</td>
                         <td> {{ $d->departemen }}</td>
                         <td> {{ number_format($d->gaji_bpjs) }}</td>

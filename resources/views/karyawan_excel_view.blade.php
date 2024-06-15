@@ -38,7 +38,7 @@
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->placement }}</td>
-                    <td style="text-align: center"> {{ $d->company }}</td>
+                    <td style="text-align: center"> {{ $d->company->company_name }}</td>
                     <td style="text-align: center"> {{ $d->departemen }}</td>
                     <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>

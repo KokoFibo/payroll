@@ -323,7 +323,7 @@ class Karyawanindexwr extends Component
         // }
 
         $placement_fn = $this->search_placement;
-        $company_fn = $this->search_company;
+        $company_fn = nama_company($this->search_company);
 
         if ($placement_fn && $company_fn) {
             $nama_file = "Karyawan_Placement_" .  $placement_fn . '_Company_' . $company_fn . '.xlsx';
@@ -338,7 +338,7 @@ class Karyawanindexwr extends Component
         return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->selectStatus), $nama_file);
     }
 
-    public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
+    public function getPayrollQuery($statuses, $search = null, $placement = null, $company_id = null)
     {
         return Karyawan::query()
             ->whereIn('status_karyawan', $statuses)
@@ -357,14 +357,14 @@ class Karyawanindexwr extends Component
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('etnis', 'LIKE', '%' . trim($this->search) . '%')
-                    ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('company_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
             })
             ->when($placement, function ($query) use ($placement) {
                 $query->where('placement', $placement);
             })
-            ->when($company, function ($query) use ($company) {
-                $query->where('company', $company);
+            ->when($company_id, function ($query) use ($company_id) {
+                $query->where('company_id', $company_id);
             })
 
             ->orderBy($this->columnName, $this->direction);
@@ -390,7 +390,7 @@ class Karyawanindexwr extends Component
             })
 
             ->when($this->search_company, function ($query) {
-                $query->where('company', trim($this->search_company));
+                $query->where('company_id', trim($this->search_company));
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', trim($this->search_jabatan));
@@ -407,7 +407,7 @@ class Karyawanindexwr extends Component
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', trim($this->search_jabatan));
             })
-            ->pluck('company')->unique();
+            ->pluck('company_id')->unique();
 
         $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
@@ -417,7 +417,7 @@ class Karyawanindexwr extends Component
                 $query->where('departemen', trim($this->search_department));
             })
             ->when($this->search_company, function ($query) {
-                $query->where('company', trim($this->search_company));
+                $query->where('company_id', trim($this->search_company));
             })
             ->pluck('jabatan_id')->unique();
 
@@ -429,7 +429,7 @@ class Karyawanindexwr extends Component
                 $query->where('departemen', trim($this->search_department));
             })
             ->when($this->search_company, function ($query) {
-                $query->where('company', trim($this->search_company));
+                $query->where('company_id', trim($this->search_company));
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', trim($this->search_jabatan));
@@ -448,7 +448,7 @@ class Karyawanindexwr extends Component
             })
 
             ->when($this->search_company, function ($query) {
-                $query->where('company', $this->search_company);
+                $query->where('company_id', $this->search_company);
             })
 
             ->when($this->search_placement, function ($query) {

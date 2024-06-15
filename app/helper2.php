@@ -492,7 +492,7 @@ function build_payroll($month, $year)
             'id_karyawan' => $data->karyawan->id_karyawan,
             // 'jabatan' => $data->karyawan->jabatan_id,
             'jabatan' => nama_jabatan($data->karyawan->jabatan_id),
-            'company' => $data->karyawan->company,
+            'company' => nama_company($data->karyawan->company_id),
             'placement' => $data->karyawan->placement,
             'departemen' => $data->karyawan->departemen,
             'status_karyawan' => $data->karyawan->status_karyawan,
@@ -701,7 +701,7 @@ function build_payroll($month, $year)
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
-            $data->company = $data_karyawan->company;
+            $data->company = nama_company($data_karyawan->company_id);
             $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;
@@ -724,7 +724,7 @@ function build_payroll($month, $year)
             $data->id_karyawan = $data_karyawan->id_karyawan;
             $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
 
-            $data->company = $data_karyawan->company;
+            $data->company = nama_company($data_karyawan->company_id);
             $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;

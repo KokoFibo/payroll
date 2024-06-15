@@ -40,7 +40,7 @@
                                         aria-label="Default select example">
                                         <option value="">{{ __('Company') }}</option>
                                         @foreach ($companies as $j)
-                                            <option value="{{ $j }}">{{ $j }}</option>
+                                            <option value="{{ $j }}">{{ nama_company($j) }}</option>
                                         @endforeach
 
                                     </select>
@@ -76,7 +76,7 @@
                                         aria-label="Default select example">
                                         <option value="">{{ __('Jabatan') }}</option>
                                         @foreach ($jabatans as $j)
-                                            <option value="{{ $j }}">{{ $j }}</option>
+                                            <option value="{{ $j }}">{{ nama_jabatan($j) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -93,13 +93,13 @@
                         <tr>
                             <th>{{ __('ID Karyawan') }}</th>
                             <th>{{ __('Nama') }}</th>
-                            <th wire:click="sortColumnName('company')">
+                            <th wire:click="sortColumnName('company_id')">
                                 {{ __('Company') }}</th>
                             <th wire:click="sortColumnName('placement')">
                                 {{ __('Placement') }}</th>
                             <th wire:click="sortColumnName('departemen')">
                                 {{ __('Department') }}</th>
-                            <th wire:click="sortColumnName('jabatan')">
+                            <th wire:click="sortColumnName('jabatanid')">
                                 {{ __('Jabatan') }}</th>
                             <th wire:click="sortColumnName('status_karyawan')">
                                 {{ __('Status') }}</th>
@@ -118,10 +118,10 @@
                             <tr>
                                 <td>{{ $d->id_karyawan }}</td>
                                 <td>{{ $d->nama }}</td>
-                                <td>{{ $d->company }}</td>
+                                <td>{{ $d->company->company_name }}</td>
                                 <td>{{ $d->placement }}</td>
                                 <td>{{ $d->departemen }}</td>
-                                <td>{{ $d->jabatan }}</td>
+                                <td>{{ $d->jabatan->nama_jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>
                                 <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
                                 <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>

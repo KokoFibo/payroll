@@ -43,7 +43,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         }
 
         if ($this->selected_company) {
-            $data = $data->where('company', $this->selected_company);
+            $data = $data->where('company_id', $this->selected_company);
         }
 
         $data = $data->get();
@@ -88,7 +88,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         }
         return Karyawan::whereIn('status_karyawan', $statuses)
             ->where('placement', 'selected_placement')
-            ->where('company', 'selected_company');
+            ->where('company_id', 'selected_company');
     }
 
     // public function map($karyawan): array

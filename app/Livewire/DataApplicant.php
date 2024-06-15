@@ -142,6 +142,7 @@ class DataApplicant extends Component
                 'id_file_karyawan' => $dataApplicant->applicant_id,
                 'status_karyawan' => 'PKWT',
                 'jabatan_id' => 100,
+                'company_id' => 100,
                 'tanggal_bergabung' => Carbon::now()->toDateString()
             ]);
 

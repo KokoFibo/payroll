@@ -10,83 +10,38 @@ class ChangeField extends Component
     public function change()
     {
         $data = Karyawan::get();
-        $jabatan = '';
+        $company = '';
         foreach ($data as $d) {
-            switch ($d->jabatan) {
-                case 'Admin':
-                    $jabatan = '1';
+            switch ($d->company) {
+                case 'ASB':
+                    $company = '1';
                     break;
-                case 'Asisten Direktur':
-                    $jabatan = '2';
+                case 'DPA':
+                    $company = '2';
                     break;
-                case 'Asisten Kepala':
-                    $jabatan = '3';
+                case 'YCME':
+                    $company = '3';
                     break;
-                case 'Asisten Manager':
-                    $jabatan = '4';
+                case 'YEV':
+                    $company = '4';
                     break;
-                case 'Asisten Pengawas':
-                    $jabatan = '5';
+                case 'YIG':
+                    $company = '5';
                     break;
-                case 'Asisten Wakil Presiden':
-                    $jabatan = '6';
+                case 'YSM':
+                    $company = '6';
                     break;
-                case 'Design Grafis':
-                    $jabatan = '7';
+                case 'YAM':
+                    $company = '7';
                     break;
-                case 'Director':
-                    $jabatan = '8';
+                case 'GAMA':
+                    $company = '8';
                     break;
-                case 'Kepala':
-                    $jabatan = '9';
-                    break;
-                case 'Manager':
-                    $jabatan = '10';
-                    break;
-                case 'Pengawas':
-                    $jabatan = '11';
-                    break;
-                case 'President':
-                    $jabatan = '12';
-                    break;
-                case 'Senior Staff':
-                    $jabatan = '13';
-                    break;
-                case 'Staff':
-                    $jabatan = '14';
-                    break;
-                case 'Supervisor':
-                    $jabatan = '15';
-                    break;
-                case 'Vice President':
-                    $jabatan = '16';
-                    break;
-                case 'Satpam':
-                    $jabatan = '17';
-                    break;
-                case 'Koki':
-                    $jabatan = '18';
-                    break;
-                case 'Dapur Kantor':
-                    $jabatan = '19';
-                    break;
-                case 'Dapur Pabrik':
-                    $jabatan = '20';
-                    break;
-                case 'QC Aging':
-                    $jabatan = '21';
-                    break;
-                case 'Driver':
-                    $jabatan = '22';
-                    break;
-                case 'Translator':
-                    $jabatan = '23';
-                    break;
-                case 'Senior SPV':
-                    $jabatan = '24';
+                case 'WAS':
+                    $company = '9';
                     break;
             }
-            $d->jabatan = $jabatan;
+            $d->company = $company;
             $d->save();
         }
         $this->dispatch(

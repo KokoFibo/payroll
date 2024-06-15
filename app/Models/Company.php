@@ -10,6 +10,7 @@ class Company extends Model
     use HasFactory;
     protected $guarded = [];
 
+
     public function karyawan()
     {
         return $this->hasMany(Karyawan::class);

@@ -1,5 +1,4 @@
 <div class="card">
-
     <div class="card-body">
         <div class="card">
             <div class="card-header bg-secondary">
@@ -99,9 +98,12 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Company') }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('company') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="company">
+                                aria-label="Default select example" wire:model="company_id">
                                 <option value=" ">{{ __('Pilih company') }}</option>
-                                <option value="ASB">ASB</option>
+                                @foreach ($pilih_company as $key => $nj)
+                                    <option value="{{ $nj->id }}">{{ $nj->company_name }}</option>
+                                @endforeach
+                                {{-- <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
                                 <option value="YEV">YEV</option>
@@ -109,7 +111,7 @@
                                 <option value="YSM">YSM</option>
                                 <option value="YAM">YAM</option>
                                 <option value="GAMA">GAMA</option>
-                                <option value="WAS">WAS</option>
+                                <option value="WAS">WAS</option> --}}
 
                             </select>
                             @error('company')

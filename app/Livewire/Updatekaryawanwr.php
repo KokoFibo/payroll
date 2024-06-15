@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Company;
 use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Karyawan;
@@ -26,7 +27,7 @@ class Updatekaryawanwr extends Component
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company, $placement,  $departemen, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
+    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company_id, $placement,  $departemen, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update;
@@ -38,6 +39,8 @@ class Updatekaryawanwr extends Component
     public $filenames = [];
     public $is_update;
     public $pilih_jabatan;
+    public $pilih_company;
+
 
 
     public function updatedFiles()
@@ -110,6 +113,8 @@ class Updatekaryawanwr extends Component
     public function mount($id)
     {
         $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
+        $this->pilih_company = Company::orderBy('company_name', 'asc')->get();
+
 
         $this->is_update = true;
         $this->show_arsip = false;
@@ -148,7 +153,7 @@ class Updatekaryawanwr extends Component
         $this->tanggal_resigned = $data->tanggal_resigned;
         $this->tanggal_blacklist = $data->tanggal_blacklist;
 
-        $this->company = trim($data->company);
+        $this->company_id = $data->company_id;
         $this->placement = trim($data->placement);
         $this->departemen = trim($data->departemen);
         $this->jabatan_id = $data->jabatan_id;
@@ -222,7 +227,7 @@ class Updatekaryawanwr extends Component
             'tanggal_resigned' => new RequiredIf($this->status_karyawan == 'Resigned'),
             'tanggal_blacklist' => new RequiredIf($this->status_karyawan == 'Blacklist'),
             'tanggal_bergabung' => 'date|required',
-            'company' => 'required',
+            'company_id' => 'required',
             'placement' => 'required',
             'departemen' => 'required',
             'jabatan_id' => 'required',
@@ -393,7 +398,7 @@ class Updatekaryawanwr extends Component
             $data->tanggal_resigned = null;
         }
 
-        $data->company = $this->company;
+        $data->company_id = $this->company_id;
         $data->placement = $this->placement;
         $data->departemen = $this->departemen;
         $data->jabatan_id = $this->jabatan_id;

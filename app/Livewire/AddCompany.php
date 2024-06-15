@@ -31,7 +31,7 @@ class AddCompany extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan added',
+            title: 'Company added',
         );
     }
 
@@ -54,7 +54,7 @@ class AddCompany extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan updated',
+            title: 'Company updated',
         );
     }
 
@@ -66,7 +66,7 @@ class AddCompany extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan deleted',
+            title: 'Company deleted',
         );
     }
 
