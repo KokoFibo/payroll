@@ -100,8 +100,9 @@
                 </div>
 
                 <div class="d-flex gap-3 pb-3 px-3" wire:loading.remove>
-
-                    <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
+                    @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
+                        <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
+                    @endif
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
                     @if (!$show_arsip)
                         <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
