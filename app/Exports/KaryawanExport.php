@@ -57,7 +57,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         //     $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
         // }
         $placement = $this->selected_placement;
-        $company = $this->selected_company;
+        $company = nama_company($this->selected_company);
 
         if ($placement && $company) {
             $header_text = "Excel Karyawan Placement $placement, Company $company";
