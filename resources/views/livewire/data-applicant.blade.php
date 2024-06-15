@@ -16,6 +16,12 @@
                     @endif
                 </div>
             </div>
+            <div class="col-4">
+                <div class="mt-3 ml-3">
+                    <input wire:model.live='search' type="email" class="form-control" id="exampleFormControlInput1"
+                        placeholder="search...">
+                </div>
+            </div>
             @if ($show_table)
                 <div class="card-body">
                     <div>
