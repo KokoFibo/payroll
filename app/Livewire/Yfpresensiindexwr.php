@@ -559,7 +559,7 @@ class Yfpresensiindexwr extends Component
         // fil
 
         if ($this->is_noscan) {
-            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen', 'karyawans.jabatan.nama_jabatan'])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen', 'karyawans.jabatan_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->where('no_scan', 'No Scan')
                 ->paginate($this->perpage);
