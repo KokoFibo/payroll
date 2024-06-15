@@ -22,6 +22,11 @@
                         placeholder="search...">
                 </div>
             </div>
+            <div class='ml-4 mt-2 '>
+                <p class='text-danger'>Data appliicant yang statusnya dirubah menjadi 'Diterima', akan di delete dan
+                    datanya akan otomatis
+                    dipindahkan ke database karyawan.</p>
+            </div>
             @if ($show_table)
                 <div class="card-body">
                     <div>
