@@ -190,7 +190,7 @@
                                             Etnis</button>
                                     </th> --}}
                                 @endif
-                                @if ($is_tanggal_gajian || auth()->user()->role >= 5)
+                                @if ($is_tanggal_gajian || auth()->user()->role == 5)
                                     <th style="width: 150px; border-style: none;">
                                         <a href="/iuranlocker"><button
                                                 class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus
