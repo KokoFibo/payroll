@@ -30,7 +30,7 @@ class Jabatanwr extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan added',
+            title: 'Jabatan added',
         );
     }
 
@@ -53,7 +53,7 @@ class Jabatanwr extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan updated',
+            title: 'Jabatan updated',
         );
     }
 
@@ -65,7 +65,7 @@ class Jabatanwr extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Jabatan deleted',
+            title: 'Jabatan deleted',
         );
     }
 

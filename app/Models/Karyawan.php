@@ -19,6 +19,10 @@ class Karyawan extends Model
     {
         return $this->belongsTo(Jabatan::class);
     }
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

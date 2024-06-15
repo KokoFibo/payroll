@@ -31,7 +31,7 @@ class AddPlacement extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Placement added',
+            title: 'Placement added',
         );
     }
 
@@ -54,7 +54,7 @@ class AddPlacement extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Placement updated',
+            title: 'Placement updated',
         );
     }
 
@@ -66,7 +66,7 @@ class AddPlacement extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Placement deleted',
+            title: 'Placement deleted',
         );
     }
 

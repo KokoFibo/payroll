@@ -123,7 +123,7 @@
                                             <option value="YSM">YSM</option>
                                             <option value="YAM">YAM</option> --}}
                                             @foreach ($companies as $j)
-                                                <option value="{{ $j }}">{{ $j }}</option>
+                                                <option value="{{ $j }}">{{ nama_company($j) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -209,7 +209,7 @@
                                     {{ __('Placement') }}
 
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('company')">
+                                <th class="text-center" wire:click="sortColumnName('company_id')">
                                     {{ __('Company') }} </th>
                                 <th class="text-center" wire:click="sortColumnName('departemen')">
                                     {{ __('Departemen') }}
@@ -281,13 +281,10 @@
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td class="text-center">{{ $data->placement }}</td>
-                                    <td class="text-center">{{ $data->company }}</td>
+                                    <td class="text-center">{{ $data->company->company_name }}</td>
                                     <td class="text-center">{{ $data->departemen }}</td>
-                                    @if ($data->jabatan->nama_jabatan != null)
-                                        <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
-                                    @else
-                                        <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
-                                    @endif
+                                    <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
+
                                     @if (Auth::user()->role > 6)
                                         <td class="text-center">{{ $data->etnis }}</td>
                                         <td class="text-center">{{ $data->level_jabatan }}</td>
@@ -296,7 +293,8 @@
                                     {{-- @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) || auth()->user()->role > 6) --}}
                                     @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || auth()->user()->role >= 6)
                                         @if (Auth::user()->role > 5)
-                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}
+                                            </td>
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
