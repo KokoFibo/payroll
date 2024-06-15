@@ -21,6 +21,7 @@ class DataApplicant extends Component
     public $show_data, $show_table, $personal_data, $personal_files;
     public  $status, $editId = null;
     public $delete_id, $terima_id;
+    public $search;
 
 
     public function terimaConfirmation($id)
@@ -211,7 +212,12 @@ class DataApplicant extends Component
 
     public function render()
     {
-        $data = Applicantdata::orderBy('created_at', 'asc')->paginate(10);
+        $data = Applicantdata::orderBy('created_at', 'asc')
+            ->where(function ($query) {
+                $query->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('email', 'LIKE', '%' . trim($this->search) . '%');
+            })
+            ->paginate(10);
 
         return view('livewire.data-applicant', [
             'data' => $data,
