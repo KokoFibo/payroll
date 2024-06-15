@@ -28,10 +28,30 @@
                     @enderror
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
-                    <button wire:click="reinstate" class="btn btn-primary">Reinstate</button>
+                    <button wire:click="reinstateConfirmation" class="btn btn-primary">Reinstate</button>
                     <button wire:click="cancel" class="btn btn-dark">Cancel/Exit</button>
                 </div>
             </div>
         </div>
     </div>
+    @script
+        <script>
+            window.addEventListener("show-reinstate-confirmation", (event) => {
+                Swal.fire({
+                    title: "Data Karyawan ini akan di reinstate?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, reinstate",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("reinstate-confirmed");
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>

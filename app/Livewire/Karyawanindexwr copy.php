@@ -16,7 +16,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
 use App\Exports\KaryawanByDepartmentExport;
-use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Karyawanindexwr extends Component
 {
@@ -285,56 +284,42 @@ class Karyawanindexwr extends Component
     public function excel()
     {
         $nama_file = "";
-        // switch ($this->selected_company) {
+        switch ($this->selected_company) {
 
-        //     case '0':
-        //         $nama_file = "semua_karyawan.xlsx";
-        //         break;
-        //     case '1':
-        //         $nama_file = "Karyawan_Pabrik-1.xlsx";
-        //         break;
-        //     case '2':
-        //         $nama_file = "Karyawan_Pabrik-2.xlsx";
-        //         break;
-        //     case '3':
-        //         $nama_file = "Karyawan_Kantor.xlsx";
-        //         break;
-        //     case '4':
-        //         $nama_file = "Karyawan_ASB.xlsx";
-        //         break;
-        //     case '5':
-        //         $nama_file = "Karyawan_DPA.xlsx";
-        //         break;
-        //     case '6':
-        //         $nama_file = "Karyawan_YCME.xlsx";
-        //         break;
-        //     case '7':
-        //         $nama_file = "Karyawan_YEV.xlsx";
-        //         break;
-        //     case '8':
-        //         $nama_file = "Karyawan_YIG.xlsx";
-        //         break;
-        //     case '9':
-        //         $nama_file = "Karyawan_YSM.xlsx";
-        //         break;
-        //     case '10':
-        //         $nama_file = "Karyawan_YAM.xlsx";
-        //         break;
-        // }
-
-        $placement_fn = $this->search_placement;
-        $company_fn = $this->search_company;
-
-        if ($placement_fn && $company_fn) {
-            $nama_file = "Karyawan_Placement_" .  $placement_fn . '_Company_' . $company_fn . '.xlsx';
-        } elseif ($placement_fn) {
-            $nama_file = "Karyawan_Placement_" .  $placement_fn . '.xlsx';
-        } elseif ($company_fn) {
-            $nama_file = "Karyawan_Company_" .  $company_fn . '.xlsx';
-        } else {
-            $nama_file = 'Seluruh_Karyawan.xlsx';
+            case '0':
+                $nama_file = "semua_karyawan.xlsx";
+                break;
+            case '1':
+                $nama_file = "Karyawan_Pabrik-1.xlsx";
+                break;
+            case '2':
+                $nama_file = "Karyawan_Pabrik-2.xlsx";
+                break;
+            case '3':
+                $nama_file = "Karyawan_Kantor.xlsx";
+                break;
+            case '4':
+                $nama_file = "Karyawan_ASB.xlsx";
+                break;
+            case '5':
+                $nama_file = "Karyawan_DPA.xlsx";
+                break;
+            case '6':
+                $nama_file = "Karyawan_YCME.xlsx";
+                break;
+            case '7':
+                $nama_file = "Karyawan_YEV.xlsx";
+                break;
+            case '8':
+                $nama_file = "Karyawan_YIG.xlsx";
+                break;
+            case '9':
+                $nama_file = "Karyawan_YSM.xlsx";
+                break;
+            case '10':
+                $nama_file = "Karyawan_YAM.xlsx";
+                break;
         }
-
         return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->selectStatus), $nama_file);
     }
 
@@ -382,11 +367,42 @@ class Karyawanindexwr extends Component
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
+        // =================================
+        //  <option value="1">YCME</option>
+        // <option value="2">YEV</option>
+        // {{-- <option value="3">Kantor</option> --}}
+        // <option value="6">YAM</option>
+        // <option value="4">YIG</option>
+        // <option value="5">YSM</option>
+        // <option value="7">YEV SMOOT</option>
+        // <option value="8">YEV OFFERO</option>
+        // <option value="9">YEV SUNRA</option>
 
+        // ================================
 
         $departments = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } elseif ($this->search_placement == 4) {
+                    $query->where('placement', 'YIG');
+                } elseif ($this->search_placement == 5) {
+                    $query->where('placement', 'YSM');
+                } elseif ($this->search_placement == 6) {
+                    $query->where('placement', 'YAM');
+                } elseif ($this->search_placement == 7) {
+                    $query->where('placement', 'YEV SMOOT');
+                } elseif ($this->search_placement == 8) {
+                    $query->where('placement', 'YEV OFFERO');
+                } elseif ($this->search_placement == 9) {
+                    $query->where('placement', 'YEV SUNRA');
+                } elseif ($this->search_placement == 10) {
+                    $query->where('placement', 'YEV AIMA');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
             })
 
             ->when($this->search_company, function ($query) {
@@ -397,9 +413,19 @@ class Karyawanindexwr extends Component
             })
             ->pluck('departemen')->unique();
 
+
+
+
+
         $companies = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
             })
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', trim($this->search_department));
@@ -411,7 +437,13 @@ class Karyawanindexwr extends Component
 
         $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
             })
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', trim($this->search_department));
@@ -423,7 +455,13 @@ class Karyawanindexwr extends Component
 
         $etnises = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
             })
             ->when($this->search_department, function ($query) {
                 $query->where('departemen', trim($this->search_department));
@@ -441,6 +479,7 @@ class Karyawanindexwr extends Component
 
 
         $datas = Karyawan::query()
+            // ->orderBy('nama', $this->direction)
             ->whereIn('status_karyawan', $statuses)
             ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
             ->when($this->search_id_karyawan, function ($query) {
@@ -452,7 +491,27 @@ class Karyawanindexwr extends Component
             })
 
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                if ($this->search_placement == 1) {
+                    $query->where('placement', 'YCME');
+                } elseif ($this->search_placement == 2) {
+                    $query->where('placement', 'YEV');
+                } elseif ($this->search_placement == 4) {
+                    $query->where('placement', 'YIG');
+                } elseif ($this->search_placement == 5) {
+                    $query->where('placement', 'YSM');
+                } elseif ($this->search_placement == 6) {
+                    $query->where('placement', 'YAM');
+                } elseif ($this->search_placement == 7) {
+                    $query->where('placement', 'YEV SMOOT');
+                } elseif ($this->search_placement == 8) {
+                    $query->where('placement', 'YEV OFFERO');
+                } elseif ($this->search_placement == 9) {
+                    $query->where('placement', 'YEV SUNRA');
+                } elseif ($this->search_placement == 10) {
+                    $query->where('placement', 'YEV AIMA');
+                } else {
+                    $query->whereIn('placement', ['YIG', 'YSM']);
+                }
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', $this->search_jabatan);
