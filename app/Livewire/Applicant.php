@@ -27,6 +27,13 @@ class Applicant extends Component
     public $contact_darurat_1, $contact_darurat_2, $jenis_identitas, $no_identitas;
     public $alamat_identitas, $alamat_tinggal_sekarang;
     public $applicant_id, $originalName, $filename;
+    public $toggle_eye_password;
+
+
+    public function toggleEyePassword()
+    {
+        $this->toggle_eye_password = !$this->toggle_eye_password;
+    }
 
 
     public function deleteFile($id)
@@ -371,6 +378,7 @@ class Applicant extends Component
         $this->showMenu = true;
         $this->is_update = false;
         $this->showSubmit = false;
+        $this->toggle_eye_password = false;
     }
 
     public function alreadyRegistered()

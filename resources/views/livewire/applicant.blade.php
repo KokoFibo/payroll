@@ -123,8 +123,15 @@
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password<span
                                 class="text-red-500 ml-1">*</span></label>
-                        <input wire:model='password' type="password" id="password"
-                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                        <div class="relative">
+                            <input wire:model='password' type="{{ $toggle_eye_password ? 'text' : 'password' }}"
+                                id="password"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            <button type='button' wire:click="toggleEyePassword"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                                <i id="eyeIcon" class="fas fa-eye"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <div class="text-red-500">
                                 {{ $message }}
@@ -134,8 +141,17 @@
                     <div>
                         <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900">Confirm
                             Password<span class="text-red-500 ml-1">*</span></label>
-                        <input wire:model='confirm_password' type="password" id="confirm_password"
-                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                        <div class="relative">
+
+                            <input wire:model='confirm_password' type="{{ $toggle_eye_password ? 'text' : 'password' }}"
+                                id="confirm_password"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            <button type='button' wire:click="toggleEyePassword"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                                <i id="eyeIcon" class="fas fa-eye"></i>
+                            </button>
+                        </div>
+
                         @error('confirm_password')
                             <div class="text-red-500">
                                 {{ $message }}
