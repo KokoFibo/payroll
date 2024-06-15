@@ -97,7 +97,6 @@
                         <form wire:submit='update'>
                 @endif
                 <div class="p-3 grid gap-6 mb-6 md:grid-cols-2">
-                    {{-- <div class="lg:w-[800px]"> --}}
                     <div>
                         <label for="nama_lengkap" class="block mb-2 text-sm font-medium text-gray-900 ">Nama
                             Lengkap<span class="text-red-500 ml-1">*</span></label>
