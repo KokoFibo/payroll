@@ -65,6 +65,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Http\Controllers\KviewController;
 use App\Http\Controllers\TerControler;
 use App\Livewire\ApplicantDiterima;
 use App\Livewire\ChangeField;
@@ -152,6 +153,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/tambahan', Tambahanwr::class);
                 Route::get('/iuranlocker', IuranLocker::class);
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
+                Route::get('/kview', [KviewController::class, 'index']);
 
 
                 // YF PRESENSI
