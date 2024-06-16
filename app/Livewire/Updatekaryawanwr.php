@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Karyawan;
+use App\Models\Department;
 use Livewire\Attributes\On;
 use App\Rules\FileSizeLimit;
 use Livewire\Attributes\Url;
@@ -27,7 +28,7 @@ class Updatekaryawanwr extends Component
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company_id, $placement,  $departemen, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
+    public $status_karyawan, $tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist,  $company_id, $placement,  $department_id, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
     public $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam, $metode_penggajian,  $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja,  $iuran_air, $iuran_locker, $denda, $gaji_bpjs, $potongan_JHT, $potongan_JP, $potongan_JKK, $potongan_JKM;
     public  $potongan_kesehatan, $update;
@@ -40,6 +41,8 @@ class Updatekaryawanwr extends Component
     public $is_update;
     public $pilih_jabatan;
     public $pilih_company;
+    public $pilih_department;
+
 
 
 
@@ -114,6 +117,7 @@ class Updatekaryawanwr extends Component
     {
         $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
         $this->pilih_company = Company::orderBy('company_name', 'asc')->get();
+        $this->pilih_department = Department::orderBy('nama_department', 'asc')->get();
 
 
         $this->is_update = true;
@@ -155,10 +159,17 @@ class Updatekaryawanwr extends Component
 
         $this->company_id = $data->company_id;
         $this->placement = trim($data->placement);
-        $this->departemen = trim($data->departemen);
+        $this->department_id = $data->department_id;
         $this->jabatan_id = $data->jabatan_id;
+
         if ($this->jabatan_id == 100) {
             $this->jabatan_id = '';
+        }
+        if ($this->company_id == 100) {
+            $this->company_id = '';
+        }
+        if ($this->department_id == 100) {
+            $this->department_id = '';
         }
         $this->level_jabatan = trim($data->level_jabatan);
         $this->nama_bank = trim($data->nama_bank);
@@ -229,7 +240,7 @@ class Updatekaryawanwr extends Component
             'tanggal_bergabung' => 'date|required',
             'company_id' => 'required',
             'placement' => 'required',
-            'departemen' => 'required',
+            'department_id' => 'required',
             'jabatan_id' => 'required',
             'level_jabatan' => 'nullable',
             'nama_bank' => 'nullable',
@@ -400,7 +411,7 @@ class Updatekaryawanwr extends Component
 
         $data->company_id = $this->company_id;
         $data->placement = $this->placement;
-        $data->departemen = $this->departemen;
+        $data->department_id = $this->department_id;
         $data->jabatan_id = $this->jabatan_id;
         $data->level_jabatan = $this->level_jabatan;
         $data->nama_bank = $this->nama_bank;

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Department;
 use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Karyawan;
@@ -15,7 +16,7 @@ class Karyawanwr extends Component
     public $id;
     public $id_karyawan, $nama, $email, $hp, $telepon, $tempat_lahir, $tanggal_lahir, $gender, $status_pernikahan, $golongan_darah, $agama, $etnis;
     public $jenis_identitas, $no_identitas, $alamat_identitas, $alamat_tinggal;
-    public $status_karyawan, $tanggal_bergabung, $company_id, $placement, $departemen, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
+    public $status_karyawan, $tanggal_bergabung, $company_id, $placement, $department_id, $jabatan_id, $level_jabatan, $nama_bank, $nomor_rekening;
 
     public $metode_penggajian, $gaji_pokok, $gaji_overtime, $gaji_shift_malam_satpam;
     public $bonus, $tunjangan_jabatan, $tunjangan_bahasa;
@@ -29,11 +30,13 @@ class Karyawanwr extends Component
     public $is_update;
     public $pilih_jabatan;
     public $pilih_company;
+    public $pilih_department;
 
     public function mount()
     {
         $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
         $this->pilih_company = Company::orderBy('company_name', 'asc')->get();
+        $this->pilih_department = Department::orderBy('nama_department', 'asc')->get();
 
         $this->is_update = false;
         $this->update = false;
@@ -74,7 +77,7 @@ class Karyawanwr extends Component
         'tanggal_bergabung' => 'date|required|after:yesterday',
         'company_id' => 'required',
         'placement' => 'required',
-        'departemen' => 'required',
+        'department_id' => 'required',
         'jabatan_id' => 'required',
         'level_jabatan' => 'nullable',
         'nama_bank' => 'nullable',
@@ -164,7 +167,7 @@ class Karyawanwr extends Component
             $data->tanggal_bergabung = $this->tanggal_bergabung;
             $data->company_id = $this->company_id;
             $data->placement = $this->placement;
-            $data->departemen = $this->departemen;
+            $data->department_id = $this->department_id;
             $data->jabatan_id = $this->jabatan_id;
             $data->level_jabatan = $this->level_jabatan;
             $data->nama_bank = $this->nama_bank;
@@ -281,7 +284,7 @@ class Karyawanwr extends Component
             $data->tanggal_bergabung = $this->tanggal_bergabung;
             $data->company_id = $this->company_id;
             $data->placement = $this->placement;
-            $data->departemen = $this->departemen;
+            $data->department_id = $this->department_id;
             $data->jabatan_id = $this->jabatan_id;
             $data->level_jabatan = $this->level_jabatan;
             $data->nama_bank = $this->nama_bank;

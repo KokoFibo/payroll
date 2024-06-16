@@ -97,11 +97,13 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Company') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('company') is-invalid @enderror"
+                            <select class="form-select @error('company_id') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="company_id">
                                 <option value=" ">{{ __('Pilih company') }}</option>
                                 @foreach ($pilih_company as $key => $nj)
-                                    <option value="{{ $nj->id }}">{{ $nj->company_name }}</option>
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->company_name }}</option>
+                                    @endif
                                 @endforeach
                                 {{-- <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
@@ -114,7 +116,7 @@
                                 <option value="WAS">WAS</option> --}}
 
                             </select>
-                            @error('company')
+                            @error('company_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -125,11 +127,17 @@
 
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">{{ __('Departemen') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('departemen') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="departemen">
-                                <option value=" ">{{ __('Pilih departemen') }}</option>
-                                <option value="BD">BD</option>
+                            <label class="form-label">{{ __('Department') }} <span class="text-danger">*</span></label>
+                            <select class="form-select @error('department_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="department_id">
+                                <option value=" ">{{ __('Pilih Department') }}</option>
+                                @foreach ($pilih_department as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->nama_department }}</option>
+                                    @endif
+                                @endforeach
+
+                                {{-- <option value="BD">BD</option>
                                 <option value="Engineering">Engineering</option>
                                 <option value="EXIM">EXIM</option>
                                 <option value="Finance Accounting">Finance Accounting</option>
@@ -140,10 +148,10 @@
                                 <option value="Procurement">Procurement</option>
                                 <option value="Produksi">Produksi</option>
                                 <option value="Quality Control">Quality Control</option>
-                                <option value="Board of Director">Board of Director</option>
+                                <option value="Board of Director">Board of Director</option> --}}
 
                             </select>
-                            @error('departemen')
+                            @error('department_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -153,11 +161,13 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Jabatan') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('jabatan') is-invalid @enderror"
+                            <select class="form-select @error('jabatan_id') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="jabatan_id">
                                 <option value=" ">{{ __('Pilih jabatan') }}</option>
                                 @foreach ($pilih_jabatan as $key => $nj)
-                                    <option value="{{ $nj->id }}">{{ $nj->nama_jabatan }}</option>
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->nama_jabatan }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                             {{-- <select class="form-select @error('jabatan') is-invalid @enderror"
@@ -189,7 +199,7 @@
                                 <option value="Senior SPV">Senior SPV</option>
 
                             </select> --}}
-                            @error('jabatan')
+                            @error('jabatan_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -199,8 +209,7 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Level Jabatan') }}</label>
-                            <select class="form-select" aria-label="Default select example"
-                                wire:model="level_jabatan">
+                            <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
                                 <option value=" ">{{ __('Pilih level jabatan') }}</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
