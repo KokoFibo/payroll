@@ -12,6 +12,7 @@ use App\Models\Tambahan;
 use Illuminate\Support\Str;
 use App\Models\Applicantfile;
 use App\Models\Dashboarddata;
+use App\Models\Department;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,13 @@ function check_di_karyawan($email)
     else return false;
 }
 
+function nama_department($id)
+{
+    if ($id != null) {
+        $data = Department::find($id);
+        return $data->nama_department;
+    }
+}
 function nama_company($id)
 {
     if ($id != null) {
@@ -619,7 +627,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2100000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2100000;
@@ -638,7 +646,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2200000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2200000;
@@ -656,7 +664,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2300000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2300000;
@@ -673,7 +681,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2400000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2400000;
@@ -691,7 +699,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2500000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2500000;

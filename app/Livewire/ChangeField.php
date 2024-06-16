@@ -10,38 +10,47 @@ class ChangeField extends Component
     public function change()
     {
         $data = Karyawan::get();
-        $company = '';
+        $departemen = '';
         foreach ($data as $d) {
-            switch ($d->company) {
-                case 'ASB':
-                    $company = '1';
+            switch ($d->departemen) {
+                case 'BD':
+                    $departemen = '1';
                     break;
-                case 'DPA':
-                    $company = '2';
+                case 'Engineering':
+                    $departemen = '2';
                     break;
-                case 'YCME':
-                    $company = '3';
+                case 'EXIM':
+                    $departemen = '3';
                     break;
-                case 'YEV':
-                    $company = '4';
+                case 'Finance Accounting':
+                    $departemen = '4';
                     break;
-                case 'YIG':
-                    $company = '5';
+                case 'GA':
+                    $departemen = '5';
                     break;
-                case 'YSM':
-                    $company = '6';
+                case 'Gudang':
+                    $departemen = '6';
                     break;
-                case 'YAM':
-                    $company = '7';
+                case 'HR':
+                    $departemen = '7';
                     break;
-                case 'GAMA':
-                    $company = '8';
+                case 'Legal':
+                    $departemen = '8';
                     break;
-                case 'WAS':
-                    $company = '9';
+                case 'Procurement':
+                    $departemen = '9';
+                    break;
+                case 'Produksi':
+                    $departemen = '10';
+                    break;
+                case 'Quality Control':
+                    $departemen = '11';
+                    break;
+                case 'Board of Director':
+                    $departemen = '12';
                     break;
             }
-            $d->company = $company;
+            $d->departemen = $departemen;
             $d->save();
         }
         $this->dispatch(

@@ -90,7 +90,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
             ->where('placement', 'selected_placement')
             ->where('company_id', 'selected_company');
     }
-
+    //map
     // public function map($karyawan): array
     // {
     //     return [

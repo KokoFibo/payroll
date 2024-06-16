@@ -190,8 +190,7 @@ class Karyawanindexwr extends Component
         $this->selected_company = 0;
 
         $this->selectStatus = 1;
-        // $this->jabatans = Karyawan::select('jabatan')->distinct()->orderBy('jabatan', 'asc')->get();
-        // $this->departments = Karyawan::select('departemen')->distinct()->orderBy('departemen', 'asc')->get();
+
         $this->columnName = 'id_karyawan';
         $this->direction = 'desc';
         $this->search_etnis = "";
@@ -395,14 +394,14 @@ class Karyawanindexwr extends Component
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', trim($this->search_jabatan));
             })
-            ->pluck('departemen')->unique();
+            ->pluck('department_id')->unique();
 
         $companies = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
                 $query->where('placement', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
-                $query->where('departemen', trim($this->search_department));
+                $query->where('department_id', trim($this->search_department));
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', trim($this->search_jabatan));
@@ -414,7 +413,7 @@ class Karyawanindexwr extends Component
                 $query->where('placement', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
-                $query->where('departemen', trim($this->search_department));
+                $query->where('department_id', trim($this->search_department));
             })
             ->when($this->search_company, function ($query) {
                 $query->where('company_id', trim($this->search_company));
@@ -426,7 +425,7 @@ class Karyawanindexwr extends Component
                 $query->where('placement', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
-                $query->where('departemen', trim($this->search_department));
+                $query->where('department_id', trim($this->search_department));
             })
             ->when($this->search_company, function ($query) {
                 $query->where('company_id', trim($this->search_company));
@@ -465,7 +464,7 @@ class Karyawanindexwr extends Component
                 }
             })
             ->when($this->search_department, function ($query) {
-                $query->where('departemen', trim($this->search_department));
+                $query->where('department_id', trim($this->search_department));
             })
 
             ->orderBy($this->columnName, $this->direction)

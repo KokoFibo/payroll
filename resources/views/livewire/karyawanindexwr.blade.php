@@ -134,7 +134,7 @@
                                             aria-label="Default select example">
                                             <option value="">{{ __('Department') }}</option>
                                             @foreach ($departments as $j)
-                                                <option value="{{ $j }}">{{ $j }}</option>
+                                                <option value="{{ $j }}">{{ nama_department($j) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -211,8 +211,8 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('company_id')">
                                     {{ __('Company') }} </th>
-                                <th class="text-center" wire:click="sortColumnName('departemen')">
-                                    {{ __('Departemen') }}
+                                <th class="text-center" wire:click="sortColumnName('department_id')">
+                                    {{ __('Department') }}
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('jabatan_id')">
                                     {{ __('Jabatan') }} </th>
@@ -282,7 +282,7 @@
                                     <td>{{ $data->nama }}</td>
                                     <td class="text-center">{{ $data->placement }}</td>
                                     <td class="text-center">{{ $data->company->company_name }}</td>
-                                    <td class="text-center">{{ $data->departemen }}</td>
+                                    <td class="text-center">{{ $data->department->nama_department }}</td>
                                     <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
 
                                     @if (Auth::user()->role > 6)

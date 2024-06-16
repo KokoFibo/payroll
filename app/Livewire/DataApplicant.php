@@ -143,6 +143,7 @@ class DataApplicant extends Component
                 'status_karyawan' => 'PKWT',
                 'jabatan_id' => 100,
                 'company_id' => 100,
+                'department_id' => 100,
                 'tanggal_bergabung' => Carbon::now()->toDateString()
             ]);
 
