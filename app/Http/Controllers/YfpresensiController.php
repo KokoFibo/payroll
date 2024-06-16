@@ -185,7 +185,6 @@ class YfpresensiController extends Controller
                 $Yfpresensidata[] = [
                     'user_id' => $user_id,
                     // 'name' => $name,
-                    // 'department' => $department,
                     'date' => $tgl,
                     'time' => $time,
                     'day_number' => date('w', strtotime($tgl)),
@@ -382,10 +381,6 @@ class YfpresensiController extends Controller
                         }
                     }
                 }
-
-                // $department = $importedData->getCell( 'C' . $i )->getValue();
-                // $dept = Department::updateOrCreate( [ 'name' => $department ], [ 'name' => $department ] );
-                // Employee::updateOrCreate( [ 'user_id' => $user_id, 'name' => $name ], [ 'user_id' => $user_id, 'name' => $name, 'department_id' => $dept->id ] );
             }
 
             if ($importedData->getCell('D' . $i)->getValue() != '') {
@@ -395,20 +390,12 @@ class YfpresensiController extends Controller
                     $time = date('H:i', strtotime($str));
                 }
 
-                // Yfpresensi::create( [
-                //     'user_id' => $user_id,
-                //     'name' => $name,
-                //     'department' => $department,
-                //     'date' => $tgl,
-                //     'time' => $time,
-                //     'day_number' => date( 'w', strtotime( $tgl ) ),
-                // ] );
+
 
                 //  pakai Chunk
                 $Yfpresensidata[] = [
                     'user_id' => $user_id,
-                    // 'name' => $name,
-                    // 'department' => $department,
+
                     'date' => $tgl,
                     'time' => $time,
                     'day_number' => date('w', strtotime($tgl)),
@@ -442,7 +429,6 @@ class YfpresensiController extends Controller
             ->count('user_id');
 
         $karyawanHadir = DB::table('yfpresensis')
-            // ->select( 'user_id', 'name', 'date', 'department' )
             ->select('user_id', 'date')
             ->distinct()
             ->get();
@@ -450,7 +436,6 @@ class YfpresensiController extends Controller
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
             // $name = $kh->name;
-            // $department = $kh->department;
             $tgl = $kh->date;
             $first_in = null;
             $first_out = null;
@@ -696,7 +681,6 @@ class YfpresensiController extends Controller
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
                 // 'name' => $name,
-                // 'department' => $department,
                 'date' => $tgl,
                 'first_in' => $first_in,
                 'first_out' => $first_out,

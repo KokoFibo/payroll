@@ -31,129 +31,129 @@ class Placementreport extends Component
         $this->jumlah_karyawan = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('placement', $this->placement)
-            ->whereIn('departemen', ['Produksi', 'Quality Control', 'Gudang', 'Engineering', 'GA', 'Exim', 'BD', 'Procurement'])
+            ->whereIn('department_id', [10, 11, 6, 2, 5, 3, 1, 9])
             ->count();
         $this->jumlah_shift_malam = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
             ->where('placement', $this->placement)
-            ->whereIn('departemen', ['Produksi', 'Quality Control', 'Gudang', 'Engineering', 'GA', 'Exim', 'BD', 'Procurement'])
+            ->whereIn('department_id', [10, 11, 6, 2, 5, 3, 1, 9])
             ->count();
 
         $this->jumlah_laki_laki = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('gender', 'Laki-laki')
             ->where('placement', $this->placement)
-            ->whereIn('departemen', ['Produksi', 'Quality Control', 'Gudang', 'Engineering', 'GA', 'Exim', 'BD', 'Procurement'])
+            ->whereIn('department_id', [10, 11, 6, 2, 5, 3, 1, 9])
             ->count();
         $this->jumlah_perempuan = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('gender', 'Perempuan')
             ->where('placement', $this->placement)
-            ->whereIn('departemen', ['Produksi', 'Quality Control', 'Gudang', 'Engineering', 'GA', 'Exim', 'BD', 'Procurement'])
+            ->whereIn('department_id', [10, 11, 6, 2, 5, 3, 1, 9])
             ->count();
 
         $this->shift_pagi_produksi = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'Produksi')
+            ->where('department_id', 10)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_produksi = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'Produksi')
+            ->where('department_id', 10)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_quality_control = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'Quality Control')
+            ->where('department_id', 11)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_quality_control = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'Quality Control')
+            ->where('department_id', 11)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_gudang = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'Gudang')
+            ->where('department_id', 6)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_gudang = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'Gudang')
+            ->where('department_id', 6)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_engineering = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'Engineering')
+            ->where('department_id', 2)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_engineering = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'Engineering')
+            ->where('department_id', 2)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_ga = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'GA')
+            ->where('department_id', 5)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_ga = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'GA')
+            ->where('department_id', 5)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_exim = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'EXIM')
+            ->where('department_id', 3)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_exim = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'EXIM')
+            ->where('department_id', 3)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_bd = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'BD')
+            ->where('department_id', 1)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_bd = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'BD')
+            ->where('department_id', 1)
             ->where('placement', $this->placement)
             ->count();
 
         $this->shift_pagi_procurement = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Pagi')
-            ->where('departemen', 'Procurement')
+            ->where('department_id', 9)
             ->where('placement', $this->placement)
             ->count();
         $this->shift_malam_procurement = Yfrekappresensi::join('karyawans', 'karyawans.id', 'yfrekappresensis.karyawan_id')
             ->where('date', $this->last_date)
             ->where('shift', 'Malam')
-            ->where('departemen', 'Procurement')
+            ->where('department_id', 9)
             ->where('placement', $this->placement)
             ->count();
 
@@ -164,105 +164,105 @@ class Placementreport extends Component
 
         // Karywawan Resign
         $this->resign_produksi = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Produksi')
+            ->where('department_id', 10)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_quality_control = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Quality Control')
+            ->where('department_id', 11)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_gudang = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Gudang')
+            ->where('department_id', 6)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_engineering = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Engineering')
+            ->where('department_id', 2)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_ga = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'GA')
+            ->where('department_id', 5)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_exim = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Exim')
+            ->where('department_id', 3)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_bd = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'BD')
+            ->where('department_id', 1)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_procurement = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Procurement')
+            ->where('department_id', 9)
             ->where('tanggal_resigned', $this->last_date)
             ->count();
         $this->resign_total = $this->resign_produksi + $this->resign_quality_control + $this->resign_gudang + $this->resign_engineering + $this->resign_ga + $this->resign_exim + $this->resign_bd + $this->resign_procurement + $this->resign_total;
 
         // Karywawan Blacklist
         $this->blacklist_produksi = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Produksi')
+            ->where('department_id', 10)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_quality_control = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Quality Control')
+            ->where('department_id', 11)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_gudang = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Gudang')
+            ->where('department_id', 6)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_engineering = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Engineering')
+            ->where('department_id', 2)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_ga = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'GA')
+            ->where('department_id', 5)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_exim = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Exim')
+            ->where('department_id', 3)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_bd = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'BD')
+            ->where('department_id', 1)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_procurement = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Procurement')
+            ->where('department_id', 9)
             ->where('tanggal_blacklist', $this->last_date)
             ->count();
         $this->blacklist_total = $this->blacklist_produksi + $this->blacklist_quality_control + $this->blacklist_gudang + $this->blacklist_engineering + $this->blacklist_ga + $this->blacklist_exim + $this->blacklist_bd + $this->blacklist_procurement + $this->blacklist_total;
 
         // Karywawan Baru
         $this->baru_produksi = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Produksi')
+            ->where('department_id', 10)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_quality_control = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Quality Control')
+            ->where('department_id', 11)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_gudang = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Gudang')
+            ->where('department_id', 6)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_engineering = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Engineering')
+            ->where('department_id', 2)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_ga = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'GA')
+            ->where('department_id', 5)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_exim = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Exim')
+            ->where('department_id', 3)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_bd = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'BD')
+            ->where('department_id', 1)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_procurement = Karyawan::where('placement', $this->placement)
-            ->where('departemen', 'Procurement')
+            ->where('department_id', 9)
             ->where('tanggal_bergabung', $this->last_date)
             ->count();
         $this->baru_total =

@@ -1,11 +1,14 @@
 <?php
 
 use App\Livewire\Test;
+use App\Livewire\Terwr;
 use App\Models\Payroll;
 use App\Livewire\DataLog;
 use App\Livewire\Profile;
 use App\Livewire\UserLog;
+use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
+use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
 use App\Livewire\Jabatanwr;
@@ -19,11 +22,13 @@ use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
 use App\Livewire\AddPresensi;
+use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
 use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
+use App\Livewire\Departmentwr;
 use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\DataApplicant;
@@ -46,13 +51,17 @@ use App\Livewire\Presensidetailwr;
 use App\Livewire\Removepresensiwr;
 use App\Livewire\SalaryAdjustment;
 use App\Livewire\Updatekaryawanwr;
+use App\Livewire\ApplicantDiterima;
+use App\Livewire\KaryawanReinstate;
 use App\Livewire\Karyawansettingwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TerControler;
 use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
+use App\Http\Controllers\KviewController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
@@ -65,13 +74,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Http\Controllers\KviewController;
-use App\Http\Controllers\TerControler;
-use App\Livewire\ApplicantDiterima;
-use App\Livewire\ChangeField;
-use App\Livewire\Gajibpjs;
-use App\Livewire\KaryawanReinstate;
-use App\Livewire\Terwr;
 
 // Middleware
 Auth::routes([
@@ -249,7 +251,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/data-log', DataLog::class)->name('datalog');
                             Route::get('/changefield', ChangeField::class)->name('changefield');
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
-
+                            Route::get('/department', Departmentwr::class);
 
 
 

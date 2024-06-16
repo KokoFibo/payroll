@@ -436,9 +436,9 @@ class Payrollwr extends Component
 
     public function mount()
     {
-        $this->departments = Karyawan::select('departemen')
+        $this->departments = Karyawan::select('department_id')
             ->distinct()
-            ->pluck('departemen')
+            ->pluck('department_id')
             ->toArray();
 
         $data = Payroll::first();

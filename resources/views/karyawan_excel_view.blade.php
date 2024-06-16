@@ -39,7 +39,7 @@
                     <td style="text-align: center"> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->placement }}</td>
                     <td style="text-align: center"> {{ $d->company->company_name }}</td>
-                    <td style="text-align: center"> {{ $d->departemen }}</td>
+                    <td style="text-align: center"> {{ $d->department->nama_department }}</td>
                     <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>

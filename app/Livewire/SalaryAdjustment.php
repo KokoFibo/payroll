@@ -117,14 +117,7 @@ class SalaryAdjustment extends Component
     public function render()
     {
 
-        // $this->pilihLamaKerja = 3;
-        // $ninetyDaysAgo = Carbon::now()->subDays(90);
-        // $hundredTwentyDaysAgo = Carbon::now()->subDays(120);
-        // $hundredFiftyDaysAgo = Carbon::now()->subDays(150);
-        // $hundredEigtyDaysAgo = Carbon::now()->subDays(180);
-        // $twoHundredTenDaysAgo = Carbon::now()->subDays(210);
-        // $twoHundredFortyDaysAgo = Carbon::now()->subDays(240);
-        // $twoHundredseventyDaysAgo = Carbon::now()->subDays(270);
+
 
         $bulan3 = Carbon::now()->startOfMonth()->subMonths(4);
         $bulan4 = Carbon::now()->startOfMonth()->subMonths(5);
@@ -135,19 +128,24 @@ class SalaryAdjustment extends Component
         $bulan9 = Carbon::now()->startOfMonth()->subMonths(10);
 
         // dd($bulan3->format('m'));
+
         switch ($this->pilihLamaKerja) {
             case "3":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    // ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    // ->whereNotIn('departemen', ['EXIM', 'GA'])
+
+                    ->whereNotIn('department_id', [3, 5])
+
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -164,7 +162,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -178,13 +176,13 @@ class SalaryAdjustment extends Component
                     ->where('gaji_pokok', '<', 2200000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
                     ->where('gaji_pokok', '<', 2200000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -202,7 +200,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -218,13 +216,13 @@ class SalaryAdjustment extends Component
                     ->where('gaji_pokok', '<', 2300000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
                     ->where('gaji_pokok', '<', 2300000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -242,7 +240,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -255,13 +253,13 @@ class SalaryAdjustment extends Component
                     ->where('gaji_pokok', '<', 2400000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
                     ->where('gaji_pokok', '<', 2400000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -279,7 +277,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -292,13 +290,13 @@ class SalaryAdjustment extends Component
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -316,7 +314,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -329,13 +327,13 @@ class SalaryAdjustment extends Component
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])->get();
+                    ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('departemen', ['EXIM', 'GA'])
+                    ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
                     ->when($this->search_id_karyawan, function ($query) {
                         $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -353,7 +351,7 @@ class SalaryAdjustment extends Component
                         $query->where('jabatan_id', $this->search_jabatan);
                     })
                     ->when($this->search_department, function ($query) {
-                        $query->where('departemen', $this->search_department);
+                        $query->where('department_id', $this->search_department);
                     })
                     // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
@@ -368,7 +366,7 @@ class SalaryAdjustment extends Component
         $placements = array();
 
         $jabatans = array_merge($jabatans, $data2->pluck('jabatan_id')->unique()->toArray());
-        $departments = array_merge($departments, $data2->pluck('departemen')->unique()->toArray());
+        $departments = array_merge($departments, $data2->pluck('department_id')->unique()->toArray());
         $companies = array_merge($companies, $data2->pluck('company_id')->unique()->toArray());
         $placements = array_merge($placements, $data2->pluck('placement')->unique()->toArray());
 

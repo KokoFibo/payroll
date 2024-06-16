@@ -97,7 +97,7 @@
                                 {{ __('Company') }}</th>
                             <th wire:click="sortColumnName('placement')">
                                 {{ __('Placement') }}</th>
-                            <th wire:click="sortColumnName('departemen')">
+                            <th wire:click="sortColumnName('department_id')">
                                 {{ __('Department') }}</th>
                             <th wire:click="sortColumnName('jabatanid')">
                                 {{ __('Jabatan') }}</th>
@@ -120,14 +120,14 @@
                                 <td>{{ $d->nama }}</td>
                                 <td>{{ $d->company->company_name }}</td>
                                 <td>{{ $d->placement }}</td>
-                                <td>{{ $d->departemen }}</td>
+                                <td>{{ $d->department->nama_department }}</td>
                                 <td>{{ $d->jabatan->nama_jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>
                                 <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
                                 <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
                                 <td>{{ number_format($d->gaji_pokok) }}</td>
                                 <td class="text-center">
-                                    @if (auth()->user()->role >= 3)
+                                    @if (auth()->user()->role >= 6)
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                             wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
                                             class="btn btn-warning btn-sm nightowl-daylight"

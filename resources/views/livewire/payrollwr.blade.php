@@ -218,7 +218,8 @@
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Department') }}</option>
                             @foreach ($departments as $department)
-                                <option value="{{ $department }}">{{ $department }}</option>
+                                <option value="{{ nama_department($department) }}">{{ nama_department($department) }}
+                                </option>
                             @endforeach
 
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
