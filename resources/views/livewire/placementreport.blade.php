@@ -2,7 +2,7 @@
     {{-- Header --}}
     <div class="card mt-5 my-3">
         <div class="card-header" style="background-color: #466deb; color: white">
-            @if ($placement != '')
+            @if ($placement_id != '')
                 <div class='text-right'>
                     <button wire:click='close' class='btn btn-sm btn-info'>{{ __('Close Detail') }}</button>
                 </div>
@@ -10,12 +10,20 @@
             <p class="text-center lg:text-2xl">{{ __('Placement Report') }} </p>
         </div>
         <div class="mt-3">
-            <div class="px-4 d-flex flex-lg-row flex-column align-items-center lg:gap-0 gap-3">
+            <div class="px-4 pb-3 d-flex flex-lg-row flex-column align-items-center lg:gap-0 gap-3">
                 <input type="date" wire:model.live='last_date'
                     class="form-control text-center col-8 col-lg-3 mr-0 lg:mr-5 " id="exampleFormControlInput1">
-                <span>{{ __('Silakan pilih Placement dibawah untuk lihat detail') }}</span>
                 <div>
-                    <button wire:loading wire:target='placement' class="btn btn-primary " type="button">
+                    <select wire:model.live="placement_id" class="form-select" aria-label="Default select example">
+                        <option value="">{{ __('Pilih Placement') }}</option>
+                        @foreach ($placements as $j)
+                            <option value="{{ $j }}">{{ nama_placement($j) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <button wire:loading wire:target='placement_id' class="btn btn-primary " type="button">
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     </button>
                     <button wire:loading wire:target='last_date' class="btn btn-primary " type="button">
@@ -23,84 +31,10 @@
                     </button>
                 </div>
             </div>
-            <div class="d-flex  flex-lg-row flex-column  justify-content-evenly gap-lg-0 gap-2 mb-3 lg:my-3">
-                <div class="d-flex  gap-lg-3 gap-0 justify-content-evenly lg:p-0">
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YCME"
-                            value="YCME">
-                        <label class="form-check-label" for="YCME">
-                            YCME
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YAM"
-                            value="YAM">
-                        <label class="form-check-label" for="YAM">
-                            YAM
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YIG"
-                            value="YIG">
-                        <label class="form-check-label" for="YIG">
-                            YIG
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YSM"
-                            value="YSM">
-                        <label class="form-check-label" for="YSM">
-                            YSM
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YEV"
-                            value="YEV">
-                        <label class="form-check-label" for="YEV">
-                            YEV
-                        </label>
-                    </div>
-                </div>
-
-                <div class="d-flex gap-lg-3 gap-0 justify-content-lg-between justify-content-evenly">
-
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YEV_SMOOT"
-                            value="YEV SMOOT">
-                        <label class="form-check-label" for="YEV_SMOOT">
-                            YEV SMOOT
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YEV_OFFERO"
-                            value="YEV OFFERO">
-                        <label class="form-check-label" for="YEV_OFFERO">
-                            YEV OFFERO
-                        </label>
-                    </div>
-
-                </div>
-                <div class="d-flex gap-lg-3 gap-0 justify-content-lg-between justify-content-evenly">
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YEV_SUNRA"
-                            value="YEV SUNRA">
-                        <label class="form-check-label" for="YEV_SUNRA">
-                            YEV SUNRA
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input wire:model.live='placement' class="form-check-input" type="radio" id="YEV_AIMA"
-                            value="YEV AIMA">
-                        <label class="form-check-label" for="YEV_AIMA">
-                            YEV AIMA
-                        </label>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    @if ($placement != '')
+    @if ($placement_id != '')
         <div class="card my-3">
             <div class="card-header" style="background-color: #608ed3; color: white">
                 <h2 class="py-1 px-3 text-center text-lg lg:text-2xl">{{ __('Penempatan Bagian Karyawan Pabrik') }}
@@ -157,7 +91,7 @@
 
 
 
-    @if ($placement != '')
+    @if ($placement_id != '')
         {{-- Penempatan Bagian Karyawan Pabrik --}}
         <div class="card my-3">
             <div class="card-header" style="background-color: #608ed3; color: white">
