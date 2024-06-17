@@ -154,7 +154,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -192,7 +192,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -232,7 +232,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -269,7 +269,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -306,7 +306,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -343,7 +343,7 @@ class SalaryAdjustment extends Component
                         $query->where('company_id', $this->search_company);
                     })
                     ->when($this->search_placement, function ($query) {
-                        $query->where('placement', $this->search_placement);
+                        $query->where('placement_id', $this->search_placement);
                     })
 
 
@@ -368,7 +368,7 @@ class SalaryAdjustment extends Component
         $jabatans = array_merge($jabatans, $data2->pluck('jabatan_id')->unique()->toArray());
         $departments = array_merge($departments, $data2->pluck('department_id')->unique()->toArray());
         $companies = array_merge($companies, $data2->pluck('company_id')->unique()->toArray());
-        $placements = array_merge($placements, $data2->pluck('placement')->unique()->toArray());
+        $placements = array_merge($placements, $data2->pluck('placement_id')->unique()->toArray());
 
 
 

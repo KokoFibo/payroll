@@ -68,7 +68,10 @@ function build_payroll($month, $year)
         return 0;
     }
 
-
+    // $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
+    //     ->whereMonth('date', $month)
+    //     ->whereYear('date', $year)
+    //     ->get();
 
     // disini mulai prosesnya
 
@@ -85,7 +88,7 @@ function build_payroll($month, $year)
 
 
 
-            $dataId = Yfrekappresensi::with('karyawan:id,jabatan_id,status_karyawan,metode_penggajian,placement_id,tanggal_blacklist')
+            $dataId = Yfrekappresensi::with('karyawan:id,jabatan_id,status_karyawan,metode_penggajian,placement,tanggal_blacklist')
                 ->where('user_id', $data)
                 ->where('date', '>=', $startOfMonth)
                 ->where('date', '<=', $endOfMonth)
@@ -139,8 +142,8 @@ function build_payroll($month, $year)
                     if ($jam_lembur >= 9 && is_sunday($d->date) == false && $d->karyawan->jabatan_id != 22) {
                         $jam_lembur = 0;
                     }
-                    // yig= 12, ysm= 13
-                    if ($d->karyawan->placement_id == 12 || $d->karyawan->placement_id == 13 || $d->karyawan->jabatan_id == 17) {
+
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan_id == 17) {
                         if (is_friday($d->date)) {
                             $jam_kerja = 7.5;
                         } elseif (is_saturday($d->date)) {
@@ -490,7 +493,7 @@ function build_payroll($month, $year)
             // 'jabatan' => $data->karyawan->jabatan_id,
             'jabatan' => nama_jabatan($data->karyawan->jabatan_id),
             'company' => nama_company($data->karyawan->company_id),
-            'placement' => nama_placement($data->karyawan->placement_id),
+            'placement' => $data->karyawan->placement,
             'departemen' => $data->karyawan->department->nama_department,
             'status_karyawan' => $data->karyawan->status_karyawan,
             'metode_penggajian' => $data->karyawan->metode_penggajian,
@@ -700,7 +703,7 @@ function build_payroll($month, $year)
             $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
             $data->company = nama_company($data_karyawan->company_id);
             $data->departemen = nama_department($data_karyawan->department_id);
-            $data->placement = nama_placement($data_karyawan->placement_id);
+            $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;
             $data->nomor_rekening = $data_karyawan->nomor_rekening;
@@ -725,7 +728,7 @@ function build_payroll($month, $year)
             $data->company = nama_company($data_karyawan->company_id);
             $data->departemen = nama_department($data_karyawan->department_id);
 
-            $data->placement = nama_placement($data_karyawan->placement_id);
+            $data->placement = $data_karyawan->placement;
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;
             $data->nomor_rekening = $data_karyawan->nomor_rekening;

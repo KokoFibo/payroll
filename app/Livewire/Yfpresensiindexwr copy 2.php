@@ -215,7 +215,7 @@ class Yfpresensiindexwr extends Component
                     //     dd($jam_kerja, $terlambat);
                     // }
 
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement_id);
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement);
                     if (is_sunday($d->date)) {
                         $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 * 2
                             + $langsungLembur * 2;
@@ -248,8 +248,8 @@ class Yfpresensiindexwr extends Component
                     if (($jam_lembur >= 9) && (is_sunday($d->date) == false) && ($d->karyawan->jabatan_id != 22)) {
                         $jam_lembur = 0;
                     }
-                    // yig = 12, ysm = 13
-                    if ($d->karyawan->placement_id == 12 || $d->karyawan->placement_id == 13 || $d->karyawan->jabatan_id == 17) {
+
+                    if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan_id == 17) {
                         if (is_friday($d->date)) {
                             $jam_kerja = 7.5;
                         } elseif (is_saturday($d->date)) {
@@ -281,6 +281,19 @@ class Yfpresensiindexwr extends Component
                         }
                     }
 
+                    // khusus placement YAM yev yev... tgl 2024-04-07 dan 2024-04-09  
+                    $rule1 = ($d->date == '2024-04-07' || $d->date == '2024-04-09') &&  (substr($d->karyawan->placement, 0, 3) == "YEV" || $d->karyawan->placement == 'YAM');
+                    if ($rule1) {
+                        $jam_kerja /= 2;
+                        $jam_lembur /= 2;
+                    }
+
+
+
+
+                    // elseif ((is_libur_nasional($d->date) &&  !is_sunday($d->date)) && $d->karyawan->jabatan_id == 'Translator') {
+                    //     $jam_kerja /= 2;
+                    // }
 
                     $table_warning = false;
                     if (is_sunday($d->date) || is_libur_nasional($d->date)) {
@@ -564,7 +577,15 @@ class Yfpresensiindexwr extends Component
             $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.jabatan_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->join('jabatans', 'karyawans.jabatan_id', '=', 'jabatans.id')
-
+                // ->when($this->location == 'Pabrik 1', function ($query) {
+                //     return $query->where('placement', 'YCME');
+                // })
+                // ->when($this->location == 'Pabrik 2', function ($query) {
+                //     return $query->where('placement', 'YEV');
+                // })
+                // ->when($this->location == 'Kantor', function ($query) {
+                //     return $query->whereIn('placement', ['YIG', 'YSM']);
+                // })
                 ->orderBy($this->columnName, $this->direction)
                 // hilangin ini kalau ngaco            
                 ->orderBy('user_id', 'asc')
@@ -592,7 +613,7 @@ class Yfpresensiindexwr extends Component
                             // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
                             // ->orWhere('jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('nama_jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('placement_id', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('placement', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
                             ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
                         // ->whereMonth('date', $this->month)

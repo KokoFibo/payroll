@@ -95,7 +95,7 @@
                             <th>{{ __('Nama') }}</th>
                             <th wire:click="sortColumnName('company_id')">
                                 {{ __('Company') }}</th>
-                            <th wire:click="sortColumnName('placement')">
+                            <th wire:click="sortColumnName('placement_id')">
                                 {{ __('Placement') }}</th>
                             <th wire:click="sortColumnName('department_id')">
                                 {{ __('Department') }}</th>
@@ -119,7 +119,7 @@
                                 <td>{{ $d->id_karyawan }}</td>
                                 <td>{{ $d->nama }}</td>
                                 <td>{{ $d->company->company_name }}</td>
-                                <td>{{ $d->placement }}</td>
+                                <td>{{ $d->placement->placement_name }}</td>
                                 <td>{{ $d->department->nama_department }}</td>
                                 <td>{{ $d->jabatan->nama_jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>

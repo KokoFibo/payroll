@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
 use App\Exports\KaryawanByDepartmentExport;
+use App\Models\Placement;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Karyawanindexwr extends Component
@@ -145,7 +146,6 @@ class Karyawanindexwr extends Component
             'data_karyawan' . "_" . $this->month . "_" . $this->year . ".xlsx";
 
 
-        // return Excel::download(new KaryawanByDepartmentExport($this->search_placement, $this->search_department), $nama_file);
 
         return Excel::download(new KaryawanByDepartmentExport($this->search_nama, $this->search_id_karyawan, $this->search_company, $this->search_placement, $this->search_department, $this->search_jabatan, $this->search_etnis), $nama_file);
     }
@@ -321,7 +321,7 @@ class Karyawanindexwr extends Component
         //         break;
         // }
 
-        $placement_fn = $this->search_placement;
+        $placement_fn = nama_placement($this->search_placement);
         $company_fn = nama_company($this->search_company);
 
         if ($placement_fn && $company_fn) {
@@ -337,20 +337,12 @@ class Karyawanindexwr extends Component
         return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->selectStatus), $nama_file);
     }
 
-    public function getPayrollQuery($statuses, $search = null, $placement = null, $company_id = null)
+    public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null)
     {
         return Karyawan::query()
             ->whereIn('status_karyawan', $statuses)
             ->when($search, function ($query) use ($search) {
                 $query
-
-                    // ->where('nama', 'LIKE', $search)
-                    // ->orWhere('company', 'LIKE', $search)
-                    // ->orWhere('id_karyawan', 'LIKE', $search)
-                    // ->orWhere('departemen', 'LIKE', $search)
-                    // ->orWhere('placement', 'LIKE', $search)
-                    // ->orWhere('company', 'LIKE', $search)
-                    // ->orWhere('jabatan', 'LIKE', $search);
 
                     ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
@@ -359,8 +351,8 @@ class Karyawanindexwr extends Component
                     ->orWhere('company_id', 'LIKE', '%' . trim($this->search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
             })
-            ->when($placement, function ($query) use ($placement) {
-                $query->where('placement', $placement);
+            ->when($placement_id, function ($query) use ($placement_id) {
+                $query->where('placement_id', $placement_id);
             })
             ->when($company_id, function ($query) use ($company_id) {
                 $query->where('company_id', $company_id);
@@ -383,9 +375,24 @@ class Karyawanindexwr extends Component
         }
 
 
+        $placements = Karyawan::whereIn('status_karyawan', $statuses)
+            // ->when($this->search_department, function ($query) {
+            //     $query->where('department_id', $this->search_department);
+            // })
+
+            // ->when($this->search_company, function ($query) {
+            //     $query->where('company_id', trim($this->search_company));
+            // })
+            // ->when($this->search_jabatan, function ($query) {
+            //     $query->where('jabatan_id', trim($this->search_jabatan));
+            // })
+            ->pluck('placement_id')->unique();
+
+        // $placements = Placement::all();
+
         $departments = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                $query->where('placement_id', $this->search_placement);
             })
 
             ->when($this->search_company, function ($query) {
@@ -398,7 +405,7 @@ class Karyawanindexwr extends Component
 
         $companies = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                $query->where('placement_id', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
                 $query->where('department_id', trim($this->search_department));
@@ -410,7 +417,7 @@ class Karyawanindexwr extends Component
 
         $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                $query->where('placement_id', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
                 $query->where('department_id', trim($this->search_department));
@@ -422,7 +429,7 @@ class Karyawanindexwr extends Component
 
         $etnises = Karyawan::whereIn('status_karyawan', $statuses)
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                $query->where('placement_id', $this->search_placement);
             })
             ->when($this->search_department, function ($query) {
                 $query->where('department_id', trim($this->search_department));
@@ -451,7 +458,7 @@ class Karyawanindexwr extends Component
             })
 
             ->when($this->search_placement, function ($query) {
-                $query->where('placement', $this->search_placement);
+                $query->where('placement_id', $this->search_placement);
             })
             ->when($this->search_jabatan, function ($query) {
                 $query->where('jabatan_id', $this->search_jabatan);
@@ -474,6 +481,7 @@ class Karyawanindexwr extends Component
 
         return view('livewire.karyawanindexwr', [
             'datas' => $datas,
+            'placements' => $placements,
             'departments' => $departments,
             'jabatans' => $jabatans,
             'companies' => $companies,
