@@ -23,7 +23,7 @@
                         <td> {{ $d->nama }}</td>
                         <td> {{ $d->hp }}</td>
                         <td> {{ $d->company->company_name }}</td>
-                        <td> {{ $d->placement }}</td>
+                        <td> {{ $d->placement->placement_name }}</td>
                         <td> {{ $d->department->nama_department }}</td>
                         <td> {{ number_format($d->gaji_bpjs) }}</td>
                         <td> {{ $d->ptkp }}</td>
