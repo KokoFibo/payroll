@@ -60,7 +60,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         $company = nama_company($this->selected_company);
 
         if ($placement && $company) {
-            $header_text = "Excel Karyawan Placement $placement, Company $company";
+            $header_text = "Excel Karyawan Company $company, Placement $placement";
         } elseif ($placement) {
             $header_text = "Excel Karyawan Placement $placement";
         } elseif ($company) {

@@ -94,11 +94,17 @@
                                         <select wire:model.live="search_placement" class="form-select"
                                             aria-label="Default select example">
                                             <option value="">{{ __('Placement') }}</option>
-                                            <option value="YCME">YCME</option>
+                                            @foreach ($placements as $j)
+                                                {{-- <option value="{{ $j->id }}">{{ $j->placement_name }}</option> --}}
+                                                <option value="{{ $j }}">{{ nama_placement($j) }}
+                                                    {{-- <option value="{{ $j }}">{{ $j }} --}}
+                                                </option>
+                                            @endforeach
+                                            {{-- <option value="YCME">YCME</option>
                                             <option value="YEV">YEV</option>
                                             <option value="YAM">YAM</option>
                                             <option value="YIG">YIG</option>
-                                            <option value="YSM">YSM</option>
+                                            <option value="YSM">YSM</option> --}}
                                             {{-- <option value="1">YCME</option>
                                             <option value="2">YEV</option>
                                             <option value="6">YAM</option>
@@ -205,7 +211,7 @@
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID Karyawan') }}
                                 </th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} </th>
-                                <th class="text-center" wire:click="sortColumnName('placement')">
+                                <th class="text-center" wire:click="sortColumnName('placement_id')">
                                     {{ __('Placement') }}
 
                                 </th>
@@ -219,8 +225,9 @@
                                 @if (Auth::user()->role > 6)
                                     <th class="text-center" wire:click="sortColumnName('etnis')">
                                         {{ __('Etnis') }}
-                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">
-                                        {{ __('Level Jabatan') }}
+                                        {{-- level jabatan smeentar di hide dulu --}}
+                                        {{-- <th class="text-center" wire:click="sortColumnName('level_jabatan')">
+                                        {{ __('Level Jabatan') }} --}}
                                 @endif
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">
@@ -280,14 +287,15 @@
                                     </td>
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
-                                    <td class="text-center">{{ $data->placement }}</td>
+                                    <td class="text-center">{{ $data->placement->placement_name }}</td>
                                     <td class="text-center">{{ $data->company->company_name }}</td>
                                     <td class="text-center">{{ $data->department->nama_department }}</td>
                                     <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
 
                                     @if (Auth::user()->role > 6)
                                         <td class="text-center">{{ $data->etnis }}</td>
-                                        <td class="text-center">{{ $data->level_jabatan }}</td>
+                                        {{-- level jabatan smeentar di hide dulu --}}
+                                        {{-- <td class="text-center">{{ $data->level_jabatan }}</td> --}}
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
                                     {{-- @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) || auth()->user()->role > 6) --}}
