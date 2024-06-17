@@ -34,8 +34,8 @@ return new class extends Migration
             $table->string('status_karyawan')->nullable();
             $table->date('tanggal_bergabung')->nullable();
             $table->foreignId('company_id')->nullable();
-            $table->string('placement')->nullable();
-            $table->string('departemen')->nullable();
+            $table->foreignId('placement_id')->nullable();
+            $table->foreignId('department_id')->nullable();
             // $table->string('jabatan')->nullable();
             $table->foreignId('jabatan_id')->nullable();
 

@@ -10,53 +10,84 @@ class ChangeField extends Component
     public function change()
     {
         $data = Karyawan::get();
-        $departemen = '';
+        $total_karyawan = Karyawan::count();
+        $placement = '';
+        $cx = 0;
         foreach ($data as $d) {
-            switch ($d->departemen) {
-                case 'BD':
-                    $departemen = '1';
+            switch ($d->placement) {
+                case 'ASB':
+                    $placement = '1';
+                    $cx++;
+
                     break;
-                case 'Engineering':
-                    $departemen = '2';
+                case 'DPA':
+                    $placement = '2';
+                    $cx++;
+
                     break;
-                case 'EXIM':
-                    $departemen = '3';
+                case 'GAMA':
+                    $placement = '3';
+                    $cx++;
+
                     break;
-                case 'Finance Accounting':
-                    $departemen = '4';
+                case 'WAS':
+                    $placement = '4';
+                    $cx++;
+
                     break;
-                case 'GA':
-                    $departemen = '5';
+                case 'YAM':
+                    $placement = '5';
+                    $cx++;
+
                     break;
-                case 'Gudang':
-                    $departemen = '6';
+                case 'YCME':
+                    $placement = '6';
+                    $cx++;
+
                     break;
-                case 'HR':
-                    $departemen = '7';
+                case 'YEV':
+                    $placement = '7';
+                    $cx++;
+
                     break;
-                case 'Legal':
-                    $departemen = '8';
+                case 'YEV AIMA':
+                    $placement = '8';
+                    $cx++;
+
                     break;
-                case 'Procurement':
-                    $departemen = '9';
+                case 'YEV OFFERO':
+                    $placement = '9';
+                    $cx++;
+
                     break;
-                case 'Produksi':
-                    $departemen = '10';
+                case 'YEV SMOOT':
+                    $placement = '10';
+                    $cx++;
+
                     break;
-                case 'Quality Control':
-                    $departemen = '11';
+                case 'YEV SUNRA':
+                    $placement = '11';
+                    $cx++;
+
                     break;
-                case 'Board of Director':
-                    $departemen = '12';
+                case 'YIG':
+                    $placement = '12';
+                    $cx++;
+
+                    break;
+                case 'YSM':
+                    $placement = '13';
+                    $cx++;
+
                     break;
             }
-            $d->departemen = $departemen;
+            $d->placement = $placement;
             $d->save();
         }
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'Data has been changed',
+            title: $cx . ' Data of ' . $total_karyawan . ' has been changed',
         );
     }
     public function render()

@@ -172,25 +172,6 @@
                                 placeholder="{{ __('Search') }} ...">
                         </div>
                     </div>
-                    {{-- Company --}}
-                    <div>
-                        <select wire:model.live="selected_company" class="form-select"
-                            aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Companies') }}</option>
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option> --}}
-                            <option value="4">ASB</option>
-                            <option value="5">DPA</option>
-                            <option value="6">YCME</option>
-                            <option value="7">YEV</option>
-                            <option value="8">YIG</option>
-                            <option value="9">YSM</option>
-                            <option value="10">YAM</option>
-                            <option value="11">GAMA</option>
-                            <option value="12">WAS</option>
-                        </select>
-                    </div>
                     {{-- placement --}}
                     <div>
                         <select wire:model.live="selected_placement" class="form-select"
@@ -212,6 +193,26 @@
                                 <option value="5">DPA</option> --}}
                         </select>
                     </div>
+                    {{-- Company --}}
+                    <div>
+                        <select wire:model.live="selected_company" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Companies') }}</option>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                                <option value="2">{{ __('Pabrik 2') }}</option>
+                                <option value="3">{{ __('Kantor') }}</option> --}}
+                            <option value="4">ASB</option>
+                            <option value="5">DPA</option>
+                            <option value="6">YCME</option>
+                            <option value="7">YEV</option>
+                            <option value="8">YIG</option>
+                            <option value="9">YSM</option>
+                            <option value="10">YAM</option>
+                            <option value="11">GAMA</option>
+                            <option value="12">WAS</option>
+                        </select>
+                    </div>
+
                     {{-- Departemen --}}
                     <div>
                         <select wire:model.live="selected_departemen" class="form-select"
@@ -267,11 +268,11 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
-                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('departemen')">{{ __('Department') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -373,8 +374,8 @@
                                             <td>{{ $p->nama }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
                                             <td>{{ $p->jabatan }}</td>
-                                            <td>{{ $p->company }}</td>
                                             <td>{{ $p->placement }}</td>
+                                            <td>{{ $p->company }}</td>
                                             <td>{{ $p->departemen }}</td>
                                             <td>{{ $p->metode_penggajian }}</td>
                                             <td class="text-end">{{ $p->hari_kerja }}</td>

@@ -527,7 +527,7 @@ function get_placement($id)
         dd('ID tidak diketemukan : ' . $id);
     } else {
 
-        return $data->placement_id;
+        return $data->placement;
     }
 }
 function getTotalWorkingDays($year, $month)
@@ -986,7 +986,7 @@ function clear_locks()
     $lock->payroll = 0;
     $lock->save();
 }
-function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
+function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
 {
 
     // betulin
@@ -998,7 +998,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             return $diff;
         }
     }
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
         if ($second_out != null) {
             $lembur = 0;
             $t2 = strtotime($second_out);
@@ -1183,10 +1183,10 @@ function tgl_doang($tgl)
     return $dt->day;
 }
 
-function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement_id)
+function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement)
 {
     $perJam = 60;
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
         if ($late == null) {
             if ($shift == 'Pagi') {
                 if (is_saturday($tgl)) {
@@ -1206,7 +1206,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         } else {
             // check late kkk
-            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
+            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
@@ -1262,7 +1262,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         } else {
             // check late kkk
-            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
+            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
@@ -1555,16 +1555,16 @@ function trimTime($data)
     return Str::substr($data, 0, 5);
 }
 
-function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id)
+function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement)
 {
     $late_1 = 0;
     $late_2 = 0;
     $late_3 = 0;
     $late_4 = 0;
-    $late1 = checkFirstInLate($first_in, $shift, $tgl, $placement_id);
-    $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id);
-    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement_id);
-    $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id);
+    $late1 = checkFirstInLate($first_in, $shift, $tgl, $placement);
+    $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement);
+    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement);
+    $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement);
 
     // if (is_sunday($tgl) && (trim($jabatan) == 'Driver' || trim($jabatan) == 'Koki' || trim($jabatan) == 'Dapur Kantor' || trim($jabatan) == 'Dapur Pabrik')) {
     //     return 0;
@@ -1692,16 +1692,16 @@ function hoursToMinutes($jam)
     return $minJam + $min;
 }
 
-function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
+function checkFirstInLate($check_in, $shift, $tgl, $placement)
 {
     // rubah angka ini utk bulan puasa
-    $test = $placement_id;
+    $test = $placement;
 
     $jam_mulai_pagi = '08:03';
     $strtime_pagi = '08:03:00';
     $perJam = 60;
     $late = null;
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
         if ($check_in != null) {
             if ($shift == 'Pagi') {
                 // Shift Pagi
@@ -1793,11 +1793,11 @@ function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
     return $late;
 }
 
-function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
+function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
 {
     $perJam = 60;
     $late = null;
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
 
         if ($second_out != null) {
             if ($shift == 'Pagi') {
@@ -1959,13 +1959,13 @@ function checkOvertimeInLate($overtime_in, $shift, $tgl)
     return $late;
 }
 
-function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
+function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement)
 {
     //ok
     $perJam = 60;
     $late = null;
 
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
         } else {
@@ -2040,12 +2040,12 @@ function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
     return $late;
 }
 
-function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $placement_id)
+function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $placement)
 {
     $perJam = 60;
     $late = null;
 
-    if (is_puasa($tgl) && $placement_id == 6) {
+    if (is_puasa($tgl) && $placement == 'YCME') {
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
         } else {

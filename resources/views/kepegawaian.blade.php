@@ -230,10 +230,15 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Placement') }} <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select @error('placement') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="placement">
+                            <select class="form-select @error('placement_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="placement_id">
                                 <option value=" ">{{ __('Pilih placement') }}</option>
-                                <option value="ASB">ASB</option>
+                                @foreach ($pilih_placement as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->placement_name }}</option>
+                                    @endif
+                                @endforeach
+                                {{-- <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
                                 <option value="YIG">YIG</option>
@@ -245,10 +250,10 @@
                                 <option value="YEV SMOOT">YEV SMOOT</option>
                                 <option value="YEV OFFERO">YEV OFFERO</option>
                                 <option value="YEV SUNRA">YEV SUNRA</option>
-                                <option value="YEV AIMA">YEV AIMA</option>
+                                <option value="YEV AIMA">YEV AIMA</option> --}}
 
                             </select>
-                            @error('placement')
+                            @error('placement_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>

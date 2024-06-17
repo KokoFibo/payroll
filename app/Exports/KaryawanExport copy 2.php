@@ -39,7 +39,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         $data = Karyawan::whereIn('status_karyawan', $statuses);
 
         if ($this->selected_placement) {
-            $data = $data->where('placement_id', $this->selected_placement);
+            $data = $data->where('placement', $this->selected_placement);
         }
 
         if ($this->selected_company) {
@@ -56,7 +56,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         // } else {
         //     $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
         // }
-        $placement = nama_placement($this->selected_placement);
+        $placement = $this->selected_placement;
         $company = nama_company($this->selected_company);
 
         if ($placement && $company) {
@@ -87,7 +87,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
         return Karyawan::whereIn('status_karyawan', $statuses)
-            ->where('placement_id', 'selected_placement')
+            ->where('placement', 'selected_placement')
             ->where('company_id', 'selected_company');
     }
     //map

@@ -66,6 +66,9 @@ class Test extends Component
     $month = '10';
     $year = '2024';
 
+    $total_karyawan = Karyawan::count();
+    dd($total_karyawan);
+
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
     // Blacklist
     // $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
@@ -78,53 +81,9 @@ class Test extends Component
     //   ->orderBy('karyawans.tanggal_resigned', 'desc')
     //   ->paginate(10);
 
-    $gaji_bpjs = 10000000;
-    $ptkp = 'K3';
-
-    $jkk_company = ($gaji_bpjs * 0.24) / 100;
-    $jkm_company = ($gaji_bpjs * 0.3) / 100;
-    $kesehatan_company = ($gaji_bpjs * 0.4) / 100;
-    $total_bpjs_company = $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
-
-    switch ($ptkp) {
-      case 'TK0':
-        $ter = 'A';
-        break;
-      case 'TK1':
-        $ter = 'A';
-        break;
-      case 'TK2':
-        $ter = 'B';
-        break;
-      case 'TK3':
-        $ter = 'B';
-        break;
-      case 'K0':
-        $ter = 'A';
-        break;
-      case 'K1':
-        $ter = 'B';
-        break;
-      case 'K2':
-        $ter = 'B';
-        break;
-      case 'K3':
-        $ter = 'C';
-        break;
-    }
-    $total_bpjs_company = 26200000;
 
 
-    $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
-    $pph21 = $total_bpjs_company * $rate_pph21 / 100;
-
-
-    $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
-      ->where('karyawans.status_karyawan', 'Resigned')
-      ->whereMonth('payrolls.date', '05')
-      ->whereYear('payrolls.date', '2024')
-      ->where('payrolls.metode_penggajian', 'Perbulan')
-      ->orderBy('karyawans.tanggal_resigned', 'desc')
+    $datas = Karyawan::whereIn('placement', ['ASB', 'DPA',  'GAMA', 'WAS'])
       ->paginate(10);
 
 
