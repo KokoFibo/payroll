@@ -48,14 +48,6 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
 
         $data = $data->get();
 
-        // lllllllllllllllllllllllllllllllllllllllllllllllll
-
-
-        // if ($this->selected_departemen != 0) {
-        //     $header_text = 'Perincian Payroll untuk Department ' . $this->selected_departemen . ' ' . nama_bulan($this->month) . ' ' . $this->year;
-        // } else {
-        //     $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
-        // }
         $placement = nama_placement($this->selected_placement);
         $company = nama_company($this->selected_company);
 
@@ -77,27 +69,8 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         ]);
     }
 
-    public function query()
-    {
-        if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
-        } elseif ($this->selectStatus == 2) {
-            $statuses = ['Blacklist', 'Resigned'];
-        } else {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
-        }
-        return Karyawan::whereIn('status_karyawan', $statuses)
-            ->where('placement_id', 'selected_placement')
-            ->where('company_id', 'selected_company');
-    }
-    //map
-    // public function map($karyawan): array
-    // {
-    //     return [
-    //         $karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan->nama_jabatan,
-    //         $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs
-    //     ];
-    // }
+
+
 
     public function columnFormats(): array
     {

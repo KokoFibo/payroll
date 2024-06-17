@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class PermohonanPersonnel extends Component
 {
-    public $requester_id, $placement, $posisi, $jumlah_dibutuhkan, $level_posisi;
+    public $requester_id, $placement_id, $posisi, $jumlah_dibutuhkan, $level_posisi;
     public $manpower_posisi, $jumlah_manpower_saat_ini, $waktu_masuk_kerja, $job_description, $usia;
     public $pendidikan, $pengalaman_kerja, $kualifikasi_lain, $kisaran_gaji, $gender;
     public $skil_wajib, $alasan_permohonan, $tgl_request;
@@ -27,11 +27,12 @@ class PermohonanPersonnel extends Component
         $this->is_requester = false;
         $this->is_approval_1 = false;
         $this->is_approvel_2 = false;
-        $this->user_id = auth()->user()->username;
+        // $this->user_id = auth()->user()->username;
+        $this->user_id = 4;
         $karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
-        $this->placement = $karyawan->placement;
+        $this->placement_id = $karyawan->placement_id;
 
-        $check_user = Requester::where('placement', $this->placement)
+        $check_user = Requester::where('placement_id', $this->placement_id)
             ->where('request_id', $this->user_id)
             ->orWhere('approve_by_1', $this->user_id)
             ->orWhere('approve_by_2', $this->user_id)->first();
