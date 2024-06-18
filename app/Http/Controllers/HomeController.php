@@ -146,8 +146,10 @@ class HomeController extends Controller
             // return view( 'dashboardMobile1' );
             $user_id = auth()->user()->username;
 
+            // $month = 11;
+
+
             // $user_id = 1112;
-            $month = 11;
             // $total_hari_kerja = Yfrekappresensi::whereMonth('date', '=', 11)
             //     ->distinct('date')
             //     ->count();
@@ -168,10 +170,10 @@ class HomeController extends Controller
             foreach ($data as $d) {
                 if ($d->no_scan == null) {
                     $tgl = tgl_doang($d->date);
-                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
-                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                    $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     // if($d->shift == 'Malam' || is_jabatan_khusus($d->user_id)) {
-                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan, get_placement($d->user_id));
+                    $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     // }
                     $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
                     $total_jam_kerja = $total_jam_kerja + $jam_kerja;
