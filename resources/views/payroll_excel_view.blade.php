@@ -53,7 +53,7 @@
                     <h4>Karyawan</h4>
                 </th>
 
-                <th colspan="3" style="text-align: center; background-color: blue; color:white">
+                <th colspan="5" style="text-align: center; background-color: blue; color:white">
                     <h4>Company</h4>
                 </th>
 
@@ -98,6 +98,8 @@
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
+                <th style="text-align: center;">JHT</th>
+                <th style="text-align: center;">JP</th>
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
@@ -116,7 +118,10 @@
                     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
                     $kesehatan_company = ($d->gaji_bpjs * 0.4) / 100;
-                    $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+                    $jp_company = ($d->gaji_bpjs * 0.2) / 100;
+                    $jht_company = ($d->gaji_bpjs * 0.37) / 100;
+                    $total_bpjs_company =
+                        $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
                     $ter = '';
                     switch ($d->ptkp) {
                         case 'TK0':
@@ -183,6 +188,8 @@
                     <td style="text-align: right"> {{ $d->jkk }}</td>
                     <td style="text-align: right"> {{ $d->jkm }}</td>
                     <td style="text-align: right"> {{ $d->kesehatan }}</td>
+                    <td style="text-align: right"> {{ $jht_company }}</td>
+                    <td style="text-align: right"> {{ $jp_company }}</td>
                     <td style="text-align: right"> {{ $jkk_company }}</td>
                     <td style="text-align: right"> {{ $jkm_company }}</td>
                     <td style="text-align: right"> {{ $kesehatan_company }}</td>
