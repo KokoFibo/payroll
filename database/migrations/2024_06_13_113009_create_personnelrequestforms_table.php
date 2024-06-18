@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('skil_wajib')->nullable();
             $table->string('alasan_permohonan')->nullable();
             $table->date('tgl_request');
+            $table->string('status')->nullable();
 
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ class PermohonanPersonnel extends Component
     public $manpower_posisi, $jumlah_manpower_saat_ini, $waktu_masuk_kerja, $job_description, $usia;
     public $pendidikan, $pengalaman_kerja, $kualifikasi_lain, $kisaran_gaji, $gender;
     public $skil_wajib, $alasan_permohonan, $tgl_request;
-    public $request_name, $is_add;
+    public $is_add;
     public $user_id, $is_requester, $is_approval_1, $is_approvel_2;
 
     public function add()
@@ -29,10 +29,8 @@ class PermohonanPersonnel extends Component
         $this->is_approvel_2 = false;
         // $this->user_id = auth()->user()->username;
         $this->user_id = 4;
-        $karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
-        $this->placement_id = $karyawan->placement_id;
 
-        $check_user = Requester::where('placement_id', $this->placement_id)
+        $check_user = Requester::where('request_id', $this->user_id)
             ->where('request_id', $this->user_id)
             ->orWhere('approve_by_1', $this->user_id)
             ->orWhere('approve_by_2', $this->user_id)->first();
@@ -41,7 +39,6 @@ class PermohonanPersonnel extends Component
             if ($check_user->approve_by_1 == $this->user_id) $this->is_approval_1 = true;
             if ($check_user->approve_by_2 == $this->user_id) $this->is_approvel_2 = true;
         }
-        $this->user_id = $karyawan->nama;
     }
 
     public function render()

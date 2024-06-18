@@ -9,11 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('requesters', function (Blueprint $table) {
             $table->id();
-            $table->string('placement')->nullable();
             $table->string('request_id')->nullable();
             $table->string('approve_by_1')->nullable();
             $table->string('approve_by_2')->nullable();
