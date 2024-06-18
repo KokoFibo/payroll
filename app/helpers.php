@@ -19,6 +19,30 @@ use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function clear_dot($filename)
+{
+    $lastDotPosition = strrpos($filename, '.');
+
+    // Split the filename into two parts: before the last dot and after
+    $beforeLastDot = substr($filename, 0, $lastDotPosition);
+    $afterLastDot = substr($filename, $lastDotPosition);
+
+    // Replace all dots with underscores in the part before the last dot
+    $beforeLastDot = str_replace('.', ' ', $beforeLastDot);
+
+    // Concatenate the modified part with the unmodified last dot part
+    $newFilename = $beforeLastDot . $afterLastDot;
+    return $newFilename;
+}
+
+function getName($id)
+{
+    $data = Karyawan::where('id_karyawan', $id)->first();
+    if ($data != null)
+        return  $data->nama;
+    else return '';
+}
+
 function check_id_file_karyawan($id_file_karyawan)
 {
     $data = Karyawan::where('id_file_karyawan', $id_file_karyawan)->first();

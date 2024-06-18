@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('request_id')->nullable();
             $table->string('approve_by_1')->nullable();
             $table->string('approve_by_2')->nullable();
-            $table->string('approve_by_3')->nullable();
             $table->timestamps();
         });
     }
