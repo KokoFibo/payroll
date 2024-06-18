@@ -33,7 +33,8 @@
                                     <tr>
                                         <td>Company / Placement</td>
                                         <td>
-                                            {{ $data_karyawan->company }} / {{ $data_karyawan->placement }}</td>
+                                            {{ $data_karyawan->company->company_name }} /
+                                            {{ $data_karyawan->placement->placement_name }}</td>
                                     </tr>
                                     @if ($data_karyawan->no_npwp != null)
                                         <tr>
