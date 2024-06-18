@@ -28,6 +28,7 @@ class Applicant extends Component
     public $alamat_identitas, $alamat_tinggal_sekarang;
     public $applicant_id, $originalName, $filename;
     public $toggle_eye_password;
+    public $id;
 
 
     public function toggleEyePassword()
@@ -104,7 +105,7 @@ class Applicant extends Component
             $this->showMenu = false;
             $this->show = true;
             //    ==============================
-
+            $this->id = $data->id;
             $this->applicant_id = $data->applicant_id;
             $this->nama = $data->nama;
             $this->email = $data->email;
@@ -187,7 +188,8 @@ class Applicant extends Component
     {
         return [
             'nama' => 'required|min:2',
-            'email' => 'required|unique:App\Models\Applicantdata,email|',
+            'email' =>
+            'required|unique:App\Models\Applicantdata,email,' . $this->id,
             'password' => 'required|min:6',
             'confirm_password' => 'required|min:6|same:password',
             'hp' => 'required|min:10',
@@ -282,6 +284,9 @@ class Applicant extends Component
             'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
             'status' => 1
         ]);
+
+        $currentApplicantdata = Applicantdata::where('applicant_id', $this->applicant_id)->first();
+        $this->id = $currentApplicantdata->id;
 
 
         // $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');

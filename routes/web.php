@@ -74,6 +74,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Requesterwr;
 
 // Middleware
 Auth::routes([
@@ -190,6 +191,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('ter', Terwr::class);
                     Route::get('gajibpjs', Gajibpjs::class);
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
+                    Route::get('/addrequester', Requesterwr::class);
+
 
 
 

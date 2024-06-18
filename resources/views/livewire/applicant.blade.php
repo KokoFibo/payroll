@@ -1,6 +1,4 @@
 <div>
-
-
     @if ($showMenu)
         <div class='h-screen flex  flex-col  justify-center items-center px-5 mx-auto gap-10'>
             <div>
