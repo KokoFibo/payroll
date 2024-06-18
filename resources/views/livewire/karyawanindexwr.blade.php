@@ -245,6 +245,9 @@
                                 <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
                                     {{ __('Gaji Pokok') }}
                                 </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_bpjs')">
+                                    {{ __('Gaji BPJS') }}
+                                </th>
                                 <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
                                     {{ __('Overtime') }}
                                 </th>
@@ -307,6 +310,7 @@
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
+                                        <td class="text-center">{{ number_format($data->gaji_bpjs) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_air) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>

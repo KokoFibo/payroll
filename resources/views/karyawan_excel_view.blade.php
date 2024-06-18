@@ -45,7 +45,7 @@
                     <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
-                    <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_overtime }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                 </tr>
             @endforeach
