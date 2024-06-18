@@ -1,6 +1,6 @@
 <div class='container'>
     <div class='mt-3 p-3'>
-        <h4>Hello, {{ $request_name }}</h4>
+        <h4>Hello, {{ auth()->user()->name }}</h4>
 
         <button class='btn btn-primary' wire:click='add'>Click to make new Request</button>
     </div>
