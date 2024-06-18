@@ -254,7 +254,8 @@ class Applicant extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->applicant_id,
-                    'originalName' => $this->originalFilename,
+                    // 'originalName' => $this->originalFilename,
+                    'originalName' => clear_dot($this->originalFilename),
                     'filename' => $this->path,
                 ]);
             }

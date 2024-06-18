@@ -66,8 +66,16 @@ class Test extends Component
     $month = '10';
     $year = '2024';
 
-    $total_karyawan = Karyawan::count();
-    dd($total_karyawan);
+    // $filename = 'CamScanner .18-06-2024. 08.47_11.zon (1).pdf';
+    $filename = 'Cam.Scanner.pdf';
+
+
+    dd(clear_dot($filename));
+    // if (count($arr) > 2) {
+    //   dd(last(arr));
+    // } else {
+    //   dd('dibawah 2');
+    // }
 
     // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
     // Blacklist
