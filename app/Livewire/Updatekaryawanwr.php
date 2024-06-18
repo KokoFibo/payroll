@@ -324,7 +324,7 @@ class Updatekaryawanwr extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->id_file_karyawan,
-                    'originalName' => $this->originalFilename,
+                    'originalName' => clear_dot($this->originalFilename),
                     'filename' => $this->path,
                 ]);
             }
@@ -517,7 +517,7 @@ class Updatekaryawanwr extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->id_file_karyawan,
-                    'originalName' => $this->originalFilename,
+                    'originalName' => clear_dot($this->originalFilename),
                     'filename' => $this->path,
                 ]);
             }
