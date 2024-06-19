@@ -3,10 +3,12 @@
     <p>alasan_permohonan: {{ var_export($alasan_permohonan) }}</p> --}}
     <p>is_requester = {{ $is_requester }}</p>
     <p>is_approval_1 = {{ $is_approval_1 }}</p>
-    <p>is_approvel_2 = {{ $is_approvel_2 }}</p>
+    <p>is_approval_2 = {{ $is_approval_2 }}</p>
     <p>is_admin = {{ $is_admin }}</p>
     <p>approve_1 = {{ $approve_1 }}</p>
+    <p>approve_date_1 = {{ $approve_date_1 }}</p>
     <p>approve_2 = {{ $approve_2 }}</p>
+    <p>approve_date_2 = {{ $approve_date_2 }}</p>
     <div class='mt-3 p-3'>
         <h4>Hello, {{ auth()->user()->name }}</h4>
         @if (!$is_add && !$is_update && $is_requester)
@@ -301,7 +303,7 @@
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
                                     <label for="approved_1" class="form-label">1st Approval by</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='' type="text"
+                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='approve_1' type="text"
                                         class="form-control" id="approved_1">
                                 </div>
                                 <div class="mb-3 col-4">
@@ -327,18 +329,18 @@
                                 </div>
                                 <div class="mb-3 col-4">
                                     <label for="approved_1" class="form-label">Date of approval</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='' type="text"
-                                        class="form-control" id="approved_1">
+                                    <input {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_1 }}'
+                                        type="text" class="form-control" id="approved_1">
                                 </div>
                             </div>
                         </div>
-                        @if ($is_approvel_2)
+                        @if ($is_approval_2)
                             <button wire:click='save_approve_1' class="btn btn-primary">Approve</button>
                             <button wire:click='exit' class="btn btn-dark">Exit</button>
                         @endif
                     @endif
                     {{-- Approved 2 --}}
-                    @if ($is_approvel_2 || $is_admin)
+                    @if ($is_approval_2 || $is_admin)
                         <div class="card-body rounded my-3" style="background-color: rgb(226, 216, 216)">
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
@@ -374,7 +376,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if ($is_approvel_2)
+                        @if ($is_approval_2)
                             <button wire:click='save_approve_2' class="btn btn-primary">Click to Approve</button>
                             <button wire:click='exit' class="btn btn-dark">Exit</button>
                         @endif
