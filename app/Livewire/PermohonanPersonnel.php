@@ -20,6 +20,8 @@ class PermohonanPersonnel extends Component
     public $skil_wajib = [], $alasan_permohonan = [], $tgl_request, $status;
     public $delete_id, $update_id;
     public $approve_1, $approve_2;
+    public $approve_date_1, $approve_date_2;
+
 
     public $is_add, $is_update;
     public $user_id, $is_requester, $is_approval_1, $is_approvel_2, $is_admin;
@@ -49,13 +51,15 @@ class PermohonanPersonnel extends Component
         $this->is_update = false;
         $this->is_requester = false;
         $this->is_approval_1 = false;
-        $this->is_approvel_2 = false;
+        $this->is_approval_2 = false;
         $this->is_admin = false;
-        $this->approve_1 = false;
-        $this->approve_2 = false;
+        // $this->approve_1 = false;
+        // $this->approve_2 = false;
 
-        // $this->user_id = auth()->user()->username;
+        $this->user_id = auth()->user()->username;
         // $this->user_id = 38;
+
+
 
         $check_user = Requester::where('request_id', $this->user_id)
             ->where('request_id', $this->user_id)
@@ -68,6 +72,16 @@ class PermohonanPersonnel extends Component
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
+        }
+
+        if ($this->is_approval_1) {
+            $this->approve_1 = auth()->user()->name;
+            $this->approve_date_1 = Carbon::now()->toDateString();
+        }
+
+        if ($this->is_approval_2) {
+            $this->approve_2 = auth()->user()->name;
+            $this->approve_date_2 = Carbon::now()->toDateString();
         }
     }
 
@@ -97,6 +111,19 @@ class PermohonanPersonnel extends Component
         $this->gender = $data->gender;
         $this->skil_wajib = explode(',', $data->skil_wajib);
         $this->alasan_permohonan = explode(',', $data->alasan_permohonan);
+        $this->requester_id = $data->requester_id;
+        $this->tgl_request = $data->tgl_request;
+        $this->tgl_request = $data->tgl_request;
+        $this->approve_1 = $data->approve_by_1;
+        $this->approve_2 = $data->approve_by_2;
+        $this->approve_date_1 = $data->approve_date_1;
+        $this->approve_date_2 = $data->approve_date_2;
+
+
+
+
+        // $approve_1, $approve_2;
+
         $this->is_update = true;
     }
 
@@ -171,10 +198,8 @@ class PermohonanPersonnel extends Component
     public function save()
     {
         $this->validate();
-        // dd($this->skil_wajib, $this->alasan_permohonan);
-        // dd($this->posisi);
 
-        Personnelrequestform::create([
+        $data = Personnelrequestform::create([
             'posisi' => $this->posisi,
             'jumlah_dibutuhkan' => $this->jumlah_dibutuhkan,
             'level_posisi' => $this->level_posisi,
@@ -193,8 +218,9 @@ class PermohonanPersonnel extends Component
             'tgl_request' => Carbon::now()->toDateString(),
             'requester_id' => auth()->user()->username,
             'status' => 'Applying'
-
         ]);
+
+
         $this->reset();
         $this->dispatch(
             'message',
