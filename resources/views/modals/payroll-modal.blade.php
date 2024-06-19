@@ -182,7 +182,7 @@
                                         <tr>
                                             <td>PTKP</td>
                                             <td>
-                                                Rp. {{ number_format($data_karyawan->ptkp) }}</td>
+                                                Rp. {{ $data_karyawan->ptkp }}</td>
                                         </tr>
                                     @endif
                                     @if ($data_payroll->denda_resigned != 0)
