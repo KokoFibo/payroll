@@ -302,7 +302,11 @@
                                         {{-- <td class="text-center">{{ $data->level_jabatan }}</td> --}}
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    {{-- @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) || auth()->user()->role > 6) --}}
+                                    {{-- @if 
+                                        // (auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) ||
+                                        //     (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) ||
+                                        //     auth()->user()->role > 6)  --}}
+
                                     @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || auth()->user()->role >= 6)
                                         @if (Auth::user()->role > 5)
                                             <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}

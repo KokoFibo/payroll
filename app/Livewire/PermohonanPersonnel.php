@@ -24,7 +24,7 @@ class PermohonanPersonnel extends Component
 
 
     public $is_add, $is_update;
-    public $user_id, $is_requester, $is_approval_1, $is_approvel_2, $is_admin;
+    public $user_id, $is_requester, $is_approval_1, $is_approval_2, $is_admin;
 
     public function save_approve_1()
     {
@@ -68,7 +68,7 @@ class PermohonanPersonnel extends Component
         if ($check_user != null) {
             if ($check_user->request_id == $this->user_id) $this->is_requester = true;
             if ($check_user->approve_by_1 == $this->user_id) $this->is_approval_1 = true;
-            if ($check_user->approve_by_2 == $this->user_id) $this->is_approvel_2 = true;
+            if ($check_user->approve_by_2 == $this->user_id) $this->is_approval_2 = true;
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
@@ -245,7 +245,7 @@ class PermohonanPersonnel extends Component
         // $this->is_update = false;
         // $this->is_requester = false;
         // $this->is_approval_1 = false;
-        // $this->is_approvel_2 = false;
+        // $this->is_approval_2 = false;
         // $this->is_admin = false;
 
         // $this->user_id = auth()->user()->username;
@@ -257,7 +257,7 @@ class PermohonanPersonnel extends Component
         if ($check_user != null) {
             if ($check_user->request_id == $this->user_id) $this->is_requester = true;
             if ($check_user->approve_by_1 == $this->user_id) $this->is_approval_1 = true;
-            if ($check_user->approve_by_2 == $this->user_id) $this->is_approvel_2 = true;
+            if ($check_user->approve_by_2 == $this->user_id) $this->is_approval_2 = true;
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
