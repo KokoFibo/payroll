@@ -178,7 +178,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_karyawan->ptkp != 0)
+                                    @if ($data_karyawan->ptkp != '')
                                         <tr>
                                             <td>PTKP</td>
                                             <td>
@@ -200,7 +200,59 @@
                                                 Rp. {{ number_format($data_payroll->denda_resigned) }}</td>
                                         </tr>
                                     @endif
+                                    @if ($data_karyawan->ptkp != '')
+                                        @php
+                                            $jkk_company = ($data_payroll->gaji_bpjs * 0.24) / 100;
+                                            $jkm_company = ($data_payroll->gaji_bpjs * 0.3) / 100;
+                                            $kesehatan_company = ($data_payroll->gaji_bpjs * 0.4) / 100;
+                                            $jp_company = ($data_payroll->gaji_bpjs * 0.2) / 100;
+                                            $jht_company = ($data_payroll->gaji_bpjs * 0.37) / 100;
+                                            $total_bpjs_company =
+                                                $data_payroll->gaji_bpjs +
+                                                $jkk_company +
+                                                $jkm_company +
+                                                $kesehatan_company +
+                                                $jp_company +
+                                                $jht_company;
+                                            $ter = '';
+                                            switch ($data_payroll->ptkp) {
+                                                case 'TK0':
+                                                    $ter = 'A';
+                                                    break;
+                                                case 'TK1':
+                                                    $ter = 'A';
+                                                    break;
+                                                case 'TK2':
+                                                    $ter = 'B';
+                                                    break;
+                                                case 'TK3':
+                                                    $ter = 'B';
+                                                    break;
+                                                case 'K0':
+                                                    $ter = 'A';
+                                                    break;
+                                                case 'K1':
+                                                    $ter = 'B';
+                                                    break;
+                                                case 'K2':
+                                                    $ter = 'B';
+                                                    break;
+                                                case 'K3':
+                                                    $ter = 'C';
+                                                    break;
+                                            }
 
+                                            $rate_pph21 = get_rate_ter_pph21($data_payroll->ptkp, $total_bpjs_company);
+                                            $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
+
+                                        @endphp
+                                        <tr>
+                                            <td>PPh21</td>
+                                            <td>
+                                                Rp. {{ number_format($pph21) }}
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>Total Gaji</td>
                                         <td>
