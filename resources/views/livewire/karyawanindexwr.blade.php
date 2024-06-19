@@ -4,7 +4,7 @@
 
     {{-- aktifkan ini supaya datanya bisa lengket --}}
 
-    {{-- @if (auth()->user()->role == 5 || auth()->user()->role == 6)
+    @if (auth()->user()->role == 5 || auth()->user()->role == 6)
         <div x-data="{
             search: $persist(@entangle('search').live),
             columnName: $persist(@entangle('columnName').live),
@@ -14,7 +14,7 @@
             page: $persist(@entangle('paginators.page').live),
         }">
         </div>
-    @endif --}}
+    @endif
 
 
 

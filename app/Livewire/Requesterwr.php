@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Requester;
@@ -14,10 +15,14 @@ class Requesterwr extends Component
     public $namaRequestId, $namaApproveBy1, $namaApproveBy2;
     public $is_update = false;
     public $is_update_id, $delete_id;
+    public $old_requester, $old_Approve1, $old_Approve2;
 
     public function edit($id)
     {
         $data = Requester::find($id);
+        $this->old_requester = $data->request_id;
+        $this->old_Approve1 = $data->approve_by_1;
+        $this->old_Approve2 = $data->approve_by_2;
         $this->requestId = $data->request_id;
         $this->approveBy1 = $data->approve_by_1;
         $this->approveBy2 = $data->approve_by_2;
@@ -37,6 +42,23 @@ class Requesterwr extends Component
         ]);
 
         if ($this->namaRequestId != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
+
+
+            $data1 = User::where('username', $this->old_requester)->first();
+            $data2 = User::where('username', $this->old_Approve1)->first();
+            $data3 = User::where('username', $this->old_Approve2)->first();
+            if ($this->requestId == $this->old_requester) $data1->role = 2;
+            else $data1->role = 1;
+
+            if ($this->approveBy1 == $this->old_Approve1) $data2->role = 2;
+            else $data2->role = 1;
+
+            if ($this->approveBy2 == $this->old_Approve2) $data3->role = 2;
+            else $data3->role = 1;
+
+            $data1->save();
+            $data2->save();
+            $data3->save();
 
             $data = Requester::find($this->is_update_id);
             $data->request_id = $this->requestId;
@@ -70,7 +92,19 @@ class Requesterwr extends Component
     #[On('delete-confirmed')]
     public function delete()
     {
-        $data = Requester::find($this->delete_id)->delete();
+        // kembalikan role semua yg akan delete menjadi 1 
+        $data = Requester::find($this->delete_id);
+        $data1 = User::where('username', $data->request_id)->first();
+        $data2 = User::where('username', $data->approve_by_1)->first();
+        $data3 = User::where('username', $data->approve_by_2)->first();
+        $data1->role = 1;
+        $data2->role = 1;
+        $data3->role = 1;
+        $data1->save();
+        $data2->save();
+        $data3->save();
+
+        $data->delete();
         $this->dispatch(
             'message',
             type: 'success',
@@ -120,6 +154,16 @@ class Requesterwr extends Component
                 'approve_by_1' => $this->approveBy1,
                 'approve_by_2' => $this->approveBy2
             ]);
+
+            $data1 = User::where('username', $this->requestId)->first();
+            $data2 = User::where('username', $this->approveBy1)->first();
+            $data3 = User::where('username', $this->approveBy2)->first();
+            $data1->role = 2;
+            $data2->role = 2;
+            $data3->role = 2;
+            $data1->save();
+            $data2->save();
+            $data3->save();
 
             $this->dispatch(
                 'message',

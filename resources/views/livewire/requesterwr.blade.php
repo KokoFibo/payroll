@@ -17,7 +17,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="approval1" class="form-label">Approval1 User Id
+                    <label for="approval1" class="form-label">1st Approve User Id
                         {{ $namaApproveBy1 ? '->' . $namaApproveBy1 : '' }}</label>
                     <input wire:model.live='approveBy1' type="text" class="form-control" id="approval1">
                     @error('approveBy1')
@@ -28,7 +28,7 @@
 
                 </div>
                 <div class="mb-3">
-                    <label for="approval2" class="form-label">Approval2 User Id
+                    <label for="approval2" class="form-label">2nd Approve User Id
                         {{ $namaApproveBy2 ? '->' . $namaApproveBy2 : '' }}</label>
                     <input wire:model.live='approveBy2' type="text" class="form-control" id="approval2">
                     @error('approveBy2')

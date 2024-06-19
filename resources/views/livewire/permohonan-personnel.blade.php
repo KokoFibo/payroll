@@ -9,7 +9,7 @@
     <p>approve_2 = {{ $approve_2 }}</p>
     <div class='mt-3 p-3'>
         <h4>Hello, {{ auth()->user()->name }}</h4>
-        @if (!$is_add && !$is_update)
+        @if (!$is_add && !$is_update && $is_requester)
             <button class='btn btn-primary' wire:click='add'>Click to make new Request</button>
         @endif
     </div>
@@ -294,6 +294,7 @@
                             </div>
                         </div>
                     </div>
+
                     {{-- Approved 1 --}}
                     @if ($is_approval_1 || $is_admin)
                         <div class="card-body rounded my-3" style="background-color: rgb(226, 216, 216)">
@@ -310,7 +311,7 @@
                                         </div>
 
                                         <div class="mt-1">
-                                            <input {{ $is_admin ? 'disabled' : '' }} wire:model='approve_1'
+                                            <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='approve_1'
                                                 class="form-check-input" type="checkbox" value="true"
                                                 id="approved_1">
                                             <label class="form-check-label" for="approved_1">
@@ -326,7 +327,7 @@
                                 </div>
                                 <div class="mb-3 col-4">
                                     <label for="approved_1" class="form-label">Date of approval</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='' type="text"
+                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='' type="text"
                                         class="form-control" id="approved_1">
                                 </div>
                             </div>
@@ -408,7 +409,9 @@
                                 <tr>
                                     <td>{{ $d->id }}</td>
                                     <td>{{ getName($d->requester_id) }}</td>
+                                    {{-- <td>{{ $d->personellrequestform->posisi }}</td> --}}
                                     <td>{{ $d->posisi }}</td>
+                                    {{-- <td>{{ $d->personellrequestform->jumlah_dibutuhkan }}</td> --}}
                                     <td>{{ $d->jumlah_dibutuhkan }}</td>
                                     <td>{{ $d->status }}</td>
                                     <td>

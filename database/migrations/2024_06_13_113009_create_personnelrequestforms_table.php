@@ -31,6 +31,10 @@ return new class extends Migration
             $table->string('skil_wajib')->nullable();
             $table->string('alasan_permohonan')->nullable();
             $table->date('tgl_request');
+            $table->string('approve_by_1')->nullable();
+            $table->date('approve_date_1')->nullable();
+            $table->string('approve_by_2')->nullable();
+            $table->date('approve_date_2')->nullable();
             $table->string('status')->nullable();
 
             $table->timestamps();
