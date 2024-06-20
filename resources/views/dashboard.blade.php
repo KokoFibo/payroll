@@ -26,7 +26,7 @@
     {{-- Dashboard device = {{ isDesktop() }} --}}
     <div id="root">
 
-        @if (auth()->user()->role == 5)
+        @if (auth()->user()->role == 8)
             <div class="container">
                 <button class="bg-blue-500 text-white px-3 py-2 rounded-md shadow-sm">Tanpa Etnis :
                     {{ $belum_isi_etnis }}</button>
