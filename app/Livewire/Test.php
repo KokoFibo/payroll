@@ -13,6 +13,7 @@ use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
+use App\Models\Personnelrequestform;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
 
@@ -66,11 +67,9 @@ class Test extends Component
     $month = '10';
     $year = '2024';
 
+    $check_for_new_request = Personnelrequestform::where('status', 'Approved')->count();
+    dd($check_for_new_request);
     // $filename = 'CamScanner .18-06-2024. 08.47_11.zon (1).pdf';
-    $filename = 'Cam.Scanner.pdf';
-
-
-    dd(clear_dot($filename));
     // if (count($arr) > 2) {
     //   dd(last(arr));
     // } else {
@@ -88,6 +87,8 @@ class Test extends Component
     //   ->where('payrolls.metode_penggajian', 'Perbulan')
     //   ->orderBy('karyawans.tanggal_resigned', 'desc')
     //   ->paginate(10);
+
+
 
 
 

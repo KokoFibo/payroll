@@ -41,21 +41,19 @@ with font-awesome or any other icon font library -->
             <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/permohonan-personnel" class="nav-link">
                     <i class="nav-icon fa-solid fa-person-walking"></i>
-                    <p>
+                    <p class="personnel-request">
                         {{ __('Personnel Request') }}
+                        @if (auth()->user()->role >= 6 && check_for_new_request() != 0)
+                            <span class="badge">{{ check_for_new_request() }}
+                            </span>
+                        @endif
                     </p>
                 </a>
             </li>
+
         @endif
+
         @if (Auth::user()->role >= 5)
-            <li class="nav-item {{ 'addrequester' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/addrequester" class="nav-link">
-                    <i class="nav-icon fa-solid fa-person-walking"></i>
-                    <p>
-                        {{ __('Add Requester') }}
-                    </p>
-                </a>
-            </li>
 
             @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
@@ -413,7 +411,28 @@ with font-awesome or any other icon font library -->
         </li>
     </ul>
 
+    <style>
+        .personnel-request {
+            position: relative;
+        }
 
+        .personnel-request .badge {
+            position: absolute;
+            top: 50%;
+            left: 115%;
+            transform: translate(-50%, -50%);
+            background-color: #dc3545;
+            /* Bootstrap bg-danger color */
+            color: white;
+            /* To ensure text is readable */
+            padding: 0.25em 0.6em;
+            /* Equivalent to Bootstrap badge padding */
+            border-radius: 50px;
+            /* Equivalent to Bootstrap rounded-pill */
+            font-size: 75%;
+            /* Equivalent to Bootstrap badge font size */
+        }
+    </style>
 
 </nav>
 <!-- /.sidebar-menu -->

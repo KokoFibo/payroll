@@ -397,8 +397,11 @@
     @if (!$is_add && !$is_update)
         <div>
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between">
                     <h3>List of Personnel Requests</h3>
+                    @if (auth()->user()->role >= 6)
+                        <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <table class="table">
@@ -406,11 +409,11 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Posisi</th>
-                                <th>Jumlah dibutuhkan</th>
                                 <th>Status</th>
                                 <th>Requested by</th>
                                 <th>1st Approved by</th>
                                 <th>2nd Approved by</th>
+                                <th>Done by</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -418,11 +421,8 @@
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    {{-- <td>{{ $d->personellrequestform->posisi }}</td> --}}
                                     <td>{{ $d->posisi }}</td>
-                                    {{-- <td>{{ $d->personellrequestform->jumlah_dibutuhkan }}</td> --}}
-                                    <td>{{ $d->jumlah_dibutuhkan }}</td>
-                                    {{-- <td>{{ $d->status }}</td> --}}
+
                                     <td>
                                         @if ($d->status == 'Applying')
                                             <span class="badge text-bg-warning">{{ $d->status }}</span>
@@ -460,6 +460,14 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div>
+                                            {{ getName($d->done_by) }}
+                                        </div>
+                                        <div>
+                                            {{ format_tgl($d->done_date) }}
+                                        </div>
+                                    </td>
+                                    <td>
                                         {{-- @if ($d->status == 'Applying') --}}
                                         <button wire:click='edit({{ $d->id }})'
                                             class="btn btn-warning btn-sm">{{ $is_requester && $d->status == 'Applying' ? 'Edit' : 'Show' }}</button>
@@ -478,8 +486,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $data->links() }}
+                    </div>
                 </div>
-                {{ $data->links() }}
             </div>
         </div>
     @endif

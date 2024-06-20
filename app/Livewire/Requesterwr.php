@@ -17,6 +17,11 @@ class Requesterwr extends Component
     public $is_update_id, $delete_id;
     public $old_requester, $old_Approve1, $old_Approve2;
 
+    public function exit()
+    {
+        $this->redirect(PermohonanPersonnel::class);
+    }
+
     public function edit($id)
     {
         $data = Requester::find($id);
