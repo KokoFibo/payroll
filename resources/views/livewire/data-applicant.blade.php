@@ -22,11 +22,11 @@
                         placeholder="search...">
                 </div>
             </div>
-            <div class='ml-4 mt-2 '>
+            {{-- <div class='ml-4 mt-2 '>
                 <p class='text-danger'>Data appliicant yang statusnya dirubah menjadi 'Diterima', akan di delete dan
                     datanya akan otomatis
                     dipindahkan ke database karyawan.</p>
-            </div>
+            </div> --}}
             @if ($show_table)
                 <div class="card-body">
                     <div>
@@ -40,6 +40,9 @@
                                         <th>Email</th>
                                         <th>HP</th>
                                         <th>Gender</th>
+                                        @if (auth()->user()->role == 8)
+                                            <th>Etnis</th>
+                                        @endif
                                         <th>Tanggal Lahir</th>
                                         <th>Status Penerimaan</th>
                                         <th>Submitted</th>
@@ -56,6 +59,10 @@
                                             <td>{{ $d->email }}</td>
                                             <td>{{ $d->hp }}</td>
                                             <td>{{ $d->gender }}</td>
+                                            @if (auth()->user()->role == 8)
+                                                <td>{{ $d->etnis }}</td>
+                                            @endif
+
                                             <td>{{ format_tgl($d->tgl_lahir) }}</td>
 
                                             <td>
