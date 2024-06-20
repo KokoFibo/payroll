@@ -43,28 +43,19 @@ class Requesterwr extends Component
 
         if ($this->namaRequestId != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
 
-
-            $data1 = User::where('username', $this->old_requester)->first();
-            $data2 = User::where('username', $this->old_Approve1)->first();
-            $data3 = User::where('username', $this->old_Approve2)->first();
-            if ($this->requestId == $this->old_requester) $data1->role = 2;
-            else $data1->role = 1;
-
-            if ($this->approveBy1 == $this->old_Approve1) $data2->role = 2;
-            else $data2->role = 1;
-
-            if ($this->approveBy2 == $this->old_Approve2) $data3->role = 2;
-            else $data3->role = 1;
-
-            $data1->save();
-            $data2->save();
-            $data3->save();
-
             $data = Requester::find($this->is_update_id);
             $data->request_id = $this->requestId;
             $data->approve_by_1 = $this->approveBy1;
             $data->approve_by_2 = $this->approveBy2;
             $data->save();
+
+            if ($this->requestId != $this->old_requester) changeToAdmin($this->old_requester);
+            if ($this->approveBy1 != $this->old_Approve1) changeToAdmin($this->old_Approve1);
+            if ($this->approveBy2 != $this->old_Approve2) changeToAdmin($this->old_Approve2);
+            changeToRequest($this->requestId);
+            changeToRequest($this->approveBy1);
+            changeToRequest($this->approveBy2);
+
             $this->dispatch(
                 'message',
                 type: 'success',
@@ -83,6 +74,13 @@ class Requesterwr extends Component
 
     public function deleteConfirmation($id)
     {
+
+        $data = Requester::find($id);
+        $this->old_requester = $data->request_id;
+        $this->old_Approve1 = $data->approve_by_1;
+        $this->old_Approve2 = $data->approve_by_2;
+
+
         $this->delete_id = $id;
         $data = Requester::find($id);
         $text = getName($data->request_id) . '(' . $data->request_id . ') -> ' . getName($data->approve_by_1) . '(' . $data->approve_by_1 . ') -> ' . getName($data->approve_by_2) . '(' . $data->approve_by_2 . ')';
@@ -94,17 +92,11 @@ class Requesterwr extends Component
     {
         // kembalikan role semua yg akan delete menjadi 1 
         $data = Requester::find($this->delete_id);
-        $data1 = User::where('username', $data->request_id)->first();
-        $data2 = User::where('username', $data->approve_by_1)->first();
-        $data3 = User::where('username', $data->approve_by_2)->first();
-        $data1->role = 1;
-        $data2->role = 1;
-        $data3->role = 1;
-        $data1->save();
-        $data2->save();
-        $data3->save();
-
         $data->delete();
+        changeToAdmin($this->old_requester);
+        changeToAdmin($this->old_Approve1);
+        changeToAdmin($this->old_Approve2);
+
         $this->dispatch(
             'message',
             type: 'success',

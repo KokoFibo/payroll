@@ -40,7 +40,7 @@
                                         <td>{{ format_tgl($data->tanggal_lahir) }}</td>
                                         <td>{{ $data->branch }}</td>
                                         <td>{{ $data->departemen }}</td>
-                                        <td>{{ $data->jabatan }}</td>
+                                        <td>{{ $data->jabatan->nama_jabatan }}</td>
                                     </tr>
                                 </tbody>
                             </table>

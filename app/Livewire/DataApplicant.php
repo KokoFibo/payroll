@@ -73,6 +73,7 @@ class DataApplicant extends Component
         $data = Applicantdata::find($this->editId);
         $this->status = $data->status;
     }
+
     #[On('terima-confirmed')]
     public function diterima()
     {

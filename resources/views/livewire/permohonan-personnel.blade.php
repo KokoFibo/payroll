@@ -1,18 +1,9 @@
-<div class='container'>
-    {{-- <p>skil_wajib: {{ var_export($skil_wajib) }}</p>
-    <p>alasan_permohonan: {{ var_export($alasan_permohonan) }}</p> --}}
-    <p>is_requester = {{ $is_requester }}</p>
-    <p>is_approval_1 = {{ $is_approval_1 }}</p>
-    <p>is_approval_2 = {{ $is_approval_2 }}</p>
-    <p>is_admin = {{ $is_admin }}</p>
-    <p>approve_1 = {{ $approve_1 }}</p>
-    <p>approve_date_1 = {{ $approve_date_1 }}</p>
-    <p>approve_2 = {{ $approve_2 }}</p>
-    <p>approve_date_2 = {{ $approve_date_2 }}</p>
+<div class=''>
+
     <div class='mt-3 p-3'>
-        <h4>Hello, {{ auth()->user()->name }}</h4>
+        <h5>Hello, {{ auth()->user()->name }}</h5>
         @if (!$is_add && !$is_update && $is_requester)
-            <button class='btn btn-primary' wire:click='add'>Click to make new Request</button>
+            <button class='btn btn-primary' wire:click='add'>New Request</button>
         @endif
     </div>
     @if ($is_add || $is_update)
@@ -269,7 +260,7 @@
                         @if ($is_add)
                             <div wire:click='save' class="button btn btn-primary">Submit</div>
                         @endif
-                        @if ($is_update)
+                        @if ($is_update && $status == 'Applying')
                             <div wire:click='update' class="button btn btn-primary">Update</div>
                         @endif
                         <div wire:click='exit' class="ml-5 button btn btn-dark">Exit/Cancel</div>
@@ -278,7 +269,8 @@
 
 
                     {{-- Request By  --}}
-                    <div class="card-body rounded my-3" style="background-color: rgb(226, 216, 216)">
+                    <div class="card-body rounded my-3"
+                        style="background-color: {{ $is_request_approved ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }} ">
                         <div class="d-flex">
                             <div class="mb-3 col-4">
                                 <label for="approved_1" class="form-label">Request by</label>
@@ -299,86 +291,99 @@
 
                     {{-- Approved 1 --}}
                     @if ($is_approval_1 || $is_admin)
-                        <div class="card-body rounded my-3" style="background-color: rgb(226, 216, 216)">
+                        <div class="card-body rounded my-3"
+                            style="background-color: {{ $is_approved_1 ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }} ">
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
                                     <label for="approved_1" class="form-label">1st Approval by</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='approve_1' type="text"
-                                        class="form-control" id="approved_1">
+                                    <input disabled {{ $is_admin ? 'disabled' : '' }} wire:model='approve_1'
+                                        type="text" class="form-control" id="approved_1">
                                 </div>
                                 <div class="mb-3 col-4">
                                     <div class="form-check text-center ">
                                         <div>
                                             <label for="approved_1" class="form-label">Signature</label>
                                         </div>
-
-                                        <div class="mt-1">
-                                            <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='approve_1'
-                                                class="form-check-input" type="checkbox" value="true"
-                                                id="approved_1">
-                                            <label class="form-check-label" for="approved_1">
-                                                Approve
-                                            </label>
-                                        </div>
-                                        @error('approve_1')
-                                            <div class="text-danger">
-                                                {{ $message }}
+                                        @if (!$is_approved_1)
+                                            <div class="mt-1">
+                                                <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='signature1'
+                                                    class="form-check-input" type="checkbox" value="true"
+                                                    id="approved_1">
+                                                <label class="form-check-label" for="approved_1">
+                                                    Approve
+                                                </label>
                                             </div>
-                                        @enderror
+                                            @error('signature1')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        @else
+                                            <h4>Approved</h4>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="mb-3 col-4">
                                     <label for="approved_1" class="form-label">Date of approval</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_1 }}'
+                                    <input disabled {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_1 }}'
                                         type="text" class="form-control" id="approved_1">
                                 </div>
                             </div>
                         </div>
-                        @if ($is_approval_2)
+                        @if ($is_approval_1 && $is_approved_1 == false)
                             <button wire:click='save_approve_1' class="btn btn-primary">Approve</button>
-                            <button wire:click='exit' class="btn btn-dark">Exit</button>
+                        @endif
+                        @if (!$is_admin)
+                            <button wire:click='exit_approval_by' class="btn btn-dark">Exit</button>
                         @endif
                     @endif
+
                     {{-- Approved 2 --}}
                     @if ($is_approval_2 || $is_admin)
-                        <div class="card-body rounded my-3" style="background-color: rgb(226, 216, 216)">
+                        <div class="card-body rounded my-3"
+                            style="background-color: {{ $is_approved_2 ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }}">
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
                                     <label for="approved_2" class="form-label">2nd Approval by</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='' type="text"
-                                        class="form-control" id="approved_2">
+                                    <input disabled {{ $is_admin ? 'disabled' : '' }} wire:model='approve_2'
+                                        type="text" class="form-control" id="approved_2">
                                 </div>
                                 <div class="mb-3 col-4">
                                     <div class="form-check text-center ">
                                         <div>
                                             <label for="approved_2" class="form-label">Signature</label>
                                         </div>
-
-                                        <div class="mt-1">
-                                            <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='approve_2'
-                                                class="form-check-input" type="checkbox" value="true"
-                                                id="approved_2">
-                                            <label class="form-check-label" for="approved_2">
-                                                Approve
-                                            </label>
-                                        </div>
-                                        @error('approve_2')
-                                            <div class="text-danger">
-                                                {{ $message }}
+                                        @if (!$is_approved_2)
+                                            <div class="mt-1">
+                                                <input {{ $is_admin ? 'disabled' : '' }} wire:model.live='signature2'
+                                                    class="form-check-input" type="checkbox" value="true"
+                                                    id="approved_2">
+                                                <label class="form-check-label" for="approved_2">
+                                                    Approve
+                                                </label>
                                             </div>
-                                        @enderror
+                                            @error('signature2')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        @else
+                                            <h4>Approved</h4>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="mb-3 col-4">
                                     <label for="approved_2" class="form-label">Date of approval</label>
-                                    <input {{ $is_admin ? 'disabled' : '' }} wire:model='' type="text"
-                                        class="form-control" id="approved_2">
+                                    <input disabled {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_2 }}'
+                                        type="text" class="form-control" id="approved_2">
                                 </div>
                             </div>
                         </div>
-                        @if ($is_approval_2)
+                        @if ($is_approval_2 && $is_approved_2 == false)
                             <button wire:click='save_approve_2' class="btn btn-primary">Click to Approve</button>
-                            <button wire:click='exit' class="btn btn-dark">Exit</button>
+                        @endif
+                        @if (!$is_admin)
+                            <button wire:click='exit_approval_by' class="btn btn-dark">Exit</button>
                         @endif
                     @endif
                     @if ($is_admin)
@@ -393,42 +398,88 @@
         <div>
             <div class="card">
                 <div class="card-header">
-                    <h3>List of Request</h3>
+                    <h3>List of Personnel Requests</h3>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Requester</th>
                                 <th>Posisi</th>
                                 <th>Jumlah dibutuhkan</th>
                                 <th>Status</th>
+                                <th>Requested by</th>
+                                <th>1st Approved by</th>
+                                <th>2nd Approved by</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $d)
                                 <tr>
                                     <td>{{ $d->id }}</td>
-                                    <td>{{ getName($d->requester_id) }}</td>
                                     {{-- <td>{{ $d->personellrequestform->posisi }}</td> --}}
                                     <td>{{ $d->posisi }}</td>
                                     {{-- <td>{{ $d->personellrequestform->jumlah_dibutuhkan }}</td> --}}
                                     <td>{{ $d->jumlah_dibutuhkan }}</td>
-                                    <td>{{ $d->status }}</td>
+                                    {{-- <td>{{ $d->status }}</td> --}}
                                     <td>
+                                        @if ($d->status == 'Applying')
+                                            <span class="badge text-bg-warning">{{ $d->status }}</span>
+                                        @endif
+                                        @if ($d->status == 'Approved')
+                                            <span class="badge text-bg-primary">{{ $d->status }}</span>
+                                        @endif
+                                        @if ($d->status == 'Done')
+                                            <span class="badge text-bg-success">{{ $d->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ getName($d->requester_id) }}
+                                        </div>
+                                        <div>
+                                            {{ format_tgl($d->tgl_request) }}
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ getName($d->approve_by_1) }}
+                                        </div>
+                                        <div>
+                                            {{ format_tgl($d->approve_date_1) }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ getName($d->approve_by_2) }}
+                                        </div>
+                                        <div>
+                                            {{ format_tgl($d->approve_date_2) }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{-- @if ($d->status == 'Applying') --}}
                                         <button wire:click='edit({{ $d->id }})'
-                                            class="btn btn-warning btn-sm">{{ $is_requester ? 'Edit' : 'Show' }}</button>
-                                        @if ($is_requester)
+                                            class="btn btn-warning btn-sm">{{ $is_requester && $d->status == 'Applying' ? 'Edit' : 'Show' }}</button>
+                                        @if ($is_requester && $d->status == 'Applying')
                                             <button wire:click='deleteConfirmation({{ $d->id }})'
                                                 class="btn btn-danger btn-sm">Delete</button>
                                         @endif
+                                        {{-- @endif --}}
+                                        @if ($is_admin && $d->status != 'Done')
+                                            <button wire:click='DoneConfirmation({{ $d->id }})'
+                                                class="btn btn-success btn-sm">Done Personnel Request</button>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+                {{ $data->links() }}
             </div>
         </div>
     @endif
@@ -446,6 +497,22 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+
+            window.addEventListener("show-done-confirmation", (event) => {
+                Swal.fire({
+                    title: "Rubah status Personnel Request Menjadi DONE?",
+                    text: "",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Done",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("done-confirmed");
                     }
                 });
             });
