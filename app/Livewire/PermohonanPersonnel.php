@@ -6,13 +6,16 @@ use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Personnelrequestform;
 use App\Models\Requester;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use App\Models\Personnelrequestform;
 
 
 class PermohonanPersonnel extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $requester_id, $placement_id;
     public $posisi, $jumlah_dibutuhkan, $level_posisi;
     public $manpower_posisi, $jumlah_manpower_saat_ini, $waktu_masuk_kerja, $job_description, $usia;
@@ -21,28 +24,86 @@ class PermohonanPersonnel extends Component
     public $delete_id, $update_id;
     public $approve_1, $approve_2;
     public $approve_date_1, $approve_date_2;
+    public $signature1 = false;
+    public $signature2 = false;
+    public $is_approved_1 = false, $is_approved_2 = false, $is_request_approved = false;
+
+    public $is_add, $is_update, $done_id;
+    public $user_id, $is_requester, $is_approval_1, $is_approval_2, $is_admin, $requestBy = [];
 
 
-    public $is_add, $is_update;
-    public $user_id, $is_requester, $is_approval_1, $is_approval_2, $is_admin;
+
+    public function DoneConfirmation($id)
+    {
+        $this->done_id = $id;
+        $this->dispatch('show-done-confirmation');
+    }
+
+    #[On('done-confirmed')]
+    public function done()
+    {
+        $data = Personnelrequestform::find($this->done_id);
+        $data->status = 'Done';
+        $data->save();
+
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Personnel Request Done',
+        );
+        $this->mount();
+    }
+
+    public function exit_approval_by()
+    {
+        $this->is_add = false;
+        $this->is_update = false;
+    }
 
     public function save_approve_1()
     {
         $this->validate([
-            'approve_1' => 'required|accepted'
+            'signature1' => 'required|accepted'
         ], [
-            'approve_1.accepted' => 'Please tick to approve'
+            'signature1.accepted' => 'Please tick to approve'
         ]);
-        dd('save_approve_1');
+        $data = Personnelrequestform::find($this->update_id);
+        $data->approve_by_1 = $this->user_id;
+        $data->approve_date_1 = $this->approve_date_1;
+        $data->save();
+        if ($data->approve_by_1 != '' && $data->approve_by_2 != '' && $data->approve_date_1 != '' && $data->approve_date_2 != '') {
+            $data->status = 'Approved';
+            $data->save();
+        }
+        $this->mount();
+
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Request Approved',
+        );
     }
     public function save_approve_2()
     {
         $this->validate([
-            'approve_2' => 'required|accepted'
+            'signature2' => 'required|accepted'
         ], [
-            'approve_2.accepted' => 'Please tick to approve'
+            'signature2.accepted' => 'Please tick to approve'
         ]);
-        dd('save_approve_2');
+        $data = Personnelrequestform::find($this->update_id);
+        $data->approve_by_2 = $this->user_id;
+        $data->approve_date_2 = $this->approve_date_2;
+        $data->save();
+        if ($data->approve_by_1 != '' && $data->approve_by_2 != '' && $data->approve_date_1 != '' && $data->approve_date_2 != '') {
+            $data->status = 'Approved';
+            $data->save();
+        }
+        $this->mount();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Request Approved',
+        );
     }
 
     public function mount()
@@ -55,6 +116,8 @@ class PermohonanPersonnel extends Component
         $this->is_admin = false;
         // $this->approve_1 = false;
         // $this->approve_2 = false;
+        $this->signature1 = false;
+        $this->signature2 = false;
 
         $this->user_id = auth()->user()->username;
         // $this->user_id = 38;
@@ -83,13 +146,24 @@ class PermohonanPersonnel extends Component
             $this->approve_2 = auth()->user()->name;
             $this->approve_date_2 = Carbon::now()->toDateString();
         }
+
+
+        $check = Requester::where(function ($query) {
+            $query->where('request_id', $this->user_id)
+                ->orWhere('approve_by_1', $this->user_id)
+                ->orWhere('approve_by_2', $this->user_id);
+        })->pluck('request_id');
+
+        if ($check->isNotEmpty()) {
+            $this->requestBy = $check->toArray(); // Convert the collection to an array
+        }
     }
 
     public function exit()
     {
+        $this->mount();
         $this->is_add = false;
         $this->is_update = false;
-        $this->reset();
     }
 
     public function edit($id)
@@ -113,14 +187,29 @@ class PermohonanPersonnel extends Component
         $this->alasan_permohonan = explode(',', $data->alasan_permohonan);
         $this->requester_id = $data->requester_id;
         $this->tgl_request = $data->tgl_request;
-        $this->tgl_request = $data->tgl_request;
-        $this->approve_1 = $data->approve_by_1;
-        $this->approve_2 = $data->approve_by_2;
-        $this->approve_date_1 = $data->approve_date_1;
-        $this->approve_date_2 = $data->approve_date_2;
+        $this->status = $data->status;
+        if ($data->approve_by_1 != '') $this->approve_1 = $data->approve_by_1;
+        if ($data->approve_by_2 != '') $this->approve_2 = $data->approve_by_2;
+        if ($data->approve_date_1 != '') $this->approve_date_1 = $data->approve_date_1;
+        if ($data->approve_date_2 != '') $this->approve_date_2 = $data->approve_date_2;
 
+        $this->signature1 = false;
+        $this->is_approved_1 = false;
+        $this->is_request_approved = false;
 
+        if ($data->approve_by_1 != '' && $data->approve_date_1 != '') {
 
+            $this->is_approved_1 = true;
+            $this->signature2 = true;
+        }
+        if ($data->approve_by_2 != '' && $data->approve_date_2 != '') {
+            $this->signature2 = true;
+            $this->is_approved_2 = true;
+        }
+
+        if ($data->requester_id != '' && $data->tgl_request != '') {
+            $this->is_request_approved = true;
+        }
 
         // $approve_1, $approve_2;
 
@@ -153,6 +242,7 @@ class PermohonanPersonnel extends Component
             title: 'Request Form Updated',
         );
         $this->is_update = false;
+        $this->mount();
     }
 
     public function deleteConfirmation($id)
@@ -227,6 +317,8 @@ class PermohonanPersonnel extends Component
             type: 'success',
             title: 'Request Form Created',
         );
+        $this->mount();
+
         $this->is_add = false;
     }
 
@@ -261,8 +353,15 @@ class PermohonanPersonnel extends Component
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
+            $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->paginate(10);
+        } else {
+
+            // $data = Personnelrequestform::where('requester_id', $this->requestBy)
+            $data = Personnelrequestform::whereIn('requester_id', $this->requestBy)
+                // dd($data);
+                ->paginate(10);
         }
-        $data = Personnelrequestform::all();
+
         return view('livewire.permohonan-personnel', [
             'data' => $data
         ]);

@@ -35,6 +35,8 @@ return new class extends Migration
             $table->date('approve_date_1')->nullable();
             $table->string('approve_by_2')->nullable();
             $table->date('approve_date_2')->nullable();
+            $table->string('done_by')->nullable();
+            $table->date('done_date')->nullable();
             $table->string('status')->nullable();
 
             $table->timestamps();

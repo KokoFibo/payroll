@@ -9,15 +9,41 @@ use App\Models\Jabatan;
 use App\Models\Payroll;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Department;
 use Illuminate\Support\Str;
 use App\Models\Applicantfile;
 use App\Models\Dashboarddata;
-use App\Models\Department;
 use App\Models\Liburnasional;
-use App\Models\Placement;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function changeToAdmin($id)
+{
+    $check_user = Requester::where('request_id', $id)
+        ->where('request_id', $id)
+        ->orWhere('approve_by_1', $id)
+        ->orWhere('approve_by_2', $id)->first();
+
+    // dd($check_user == null);
+    if ($check_user == null) {
+        $data = User::where('username', $id)->first();
+        $data->role = 1;
+        $data->save();
+    }
+}
+
+function changeToRequest($id)
+{
+
+    if ($id != '') {
+        $data = User::where('username', $id)->first();
+        $data->role = 2;
+        $data->save();
+    }
+}
 
 function clear_dot($filename)
 {
