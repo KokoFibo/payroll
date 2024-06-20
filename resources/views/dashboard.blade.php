@@ -10,10 +10,6 @@
         integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-
-
-
 @endsection
 
 @section('content')
