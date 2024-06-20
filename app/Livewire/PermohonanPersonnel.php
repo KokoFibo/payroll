@@ -43,6 +43,9 @@ class PermohonanPersonnel extends Component
     public function done()
     {
         $data = Personnelrequestform::find($this->done_id);
+
+        $data->done_by = $this->user_id;
+        $data->done_date = Carbon::now()->toDateString();
         $data->status = 'Done';
         $data->save();
 
@@ -118,9 +121,23 @@ class PermohonanPersonnel extends Component
         // $this->approve_2 = false;
         $this->signature1 = false;
         $this->signature2 = false;
+        $this->is_approved_1 = false;
+        $this->is_approved_2 = false;
+        $this->is_request_approved = false;
 
         $this->user_id = auth()->user()->username;
         // $this->user_id = 38;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -195,12 +212,13 @@ class PermohonanPersonnel extends Component
 
         $this->signature1 = false;
         $this->is_approved_1 = false;
+        $this->signature2 = false;
+        $this->is_approved_2 = false;
         $this->is_request_approved = false;
 
         if ($data->approve_by_1 != '' && $data->approve_date_1 != '') {
-
             $this->is_approved_1 = true;
-            $this->signature2 = true;
+            $this->signature1 = true;
         }
         if ($data->approve_by_2 != '' && $data->approve_date_2 != '') {
             $this->signature2 = true;
@@ -353,13 +371,13 @@ class PermohonanPersonnel extends Component
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
-            $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->paginate(10);
+            $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->paginate(5);
         } else {
 
             // $data = Personnelrequestform::where('requester_id', $this->requestBy)
             $data = Personnelrequestform::whereIn('requester_id', $this->requestBy)
                 // dd($data);
-                ->paginate(10);
+                ->paginate(5);
         }
 
         return view('livewire.permohonan-personnel', [

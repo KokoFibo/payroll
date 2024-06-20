@@ -37,11 +37,14 @@
                         </div>
                     @enderror
                 </div>
-                @if ($is_update == true)
-                    <button class="btn btn-primary" wire:click='update'>Update</button>
-                @else
-                    <button class="btn btn-primary" wire:click='save'>Save</button>
-                @endif
+                <div class="d-flex justify-content-between">
+                    @if ($is_update == true)
+                        <button class="btn btn-primary" wire:click='update'>Update</button>
+                    @else
+                        <button class="btn btn-primary" wire:click='save'>Save</button>
+                    @endif
+                    <button class="btn btn-dark" wire:click='exit'>Exit</button>
+                </div>
             </div>
         </div>
     </div>
