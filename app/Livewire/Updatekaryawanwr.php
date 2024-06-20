@@ -44,20 +44,21 @@ class Updatekaryawanwr extends Component
     public $pilih_company;
     public $pilih_department;
     public $pilih_placement;
+    public $delete_id;
 
-
-
-
-
-    public function updatedFiles()
+    public function deleteConfirmation($id)
     {
-        $this->validate([
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
-        ]);
+        $this->delete_id = $id;
+
+        $data = Applicantfile::find($id);
+
+        $this->dispatch('show-delete-confirmation', text: $data->originalName);
     }
 
-    public function deleteFile($id)
+    #[On('delete-confirmed')]
+    public function deleteFile()
     {
+        $id = $this->delete_id;
         // $data = Applicantfile::where('filename', $filename)->first();
         $data = Applicantfile::find($id);
         if ($data != null) {
@@ -103,6 +104,17 @@ class Updatekaryawanwr extends Component
             );
         }
     }
+
+
+
+    public function updatedFiles()
+    {
+        $this->validate([
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+        ]);
+    }
+
+
 
 
 
