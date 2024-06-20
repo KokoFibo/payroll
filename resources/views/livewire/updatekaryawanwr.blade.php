@@ -159,9 +159,8 @@
                                                     <h4> {{ $fn->originalName }}</h4>
                                                     <div>
                                                         <button class="btn btn-danger"
-                                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove
-                                                            wire:confirm='Sudah yakin mau di delete?'>Remove</button>
-                                                        <div wire:loading wire:target='deleteFile'>
+                                                            wire:click="deleteConfirmation('{{ $fn->id }}')"wire:loading.remove>Remove</button>
+                                                        <div wire:loading wire:target='deleteConfirmation'>
                                                             <div class="text-center">
                                                                 <h5>Mohon tunggu sampai proses delete selesai</h5>
                                                                 <div class="spinner-border text-dark mt-2"
@@ -211,4 +210,24 @@
             /* Remove any extra space below the image */
         }
     </style>
+    @script
+        <script>
+            window.addEventListener("show-delete-confirmation", (event) => {
+                Swal.fire({
+                    title: "Yakin mau delete data?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>
