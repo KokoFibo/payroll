@@ -22,6 +22,7 @@
                                 id="nama_karyawan" disabled>
                         </div>
 
+
                     </div>
                     <div class="mb-3 col-12 col-xl-2">
                         <label class="form-label">{{ __('Tanggal') }} (mm/dd/yyyy)</label>
@@ -150,6 +151,13 @@
                                 <option value="desc">Descending</option>
                                 <option value="asc">Ascending</option>
                             </select>
+                        </div>
+                        <div class="spinner-border text-primary" role="status" wire:loading
+                            wire:target="columnName">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="direction">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
 
                         <div class="d-flex gap-2 col-12 col-xl-3">
