@@ -67,6 +67,12 @@ class Test extends Component
     $month = '10';
     $year = '2024';
 
+    $newFilename = 'test';
+    $data_arr = explode('.', $newFilename);
+    $length = count($data_arr); // Count the elements in the array
+    if ($length == 1)
+      dd($length);
+
     $check_for_new_request = Personnelrequestform::where('status', 'Approved')->count();
     dd($check_for_new_request);
     // $filename = 'CamScanner .18-06-2024. 08.47_11.zon (1).pdf';

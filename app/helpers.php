@@ -51,7 +51,7 @@ function changeToRequest($id)
     }
 }
 
-function clear_dot($filename)
+function clear_dot($filename, $fileExtension)
 {
     $lastDotPosition = strrpos($filename, '.');
 
@@ -59,11 +59,39 @@ function clear_dot($filename)
     $beforeLastDot = substr($filename, 0, $lastDotPosition);
     $afterLastDot = substr($filename, $lastDotPosition);
 
+    $data_arr = explode('.', $afterLastDot);
+    $length = count($data_arr); // Count the elements in the array
+    if ($length == 2)
+        switch ($data_arr[1]) {
+            case 'pdf':
+                break;
+            case 'jpg':
+                break;
+            case 'jpeg':
+                break;
+            case 'png':
+                break;
+            default:
+                $afterLastDot = $data_arr[1] . '.' . $fileExtension;
+                break;
+        }
+
     // Replace all dots with underscores in the part before the last dot
     $beforeLastDot = str_replace('.', ' ', $beforeLastDot);
 
     // Concatenate the modified part with the unmodified last dot part
-    $newFilename = $beforeLastDot . $afterLastDot;
+    if ($lastDotPosition) {
+        $newFilename = $beforeLastDot . $afterLastDot;
+    } else {
+
+        $data_arr = explode('.', $filename);
+        $length = count($data_arr); // Count the elements in the array
+        if ($length == 1)
+            $newFilename = $filename . '.' . $fileExtension;
+    }
+
+
+
     return $newFilename;
 }
 
@@ -338,7 +366,7 @@ function getFilenameExtension($filename)
         $arrNamas = explode('.', $filename);
         return $arrNamas[1];
     } catch (\Exception $e) {
-        dd($filename);
+        dd($filename->getClientOriginalExtension());
         return $e->getMessage();
     }
 }

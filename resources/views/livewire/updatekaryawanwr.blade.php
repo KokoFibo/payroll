@@ -127,17 +127,8 @@
                                     {{-- <li class="list-group-item "> --}}
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <h4> {{ $fn->originalName }}</h4>
-                                        <button class="btn btn-danger" wire:confirm='Sudah yakin mau di delete?'
-                                            wire:click="deleteFile('{{ $fn->id }}')"wire:loading.remove>Remove</button>
-                                        <div wire:loading wire:target='deleteFile'>
-                                            <div class="text-center">
-                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
-                                                <div class="spinner-border text-dark mt-2" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        <button class="btn btn-danger" wire:confirm='Yakin mau di delete?'
+                                            wire:click="deleteFile('{{ $fn->id }}')">Remove</button>
                                     </div>
                                     <div>
                                         <iframe class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
@@ -159,16 +150,9 @@
                                                     <h4> {{ $fn->originalName }}</h4>
                                                     <div>
                                                         <button class="btn btn-danger"
-                                                            wire:click="deleteConfirmation('{{ $fn->id }}')"wire:loading.remove>Remove</button>
-                                                        <div wire:loading wire:target='deleteConfirmation'>
-                                                            <div class="text-center">
-                                                                <h5>Mohon tunggu sampai proses delete selesai</h5>
-                                                                <div class="spinner-border text-dark mt-2"
-                                                                    role="status">
-                                                                    <span class="visually-hidden">Loading...</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            wire:confirm='Yakin mau di delete?'
+                                                            wire:click="deleteFile('{{ $fn->id }}')">Remove</button>
+
                                                     </div>
 
 
