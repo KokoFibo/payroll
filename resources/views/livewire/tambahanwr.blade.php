@@ -1,6 +1,6 @@
 <div>
-    <p>columnName: {{ $columnName }}</p>
-    <p>direction : {{ $direction }}</p>
+    {{-- <p>columnName: {{ $columnName }}</p>
+    <p>direction : {{ $direction }}</p> --}}
 
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
