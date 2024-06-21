@@ -1,6 +1,5 @@
 <div>
-    {{-- <p>columnName: {{ $columnName }}</p>
-    <p>direction : {{ $direction }}</p> --}}
+
 
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
@@ -141,7 +140,9 @@
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
+                            <button wire:click='refresh' class="ml-3 btn btn-success">Refresh</button>
                         </div>
+
                         <div class="d-flex gap-2 col-12 col-xl-3">
                             <select class="form-select" wire:model.live="columnName">
                                 <option value="user_id">Id Karyawan</option>
@@ -152,11 +153,21 @@
                                 <option value="asc">Ascending</option>
                             </select>
                         </div>
+
                         <div class="spinner-border text-primary" role="status" wire:loading
                             wire:target="columnName">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                         <div class="spinner-border text-primary" role="status" wire:loading wire:target="direction">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="year">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="month">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="refresh">
                             <span class="visually-hidden">Loading...</span>
                         </div>
 
@@ -168,11 +179,12 @@
                             </select>
                             <select class="form-select" wire:model.live="month">
                                 @foreach ($select_month as $sm)
-                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                                    <option value="{{ $sm }}">{{ monthName($sm) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mt-2 mt-lg-0">
+                        <div class="mt-2 mt-lg-0 col-1">
                             <button wire:click="add"
                                 class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
                                 {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Add New') }}</button>
