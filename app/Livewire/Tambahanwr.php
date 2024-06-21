@@ -18,7 +18,7 @@ class Tambahanwr extends Component
     public $tanggal, $uang_makan, $bonus_lain, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
     public $year, $month;
-    public $columnName = 'id_karyawan';
+    public $columnName = 'user_id';
     public $direction = 'desc';
     public $select_month, $select_year;
 

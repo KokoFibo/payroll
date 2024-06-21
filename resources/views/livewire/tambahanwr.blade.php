@@ -1,4 +1,7 @@
 <div>
+    <p>columnName: {{ $columnName }}</p>
+    <p>direction : {{ $direction }}</p>
+
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
         <div class="card ">
@@ -132,13 +135,24 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-column flex-lg-row justify-content-between">
-                        <div class="input-group col-12 col-xl-4">
+                        <div class="input-group col-12 col-xl-3">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
-                        <div class="d-flex gap-2 col-12 col-xl-4">
+                        <div class="d-flex gap-2 col-12 col-xl-3">
+                            <select class="form-select" wire:model.live="columnName">
+                                <option value="user_id">Id Karyawan</option>
+                                <option value="id">Data Terakhir</option>
+                            </select>
+                            <select class="form-select" wire:model.live="direction">
+                                <option value="desc">Descending</option>
+                                <option value="asc">Ascending</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2 col-12 col-xl-3">
                             <select class="form-select" wire:model.live="year">
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
