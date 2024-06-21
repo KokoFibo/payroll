@@ -366,7 +366,7 @@ function getFilenameExtension($filename)
         $arrNamas = explode('.', $filename);
         return $arrNamas[1];
     } catch (\Exception $e) {
-        dd($filename->getClientOriginalExtension());
+        // dd($filename->getClientOriginalExtension());
         return $e->getMessage();
     }
 }
