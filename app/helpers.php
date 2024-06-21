@@ -334,9 +334,13 @@ function getNamaStatus($kode_status)
 
 function getFilenameExtension($filename)
 {
-
-    $arrNamas = explode('.', $filename);
-    return $arrNamas[1];
+    try {
+        $arrNamas = explode('.', $filename);
+        return $arrNamas[1];
+    } catch (\Exception $e) {
+        dd($filename);
+        return $e->getMessage();
+    }
 }
 
 function getFilename($filename)
