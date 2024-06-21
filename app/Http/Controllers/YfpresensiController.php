@@ -696,9 +696,9 @@ class YfpresensiController extends Controller
             ]);
         }
 
-        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
 
         Yfpresensi::query()->truncate();
         clear_locks();
+        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
 }
