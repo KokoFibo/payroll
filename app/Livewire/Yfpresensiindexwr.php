@@ -551,7 +551,7 @@ class Yfpresensiindexwr extends Component
                 ->where('no_scan', 'No Scan')
                 ->paginate($this->perpage);
         } elseif ($this->is_kosong) {
-            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.departemen'])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->whereNull('first_in')
                 ->whereNull('first_out')
