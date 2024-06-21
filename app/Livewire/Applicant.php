@@ -3,16 +3,17 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Rules\FileSizeLimit;
 use Illuminate\Http\Request;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
+use App\Rules\AllowedFileExtension;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-use App\Rules\FileSizeLimit;
 
 class Applicant extends Component
 {
@@ -208,7 +209,8 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
-            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+            // 'files.*' =>  ['nullable', 'extensions:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+            'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
             // 'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
             // 'files' => 'image|max:1024'
         ];
@@ -255,7 +257,7 @@ class Applicant extends Component
                 Applicantfile::create([
                     'id_karyawan' => $this->applicant_id,
                     // 'originalName' => $this->originalFilename,
-                    'originalName' => clear_dot($this->originalFilename),
+                    'originalName' => clear_dot($this->originalFilename, $fileExension),
                     'filename' => $this->path,
                 ]);
             }
@@ -337,7 +339,7 @@ class Applicant extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->applicant_id,
-                    'originalName' => $this->originalFilename,
+                    'originalName' => clear_dot($this->originalFilename, $fileExension),
                     'filename' => $this->path,
                 ]);
             }

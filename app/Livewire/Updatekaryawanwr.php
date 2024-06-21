@@ -46,19 +46,11 @@ class Updatekaryawanwr extends Component
     public $pilih_placement;
     public $delete_id;
 
-    public function deleteConfirmation($id)
+
+
+    public function deleteFile($id)
     {
-        $this->delete_id = $id;
-
-        $data = Applicantfile::find($id);
-
-        $this->dispatch('show-delete-confirmation', text: $data->originalName);
-    }
-
-    #[On('delete-confirmed')]
-    public function deleteFile()
-    {
-        $id = $this->delete_id;
+        // $id = $this->delete_id;
         // $data = Applicantfile::where('filename', $filename)->first();
         $data = Applicantfile::find($id);
         if ($data != null) {
@@ -336,7 +328,7 @@ class Updatekaryawanwr extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->id_file_karyawan,
-                    'originalName' => clear_dot($this->originalFilename),
+                    'originalName' => clear_dot($this->originalFilename, $fileExension),
                     'filename' => $this->path,
                 ]);
             }
@@ -529,7 +521,8 @@ class Updatekaryawanwr extends Component
                 $this->originalFilename = $file->getClientOriginalName();
                 Applicantfile::create([
                     'id_karyawan' => $this->id_file_karyawan,
-                    'originalName' => clear_dot($this->originalFilename),
+                    'originalName' => clear_dot($this->originalFilename, $fileExension),
+
                     'filename' => $this->path,
                 ]);
             }

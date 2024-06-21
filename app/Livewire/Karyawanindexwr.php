@@ -53,10 +53,8 @@ class Karyawanindexwr extends Component
 
     // public $departments, $companies, $etnises, $jabatans;
 
-    #[On('delete-confirmed')]
-    public function delete()
+    public function delete($id)
     {
-        $id = $this->delete_id;
         $Data_Karyawan = Karyawan::find($id);
         $dataUser = User::where('username', $Data_Karyawan->id_karyawan)->first();
         if ($dataUser->id) {
