@@ -22,6 +22,16 @@ class Tambahanwr extends Component
     public $direction = 'desc';
     public $select_month, $select_year;
 
+    public function refresh()
+    {
+        // $this->columnName = 'user_id';
+        // $this->direction = 'desc';
+        // $this->year = now()->year;
+        // $this->month = now()->month;
+        $this->mount();
+    }
+
+
 
     public function sortColumnName($namaKolom)
     {
@@ -40,15 +50,18 @@ class Tambahanwr extends Component
         $this->year = now()->year;
         $this->month = now()->month;
         $this->tanggal = now()->toDateString();
+        $this->columnName = 'user_id';
+        $this->direction = 'desc';
 
+
+        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
 
         $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))
             ->distinct()
             ->pluck('month')
-            ->toArray();
-        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
-            ->distinct()
-            ->pluck('year')
             ->toArray();
     }
 
