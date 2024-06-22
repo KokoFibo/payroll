@@ -66,6 +66,11 @@
                 <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
             </div>
         @endif
+        @if ($fail = check_fail_job())
+            <div class="alert alert-danger" role="alert">
+                <strong>Errror building payroll</strong>
+            </div>
+        @endif
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
                 @if (auth()->user()->role > 7)

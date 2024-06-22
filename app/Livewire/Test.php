@@ -63,6 +63,7 @@ class Test extends Component
 
   public function render()
   {
+    check_fail_job();
 
     $month = '10';
     $year = '2024';
