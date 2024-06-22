@@ -21,6 +21,13 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function check_fail_job()
+{
+    $fail = DB::table('failed_jobs')->count();
+    if ($fail > 0) return true;
+    else return false;
+}
+
 function check_rebuild_done()
 {
     $lock = Lock::find(1);
