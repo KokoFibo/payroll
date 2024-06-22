@@ -1,7 +1,4 @@
 <div>
-
-
-
     <div class="p-3">
         <div class="card">
             <div class="card-header">
@@ -29,112 +26,91 @@
             </div> --}}
             @if ($show_table)
                 <div class="card-body">
-                    <div>
-                        <div class="table-responsive">
-
-                            <table class="table">
-                                <thead>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>HP</th>
+                                    <th>Gender</th>
+                                    @if (auth()->user()->role == 8)
+                                        <th>Etnis</th>
+                                    @endif
+                                    <th>Tanggal Lahir</th>
+                                    <th>Status Penerimaan</th>
+                                    <th>Submitted</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $d)
                                     <tr>
-                                        <th>id</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>HP</th>
-                                        <th>Gender</th>
+                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $d->nama }}</td>
+                                        <td>{{ $d->email }}</td>
+                                        <td>{{ $d->hp }}</td>
+                                        <td>{{ $d->gender }}</td>
                                         @if (auth()->user()->role == 8)
-                                            <th>Etnis</th>
+                                            <td>{{ $d->etnis }}</td>
                                         @endif
-                                        <th>Tanggal Lahir</th>
-                                        <th>Status Penerimaan</th>
-                                        <th>Submitted</th>
-                                        <th></th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $d)
-                                        <tr>
-                                            {{-- <td>{{ $key + 1 }}</td> --}}
-                                            <td>{{ $d->id }}</td>
-                                            <td>{{ $d->nama }}</td>
-                                            <td>{{ $d->email }}</td>
-                                            <td>{{ $d->hp }}</td>
-                                            <td>{{ $d->gender }}</td>
-                                            @if (auth()->user()->role == 8)
-                                                <td>{{ $d->etnis }}</td>
+                                        <td>{{ format_tgl($d->tgl_lahir) }}</td>
+                                        <td>
+                                            @if ($editId === $d->id)
+                                                {{-- selkect --}}
+                                                <select class="form-select" aria-label="Default select example"
+                                                    wire:model.live='status'>
+                                                    <option value="1">1. Melamar</option>
+                                                    <option value="2">2. Sedang Komunikasi</option>
+                                                    <option value="3">3. Psikotest</option>
+                                                    <option value="4">4. Interview</option>
+                                                    <option value="5">5. Ditolak</option>
+                                                    <option value="6">6. Cadangan</option>
+                                                    <option value="7">7. Onboarding</option>
+                                                    <option value="8">8. Diterima</option>
+                                                </select>
+                                            @else
+                                                <span
+                                                    class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
                                             @endif
-
-                                            <td>{{ format_tgl($d->tgl_lahir) }}</td>
-
-                                            <td>
-                                                @if ($editId === $d->id)
-                                                    {{-- selkect --}}
-                                                    <select class="form-select" aria-label="Default select example"
-                                                        wire:model.live='status'>
-                                                        <option value="1">1. Melamar</option>
-                                                        <option value="2">2. Sedang Komunikasi</option>
-                                                        <option value="3">3. Psikotest</option>
-                                                        <option value="4">4. Interview</option>
-                                                        <option value="5">5. Ditolak</option>
-                                                        <option value="6">6. Cadangan</option>
-                                                        <option value="7">7. Onboarding</option>
-                                                        <option value="8">8. Diterima</option>
-                                                    </select>
-                                                @else
-                                                    <span
-                                                        class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
-                                                @endif
-                                            </td>
-
-                                            <td>{{ dateTimeFormat($d->created_at) }}</td>
-                                            <td>
-
-                                                @if ($editId === $d->id)
-                                                    @if ($status == 8)
-                                                        <button class="btn btn-sm btn-primary"
-                                                            wire:click='save'>Simpan</button>
-                                                        {{-- <button class="btn btn-sm btn-primary"
-                                                            wire:confirm="Jika status diterima, maka data akan dipindahkan ke database karyawan, setuju?"
-                                                            wire:key="{{ $d->id }}-save"
-                                                            wire:click='save'>Simpan</button> --}}
-                                                    @else
-                                                        <button class="btn btn-sm btn-primary "
-                                                            wire:click='save'>Simpan</button>
-                                                    @endif
-                                                    <button class="btn btn-sm btn-warning"
-                                                        wire:click='cancel'>Cancel</button>
-                                                @else
-                                                    @if (check_storage($d->applicant_id))
-                                                        <button class="btn btn-sm btn-success"
-                                                            wire:click='show({{ $d->id }})'>Show</button>
-                                                    @else
-                                                        <button class="btn btn-sm btn-warning"
-                                                            wire:click='show({{ $d->id }})'>Show</button>
-                                                    @endif
-                                                    {{-- <button class="btn btn-sm btn-danger"
-                                                        wire:confirm="Apakah yakin data applicant ini akan di delete?"
-                                                        wire:key="{{ $d->id }}-delete"
-                                                        wire:click='delete({{ $d->id }})'>Delete</button> --}}
-
-                                                    <button class="btn btn-sm btn-danger"
-                                                        wire:key="{{ $d->id }}-delete"
-                                                        wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
-
+                                        </td>
+                                        <td>{{ dateTimeFormat($d->created_at) }}</td>
+                                        <td>
+                                            @if ($editId === $d->id)
+                                                @if ($status == 8)
                                                     <button class="btn btn-sm btn-primary"
-                                                        wire:click='edit({{ $d->id }})'>Rubah
-                                                        Status</button>
+                                                        wire:click='save'>Simpan</button>
+                                                @else
+                                                    <button class="btn btn-sm btn-primary"
+                                                        wire:click='save'>Simpan</button>
                                                 @endif
-                                            </td>
-
-
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                                <button class="btn btn-sm btn-warning"
+                                                    wire:click='cancel'>Cancel</button>
+                                            @else
+                                                @if (check_storage($d->applicant_id))
+                                                    <button class="btn btn-sm btn-success"
+                                                        wire:click='show({{ $d->id }})'>Show</button>
+                                                @else
+                                                    <button class="btn btn-sm btn-warning"
+                                                        wire:click='show({{ $d->id }})'>Show</button>
+                                                @endif
+                                                <button class="btn btn-sm btn-danger"
+                                                    wire:key="{{ $d->id }}-delete"
+                                                    wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
+                                                <button class="btn btn-sm btn-primary"
+                                                    wire:click='edit({{ $d->id }})'>Rubah Status</button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     {{ $data->links() }}
                 </div>
+
+
             @endif
             @if ($show_data)
                 <div class="d-flex mt-3">
