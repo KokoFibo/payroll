@@ -17,8 +17,11 @@ use App\Models\Yfrekappresensi;
 use App\Exports\BankReportExcel;
 use App\Exports\PlacementExport;
 use App\Exports\DepartmentExport;
+use App\Jobs\rebuildJob;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+
+
 
 class Payrollwr extends Component
 {
@@ -44,6 +47,12 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function close_succesful_rebuilt()
+    {
+        $rebuild = Lock::find(1);
+        $rebuild->rebuild_done = false;
+        $rebuild->save();
+    }
 
 
     public function export()
@@ -495,8 +504,9 @@ class Payrollwr extends Component
         $this->dispatch(new BuildPayrollJob($this->month, $this->year));
     }
 
-    public function buat_payroll()
+    public function buat_payroll($queue)
     {
+
         // supaya tidak dilakukan bersamaan
         if (check_absensi_kosong()) {
             clear_locks();
@@ -527,10 +537,16 @@ class Payrollwr extends Component
         $lock->save();
 
         $startTime = microtime(true);
+        if ($queue == 'noQueue') {
+            $result  = build_payroll($this->month, $this->year);
+        } else {
+            $lock = Lock::find(1);
+            $lock->rebuild_done = 2;
+            $lock->save();
+            dispatch(new rebuildJob($this->month, $this->year));
+            $result = 1;
+        }
 
-        $result  = build_payroll($this->month, $this->year);
-        // $time_end = microtime(true);
-        // $time_needed = $time_end - $time_start;
 
         if ($result == 0) {
             // $this->dispatch('error', message: 'Data Presensi tidak ada');
