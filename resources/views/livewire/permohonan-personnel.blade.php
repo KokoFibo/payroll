@@ -404,92 +404,88 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Posisi</th>
-                                <th>Status</th>
-                                <th>Requested by</th>
-                                <th>1st Approved by</th>
-                                <th>2nd Approved by</th>
-                                <th>Done by</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $d)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $d->id }}</td>
-                                    <td>{{ $d->posisi }}</td>
-
-                                    <td>
-                                        @if ($d->status == 'Applying')
-                                            <span class="badge text-bg-warning">{{ $d->status }}</span>
-                                        @endif
-                                        @if ($d->status == 'Approved')
-                                            <span class="badge text-bg-primary">{{ $d->status }}</span>
-                                        @endif
-                                        @if ($d->status == 'Done')
-                                            <span class="badge text-bg-success">{{ $d->status }}</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ getName($d->requester_id) }}
-                                        </div>
-                                        <div>
-                                            {{ format_tgl($d->tgl_request) }}
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ getName($d->approve_by_1) }}
-                                        </div>
-                                        <div>
-                                            {{ format_tgl($d->approve_date_1) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ getName($d->approve_by_2) }}
-                                        </div>
-                                        <div>
-                                            {{ format_tgl($d->approve_date_2) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ getName($d->done_by) }}
-                                        </div>
-                                        <div>
-                                            {{ format_tgl($d->done_date) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{-- @if ($d->status == 'Applying') --}}
-                                        <button wire:click='edit({{ $d->id }})'
-                                            class="btn btn-warning btn-sm">{{ $is_requester && $d->status == 'Applying' ? 'Edit' : 'Show' }}</button>
-                                        @if ($is_requester && $d->status == 'Applying')
-                                            <button wire:click='deleteConfirmation({{ $d->id }})'
-                                                class="btn btn-danger btn-sm">Delete</button>
-                                        @endif
-                                        {{-- @endif --}}
-                                        @if ($is_admin && $d->status != 'Done')
-                                            <button wire:click='DoneConfirmation({{ $d->id }})'
-                                                class="btn btn-success btn-sm">Done Personnel Request</button>
-                                        @endif
-
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Posisi</th>
+                                    <th>Status</th>
+                                    <th>Requested by</th>
+                                    <th>1st Approved by</th>
+                                    <th>2nd Approved by</th>
+                                    <th>Done by</th>
+                                    <th></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $d)
+                                    <tr>
+                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $d->posisi }}</td>
+                                        <td>
+                                            @if ($d->status == 'Applying')
+                                                <span class="badge bg-warning text-dark">{{ $d->status }}</span>
+                                            @elseif ($d->status == 'Approved')
+                                                <span class="badge bg-primary">{{ $d->status }}</span>
+                                            @elseif ($d->status == 'Done')
+                                                <span class="badge bg-success">{{ $d->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{ getName($d->requester_id) }}
+                                            </div>
+                                            <div>
+                                                {{ format_tgl($d->tgl_request) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{ getName($d->approve_by_1) }}
+                                            </div>
+                                            <div>
+                                                {{ format_tgl($d->approve_date_1) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{ getName($d->approve_by_2) }}
+                                            </div>
+                                            <div>
+                                                {{ format_tgl($d->approve_date_2) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{ getName($d->done_by) }}
+                                            </div>
+                                            <div>
+                                                {{ format_tgl($d->done_date) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button wire:click='edit({{ $d->id }})'
+                                                class="btn btn-warning btn-sm">{{ $is_requester && $d->status == 'Applying' ? 'Edit' : 'Show' }}</button>
+                                            @if ($is_requester && $d->status == 'Applying')
+                                                <button wire:click='deleteConfirmation({{ $d->id }})'
+                                                    class="btn btn-danger btn-sm">Delete</button>
+                                            @endif
+                                            @if ($is_admin && $d->status != 'Done')
+                                                <button wire:click='DoneConfirmation({{ $d->id }})'
+                                                    class="btn btn-success btn-sm">Done Personnel Request</button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="mt-3">
                         {{ $data->links() }}
                     </div>
                 </div>
+
             </div>
         </div>
     @endif

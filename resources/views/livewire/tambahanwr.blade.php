@@ -5,7 +5,31 @@
     <div class="col-12  mx-auto pt-3">
         <div class="card ">
             <div class="card-header bg-info nightowl-daylight">
-                <label class="col-sm-2  col-form-label">{{ __('Bonus dan Potongan') }}</label>
+                <div class="d-flex justify-content-between">
+
+                    <label class=" col-form-label">{{ __('Bonus dan Potongan') }}</label>
+                    {{-- spinner --}}
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="columnName">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="direction">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="year">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="month">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    {{-- end spinner --}}
+                    <div class="">
+                        <button wire:click="add"
+                            class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
+                            {{ is_data_locked() ? 'disabled' : '' }}>
+                            {{ __('Add New') }}
+                        </button>
+                    </div>
+                </div>
             </div>
             @if ($modal == true)
                 <div class="card-body">
@@ -114,7 +138,8 @@
                     <div class="d-flex gap-5">
                         <button wire:click="save"
                             class="btn btn-success nightowl-daylight">{{ __('Save') }}</button>
-                        <button wire:click="cancel" class="btn btn-dark nightowl-daylight">{{ __('Cancel') }}</button>
+                        <button wire:click="cancel"
+                            class="btn btn-dark nightowl-daylight">{{ __('Cancel') }}</button>
                     </div>
                 </div>
             @endif
@@ -134,16 +159,17 @@
 
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex flex-column flex-lg-row justify-content-between">
-                        <div class="input-group col-12 col-xl-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="input-group col-12 col-md-4">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
-                            <button wire:click='refresh' class="ml-3 btn btn-success">Refresh</button>
+                            <button wire:click='refresh'
+                                class="ml-3 btn btn-success d-none d-md-inline">Refresh</button>
                         </div>
 
-                        <div class="d-flex gap-2 col-12 col-xl-3">
+                        <div class="d-flex gap-2 col-12 col-md-4 mt-2 mt-md-0">
                             <select class="form-select" wire:model.live="columnName">
                                 <option value="user_id">Id Karyawan</option>
                                 <option value="id">Data Terakhir</option>
@@ -154,24 +180,9 @@
                             </select>
                         </div>
 
-                        <div class="spinner-border text-primary" role="status" wire:loading
-                            wire:target="columnName">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="direction">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="year">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="month">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="spinner-border text-primary" role="status" wire:loading wire:target="refresh">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
 
-                        <div class="d-flex gap-2 col-12 col-xl-3">
+
+                        <div class="d-flex gap-2 col-12 col-md-4 mt-2 mt-md-0">
                             <select class="form-select" wire:model.live="year">
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
@@ -179,17 +190,17 @@
                             </select>
                             <select class="form-select" wire:model.live="month">
                                 @foreach ($select_month as $sm)
-                                    <option value="{{ $sm }}">{{ monthName($sm) }}
-                                    </option>
+                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mt-2 mt-lg-0 col-1">
-                            <button wire:click="add"
-                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
-                                {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Add New') }}</button>
-                        </div>
+
+
+
+                        <button wire:click='refresh'
+                            class="mt-2 mt-lg-0 ml-3 btn btn-success d-md-none">Refresh</button>
                     </div>
+
                 </div>
                 <div class="col-12">
                     <div class="card-body">
