@@ -54,6 +54,18 @@
         <p>selected_departemen : {{ $selected_departemen }}</p> --}}
         {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
+        @if (check_rebuild_done())
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            </div>
+        @endif
+        @if (check_rebuilding())
+            <div class="alert alert-primary" role="alert">
+                <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
+            </div>
+        @endif
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
                 @if (auth()->user()->role > 7)
@@ -148,15 +160,19 @@
                 </div>
             </div>
 
-
             <div class="d-flex gap-2" wire:loading.class='invisible'>
+                @if (auth()->user()->role == 8)
+                    <button wire:click="buat_payroll('noQueue')"
+                        {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild tanpa Queue') }}</button>
+                @endif
                 <a href="/ter"><button
                         class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
                 <button class="btn btn-success nightowl-daylight"
                     wire:click="bankexcel">{{ __('Report for bank') }}</button>
                 <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
 
-                <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                <button wire:click="buat_payroll('queue')" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                     class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
 
             </div>

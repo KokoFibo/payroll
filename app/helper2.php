@@ -6,11 +6,16 @@ use App\Models\Karyawan;
 use App\Models\Bonuspotongan;
 use App\Models\Jamkerjaid;
 use App\Models\Liburnasional;
+use App\Models\Lock;
 use App\Models\Yfrekappresensi;
 //ok 1
 
 function build_payroll($month, $year)
 {
+    // $lock = Lock::find(1);
+    // $lock->rebuild_done = 2;
+    // $lock->save();
+
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
@@ -748,6 +753,10 @@ function build_payroll($month, $year)
         ->sum('jumlah_hari_libur');
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
+
+    $lock = Lock::find(1);
+    $lock->rebuild_done = 1;
+    $lock->save();
 
     return 1;
 }

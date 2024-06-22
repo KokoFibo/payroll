@@ -21,6 +21,19 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function check_rebuild_done()
+{
+    $lock = Lock::find(1);
+    if ($lock->rebuild_done == 1) return true;
+    else return false;
+}
+function check_rebuilding()
+{
+    $lock = Lock::find(1);
+    if ($lock->rebuild_done == 2) return true;
+    else return false;
+}
+
 function check_for_new_request()
 {
     return Personnelrequestform::where('status', 'Approved')->count();

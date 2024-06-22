@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('upload')->nullable()->default(false);
             $table->boolean('build')->nullable()->default(false);
             $table->boolean('payroll')->nullable()->default(false);
+            $table->boolean('rebuild_done')->nullable()->default(false);
             $table->boolean('presensi')->nullable()->default(false);
             $table->boolean('build_payroll')->nullable()->default(false);
             $table->boolean('tambahan')->nullable()->default(false);
