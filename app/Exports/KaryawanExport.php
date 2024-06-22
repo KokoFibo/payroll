@@ -19,10 +19,11 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
      */
     protected $selected_placement, $selected_company, $selectStatus;
 
-    public function __construct($selected_placement, $selected_company, $selectStatus)
+    public function __construct($selected_placement, $selected_company, $selected_department, $selectStatus)
     {
         $this->selected_placement = $selected_placement;
         $this->selected_company = $selected_company;
+        $this->selected_department = $selected_department;
         $this->selectStatus = $selectStatus;
     }
 
@@ -45,20 +46,35 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         if ($this->selected_company) {
             $data = $data->where('company_id', $this->selected_company);
         }
+        if ($this->selected_department) {
+            $data = $data->where('department_id', $this->selected_department);
+        }
 
         $data = $data->get();
 
         $placement = nama_placement($this->selected_placement);
         $company = nama_company($this->selected_company);
+        $department = nama_department($this->selected_department);
 
-        if ($placement && $company) {
-            $header_text = "Excel Karyawan Company $company, Placement $placement";
-        } elseif ($placement) {
-            $header_text = "Excel Karyawan Placement $placement";
-        } elseif ($company) {
-            $header_text = "Excel Karyawan Company $company";
+
+
+        // if ($placement && $company) {
+        //     $header_text = "Excel Karyawan Company $company, Placement $placement";
+        // } elseif ($placement) {
+        //     $header_text = "Excel Karyawan Placement $placement";
+        // } elseif ($company) {
+        //     $header_text = "Excel Karyawan Company $company";
+        // } else {
+        //     $header_text = 'Excel Seluruh Karyawan';
+        // }
+
+        if ($placement || $company || $department) {
+            $header_text = 'Data';
+            if ($company) $header_text = $header_text . ' Company ' . $company;
+            if ($placement) $header_text = $header_text . ' Placement ' . $placement;
+            if ($department) $header_text = $header_text . ' Department ' . $department;
         } else {
-            $header_text = 'Excel Seluruh Karyawan';
+            $header_text = 'Data Seluruh Karyawan';
         }
 
 

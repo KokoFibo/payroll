@@ -182,8 +182,22 @@
                                     </th>
                                     @if (Auth::user()->role > 6)
                                         <th style="width: 150px; border-style: none;">
-                                            <button wire:click="excel" class="btn btn-success col-12">Excel</button></a>
+                                            <button wire:loading.remove wire:click="excel"
+                                                class="btn btn-success col-12">Excel</button></a>
+
                                         </th>
+                                        <th style=" border-style: none;">
+                                            <div wire:loading wire:target='excel' class="spinner-border text-primary"
+                                                role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </th>
+                                        <th style=" border-style: none;"></th>
+                                        <th style=" border-style: none;"></th>
+                                        <th style=" border-style: none;"></th>
+                                        <th style=" border-style: none;"></th>
+                                        <th style=" border-style: none;"></th>
+                                        <th style=" border-style: none;"></th>
                                     @endif
 
                                     {{-- <th style="width: 150px; border-style: none;">
