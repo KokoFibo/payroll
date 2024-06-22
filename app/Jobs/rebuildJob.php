@@ -12,6 +12,8 @@ class rebuildJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 600;
+
     /**
      * Create a new job instance.
      */
