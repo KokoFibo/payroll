@@ -24,6 +24,12 @@
                     datanya akan otomatis
                     dipindahkan ke database karyawan.</p>
             </div> --}}
+            <style>
+                td,
+                th {
+                    white-space: nowrap;
+                }
+            </style>
             @if ($show_table)
                 <div class="card-body">
                     <div class="table-responsive">
