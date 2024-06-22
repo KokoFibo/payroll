@@ -489,6 +489,7 @@
             </div>
         </div>
     @endif
+
     @script
         <script>
             window.addEventListener("show-delete-confirmation", (event) => {
