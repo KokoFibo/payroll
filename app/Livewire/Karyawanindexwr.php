@@ -321,18 +321,29 @@ class Karyawanindexwr extends Component
 
         $placement_fn = nama_placement($this->search_placement);
         $company_fn = nama_company($this->search_company);
+        $department_fn = nama_department($this->search_department);
 
-        if ($placement_fn && $company_fn) {
-            $nama_file = "Karyawan_Company_" .  $company_fn . '_Placement_' . $placement_fn . '.xlsx';
-        } elseif ($placement_fn) {
-            $nama_file = "Karyawan_Placement_" .  $placement_fn . '.xlsx';
-        } elseif ($company_fn) {
-            $nama_file = "Karyawan_Company_" .  $company_fn . '.xlsx';
+        // if ($placement_fn && $company_fn) {
+        //     $nama_file = "Karyawan_Company_" .  $company_fn . '_Placement_' . $placement_fn . '.xlsx';
+        // } elseif ($placement_fn) {
+        //     $nama_file = "Karyawan_Placement_" .  $placement_fn . '.xlsx';
+        // } elseif ($company_fn) {
+        //     $nama_file = "Karyawan_Company_" .  $company_fn . '.xlsx';
+        // } else {
+        //     $nama_file = 'Seluruh_Karyawan.xlsx';
+        // }
+
+        if ($placement_fn || $company_fn || $department_fn) {
+            $nama_file = 'Karyawan';
+            if ($company_fn) $nama_file = $nama_file . ' Company ' . $company_fn;
+            if ($placement_fn) $nama_file = $nama_file . ' Placement ' . $placement_fn;
+            if ($department_fn) $nama_file = $nama_file . ' Department ' . $department_fn;
         } else {
-            $nama_file = 'Seluruh_Karyawan.xlsx';
+            $nama_file = 'Seluruh Karyawan';
         }
+        $nama_file = $nama_file . '.xlsx';
 
-        return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->selectStatus), $nama_file);
+        return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus), $nama_file);
     }
 
     public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null)

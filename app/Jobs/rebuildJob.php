@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 class rebuildJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    // naikin angka ini utk tingkatkan timeout queue job
     public $timeout = 600;
 
     /**
