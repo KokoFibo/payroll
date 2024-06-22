@@ -403,6 +403,12 @@
                         <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
                     @endif
                 </div>
+                <style>
+                    td,
+                    th {
+                        white-space: nowrap;
+                    }
+                </style>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
