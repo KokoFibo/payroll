@@ -1,6 +1,6 @@
 <div>
 
-    <div class="col-4 mx-auto mt-5">
+    <div class="col-lg-4 col-8 mx-auto mt-5">
         <div class="card">
             <div class="card-header bg-primary">
                 <h3>Requester</h3>
@@ -49,36 +49,44 @@
         </div>
     </div>
     {{-- table --}}
+    <style>
+        td,
+        th {
+            white-space: nowrap;
+        }
+    </style>
     <div class="p-5">
         <div class="card">
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Request ID</th>
-                            <th>1st Approve by</th>
-                            <th>2nd Approve by</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data_requester as $key => $d)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <th>{{ $d->id }}</th>
-                                <th>{{ $d->request_id }}->{{ getName($d->request_id) }}</th>
-                                <th>{{ $d->approve_by_1 }}->{{ getName($d->approve_by_1) }}</th>
-                                <th>{{ $d->approve_by_2 }}->{{ getName($d->approve_by_2) }}</th>
-                                <th>
-                                    <button wire:click='edit({{ $d->id }})'
-                                        class="btn btn-warning btn-sm">Edit</button>
-                                    <button wire:click='deleteConfirmation({{ $d->id }})'
-                                        class="btn btn-danger btn-sm">Delete</button>
-                                </th>
+                                <th>ID</th>
+                                <th>Request ID</th>
+                                <th>1st Approve by</th>
+                                <th>2nd Approve by</th>
+                                <th></th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($data_requester as $key => $d)
+                                <tr>
+                                    <th>{{ $d->id }}</th>
+                                    <th>{{ $d->request_id }}->{{ getName($d->request_id) }}</th>
+                                    <th>{{ $d->approve_by_1 }}->{{ getName($d->approve_by_1) }}</th>
+                                    <th>{{ $d->approve_by_2 }}->{{ getName($d->approve_by_2) }}</th>
+                                    <th>
+                                        <button wire:click='edit({{ $d->id }})'
+                                            class="btn btn-warning btn-sm">Edit</button>
+                                        <button wire:click='deleteConfirmation({{ $d->id }})'
+                                            class="btn btn-danger btn-sm">Delete</button>
+                                    </th>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
