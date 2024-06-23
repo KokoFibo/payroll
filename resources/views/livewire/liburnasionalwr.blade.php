@@ -102,40 +102,51 @@
 
     </div>
     <div class="m-3">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>{{ __('Nama Hari Libur') }}</th>
-                    <th>{{ __('Tanggal Libur') }}</th>
-                    {{-- <th>Tanggal Akhir</th> --}}
-                    @if (auth()->user()->role == 8)
-                        <th>Jumlah Hari libur</th>
-                        <th></th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $index => $d)
+        <style>
+            td,
+            th {
+                white-space: nowrap;
+            }
+        </style>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $d->nama_hari_libur }}</td>
-                        {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
-                        <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
-                        {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
+                        <th>#</th>
+                        <th>{{ __('Nama Hari Libur') }}</th>
+                        <th>{{ __('Tanggal Libur') }}</th>
+                        {{-- <th>Tanggal Akhir</th> --}}
                         @if (auth()->user()->role == 8)
-                            <td>{{ $d->jumlah_hari_libur }}</td>
-                            <td>
-                                <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>
-                                <button
-                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                    wire:click="delete({{ $d->id }})" class="btn-danger btn-sm">Delete</button>
-                            </td>
+                            <th>Jumlah Hari libur</th>
+                            <th></th>
                         @endif
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                    @foreach ($data as $index => $d)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $d->nama_hari_libur }}</td>
+                            {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
+                            <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
+                            {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
+                            @if (auth()->user()->role == 8)
+                                <td>{{ $d->jumlah_hari_libur }}</td>
+                                <td>
+                                    <button wire:click="edit({{ $d->id }})"
+                                        class="btn-warning btn-sm">Edit</button>
+                                    <button
+                                        wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                        wire:click="delete({{ $d->id }})"
+                                        class="btn-danger btn-sm">Delete</button>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>
