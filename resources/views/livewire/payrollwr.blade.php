@@ -54,26 +54,26 @@
         <p>selected_departemen : {{ $selected_departemen }}</p> --}}
         {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
-        @if (auth()->user()->role == 8)
+        {{-- @if (auth()->user()->role == 8) --}}
 
-            @if (check_rebuild_done())
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
-                    <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
-                        aria-label="Close"></button>
-                </div>
-            @endif
-            @if (check_rebuilding())
-                <div class="alert alert-primary" role="alert">
-                    <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
-                </div>
-            @endif
-            @if ($fail = check_fail_job())
-                <div class="alert alert-danger" role="alert">
-                    <strong>Errror building payroll</strong>
-                </div>
-            @endif
+        @if (check_rebuild_done())
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            </div>
         @endif
+        @if (check_rebuilding())
+            <div class="alert alert-primary" role="alert">
+                <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
+            </div>
+        @endif
+        @if ($fail = check_fail_job())
+            <div class="alert alert-danger" role="alert">
+                <strong>Errror building payroll</strong>
+            </div>
+        @endif
+        {{-- @endif --}}
 
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
@@ -126,68 +126,68 @@
                 </div>
             </div>
         </div>
+        @if (!check_rebuilding())
 
-        <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
-            <div class="d-flex gap-2 flex-lg-row flex-column">
-                <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
-                    {{ number_format($total) }}</button>
-                <div class="d-flex gap-2">
-                    <div>
-                        <select class="form-select" wire:model.live="year">
-                            @foreach ($select_year as $sy)
-                                <option value="{{ $sy }}">{{ $sy }}</option>
-                            @endforeach
-                        </select>
+            <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
+                <div class="d-flex gap-2 flex-lg-row flex-column">
+                    <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
+                        {{ number_format($total) }}</button>
+                    <div class="d-flex gap-2">
+                        <div>
+                            <select class="form-select" wire:model.live="year">
+                                @foreach ($select_year as $sy)
+                                    <option value="{{ $sy }}">{{ $sy }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <select class="form-select" wire:model.live="month">
+                                {{-- <option selected>Open this select menu</option>  --}}
+                                @foreach ($select_month as $sm)
+                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                                @endforeach
+                                {{-- <option value="6">juni</option> --}}
+
+
+                            </select>
+                        </div>
                     </div>
                     <div>
-                        <select class="form-select" wire:model.live="month">
-                            {{-- <option selected>Open this select menu</option>  --}}
-                            @foreach ($select_month as $sm)
-                                <option value="{{ $sm }}">{{ monthName($sm) }}</option>
-                            @endforeach
-                            {{-- <option value="6">juni</option> --}}
+                        <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span
+                                role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
+                        </button>
+                        <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Excel ... PLease wait') }}</span>
+                        </button>
+                        <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
+                        </button>
 
-
-                        </select>
                     </div>
                 </div>
-                <div>
-                    <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span
-                            role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
-                    </button>
-                    <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">{{ __('Building Excel ... PLease wait') }}</span>
-                    </button>
-                    <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
-                    </button>
 
-                </div>
-            </div>
-
-            <div class="d-flex gap-2" wire:loading.class='invisible'>
-                @if (auth()->user()->role > 5)
-                    <button wire:click="buat_payroll('noQueue')"
-                        {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
-                @endif
-                <a href="/ter"><button
-                        class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
-                <button class="btn btn-success nightowl-daylight"
-                    wire:click="bankexcel">{{ __('Report for bank') }}</button>
-                <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
-                @if (auth()->user()->role == 8)
+                <div class="d-flex gap-2" wire:loading.class='invisible'>
+                    @if (auth()->user()->role == 8)
+                        <button wire:click="buat_payroll('noQueue')"
+                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
+                    @endif
+                    <a href="/ter"><button
+                            class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
+                    <button class="btn btn-success nightowl-daylight"
+                        wire:click="bankexcel">{{ __('Report for bank') }}</button>
+                    <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
                     <button wire:click="buat_payroll('queue')"
                         {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild with queue') }}</button>
-                @endif
-
+                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
+                </div>
             </div>
-        </div>
+        @endif
+
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-xl-row flex-column justify-content-between align-items-center gap-2 gap-xl-0">

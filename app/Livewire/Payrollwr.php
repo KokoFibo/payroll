@@ -499,10 +499,10 @@ class Payrollwr extends Component
 
 
 
-    public function getPayrollQueue()
-    {
-        $this->dispatch(new BuildPayrollJob($this->month, $this->year));
-    }
+    // public function getPayrollQueue()
+    // {
+    //     $this->dispatch(new BuildPayrollJob($this->month, $this->year));
+    // }
 
     public function buat_payroll($queue)
     {

@@ -2,12 +2,30 @@
 
     @section('title', 'Presensi Detail')
     <h4 class="text-center text-bold pt-2 my-3">{{ __('Presensi Detail') }}</h4>
+    @if (check_rebuild_done())
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+            <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+    @endif
+    @if (check_rebuilding())
+        <div class="alert alert-primary" role="alert">
+            <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
+        </div>
+    @endif
+    @if ($fail = check_fail_job())
+        <div class="alert alert-danger" role="alert">
+            <strong>Errror building payroll</strong>
+        </div>
+    @endif
     <div class="d-flex flex-xl-row flex-column justify-content-xl-between gap-lg-0 gap-2 px-4">
         {{-- <div class="col-xl-8 col-12 p-2 p-xl-4 d-flex flex-xl-row flex-column  gap-xl-0 gap-2"> --}}
         <div class="col-xl-4 col-12">
             <div class="input-group">
                 <button class="btn btn-primary" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="search" wire:model.live="search" class="form-control" placeholder="{{ __('Search') }} ...">
+                <input type="search" wire:model.live="search" class="form-control"
+                    placeholder="{{ __('Search') }} ...">
             </div>
         </div>
         <div>
@@ -37,20 +55,10 @@
             </select>
         </div>
 
-        <a href="/presensisummaryindex"><button
-                class="btn btn-success {{ auth()->user()->role < 6 ? 'invisible' : '' }} nightowl-daylight">Excel</button></a>
+        {{-- <a href="/presensisummaryindex"><button
+                class="btn btn-success {{ auth()->user()->role < 6 ? 'invisible' : '' }} nightowl-daylight">Excel</button></a> --}}
+    </div>
 
-        <button wire:click="buat_payroll"
-            class="btn btn-primary {{ auth()->user()->role < 6 ? 'invisible' : '' }} nightowl-daylight"
-            wire:loading.class='invisible'
-            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}>{{ __('Rebuild') }}</button>
-    </div>
-    <div class="{{ auth()->user()->role < 6 ? 'invisible' : '' }} text-center mt-3">
-        <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span role="status">{{ __('Building Payroll... sedikit lama (2,5 menit), jangan tekan apapun.') }}</span>
-        </button>
-    </div>
 
     <div class="p-4">
         <div class="card">
