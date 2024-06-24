@@ -119,9 +119,8 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
             'AJ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }

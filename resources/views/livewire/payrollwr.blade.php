@@ -496,10 +496,4 @@
     @if ($data_payroll != null && $data_karyawan != null)
         @include('modals.payroll-modal')
     @endif
-
-
-
-
-
-
 </div>

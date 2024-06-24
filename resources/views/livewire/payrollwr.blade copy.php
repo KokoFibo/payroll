@@ -1,86 +1,83 @@
 <div>
     @section('title', 'Payroll')
+    {{-- <p>lock_presensi: {{ $lock_presensi }}</p> --}}
+    <style>
+        td,
+        th {
+            white-space: nowrap;
+        }
 
-    <div class="pt-2">
-        <div class="row">
-            <div class="col"></div>
+        @media (min-width : 600px) {
+
+            table th {
+                z-index: 2;
+            }
+
+            td:first-child,
+            th:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+            }
+
+            td:nth-child(2),
+            th:nth-child(2) {
+                position: sticky;
+                left: 56px;
+                z-index: 1;
+            }
+
+            td:nth-child(3),
+            th:nth-child(3) {
+                position: sticky;
+                left: 110px;
+                z-index: 1;
+            }
+
+            td:nth-child(4),
+            th:nth-child(4) {
+
+                position: sticky;
+                left: 200px;
+                z-index: 1;
+            }
+
+            th:first-child,
+            th:nth-child(2) {
+                z-index: 3;
+            }
+        }
+    </style>
+    <div class="p-2">
+        {{-- <p>selected_company : {{ $selected_company }}</p>
+        <p>selected_placement : {{ $selected_placement }}</p>
+        <p>selected_departemen : {{ $selected_departemen }}</p> --}}
+        {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
+            {{ jumlah_libur_nasional($month, $year) }}</p> --}}
+        {{-- @if (auth()->user()->role == 8) --}}
+
+        @if (check_rebuild_done())
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            </div>
+        @endif
+        @if (check_rebuilding())
+            <div class="alert alert-primary" role="alert">
+                <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
+            </div>
+        @endif
+        @if ($fail = check_fail_job())
+            <div class="alert alert-danger" role="alert">
+                <strong>Errror building payroll</strong>
+            </div>
+        @endif
+        {{-- @endif --}}
+
+        <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
-                <h4 class="text-center text-bold mb-3">Yifang Payroll</h4>
-            </div>
-            <div class="col">
-                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center">
-                    @if (auth()->user()->role > 4)
-                        <div class="form-check form-switch">
-                            <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox"
-                                role="switch" id="flexSwitchCheckChecked" value=1
-                                {{ $lock_slip_gaji ? 'checked' : '' }}>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">
-                                @if ($lock_slip_gaji)
-                                    {{ __('Slip Gaji is locked') }}
-                                @else
-                                    {{ __('Slip Gaji is unlocked') }}
-                                @endif
-                            </label>
-                        </div>
-                    @endif
-                    <div class="form-check form-switch">
-                        <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
-                            id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">
-                            @if ($lock_data)
-                                {{ __('Data is locked') }}
-                            @else
-                                {{ __('Data is unlocked') }}
-                            @endif
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
-                            id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">
-                            {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
-                            @if ($lock_presensi)
-                                {{ __('Presensi is locked') }}
-                            @else
-                                {{ __('Presensi is unlocked') }}
-                            @endif
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4">
-
-            <button class="btn btn-info mb-2">{{ __('Total Gaji') }} : Rp. {{ number_format($total) }}</button>
-            <div class="col-xl-3 d-flex gap-2 flex-column flex-xl-row ">
-
-                <div class="col-xl-6">
-                    <select class="form-select" wire:model.live="year">
-                        {{-- <option selected>Open this select menu</option> --}}
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                    </select>
-                </div>
-                <div class="col-xl-6">
-                    <select class="form-select" wire:model.live="month">
-                        {{-- <option selected>Open this select menu</option> --}}
-                        <option value="11">{{ monthName(11) }}</option>
-                        <option value="12">{{ monthName(12) }}</option>
-                        <option value="1">{{ monthName(1) }}</option>
-                        <option value="2">{{ monthName(2) }}</option>
-                    </select>
-                </div>
-            </div>
-
-            <div wire:loading>
-                <button class="btn btn-primary" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span role="status">{{ __('Building Payroll... sedikit lama, jangan tekan apapun.') }}</span>
-                </button>
-            </div>
-            <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center">
-                @if (auth()->user()->role > 4)
+                @if (auth()->user()->role > 7)
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
@@ -93,140 +90,195 @@
                         </label>
                     </div>
                 @endif
-                <div class="form-check form-switch">
-                    <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
-                        id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
-                    <label class="form-check-label" for="flexSwitchCheckChecked">
-                        @if ($lock_data)
-                            {{ __('Data is locked') }}
-                        @else
-                            {{ __('Data is unlocked') }}
-                        @endif
-                    </label>
-                </div>
-                <div class="form-check form-switch">
-                    <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox" role="switch"
-                        id="flexSwitchCheckChecked" value=1 {{ $lock_presensi ? 'checked' : '' }}>
-                    <label class="form-check-label" for="flexSwitchCheckChecked">
-                        {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
-                        @if ($lock_presensi)
-                            {{ __('Presensi is locked') }}
-                        @else
-                            {{ __('Presensi is unlocked') }}
-                        @endif
-                    </label>
-                </div>
 
-                <div>
-                    <a href="/reportindex"><button class="btn btn-success text-end mb-2 mr-2"
-                            wire:loading.remove>{{ __('Report for bank') }}</button></a>
-
-                </div>
-
-                <div>
-                    {{-- <button wire:click="getPayroll" class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button> --}}
-                    <button wire:click="buat_payroll" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
-                        class="btn btn-primary text-end mb-2">{{ __('Rebuild') }}</button>
-                    {{-- <button wire:click="rebuild" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
-                    {{-- <button wire:click="getPayrollQueue" class="btn btn-primary text-end mb-2">Rebuild</button> --}}
+            </div>
+            <div class="col">
+                <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
+            </div>
+            <div class="col">
+                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
+                    @if (auth()->user()->role > 6)
+                        <div class="form-check form-switch">
+                            <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked" value=1 {{ $lock_data ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">
+                                @if ($lock_data)
+                                    {{ __('Data is locked') }}
+                                @else
+                                    {{ __('Data is unlocked') }}
+                                @endif
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input wire:model.live="lock_presensi" class="form-check-input" type="checkbox"
+                                role="switch" id="flexSwitchCheckChecked" value=1
+                                {{ $lock_presensi ? 'checked' : '' }}>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">
+                                {{-- {{ $lock_presensi ? 'Presensi is locked' : 'Presensi is unlocked' }} --}}
+                                @if ($lock_presensi)
+                                    {{ __('Presensi is locked') }}
+                                @else
+                                    {{ __('Presensi is unlocked') }}
+                                @endif
+                            </label>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
+        @if (!check_rebuilding())
+
+            <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
+                <div class="d-flex gap-2 flex-lg-row flex-column">
+                    <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
+                        {{ number_format($total) }}</button>
+                    <div class="d-flex gap-2">
+                        <div>
+                            <select class="form-select" wire:model.live="year">
+                                @foreach ($select_year as $sy)
+                                    <option value="{{ $sy }}">{{ $sy }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <select class="form-select" wire:model.live="month">
+                                {{-- <option selected>Open this select menu</option>  --}}
+                                @foreach ($select_month as $sm)
+                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                                @endforeach
+                                {{-- <option value="6">juni</option> --}}
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span
+                                role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
+                        </button>
+                        <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Excel ... PLease wait') }}</span>
+                        </button>
+                        <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2" wire:loading.class='invisible'>
+                    @if (auth()->user()->role == 8)
+                        <button wire:click="buat_payroll('noQueue')"
+                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
+                    @endif
+                    <a href="/ter"><button
+                            class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
+                    <button class="btn btn-success nightowl-daylight"
+                        wire:click="bankexcel">{{ __('Report for bank') }}</button>
+                    <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
+                    <button wire:click="buat_payroll('queue')"
+                        {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
+                </div>
+            </div>
+        @endif
+
         <div class="card">
             <div class="card-header">
-                {{-- <div class="d-flex justify-content-between align-items-center"> --}}
-                <div class="d-flex flex-xl-row flex-column col-xl-12 justify-content-between align-items-center ">
-                    <div class="col-xl-4 d-flex flex-xl-row flex-column gap-2">
-                        <div class="input-group col-xl-6 col-12">
+                <div class="d-flex flex-xl-row flex-column justify-content-between align-items-center gap-2 gap-xl-0">
+                    <div class="col-xl-4">
+                        <div class="input-group">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
-                        {{-- Company --}}
-                        <div class="col-xl-6 col-12">
-                            <select wire:model.live="selected_company" class="form-select"
-                                aria-label="Default select example">
-                                <option value="0"selected>{{ __('All Companies') }}</option>
-                                {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option> --}}
-                                <option value="4">ASB</option>
-                                <option value="5">DPA</option>
-                                <option value="6">YCME</option>
-                                <option value="7">YEV</option>
-                                <option value="8">YIG</option>
-                                <option value="9">YSM</option>
-                                <option value="10">YAM</option>
-                            </select>
-                        </div>
-                        {{-- placement --}}
-                        <div class="col-xl-6 col-12">
-                            <select wire:model.live="selected_placement" class="form-select"
-                                aria-label="Default select example">
-                                <option value="0"selected>{{ __('All Placement') }}</option>
-                                <option value="6">YCME</option>
-                                <option value="7">YEV</option>
-                                <option value="10">YAM</option>
-                                <option value="8">YIG</option>
-                                <option value="9">YSM</option>
-                                {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                    </div>
+                    {{-- placement --}}
+                    <div>
+                        <select wire:model.live="selected_placement" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Placement') }}</option>
+                            <option value="6">YCME</option>
+                            <option value="7">YEV</option>
+                            <option value="10">YAM</option>
+                            <option value="8">YIG</option>
+                            <option value="9">YSM</option>
+                            <option value="11">YEV SMOOT</option>
+                            <option value="12">YEV OFFERO</option>
+                            <option value="13">YEV SUNRA</option>
+                            <option value="14">YEV AIMA</option>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>
                                 <option value="4">ASB</option>
                                 <option value="5">DPA</option> --}}
-                            </select>
-
-                        </div>
+                        </select>
+                    </div>
+                    {{-- Company --}}
+                    <div>
+                        <select wire:model.live="selected_company" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Companies') }}</option>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                                <option value="2">{{ __('Pabrik 2') }}</option>
+                                <option value="3">{{ __('Kantor') }}</option> --}}
+                            <option value="4">ASB</option>
+                            <option value="5">DPA</option>
+                            <option value="6">YCME</option>
+                            <option value="7">YEV</option>
+                            <option value="8">YIG</option>
+                            <option value="9">YSM</option>
+                            <option value="10">YAM</option>
+                            <option value="11">GAMA</option>
+                            <option value="12">WAS</option>
+                        </select>
                     </div>
 
+                    {{-- Departemen --}}
+                    <div>
+                        <select wire:model.live="selected_departemen" class="form-select"
+                            aria-label="Default select example">
+                            <option value="0"selected>{{ __('All Department') }}</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ nama_department($department) }}">{{ nama_department($department) }}
+                                </option>
+                            @endforeach
 
-
-                    <div class="col-xl-6  gap-2 mt-2 mt-xl-0 d-flex flex-xl-row flex-column justify-content-between">
-                        <div>
-                            <select class="form-select" wire:model.live="perpage">
-                                {{-- <option selected>Open this select menu</option> --}}
-                                <option value="10">10 {{ __('rows perpage') }}</option>
-                                <option value="15">15 {{ __('rows perpage') }}</option>
-                                <option value="20">20 {{ __('rows perpage') }}</option>
-                                <option value="25">25 {{ __('rows perpage') }}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select class="form-select" wire:model.live="status">
-                                <option value="0">{{ __('Semua') }}</option>
-                                <option value="1">{{ __('Status Aktif') }}</option>
-                                <option value="2">{{ __('Status Non Aktif') }}</option>
-                            </select>
-                        </div>
-                        <div
-                            class=" mt-xl-0  mt-2 d-flex align-items-center justify-content-between justify-content-xl-end gap-2 ">
-                            <div class="">
-                                <button wire:click="export" class="btn btn-success">Excel Company</button>
-                            </div>
-                            <div class="">
-                                <button wire:click="exportPlacement" class="btn btn-success">Excel Placement</button>
-                            </div>
-                            {{-- <div>
-                                <button class="btn btn-danger">PDF</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-dark">Print</button>
-                            </div> --}}
-                        </div>
+                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
+                                <option value="2">{{ __('Pabrik 2') }}</option>
+                                <option value="3">{{ __('Kantor') }}</option>
+                                <option value="4">ASB</option>
+                                <option value="5">DPA</option> --}}
+                        </select>
                     </div>
+
+                    <div>
+                        <select class="form-select" wire:model.live="perpage">
+                            {{-- <option selected>Open this select menu</option> --}}
+                            <option value="10">10 {{ __('rows perpage') }}</option>
+                            <option value="15">15 {{ __('rows perpage') }}</option>
+                            <option value="20">20 {{ __('rows perpage') }}</option>
+                            <option value="25">25 {{ __('rows perpage') }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select" wire:model.live="status">
+                            <option value="0">{{ __('Semua') }}</option>
+                            <option value="1">{{ __('Status Aktif') }}</option>
+                            <option value="2">{{ __('Status Non Aktif') }}</option>
+                        </select>
+                    </div>
+
+                    {{-- </div> --}}
                 </div>
-
             </div>
 
-
-
-            <style>
-                td,
-                th {
-                    white-space: nowrap;
-                }
-            </style>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -235,22 +287,26 @@
                                 <th></th>
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Date') }} <i
-                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('id_karyawan')">
+                                    {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
-                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }} <i
+                                <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('id_karyawan')">{{ __('Hari Kerja') }} <i
+                                <th wire:click="sortColumnName('departemen')">{{ __('Department') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('metode_penggajian')">{{ __('Metode Penggajian') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('hari_kerja')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('jam_kerja')">{{ __('Jam Kerja Bersih') }} <i
@@ -274,8 +330,12 @@
                                 <th wire:click="sortColumnName('subtotal')">{{ __('Sub Gaji') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
+                                <th wire:click="sortColumnName('gaji_libur')">{{ __('Gaji Libur') }} <i
                                         class="fa-solid fa-sort"></i>
+                                </th>
+
+                                {{-- <th wire:click="sortColumnName('libur_nasional')">{{ __('Libur Nasional') }} <i
+                                        class="fa-solid fa-sort"></i> --}}
                                 </th>
                                 <th wire:click="sortColumnName('tambahan_shift_malam')">
                                     {{ __('Tambahan Shift Malam') }} <i class="fa-solid fa-sort"></i>
@@ -326,10 +386,11 @@
                                     @if (check_bulan($p->date, $month, $year))
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-success btn-sm"
+                                                <button type="button"
+                                                    class="btn btn-success btn-sm nightowl-daylight"
                                                     wire:click="showDetail({{ $p->id_karyawan }})"
                                                     data-bs-toggle="modal" data-bs-target="#payroll"><i
-                                                        class="fa-solid fa-magnifying-glass"></i></button>
+                                                        class="fa-solid fa-magnifying-glass nightowl-daylight"></i></button>
 
                                             </td>
 
@@ -340,8 +401,9 @@
                                             <td>{{ $p->nama }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
                                             <td>{{ $p->jabatan }}</td>
-                                            <td>{{ $p->company }}</td>
                                             <td>{{ $p->placement }}</td>
+                                            <td>{{ $p->company }}</td>
+                                            <td>{{ $p->departemen }}</td>
                                             <td>{{ $p->metode_penggajian }}</td>
                                             <td class="text-end">{{ $p->hari_kerja }}</td>
                                             <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
@@ -355,9 +417,10 @@
                                                 {{ $p->gaji_bpjs ? number_format($p->gaji_bpjs) : '' }}
                                             </td>
                                             <td class="text-end">{{ number_format($p->subtotal) }}</td>
-                                            <td class="text-end">
+                                            <td class="text-end">{{ number_format($p->gaji_libur) }}</td>
+                                            {{-- <td class="text-end">
                                                 {{ $p->libur_nasional ? number_format($p->libur_nasional) : '' }}
-                                            </td>
+                                            </td> --}}
                                             <td class="text-end">
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
@@ -368,7 +431,13 @@
                                                 $total_potongan_dari_karyawan = 0;
                                                 $total_bonus_dari_karyawan = 0;
                                                 $total_potongan_dari_karyawan = $p->iuran_air + $p->iuran_locker;
-                                                $total_bonus_dari_karyawan = $p->thr + $p->tunjangan_jabatan + $p->tunjangan_bahasa + $p->tunjangan_skill + $p->tunjangan_lembur_sabtu + $p->tunjangan_lama_kerja;
+                                                $total_bonus_dari_karyawan =
+                                                    $p->thr +
+                                                    $p->tunjangan_jabatan +
+                                                    $p->tunjangan_bahasa +
+                                                    $p->tunjangan_skill +
+                                                    $p->tunjangan_lembur_sabtu +
+                                                    $p->tunjangan_lama_kerja;
 
                                             @endphp
                                             <td class="text-end">
@@ -390,7 +459,8 @@
 
                                             </td>
 
-                                            <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}</td>
+                                            <td class="text-end">{{ $p->pajak ? number_format($p->pajak) : '' }}
+                                            </td>
                                             <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
                                             <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
                                             <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
@@ -415,6 +485,11 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
+            <p class="px-3">{{ __('Total') }}
+                {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
+
+                {{ __('working days with') }}
+                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }}</p>
             <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>

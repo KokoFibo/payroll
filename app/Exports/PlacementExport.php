@@ -178,7 +178,7 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
                     ->orderBy('id_karyawan', 'asc')->get();
                 break;
         }
-        $header_text = 'Perincian Payroll untuk Placement ' . $this->selected_placement . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+        $header_text = 'Perincian Payroll untuk Placement ' .  nama_bulan($this->month) . ' ' . $this->year;
 
         return view('payroll_excel_view', [
             'data' => $data,
@@ -216,9 +216,8 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
             'AJ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }
