@@ -90,14 +90,7 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 7)
-                <li class="nav-item {{ 'absensikosong' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/absensikosong" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard-check"></i>
-                        <p>{{ __('Absensi Kosong') }}</p>
-                    </a>
-                </li>
-            @endif
+
 
             @if (Auth::user()->role >= 5)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
@@ -301,12 +294,7 @@ with font-awesome or any other icon font library -->
                                 <p>Missing ID</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ 'usernotfound' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a href="/usernotfound" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User Not Found</p>
-                            </a>
-                        </li>
+
                         <li
                             class="nav-item {{ 'importKaryawanExcel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau import karyawan dari excel bersih?')"
