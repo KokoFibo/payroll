@@ -557,11 +557,13 @@ class Payrollwr extends Component
             );
         } else {
             // $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )');
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )',
-            );
+            if ($queue == 'noQueue') {
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )',
+                );
+            }
         }
 
 
