@@ -48,18 +48,20 @@ class HomeController extends Controller
         $user = User::find(auth()->user()->id);
 
         if (!((auth()->user()->role <= 6 && auth()->user()->role > 0) && $desktop == false)) {
+            $data = Dashboarddata::find(1);
 
-            // khusus mobile doang
-            // aktifin in ijika ngaco
+            // $jumlah_total_karyawan = $data->jumlah_total_karyawan;
+            // $jumlah_karyawan_pria = $data->jumlah_karyawan_pria;
+            // $jumlah_karyawan_wanita = $data->jumlah_karyawan_wanita;
 
-            // $jumlah_karyawan_baru_hari_ini = Karyawan::whereDate('tanggal_bergabung', Carbon::today())->count();
-            // $jumlah_karyawan_Resigned_hari_ini = Karyawan::whereDate('tanggal_resigned', Carbon::today())->count();
-            // $jumlah_karyawan_blacklist_hari_ini = Karyawan::whereDate('tanggal_blacklist', Carbon::today())->count();
+            $karyawan_baru_mtd =  $data->karyawan_baru_mtd;
+            $karyawan_resigned_mtd = $data->karyawan_resigned_mtd;
+            $karyawan_blacklist_mtd = $data->karyawan_blacklist_mtd;
+            $karyawan_aktif_mtd = $data->karyawan_aktif_mtd;
 
-            // $karyawan_baru_mtd =  Karyawan::whereBetween('tanggal_bergabung', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-            // $karyawan_resigned_mtd =  Karyawan::whereBetween('tanggal_resigned', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-            // $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-            // $karyawan_aktif_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+            $jumlah_karyawan_baru_hari_ini = $data->jumlah_karyawan_baru_hari_ini;
+            $jumlah_karyawan_Resigned_hari_ini = $data->jumlah_karyawan_Resigned_hari_ini;
+            $jumlah_karyawan_blacklist_hari_ini = $data->jumlah_karyawan_blacklist_hari_ini;
 
             // Shift Pagi dan Shift Malam
 
@@ -104,32 +106,22 @@ class HomeController extends Controller
         $belum_isi_kontak_darurat = 0;
         $belum_isi_etnis = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->where('etnis', null)->count();
         $belum_isi_kontak_darurat = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->where('kontak_darurat', null)->count();
+        // dd($isi_etnis);
 
-        $jumlah_karyawan_baru_hari_ini = Karyawan::whereDate('tanggal_bergabung', Carbon::today())->count();
-        $jumlah_karyawan_Resigned_hari_ini = Karyawan::whereDate('tanggal_resigned', Carbon::today())->count();
-        $jumlah_karyawan_blacklist_hari_ini = Karyawan::whereDate('tanggal_blacklist', Carbon::today())->count();
-
-        $karyawan_baru_mtd =  Karyawan::whereBetween('tanggal_bergabung', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-        $karyawan_resigned_mtd =  Karyawan::whereBetween('tanggal_resigned', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-        $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-        $karyawan_aktif_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+        // kkk
 
         if ($desktop) {
             $user->device = 1;
             $user->save();
             if (auth()->user()->role != 1 && auth()->user()->role != 4 && auth()->user()->role != 2) {
-                // khusus desktop
+                $karyawan_baru_mtd =  $data->karyawan_baru_mtd;
+                $karyawan_resigned_mtd = $data->karyawan_resigned_mtd;
+                $karyawan_blacklist_mtd = $data->karyawan_blacklist_mtd;
+                $karyawan_aktif_mtd = $data->karyawan_aktif_mtd;
 
-                // $jumlah_karyawan_baru_hari_ini = Karyawan::whereDate('tanggal_bergabung', Carbon::today())->count();
-                // $jumlah_karyawan_Resigned_hari_ini = Karyawan::whereDate('tanggal_resigned', Carbon::today())->count();
-                // $jumlah_karyawan_blacklist_hari_ini = Karyawan::whereDate('tanggal_blacklist', Carbon::today())->count();
-
-                // $karyawan_baru_mtd =  Karyawan::whereBetween('tanggal_bergabung', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-                // $karyawan_resigned_mtd =  Karyawan::whereBetween('tanggal_resigned', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-                // $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
-                // $karyawan_aktif_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-
-
+                $jumlah_karyawan_baru_hari_ini = $data->jumlah_karyawan_baru_hari_ini;
+                $jumlah_karyawan_Resigned_hari_ini = $data->jumlah_karyawan_Resigned_hari_ini;
+                $jumlah_karyawan_blacklist_hari_ini = $data->jumlah_karyawan_blacklist_hari_ini;
                 return view('dashboard', compact([
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
                     'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
@@ -143,7 +135,6 @@ class HomeController extends Controller
             if (auth()->user()->role >= 7 || auth()->user()->role == 0) {
                 $user->device = 1;
                 $user->save();
-
 
                 return view('dashboard', compact([
                     'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',

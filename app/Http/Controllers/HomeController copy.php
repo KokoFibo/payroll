@@ -50,9 +50,9 @@ class HomeController extends Controller
         if (!((auth()->user()->role <= 3 && auth()->user()->role > 0) && $desktop == false)) {
             $data = Dashboarddata::find(1);
 
-            $jumlah_total_karyawan = $data->jumlah_total_karyawan;
-            $jumlah_karyawan_pria = $data->jumlah_karyawan_pria;
-            $jumlah_karyawan_wanita = $data->jumlah_karyawan_wanita;
+            // $jumlah_total_karyawan = $data->jumlah_total_karyawan;
+            // $jumlah_karyawan_pria = $data->jumlah_karyawan_pria;
+            // $jumlah_karyawan_wanita = $data->jumlah_karyawan_wanita;
 
             $jumlah_karyawan_baru_hari_ini = $data->jumlah_karyawan_baru_hari_ini;
             $jumlah_karyawan_Resigned_hari_ini = $data->jumlah_karyawan_Resigned_hari_ini;
