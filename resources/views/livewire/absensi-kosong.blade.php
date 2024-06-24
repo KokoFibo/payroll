@@ -22,9 +22,9 @@
                         <tr>
                             <td>{{ $d->user_id }}</td>
                             <td>{{ $d->karyawan->nama }}</td>
-                            <td>{{ $d->karyawan->jabatan }}</td>
-                            <td>{{ $d->karyawan->company }}</td>
-                            <td>{{ $d->karyawan->placement }}</td>
+                            <td>{{ $d->karyawan->jabatan->nama_jabatan }}</td>
+                            <td>{{ $d->karyawan->company->nama_company }}</td>
+                            <td>{{ $d->karyawan->placement->placement_name }}</td>
                             <td>{{ $d->karyawan->metode_penggajian }}</td>
                             <td>{{ format_tgl($d->date) }}</td>
                         </tr>
