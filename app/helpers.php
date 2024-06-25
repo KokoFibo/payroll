@@ -21,6 +21,15 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function is_perbulan()
+{
+    $is_perbulan = false;
+    $data_karyawan = Karyawan::where('id_karyawan', auth()->user()->username)->where('metode_penggajian', 'Perbulan')->first();
+    if ($data_karyawan != null) $is_perbulan = true;
+    else $is_perbulan = false;
+    return $is_perbulan;
+}
+
 function check_fail_job()
 {
     $fail = DB::table('failed_jobs')->count();

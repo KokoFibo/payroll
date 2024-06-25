@@ -78,11 +78,18 @@
                         class="{{ 'usermobile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
                             class="fa-solid fa-house"></i>
                     </button></a>
-                {{-- href="/userinformation" --}}
-                <a wire:navigate href="userinformation"><button
-                        class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                            class="fa-solid fa-circle-info"></i>
-                    </button></a>
+                @if (is_perbulan())
+                    <a href="cutirequest"><button
+                            class="{{ 'cutirequest' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
+                                class="fa-brands fa-wpforms"></i>
+                        </button></a>
+                @else
+                    {{-- href="/userinformation" --}}
+                    <a wire:navigate href="userinformation"><button
+                            class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
+                                class="fa-solid fa-circle-info"></i>
+                        </button></a>
+                @endif
 
                 <div>
                     <a href="{{ route('logout') }}"

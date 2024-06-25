@@ -207,13 +207,18 @@
                                             $kesehatan_company = ($data_payroll->gaji_bpjs * 0.4) / 100;
                                             $jp_company = ($data_payroll->gaji_bpjs * 0.2) / 100;
                                             $jht_company = ($data_payroll->gaji_bpjs * 0.37) / 100;
+                                            // $total_bpjs_company =
+                                            //     $data_payroll->gaji_bpjs +
+                                            //     $jkk_company +
+                                            //     $jkm_company +
+                                            //     $kesehatan_company +
+                                            //     $jp_company +
+                                            //     $jht_company;
                                             $total_bpjs_company =
                                                 $data_payroll->gaji_bpjs +
                                                 $jkk_company +
                                                 $jkm_company +
-                                                $kesehatan_company +
-                                                $jp_company +
-                                                $jht_company;
+                                                $kesehatan_company;
                                             $ter = '';
                                             switch ($data_payroll->ptkp) {
                                                 case 'TK0':
