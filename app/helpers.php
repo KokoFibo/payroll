@@ -21,6 +21,53 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function hitung_pph21($gaji_bpjs, $ptkp)
+{
+    if ($gaji_bpjs != '' &&  $ptkp != '') {
+        $jkk_company = ($gaji_bpjs * 0.24) / 100;
+        $jkm_company = ($gaji_bpjs * 0.3) / 100;
+        $kesehatan_company = ($gaji_bpjs * 0.4) / 100;
+        $jp_company = ($gaji_bpjs * 0.2) / 100;
+        $jht_company = ($gaji_bpjs * 0.37) / 100;
+        $total_bpjs_company =
+            // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
+            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+        $ter = '';
+        switch ($ptkp) {
+            case 'TK0':
+                $ter = 'A';
+                break;
+            case 'TK1':
+                $ter = 'A';
+                break;
+            case 'TK2':
+                $ter = 'B';
+                break;
+            case 'TK3':
+                $ter = 'B';
+                break;
+            case 'K0':
+                $ter = 'A';
+                break;
+            case 'K1':
+                $ter = 'B';
+                break;
+            case 'K2':
+                $ter = 'B';
+                break;
+            case 'K3':
+                $ter = 'C';
+                break;
+        }
+
+        $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
+        $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
+    } else {
+        $pph21 = 0;
+    }
+    return $pph21;
+}
+
 function is_perbulan()
 {
     $is_perbulan = false;
