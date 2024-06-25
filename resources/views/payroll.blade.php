@@ -252,40 +252,38 @@
 
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="0"
-                            nama="tanggungan"
-                            id="flexRadioDefault1>
-                            <label class="form-check-label"
-                            for="flexRadioDefault1">
-                        Tidak ada
+                            nama="tanggungan" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Tidak ada
                         </label>
                     </div>
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="1"
-                            nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                            nama="tanggungan" id="flexRadioDefault1"> <label class="form-check-label"
                             for="flexRadioDefault1">
-                        1 Orang
+                            1 Orang
                         </label>
                     </div>
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="2"
-                            nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                            nama="tanggungan" id="flexRadioDefault1"> <label class="form-check-label"
                             for="flexRadioDefault1">
-                        2 Orang
+                            2 Orang
                         </label>
                     </div>
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="3"
-                            nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                            nama="tanggungan" id="flexRadioDefault1"> <label class="form-check-label"
                             for="flexRadioDefault1">
-                        3 Orang
+                            3 Orang
                         </label>
 
                     </div>
                     <div class="form-check mt-2">
                         <input type="radio" wire:model="tanggungan" class="form-check-input" value="4"
-                            nama="tanggungan" id="flexRadioDefault1> <label class="form-check-label"
+                            nama="tanggungan" id="flexRadioDefault1"> <label class="form-check-label"
                             for="flexRadioDefault1">
-                        4 Orang
+                            4 Orang
                         </label>
                     </div>
                 </div>

@@ -400,7 +400,14 @@
                                             <tr>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP</td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                    Rp. {{ number_format($data_karyawan->ptkp) }}</td>
+                                                    {{ $data_karyawan->ptkp }}</td>
+                                            </tr>
+                                        @endif
+                                        @if ($data_payroll->pph21 != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PPh21</td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->pph21) }}</td>
                                             </tr>
                                         @endif
 
@@ -650,8 +657,8 @@
                             class="fa-solid fa-house"></i>
                     </button></a>
                 @if (is_perbulan())
-                    <a href="cutirequest"><button
-                            class="{{ 'cutirequest' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
+                    <a href="timeoff"><button
+                            class="{{ 'timeoff' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
                                 class="fa-brands fa-wpforms"></i>
                         </button></a>
                 @else

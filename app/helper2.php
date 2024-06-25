@@ -341,6 +341,11 @@ function build_payroll($month, $year)
 
         // end of bpjs
 
+
+        // hitung pph21
+        $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp);
+
+
         $pajak = 0;
 
         // denda no scan
@@ -527,7 +532,8 @@ function build_payroll($month, $year)
             'tambahan_shift_malam' => $tambahan_shift_malam,
             'subtotal' => $subtotal,
             'date' => buatTanggal($data->date),
-            'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
+            'pph21' => $pph21,
+            'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
             // 'created_at' => now()->toDateTimeString(),
             // 'updated_at' => now()->toDateTimeString()
         ]);

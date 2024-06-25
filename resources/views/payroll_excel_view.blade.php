@@ -198,7 +198,7 @@
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
-                    <td style="text-align: right"> {{ $pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->pph21 }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
                 </tr>
             @endforeach

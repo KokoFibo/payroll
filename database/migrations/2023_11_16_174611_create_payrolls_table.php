@@ -70,6 +70,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('status_karyawan');
             $table->string('ptkp');
+            $table->integer('pph21')->nullable();
             $table->timestamps();
         });
     }

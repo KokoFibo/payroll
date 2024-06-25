@@ -5,7 +5,7 @@
             <h4>Under Construction</h4>
         </div>
     @else
-        Request Cuti
+        Request Time Off
     @endif
 
     <div class="mt-20"></div>

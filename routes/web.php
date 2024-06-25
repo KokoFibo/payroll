@@ -76,6 +76,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\Requesterwr;
+use App\Livewire\Timeoffwr;
 
 // Middleware
 Auth::routes([
@@ -128,7 +129,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profile', Profile::class);
         Route::get('/userinformation', UserInformation::class);
         Route::get('/userregulation', UserRegulation::class);
-        Route::get('/cutirequest', Cutirequestwr::class);
+        Route::get('/timeoff', Timeoffwr::class);
 
 
 
