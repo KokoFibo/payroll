@@ -699,6 +699,10 @@ function build_payroll($month, $year)
         } else {
             $kesehatan = 0;
         }
+
+        // hitung pph21
+        $pph21 = hitung_pph21($data_karyawan->gaji_bpjs, $data_karyawan->ptkp);
+
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
@@ -722,7 +726,8 @@ function build_payroll($month, $year)
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';
-            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan);
+            $data->pph21  = $pph21;
+            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
             $data->save();
         } else {
             $data = new Payroll();
@@ -747,7 +752,8 @@ function build_payroll($month, $year)
             $data->jkk = $data_karyawan->jkk;
             $data->jkm = $data_karyawan->jkm;
             $data->date = $year . '-' . $month . '-01';
-            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan);
+            $data->pph21  = $pph21;
+            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
             $data->save();
         }
     }
