@@ -47,6 +47,7 @@ class HomeController extends Controller
         $desktop = $agent->isDesktop();
         $user = User::find(auth()->user()->id);
 
+
         if (!((auth()->user()->role <= 6 && auth()->user()->role > 0) && $desktop == false)) {
 
             // khusus mobile doang

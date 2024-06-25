@@ -74,6 +74,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Cutirequestwr;
 use App\Livewire\Requesterwr;
 
 // Middleware
@@ -127,6 +128,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profile', Profile::class);
         Route::get('/userinformation', UserInformation::class);
         Route::get('/userregulation', UserRegulation::class);
+        Route::get('/cutirequest', Cutirequestwr::class);
 
 
 
