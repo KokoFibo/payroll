@@ -203,7 +203,7 @@
                     @else
                         <td style="text-align: right"></td>
                     @endif
-                    @if ($d->jp == 1)
+                    @if ($d->jp != null)
                         <td style="text-align: right"> {{ $jp_company }}</td>
                     @else
                         <td style="text-align: right"></td>
@@ -215,7 +215,7 @@
                         <td style="text-align: right"></td>
                     @endif
 
-                    @if ($d->jkm != null)
+                    @if ($d->jkm == 1)
                         <td style="text-align: right"> {{ $jkm_company }}</td>
                     @else
                         <td style="text-align: right"></td>
