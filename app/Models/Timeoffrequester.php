@@ -9,4 +9,9 @@ class Timeoffrequester extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function placement()
+    {
+        return $this->belongsTo(Placement::class);
+    }
 }
