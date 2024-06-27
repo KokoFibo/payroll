@@ -199,18 +199,7 @@
                     {{-- <td style="text-align: right"> {{ $d->jkk }}</td>
                     <td style="text-align: right"> {{ $d->jkm }}</td> --}}
                     <td style="text-align: right"> {{ $d->kesehatan }}</td>
-                    {{-- @if ($d->company == 'YIG' || $d->company == 'YAM' || $d->company == 'YCME' || $d->company == 'YSM')
-                        <td style="text-align: right"> {{ $jht_company }}</td>
-                        <td style="text-align: right"> {{ $jp_company }}</td>
-                        <td style="text-align: right"> {{ $jkk_company }}</td>
-                        <td style="text-align: right"> {{ $jkm_company }}</td>
-                    @else --}}
-                    {{-- untuk company selain YCME, YAM, YIG YSM jangan munculkan jkk company dan jkm company jika tidak di conteng --}}
-                    {{-- @if ($d->kesehatan != null)
-                        <td style="text-align: right"> {{ $kesehatan }}</td>
-                    @else
-                        <td style="text-align: right"></td>
-                    @endif --}}
+
                     @if ($d->jht != null)
                         <td style="text-align: right"> {{ $jht_company }}</td>
                     @else
@@ -233,8 +222,14 @@
                     @else
                         <td style="text-align: right"></td>
                     @endif
-                    {{-- @endif --}}
-                    <td style="text-align: right"> {{ $kesehatan_company }}</td>
+
+                    @if ($d->kesehatan != null)
+                        <td style="text-align: right"> {{ $kesehatan_company }}</td>
+                    @else
+                        <td style="text-align: right"></td>
+                    @endif
+
+
                     <td style="text-align: right"> {{ $total_bpjs_company }}</td>
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
