@@ -215,7 +215,7 @@
                         <td style="text-align: right"></td>
                     @endif
 
-                    @if ($d->jkm != null)
+                    @if ($d->jkm == 1)
                         <td style="text-align: right"> {{ $jkm_company }}</td>
                     @else
                         <td style="text-align: right"></td>
