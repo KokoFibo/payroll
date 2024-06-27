@@ -186,39 +186,54 @@
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
-                    <td style="text-align: right"> {{ $d->jkk }}</td>
-                    <td style="text-align: right"> {{ $d->jkm }}</td>
+                    @if ($d->jkk)
+                        <td style="text-align: right">Yes</td>
+                    @else
+                        <td style="text-align: right">No</td>
+                    @endif
+                    @if ($d->jkm)
+                        <td style="text-align: right">Yes</td>
+                    @else
+                        <td style="text-align: right">No</td>
+                    @endif
+                    {{-- <td style="text-align: right"> {{ $d->jkk }}</td>
+                    <td style="text-align: right"> {{ $d->jkm }}</td> --}}
                     <td style="text-align: right"> {{ $d->kesehatan }}</td>
-                    @if ($d->company == 'YIG' || $d->company == 'YAM' || $d->company == 'YCME' || $d->company == 'YSM')
+                    {{-- @if ($d->company == 'YIG' || $d->company == 'YAM' || $d->company == 'YCME' || $d->company == 'YSM')
                         <td style="text-align: right"> {{ $jht_company }}</td>
                         <td style="text-align: right"> {{ $jp_company }}</td>
                         <td style="text-align: right"> {{ $jkk_company }}</td>
                         <td style="text-align: right"> {{ $jkm_company }}</td>
+                    @else --}}
+                    {{-- untuk company selain YCME, YAM, YIG YSM jangan munculkan jkk company dan jkm company jika tidak di conteng --}}
+                    {{-- @if ($d->kesehatan != null)
+                        <td style="text-align: right"> {{ $kesehatan }}</td>
                     @else
-                        {{-- untuk company selain YCME, YAM, YIG YSM jangan munculkan jkk company dan jkm company jika tidak di conteng --}}
-                        @if ($d->jht != null)
-                            <td style="text-align: right"> {{ $jht_company }}</td>
-                        @else
-                            <td style="text-align: right"></td>
-                        @endif
-                        @if ($d->jp != null)
-                            <td style="text-align: right"> {{ $jp_company }}</td>
-                        @else
-                            <td style="text-align: right"></td>
-                        @endif
-
-                        @if ($d->jkk != null)
-                            <td style="text-align: right"> {{ $jkk_company }}</td>
-                        @else
-                            <td style="text-align: right"></td>
-                        @endif
-
-                        @if ($d->jkk != null)
-                            <td style="text-align: right"> {{ $jkm_company }}</td>
-                        @else
-                            <td style="text-align: right"></td>
-                        @endif
+                        <td style="text-align: right"></td>
+                    @endif --}}
+                    @if ($d->jht != null)
+                        <td style="text-align: right"> {{ $jht_company }}</td>
+                    @else
+                        <td style="text-align: right"></td>
                     @endif
+                    @if ($d->jp == 1)
+                        <td style="text-align: right"> {{ $jp_company }}</td>
+                    @else
+                        <td style="text-align: right"></td>
+                    @endif
+
+                    @if ($d->jkk == 1)
+                        <td style="text-align: right"> {{ $jkk_company }}</td>
+                    @else
+                        <td style="text-align: right"></td>
+                    @endif
+
+                    @if ($d->jkk != null)
+                        <td style="text-align: right"> {{ $jkm_company }}</td>
+                    @else
+                        <td style="text-align: right"></td>
+                    @endif
+                    {{-- @endif --}}
                     <td style="text-align: right"> {{ $kesehatan_company }}</td>
                     <td style="text-align: right"> {{ $total_bpjs_company }}</td>
                     <td style="text-align: right"> {{ $d->ptkp }}</td>

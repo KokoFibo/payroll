@@ -513,8 +513,8 @@ function build_payroll($month, $year)
             // oll
             'libur_nasional' => $libur_nasional,
 
-            'jkk' => $data->karyawan->jkk,
-            'jkm' => $data->karyawan->jkm,
+            // 'jkk' => $data->karyawan->jkk,
+            // 'jkm' => $data->karyawan->jkm,
             'hari_kerja' => $data->total_hari_kerja,
             'jam_kerja' => $data->jumlah_jam_kerja,
             'jam_lembur' => $data->jumlah_menit_lembur,
