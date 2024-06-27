@@ -221,7 +221,7 @@
                         <td style="text-align: right"></td>
                     @endif
 
-                    @if ($d->kesehatan != null)
+                    @if ($d->kesehatan > 0)
                         <td style="text-align: right"> {{ $kesehatan_company }}</td>
                     @else
                         <td style="text-align: right"></td>
