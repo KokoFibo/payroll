@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 
@@ -33,6 +35,36 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <script>
+        document.addEventListener("message", (event) => {
+
+            const data = event.detail;
+            Swal.fire({
+                position: "center",
+                icon: data.type,
+                title: data.title,
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        });
+
+        window.addEventListener("delete_confirmation", (event) => {
+            Swal.fire({
+                title: event.detail.title,
+                // text: "You won't be able to revert this!",
+                text: event.detail.text,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, delete",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.dispatch("delete_confirmed");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
