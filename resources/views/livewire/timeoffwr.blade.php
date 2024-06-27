@@ -226,8 +226,25 @@
 
 
     </div>
-
-    <script></script>
-
+    @script
+        <script>
+            window.addEventListener("delete_confirmation", (event) => {
+                Swal.fire({
+                    title: event.detail.title,
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("delete-confirmed");
+                    }
+                });
+            });
+        </script>
+    @endscript
 
 </div>
