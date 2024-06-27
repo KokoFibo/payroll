@@ -117,7 +117,7 @@
                 @php
                     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
-                    $kesehatan_company = ($d->gaji_bpjs * 0.4) / 100;
+                    $kesehatan_company = ($d->gaji_bpjs * 4) / 100;
                     $jp_company = ($d->gaji_bpjs * 2) / 100;
                     $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     $total_bpjs_company =
@@ -217,7 +217,7 @@
                         <td style="text-align: right"></td>
                     @endif
 
-                    @if ($d->jkk != null)
+                    @if ($d->jkm != null)
                         <td style="text-align: right"> {{ $jkm_company }}</td>
                     @else
                         <td style="text-align: right"></td>

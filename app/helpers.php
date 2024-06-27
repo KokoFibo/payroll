@@ -34,7 +34,7 @@ function hitung_pph21($gaji_bpjs, $ptkp)
     if ($gaji_bpjs != '' &&  $ptkp != '') {
         $jkk_company = ($gaji_bpjs * 0.24) / 100;
         $jkm_company = ($gaji_bpjs * 0.3) / 100;
-        $kesehatan_company = ($gaji_bpjs * 0.4) / 100;
+        $kesehatan_company = ($gaji_bpjs * 4) / 100;
         $jp_company = ($gaji_bpjs * 2) / 100;
         $jht_company = ($gaji_bpjs * 3.7) / 100;
         $total_bpjs_company =
