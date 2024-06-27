@@ -198,12 +198,12 @@
                     <td style="text-align: right"> {{ $d->jkm }}</td> --}}
                     <td style="text-align: right"> {{ $d->kesehatan }}</td>
 
-                    @if ($d->jht != null)
+                    @if ($d->jht > 0)
                         <td style="text-align: right"> {{ $jht_company }}</td>
                     @else
                         <td style="text-align: right"></td>
                     @endif
-                    @if ($d->jp != null)
+                    @if ($d->jp > 0)
                         <td style="text-align: right"> {{ $jp_company }}</td>
                     @else
                         <td style="text-align: right"></td>
