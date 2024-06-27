@@ -186,12 +186,12 @@
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
-                    @if ($d->jkk)
+                    @if ($d->jkk == 1)
                         <td style="text-align: right">Yes</td>
                     @else
                         <td style="text-align: right">No</td>
                     @endif
-                    @if ($d->jkm)
+                    @if ($d->jkm == 1)
                         <td style="text-align: right">Yes</td>
                     @else
                         <td style="text-align: right">No</td>
