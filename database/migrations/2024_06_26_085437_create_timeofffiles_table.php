@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('timeoffs', function (Blueprint $table) {
+        Schema::create('timeofffiles', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('karyawan_id');
-            $table->string('placement_id');
-            $table->string('request_type');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('description');
-            $table->string('status')->nullable();
-
+            $table->string('originalName');
+            $table->string('filename');
             $table->timestamps();
         });
     }
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('timeoffs');
+        Schema::dropIfExists('timeofffiles');
     }
 };
