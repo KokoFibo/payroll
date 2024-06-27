@@ -6,90 +6,96 @@
         </div>
     @else
         @if (!$is_add && !$is_update)
-            Request Anda
-            <button wire:click='add' class='bg-green-500 text-white px-3 py-1 rounded-lg text-sm'>Add Request</button>
+            <h4 class='bg-blue-500 text-white text-lg text-center font-semibold py-3'>Time Off Request</h4>
+            <div class="text-center">
+                <button wire:click='add' class='my-2  bg-green-500 text-white px-3 py-1 rounded-lg text-sm'>Add
+                    Request</button>
+            </div>
+            @if (count($data) > 0)
+                @foreach ($data as $key => $d)
+                    <div class=" bg-blue-500 text-white m-3 p-3 rounded-xl">
+                        <div class='flex gap-5'>
 
-            @foreach ($data as $key => $d)
-                <div class=" bg-blue-500 text-white m-3 p-3 rounded-xl">
-                    <div class='flex gap-5'>
-
-                        <ul>
-                            <li>Tipe Request</li>
-                            <li>Dari</li>
-                            <li>Sampai</li>
-                            <li>Keterangan</li>
-                            <li>Status</li>
-                            <li></li>
-                        </ul>
-                        <ul>
-                            <div>
-                                <li>{{ $d->request_type }}</li>
-                                <li>{{ format_tgl($d->start_date) }}</li>
-                                <li>{{ format_tgl($d->end_date) }}</li>
-                                <li>{{ $d->description }}</li>
-                                <li>{{ $d->status }}</li>
-                            </div>
-                        </ul>
-                    </div>
-                    <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-                    <div class='text-center'>
-                        @if ($show_image)
-                            <button wire:click='show_image_toggle'
-                                class='bg-black text-white px-3 py-1 rounded-lg text-sm'>Sembunyikan File</button>
-                        @else
-                            <button wire:click='show_image_toggle'
-                                class='bg-purple-500 text-white px-3 py-1 rounded-lg text-sm'>Lihat
-                                File</button>
-                        @endif
-
-                        <button wire:click='edit({{ $d->id }})'
-                            class='bg-orange-500 text-white px-3 py-1 rounded-lg text-sm'>Edit</button>
-                        <button wire:click='confirm_delete({{ $d->id }})'
-                            class='bg-red-500 text-white px-3 py-1 rounded-lg text-sm'>Delete</button>
-                    </div>
-                    @if ($show_image)
-                        @if ($filenames)
-                            @foreach ($filenames as $fn)
-                                <div class="lg:my-5 py-2 w-full lg:w-1/2 ">
-                                    <div class="d-flex justify-content-between px-1 pb-2">
-                                        <div>
-                                            <div>
-                                                <button class="bg-red-500 py-0 px-3 text-white rounded text-sm"
-                                                    wire:click="deleteFile('{{ $fn->id }}')"
-                                                    wire:loading.remove>Hapus</button>
-                                            </div>
-                                            <p class="text-sm py-1 lg:text-xl font-medium lg:font-bold">
-                                                {{ $fn->originalName }}
-                                            </p>
-                                        </div>
-
-                                        <div role="status" wire:loading wire:target='deleteFile'>
-                                            <svg aria-hidden="true"
-                                                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                    fill="currentColor" />
-                                                <path
-                                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                    fill="currentFill" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                                        <img class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" alt="">
-                                    @else
-                                        <iframe class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}"
-                                            width="100%" height="600px"></iframe>
-                                    @endif
+                            <ul>
+                                <li>Tipe Request</li>
+                                <li>Dari</li>
+                                <li>Sampai</li>
+                                <li>Keterangan</li>
+                                <li>Status</li>
+                                <li></li>
+                            </ul>
+                            <ul>
+                                <div>
+                                    <li>{{ $d->request_type }}</li>
+                                    <li>{{ format_tgl($d->start_date) }}</li>
+                                    <li>{{ format_tgl($d->end_date) }}</li>
+                                    <li>{{ $d->description }}</li>
+                                    <li>{{ $d->status }}</li>
                                 </div>
-                            @endforeach
+                            </ul>
+                        </div>
+                        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+                        <div class='text-center'>
+                            @if ($show_image)
+                                <button wire:click='show_image_toggle({{ $d->id }})'
+                                    class='bg-black text-white px-3 py-1 rounded-lg text-sm'>Sembunyikan File</button>
+                            @else
+                                <button wire:click='show_image_toggle({{ $d->id }})'
+                                    class='bg-purple-500 text-white px-3 py-1 rounded-lg text-sm'>Lihat
+                                    File</button>
+                            @endif
+
+                            <button wire:click='edit({{ $d->id }})'
+                                class='bg-orange-500 text-white px-3 py-1 rounded-lg text-sm'>Edit</button>
+                            <button wire:click='confirm_delete({{ $d->id }})'
+                                class='bg-red-500 text-white px-3 py-1 rounded-lg text-sm'>Delete</button>
+                        </div>
+                        @if ($show_image)
+                            @if ($filenames)
+                                @foreach ($filenames as $fn)
+                                    <div class="lg:my-5 py-2 w-full lg:w-1/2 ">
+                                        <div class="d-flex justify-content-between px-1 pb-2">
+                                            <div>
+                                                <div>
+                                                    <button class="bg-red-500 py-0 px-3 text-white rounded text-sm"
+                                                        wire:click="deleteFile('{{ $fn->id }}')"
+                                                        wire:loading.remove>Hapus</button>
+                                                </div>
+                                                <p class="text-sm py-1 lg:text-xl font-medium lg:font-bold">
+                                                    {{ $fn->originalName }}
+                                                </p>
+                                            </div>
+
+                                            <div role="status" wire:loading wire:target='deleteFile'>
+                                                <svg aria-hidden="true"
+                                                    class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                                    viewBox="0 0 100 101" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                        fill="currentFill" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                                            <img class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}"
+                                                alt="">
+                                        @else
+                                            <iframe class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}"
+                                                width="100%" height="600px"></iframe>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @endif
                         @endif
-                    @endif
-                </div>
-            @endforeach
-
-
+                    </div>
+                @endforeach
+            @else
+                <h4 class='mt-5 text-center text-xl font-bold'>Belum Ada Permintaan Time Off</h4>
+            @endif
         @endif
         @if ($is_add || $is_update)
             <div class="p-4">

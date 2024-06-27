@@ -39,9 +39,11 @@ class Timeoffwr extends Component
     {
         $data = Timeoff::find($this->delete_id);
         $data->delete();
-        $datas = Timeofffile::where('karyawan_id', $this->karyawan_id)->get();
+        $timeoff_id = $this->delete_id;
+        $datas = Timeofffile::where('timeoff_id', $timeoff_id)->get();
+        // dd($datas);
         if ($datas) {
-            foreach ($datas as $d) {
+            foreach ($datas as $data) {
                 // $data = Timeofffile::find($id);
                 if ($data != null) {
                     try {
@@ -71,26 +73,32 @@ class Timeoffwr extends Component
                 }
             }
         }
+
+
         $this->dispatch(
             'message',
             type: 'success',
             title: 'File telah di delete',
         );
-
-        dd($this->delete_id);
     }
 
     public function deleteFile($id)
     {
         // $data = Applicantfile::where('filename', $filename)->first();
         $data = Timeofffile::find($id);
+
         if ($data != null) {
+
+
             try {
                 // $result = Storage::disk('google')->delete($data->filename);
                 $result = Storage::disk('public')->delete($data->filename);
                 if ($result) {
                     // File was deleted successfully
+                    $timeoff_id = $data->timeoff_id;
                     $data->delete();
+
+                    $this->refresh_file($timeoff_id);
                     // $this->dispatch('success', message: 'File telah di delete');
                     $this->dispatch(
                         'message',
@@ -175,9 +183,12 @@ class Timeoffwr extends Component
         $this->show_image = false;
     }
 
-    public function show_image_toggle()
-    {
 
+
+
+    public function show_image_toggle($id)
+    {
+        $this->refresh_file($id);
         $this->show_image = !$this->show_image;
     }
     public function add()
@@ -230,8 +241,9 @@ class Timeoffwr extends Component
                 }
 
                 $this->originalFilename = $file->getClientOriginalName();
+                $timeoff_id = $this->edit_id;
                 Timeofffile::create([
-                    'karyawan_id' => $this->karyawan_id,
+                    'timeoff_id' => $timeoff_id,
                     // 'originalName' => $this->originalFilename,
                     'originalName' => clear_dot($this->originalFilename, $fileExension),
                     'filename' => $this->path,
@@ -246,9 +258,11 @@ class Timeoffwr extends Component
         $data->end_date = $this->end_date;
         $data->description = $this->description;
         $data->save();
-
+        $this->refresh_file($data->id);
         $this->is_update = false;
         $this->clear_fields();
+
+
         // $this->dispatch('success', 'Request Anda sudah berhasil di submit');
         $this->dispatch(
             'message',
@@ -260,6 +274,15 @@ class Timeoffwr extends Component
     public function save()
     {
         $this->validate();
+        $time_off = Timeoff::create([
+            'karyawan_id' => $this->karyawan_id,
+            'placement_id' => $this->placement_id,
+            'request_type' => $this->request_type,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'description' => $this->description,
+            'status' => 'Menunggu Approval',
+        ]);
         if ($this->files) {
             // dd($this->files);
 
@@ -289,7 +312,7 @@ class Timeoffwr extends Component
 
                 $this->originalFilename = $file->getClientOriginalName();
                 Timeofffile::create([
-                    'karyawan_id' => $this->karyawan_id,
+                    'timeoff_id' => $time_off->id,
                     // 'originalName' => $this->originalFilename,
                     'originalName' => clear_dot($this->originalFilename, $fileExension),
                     'filename' => $this->path,
@@ -298,18 +321,12 @@ class Timeoffwr extends Component
             $this->files = '';
             // return response()->json(['success' => true]);
         }
-        Timeoff::create([
-            'karyawan_id' => $this->karyawan_id,
-            'placement_id' => $this->placement_id,
-            'request_type' => $this->request_type,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'description' => $this->description,
-            'status' => 'Menunggu Approval',
-        ]);
+
         $this->is_add = false;
         $this->clear_fields();
         // $this->dispatch('success', 'Request Anda sudah berhasil di submit');
+
+
         $this->dispatch(
             'message',
             type: 'success',
@@ -317,10 +334,16 @@ class Timeoffwr extends Component
         );
     }
 
+    public function refresh_file($id)
+    {
+        $file_data = Timeofffile::where('timeoff_id', $id)->get();
+        $this->filenames = $file_data;
+    }
+
     public function render()
     {
-        $file_data = Timeofffile::where('karyawan_id', $this->karyawan_id)->get();
-        $this->filenames = $file_data;
+
+
 
         $data = Timeoff::where('karyawan_id', $this->karyawan_id)->get();
         return view('livewire.timeoffwr', [
