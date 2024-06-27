@@ -34,9 +34,49 @@ class Timeoffwr extends Component
         );
     }
 
-    #[On('delete_confirmed')]
+    #[On('delete-confirmed')]
     public function delete()
     {
+        $data = Timeoff::find($this->delete_id);
+        $data->delete();
+        $datas = Timeofffile::where('karyawan_id', $this->karyawan_id)->get();
+        if ($datas) {
+            foreach ($datas as $d) {
+                // $data = Timeofffile::find($id);
+                if ($data != null) {
+                    try {
+                        $result = Storage::disk('public')->delete($data->filename);
+                        if ($result) {
+                            // File was deleted successfully
+                            $data->delete();
+                            // $this->dispatch('success', message: 'File telah di delete');
+
+                        } else {
+                            // File could not be deleted
+                            // return 'Failed to delete file.';
+
+
+                            // $this->dispatch('error', message: 'File GAGAL di delete');
+                            $this->dispatch(
+                                'message',
+                                type: 'error',
+                                title: 'File GAGAL di delete',
+                            );
+                            return;
+                        }
+                    } catch (\Exception $e) {
+                        // An error occurred while deleting the file
+                        return 'An error occurred: ' . $e->getMessage();
+                    }
+                }
+            }
+        }
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'File telah di delete',
+        );
+
         dd($this->delete_id);
     }
 

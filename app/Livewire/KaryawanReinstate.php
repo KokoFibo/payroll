@@ -39,6 +39,7 @@ class KaryawanReinstate extends Component
     {
         $this->dispatch('show-reinstate-confirmation', $this->nama);
     }
+
     #[On('reinstate-confirmed')]
     public function reinstate()
     {

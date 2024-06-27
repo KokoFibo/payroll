@@ -118,8 +118,8 @@
                     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
                     $kesehatan_company = ($d->gaji_bpjs * 0.4) / 100;
-                    $jp_company = ($d->gaji_bpjs * 0.2) / 100;
-                    $jht_company = ($d->gaji_bpjs * 0.37) / 100;
+                    $jp_company = ($d->gaji_bpjs * 2) / 100;
+                    $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     $total_bpjs_company =
                         // $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
                         $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('timeofffiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('karyawan_id');
+            $table->foreignId('timeoff_id');
             $table->string('originalName');
             $table->string('filename');
             $table->timestamps();
