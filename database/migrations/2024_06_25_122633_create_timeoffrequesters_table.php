@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('timeoffrequesters', function (Blueprint $table) {
             $table->id();
-            $table->string('placement');
-            $table->string('request_id')->nullable();
-            $table->string('approve_by_1')->nullable();
-            $table->string('approve_by_2')->nullable();
+            $table->foreignId('placement_id');
+            $table->string('approve_by_1');
+            $table->string('approve_by_2');
             $table->timestamps();
         });
     }

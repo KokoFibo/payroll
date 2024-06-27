@@ -77,6 +77,7 @@ use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\Requesterwr;
 use App\Livewire\Timeoffwr;
+use App\Livewire\Timeoutrequsterwr;
 
 // Middleware
 Auth::routes([
@@ -195,6 +196,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('gajibpjs', Gajibpjs::class);
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/addrequester', Requesterwr::class);
+                    Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
 
 
 

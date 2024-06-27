@@ -93,6 +93,14 @@ with font-awesome or any other icon font library -->
 
 
             @if (Auth::user()->role >= 5)
+                <li class="nav-item {{ 'addtimeoutrequester' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/addtimeoutrequester" class="nav-link">
+                        <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
+                        <p>
+                            {{ __('Add TimeOff Req') }}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
