@@ -18,8 +18,16 @@ use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use App\Models\Personnelrequestform;
+use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function isResigned($id)
+{
+    $data = Karyawan::where('id_karyawan', $id)->whereIn('status_karyawan', ['Resigned', 'Blacklist'])->first();
+    if ($data == null) return false;
+    else return true;
+}
 
 function get_first_name($name)
 {
@@ -110,6 +118,7 @@ function check_for_new_request()
     return Personnelrequestform::where('status', 'Approved')->count();
 }
 
+
 function changeToAdmin($id)
 {
     $check_user = Requester::where('request_id', $id)
@@ -117,8 +126,11 @@ function changeToAdmin($id)
         ->orWhere('approve_by_1', $id)
         ->orWhere('approve_by_2', $id)->first();
 
+    $check_user_time_off = Timeoffrequester::where('approve_by_1', $id)
+        ->orWhere('approve_by_2', $id)->first();
+
     // dd($check_user == null);
-    if ($check_user == null) {
+    if ($check_user == null && $check_user_time_off == null) {
         $data = User::where('username', $id)->first();
         $data->role = 1;
         $data->save();

@@ -47,27 +47,34 @@ class Requesterwr extends Component
         ]);
 
         if ($this->namaRequestId != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
+            if (!isResigned($this->requestId) && !isResigned($this->approveBy1) && !isResigned($this->approveBy2)) {
+                $data = Requester::find($this->is_update_id);
+                $data->request_id = $this->requestId;
+                $data->approve_by_1 = $this->approveBy1;
+                $data->approve_by_2 = $this->approveBy2;
+                $data->save();
 
-            $data = Requester::find($this->is_update_id);
-            $data->request_id = $this->requestId;
-            $data->approve_by_1 = $this->approveBy1;
-            $data->approve_by_2 = $this->approveBy2;
-            $data->save();
+                if ($this->requestId != $this->old_requester) changeToAdmin($this->old_requester);
+                if ($this->approveBy1 != $this->old_Approve1) changeToAdmin($this->old_Approve1);
+                if ($this->approveBy2 != $this->old_Approve2) changeToAdmin($this->old_Approve2);
+                changeToRequest($this->requestId);
+                changeToRequest($this->approveBy1);
+                changeToRequest($this->approveBy2);
 
-            if ($this->requestId != $this->old_requester) changeToAdmin($this->old_requester);
-            if ($this->approveBy1 != $this->old_Approve1) changeToAdmin($this->old_Approve1);
-            if ($this->approveBy2 != $this->old_Approve2) changeToAdmin($this->old_Approve2);
-            changeToRequest($this->requestId);
-            changeToRequest($this->approveBy1);
-            changeToRequest($this->approveBy2);
-
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Requester Updated',
-            );
-            $this->is_update = false;
-            $this->reset();
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Requester Updated',
+                );
+                $this->is_update = false;
+                $this->reset();
+            } else {
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: '1st approve or 2nd approve is resigned or blacklisted',
+                );
+            }
         } else {
             $this->dispatch(
                 'message',
@@ -146,29 +153,37 @@ class Requesterwr extends Component
         ]);
 
         if ($this->namaRequestId != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
-            Requester::create([
-                'request_id' => $this->requestId,
-                'approve_by_1' => $this->approveBy1,
-                'approve_by_2' => $this->approveBy2
-            ]);
+            if (!isResigned($this->requestId) && !isResigned($this->approveBy1) && !isResigned($this->approveBy2)) {
+                Requester::create([
+                    'request_id' => $this->requestId,
+                    'approve_by_1' => $this->approveBy1,
+                    'approve_by_2' => $this->approveBy2
+                ]);
 
-            $data1 = User::where('username', $this->requestId)->first();
-            $data2 = User::where('username', $this->approveBy1)->first();
-            $data3 = User::where('username', $this->approveBy2)->first();
-            $data1->role = 2;
-            $data2->role = 2;
-            $data3->role = 2;
-            $data1->save();
-            $data2->save();
-            $data3->save();
+                $data1 = User::where('username', $this->requestId)->first();
+                $data2 = User::where('username', $this->approveBy1)->first();
+                $data3 = User::where('username', $this->approveBy2)->first();
+                $data1->role = 2;
+                $data2->role = 2;
+                $data3->role = 2;
+                $data1->save();
+                $data2->save();
+                $data3->save();
 
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Requester Created',
-            );
-            $this->is_update = false;
-            $this->reset();
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Requester Created',
+                );
+                $this->is_update = false;
+                $this->reset();
+            } else {
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: '1st approve or 2nd approve is resigned or blacklisted',
+                );
+            }
         } else {
             $this->dispatch(
                 'message',
