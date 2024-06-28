@@ -115,10 +115,16 @@
         <tbody>
             @foreach ($data as $key => $d)
                 @php
+                    $gaji_bpjs_max = 0;
+                    if ($d->gaji_bpjs >= 12000000) {
+                        $gaji_bpjs_max = 12000000;
+                    } else {
+                        $gaji_bpjs_max = $d->gaji_bpjs;
+                    }
                     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                     $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
-                    $kesehatan_company = ($d->gaji_bpjs * 4) / 100;
-                    $jp_company = ($d->gaji_bpjs * 2) / 100;
+                    $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
+                    $jp_company = ($gaji_bpjs_max * 2) / 100;
                     $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
                     $ter = '';
