@@ -700,6 +700,17 @@ function build_payroll($month, $year)
             $kesehatan = 0;
         }
 
+        if ($data_karyawan->potongan_JKK == 1) {
+            $jkk = 1;
+        } else {
+            $jkk = 0;
+        }
+        if ($data_karyawan->potongan_JKM == 1) {
+            $jkm = 1;
+        } else {
+            $jkm = 0;
+        }
+
         // hitung pph21
         $pph21 = hitung_pph21($data_karyawan->gaji_bpjs, $data_karyawan->ptkp);
 
@@ -723,8 +734,8 @@ function build_payroll($month, $year)
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
             $data->ptkp = $data_karyawan->ptkp;
-            $data->jkk = $data_karyawan->jkk;
-            $data->jkm = $data_karyawan->jkm;
+            $data->jkk = $jkk;
+            $data->jkm = $jkm;
             $data->date = $year . '-' . $month . '-01';
             $data->pph21  = $pph21;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
@@ -749,8 +760,8 @@ function build_payroll($month, $year)
             $data->gaji_pokok = $data_karyawan->gaji_pokok;
             $data->gaji_bpjs = $data_karyawan->gaji_bpjs;
             $data->ptkp = $data_karyawan->ptkp;
-            $data->jkk = $data_karyawan->jkk;
-            $data->jkm = $data_karyawan->jkm;
+            $data->jkk = $jkk;
+            $data->jkm = $jkm;
             $data->date = $year . '-' . $month . '-01';
             $data->pph21  = $pph21;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
