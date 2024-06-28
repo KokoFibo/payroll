@@ -20,6 +20,13 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('description');
             $table->string('status')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('approve1')->nullable();
+            $table->date('approve1_date')->nullable();
+            $table->string('approve2')->nullable();
+            $table->date('approve2_date')->nullable();
+            $table->string('done_by')->nullable();
+            $table->date('done_date')->nullable();
 
             $table->timestamps();
         });
