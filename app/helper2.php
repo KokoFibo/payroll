@@ -315,7 +315,11 @@ function build_payroll($month, $year)
         }
 
         if ($data->karyawan->potongan_kesehatan == 1) {
-            $kesehatan = $data->karyawan->gaji_bpjs * 0.01;
+            $data_gaji_bpjs = 0;
+            if ($data->karyawan->gaji_bpjs >= 12000000) $data_gaji_bpjs = 12000000;
+            else $data_gaji_bpjs = $data->karyawan->gaji_bpjs;
+
+            $kesehatan = $data_gaji_bpjs * 0.01;
         } else {
             $kesehatan = 0;
         }
@@ -694,8 +698,12 @@ function build_payroll($month, $year)
         } else {
             $jht = 0;
         }
+
         if ($data_karyawan->potongan_kesehatan == 1) {
-            $kesehatan = $data_karyawan->gaji_bpjs * 0.01;
+            $data_gaji_bpjs = 0;
+            if ($data_karyawan->gaji_bpjs >= 12000000) $data_gaji_bpjs = 12000000;
+            else $data_gaji_bpjs = $data_karyawan->gaji_bpjs;
+            $kesehatan = $data_gaji_bpjs * 0.01;
         } else {
             $kesehatan = 0;
         }

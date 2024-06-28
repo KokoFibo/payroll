@@ -76,6 +76,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\Requesterwr;
+use App\Livewire\Timeoffapprovewr;
 use App\Livewire\Timeoffwr;
 use App\Livewire\Timeoutrequsterwr;
 
@@ -197,6 +198,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
+                    Route::get('timeoff-approve', Timeoffapprovewr::class);
 
 
 
@@ -278,6 +280,8 @@ Route::middleware(['auth'])->group(function () {
             });
         });
         Route::get('permohonan-personnel', PermohonanPersonnel::class)->middleware('Requester');
+        Route::get('timeoff-approve', Timeoffapprovewr::class)->middleware('Requester');
+
 
 
         // PRESENSI

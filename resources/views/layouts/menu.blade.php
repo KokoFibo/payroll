@@ -50,6 +50,18 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+            <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/timeoff-approve" class="nav-link">
+                    <i class="nav-icon fa-solid fa-person-walking"></i>
+                    <p class="personnel-request">
+                        {{ __('Time off Approval') }}
+                        @if (auth()->user()->role >= 6 && check_for_new_request() != 0)
+                            <span class="badge">{{ check_for_new_request() }}
+                            </span>
+                        @endif
+                    </p>
+                </a>
+            </li>
 
         @endif
 
