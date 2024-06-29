@@ -29,7 +29,8 @@ with font-awesome or any other icon font library -->
         @if (Auth::user()->role >= 4)
             <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/dataapplicant" class="nav-link">
-                    <i class="nav-icon fa-solid fa-people-group"></i>
+                    <i class="nav-icon fa-solid fa-person-walking"></i>
+
                     <p>
                         {{ __('Data Applicant') }}
                     </p>
@@ -40,7 +41,7 @@ with font-awesome or any other icon font library -->
             @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
                 <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/permohonan-personnel" class="nav-link">
-                        <i class="nav-icon fa-solid fa-person-walking"></i>
+                        <i class="nav-icon fa-solid fa-people-arrows"></i>
                         <p class="personnel-request">
                             {{ __('Personnel Request') }}
                             @if (auth()->user()->role >= 6 && check_for_new_approved_request() != 0)
@@ -63,7 +64,7 @@ with font-awesome or any other icon font library -->
             @if (isTimeoff(auth()->user()->username) || Auth::user()->role > 5 || auth()->user()->username == '1146')
                 <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/timeoff-approve" class="nav-link">
-                        <i class="nav-icon fa-solid fa-person-walking"></i>
+                        <i class="nav-icon fa-regular fa-calendar"></i>
                         <p class="personnel-request">
                             {{ __('Time off Approval') }}
                             @if ((auth()->user()->role >= 6 || auth()->user()->username == '1146') && check_for_new_Timeoff_request() != 0)
@@ -151,7 +152,7 @@ with font-awesome or any other icon font library -->
                 </li>
                 <li class="nav-item {{ 'gajibpjs' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/gajibpjs" class="nav-link">
-                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <i class="nav-icon fa-solid fa-shield-halved"></i>
                         <p>
                             {{ __('BPJS/PTKP') }}
                         </p>
