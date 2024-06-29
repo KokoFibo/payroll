@@ -147,13 +147,21 @@ function check_rebuilding()
     else return false;
 }
 
-function check_for_new_request()
+function check_for_new_approved_request()
 {
     return Personnelrequestform::where('status', 'Approved')->count();
+}
+function check_for_new_applyingrequest()
+{
+    return Personnelrequestform::where('status', 'Applying')->count();
 }
 function check_for_new_Timeoff_request()
 {
     return Timeoff::where('status', 'Confirmed')->count();
+}
+function check_for_menunggu_approval_Timeoff_request()
+{
+    return Timeoff::where('status', 'Menunggu Approval')->count();
 }
 
 

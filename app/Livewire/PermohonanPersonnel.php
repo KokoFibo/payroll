@@ -54,7 +54,8 @@ class PermohonanPersonnel extends Component
             type: 'success',
             title: 'Personnel Request Done',
         );
-        $this->mount();
+        // $this->mount();
+        $this->redirect(PermohonanPersonnel::class);
     }
 
     public function exit_approval_by()
@@ -78,7 +79,8 @@ class PermohonanPersonnel extends Component
             $data->status = 'Approved';
             $data->save();
         }
-        $this->mount();
+        // $this->mount();
+        $this->redirect(PermohonanPersonnel::class);
 
         $this->dispatch(
             'message',
@@ -101,7 +103,9 @@ class PermohonanPersonnel extends Component
             $data->status = 'Approved';
             $data->save();
         }
-        $this->mount();
+        // $this->mount();
+        $this->redirect(PermohonanPersonnel::class);
+
         $this->dispatch(
             'message',
             type: 'success',
@@ -371,11 +375,11 @@ class PermohonanPersonnel extends Component
         }
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
-            $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->paginate(5);
+            $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->orderBy('id', 'desc')->paginate(5);
         } else {
 
             // $data = Personnelrequestform::where('requester_id', $this->requestBy)
-            $data = Personnelrequestform::whereIn('requester_id', $this->requestBy)
+            $data = Personnelrequestform::whereIn('requester_id', $this->requestBy)->orderBy('id', 'desc')
                 // dd($data);
                 ->paginate(5);
         }

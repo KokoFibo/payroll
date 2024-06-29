@@ -414,7 +414,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>#</th>
                                     <th>Posisi</th>
                                     <th>Status</th>
                                     <th>Requested by</th>
@@ -425,9 +425,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $d)
+                                @foreach ($data as $key => $d)
                                     <tr>
-                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->posisi }}</td>
                                         <td>
                                             @if ($d->status == 'Applying')
