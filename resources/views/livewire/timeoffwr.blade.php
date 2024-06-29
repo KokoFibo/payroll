@@ -61,6 +61,7 @@
                                 <button wire:click='add'
                                     class='bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm'>Buat Permohonan
                                     Ijin/Cuti</button>
+                                <p>test</p>
                             </div>
                             @if (count($data) > 0)
                                 @foreach ($data as $key => $d)
@@ -167,7 +168,7 @@
                                     </div>
                                 @endforeach
                             @else
-                                <h4 class='mt-5 text-center text-xl font-bold'>Belum Ada Permintaan Time Off</h4>
+                                <h4 class='mt-5 text-center text-xl font-bold'>Belum Ada Permohonan Ijin/Cuti</h4>
                             @endif
                         @endif
                         @if ($is_add || $is_update)
