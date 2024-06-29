@@ -18,6 +18,7 @@ use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use App\Models\Personnelrequestform;
+use App\Models\Timeoff;
 use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -149,6 +150,10 @@ function check_rebuilding()
 function check_for_new_request()
 {
     return Personnelrequestform::where('status', 'Approved')->count();
+}
+function check_for_new_Timeoff_request()
+{
+    return Timeoff::where('status', 'Confirmed')->count();
 }
 
 
