@@ -1,7 +1,7 @@
 <div class=''>
 
     <div class='mt-3 p-3'>
-        <h5>Hello, {{ auth()->user()->name }}</h5>
+        {{-- <h5>Hello, {{ auth()->user()->name }}</h5> --}}
         @if (!$is_add && !$is_update && $is_requester)
             <button class='btn btn-primary' wire:click='add'>New Request</button>
         @endif
