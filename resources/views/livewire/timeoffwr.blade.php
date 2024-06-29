@@ -61,6 +61,8 @@
                                 <button wire:click='add'
                                     class='bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm'>Buat Permohonan
                                     Ijin/Cuti</button>
+                                <button wire:click='add'>Buat Permohonan
+                                    Ijin/Cuti</button>
                                 <p>test</p>
                             </div>
                             @if (count($data) > 0)
