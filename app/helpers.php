@@ -67,18 +67,28 @@ function get_first_name($name)
     }
 }
 
-function hitung_pph21($gaji_bpjs, $ptkp)
+function hitung_pph21($gaji_bpjs, $ptkp, $jht, $jp, $jkk, $jkm, $kesehatan)
 {
     if ($gaji_bpjs != '' &&  $ptkp != '') {
         $gaji_bpjs_max = 0;
         if ($gaji_bpjs >= 12000000) $gaji_bpjs_max = 12000000;
         else $gaji_bpjs_max = $gaji_bpjs;
+        if ($jht) $jht_company = ($gaji_bpjs * 3.7) / 100;
+        else $jht_company = 0;
 
-        $jkk_company = ($gaji_bpjs * 0.24) / 100;
-        $jkm_company = ($gaji_bpjs * 0.3) / 100;
-        $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
-        $jp_company = ($gaji_bpjs_max * 2) / 100;
-        $jht_company = ($gaji_bpjs * 3.7) / 100;
+        if ($jp) $jp_company = ($gaji_bpjs_max * 2) / 100;
+        else $jp_company = 0;
+
+        if ($jkk) $jkk_company = ($gaji_bpjs * 0.24) / 100;
+        else $jkk_company = 0;
+
+        if ($jkm) $jkm_company = ($gaji_bpjs * 0.3) / 100;
+        else $jkm_company = 0;
+
+        if ($kesehatan) $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
+        else $kesehatan_company = 0;
+
+
         $total_bpjs_company =
             // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
             $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
