@@ -2,26 +2,34 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Timeoff;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Timeofffile;
+use Livewire\Attributes\On;
 use App\Rules\FileSizeLimit;
 use Livewire\WithFileUploads;
 use App\Rules\AllowedFileExtension;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-use Livewire\Attributes\On;
 
 class Timeoffwr extends Component
 {
     use WithFileUploads;
     public $karyawan_id, $placement_id, $name, $request_type, $description, $start_date, $end_date, $folder_name;
-    public $is_add, $is_update, $edit_id, $show_image, $delete_id;
+    public $is_add, $is_update, $edit_id, $show_image, $delete_id, $selected_id;
 
     public $files = [];
     public $filenames = [];
+
+    public function exit()
+    {
+        $this->is_add = false;
+        $this->is_update = false;
+        $this->clear_fields();
+    }
 
     public function confirm_delete($id)
     {
@@ -172,8 +180,8 @@ class Timeoffwr extends Component
 
     public function mount()
     {
-        // $data = Karyawan::where('id_karyawan', auth()->user()->username)->first();
-        $data = Karyawan::where('id_karyawan', 1070)->first();
+        $data = Karyawan::where('id_karyawan', auth()->user()->username)->first();
+        // $data = Karyawan::where('id_karyawan', 1070)->first();
         $this->karyawan_id = $data->id;
         $this->placement_id = $data->placement_id;
         $this->name = $data->nama;
@@ -189,6 +197,7 @@ class Timeoffwr extends Component
     public function show_image_toggle($id)
     {
         $this->refresh_file($id);
+        $this->selected_id = $id;
         $this->show_image = !$this->show_image;
     }
     public function add()
@@ -281,6 +290,7 @@ class Timeoffwr extends Component
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'description' => $this->description,
+            'tanggal' => Carbon::now()->toDateString(),
             'status' => 'Menunggu Approval',
         ]);
         if ($this->files) {
@@ -345,7 +355,7 @@ class Timeoffwr extends Component
 
 
 
-        $data = Timeoff::where('karyawan_id', $this->karyawan_id)->get();
+        $data = Timeoff::where('karyawan_id', $this->karyawan_id)->orderBy('id', 'desc')->get();
         return view('livewire.timeoffwr', [
             'data' => $data,
 

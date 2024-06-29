@@ -188,6 +188,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/liburnasional', Liburnasionalwr::class);
                 Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
 
+                Route::get('timeoff-approve', Timeoffapprovewr::class);
+
+
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
                     Route::get('/payroll', Payrollwr::class);
@@ -198,7 +201,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
-                    Route::get('timeoff-approve', Timeoffapprovewr::class);
 
 
 

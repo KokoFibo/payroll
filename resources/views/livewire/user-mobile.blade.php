@@ -1,7 +1,7 @@
 <div>
 
     {{-- <p>selectedMonth: {{ $selectedMonth }}. selectedYear: {{ $selectedYear }}, CX = {{ $cx }}</p> --}}
-    <p>is_perbulan : {{ is_perbulan() }}</p>
+    {{-- <p>is_perbulan : {{ is_perbulan() }}</p> --}}
     <div>
         <div class="flex flex-col h-screen">
             <div class=header>

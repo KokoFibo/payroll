@@ -15,6 +15,11 @@ class Karyawan extends Model
     protected $guarded = [];
     protected static $recordEvents = ['updated', 'deleted'];
 
+    public function timeoff()
+    {
+        return $this->hasMany(Timeoff::class);
+    }
+
     public function jabatan()
     {
         return $this->belongsTo(Jabatan::class);
@@ -22,7 +27,7 @@ class Karyawan extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
-    } 
+    }
     public function department()
     {
         return $this->belongsTo(Department::class);

@@ -16,7 +16,7 @@ class Requester
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ((Auth::user()->role == 2 && Auth::user()->device == 1) || Auth::user()->role >= 6) {
+        if ((Auth::user()->role == 2 && Auth::user()->device == 1) || Auth::user()->role >= 5) {
             return $next($request);
         } else {
             return redirect()->back();
