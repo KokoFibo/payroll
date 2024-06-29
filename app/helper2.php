@@ -345,9 +345,8 @@ function build_payroll($month, $year)
 
         // end of bpjs
 
-
         // hitung pph21
-        $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp);
+        $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp, $data->karyawan->potongan_JHT, $data->karyawan->potongan_JP, $data->karyawan->potongan_JKK, $data->karyawan->potongan_JKM, $data->karyawan->potongan_kesehatan);
 
 
         $pajak = 0;
@@ -720,7 +719,9 @@ function build_payroll($month, $year)
         }
 
         // hitung pph21
-        $pph21 = hitung_pph21($data_karyawan->gaji_bpjs, $data_karyawan->ptkp);
+        $pph21 = hitung_pph21($data_karyawan->gaji_bpjs, $data_karyawan->ptkp, $data_karyawan->potongan_JHT, $data_karyawan->potongan_JP, $data_karyawan->potongan_JKK, $data_karyawan->potongan_JKM, $data_karyawan->potongan_kesehatan);
+
+
 
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
