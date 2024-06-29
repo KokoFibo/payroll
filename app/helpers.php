@@ -22,6 +22,35 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function isTimeoff($id_karyawan)
+{
+    if ($id_karyawan != null) {
+        $data = Timeoffrequester::where('approve_by_1', $id_karyawan)->orWhere('approve_by_2', $id_karyawan)->first();
+        if ($data) return true;
+        else return false;
+    }
+}
+
+function isRequester($id_karyawan)
+{
+    if ($id_karyawan != null) {
+        $data = Requester::where('approve_by_1', $id_karyawan)->orWhere('approve_by_2', $id_karyawan)->orWhere('request_id', $id_karyawan)->first();
+
+        if ($data) return true;
+        else return false;
+    }
+}
+
+function getPLacement($id_karyawan)
+{
+    if (
+        $id_karyawan != null
+    ) {
+        $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
+        return $data->placement_id;
+    }
+}
+
 function isResigned($id)
 {
     $data = Karyawan::where('id_karyawan', $id)->whereIn('status_karyawan', ['Resigned', 'Blacklist'])->first();
