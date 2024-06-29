@@ -253,6 +253,8 @@ class Timeoffapprovewr extends Component
         } else {
 
             $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->orderBy('id', 'desc')->get();
+            // dibawah ini utk test buat yg data 80000
+            if (auth()->user()->username >= 60000) $data = Timeoff::orderBy('id', 'desc')->get();
         }
         return view('livewire.timeoffapprovewr', [
             'data' => $data

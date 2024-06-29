@@ -1,6 +1,6 @@
-<div class=''>
+<div class='p-3'>
 
-    <div class='mt-3 p-3'>
+    <div class='mt-3'>
         {{-- <h5>Hello, {{ auth()->user()->name }}</h5> --}}
         @if (!$is_add && !$is_update && $is_requester)
             <button class='btn btn-primary' wire:click='add'>New Request</button>
@@ -8,7 +8,7 @@
     </div>
     @if ($is_add || $is_update)
         <div>
-            <div class="card m-3">
+            <div class="card p-3">
                 <div class="card-header">
                     <h3>Form Permohonan Personnel</h3>
                 </div>
