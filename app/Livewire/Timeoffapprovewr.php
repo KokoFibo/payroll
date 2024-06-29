@@ -47,6 +47,7 @@ class Timeoffapprovewr extends Component
         );
         $this->is_show = false;
         $this->is_checked = false;
+        $this->redirect(Timeoffapprovewr::class);
     }
 
     public function done($id)
@@ -63,6 +64,7 @@ class Timeoffapprovewr extends Component
         );
         $this->is_show = false;
         $this->is_checked = false;
+        $this->redirect(Timeoffapprovewr::class);
     }
 
     public function disapprove()
@@ -105,6 +107,7 @@ class Timeoffapprovewr extends Component
                 $this->is_show = false;
             }
         }
+        $this->redirect(Timeoffapprovewr::class);
     }
 
 
@@ -191,6 +194,7 @@ class Timeoffapprovewr extends Component
                 $data->save();
             }
         }
+        $this->redirect(Timeoffapprovewr::class);
     }
 
     public function close()
@@ -245,10 +249,10 @@ class Timeoffapprovewr extends Component
     public function render()
     {
         if (auth()->user()->username == 58 || auth()->user()->username == 1146) {
-            $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->get();
+            $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->orderBy('id', 'desc')->get();
         } else {
 
-            $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->get();
+            $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->orderBy('id', 'desc')->get();
         }
         return view('livewire.timeoffapprovewr', [
             'data' => $data

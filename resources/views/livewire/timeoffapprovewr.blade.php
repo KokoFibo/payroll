@@ -96,6 +96,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Request by</th>
                                     <th>Request date</th>
                                     <th>Placement</th>
@@ -111,6 +112,7 @@
                             <tbody>
                                 @foreach ($data as $key => $d)
                                     <tr>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>
                                             <div>{{ $d->karyawan->nama }}</div>
                                             <div>ID. {{ $d->karyawan->id_karyawan }}</div>

@@ -43,10 +43,15 @@ with font-awesome or any other icon font library -->
                         <i class="nav-icon fa-solid fa-person-walking"></i>
                         <p class="personnel-request">
                             {{ __('Personnel Request') }}
-                            @if (auth()->user()->role >= 6 && check_for_new_request() != 0)
-                                <span class="badge">{{ check_for_new_request() }}
+                            @if (auth()->user()->role >= 6 && check_for_new_approved_request() != 0)
+                                <span class="badge">{{ check_for_new_approved_request() }}
                                 </span>
                             @endif
+                            @if (auth()->user()->role == 2 && check_for_new_applyingrequest() != 0)
+                                <span class="badge">{{ check_for_new_applyingrequest() }}
+                                </span>
+                            @endif
+
                         </p>
                     </a>
                 </li>
@@ -63,6 +68,10 @@ with font-awesome or any other icon font library -->
                             {{ __('Time off Approval') }}
                             @if ((auth()->user()->role >= 6 || auth()->user()->username == '1146') && check_for_new_Timeoff_request() != 0)
                                 <span class="badge">{{ check_for_new_Timeoff_request() }}
+                                </span>
+                            @endif
+                            @if (auth()->user()->role == 2 && check_for_menunggu_approval_Timeoff_request() != 0)
+                                <span class="badge">{{ check_for_menunggu_approval_Timeoff_request() }}
                                 </span>
                             @endif
                         </p>
