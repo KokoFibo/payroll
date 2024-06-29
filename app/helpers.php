@@ -48,7 +48,9 @@ function getPLacement($id_karyawan)
         $id_karyawan != null
     ) {
         $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
-        return $data->placement_id;
+        // dikasih if supaya 8000 yang gak terdaftar di karyawan bisa akses dan gak error
+        if ($data) return $data->placement_id;
+        else return $id_karyawan;
     }
 }
 
