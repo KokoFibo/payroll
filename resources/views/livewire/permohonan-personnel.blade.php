@@ -399,7 +399,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class='d-flex justify-content-between'>
-                        <h3>List of Personnel Requests</h3>
+                        <h3>Personnel request lists</h3>
                         @if (auth()->user()->role >= 6)
                             <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
                         @endif
@@ -417,7 +417,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Posisi</th>
+                                    <th>Position</th>
                                     <th>Status</th>
                                     <th>Requested by</th>
                                     <th>1st Approved by</th>
