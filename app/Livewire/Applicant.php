@@ -268,7 +268,7 @@ class Applicant extends Component
         }
         Applicantdata::create([
             'applicant_id' => $this->applicant_id,
-            'nama' => titleCase($this->nama),
+            'nama' => titleCase(trim($this->nama)),
             'email' => $this->email,
             'password' => $this->password,
             'hp' => $this->hp,
