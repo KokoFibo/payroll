@@ -1,6 +1,6 @@
 <div class='p-3'>
 
-    <div class='mt-3'>
+    <div>
         {{-- <h5>Hello, {{ auth()->user()->name }}</h5> --}}
         @if (!$is_add && !$is_update && $is_requester)
             <button class='btn btn-primary' wire:click='add'>New Request</button>
@@ -397,11 +397,13 @@
     @if (!$is_add && !$is_update)
         <div>
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h3>List of Personnel Requests</h3>
-                    @if (auth()->user()->role >= 6)
-                        <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
-                    @endif
+                <div class="card-header">
+                    <div class='d-flex justify-content-between'>
+                        <h3>List of Personnel Requests</h3>
+                        @if (auth()->user()->role >= 6)
+                            <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
+                        @endif
+                    </div>
                 </div>
                 <style>
                     td,
