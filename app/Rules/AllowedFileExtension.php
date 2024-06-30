@@ -15,12 +15,11 @@ class AllowedFileExtension implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (
-            strtolower($value->getClientOriginalExtension()) != 'pdf' &&
             strtolower($value->getClientOriginalExtension()) != 'jpg' &&
             strtolower($value->getClientOriginalExtension()) != 'jpeg' &&
             strtolower($value->getClientOriginalExtension()) != 'png'
         ) {
-            $fail('Hanya menerima file png, jpg, jpeg dan pdf');
+            $fail('Hanya menerima file png, jpg dan jpeg');
         }
     }
 }

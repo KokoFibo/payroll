@@ -15,6 +15,7 @@ use Livewire\Attributes\Url;
 use App\Models\Applicantfile;
 use Livewire\WithFileUploads;
 use App\Livewire\Karyawanindexwr;
+use App\Rules\AllowedFileExtension;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
@@ -101,9 +102,15 @@ class Updatekaryawanwr extends Component
 
     public function updatedFiles()
     {
-        $this->validate([
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
-        ]);
+        $this->validate(
+            [
+                // 'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+                'files.*' => ['nullable', new AllowedFileExtension],
+            ],
+            // [
+            //     'files.*.mimes' => ['Hanya menerima file png dan jpg'],
+            // ]
+        );
     }
 
 
@@ -222,7 +229,8 @@ class Updatekaryawanwr extends Component
     public function rules()
     {
         return [
-            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            // 'files.*' =>  ['nullable', new AllowedFileExtension],
             'id_karyawan' => 'required',
             'nama' => 'required',
             'email' => 'email|nullable|unique:karyawans,email,' . $this->id,
@@ -280,17 +288,16 @@ class Updatekaryawanwr extends Component
             'tanggungan' => 'nullable',
             'no_npwp' => 'nullable',
             'ptkp' => 'nullable',
-
-
         ];
     }
 
     public function uploadfile()
     {
+        dd('sini');
         $this->validate([
-            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
+            'files.*' =>  ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension]
         ], [
-            'files.*.mimes' => ['Hanya menerima file png, jpg, jpeg dan pdf'],
+            'files.*.mimes' => ['Hanya menerima file png dan jpg'],
         ]);
         if ($this->files) {
             if (!$this->id_file_karyawan) {
