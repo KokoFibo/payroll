@@ -241,9 +241,10 @@
                                         <label for="file_upload"
                                             class="block text-gray-700 text-sm font-bold mb-2">Upload Surat
                                             Keterangan</label>
+                                        <span class='text-xs '>Hanya menerima file png dan jpg</span>
                                         <input id="file_upload" name="files" type="file" wire:model='files'
                                             multiple
-                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                            class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                         @error('files.*')
                                             <div class="text-red-500">
                                                 {{ $message }}

@@ -64,8 +64,8 @@
                     <div class='card-body'>
                         <label for="formFileLg" class="form-label">
                             <p>Upload Dokumen <span class="text-danger">*</span> ( hanya
-                                menerima format jpg, jpeg, png dan pdf )</p>
-                            <p>khusus untuk file PDF, tidak boleh melebihi 1,024Kb</p>
+                                menerima format jpg, jpeg dan png )</p>
+                            {{-- <p>khusus untuk file PDF, tidak boleh melebihi 1,024Kb</p> --}}
                         </label>
                         <div class="d-flex flex-row gap-5 align-items-center ">
                             <div>

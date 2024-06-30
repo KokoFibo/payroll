@@ -167,7 +167,7 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
-            'files.*.mimes' => 'Hanya menerima file png, jpg, jpeg dan pdf',
+            'files.*.mimes' => 'Hanya menerima file png, jpg dan jpeg',
             'files.*.max' => 'Max file size 1Mb',
 
             'nama.min' => 'Nama minimal 5 karakter.',
@@ -209,19 +209,21 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
-            // 'files.*' =>  ['nullable', 'extensions:png,jpg,jpeg,pdf', new FileSizeLimit(1024)]
-            'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
-            // 'files.*' => 'nullable|mimes:png,jpg,jpeg,pdf|max:1024'
-            // 'files' => 'image|max:1024'
+            // 'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
+            // 'files.*' =>  ['nullable',  new AllowedFileExtension]
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
         ];
     }
 
     public function updatedFiles()
     {
         $this->validate([
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+            // 'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
         ]);
     }
+
     public function save()
     {
         $validated = $this->validate();
@@ -266,7 +268,7 @@ class Applicant extends Component
         }
         Applicantdata::create([
             'applicant_id' => $this->applicant_id,
-            'nama' => titleCase($this->nama),
+            'nama' => titleCase(trim($this->nama)),
             'email' => $this->email,
             'password' => $this->password,
             'hp' => $this->hp,

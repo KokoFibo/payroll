@@ -565,7 +565,7 @@ function makeApplicationId($nama, $date)
 {
     if ($nama != '' && $date != '') {
 
-
+        $nama = trim($nama);
         $arrNamas = explode(' ', $nama);
         $arrDates = explode('-', $date);
         $nama_sambung = '';

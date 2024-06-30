@@ -141,6 +141,7 @@ class Timeoffwr extends Component
         }
     }
 
+
     public function rules()
     {
         return [
@@ -160,6 +161,8 @@ class Timeoffwr extends Component
             'end_date.required' => 'Tanggal sampai wajib diisi.',
             'end_date.date' => 'Harus berformat tanggal dd/mm/yyyy',
             'description.required' => 'Deskripsi wajib diisi',
+            'files.*.mimes' => 'Hanya menerima file png, jpg dan jpeg',
+            'files.*.max' => 'Max file size 1Mb',
         ];
     }
 
@@ -174,7 +177,7 @@ class Timeoffwr extends Component
     public function updatedFiles()
     {
         $this->validate([
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
+            'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new FileSizeLimit(1024)],
         ]);
     }
 
