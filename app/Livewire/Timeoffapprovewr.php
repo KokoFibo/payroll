@@ -6,11 +6,14 @@ use Carbon\Carbon;
 use App\Models\Timeoff;
 use Livewire\Component;
 use App\Models\Timeofffile;
+use Livewire\WithPagination;
 use App\Models\Timeoffrequester;
 use Google\Service\CloudSearch\History;
 
 class Timeoffapprovewr extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $karyawan_id, $placement_id, $request_type, $start_date, $end_date;
     public $description, $status, $tanggal,  $approve1, $approve1_date, $approve2, $approve2_date, $done_by, $done_date;
     public $id, $is_show, $is_checked, $is_approve1, $is_approve2, $is_done;
@@ -249,12 +252,12 @@ class Timeoffapprovewr extends Component
     public function render()
     {
         if (auth()->user()->username == 58 || auth()->user()->username == 1146) {
-            $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->orderBy('id', 'desc')->get();
+            $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->orderBy('id', 'desc')->paginate(5);
         } else {
 
-            $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->orderBy('id', 'desc')->get();
+            $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->orderBy('id', 'desc')->paginate(5);
             // dibawah ini utk test buat yg data 80000
-            if (auth()->user()->username >= 60000) $data = Timeoff::orderBy('id', 'desc')->get();
+            if (auth()->user()->username >= 60000) $data = Timeoff::orderBy('id', 'desc')->paginate(5);
         }
         return view('livewire.timeoffapprovewr', [
             'data' => $data
