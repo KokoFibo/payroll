@@ -3,11 +3,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h3>Time Off Requests list</h3>
+                    <h3>Time off request lists</h3>
                     <div>
                         @if (auth()->user()->role > 5)
-                            <a href="/addtimeoutrequester"><button class="btn btn-primary">Add Time Off
-                                    Approver</button></a>
+                            <a href="/addtimeoutrequester"><button class="btn btn-primary">Add Approver</button></a>
                         @endif
                     </div>
                 </div>
