@@ -4,18 +4,300 @@ use Carbon\Carbon;
 use App\Models\Ter;
 use App\Models\Lock;
 use App\Models\User;
+use App\Models\Company;
 use App\Models\Jabatan;
 use App\Models\Payroll;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Department;
 use Illuminate\Support\Str;
 use App\Models\Applicantfile;
 use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
+use App\Models\Personnelrequestform;
+use App\Models\Timeoff;
+use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function isTimeoff($id_karyawan)
+{
+    if ($id_karyawan != null) {
+        $data = Timeoffrequester::where('approve_by_1', $id_karyawan)->orWhere('approve_by_2', $id_karyawan)->first();
+        if ($data) return true;
+        else return false;
+    }
+}
+
+function isRequester($id_karyawan)
+{
+    if ($id_karyawan != null) {
+        $data = Requester::where('approve_by_1', $id_karyawan)->orWhere('approve_by_2', $id_karyawan)->orWhere('request_id', $id_karyawan)->first();
+
+        if ($data) return true;
+        else return false;
+    }
+}
+
+function getPLacement($id_karyawan)
+{
+    if (
+        $id_karyawan != null
+    ) {
+        $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
+        // dikasih if supaya 8000 yang gak terdaftar di karyawan bisa akses dan gak error
+        if ($data) return $data->placement_id;
+        else return $id_karyawan;
+    }
+}
+
+function isResigned($id)
+{
+    $data = Karyawan::where('id_karyawan', $id)->whereIn('status_karyawan', ['Resigned', 'Blacklist'])->first();
+    if ($data == null) return false;
+    else return true;
+}
+
+function get_first_name($name)
+{
+    if ($name != '') {
+        $arrName = explode(' ', $name);
+        return $arrName[0];
+    }
+}
+
+function hitung_pph21($gaji_bpjs, $ptkp, $jht, $jp, $jkk, $jkm, $kesehatan)
+{
+    if ($gaji_bpjs != '' &&  $ptkp != '') {
+        $gaji_bpjs_max = 0;
+        if ($gaji_bpjs >= 12000000) $gaji_bpjs_max = 12000000;
+        else $gaji_bpjs_max = $gaji_bpjs;
+        if ($jht) $jht_company = ($gaji_bpjs * 3.7) / 100;
+        else $jht_company = 0;
+
+        if ($jp) $jp_company = ($gaji_bpjs_max * 2) / 100;
+        else $jp_company = 0;
+
+        if ($jkk) $jkk_company = ($gaji_bpjs * 0.24) / 100;
+        else $jkk_company = 0;
+
+        if ($jkm) $jkm_company = ($gaji_bpjs * 0.3) / 100;
+        else $jkm_company = 0;
+
+        if ($kesehatan) $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
+        else $kesehatan_company = 0;
+
+
+        $total_bpjs_company =
+            // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
+            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+        $ter = '';
+        switch ($ptkp) {
+            case 'TK0':
+                $ter = 'A';
+                break;
+            case 'TK1':
+                $ter = 'A';
+                break;
+            case 'TK2':
+                $ter = 'B';
+                break;
+            case 'TK3':
+                $ter = 'B';
+                break;
+            case 'K0':
+                $ter = 'A';
+                break;
+            case 'K1':
+                $ter = 'B';
+                break;
+            case 'K2':
+                $ter = 'B';
+                break;
+            case 'K3':
+                $ter = 'C';
+                break;
+        }
+
+        $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
+        $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
+    } else {
+        $pph21 = 0;
+    }
+    return $pph21;
+}
+
+function is_perbulan()
+{
+    $is_perbulan = false;
+    $data_karyawan = Karyawan::where('id_karyawan', auth()->user()->username)->where('metode_penggajian', 'Perbulan')->first();
+    if ($data_karyawan != null) $is_perbulan = true;
+    else $is_perbulan = false;
+    return $is_perbulan;
+}
+
+function check_fail_job()
+{
+    $fail = DB::table('failed_jobs')->count();
+    if ($fail > 0) return true;
+    else return false;
+}
+
+function check_rebuild_done()
+{
+    $lock = Lock::find(1);
+    if ($lock->rebuild_done == 1) return true;
+    else return false;
+}
+function check_rebuilding()
+{
+    $lock = Lock::find(1);
+    if ($lock->rebuild_done == 2) return true;
+    else return false;
+}
+
+function check_for_new_approved_request()
+{
+    return Personnelrequestform::where('status', 'Approved')->count();
+}
+function check_for_new_applyingrequest()
+{
+    return Personnelrequestform::where('status', 'Applying')->count();
+}
+function check_for_new_Timeoff_request()
+{
+    return Timeoff::where('status', 'Confirmed')->count();
+}
+function check_for_menunggu_approval_Timeoff_request()
+{
+    return Timeoff::where('status', 'Menunggu Approval')->count();
+}
+
+
+function changeToAdmin($id)
+{
+    $check_user = Requester::where('request_id', $id)
+        ->where('request_id', $id)
+        ->orWhere('approve_by_1', $id)
+        ->orWhere('approve_by_2', $id)->first();
+
+    $check_user_time_off = Timeoffrequester::where('approve_by_1', $id)
+        ->orWhere('approve_by_2', $id)->first();
+
+    // dd($check_user == null);
+    if ($check_user == null && $check_user_time_off == null) {
+        $data = User::where('username', $id)->first();
+        $data->role = 1;
+        $data->save();
+    }
+}
+
+function changeToRequest($id)
+{
+
+    if ($id != '') {
+        $data = User::where('username', $id)->first();
+        $data->role = 2;
+        $data->save();
+    }
+}
+
+function clear_dot($filename, $fileExtension)
+{
+    $lastDotPosition = strrpos($filename, '.');
+
+    // Split the filename into two parts: before the last dot and after
+    $beforeLastDot = substr($filename, 0, $lastDotPosition);
+    $afterLastDot = substr($filename, $lastDotPosition);
+
+    $data_arr = explode('.', $afterLastDot);
+    $length = count($data_arr); // Count the elements in the array
+    if ($length == 2)
+        switch ($data_arr[1]) {
+            case 'pdf':
+                break;
+            case 'jpg':
+                break;
+            case 'jpeg':
+                break;
+            case 'png':
+                break;
+            default:
+                $afterLastDot = $data_arr[1] . '.' . $fileExtension;
+                break;
+        }
+
+    // Replace all dots with underscores in the part before the last dot
+    $beforeLastDot = str_replace('.', ' ', $beforeLastDot);
+
+    // Concatenate the modified part with the unmodified last dot part
+    if ($lastDotPosition) {
+        $newFilename = $beforeLastDot . $afterLastDot;
+    } else {
+
+        $data_arr = explode('.', $filename);
+        $length = count($data_arr); // Count the elements in the array
+        if ($length == 1)
+            $newFilename = $filename . '.' . $fileExtension;
+    }
+
+
+
+    return $newFilename;
+}
+
+function getName($id)
+{
+    $data = Karyawan::where('id_karyawan', $id)->first();
+    if ($data != null)
+        return  $data->nama;
+    else return '';
+}
+
+function check_id_file_karyawan($id_file_karyawan)
+{
+    $data = Karyawan::where('id_file_karyawan', $id_file_karyawan)->first();
+    if ($data != null) return $id_file_karyawan;
+    else return 'false';
+}
+
+function check_di_user($email)
+{
+    $data = User::where('email', trim($email, ' '))->first();
+    if ($data != null) return $data->username;
+    else return '';
+}
+function check_di_karyawan($email)
+{
+    $data = Karyawan::where('email', trim($email, ' '))->first();
+    if ($data != null) return $data->id_karyawan;
+    else return false;
+}
+
+function nama_department($id)
+{
+    if ($id != null) {
+        $data = Department::find($id);
+        return $data->nama_department;
+    }
+}
+function nama_company($id)
+{
+    if ($id != null) {
+        $data = Company::find($id);
+        return $data->company_name;
+    }
+}
+function nama_placement($id)
+{
+    if ($id != null) {
+        $data = Placement::find($id);
+        return $data->placement_name;
+    }
+}
 function nama_jabatan($id)
 {
     if ($id != null) {
@@ -234,9 +516,13 @@ function getNamaStatus($kode_status)
 
 function getFilenameExtension($filename)
 {
-
-    $arrNamas = explode('.', $filename);
-    return $arrNamas[1];
+    try {
+        $arrNamas = explode('.', $filename);
+        return $arrNamas[1];
+    } catch (\Exception $e) {
+        // dd($filename->getClientOriginalExtension());
+        return $e->getMessage();
+    }
 }
 
 function getFilename($filename)
@@ -279,7 +565,7 @@ function makeApplicationId($nama, $date)
 {
     if ($nama != '' && $date != '') {
 
-
+        $nama = trim($nama);
         $arrNamas = explode(' ', $nama);
         $arrDates = explode('-', $date);
         $nama_sambung = '';
@@ -483,7 +769,7 @@ function get_placement($id)
         dd('ID tidak diketemukan : ' . $id);
     } else {
 
-        return $data->placement;
+        return $data->placement_id;
     }
 }
 function getTotalWorkingDays($year, $month)
@@ -513,250 +799,7 @@ function is_puasa($tgl)
     return false;
 }
 
-function get_data_karyawan()
-{
-    $year = now()->year;
-    $month = now()->month;
 
-    $jumlah_total_karyawan = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_karyawan_pria = Karyawan::where('gender', 'Laki-laki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_karyawan_wanita = Karyawan::where('gender', 'Perempuan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-
-    $jumlah_karyawan_baru_hari_ini = Karyawan::where('tanggal_bergabung', today())->count();
-    $jumlah_karyawan_Resigned_hari_ini = Karyawan::where('tanggal_resigned', today())->count();
-    $jumlah_karyawan_blacklist_hari_ini = Karyawan::where('tanggal_blacklist', today())->count();
-
-    $karyawan_baru_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereMonth('tanggal_bergabung', $month)
-        ->whereYear('tanggal_bergabung', $year)
-        ->count();
-
-    $karyawan_resigned_mtd = Karyawan::where('status_karyawan', 'Resigned')
-        ->whereMonth('tanggal_resigned', $month)
-        ->whereYear('tanggal_resigned', $year)
-        ->count();
-
-    $karyawan_blacklist_mtd = Karyawan::where('status_karyawan', 'Blacklist')
-        ->whereMonth('tanggal_blacklist', $month)
-        ->whereYear('tanggal_blacklist', $year)
-        ->count();
-
-    $karyawan_aktif_mtd = Payroll::whereMonth('date', $month)
-        ->whereYear('date', $year)
-        ->count();
-
-
-
-    // Jumlah Karyawan
-    $jumlah_ASB = Karyawan::where('company', 'ASB')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_DPA = Karyawan::where('company', 'DPA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_YCME = Karyawan::where('company', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_YEV = Karyawan::where('company', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_YIG = Karyawan::where('company', 'YIG')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_YSM = Karyawan::where('company', 'YSM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_YAM = Karyawan::where('company', 'YAM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_GAMA = Karyawan::where('company', 'GAMA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_WAS = Karyawan::where('company', 'WAS')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_Pabrik_1 = Karyawan::where('placement', 'YCME')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_Pabrik_2 = Karyawan::where('placement', 'YEV')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_Kantor = Karyawan::whereIn('placement', ['YSM', 'YIG'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jumlah_placement =  $jumlah_Pabrik_1 + $jumlah_Pabrik_2 + $jumlah_Kantor;
-    $jumlah_company =  $jumlah_ASB + $jumlah_DPA + $jumlah_YCME + $jumlah_YEV + $jumlah_YIG +  $jumlah_YSM + $jumlah_YAM + $jumlah_GAMA + $jumlah_WAS;
-
-
-    // Department
-    $department_BD = Karyawan::where('departemen', 'BD')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Engineering = Karyawan::where('departemen', 'Engineering')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_EXIM = Karyawan::where('departemen', 'EXIM')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Finance_Accounting = Karyawan::where('departemen', 'Finance Accounting')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_GA = Karyawan::where('departemen', 'GA')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Gudang = Karyawan::where('departemen', 'Gudang')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_HR = Karyawan::where('departemen', 'HR')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Legal = Karyawan::where('departemen', 'Legal')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Procurement = Karyawan::where('departemen', 'Procurement')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Produksi = Karyawan::where('departemen', 'Produksi')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Quality_Control = Karyawan::where('departemen', 'Quality Control')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $department_Board_of_Director = Karyawan::where('departemen', 'Board of Director')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-
-    // Jabatan
-    $jabatan_Admin = Karyawan::where('jabatan', 'Admin')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Asisten_Direktur = Karyawan::where('jabatan', 'Asisten Direktur')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Asisten_Kepala = Karyawan::where('jabatan', 'Asisten Kepala')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Asisten_Manager = Karyawan::where('jabatan', 'Asisten Manager')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Asisten_Pengawas = Karyawan::where('jabatan', 'Asisten Pengawas')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Asisten_Wakil_Presiden = Karyawan::where('jabatan', 'Asisten Wakil Presiden')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Design_grafis = Karyawan::where('jabatan', 'Design grafis')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Director = Karyawan::where('jabatan', 'Director')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Kepala = Karyawan::where('jabatan', 'Kepala')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Manager = Karyawan::where('jabatan', 'Manager')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Pengawas = Karyawan::where('jabatan', 'Pengawas')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_President = Karyawan::where('jabatan', 'President')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Senior_staff = Karyawan::where('jabatan', 'Senior staff')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Staff = Karyawan::where('jabatan', 'Staff')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Supervisor = Karyawan::where('jabatan', 'Supervisor')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Vice_President = Karyawan::where('jabatan', 'Vice President')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Satpam = Karyawan::where('jabatan', 'Satpam')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Koki = Karyawan::where('jabatan', 'Koki')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Dapur_Kantor = Karyawan::where('jabatan', 'Dapur Kantor')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Dapur_Pabrik = Karyawan::where('jabatan', 'Dapur Pabrik')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_QC_Aging = Karyawan::where('jabatan', 'QC Aging')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-    $jabatan_Driver = Karyawan::where('jabatan', 'Driver')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
-
-    $countLatestHadir = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->count();
-    // $latestDate = Yfrekappresensi::where('date', Yfrekappresensi::max('date'))->first();
-
-    // $dataCountLatestHadir = [$countLatestHadir, $jumlah_total_karyawan - $countLatestHadir];
-
-    //  $average7Hari = ratarata (7);
-    // $average7Hari = [ratarata(7), $jumlah_total_karyawan - ratarata(7)];
-
-    //  rata-rata 30 hari
-    // $average30Hari = [ratarata(30), $jumlah_total_karyawan - ratarata(30)];
-    //  Presensi by Depertemen
-    $bd = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'BD')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $engineering = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Engineering')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $exim = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'EXIM')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $finance_accounting = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Finance Accounting')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $ga = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'GA')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $gudang = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Gudang')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $hr = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'HR')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $legal = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Legal')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $procurement = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Procurement')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $produksi = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Produksi')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $quality_control = Karyawan::join('yfrekappresensis', 'karyawans.id', '=', 'yfrekappresensis.karyawan_id')
-        ->select('karyawans.*', 'yfrekappresensis.*')
-        ->where('departemen', 'Quality Control')
-        ->where('date', Yfrekappresensi::max('date'))->count();
-
-    $total_presensi_by_departemen = $bd + $engineering + $exim + $finance_accounting + $ga + $gudang + $hr + $legal +
-        $procurement + $produksi + $quality_control;
-
-    $shift_pagi = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Pagi')->count();
-    $shift_malam = Yfrekappresensi::whereMonth('date', now()->month)->whereYear('date', now()->year)->where('shift', 'Malam')->count();
-    $total = $shift_pagi + $shift_malam;
-
-    Dashboarddata::query()->truncate();
-    $data = new Dashboarddata;
-
-    $data->jumlah_total_karyawan = $jumlah_total_karyawan;
-    $data->jumlah_karyawan_pria = $jumlah_karyawan_pria;
-    $data->jumlah_karyawan_wanita = $jumlah_karyawan_wanita;
-    $data->karyawan_baru_mtd = $karyawan_baru_mtd;
-    $data->karyawan_resigned_mtd = $karyawan_resigned_mtd;
-    $data->karyawan_blacklist_mtd = $karyawan_blacklist_mtd;
-    $data->karyawan_aktif_mtd = $karyawan_aktif_mtd;
-    $data->jumlah_karyawan_baru_hari_ini = $jumlah_karyawan_baru_hari_ini;
-    $data->jumlah_karyawan_Resigned_hari_ini = $jumlah_karyawan_Resigned_hari_ini;
-    $data->jumlah_karyawan_blacklist_hari_ini = $jumlah_karyawan_blacklist_hari_ini;
-    $data->jumlah_ASB = $jumlah_ASB;
-    $data->jumlah_DPA = $jumlah_DPA;
-    $data->jumlah_YCME = $jumlah_YCME;
-    $data->jumlah_YEV = $jumlah_YEV;
-    $data->jumlah_YIG = $jumlah_YIG;
-    $data->jumlah_YSM = $jumlah_YSM;
-    $data->jumlah_YAM = $jumlah_YAM;
-    $data->jumlah_GAMA = $jumlah_GAMA;
-    $data->jumlah_WAS = $jumlah_WAS;
-    $data->jumlah_Pabrik_1 = $jumlah_Pabrik_1;
-    $data->jumlah_Pabrik_2 = $jumlah_Pabrik_2;
-    $data->jumlah_Kantor = $jumlah_Kantor;
-    $data->jumlah_placement = $jumlah_placement;
-    $data->jumlah_company = $jumlah_company;
-    $data->department_BD = $department_BD;
-    $data->department_Engineering = $department_Engineering;
-    $data->department_EXIM = $department_EXIM;
-    $data->department_Finance_Accounting = $department_Finance_Accounting;
-    $data->department_GA = $department_GA;
-    $data->department_Gudang = $department_Gudang;
-    $data->department_HR = $department_HR;
-    $data->department_Legal = $department_Legal;
-    $data->department_Procurement = $department_Procurement;
-    $data->department_Produksi = $department_Produksi;
-    $data->department_Quality_Control = $department_Quality_Control;
-    $data->department_Board_of_Director = $department_Board_of_Director;
-    $data->jabatan_Admin = $jabatan_Admin;
-    $data->jabatan_Asisten_Direktur = $jabatan_Asisten_Direktur;
-    $data->jabatan_Asisten_Kepala = $jabatan_Asisten_Kepala;
-    $data->jabatan_Asisten_Manager = $jabatan_Asisten_Manager;
-    $data->jabatan_Asisten_Pengawas = $jabatan_Asisten_Pengawas;
-    $data->jabatan_Asisten_Wakil_Presiden = $jabatan_Asisten_Wakil_Presiden;
-    $data->jabatan_Design_grafis = $jabatan_Design_grafis;
-    $data->jabatan_Director = $jabatan_Director;
-    $data->jabatan_Kepala = $jabatan_Kepala;
-    $data->jabatan_Manager = $jabatan_Manager;
-    $data->jabatan_Pengawas = $jabatan_Pengawas;
-    $data->jabatan_President = $jabatan_President;
-    $data->jabatan_Senior_staff = $jabatan_Senior_staff;
-    $data->jabatan_Staff = $jabatan_Staff;
-    $data->jabatan_Supervisor = $jabatan_Supervisor;
-    $data->jabatan_Vice_President = $jabatan_Vice_President;
-    $data->jabatan_Satpam = $jabatan_Satpam;
-    $data->jabatan_Koki = $jabatan_Koki;
-    $data->jabatan_Dapur_Kantor = $jabatan_Dapur_Kantor;
-    $data->jabatan_Dapur_Pabrik = $jabatan_Dapur_Pabrik;
-    $data->jabatan_QC_Aging = $jabatan_QC_Aging;
-    $data->jabatan_Driver = $jabatan_Driver;
-    $data->countLatestHadir = $countLatestHadir;
-    // $data->latestDate = $latestDate;
-    // $data->dataCountLatestHadir = $dataCountLatestHadir;
-    // $data->average7Hari = $average7Hari;
-    // $data->average30Hari = $average30Hari;
-    $data->bd = $bd;
-    $data->engineering = $engineering;
-    $data->exim = $exim;
-    $data->finance_accounting = $finance_accounting;
-    $data->ga = $ga;
-    $data->gudang = $gudang;
-    $data->hr = $hr;
-    $data->legal = $legal;
-    $data->procurement = $procurement;
-    $data->produksi = $produksi;
-    $data->quality_control = $quality_control;
-    $data->total_presensi_by_departemen = $total_presensi_by_departemen;
-    $data->shift_pagi = $shift_pagi;
-    $data->shift_malam = $shift_malam;
-    $data->save();
-}
 
 function is_libur_nasional($tanggal)
 {
@@ -834,7 +877,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2100000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2100000;
@@ -853,7 +896,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2200000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2200000;
@@ -871,7 +914,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2300000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2300000;
@@ -888,7 +931,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2400000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2400000;
@@ -906,7 +949,7 @@ function adjustSalary()
         ->where('gaji_pokok', '<', 2500000)
         ->whereNot('gaji_pokok', 0)
         ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-        ->whereNotIn('departemen', ['EXIM', 'GA'])
+        ->whereNotIn('department_id', [3, 5])
         ->orderBy('tanggal_bergabung', 'desc')
         ->get();
     $gaji_rekomendasi = 2500000;
@@ -1185,7 +1228,7 @@ function clear_locks()
     $lock->payroll = 0;
     $lock->save();
 }
-function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
+function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 {
 
     // betulin
@@ -1197,11 +1240,11 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
             return $diff;
         }
     }
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
         if ($second_out != null) {
             $lembur = 0;
             $t2 = strtotime($second_out);
-            if ($jabatan == 'Satpam') {
+            if ($jabatan == 17) {
                 if ($shift == 'Pagi') {
 
                     if (is_saturday($tgl)) {
@@ -1293,7 +1336,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement)
 
             $t2 = strtotime($second_out);
 
-            if ($jabatan == 'Satpam') {
+            if ($jabatan == 17) {
                 if ($shift == 'Pagi') {
                     if (is_saturday($tgl)) {
                         // rubah disini utk perubahan jam lembur satpam
@@ -1382,10 +1425,10 @@ function tgl_doang($tgl)
     return $dt->day;
 }
 
-function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement)
+function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement_id)
 {
     $perJam = 60;
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
         if ($late == null) {
             if ($shift == 'Pagi') {
                 if (is_saturday($tgl)) {
@@ -1405,7 +1448,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         } else {
             // check late kkk
-            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement);
+            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
@@ -1461,7 +1504,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         } else {
             // check late kkk
-            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement);
+            $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
@@ -1527,7 +1570,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         // $jam_kerja = $jam * 2;
         $jam_kerja *= 2;
     }
-    if ($jabatan == 'Satpam' && is_sunday($tgl) == false) {
+    if ($jabatan == 17 && is_sunday($tgl) == false) {
         $jam_kerja = 12;
         // $jam_kerja = $jam_kerja - $total_late;
     }
@@ -1754,16 +1797,16 @@ function trimTime($data)
     return Str::substr($data, 0, 5);
 }
 
-function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement)
+function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id)
 {
     $late_1 = 0;
     $late_2 = 0;
     $late_3 = 0;
     $late_4 = 0;
-    $late1 = checkFirstInLate($first_in, $shift, $tgl, $placement);
-    $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement);
-    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement);
-    $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement);
+    $late1 = checkFirstInLate($first_in, $shift, $tgl, $placement_id);
+    $late2 = checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id);
+    $late3 = checkSecondInLate($second_in, $shift, $first_out, $tgl, $jabatan, $placement_id);
+    $late4 = checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id);
 
     // if (is_sunday($tgl) && (trim($jabatan) == 'Driver' || trim($jabatan) == 'Koki' || trim($jabatan) == 'Dapur Kantor' || trim($jabatan) == 'Dapur Pabrik')) {
     //     return 0;
@@ -1783,22 +1826,22 @@ function is_jabatan_khusus($jabatan)
 {
     // $jabatan = Karyawan::where('id_karyawan', $id)->first();
     switch ($jabatan) {
-        case 'Satpam':
+        case 17:
             $jabatan_khusus = 1;
             break;
-        case 'Koki':
+        case 18:
             $jabatan_khusus = 1;
             break;
-        case 'Dapur Kantor':
+        case 19:
             $jabatan_khusus = 1;
             break;
-        case 'Dapur Pabrik':
+        case 20:
             $jabatan_khusus = 1;
             break;
-        case 'QC Aging':
+        case 21:
             $jabatan_khusus = 1;
             break;
-        case 'Driver':
+        case 22:
             $jabatan_khusus = 1;
             break;
 
@@ -1820,7 +1863,7 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
 
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
-        $jabatan = $data_jabatan->jabatan;
+        $jabatan = $data_jabatan->jabatan_id;
         $jabatan_khusus = is_jabatan_khusus($jabatan);
     } catch (\Exception $e) {
         dd('ID karyawan tidak ada dalam database = ', $id);
@@ -1891,16 +1934,16 @@ function hoursToMinutes($jam)
     return $minJam + $min;
 }
 
-function checkFirstInLate($check_in, $shift, $tgl, $placement)
+function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
 {
     // rubah angka ini utk bulan puasa
-    $test = $placement;
+    $test = $placement_id;
 
     $jam_mulai_pagi = '08:03';
     $strtime_pagi = '08:03:00';
     $perJam = 60;
     $late = null;
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
         if ($check_in != null) {
             if ($shift == 'Pagi') {
                 // Shift Pagi
@@ -1992,11 +2035,11 @@ function checkFirstInLate($check_in, $shift, $tgl, $placement)
     return $late;
 }
 
-function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement)
+function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
 {
     $perJam = 60;
     $late = null;
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
 
         if ($second_out != null) {
             if ($shift == 'Pagi') {
@@ -2158,13 +2201,13 @@ function checkOvertimeInLate($overtime_in, $shift, $tgl)
     return $late;
 }
 
-function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement)
+function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
 {
     //ok
     $perJam = 60;
     $late = null;
 
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
         } else {
@@ -2239,12 +2282,12 @@ function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement)
     return $late;
 }
 
-function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $placement)
+function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $placement_id)
 {
     $perJam = 60;
     $late = null;
 
-    if (is_puasa($tgl) && $placement == 'YCME') {
+    if (is_puasa($tgl) && $placement_id == 6) {
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
         } else {

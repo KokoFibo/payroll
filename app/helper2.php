@@ -330,8 +330,6 @@ function build_payroll($month, $year)
             $tanggungan = 0;
         }
 
-
-
         if ($data->karyawan->potongan_JKK == 1) {
             $jkk = 1;
         } else {

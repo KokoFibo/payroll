@@ -115,47 +115,18 @@
         <tbody>
             @foreach ($data as $key => $d)
                 @php
+                    $gaji_bpjs_max = 0;
                     if ($d->gaji_bpjs >= 12000000) {
                         $gaji_bpjs_max = 12000000;
                     } else {
                         $gaji_bpjs_max = $d->gaji_bpjs;
                     }
+                    $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
 
-                    if ($d->gaji_bpjs >= 10042300) {
-                        $gaji_jp_max = 10042300;
-                    } else {
-                        $gaji_jp_max = $d->gaji_bpjs;
-                    }
-                    if ($d->kesehatan) {
-                        $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
-                    } else {
-                        $kesehatan_company = 0;
-                    }
-
-                    if ($d->jkk) {
-                        $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
-                    } else {
-                        $jkk_company = 0;
-                    }
-
-                    if ($d->jkm) {
-                        $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
-                    } else {
-                        $jkm_company = 0;
-                    }
-
-                    if ($d->jp) {
-                        $jp_company = ($gaji_jp_max * 2) / 100;
-                    } else {
-                        $jp_company = 0;
-                    }
-
-                    if ($d->jht) {
-                        $jht_company = ($d->gaji_bpjs * 3.7) / 100;
-                    } else {
-                        $jht_company = ($d->gaji_bpjs * 3.7) / 100;
-                    }
-
+                    $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
+                    $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
+                    $jp_company = ($gaji_bpjs_max * 2) / 100;
+                    $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
                     $ter = '';
                     switch ($d->ptkp) {
