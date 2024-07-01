@@ -156,7 +156,11 @@
                         $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     }
 
+                    $total_bpjs_company = 0;
                     $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+                    if ($d->id_karyawan == 4) {
+                        dd($kesehatan_company, $total_bpjs_company);
+                    }
                     $ter = '';
                     switch ($d->ptkp) {
                         case 'TK0':
