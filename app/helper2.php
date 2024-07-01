@@ -777,7 +777,7 @@ function build_payroll($month, $year)
         }
     }
     // ok 6
-    // Libur nasional dan resigned sebelum 3 bulan kerja
+    // Libur nasional dan resigned sebelum 3 bulan bekerja
 
     $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
         ->whereYear('tanggal_mulai_hari_libur', $year)
