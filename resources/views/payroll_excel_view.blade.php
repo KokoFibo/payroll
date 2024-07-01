@@ -144,13 +144,13 @@
                         $jkm_company = 0;
                     }
 
-                    if ($d->jp) {
+                    if ($d->jp != 0) {
                         $jp_company = ($gaji_jp_max * 2) / 100;
                     } else {
                         $jp_company = 0;
                     }
 
-                    if ($d->jht) {
+                    if ($d->jht != 0) {
                         $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                     } else {
                         $jht_company = ($d->gaji_bpjs * 3.7) / 100;
@@ -158,9 +158,7 @@
 
                     $total_bpjs_company = 0;
                     $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
-                    if ($d->id_karyawan == 4) {
-                        dd($d->kesehatan, $kesehatan_company, $total_bpjs_company);
-                    }
+
                     $ter = '';
                     switch ($d->ptkp) {
                         case 'TK0':
