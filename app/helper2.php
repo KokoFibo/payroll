@@ -413,7 +413,8 @@ function build_payroll($month, $year)
         // }
 
 
-        $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
+        $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / 26) * ($data->total_hari_kerja + $manfaat_libur);
+        // $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
 
 
