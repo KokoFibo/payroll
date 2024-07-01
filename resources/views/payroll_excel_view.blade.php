@@ -126,7 +126,7 @@
                     } else {
                         $gaji_jp_max = $d->gaji_bpjs;
                     }
-                    if ($d->kesehatan) {
+                    if ($d->kesehatan != 0) {
                         $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
                     } else {
                         $kesehatan_company = 0;
