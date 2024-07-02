@@ -488,11 +488,13 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3">{{ __('Total') }}
-                {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
+            <p class="px-3">{{ __('Total : ') }} {{ getTotalWorkingDays($year, $month) }} Days.
+                ( {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
 
                 {{ __('working days with') }}
-                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }}</p>
+                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }} )
+            </p>
+
             <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>
