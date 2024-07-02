@@ -419,10 +419,12 @@ class Updatekaryawanwr extends Component
         if ($this->status_karyawan == 'Resigned') {
             $data->tanggal_blacklist = null;
             $data->tanggal_resigned = $this->tanggal_resigned;
+            $data->email = 'resigned_' . trim($this->email);
         } elseif ($this->status_karyawan == 'Blacklist') {
 
             $data->tanggal_resigned = null;
             $data->tanggal_blacklist = $this->tanggal_blacklist;
+            $data->email = 'blacklist_' . trim($this->email);
         } else {
             $data->tanggal_blacklist = null;
             $data->tanggal_resigned = null;
