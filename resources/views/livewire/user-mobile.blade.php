@@ -87,9 +87,10 @@
                                     {{-- <option value="12">Desember</option>
                                     <option value="1">Januari</option>
                                     <option value="2">Februari</option> --}}
+                                    {{-- j --}}
                                 </select>
                             </div>
-                            <div class="{{ auth()->user()->role <= 3 && $is_slipGaji == false ? 'invisible' : '' }}">
+                            <div class="{{ auth()->user()->role <= 6 && $is_slipGaji == false ? 'invisible' : '' }}">
                                 {{-- <div> --}}
                                 @if ($is_detail == false)
                                     <button wire:click="slip_gaji"
