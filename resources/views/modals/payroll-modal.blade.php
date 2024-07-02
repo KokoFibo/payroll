@@ -255,6 +255,7 @@
                                                 $jkm_company +
                                                 $kesehatan_company;
                                             $ter = '';
+                                            $ptkp = $data_payroll->ptkp;
                                             switch ($ptkp) {
                                                 case 'TK0':
                                                     $ter = 'A';
