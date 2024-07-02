@@ -178,13 +178,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_karyawan->ptkp != '')
-                                        <tr>
-                                            <td>PTKP</td>
-                                            <td>
-                                                {{ $data_karyawan->ptkp }}</td>
-                                        </tr>
-                                    @endif
+
                                     @if ($data_payroll->denda_resigned != 0)
                                         <tr>
                                             <td>Lama Bekerja</td>
@@ -201,95 +195,17 @@
                                         </tr>
                                     @endif
                                     @if ($data_karyawan->ptkp != '')
-                                        @php
-                                            if ($data_payroll->gaji_bpjs >= 12000000) {
-                                                $gaji_bpjs_kesehatan = 12000000;
-                                            } else {
-                                                $gaji_bpjs_kesehatan = $data_payroll->gaji_bpjs;
-                                            }
-
-                                            if ($data_payroll->gaji_bpjs >= 10042300) {
-                                                $gaji_jp_max = 10042300;
-                                            } else {
-                                                $gaji_jp_max = $data_payroll->gaji_bpjs;
-                                            }
-
-                                            // $gaji_bpjs_max = 0;
-                                            // if ($gaji_bpjs >= 12000000) $gaji_bpjs_max = 12000000;
-                                            // else $gaji_bpjs_max = $gaji_bpjs;
-
-                                            if ($data_payroll->jht != 0) {
-                                                $jht_company = ($data_payroll->gaji_bpjs * 3.7) / 100;
-                                            } else {
-                                                $jht_company = 0;
-                                            }
-
-                                            if ($data_payroll->jp != 0) {
-                                                $jp_company = ($gaji_jp_max * 2) / 100;
-                                            } else {
-                                                $jp_company = 0;
-                                            }
-
-                                            if ($data_karyawan->jkk == 1) {
-                                                $jkk_company = ($data_payroll->gaji_bpjs * 0.24) / 100;
-                                            } else {
-                                                $jkk_company = 0;
-                                            }
-
-                                            if ($data_karyawan->jkm == 1) {
-                                                $jkm_company = ($data_payroll->gaji_bpjs * 0.3) / 100;
-                                            } else {
-                                                $jkm_company = 0;
-                                            }
-
-                                            if ($data_payroll->kesehatan != 0) {
-                                                $kesehatan_company = ($data_payroll->gaji_bpjs_kesehatan * 4) / 100;
-                                            } else {
-                                                $kesehatan_company = 0;
-                                            }
-
-                                            $total_bpjs_company =
-                                                // $data_payroll->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
-                                                $data_payroll->gaji_bpjs +
-                                                $jkk_company +
-                                                $jkm_company +
-                                                $kesehatan_company;
-                                            $ter = '';
-                                            $ptkp = $data_payroll->ptkp;
-                                            switch ($ptkp) {
-                                                case 'TK0':
-                                                    $ter = 'A';
-                                                    break;
-                                                case 'TK1':
-                                                    $ter = 'A';
-                                                    break;
-                                                case 'TK2':
-                                                    $ter = 'B';
-                                                    break;
-                                                case 'TK3':
-                                                    $ter = 'B';
-                                                    break;
-                                                case 'K0':
-                                                    $ter = 'A';
-                                                    break;
-                                                case 'K1':
-                                                    $ter = 'B';
-                                                    break;
-                                                case 'K2':
-                                                    $ter = 'B';
-                                                    break;
-                                                case 'K3':
-                                                    $ter = 'C';
-                                                    break;
-                                            }
-
-                                            $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
-                                            $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
-                                        @endphp
+                                        <tr>
+                                            <td>PTKP</td>
+                                            <td>
+                                                {{ $data_karyawan->ptkp }}</td>
+                                        </tr>
+                                    @endif
+                                    @if ($data_karyawan->ptkp != '')
                                         <tr>
                                             <td>PPh21</td>
                                             <td>
-                                                Rp. {{ number_format($pph21) }}
+                                                Rp. {{ number_format($data_payroll->pph21) }}
                                             </td>
                                         </tr>
                                     @endif
