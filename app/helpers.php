@@ -829,9 +829,10 @@ function is_halfday($first_in, $first_out, $second_in, $second_out)
 
 function jumlah_libur_nasional($month, $year)
 {
-    return Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+    $jumlah_libur =  Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
         ->whereYear('tanggal_mulai_hari_libur', $year)
         ->sum('jumlah_hari_libur');
+    return $jumlah_libur;
 }
 
 function countWorkingDays($month, $year, $ignore)

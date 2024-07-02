@@ -63,10 +63,15 @@ class Test extends Component
 
   public function render()
   {
-    check_fail_job();
 
-    $month = '10';
+    $month = '6';
     $year = '2024';
+
+    $total_n_hari_kerja = getTotalWorkingDays($year, $month);
+    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
+    $max_hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+    dd($total_n_hari_kerja, $jumlah_libur_nasional, $max_hari_kerja);
+
 
     $newFilename = 'test';
     $data_arr = explode('.', $newFilename);
