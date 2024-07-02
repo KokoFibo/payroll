@@ -414,16 +414,16 @@ function build_payroll($month, $year)
 
         //ggg
 
-        $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-        $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
-        $max_hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
-        $gaji_potongan = $data->karyawan->gaji_pokok / 26;
-        $selisih_manfaat_libur = $jumlah_libur_nasional - $manfaat_libur;
-        $selisih_hari_kerja = $max_hari_kerja - $data->total_hari_kerja;
-        if ($selisih_hari_kerja < 0) $selisih_hari_kerja = 0;
-        if ($selisih_manfaat_libur < 0) $selisih_manfaat_libur = 0;
+        // $total_n_hari_kerja = getTotalWorkingDays($year, $month);
+        // $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
+        // $max_hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+        // $gaji_potongan = $data->karyawan->gaji_pokok / 26;
+        // $selisih_manfaat_libur = $jumlah_libur_nasional - $manfaat_libur;
+        // $selisih_hari_kerja = $max_hari_kerja - $data->total_hari_kerja;
+        // if ($selisih_hari_kerja < 0) $selisih_hari_kerja = 0;
+        // if ($selisih_manfaat_libur < 0) $selisih_manfaat_libur = 0;
 
-        $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * ($selisih_manfaat_libur + $selisih_hari_kerja));
+        // $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * ($selisih_manfaat_libur + $selisih_hari_kerja));
         // if ($data->user_id == 58) dd($selisih_manfaat_libur, $selisih_hari_kerja, $max_hari_kerja, $total_n_hari_kerja, $jumlah_libur_nasional, $manfaat_libur);
         // if ($data->total_hari_kerja >= 23) {
         //     $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * $selisih_manfaat_libur);
@@ -432,7 +432,7 @@ function build_payroll($month, $year)
         // }
 
 
-        // $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
+        $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
 
 
