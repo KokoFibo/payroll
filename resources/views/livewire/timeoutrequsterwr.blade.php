@@ -3,7 +3,7 @@
     <div class="col-lg-4 col-8 mx-auto mt-5">
         <div class="card">
             <div class="card-header bg-primary">
-                <h3>Requester</h3>
+                <h3>Approver</h3>
             </div>
             <div class="card-body">
                 <div class="mb-3">
