@@ -13,7 +13,7 @@ class Gajibpjs extends Component
 
     public function render()
     {
-        $data = Karyawan::where('gaji_bpjs', '>', 0)->orderBy('ptkp', 'desc')->paginate(10);
+        $data = Karyawan::where('gaji_bpjs', '>', 0)->where('ptkp', null)->orderBy('ptkp', 'desc')->paginate(10);
         return view('livewire.gajibpjs', [
             'data' => $data
         ]);
