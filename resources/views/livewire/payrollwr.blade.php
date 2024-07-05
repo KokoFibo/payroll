@@ -146,10 +146,14 @@
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
-                                {{-- <option value="6">juni</option> --}}
 
-
+                                {{-- jika this month gak ada maka munculkan --}}
+                                @if (!in_array(now()->month, $select_month))
+                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
+                                @endif
                             </select>
+                            {{-- <option value="7">Juli 7</option> --}}
+
                         </div>
                     </div>
                     <div>
