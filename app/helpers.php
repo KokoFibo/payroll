@@ -42,6 +42,17 @@ function isRequester($id_karyawan)
     }
 }
 
+function getDepartment($id_karyawan)
+{
+    if (
+        $id_karyawan != null
+    ) {
+        $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
+        // dikasih if supaya 8000 yang gak terdaftar di karyawan bisa akses dan gak error
+        if ($data) return $data->department_id;
+        else return $id_karyawan;
+    }
+}
 function getPLacement($id_karyawan)
 {
     if (

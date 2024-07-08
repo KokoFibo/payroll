@@ -17,7 +17,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">Request Date</li>
                             <li class="list-group-item">Request By</li>
-                            <li class="list-group-item">Placement</li>
+                            <li class="list-group-item">Department</li>
                             <li class="list-group-item">Request Type</li>
                             <li class="list-group-item">{{ format_tgl($end_date) ? 'From - To' : 'On' }} </li>
                             <li class="list-group-item">Description</li>
@@ -26,7 +26,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">{{ format_tgl($tanggal) }}</li>
                             <li class="list-group-item">{{ $karyawan_id }}</li>
-                            <li class="list-group-item">{{ nama_placement($placement_id) }}</li>
+                            <li class="list-group-item">{{ nama_department($department_id) }}</li>
                             <li class="list-group-item">{{ $request_type }}</li>
                             <li class="list-group-item">{{ format_tgl($start_date) }}
                                 {{ format_tgl($end_date) ? '  to  ' : '' }} {{ format_tgl($end_date) }}</li>
@@ -98,7 +98,7 @@
                                     <th>#</th>
                                     <th>Request by</th>
                                     <th>Request date</th>
-                                    <th>Placement</th>
+                                    <th>Department</th>
                                     <th>Type</th>
                                     <th>Description</th>
                                     <th>1st Approve by</th>
@@ -120,7 +120,7 @@
 
                                         <td>{{ $d->tanggal }}</td>
 
-                                        <td>{{ nama_placement($d->placement_id) }}</td>
+                                        <td>{{ nama_department($d->department_id) }}</td>
                                         <td>{{ $d->request_type }}</td>
                                         <td>{{ $d->description }}</td>
 

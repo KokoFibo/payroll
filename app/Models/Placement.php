@@ -14,8 +14,4 @@ class Placement extends Model
     {
         return $this->hasMany(Karyawan::class);
     }
-    public function timeoffrequester()
-    {
-        return $this->hasMany(Timeoffrequester::class);
-    }
 }

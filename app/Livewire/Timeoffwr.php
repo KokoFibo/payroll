@@ -18,7 +18,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Timeoffwr extends Component
 {
     use WithFileUploads;
-    public $karyawan_id, $placement_id, $name, $request_type, $description, $start_date, $end_date, $folder_name;
+    public $karyawan_id, $department_id, $name, $request_type, $description, $start_date, $end_date, $folder_name;
     public $is_add, $is_update, $edit_id, $show_image, $delete_id, $selected_id;
 
     public $files = [];
@@ -147,7 +147,7 @@ class Timeoffwr extends Component
         return [
             'request_type' => 'required',
             'start_date' => 'date|required',
-            'end_date' => 'date|after:start_date|nullable',
+            'end_date' => 'date|nullable',
             'description' => 'required',
             'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
         ];
@@ -186,7 +186,7 @@ class Timeoffwr extends Component
         $data = Karyawan::where('id_karyawan', auth()->user()->username)->first();
         // $data = Karyawan::where('id_karyawan', 1070)->first();
         $this->karyawan_id = $data->id;
-        $this->placement_id = $data->placement_id;
+        $this->department_id = $data->department_id;
         $this->name = $data->nama;
         $this->folder_name = get_first_name($this->name) . '_' . $data->id_karyawan;
         $this->is_add = false;
@@ -288,7 +288,7 @@ class Timeoffwr extends Component
         $this->validate();
         $time_off = Timeoff::create([
             'karyawan_id' => $this->karyawan_id,
-            'placement_id' => $this->placement_id,
+            'department_id' => $this->department_id,
             'request_type' => $this->request_type,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
@@ -355,9 +355,6 @@ class Timeoffwr extends Component
 
     public function render()
     {
-
-
-
         $data = Timeoff::where('karyawan_id', $this->karyawan_id)->orderBy('id', 'desc')->get();
         return view('livewire.timeoffwr', [
             'data' => $data,
