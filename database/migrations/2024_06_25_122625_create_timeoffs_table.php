@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('timeoffs', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('karyawan_id');
-            $table->string('placement_id');
+            $table->string('department_id');
             $table->string('request_type');
             $table->date('start_date');
             $table->date('end_date')->nullable();

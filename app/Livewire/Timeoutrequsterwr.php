@@ -6,17 +6,18 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Placement;
-use App\Models\Timeoffrequester;
+use App\Models\Department;
 use Livewire\Attributes\On;
+use App\Models\Timeoffrequester;
 
 
 class Timeoutrequsterwr extends Component
 {
-    public $placement_id, $approveBy1, $approveBy2;
-    public $namaPlacement, $namaApproveBy1, $namaApproveBy2;
+    public $department_id, $approveBy1, $approveBy2;
+    public $namaDepartment, $namaApproveBy1, $namaApproveBy2;
     public $is_update = false;
     public $is_update_id, $delete_id;
-    public $old_placement_id, $old_Approve1, $old_Approve2;
+    public $old_department_id, $old_Approve1, $old_Approve2;
 
     public function exit()
     {
@@ -26,14 +27,14 @@ class Timeoutrequsterwr extends Component
     public function edit($id)
     {
         $data = Timeoffrequester::find($id);
-        $this->old_placement_id = $data->placement_id;
+        $this->old_department_id = $data->department_id;
         $this->old_Approve1 = $data->approve_by_1;
         $this->old_Approve2 = $data->approve_by_2;
-        $this->placement_id = $data->placement_id;
+        $this->department_id = $data->department_id;
         $this->approveBy1 = $data->approve_by_1;
         $this->approveBy2 = $data->approve_by_2;
         $this->is_update_id = $data->id;
-        $this->namaPlacement = nama_placement($this->placement_id);
+        $this->namaDepartment = nama_department($this->department_id);
         $this->namaApproveBy1 = getName($this->approveBy1);
         $this->namaApproveBy2 = getName($this->approveBy2);
         $this->is_update = true;
@@ -42,23 +43,23 @@ class Timeoutrequsterwr extends Component
     public function update()
     {
         $this->validate([
-            'placement_id' => 'required|numeric',
+            'department_id' => 'required|numeric',
             'approveBy1' => 'required|numeric',
             'approveBy2' => 'required|numeric'
         ]);
 
-        if ($this->namaPlacement != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
+        if ($this->namaDepartment != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
             if (!isResigned($this->approveBy1) && !isResigned($this->approveBy2)) {
                 $data = Timeoffrequester::find($this->is_update_id);
-                $data->placement_id = $this->placement_id;
+                $data->department_id = $this->department_id;
                 $data->approve_by_1 = $this->approveBy1;
                 $data->approve_by_2 = $this->approveBy2;
                 $data->save();
 
-                if ($this->placement_id != $this->old_placement_id) changeToAdmin($this->old_placement_id);
+                if ($this->department_id != $this->old_department_id) changeToAdmin($this->old_department_id);
                 if ($this->approveBy1 != $this->old_Approve1) changeToAdmin($this->old_Approve1);
                 if ($this->approveBy2 != $this->old_Approve2) changeToAdmin($this->old_Approve2);
-                changeToRequest($this->placement_id);
+                changeToRequest($this->department_id);
                 changeToRequest($this->approveBy1);
                 changeToRequest($this->approveBy2);
 
@@ -89,14 +90,14 @@ class Timeoutrequsterwr extends Component
     {
 
         $data = Timeoffrequester::find($id);
-        $this->old_placement_id = $data->placement_id;
+        $this->old_department_id = $data->department_id;
         $this->old_Approve1 = $data->approve_by_1;
         $this->old_Approve2 = $data->approve_by_2;
 
 
         $this->delete_id = $id;
         $data = Timeoffrequester::find($id);
-        $text = nama_placement($data->placement_id) . '(' . $data->placement_id . ') -> ' . getName($data->approve_by_1) . '(' . $data->approve_by_1 . ') -> ' . getName($data->approve_by_2) . '(' . $data->approve_by_2 . ')';
+        $text = nama_department($data->department_id) . '(' . $data->department_id . ') -> ' . getName($data->approve_by_1) . '(' . $data->approve_by_1 . ') -> ' . getName($data->approve_by_2) . '(' . $data->approve_by_2 . ')';
         $this->dispatch('show-delete-confirmation', text: $text);
     }
 
@@ -125,7 +126,7 @@ class Timeoutrequsterwr extends Component
         //     $this->namaRequestId = '';
         // }
 
-        $this->namaPlacement = nama_placement($this->placement_id);
+        $this->namaDepartment = nama_department($this->department_id);
     }
 
     public function updatedApproveBy1()
@@ -150,17 +151,17 @@ class Timeoutrequsterwr extends Component
     public function save()
     {
         $this->validate([
-            'placement_id' => 'required|numeric',
+            'department_id' => 'required|numeric',
             'approveBy1' => 'required|numeric',
             'approveBy2' => 'required|numeric'
         ]);
 
-        if ($this->placement_id != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
+        if ($this->department_id != '' && $this->namaApproveBy1 != '' && $this->namaApproveBy2 != '') {
             if (!isResigned($this->approveBy1) && !isResigned($this->approveBy2)) {
 
 
                 Timeoffrequester::create([
-                    'placement_id' => $this->placement_id,
+                    'department_id' => $this->department_id,
                     'approve_by_1' => $this->approveBy1,
                     'approve_by_2' => $this->approveBy2
                 ]);
@@ -198,10 +199,10 @@ class Timeoutrequsterwr extends Component
     public function render()
     {
         $data_timeoff_requester = Timeoffrequester::all();
-        $data_placement = Placement::orderBy('placement_name', 'asc')->get();
+        $data_department = Department::orderBy('nama_department', 'asc')->get();
         return view('livewire.timeoutrequsterwr', [
             'data_timeoff_requester' => $data_timeoff_requester,
-            'data_placement' => $data_placement
+            'data_department' => $data_department
         ]);
     }
 }

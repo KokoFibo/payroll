@@ -14,7 +14,7 @@ class Timeoffapprovewr extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $karyawan_id, $placement_id, $request_type, $start_date, $end_date;
+    public $karyawan_id, $department_id, $request_type, $start_date, $end_date;
     public $description, $status, $tanggal,  $approve1, $approve1_date, $approve2, $approve2_date, $done_by, $done_date;
     public $id, $is_show, $is_checked, $is_approve1, $is_approve2, $is_done;
     public $is_hrd, $show_attachment, $hasFile;
@@ -218,8 +218,8 @@ class Timeoffapprovewr extends Component
         $this->is_done = false;
         $this->is_show = false;
         $this->is_checked = false;
-        $placement = getPLacement(auth()->user()->username);
-        $data_user = Timeoffrequester::where('placement_id', $placement)->get();
+        $department = getDepartment(auth()->user()->username);
+        $data_user = Timeoffrequester::where('department_id', $department)->get();
         // dd($data_user->all());
         foreach ($data_user as $d) {
             if ($d->approve_by_1 == auth()->user()->username) $this->is_approve1 = true;
@@ -233,7 +233,7 @@ class Timeoffapprovewr extends Component
         $data = Timeoff::find($id);
         // $this->karyawan_id = $data->karyawan_id;
         $this->karyawan_id = $data->karyawan->nama;
-        $this->placement_id = $data->placement_id;
+        $this->department_id = $data->department_id;
         $this->request_type = $data->request_type;
         $this->start_date = $data->start_date;
         $this->end_date = $data->end_date;
@@ -255,7 +255,7 @@ class Timeoffapprovewr extends Component
             $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->orderBy('id', 'desc')->paginate(5);
         } else {
 
-            $data = Timeoff::where('placement_id', getPLacement(auth()->user()->username))->orderBy('id', 'desc')->paginate(5);
+            $data = Timeoff::where('department_id', getDepartment(auth()->user()->username))->orderBy('id', 'desc')->paginate(5);
             // dibawah ini utk test buat yg data 80000
             if (auth()->user()->username >= 60000) $data = Timeoff::orderBy('id', 'desc')->paginate(5);
         }

@@ -49,8 +49,8 @@
                 {{-- content  --}}
                 <div>
                     {{-- rubah ini utk tutup dari karyawan --}}
-                    @if (auth()->user()->role != 8)
-                        {{-- @if (auth()->user()->role == 9) --}}
+                    {{-- @if (auth()->user()->role != 8) --}}
+                    @if (auth()->user()->role == 9)
                         <div class="text-center mt-5">
                             <h1>COMING SOON</h1>
                             <h4>Under Construction</h4>

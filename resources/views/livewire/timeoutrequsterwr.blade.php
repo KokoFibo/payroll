@@ -7,19 +7,19 @@
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label for="requester" class="form-label">Placement
-                        {{ $namaPlacement ? '->' . $namaPlacement : '' }}</label>
-                    {{-- <input wire:model.live='placement_id' type="text" class="form-control" id="requester"> --}}
-                    <select class="form-select" aria-label="Default select example" wire:model.live='placement_id'>
-                        <option value=" ">Silakan Pilih Placement</option>
-                        @foreach ($data_placement as $key => $d)
-                            @if ($d->placement_name != '')
-                                <option value="{{ $d->id }}">{{ $d->placement_name }}</option>
+                    <label for="requester" class="form-label">Department
+                        {{ $namaDepartment ? '->' . $namaDepartment : '' }}</label>
+                    {{-- <input wire:model.live='department_id' type="text" class="form-control" id="requester"> --}}
+                    <select class="form-select" aria-label="Default select example" wire:model.live='department_id'>
+                        <option value=" ">Silakan Pilih Department</option>
+                        @foreach ($data_department as $key => $d)
+                            @if ($d->nama_department != '')
+                                <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
                             @endif
                         @endforeach
 
                     </select>
-                    @error('placement_id')
+                    @error('department_id')
                         <div class="text-danger">
                             {{ $message }}
                         </div>
@@ -72,7 +72,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Placement</th>
+                                <th>Department</th>
                                 <th>1st Approve by</th>
                                 <th>2nd Approve by</th>
                                 <th></th>
@@ -82,7 +82,7 @@
                             @foreach ($data_timeoff_requester as $key => $d)
                                 <tr>
                                     <th>{{ $d->id }}</th>
-                                    <th>{{ $d->placement->placement_name }}</th>
+                                    <th>{{ $d->department->nama_department }}</th>
                                     <th>{{ $d->approve_by_1 }}->{{ getName($d->approve_by_1) }}</th>
                                     <th>{{ $d->approve_by_2 }}->{{ getName($d->approve_by_2) }}</th>
                                     <th>

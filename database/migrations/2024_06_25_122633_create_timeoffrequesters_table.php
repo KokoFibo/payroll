@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('timeoffrequesters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('placement_id');
+            $table->foreignId('department_id');
             $table->string('approve_by_1');
             $table->string('approve_by_2');
             $table->timestamps();

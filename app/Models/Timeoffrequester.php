@@ -10,8 +10,8 @@ class Timeoffrequester extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function placement()
+    public function department()
     {
-        return $this->belongsTo(Placement::class);
+        return $this->belongsTo(Department::class);
     }
 }
