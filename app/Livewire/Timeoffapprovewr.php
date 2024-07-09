@@ -221,6 +221,7 @@ class Timeoffapprovewr extends Component
         $department = getDepartment(auth()->user()->username);
         $data_user = Timeoffrequester::where('department_id', $department)->get();
         // dd($data_user->all());
+        // apa ya
         foreach ($data_user as $d) {
             if ($d->approve_by_1 == auth()->user()->username) $this->is_approve1 = true;
             if ($d->approve_by_2 == auth()->user()->username) $this->is_approve2 = true;
