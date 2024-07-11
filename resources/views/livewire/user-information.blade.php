@@ -39,8 +39,8 @@
                     </div>
                 </div>
                 {{-- <div class="py-2"> --}}
-                <div class="flex justify-center">
-                    <h2 class="bg-gray-500 text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                <div>
+                    <h2 class="bg-gray-500 text-center text-white text-xl py-2 px-5 mt-3">Informasi Terkini
                     </h2>
                 </div>
                 {{-- </div> --}}

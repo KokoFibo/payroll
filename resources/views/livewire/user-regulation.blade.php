@@ -40,8 +40,8 @@
                     </div>
                 </div>
                 {{-- <div class="py-2"> --}}
-                <div class="flex justify-center">
-                    <h2 class="bg-gray-600 text-center text-white text-xl rounded-xl px-5 mt-3">Jam Kerja &
+                <div>
+                    <h2 class="bg-gray-600 text-center text-white text-xl py-2 px-5 mt-3">Jam Kerja &
                         Keterlambatan
                     </h2>
                 </div>
