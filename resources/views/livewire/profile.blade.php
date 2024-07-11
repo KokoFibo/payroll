@@ -40,8 +40,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center">
-                    <h2 class="bg-blue-500 text-center text-white text-xl rounded-xl px-5 mt-3">
+                <div>
+                    <h2 class="bg-blue-500 text-center text-white text-xl py-2 px-5 mt-3">
                         {{ __('User Profile') }}</h2>
                 </div>
             </div>
