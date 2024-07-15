@@ -3,20 +3,20 @@
     <div>
         {{-- <h5>Hello, {{ auth()->user()->name }}</h5> --}}
         @if (!$is_add && !$is_update && $is_requester)
-            <button class='btn btn-primary' wire:click='add'>New Request</button>
+            <button class='btn btn-primary mb-3' wire:click='add'>New Request</button>
         @endif
     </div>
     @if ($is_add || $is_update)
         <div>
             <div class="card p-3">
                 <div class="card-header">
-                    <h3>Form Permohonan Personnel</h3>
+                    <h3>{{ __('Form Permohonan Personnel') }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="d-flex">
 
                         <div class="mb-3 col-6">
-                            <label for="posisi" class="form-label">Posisi</label>
+                            <label for="posisi" class="form-label">{{ __('Posisi') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='posisi' type="text"
                                 class="form-control" id="posisi">
                             @error('posisi')
@@ -27,7 +27,8 @@
                         </div>
 
                         <div class="mb-3 col-6">
-                            <label for="jumlah_yang_dibutuhkan" class="form-label">Jumlah yang dibutuhkan</label>
+                            <label for="jumlah_yang_dibutuhkan"
+                                class="form-label">{{ __('Jumlah yang dibutuhkan') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='jumlah_dibutuhkan' type="text"
                                 class="form-control" id="jumlah_yang_dibutuhkan">
                             @error('jumlah_dibutuhkan')
@@ -40,7 +41,7 @@
                     </div>
                     <div class="d-flex">
                         <div class="mb-3 col-6">
-                            <label for="level_posisi" class="form-label">Level posisi</label>
+                            <label for="level_posisi" class="form-label">{{ __('Level posisi') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='level_posisi' type="text"
                                 class="form-control" id="level_posisi">
                             @error('level_posisi')
@@ -50,7 +51,7 @@
                             @enderror
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="manpower_posisi" class="form-label">Manpower posisi</label>
+                            <label for="manpower_posisi" class="form-label">{{ __('Manpower posisi') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='manpower_posisi' type="text"
                                 class="form-control" id="manpower_posisi">
                             @error('manpower_posisi')
@@ -62,7 +63,8 @@
                     </div>
                     <div class="d-flex">
                         <div class="mb-3 col-6">
-                            <label for="jumlah_manpower_saat_ini" class="form-label">Jumlah manpower saat ini</label>
+                            <label for="jumlah_manpower_saat_ini"
+                                class="form-label">{{ __('Jumlah manpower saat ini') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='jumlah_manpower_saat_ini'
                                 type="text" class="form-control" id="jumlah_manpower_saat_ini">
                             @error('jumlah_manpower_saat_ini')
@@ -72,7 +74,7 @@
                             @enderror
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="waktu_masuk_kerja" class="form-label">Waktu masuk kerja</label>
+                            <label for="waktu_masuk_kerja" class="form-label">{{ __('Waktu masuk kerja') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='waktu_masuk_kerja' type="text"
                                 class="form-control" id="waktu_masuk_kerja">
                             @error('waktu_masuk_kerja')
@@ -84,7 +86,7 @@
                     </div>
                     <div class="d-flex">
                         <div class="mb-3 col-6">
-                            <label for="job_desc" class="form-label">Job description</label>
+                            <label for="job_desc" class="form-label">{{ __('Job description') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='job_description' type="text"
                                 class="form-control" id="job_desc">
                             @error('job_description')
@@ -94,7 +96,7 @@
                             @enderror
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="usia" class="form-label">Usia</label>
+                            <label for="usia" class="form-label">{{ __('Usia') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='usia' type="text"
                                 class="form-control" id="usia">
                             @error('usia')
@@ -106,7 +108,7 @@
                     </div>
                     <div class="d-flex">
                         <div class="mb-3 col-6">
-                            <label for="pendidikan" class="form-label">Pendidikan</label>
+                            <label for="pendidikan" class="form-label">{{ __('Pendidikan') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='pendidikan' type="text"
                                 class="form-control" id="pendidikan">
                             @error('pendidikan')
@@ -116,7 +118,8 @@
                             @enderror
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="pengalaman_kerja" class="form-label">Pengalaman kerja (tahun)</label>
+                            <label for="pengalaman_kerja"
+                                class="form-label">{{ __('Pengalaman kerja (tahun)') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='pengalaman_kerja' type="text"
                                 class="form-control" id="pengalaman_kerja">
                             @error('pengalaman_kerja')
@@ -128,7 +131,7 @@
                     </div>
                     <div class="d-flex">
                         <div class="mb-3 col-6">
-                            <label for="kualifikasi_lain" class="form-label">Kualifikasi lain</label>
+                            <label for="kualifikasi_lain" class="form-label">{{ __('Kualifikasi lain') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='kualifikasi_lain' type="text"
                                 class="form-control" id="kualifikasi_lain">
                             @error('kualifikasi_lain')
@@ -138,7 +141,7 @@
                             @enderror
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="kisaran_gaji" class="form-label">Kisaran gaji</label>
+                            <label for="kisaran_gaji" class="form-label">{{ __('Kisaran gaji') }}</label>
                             <input {{ !$is_requester ? 'disabled' : '' }} wire:model='kisaran_gaji' type="text"
                                 class="form-control" id="kisaran_gaji">
                             @error('kisaran_gaji')
@@ -152,27 +155,27 @@
                     <div class="d-flex">
                         {{--  Gender --}}
                         <div class="mb-3 col-4">
-                            <label class="form-label">Gender</label>
+                            <label class="form-label">{{ __('Gender') }}</label>
 
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model='gender' value='Pria'
                                     class="form-check-input" type="radio" name="flexRadioDefault" id="pria">
                                 <label class="form-check-label" for="pria">
-                                    Pria
+                                    {{ __('Pria') }}
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model='gender' value='Wanita'
                                     class="form-check-input" type="radio" name="flexRadioDefault" id="wanita">
                                 <label class="form-check-label" for="wanita">
-                                    Wanita
+                                    {{ __('Wanita') }}
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model='gender' value='Bebas'
                                     class="form-check-input" type="radio" name="flexRadioDefault" id="bebas">
                                 <label class="form-check-label" for="bebas">
-                                    Bebas
+                                    {{ __('Bebas') }}
                                 </label>
                             </div>
                             @error('gender')
@@ -183,13 +186,13 @@
                         </div>
                         {{-- Skill wajib --}}
                         <div class="mb-3 col-4">
-                            <label for="skill_wajib" class="form-label">Skill wajib</label>
+                            <label for="skill_wajib" class="form-label">{{ __('Skill wajib') }}</label>
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model.live='skil_wajib'
                                     class="form-check-input" type="checkbox" value="Bahasa inggris"
                                     id="bahasa_inggris">
                                 <label class="form-check-label" for="bahasa_inggris">
-                                    Bahasa inggris
+                                    {{ __('Bahasa inggris') }}
                                 </label>
                             </div>
                             <div class="form-check">
@@ -197,14 +200,14 @@
                                     class="form-check-input" type="checkbox" value="Bahasa mandarin"
                                     id="bahasa_mandarin">
                                 <label class="form-check-label" for="bahasa_mandarin">
-                                    Bahasa mandarin
+                                    {{ __('Bahasa mandarin') }}
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model.live='skil_wajib'
                                     class="form-check-input" type="checkbox" value="Komputer" id="komputer">
                                 <label class="form-check-label" for="komputer">
-                                    Komputer
+                                    {{ __('Komputer') }}
                                 </label>
                             </div>
                             @error('skil_wajib')
@@ -215,13 +218,13 @@
                         </div>
                         {{-- Alasan permohonan --}}
                         <div class="mb-3 col-4">
-                            <label for="alasan_permohonan" class="form-label">Alasan permohonan</label>
+                            <label for="alasan_permohonan" class="form-label">{{ __('Alasan permohonan') }}</label>
                             <div class="form-check">
                                 <input {{ !$is_requester ? 'disabled' : '' }} wire:model.live='alasan_permohonan'
                                     class="form-check-input" type="checkbox" value="Menggantikan yang resign"
                                     id="menggantikan_yang_resign">
                                 <label class="form-check-label" for="menggantikan_yang_resign">
-                                    Menggantikan yang resign
+                                    {{ __('Menggantikan yang resign') }}
                                 </label>
                             </div>
                             <div class="form-check">
@@ -229,7 +232,7 @@
                                     class="form-check-input" type="checkbox" value="Menggantikan yang dimutasi"
                                     id="menggantikan_yang_dimutasi">
                                 <label class="form-check-label" for="menggantikan_yang_dimutasi">
-                                    Menggantikan yang dimutasi
+                                    {{ __('Menggantikan yang dimutasi') }}
                                 </label>
                             </div>
                             <div class="form-check">
@@ -237,7 +240,7 @@
                                     class="form-check-input" type="checkbox" value="Beban kerja bertambah"
                                     id="beban_kerja_bertambah">
                                 <label class="form-check-label" for="beban_kerja_bertambah">
-                                    Beban kerja bertambah
+                                    {{ __('Beban kerja bertambah') }}
                                 </label>
                             </div>
                             <div class="form-check">
@@ -245,7 +248,7 @@
                                     class="form-check-input" type="checkbox" value="Pengembangan bisnis"
                                     id="pengembangan_bisnis">
                                 <label class="form-check-label" for="pengembangan_bisnis">
-                                    Pengembangan bisnis
+                                    {{ __('Pengembangan bisnis') }}
                                 </label>
                             </div>
                             @error('alasan_permohonan')
@@ -273,7 +276,7 @@
                         style="background-color: {{ $is_request_approved ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }} ">
                         <div class="d-flex">
                             <div class="mb-3 col-4">
-                                <label for="approved_1" class="form-label">Request by</label>
+                                <label for="approved_1" class="form-label">{{ __('Request by') }}</label>
                                 {{-- <input wire:model='requester_id' type="text" class="form-control"
                                     id="approved_1"> --}}
                                 <input value='{{ getName($requester_id) }}' type="text" class="form-control"
@@ -281,7 +284,7 @@
                             </div>
 
                             <div class="mb-3 col-4">
-                                <label for="approved_1" class="form-label">Date of request</label>
+                                <label for="approved_1" class="form-label">{{ __('Date of request') }}</label>
                                 {{-- <input wire:model='tgl_request' type="text" class="form-control" id="approved_1"> --}}
                                 <input value='{{ format_tgl($tgl_request) }}' type="text" class="form-control"
                                     id="approved_1" disabled>
@@ -295,14 +298,14 @@
                             style="background-color: {{ $is_approved_1 ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }} ">
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
-                                    <label for="approved_1" class="form-label">1st Approval by</label>
+                                    <label for="approved_1" class="form-label">{{ __('1st Approval by') }}</label>
                                     <input disabled {{ $is_admin ? 'disabled' : '' }} wire:model='approve_1'
                                         type="text" class="form-control" id="approved_1">
                                 </div>
                                 <div class="mb-3 col-4">
                                     <div class="form-check text-center ">
                                         <div>
-                                            <label for="approved_1" class="form-label">Signature</label>
+                                            <label for="approved_1" class="form-label">{{ __('Signature') }}</label>
                                         </div>
                                         @if (!$is_approved_1)
                                             <div class="mt-1">
@@ -310,7 +313,7 @@
                                                     class="form-check-input" type="checkbox" value="true"
                                                     id="approved_1">
                                                 <label class="form-check-label" for="approved_1">
-                                                    Approve
+                                                    {{ __('Approve') }}
                                                 </label>
                                             </div>
                                             @error('signature1')
@@ -319,22 +322,22 @@
                                                 </div>
                                             @enderror
                                         @else
-                                            <h4>Approved</h4>
+                                            <h4>{{ __('Approved') }}</h4>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="mb-3 col-4">
-                                    <label for="approved_1" class="form-label">Date of approval</label>
+                                    <label for="approved_1" class="form-label">{{ __('Date of approval') }}</label>
                                     <input disabled {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_1 }}'
                                         type="text" class="form-control" id="approved_1">
                                 </div>
                             </div>
                         </div>
                         @if ($is_approval_1 && $is_approved_1 == false)
-                            <button wire:click='save_approve_1' class="btn btn-primary">Approve</button>
+                            <button wire:click='save_approve_1' class="btn btn-primary">{{ __('Approve') }}</button>
                         @endif
                         @if (!$is_admin)
-                            <button wire:click='exit_approval_by' class="btn btn-dark">Exit</button>
+                            <button wire:click='exit_approval_by' class="btn btn-dark">{{ __('Exit') }}</button>
                         @endif
                     @endif
 
@@ -344,14 +347,14 @@
                             style="background-color: {{ $is_approved_2 ? 'rgb(124, 180, 107)' : 'rgb(191,191,191)' }}">
                             <div class="d-flex">
                                 <div class="mb-3 col-4">
-                                    <label for="approved_2" class="form-label">2nd Approval by</label>
+                                    <label for="approved_2" class="form-label">{{ __('2nd Approval by') }}</label>
                                     <input disabled {{ $is_admin ? 'disabled' : '' }} wire:model='approve_2'
                                         type="text" class="form-control" id="approved_2">
                                 </div>
                                 <div class="mb-3 col-4">
                                     <div class="form-check text-center ">
                                         <div>
-                                            <label for="approved_2" class="form-label">Signature</label>
+                                            <label for="approved_2" class="form-label">{{ __('Signature') }}</label>
                                         </div>
                                         @if (!$is_approved_2)
                                             <div class="mt-1">
@@ -359,7 +362,7 @@
                                                     class="form-check-input" type="checkbox" value="true"
                                                     id="approved_2">
                                                 <label class="form-check-label" for="approved_2">
-                                                    Approve
+                                                    {{ __('Approve') }}
                                                 </label>
                                             </div>
                                             @error('signature2')
@@ -368,26 +371,27 @@
                                                 </div>
                                             @enderror
                                         @else
-                                            <h4>Approved</h4>
+                                            <h4>{{ __('Approved') }}</h4>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="mb-3 col-4">
-                                    <label for="approved_2" class="form-label">Date of approval</label>
+                                    <label for="approved_2" class="form-label">{{ __('Date of approval') }}</label>
                                     <input disabled {{ $is_admin ? 'disabled' : '' }} value='{{ $approve_date_2 }}'
                                         type="text" class="form-control" id="approved_2">
                                 </div>
                             </div>
                         </div>
                         @if ($is_approval_2 && $is_approved_2 == false)
-                            <button wire:click='save_approve_2' class="btn btn-primary">Click to Approve</button>
+                            <button wire:click='save_approve_2'
+                                class="btn btn-primary">{{ __('Click to Approve') }}</button>
                         @endif
                         @if (!$is_admin)
-                            <button wire:click='exit_approval_by' class="btn btn-dark">Exit</button>
+                            <button wire:click='exit_approval_by' class="btn btn-dark">{{ __('Exit') }}</button>
                         @endif
                     @endif
                     @if ($is_admin)
-                        <button wire:click='exit' class="btn btn-dark">Exit</button>
+                        <button wire:click='exit' class="btn btn-dark">{{ __('Exit') }}</button>
                     @endif
                 </div>
             </div>
@@ -399,9 +403,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class='d-flex justify-content-between'>
-                        <h3>Personnel request lists</h3>
+                        <h3>{{ __('Personnel request lists') }}</h3>
                         @if (auth()->user()->role >= 6)
-                            <a href="/addrequester"><button class="btn btn-primary">Add Requester</button></a>
+                            <a href="/addrequester"><button
+                                    class="btn btn-primary">{{ __('Add Requester') }}</button></a>
                         @endif
                     </div>
                 </div>
@@ -417,12 +422,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Position</th>
-                                    <th>Status</th>
-                                    <th>Requested by</th>
-                                    <th>1st Approved by</th>
-                                    <th>2nd Approved by</th>
-                                    <th>Done by</th>
+                                    <th>{{ __('Position') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Requested by') }}</th>
+                                    <th>{{ __('1st Approved by') }}</th>
+                                    <th>{{ __('2nd Approved by') }}</th>
+                                    <th>{{ __('Done by') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -448,6 +453,7 @@
                                                 {{ format_tgl($d->tgl_request) }}
                                             </div>
                                         </td>
+
                                         <td>
                                             <div>
                                                 {{ getName($d->approve_by_1) }}

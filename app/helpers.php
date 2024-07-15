@@ -23,6 +23,13 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function is_same_approver($requester_id)
+{
+    $data = Requester::where('request_id', $requester_id)->first();
+    if ($data->approve_by_1 == $data->approve_by_2) return true;
+    else return false;
+}
+
 function is_first_in_late($jam)
 {
     $jam_max = '08:03';
