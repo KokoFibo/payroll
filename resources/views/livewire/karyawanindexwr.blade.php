@@ -3,7 +3,7 @@
     @section('title', 'Karyawan')
 
     {{-- aktifkan ini supaya datanya bisa lengket --}}
-    <p>role : {{ Auth::user()->role }}</p>
+    {{-- <p>role : {{ Auth::user()->role }}</p> --}}
     @if (auth()->user()->role == 5 || auth()->user()->role == 6)
         <div x-data="{
             search: $persist(@entangle('search').live),
