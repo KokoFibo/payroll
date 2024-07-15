@@ -64,56 +64,16 @@ class Test extends Component
   public function render()
   {
 
-    $month = '6';
-    $year = '2024';
-
-    $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
-    $max_hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
-    dd($total_n_hari_kerja, $jumlah_libur_nasional, $max_hari_kerja);
-
-
-    $newFilename = 'test';
-    $data_arr = explode('.', $newFilename);
-    $length = count($data_arr); // Count the elements in the array
-    if ($length == 1)
-      dd($length);
-
-    $check_for_new_request = Personnelrequestform::where('status', 'Approved')->count();
-    dd($check_for_new_request);
-    // $filename = 'CamScanner .18-06-2024. 08.47_11.zon (1).pdf';
-    // if (count($arr) > 2) {
-    //   dd(last(arr));
-    // } else {
-    //   dd('dibawah 2');
-    // }
-
-    // $datas = Yfrekappresensi::where('date', '2024-05-14')->where('no_scan', 'No Scan')->paginate(10);
-    // Blacklist
-    // $datas = Payroll::join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
-    //   ->whereIn('karyawans.status_karyawan', ['Resigned', 'PKWT', 'PKWTT'])
-    //   ->whereMonth('payrolls.date', '05')
-    //   ->whereYear('payrolls.date', '2024')
-    //   ->whereMonth('karyawans.tanggal_bergabung', '05')
-    //   ->whereYear('karyawans.tanggal_bergabung', '2024')
-    //   ->where('payrolls.metode_penggajian', 'Perbulan')
-    //   ->orderBy('karyawans.tanggal_resigned', 'desc')
-    //   ->paginate(10);
-
-
-
-
-
-    $datas = Karyawan::whereIn('placement', ['ASB', 'DPA',  'GAMA', 'WAS'])
-      ->paginate(10);
-
-
-
-
-
-
-    // dd(selisih_hari($date1, $date2));
-
+    $datas = Yfrekappresensi::where('late_history', 1)
+      ->whereYear('date', 2024)
+      ->whereMonth('date', 6)
+      ->whereHas('karyawan', function ($query) {
+        $query->where('department_id', 7);
+      })
+      ->with('karyawan')
+      ->get();
+    // ->paginate(10);
+    // dd($datas->all());
     return view('livewire.test', [
       'datas' => $datas,
     ]);

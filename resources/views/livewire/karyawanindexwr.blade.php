@@ -3,7 +3,7 @@
     @section('title', 'Karyawan')
 
     {{-- aktifkan ini supaya datanya bisa lengket --}}
-
+    <p>role : {{ Auth::user()->role }}</p>
     @if (auth()->user()->role == 5 || auth()->user()->role == 6)
         <div x-data="{
             search: $persist(@entangle('search').live),
@@ -58,7 +58,7 @@
                         <div class="col-12 col-xl-3">
                             <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
                                         class="fa-solid fa-plus"></i>
-                                    {{ __('Karyawan baru') }}</button></a>
+                                    {{ __('Karyawan Baru') }}</button></a>
                         </div>
                     </div>
                 </div>
@@ -180,43 +180,35 @@
                                             </select>
                                         </div>
                                     </th>
-                                    @if (Auth::user()->role > 6)
-                                        <th style="width: 150px; border-style: none;">
-                                            <button wire:loading.remove wire:click="excel"
-                                                class="btn btn-success col-12">Excel</button>
-                                        </th>
-                                        @if (auth()->user()->role == 8)
-                                            <th style="width: 150px; border-style: none;">
-                                                <a href="/usernotfound">
-                                                    <button wire:loading.remove class="btn btn-primary col-12">User Not
-                                                        Found</button></a>
-                                            </th>
-                                        @endif
-                                        <th style=" border-style: none;">
-                                            <div wire:loading wire:target='excel' class="spinner-border text-primary"
-                                                role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </th>
-                                        <th style=" border-style: none;"></th>
-                                        <th style=" border-style: none;"></th>
-                                        <th style=" border-style: none;"></th>
-                                        <th style=" border-style: none;"></th>
-                                        <th style=" border-style: none;"></th>
-                                        <th style=" border-style: none;"></th>
-                                    @endif
-
-                                    {{-- <th style="width: 150px; border-style: none;">
-                                        <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
-                                            @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
-                                            Departement</button>
-                                    </th>
-                                    <th style="width: 150px; border-style: none;">
-                                        <button wire:click="excelByEtnis" class="btn btn-success btn-sm mb-1"
-                                            @if ($search_etnis == null) disabled @endif>Excel by
-                                            Etnis</button>
-                                    </th> --}}
                                 @endif
+
+                                @if (auth()->user()->role >= 6)
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:loading.remove wire:click="excel"
+                                            class="btn btn-success col-12">Excel</button>
+                                    </th>
+                                    @if (auth()->user()->role == 8)
+                                        <th style="width: 150px; border-style: none;">
+                                            <a href="/usernotfound">
+                                                <button wire:loading.remove class="btn btn-primary col-12">User Not
+                                                    Found</button></a>
+                                        </th>
+                                    @endif
+                                    <th style=" border-style: none;">
+                                        <div wire:loading wire:target='excel' class="spinner-border text-primary"
+                                            role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                @endif
+
+
                                 @if ($is_tanggal_gajian || auth()->user()->role == 5)
                                     <th style="width: 150px; border-style: none;">
                                         <a href="/iuranlocker"><button

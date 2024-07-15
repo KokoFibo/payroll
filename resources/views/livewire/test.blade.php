@@ -1,7 +1,5 @@
 <div>
-    <livewire:placementreport />
-    <br><br><br>
-    <button class="btn btn-primary" wire:click='like'>Like</button>
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -9,35 +7,30 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>PLacement</th>
-                        <th>Company</th>
+                        <th>Tanggal Telat</th>
                         <th>Department</th>
-                        <th>Jabatan</th>
-                        <th>Gaji pokok</th>
-
-
+                        <th>First In</th>
 
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach ($datas as $p)
-                        <tr>
-                            <td>{{ $p->id_karyawan }}</td>
-                            <td>{{ $p->nama }}</td>
-                            <th>{{ $p->placement }}</th>
-                            <th>{{ $p->company->company_name }}</th>
-                            <th>{{ $p->department->nama_department }}</th>
-                            <th>{{ $p->jabatan->nama_jabatan }}</th>
-                            <th>{{ number_format($p->gaji_pokok) }}</th>
+                        @if (is_first_in_late($p->first_in))
+                            <tr>
+                                <td>{{ $p->user_id }}</td>
+                                <td>{{ $p->karyawan->nama }}</td>
+                                <td>{{ format_tgl($p->date) }}</td>
+                                <td>{{ nama_department($p->karyawan->department_id) }}</td>
+                                <td>{{ $p->first_in }}</td>
+                            </tr>
+                        @endif
 
-                        </tr>
                         {{-- @endif --}}
                     @endforeach
 
                 </tbody>
             </table>
-            {{ $datas->links() }}
+            {{-- {{ $datas->links() }} --}}
         </div>
     </div>
 </div>

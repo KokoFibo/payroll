@@ -27,6 +27,8 @@
                 <th style="text-align: center;">Status Karyawan</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
                 <th style="text-align: center;">Metode Penggajian</th>
+                <th style="text-align: center;">NPWP</th>
+                <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">Gaji Pokok</th>
                 <th style="text-align: center;">Gaji Lembur</th>
                 <th style="text-align: center;">Gaji BPJS</th>
@@ -44,6 +46,8 @@
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
+                    <td style="text-align: center"> {{ $d->no_npwp }}</td>
+                    <td style="text-align: center"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
                     <td style="text-align: right"> {{ $d->gaji_overtime }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>

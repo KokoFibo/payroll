@@ -95,10 +95,10 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
             // 'D' => '0',
 
             'H' => NumberFormat::FORMAT_DATE_XLSX15,
-            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'J' => "0",
             'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-
+            'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
 
         ];
     }
