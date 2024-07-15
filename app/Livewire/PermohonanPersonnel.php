@@ -368,11 +368,13 @@ class PermohonanPersonnel extends Component
             ->where('request_id', $this->user_id)
             ->orWhere('approve_by_1', $this->user_id)
             ->orWhere('approve_by_2', $this->user_id)->first();
+
         if ($check_user != null) {
             if ($check_user->request_id == $this->user_id) $this->is_requester = true;
             if ($check_user->approve_by_1 == $this->user_id) $this->is_approval_1 = true;
             if ($check_user->approve_by_2 == $this->user_id) $this->is_approval_2 = true;
         }
+
         if (auth()->user()->role >= 6) {
             $this->is_admin = true;
             $data = Personnelrequestform::whereIn('status', ['Approved', 'Done'])->orderBy('id', 'desc')->paginate(5);

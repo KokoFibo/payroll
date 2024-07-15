@@ -14,6 +14,7 @@ use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
 use App\Models\Personnelrequestform;
+use App\Models\Requester;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
 
@@ -61,8 +62,17 @@ class Test extends Component
 
 
 
+
+
   public function render()
   {
+
+    $requester_id = 7711;
+    dd(is_same_approver($requester_id));
+
+
+
+
 
     $datas = Yfrekappresensi::where('late_history', 1)
       ->whereYear('date', 2024)
