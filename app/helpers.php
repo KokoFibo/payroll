@@ -23,6 +23,15 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function is_first_in_late($jam)
+{
+    $jam_max = '08:03';
+    if ($jam > $jam_max)
+        return true;
+    else return false;
+    // if (Carbon::parse($jam)->betweenIncluded('05:30', '10:00')) {
+}
+
 function isTimeoff($id_karyawan)
 {
     if ($id_karyawan != null) {
