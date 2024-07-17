@@ -60,7 +60,8 @@
                     @if (!$is_add && !$is_update)
 
                         <div class='pl-3 pt-2 text-center'>
-                            <button wire:click='add' class='bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm'>Buat
+                            <button hidden wire:click='add'
+                                class='bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm'>Buat
                                 Permohonan
                                 Ijin/Cuti</button>
 
