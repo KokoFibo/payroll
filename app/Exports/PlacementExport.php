@@ -177,6 +177,13 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')->get();
                 break;
+            case 15:
+                $data = Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'YEV ELEKTRONIK')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')->get();
+                break;
         }
         $header_text = 'Perincian Payroll untuk Placement ' .  nama_bulan($this->month) . ' ' . $this->year;
 
