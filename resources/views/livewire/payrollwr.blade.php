@@ -217,6 +217,7 @@
                             <option value="12">YEV OFFERO</option>
                             <option value="13">YEV SUNRA</option>
                             <option value="14">YEV AIMA</option>
+                            <option value="15">YEV ELEKTRONIK</option>
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>

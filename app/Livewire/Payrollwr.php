@@ -154,6 +154,9 @@ class Payrollwr extends Component
                 case 14:
                     $nama_file = 'payroll_placement_YEV_AIMA.xlsx';
                     break;
+                case 15:
+                    $nama_file = 'payroll_placement_YEV_ELEKTRONIK.xlsx';
+                    break;
             }
         } else {
             if ($this->selected_departemen == 0) {
@@ -390,6 +393,15 @@ class Payrollwr extends Component
                         ->where('placement', 'YEV AIMA')
                         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
                     $nama_file = 'YEV_AIMA_Placement_Bank.xlsx';
+                    break;
+                case '15':
+                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy('id_karyawan', 'asc')
+                        ->where('placement', 'YEV ELEKTRONIK')
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    $nama_file = 'YEV_ELEKTRONIK_Placement_Bank.xlsx';
                     break;
             }
         } else {
@@ -1113,6 +1125,19 @@ class Payrollwr extends Component
                         ->sum('total');
                     $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV AIMA', '')
                         ->where('placement', 'YEV AIMA')
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->orderBy($this->columnName, $this->direction)
+                        ->paginate($this->perpage);
+                    break;
+                case 15:
+                    $total = Payroll::whereIn('status_karyawan', $statuses)
+                        ->where('placement', 'YEV ELEKTRONIK')
+                        ->whereMonth('date', $this->month)
+                        ->whereYear('date', $this->year)
+                        ->sum('total');
+                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV ELEKTRONIK', '')
+                        ->where('placement', 'YEV ELEKTRONIK')
                         ->whereMonth('date', $this->month)
                         ->whereYear('date', $this->year)
                         ->orderBy($this->columnName, $this->direction)
