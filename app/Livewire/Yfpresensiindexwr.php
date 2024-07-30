@@ -380,7 +380,6 @@ class Yfpresensiindexwr extends Component
 
     public function save()
     {
-
         $this->validate([
             'first_in' => 'date_format:H:i|nullable',
             'first_out' => 'date_format:H:i|nullable',
@@ -434,13 +433,18 @@ class Yfpresensiindexwr extends Component
             } else {
                 $data->shift = 'Malam';
                 // dd($data->shift, $is_saturday );
-
             }
 
             if ($data->second_in != null) {
+
+                if (($data->first_in == null && $data->first_out) &&
+
+                    (Carbon::parse($data->second_in)->betweenIncluded('23:00', '23:59') || Carbon::parse($data->second_in)->betweenIncluded('00:00', '01:30'))
+                ) {
+                    $data->shift = 'Malam';
+                }
                 if (Carbon::parse($data->second_in)->betweenIncluded('11:00', '15:00')) {
                     $data->shift = 'Pagi';
-                    // dd($data->shift, $is_saturday );
                 }
             }
         }

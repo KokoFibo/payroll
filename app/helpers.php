@@ -2323,6 +2323,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
     $perJam = 60;
     $late = null;
 
+
     if (is_puasa($tgl) && $placement_id == 6) {
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
