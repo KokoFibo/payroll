@@ -379,6 +379,7 @@
                                 <th wire:click="sortColumnName('tanggungan')">Tanggungan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+
                                 <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
@@ -478,6 +479,8 @@
                                             <td class="text-end">
                                                 {{ $p->tanggungan ? number_format($p->tanggungan) : '' }}
                                             </td>
+
+
 
                                             <td class="text-end">{{ number_format($p->pph21) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>

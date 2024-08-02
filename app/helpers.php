@@ -139,7 +139,11 @@ function hitung_pph21(
 
         $total_bpjs_company =
             // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
-            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $total_gaji_lembur + $gaji_libur + $total_bonus_dari_karyawan +
+            // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company +
+            $total_gaji_lembur +
+            $gaji_libur +
+            $total_bonus_dari_karyawan +
             $tambahan_shift_malam;
 
         $ter = '';

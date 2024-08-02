@@ -157,7 +157,15 @@
                     }
 
                     $total_bpjs_company = 0;
-                    $total_bpjs_company = $d->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+                    $total_bpjs_company =
+                        $d->gaji_bpjs +
+                        $jkk_company +
+                        $jkm_company +
+                        $kesehatan_company +
+                        $d->gaji_lembur * $d->jam_lembur +
+                        $d->gaji_libur +
+                        $d->bonus1x +
+                        $d->tambahan_shift_malam;
 
                     $ter = '';
                     switch ($d->ptkp) {
@@ -189,7 +197,6 @@
 
                     $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_bpjs_company);
                     $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
-
                 @endphp
                 <tr>
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
