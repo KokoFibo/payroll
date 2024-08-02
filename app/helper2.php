@@ -343,10 +343,6 @@ function build_payroll($month, $year)
 
         // end of bpjs
 
-        // hitung pph21
-        $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp, $data->karyawan->potongan_JHT, $data->karyawan->potongan_JP, $data->karyawan->potongan_JKK, $data->karyawan->potongan_JKM, $data->karyawan->potongan_kesehatan);
-
-
         $pajak = 0;
 
         // denda no scan
@@ -504,6 +500,28 @@ function build_payroll($month, $year)
         //     'created_at' => now()->toDateTimeString(),
         //     'updated_at' => now()->toDateTimeString(),
         // ];
+
+        // total gaji lembur
+
+        $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
+
+        // hitung pph21
+        // $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp, $data->karyawan->potongan_JHT, $data->karyawan->potongan_JP, $data->karyawan->potongan_JKK, $data->karyawan->potongan_JKM, $data->karyawan->potongan_kesehatan);
+        $pph21 = hitung_pph21(
+            $data->karyawan->gaji_bpjs,
+            $data->karyawan->ptkp,
+            $data->karyawan->potongan_JHT,
+            $data->karyawan->potongan_JP,
+            $data->karyawan->potongan_JKK,
+            $data->karyawan->potongan_JKM,
+            $data->karyawan->potongan_kesehatan,
+            $total_gaji_lembur,
+            $gaji_libur,
+            $total_bonus_dari_karyawan,
+            $tambahan_shift_malam
+        );
+
+
         Payroll::create([
             'jp' => $jp,
             'jht' => $jht,
@@ -736,7 +754,19 @@ function build_payroll($month, $year)
         }
 
         // hitung pph21
-        $pph21 = hitung_pph21($data_karyawan->gaji_bpjs, $data_karyawan->ptkp, $data_karyawan->potongan_JHT, $data_karyawan->potongan_JP, $data_karyawan->potongan_JKK, $data_karyawan->potongan_JKM, $data_karyawan->potongan_kesehatan);
+        $pph21 = hitung_pph21(
+            $data_karyawan->gaji_bpjs,
+            $data_karyawan->ptkp,
+            $data_karyawan->potongan_JHT,
+            $data_karyawan->potongan_JP,
+            $data_karyawan->potongan_JKK,
+            $data_karyawan->potongan_JKM,
+            $data_karyawan->potongan_kesehatan,
+            0,
+            0,
+            0,
+            0
+        );
 
 
 

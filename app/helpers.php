@@ -96,8 +96,19 @@ function get_first_name($name)
     }
 }
 
-function hitung_pph21($gaji_bpjs, $ptkp, $jht, $jp, $jkk, $jkm, $kesehatan)
-{
+function hitung_pph21(
+    $gaji_bpjs,
+    $ptkp,
+    $jht,
+    $jp,
+    $jkk,
+    $jkm,
+    $kesehatan,
+    $total_gaji_lembur,
+    $gaji_libur,
+    $total_bonus_dari_karyawan,
+    $tambahan_shift_malam
+) {
     if ($gaji_bpjs != '' &&  $ptkp != '') {
 
         if ($gaji_bpjs >= 12000000) $gaji_bpjs_kesehatan = 12000000;
@@ -128,7 +139,9 @@ function hitung_pph21($gaji_bpjs, $ptkp, $jht, $jp, $jkk, $jkm, $kesehatan)
 
         $total_bpjs_company =
             // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
-            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $total_gaji_lembur + $gaji_libur + $total_bonus_dari_karyawan +
+            $tambahan_shift_malam;
+
         $ter = '';
         switch ($ptkp) {
             case 'TK0':
