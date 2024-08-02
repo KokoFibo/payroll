@@ -438,11 +438,11 @@ class Yfpresensiindexwr extends Component
             if ($data->second_in != null) {
 
                 if (($data->first_in == null && $data->first_out) &&
-
                     (Carbon::parse($data->second_in)->betweenIncluded('23:00', '23:59') || Carbon::parse($data->second_in)->betweenIncluded('00:00', '01:30'))
                 ) {
                     $data->shift = 'Malam';
                 }
+
                 if (Carbon::parse($data->second_in)->betweenIncluded('11:00', '15:00')) {
                     $data->shift = 'Pagi';
                 }
