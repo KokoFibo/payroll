@@ -12,7 +12,7 @@ class rebuildJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     // naikin angka ini utk tingkatkan timeout queue job
-    public $timeout = 600;
+    public $timeout = 2000;
 
     /**
      * Create a new job instance.
