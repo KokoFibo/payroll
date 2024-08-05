@@ -16,5 +16,7 @@
         <a href="/addplacement"><button class="btn btn-primary">Add Placement</button></a>
         <a href="/department"><button class="btn btn-primary">Add Departement</button></a>
         <button wire:click='clear_build' class="btn btn-primary">Clear Build</button>
+        <button wire:click='clear_payroll_rebuild' class="btn btn-primary">Clear Payroll Rebuild</button>
+        <button wire:click='delete_failed_jobs' class="btn btn-primary">Delete Failed Job</button>
     </div>
 </div>

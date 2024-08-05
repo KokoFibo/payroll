@@ -23,6 +23,12 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function clear_payroll_rebuild()
+{
+    $data = Lock::find(1);
+    $data->rebuild_done = 0;
+    $data->save();
+}
 function clear_build()
 {
     $data = Lock::find(1);
