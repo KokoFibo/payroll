@@ -693,12 +693,19 @@ class Payrollwr extends Component
         $months = Payroll::select(DB::raw('MONTH(date) as month'))
             ->whereYear('date', $this->year)
             ->distinct()
+            ->orderBy('date', 'desc')
             ->pluck('month')
             ->toArray();
 
-        if (!in_array($this->month, $months)) {
+        $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)->count();
+
+        if ($data_bulan_ini > 0) {
             $months[] = $this->month;
         }
+        // if (!in_array($this->month, $months)) {
+        //     $months[] = $this->month;
+        // }
 
         $this->select_month = $months;
 
@@ -1350,6 +1357,6 @@ class Payrollwr extends Component
         $this->cx++;
 
 
-        return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong']));
+        return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong', 'data_bulan_ini']));
     }
 }
