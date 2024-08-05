@@ -56,6 +56,8 @@
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
         {{-- @if (auth()->user()->role == 8) --}}
         {{-- <p>$data_bulan_ini ; {{ $data_bulan_ini }}</p> --}}
+        <p>Month : {{ $month }}</p>
+        <p>Year : {{ $year }}</p>
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
