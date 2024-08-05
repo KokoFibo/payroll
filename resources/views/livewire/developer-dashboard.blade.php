@@ -15,5 +15,6 @@
         <a href="/addcompany"><button class="btn btn-primary">Add Company</button></a>
         <a href="/addplacement"><button class="btn btn-primary">Add Placement</button></a>
         <a href="/department"><button class="btn btn-primary">Add Departement</button></a>
+        <button wire:click='clear_build' class="btn btn-primary">Clear Build</button>
     </div>
 </div>
