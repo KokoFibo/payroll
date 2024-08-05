@@ -469,8 +469,11 @@ class Payrollwr extends Component
             $this->month =
                 now()->subMonth()->month;
         } else {
-            $this->year = now()->year;
-            $this->month = now()->month;
+            $data3 = Payroll::orderBy('date', 'desc')->first();
+            // $this->year = now()->year;
+            // $this->month = now()->month;
+            $this->year = Carbon::parse($data3->date)->year;
+            $this->month = Carbon::parse($data3->date)->month;
         }
 
         if ($data != null) {
