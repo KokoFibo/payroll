@@ -55,6 +55,7 @@
         {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
             {{ jumlah_libur_nasional($month, $year) }}</p> --}}
         {{-- @if (auth()->user()->role == 8) --}}
+        <p>$data_bulan_ini ; {{ $data_bulan_ini }}</p>
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -146,6 +147,10 @@
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
+
+                                @if ($data_bulan_ini > 0)
+                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
+                                @endif
 
                                 {{-- jika this month gak ada maka munculkan --}}
                                 {{-- @if (!in_array(now()->month, $select_month))
