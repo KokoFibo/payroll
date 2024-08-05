@@ -23,6 +23,11 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function delete_failed_jobs()
+{
+    DB::table('failed_jobs')->truncate();
+}
+
 function is_same_approver($requester_id)
 {
     $data = Requester::where('request_id', $requester_id)->first();
