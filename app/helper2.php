@@ -22,6 +22,8 @@ function build_payroll($month, $year)
     $endOfMonth = $startOfMonth->copy()->endOfMonth();
     $cx = 0;
     $pass = true;
+    delete_failed_jobs();
+
 
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
@@ -274,7 +276,7 @@ function build_payroll($month, $year)
         }
     }
 
-
+    // dd('first step done');
     // echo 'rekap done';
 
     // ok 2 perhitungan payroll

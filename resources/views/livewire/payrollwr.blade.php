@@ -148,9 +148,9 @@
                                 @endforeach
 
                                 {{-- jika this month gak ada maka munculkan --}}
-                                @if (!in_array(now()->month, $select_month))
+                                {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif
+                                @endif --}}
                             </select>
                             {{-- <option value="7">Juli 7</option> --}}
 

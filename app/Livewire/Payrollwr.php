@@ -696,9 +696,9 @@ class Payrollwr extends Component
             ->pluck('month')
             ->toArray();
 
-        if (!in_array($this->month, $months)) {
-            $months[] = $this->month;
-        }
+        // if (!in_array($this->month, $months)) {
+        //     $months[] = $this->month;
+        // }
 
         $this->select_month = $months;
 
