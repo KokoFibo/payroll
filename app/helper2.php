@@ -47,6 +47,7 @@ function build_payroll($month, $year)
         Jamkerjaid::whereMonth('date', $month)
             ->whereYear('date', $year)
             ->delete();
+        delete_failed_jobs();
     }
 
     // dd('ok1 sampai sini');
