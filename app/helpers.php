@@ -23,6 +23,13 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function clear_build()
+{
+    $data = Lock::find(1);
+    $data->build = 0;
+    $data->save();
+}
+
 function delete_failed_jobs()
 {
     DB::table('failed_jobs')->truncate();
