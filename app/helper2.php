@@ -276,7 +276,7 @@ function build_payroll($month, $year)
         }
     }
 
-
+    // dd('first step done');
     // echo 'rekap done';
 
     // ok 2 perhitungan payroll
