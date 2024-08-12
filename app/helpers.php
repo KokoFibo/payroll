@@ -23,6 +23,38 @@ use App\Models\Timeoffrequester;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function get_ter($ptkp)
+{
+
+    switch ($ptkp) {
+        case 'TK0':
+            $ter = 'A';
+            break;
+        case 'TK1':
+            $ter = 'A';
+            break;
+        case 'TK2':
+            $ter = 'B';
+            break;
+        case 'TK3':
+            $ter = 'B';
+            break;
+        case 'K0':
+            $ter = 'A';
+            break;
+        case 'K1':
+            $ter = 'B';
+            break;
+        case 'K2':
+            $ter = 'B';
+            break;
+        case 'K3':
+            $ter = 'C';
+            break;
+    }
+    return $ter;
+}
+
 function clear_payroll_rebuild()
 {
     $data = Lock::find(1);

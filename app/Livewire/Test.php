@@ -68,10 +68,6 @@ class Test extends Component
 
 
 
-    dd('cleared');
-
-    $requester_id = 7711;
-    dd(is_same_approver($requester_id));
 
 
 
@@ -79,7 +75,7 @@ class Test extends Component
 
     $datas = Yfrekappresensi::where('late_history', 1)
       ->whereYear('date', 2024)
-      ->whereMonth('date', 6)
+      ->whereMonth('date', 7)
       ->whereHas('karyawan', function ($query) {
         $query->where('department_id', 7);
       })
