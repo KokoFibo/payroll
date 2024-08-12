@@ -158,8 +158,9 @@
                                 {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif --}}
+                                {{-- <option value="7">Juli 7</option> --}}
+
                             </select>
-                            {{-- <option value="7">Juli 7</option> --}}
 
                         </div>
                     </div>
@@ -386,6 +387,9 @@
                                 <th wire:click="sortColumnName('tanggungan')">Tanggungan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('ptkp')">{{ __('PTKP') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th>{{ __('TER') }}</th>
 
                                 <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
                                         class="fa-solid fa-sort"></i></th>
@@ -487,8 +491,13 @@
                                                 {{ $p->tanggungan ? number_format($p->tanggungan) : '' }}
                                             </td>
 
+                                            <td class="text-end">{{ $p->ptkp }}</td>
 
-
+                                            @if ($p->ptkp != '')
+                                                <td class="text-end">{{ get_ter($p->ptkp) }}</td>
+                                            @else
+                                                <td class="text-end"></td>
+                                            @endif
                                             <td class="text-end">{{ number_format($p->pph21) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>
 

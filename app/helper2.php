@@ -21,6 +21,7 @@ function build_payroll($month, $year)
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
     $endOfMonth = $startOfMonth->copy()->endOfMonth();
     $cx = 0;
+    // isi ini dengan false jika mau langsung
     $pass = true;
     delete_failed_jobs();
 
@@ -506,10 +507,12 @@ function build_payroll($month, $year)
 
         // total gaji lembur
 
-        $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
 
         // hitung pph21
         // $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp, $data->karyawan->potongan_JHT, $data->karyawan->potongan_JP, $data->karyawan->potongan_JKK, $data->karyawan->potongan_JKM, $data->karyawan->potongan_kesehatan);
+
+
+        $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         $pph21 = hitung_pph21(
             $data->karyawan->gaji_bpjs,
             $data->karyawan->ptkp,
@@ -520,7 +523,7 @@ function build_payroll($month, $year)
             $data->karyawan->potongan_kesehatan,
             $total_gaji_lembur,
             $gaji_libur,
-            $total_bonus_dari_karyawan,
+            0,
             $tambahan_shift_malam
         );
 
@@ -773,6 +776,8 @@ function build_payroll($month, $year)
 
 
 
+
+
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
@@ -829,6 +834,57 @@ function build_payroll($month, $year)
             $data->save();
         }
     }
+
+    // hitung PPH21 
+    $datapph21 = Payroll::whereMonth('date', 7)->whereYear('date', 2024)
+        ->where('bonus1x', '>', 0)->get();
+
+    foreach ($datapph21 as $data) {
+        if ($data->ptkp != '') {
+            $karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
+            $total_gaji_lembur = $data->jam_lembur * $karyawan->gaji_overtime;
+            // $pph21_lama = 0;
+            // $pph21baru = 8;
+            $pph21_lama = $data->pph21;
+            $pph21baru = hitung_pph21(
+                $karyawan->gaji_bpjs,
+                $karyawan->ptkp,
+                $karyawan->potongan_JHT,
+                $karyawan->potongan_JP,
+                $karyawan->potongan_JKK,
+                $karyawan->potongan_JKM,
+                $karyawan->potongan_kesehatan,
+                $total_gaji_lembur,
+                $data->gaji_libur,
+                $data->bonus1x,
+                $data->tambahan_shift_malam
+            );
+            // dd($data->id_karyawan, $total_gaji_lembur, $data->jam_lembur, $karyawan->gaji_overtime);
+            // dd(
+            //     $data->id_karyawan,
+            //     $karyawan->gaji_bpjs,
+            //     $karyawan->ptkp,
+            //     $karyawan->potongan_JHT,
+            //     $karyawan->potongan_JP,
+            //     $karyawan->potongan_JKK,
+            //     $karyawan->potongan_JKM,
+            //     $karyawan->potongan_kesehatan,
+            //     $total_gaji_lembur,
+            //     $data->gaji_libur,
+            //     $data->bonus1x,
+            //     $data->tambahan_shift_malam
+            // );
+            // dd($data->id_karyawan,   $pph21_lama, $pph21baru);
+            $data->pph21 = $pph21baru;
+            $data->total = $data->total +  $pph21_lama - $pph21baru;
+            $data->save();
+        }
+    }
+
+
+
+
+
     // ok 6
     // Libur nasional dan resigned sebelum 3 bulan bekerja
 
