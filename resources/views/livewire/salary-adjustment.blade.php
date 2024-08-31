@@ -36,7 +36,19 @@
                             </th>
                             <th style="width: 130px;">
                                 <div style="width: 130px">
-                                    <select wire:model.live="search_company" class="form-select"
+                                    <select wire:model.live="search_placement" class="form-select"
+                                        aria-label="Default select example">
+                                        <option value="">{{ __('All Placement') }}</option>
+                                        @foreach ($placements as $j)
+                                            <option value="{{ $j }}">{{ nama_placement($j) }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                            </th>
+                            <th style="width: 130px;">
+                                <div style="width: 130px">
+                                    <select wire:model.live="search_company" class="form-select d-none"
                                         aria-label="Default select example">
                                         <option value="">{{ __('Company') }}</option>
                                         @foreach ($companies as $j)
@@ -46,22 +58,11 @@
                                     </select>
                                 </div>
                             </th>
-                            <th style="width: 130px;">
-                                <div style="width: 130px">
-                                    <select wire:model.live="search_placement" class="form-select"
-                                        aria-label="Default select example">
-                                        <option value="">{{ __('Placement') }}</option>
-                                        @foreach ($placements as $j)
-                                            <option value="{{ $j }}">{{ $j }}</option>
-                                        @endforeach
 
-                                    </select>
-                                </div>
-                            </th>
 
                             <th style="width: 200px;">
                                 <div style="width: 130px">
-                                    <select wire:model.live="search_department" class="form-select"
+                                    <select wire:model.live="search_department" class="form-select d-none"
                                         aria-label="Default select example">
                                         <option value="">{{ __('Department') }}</option>
                                         @foreach ($departments as $j)
@@ -72,7 +73,7 @@
                             </th>
                             <th style="width: 220px;">
                                 <div style="width: 130px">
-                                    <select wire:model.live="search_jabatan"class="form-select"
+                                    <select wire:model.live="search_jabatan"class="form-select d-none"
                                         aria-label="Default select example">
                                         <option value="">{{ __('Jabatan') }}</option>
                                         @foreach ($jabatans as $j)
@@ -82,7 +83,14 @@
                                 </div>
                             </th>
                             <th><button class="btn btn-primary nightowl-daylight"
-                                    wire:click="refresh">{{ __('Refresh') }}</button></th>
+                                    wire:click="refresh">{{ __('Refresh') }}</button>
+                            </th>
+                            <th><button class="btn btn-success nightowl-daylight"
+                                    wire:click="excel">{{ __('Excel') }}</button>
+                            </th>
+                            <th><button type='button' class="btn btn-warning nightowl-daylight" wire:click="adjust"
+                                    wire:confirm="Are you sure you want to delete this post?">{{ __('Sesuaikan Semua') }}</button>
+                            </th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -93,10 +101,11 @@
                         <tr>
                             <th>{{ __('ID Karyawan') }}</th>
                             <th>{{ __('Nama') }}</th>
-                            <th wire:click="sortColumnName('company_id')">
-                                {{ __('Company') }}</th>
                             <th wire:click="sortColumnName('placement_id')">
                                 {{ __('Placement') }}</th>
+                            <th wire:click="sortColumnName('company_id')">
+                                {{ __('Company') }}</th>
+
                             <th wire:click="sortColumnName('department_id')">
                                 {{ __('Department') }}</th>
                             <th wire:click="sortColumnName('jabatanid')">
@@ -118,8 +127,8 @@
                             <tr>
                                 <td>{{ $d->id_karyawan }}</td>
                                 <td>{{ $d->nama }}</td>
-                                <td>{{ $d->company->company_name }}</td>
                                 <td>{{ $d->placement->placement_name }}</td>
+                                <td>{{ $d->company->company_name }}</td>
                                 <td>{{ $d->department->nama_department }}</td>
                                 <td>{{ $d->jabatan->nama_jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>
@@ -130,7 +139,7 @@
                                     @if (auth()->user()->role >= 6)
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                             wire:click="edit(`{{ $d->id }}`)" @click="open_modal()"
-                                            class="btn btn-warning btn-sm nightowl-daylight"
+                                            class="btn btn-warning btn-sm nightowl-daylight d-none"
                                             {{ is_data_locked() ? 'disabled' : '' }}>{{ __('Edit') }}</button>
                                     @endif
                                 </td>

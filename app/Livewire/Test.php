@@ -61,30 +61,64 @@ class Test extends Component
   }
 
 
+  public function delete_diatas_4jt()
+  {
+    $users_count = User::count();
+    // dd($users_count);
+    $datas_count = Karyawan::where('gaji_pokok', '>=', 4000000)->count();
+    $data = Karyawan::where('gaji_pokok', '>=', 4000000)->get();
+    // delete user
+    $cx = 0;
+    foreach ($data as $d) {
+      $user = User::where('username', $d->id_karyawan)->first();
+      if ($user) {
+        $user->delete();
+        $cx++;
+      }
+    }
+    // dd($cx);
+    // delete data
+    $delete_data = Karyawan::where('gaji_pokok', '>=', 4000000)->delete();
 
+    $this->dispatch(
+      'message',
+      type: 'success',
+      title: 'Data Berhasil di delete : ' . $datas_count . ' data, ' . $cx . ' users',
+    );
+  }
+  public function delete_dibawah_4jt()
+  {
+    $users_count = User::count();
+    // dd($users_count);
+    $datas_count = Karyawan::where('gaji_pokok', '<', 4000000)->count();
+    $data = Karyawan::where('gaji_pokok', '<', 4000000)->get();
+    // delete user
+    $cx = 0;
+    foreach ($data as $d) {
+      $user = User::where('username', $d->id_karyawan)->first();
+      if ($user) {
+        $user->delete();
+        $cx++;
+      }
+    }
+    // dd($cx);
+
+    // delete data
+    $delete_data = Karyawan::where('gaji_pokok', '<', 4000000)->delete();
+    $this->dispatch(
+      'message',
+      type: 'success',
+      title: 'Data Berhasil di delete : ' . $datas_count . ' data, ' . $cx . ' users',
+    );
+  }
 
   public function render()
   {
 
-
-
-
-
-
-
-
-    $datas = Yfrekappresensi::where('late_history', 1)
-      ->whereYear('date', 2024)
-      ->whereMonth('date', 7)
-      ->whereHas('karyawan', function ($query) {
-        $query->where('department_id', 7);
-      })
-      ->with('karyawan')
-      ->get();
-    // ->paginate(10);
-    // dd($datas->all());
-    return view('livewire.test', [
-      'datas' => $datas,
-    ]);
+    // $datas = Karyawan::whereNot('gaji_pokok', '<', 4000000)->count();
+    // $datas = Karyawan::whereNot('gaji_pokok', '>=', 4000000)->count();
+    // $datas = Karyawan::count();
+    // dd($datas);
+    return view('livewire.test');
   }
 }
