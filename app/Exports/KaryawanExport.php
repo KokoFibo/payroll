@@ -17,14 +17,15 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
     /**
      * @return \Illuminate\Support\Collection
      */
-    protected $selected_placement, $selected_company, $selectStatus;
+    protected $selected_placement, $selected_company, $selectStatus, $search_etnis;
 
-    public function __construct($selected_placement, $selected_company, $selected_department, $selectStatus)
+    public function __construct($selected_placement, $selected_company, $selected_department, $selectStatus, $search_etnis)
     {
         $this->selected_placement = $selected_placement;
         $this->selected_company = $selected_company;
         $this->selected_department = $selected_department;
         $this->selectStatus = $selectStatus;
+        $this->search_etnis = $search_etnis;
     }
 
     public function view(): View
@@ -49,6 +50,11 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         if ($this->selected_department) {
             $data = $data->where('department_id', $this->selected_department);
         }
+        if ($this->search_etnis) {
+            $data = $data->where('etnis', $this->search_etnis);
+        }
+
+
 
         $data = $data->get();
 
@@ -68,11 +74,12 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         //     $header_text = 'Excel Seluruh Karyawan';
         // }
 
-        if ($placement || $company || $department) {
-            $header_text = 'Data';
+        if ($placement || $company || $department || $this->search_etnis) {
+            $header_text = 'Data Karyawan';
             if ($company) $header_text = $header_text . ' Company ' . $company;
             if ($placement) $header_text = $header_text . ' Placement ' . $placement;
             if ($department) $header_text = $header_text . ' Department ' . $department;
+            if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
         } else {
             $header_text = 'Data Seluruh Karyawan';
         }
@@ -94,11 +101,11 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
             // 'C' => NumberFormat::FORMAT_TEXT,
             // 'D' => '0',
 
-            'H' => NumberFormat::FORMAT_DATE_XLSX15,
-            'J' => "0",
-            'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'I' => NumberFormat::FORMAT_DATE_XLSX15,
+            'K' => "0",
             'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
 
         ];
     }
@@ -106,8 +113,17 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
     public function headings(): array
     {
         return [['Data Karyawan'], [
-            'ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
-            'Status Karyawan', 'Tanggal Bergabung', 'Metode Penggajian', 'Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS',
+            'ID Karyawan',
+            'Nama',
+            'Company',
+            'Placement',
+            'Jabatan',
+            'Status Karyawan',
+            'Tanggal Bergabung',
+            'Metode Penggajian',
+            'Gaji Pokok',
+            'Gaji Lembur',
+            'Gaji BPJS',
         ]];
     }
 
