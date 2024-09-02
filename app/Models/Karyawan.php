@@ -43,7 +43,7 @@ class Karyawan extends Model
 
         return LogOptions::defaults()
             ->logOnly(['gaji_pokok', 'gaji_overtime', 'bonus'])
-            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
+            // ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
         // Chain fluent methods for configuration options
