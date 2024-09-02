@@ -13,11 +13,12 @@ class DataLog extends Component
     public function render()
     {
 
+        $activity = Activity::whereIn('event', ['updated', 'deleted'])->orderBy('updated_at', 'DESC')->paginate(10);
+        // foreach ($activity as $a) {
 
-        $activity = Activity::whereIn('event', ['updated', 'deleted'])->paginate(10);
-        // $activity = Activity::all();
-
-        // dd($activity);
+        //     $data = json_decode($a->properties);
+        //     dd($a->properties['attributes']);
+        // }
 
         return view('livewire.data-log', [
             'activity' => $activity
