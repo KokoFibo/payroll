@@ -146,49 +146,6 @@ function get_first_name($name)
     }
 }
 
-function hitung_pph21_simple($total_bpjs_company, $ptkp, $gaji_bpjs)
-{
-
-
-
-    if ($gaji_bpjs != '' &&  $ptkp != '') {
-
-        $ter = '';
-        switch ($ptkp) {
-            case 'TK0':
-                $ter = 'A';
-                break;
-            case 'TK1':
-                $ter = 'A';
-                break;
-            case 'TK2':
-                $ter = 'B';
-                break;
-            case 'TK3':
-                $ter = 'B';
-                break;
-            case 'K0':
-                $ter = 'A';
-                break;
-            case 'K1':
-                $ter = 'B';
-                break;
-            case 'K2':
-                $ter = 'B';
-                break;
-            case 'K3':
-                $ter = 'C';
-                break;
-        }
-
-        $rate_pph21 = get_rate_ter_pph21($ptkp, $total_bpjs_company);
-        $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
-    } else {
-        $pph21 = 0;
-    }
-    return $pph21;
-}
-
 function hitung_pph21(
     $gaji_bpjs,
     $ptkp,

@@ -158,7 +158,7 @@
                                 {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif --}}
-                                {{-- <option value="8">Agst 8</option> --}}
+                                <option value="8">Agst 8</option>
 
                             </select>
 
@@ -391,6 +391,8 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th>{{ __('TER') }}</th>
 
+                                <th wire:click="sortColumnName('pph21')">{{ __('Total BPJS') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
@@ -498,6 +500,7 @@
                                             @else
                                                 <td class="text-end"></td>
                                             @endif
+                                            <td class="text-end">{{ number_format($p->total_bpjs) }}</td>
                                             <td class="text-end">{{ number_format($p->pph21) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>
 

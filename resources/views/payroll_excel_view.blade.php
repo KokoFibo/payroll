@@ -273,7 +273,8 @@
                     @endif
 
 
-                    <td style="text-align: right"> {{ $total_bpjs_company }}</td>
+                    {{-- <td style="text-align: right"> {{ $total_bpjs_company }}</td> --}}
+                    <td style="text-align: right"> {{ $d->total_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
