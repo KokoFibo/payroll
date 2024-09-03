@@ -773,20 +773,24 @@ function build_payroll($month, $year)
             if ($data_karyawan->gaji_bpjs >= 12000000) $data_gaji_bpjs = 12000000;
             else $data_gaji_bpjs = $data_karyawan->gaji_bpjs;
             $kesehatan = $data_gaji_bpjs * 0.01;
+            $kesehatan_company = ($data_gaji_bpjs * 4) / 100;
         } else {
             $kesehatan = 0;
+            $kesehatan_company = 0;
         }
 
-        // if ($data_karyawan->potongan_JKK == 1) {
-        //     $jkk = 1;
-        // } else {
-        //     $jkk = 0;
-        // }
-        // if ($data_karyawan->potongan_JKM == 1) {
-        //     $jkm = 1;
-        // } else {
-        //     $jkm = 0;
-        // }
+        if ($data_karyawan->potongan_JKK == 1) {
+            $jkk = 1;
+        } else {
+            $jkk = 0;
+        }
+        if ($data_karyawan->potongan_JKM == 1) {
+            $jkm = 1;
+        } else {
+            $jkm = 0;
+        }
+
+
 
 
         if ($data_karyawan->potongan_JKK) {
@@ -816,7 +820,7 @@ function build_payroll($month, $year)
             0
         );
 
-        $total_bpjs = $data_karyawan->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan;
+        $total_bpjs = $data_karyawan->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
 
 
 
