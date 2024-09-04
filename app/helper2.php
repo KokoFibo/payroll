@@ -679,13 +679,13 @@ function build_payroll($month, $year)
 
         $pph21_lama = $kb->pph21;
         $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
-
+        $total_lama = $kb->total;
         $kb->pph21 = $pph21simple;
-        $kb->total = $kb->total - $pph21_lama + $pph21simple;
+        $kb->total = $total_lama + $pph21_lama - $pph21simple;
         $kb->total_bpjs = $total_bpjs_company;
         $kb->save();
         // if ($kb->id_karyawan == 101) {
-        //     dd($total_bpjs_lama, $kb->bonus1x, $total_bpjs_company);
+        //     dd($pph21_lama - $pph21simple);
         // }
     }
 
@@ -747,7 +747,7 @@ function build_payroll($month, $year)
 
     $idArrTKA = [1, 3, 5, 25, 6];
     $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511, 6576, 6577, 6578, 6579]; //TKA hanya 3 no didepan
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
 
     foreach ($idKhusus as $id) {
         $data_id = Karyawan::where('id_karyawan', $id)->first();
@@ -886,51 +886,39 @@ function build_payroll($month, $year)
         }
     }
 
-    // hitung PPH21 
-    $datapph21 = Payroll::whereMonth('date', 7)->whereYear('date', 2024)
-        ->where('bonus1x', '>', 0)->get();
+    // hitung PPH21 baru di remark
+    // $datapph21 = Payroll::whereMonth('date', $month)
+    //     ->whereYear('date', $year)
+    //     ->where('bonus1x', '>', 0)->get();
 
-    foreach ($datapph21 as $data) {
-        if ($data->ptkp != '') {
-            $karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
-            $total_gaji_lembur = $data->jam_lembur * $karyawan->gaji_overtime;
-            // $pph21_lama = 0;
-            // $pph21baru = 8;
-            $pph21_lama = $data->pph21;
-            $pph21baru = hitung_pph21(
-                $karyawan->gaji_bpjs,
-                $karyawan->ptkp,
-                $karyawan->potongan_JHT,
-                $karyawan->potongan_JP,
-                $karyawan->potongan_JKK,
-                $karyawan->potongan_JKM,
-                $karyawan->potongan_kesehatan,
-                $total_gaji_lembur,
-                $data->gaji_libur,
-                $data->bonus1x,
-                $data->tambahan_shift_malam
-            );
-            // dd($data->id_karyawan, $total_gaji_lembur, $data->jam_lembur, $karyawan->gaji_overtime);
-            // dd(
-            //     $data->id_karyawan,
-            //     $karyawan->gaji_bpjs,
-            //     $karyawan->ptkp,
-            //     $karyawan->potongan_JHT,
-            //     $karyawan->potongan_JP,
-            //     $karyawan->potongan_JKK,
-            //     $karyawan->potongan_JKM,
-            //     $karyawan->potongan_kesehatan,
-            //     $total_gaji_lembur,
-            //     $data->gaji_libur,
-            //     $data->bonus1x,
-            //     $data->tambahan_shift_malam
-            // );
-            // dd($data->id_karyawan,   $pph21_lama, $pph21baru);
-            $data->pph21 = $pph21baru;
-            $data->total = $data->total +  $pph21_lama - $pph21baru;
-            $data->save();
-        }
-    }
+    // foreach ($datapph21 as $data) {
+    //     if ($data->ptkp != '') {
+    //         $karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
+    //         $total_gaji_lembur = $data->jam_lembur * $karyawan->gaji_overtime;
+
+    //         $pph21_lama = $data->pph21;
+    //         $pph21baru = hitung_pph21(
+    //             $karyawan->gaji_bpjs,
+    //             $karyawan->ptkp,
+    //             $karyawan->potongan_JHT,
+    //             $karyawan->potongan_JP,
+    //             $karyawan->potongan_JKK,
+    //             $karyawan->potongan_JKM,
+    //             $karyawan->potongan_kesehatan,
+    //             $total_gaji_lembur,
+    //             $data->gaji_libur,
+    //             $data->bonus1x,
+    //             $data->tambahan_shift_malam
+    //         );
+    //         $data->pph21 = $pph21baru;
+    //         $data->total = $data->total -  $pph21_lama + $pph21baru;
+    //         if ($data->id_karyawan == 101) {
+
+    //             dd($data->id_karyawan, $data->total,  $pph21_lama, $pph21baru, $data->bonus1x);
+    //         }
+    //         $data->save();
+    //     }
+    // }
 
 
 
