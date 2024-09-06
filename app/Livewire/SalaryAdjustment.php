@@ -52,6 +52,7 @@ class SalaryAdjustment extends Component
             case "3":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     // ->whereNotIn('departemen', ['EXIM', 'GA'])
@@ -59,6 +60,7 @@ class SalaryAdjustment extends Component
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     // ->whereNotIn('departemen', ['EXIM', 'GA'])
@@ -93,12 +95,14 @@ class SalaryAdjustment extends Component
 
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
                     ->where('gaji_pokok', '<', 2200000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
                     ->where('gaji_pokok', '<', 2200000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -133,12 +137,14 @@ class SalaryAdjustment extends Component
             case "5":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
                     ->where('gaji_pokok', '<', 2300000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
                     ->where('gaji_pokok', '<', 2300000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -170,12 +176,14 @@ class SalaryAdjustment extends Component
             case "6":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
                     ->where('gaji_pokok', '<', 2400000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
                     ->where('gaji_pokok', '<', 2400000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -205,51 +213,31 @@ class SalaryAdjustment extends Component
                 break;
 
             case "7":
-                $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])->get();
+                // $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                //     ->where('gaji_pokok', '<', 2500000)
+                //     ->where('metode_penggajian', 'Perjam')
+                //     ->whereNot('gaji_pokok', 0)
+                //     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+                //     ->whereNotIn('department_id', [3, 5])->get();
 
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
+                $data2 = Karyawan::where(function ($query) use ($bulan7) {
+                    $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                        ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
+                })
+                    ->whereDate('gaji_pokok', '<', 2500000)
+                    ->where('gaji_pokok', '>', 0) // instead of `whereNot('gaji_pokok', 0)`
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
-                    ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
-                    ->when($this->search_id_karyawan, function ($query) {
-                        $query->where('id_karyawan', trim($this->search_id_karyawan));
-                    })
-
-                    ->when($this->search_company, function ($query) {
-                        $query->where('company_id', $this->search_company);
-                    })
-                    ->when($this->search_placement, function ($query) {
-                        $query->where('placement_id', $this->search_placement);
-                    })
-
-
-                    ->when($this->search_jabatan, function ($query) {
-                        $query->where('jabatan_id', $this->search_jabatan);
-                    })
-                    ->when($this->search_department, function ($query) {
-                        $query->where('department_id', $this->search_department);
-                    })
-                    // ->orderBy('tanggal_bergabung', 'desc')
-                    ->orderBy($this->columnName, $this->direction)
                     ->get();
-                $this->gaji_rekomendasi = 2500000;
-                break;
 
-            case "8":
-                $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
+                // $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                $data = Karyawan::where(function ($query) use ($bulan7) {
+                    $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                        ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
+                })
                     ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])->get();
-
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -397,6 +385,7 @@ class SalaryAdjustment extends Component
             case "3":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     // ->whereNotIn('departemen', ['EXIM', 'GA'])
@@ -404,6 +393,7 @@ class SalaryAdjustment extends Component
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
                     ->where('gaji_pokok', '<', 2100000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     // ->whereNotIn('departemen', ['EXIM', 'GA'])
@@ -438,12 +428,14 @@ class SalaryAdjustment extends Component
 
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
                     ->where('gaji_pokok', '<', 2200000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
                     ->where('gaji_pokok', '<', 2200000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -478,12 +470,14 @@ class SalaryAdjustment extends Component
             case "5":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
                     ->where('gaji_pokok', '<', 2300000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
                     ->where('gaji_pokok', '<', 2300000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -515,12 +509,14 @@ class SalaryAdjustment extends Component
             case "6":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
                     ->where('gaji_pokok', '<', 2400000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
                     ->where('gaji_pokok', '<', 2400000)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
@@ -550,15 +546,27 @@ class SalaryAdjustment extends Component
                 break;
 
             case "7":
-                $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])->get();
 
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                // $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                $data2 = Karyawan::where(function ($query) use ($bulan7) {
+                    $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                        ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
+                })
+                    ->whereDate('gaji_pokok', '<', 2500000)
+                    ->where('gaji_pokok', '>', 0) // instead of `whereNot('gaji_pokok', 0)`
+                    ->where('metode_penggajian', 'Perjam')
+                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+                    ->whereNotIn('department_id', [3, 5])
+                    ->get();
+
+                // $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                $data = Karyawan::where(function ($query) use ($bulan7) {
+                    $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                        ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
+                })
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
+                    ->where('metode_penggajian', 'Perjam')
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
                     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
@@ -586,42 +594,44 @@ class SalaryAdjustment extends Component
                 $this->gaji_rekomendasi = 2500000;
                 break;
 
-            case "8":
-                $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])->get();
+                // case "8":
+                // $data2 = Karyawan::where('tanggal_bergabung', '<=', Carbon::now()->subMonths(8))
+                //     ->where('gaji_pokok', '<', 2500000)
+                // ->where('metode_penggajian','Perjam')   
+                // ->whereNot('gaji_pokok', 0)
+                //     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+                //     ->whereNotIn('department_id', [3, 5])->get();
 
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])
-                    ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
-                    ->when($this->search_id_karyawan, function ($query) {
-                        $query->where('id_karyawan', trim($this->search_id_karyawan));
-                    })
+                // $data = Karyawan::where('tanggal_bergabung', '<=', Carbon::now()->subMonths(8))
+                //     ->where('gaji_pokok', '<', 2500000)
+                // ->where('metode_penggajian','Perjam')    
+                // ->whereNot('gaji_pokok', 0)
+                //     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+                //     ->whereNotIn('department_id', [3, 5])
+                //     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
+                //     ->when($this->search_id_karyawan, function ($query) {
+                //         $query->where('id_karyawan', trim($this->search_id_karyawan));
+                //     })
 
-                    ->when($this->search_company, function ($query) {
-                        $query->where('company_id', $this->search_company);
-                    })
-                    ->when($this->search_placement, function ($query) {
-                        $query->where('placement_id', $this->search_placement);
-                    })
+                //     ->when($this->search_company, function ($query) {
+                //         $query->where('company_id', $this->search_company);
+                //     })
+                //     ->when($this->search_placement, function ($query) {
+                //         $query->where('placement_id', $this->search_placement);
+                //     })
 
 
-                    ->when($this->search_jabatan, function ($query) {
-                        $query->where('jabatan_id', $this->search_jabatan);
-                    })
-                    ->when($this->search_department, function ($query) {
-                        $query->where('department_id', $this->search_department);
-                    })
-                    // ->orderBy('tanggal_bergabung', 'desc')
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate(10);
-                $this->gaji_rekomendasi = 2500000;
-                break;
+                //     ->when($this->search_jabatan, function ($query) {
+                //         $query->where('jabatan_id', $this->search_jabatan);
+                //     })
+                //     ->when($this->search_department, function ($query) {
+                //         $query->where('department_id', $this->search_department);
+                //     })
+                //     // ->orderBy('tanggal_bergabung', 'desc')
+                //     ->orderBy($this->columnName, $this->direction)
+                //     ->paginate(10);
+                // $this->gaji_rekomendasi = 2500000;
+                // break;
         }
 
         $jabatans = array();
