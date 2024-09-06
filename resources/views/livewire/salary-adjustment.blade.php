@@ -14,7 +14,7 @@
                         <option value="5">{{ __('5 Bulan') }}</option>
                         <option value="6">{{ __('6 Bulan') }}</option>
                         <option value="7">{{ __('7 Bulan') }}</option>
-                        <option value="8">{{ __('8 Bulan') }}</option>
+                        {{-- <option value="8">{{ __('8 Bulan') }}</option> --}}
                         {{-- <option value="9">{{ __('9 Bulan') }}</option> --}}
                     </select>
                 </div>
@@ -112,6 +112,8 @@
                                 {{ __('Jabatan') }}</th>
                             <th wire:click="sortColumnName('status_karyawan')">
                                 {{ __('Status') }}</th>
+                            <th>
+                                {{ __('Metode Penggajian') }}</th>
                             <th wire:click="sortColumnName('tanggal_bergabung')">
                                 {{ __('Tanggal Bergabung') }}</th>
                             <th wire:click="sortColumnName('tanggal_bergabung')">
@@ -132,6 +134,7 @@
                                 <td>{{ $d->department->nama_department }}</td>
                                 <td>{{ $d->jabatan->nama_jabatan }}</td>
                                 <td>{{ $d->status_karyawan }}</td>
+                                <td>{{ $d->metode_penggajian }}</td>
                                 <td>{{ format_tgl($d->tanggal_bergabung) }}</td>
                                 <td>{{ number_format(lama_bekerja($d->tanggal_bergabung, $today)) }}</td>
                                 <td>{{ number_format($d->gaji_pokok) }}</td>
