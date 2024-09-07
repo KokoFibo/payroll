@@ -546,13 +546,12 @@ class SalaryAdjustment extends Component
                 break;
 
             case "7":
-
                 // $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
                 $data2 = Karyawan::where(function ($query) use ($bulan7) {
                     $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
                         ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
                 })
-                    ->whereDate('gaji_pokok', '<', 2500000)
+                    ->where('gaji_pokok', '<', 2500000)
                     ->where('gaji_pokok', '>', 0) // instead of `whereNot('gaji_pokok', 0)`
                     ->where('metode_penggajian', 'Perjam')
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
@@ -644,7 +643,9 @@ class SalaryAdjustment extends Component
         $companies = array_merge($companies, $data2->pluck('company_id')->unique()->toArray());
         $placements = array_merge($placements, $data2->pluck('placement_id')->unique()->toArray());
 
-
+        // if ($this->pilihLamaKerja == 7) {
+        //     dd($data2);
+        // }
 
 
         return view('livewire.salary-adjustment', compact('data', 'departments', 'jabatans', 'companies', 'placements'));
