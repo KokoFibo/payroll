@@ -124,21 +124,14 @@ class SalaryAdjustmentExport implements FromView,  ShouldAutoSize, WithColumnFor
             case "7":
 
 
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                $data = Karyawan::where(function ($query) use ($bulan7) {
+                    $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
+                        ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
+                })
                     ->where('gaji_pokok', '<', 2500000)
                     ->whereNot('gaji_pokok', 0)
-                    ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-                    ->whereNotIn('department_id', [3, 5])
-                    ->when($this->search_placement, function ($query) {
-                        $query->where('placement_id', $this->search_placement);
-                    })
-                    ->get();
-                break;
+                    ->where('metode_penggajian', 'Perjam')
 
-            case "8":
-                $data = Karyawan::whereMonth('tanggal_bergabung', $bulan8->format('m'))
-                    ->where('gaji_pokok', '<', 2500000)
-                    ->whereNot('gaji_pokok', 0)
                     ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
                     ->whereNotIn('department_id', [3, 5])
                     ->when($this->search_placement, function ($query) {
