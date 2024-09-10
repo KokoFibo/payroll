@@ -112,7 +112,7 @@
                                 {{ __('Jabatan') }}</th>
                             <th wire:click="sortColumnName('status_karyawan')">
                                 {{ __('Status') }}</th>
-                            <th>
+                            <th wire:click="sortColumnName('metode_penggajian')">
                                 {{ __('Metode Penggajian') }}</th>
                             <th wire:click="sortColumnName('tanggal_bergabung')">
                                 {{ __('Tanggal Bergabung') }}</th>
