@@ -89,7 +89,7 @@
                                     wire:click="excel">{{ __('Excel') }}</button>
                             </th>
                             <th><button type='button' class="btn btn-warning nightowl-daylight" wire:click="adjust"
-                                    wire:confirm="Are you sure you want to delete this post?">{{ __('Sesuaikan Semua') }}</button>
+                                    wire:confirm="Apakah yakin semuanya akan ditambah 100 ribu?">{{ __('+ Rp.100 Ribu') }}</button>
                             </th>
                             <th></th>
                             <th></th>

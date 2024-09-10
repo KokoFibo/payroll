@@ -271,7 +271,8 @@ class SalaryAdjustment extends Component
         $cx = 0;
         foreach ($data as $d) {
             $k = Karyawan::find($d->id);
-            $k->gaji_pokok = $this->gaji_rekomendasi;
+            // $k->gaji_pokok = $this->gaji_rekomendasi;
+            $k->gaji_pokok = $k->gaji_pokok + 100000;
             $k->save();
             $cx++;
         }
