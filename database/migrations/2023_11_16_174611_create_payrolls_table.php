@@ -71,6 +71,9 @@ return new class extends Migration
             $table->string('status_karyawan');
             $table->string('ptkp');
             $table->integer('pph21')->nullable();
+            $table->integer('total_bpjs')->nullable();
+
+
             $table->timestamps();
         });
     }
