@@ -172,7 +172,13 @@ class Test extends Component
     // $datas = Karyawan::whereNot('gaji_pokok', '>=', 4000000)->count();
     // $datas = Karyawan::count();
     // dd($datas);
-    dd($this->getDataUser(8194));
+    // dd($this->getDataUser(8194));
+
+    $data = Karyawan::where('id_karyawan', 8195)->first();
+    // dd($data);
+    $new_data = $data->replicate();
+    $new_data->id_karyawan = 9999;
+    $new_data->save();
 
     return view('livewire.test');
   }
