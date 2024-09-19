@@ -149,6 +149,21 @@ class Test extends Component
       title: 'Data Berhasil di delete : ' . $datas_count . ' data, ' . $cx . ' users',
     );
   }
+  public function getDataUser($id)
+  {
+    // Find the user by ID
+    $user = User::where('username', $id)->first();
+
+    // Check if the user exists
+    if (!$user) {
+      return response()->json([
+        'message' => 'User not found'
+      ], 404);
+    }
+
+    // Return user data
+    return response()->json($user, 200);
+  }
 
   public function render()
   {
@@ -157,6 +172,8 @@ class Test extends Component
     // $datas = Karyawan::whereNot('gaji_pokok', '>=', 4000000)->count();
     // $datas = Karyawan::count();
     // dd($datas);
+    dd($this->getDataUser(8194));
+
     return view('livewire.test');
   }
 }
