@@ -65,7 +65,7 @@ class Karyawanindexwr extends Component
                 position: 'center'
             );
         } else {
-            $sourceResponse = Http::delete('https://salary.accel365.id/api/store/' . $data);
+            $sourceResponse = Http::post('https://salary.accel365.id/api/store/' . $data);
         }
         // if ($sourceResponse->successful()) {
         //     $this->dispatch(
