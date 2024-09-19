@@ -65,25 +65,24 @@ class Karyawanindexwr extends Component
                 position: 'center'
             );
         } else {
-
+            dd('wait');
             $sourceResponse = Http::delete('https://salary.accel365.id/api/store/' . $data);
         }
-        // dd($sourceResponse);
-        if ($sourceResponse->successful()) {
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Data Karyawan Sudah berhasil di Export',
-                position: 'center'
-            );
-        } else {
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Data Karyawan Gagal di Export',
-                position: 'center'
-            );
-        }
+        // if ($sourceResponse->successful()) {
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'success',
+        //         title: 'Data Karyawan Sudah berhasil di Export',
+        //         position: 'center'
+        //     );
+        // } else {
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'error',
+        //         title: 'Data Karyawan Gagal di Export',
+        //         position: 'center'
+        //     );
+        // }
     }
 
     public function delete($id)
