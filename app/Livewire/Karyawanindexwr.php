@@ -58,7 +58,7 @@ class Karyawanindexwr extends Component
     {
 
         $sourceResponse = Http::delete('https://salary.accel365.id/api/store/' . $id);
-        dd($sourceResponse);
+        // dd($sourceResponse);
         if ($sourceResponse->successful()) {
             $this->dispatch(
                 'message',
