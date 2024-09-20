@@ -61,6 +61,21 @@ class ApiController extends Controller
         // Return user data
         return response()->json($user, 200);
     }
+    public function getDataKaryawan($id)
+    {
+        // Find the user by ID
+        $karyawan = Karyawan::where('username', $id)->first();
+
+        // Check if the user exists
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Return user data
+        return response()->json($karyawan, 200);
+    }
 
     public function move_data($id)
     {

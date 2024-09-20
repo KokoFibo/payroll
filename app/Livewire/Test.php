@@ -17,6 +17,7 @@ use App\Models\Personnelrequestform;
 use App\Models\Requester;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class Test extends Component
 {
@@ -174,11 +175,14 @@ class Test extends Component
     // dd($datas);
     // dd($this->getDataUser(8194));
 
-    $data = Karyawan::where('id_karyawan', 8195)->first();
-    // dd($data);
-    $new_data = $data->replicate();
-    $new_data->id_karyawan = 9999;
-    $new_data->save();
+    $resp = Http::get('https://payroll.accel365.id/api/getuser/8195');
+    $data = $resp->json();
+
+
+    // $data = Karyawan::where('id_karyawan', 8195)->first();
+    // $new_data = $data->replicate();
+    // $new_data->id_karyawan = 9999;
+    // $new_data->save();
 
     return view('livewire.test');
   }
