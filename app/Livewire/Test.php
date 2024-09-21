@@ -174,9 +174,26 @@ class Test extends Component
     // $datas = Karyawan::count();
     // dd($datas);
     // dd($this->getDataUser(8194));
+    $id = 8192;
+    $respKaryawan = Http::get('https://payroll.accel365.id/api/getkaryawan/' . $id);
+    $dataKaryawan = $respKaryawan->json();
 
-    $resp = Http::get('https://payroll.accel365.id/api/getuser/8195');
-    $data = $resp->json();
+    $respUser = Http::get('https://payroll.accel365.id/api/getuser/' . $id);
+    $dataUser = $respUser->json();
+
+    if ($respKaryawan->successful() && $respUser->successful()) {
+
+      // dd('berhasil');
+      $karyawan = Karyawan::create($dataKaryawan);
+      $user = User::create($dataUser);
+      return response()->json([
+        'message' => 'Karyawan created successfully!'
+
+      ], 201);
+    } else {
+      return response()->json(['error' => 'Data karyawan ini tidak dalam database'], 500);
+    }
+
 
 
     // $data = Karyawan::where('id_karyawan', 8195)->first();
