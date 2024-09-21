@@ -56,36 +56,25 @@ class Karyawanindexwr extends Component
 
     public function export($id)
     {
-        $data = Karyawan::where('id_karyawan', $id)->first();
-        if (!$data) {
+        if ($id) {
+
+            $respStore = Http::get('https://salary.accel365.id/api/store/' . $id);
+            if ($respStore->successful()) {
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Data Sudah berhasil di copy ke OS',
+                    position: 'center'
+                );
+            }
+        } else {
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Data Karyawan Tidak ada',
+                title: 'ID ini tidak ada dalam database',
                 position: 'center'
             );
-        } else {
-            // $sourceResponse = Http::post('https://salary.accel365.id/api/store/' . $data);
-            $sourceResponse = Http::post('https://salary.accel365.id/api/store/', [
-                'id_karyawan' => 8192,
-                'nama' => 'john doe',
-            ]);
         }
-        // if ($sourceResponse->successful()) {
-        //     $this->dispatch(
-        //         'message',
-        //         type: 'success',
-        //         title: 'Data Karyawan Sudah berhasil di Export',
-        //         position: 'center'
-        //     );
-        // } else {
-        //     $this->dispatch(
-        //         'message',
-        //         type: 'error',
-        //         title: 'Data Karyawan Gagal di Export',
-        //         position: 'center'
-        //     );
-        // }
     }
 
     public function delete($id)

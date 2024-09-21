@@ -8,35 +8,30 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function storeKaryawan(Request $request)
-    {
-        // $id = 8195;
-        // $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        if (!$request) {
-            return response()->json([
-                'message' => 'User or Karyawan not found'
-            ], 404);
-        } else {
-            $newKaryawan = $request->replicate();
-            $newKaryawan->save();
-            return response()->json('SUKSES BRO', 200);
-        }
-    }
+
     public function store($id)
     {
-        // $id = 8195;
-        $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        $user = User::where('username', $id)->first();
-        if (!$karyawan || !$user) {
-            return response()->json([
-                'message' => 'User or Karyawan not found'
-            ], 404);
+
+        $respKaryawan = Http::get('https://salary.accel365.id/api/getkaryawan/' . $id);
+        $dataKaryawan = $respKaryawan->json();
+
+        $respUser = Http::get('https://salary.accel365.id/api/getuser/' . $id);
+        $dataUser = $respUser->json();
+
+        if ($respKaryawan->successful() && $respUser->successful()) {
+
+            // dd('berhasil');
+            $karyawan = Karyawan::create($dataKaryawan);
+            $user = User::create($dataUser);
+            return response()->json(
+                [
+                    'message' => 'Karyawan created successfully!',
+                    'karyawan' => $karyawan
+                ],
+                200
+            );
         } else {
-            $newKaryawan = $karyawan->replicate();
-            $newUser = $user->replicate();
-            $newKaryawan->save();
-            $newUser->save();
-            return response()->json('SUKSES BRO', 200);
+            return response()->json(['error' => 'Data karyawan ini tidak dalam database'], 500);
         }
     }
 
