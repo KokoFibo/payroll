@@ -76,6 +76,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\Requesterwr;
+use App\Livewire\Rubahid;
 use App\Livewire\Timeoffapprovewr;
 use App\Livewire\Timeoffwr;
 use App\Livewire\Timeoutrequsterwr;
@@ -264,6 +265,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/changefield', ChangeField::class)->name('changefield');
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
                             Route::get('/department', Departmentwr::class);
+                            Route::get('/rubahid', Rubahid::class);
 
 
 

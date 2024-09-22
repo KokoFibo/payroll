@@ -28,6 +28,7 @@ class Test extends Component
   public $year;
   public $today;
   public $cx;
+  public $idLama, $idBaru;
 
 
 
@@ -166,40 +167,39 @@ class Test extends Component
     return response()->json($user, 200);
   }
 
+  public function rubah_id()
+  {
+    // dd($this->idBaru, $this->idLama);
+
+    $karyawan = Karyawan::where('id_karyawan', $this->idLama)->first();
+    $user = User::where('username', $this->idLama)->first();
+
+    if ($user && $karyawan) {
+
+
+      $karyawan->id_karyawan = $this->idBaru;
+      $user->username = $this->idBaru;
+      $karyawan->save();
+      $user->save();
+      $this->dispatch(
+        'message',
+        type: 'success',
+        title: 'ID Karyawan dan user Sudah di Update',
+        position: 'center'
+      );
+    } else {
+      $this->dispatch(
+        'message',
+        type: 'error',
+        title: 'ID Karyawan tidak ditemukan',
+        position: 'center'
+      );
+    }
+  }
+
   public function render()
   {
 
-    // $datas = Karyawan::whereNot('gaji_pokok', '<', 4000000)->count();
-    // $datas = Karyawan::whereNot('gaji_pokok', '>=', 4000000)->count();
-    // $datas = Karyawan::count();
-    // dd($datas);
-    // dd($this->getDataUser(8194));
-    $id = 8192;
-    $respKaryawan = Http::get('https://payroll.accel365.id/api/getkaryawan/' . $id);
-    $dataKaryawan = $respKaryawan->json();
-
-    $respUser = Http::get('https://payroll.accel365.id/api/getuser/' . $id);
-    $dataUser = $respUser->json();
-
-    if ($respKaryawan->successful() && $respUser->successful()) {
-
-      // dd('berhasil');
-      $karyawan = Karyawan::create($dataKaryawan);
-      $user = User::create($dataUser);
-      return response()->json([
-        'message' => 'Karyawan created successfully!'
-
-      ], 201);
-    } else {
-      return response()->json(['error' => 'Data karyawan ini tidak dalam database'], 500);
-    }
-
-
-
-    // $data = Karyawan::where('id_karyawan', 8195)->first();
-    // $new_data = $data->replicate();
-    // $new_data->id_karyawan = 9999;
-    // $new_data->save();
 
     return view('livewire.test');
   }
