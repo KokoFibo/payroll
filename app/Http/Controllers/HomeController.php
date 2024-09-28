@@ -132,8 +132,15 @@ class HomeController extends Controller
 
 
                 return view('dashboard', compact([
-                    'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
+                    'karyawan_baru_mtd',
+                    'karyawan_resigned_mtd',
+                    'karyawan_blacklist_mtd',
+                    'karyawan_aktif_mtd',
+                    'jumlah_karyawan_baru_hari_ini',
+                    'jumlah_karyawan_Resigned_hari_ini',
+                    'jumlah_karyawan_blacklist_hari_ini',
+                    'belum_isi_etnis',
+                    'belum_isi_kontak_darurat'
                 ]));
             } else {
                 return view('user_dashboard');
@@ -147,8 +154,15 @@ class HomeController extends Controller
 
 
                 return view('dashboard', compact([
-                    'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
+                    'karyawan_baru_mtd',
+                    'karyawan_resigned_mtd',
+                    'karyawan_blacklist_mtd',
+                    'karyawan_aktif_mtd',
+                    'jumlah_karyawan_baru_hari_ini',
+                    'jumlah_karyawan_Resigned_hari_ini',
+                    'jumlah_karyawan_blacklist_hari_ini',
+                    'belum_isi_etnis',
+                    'belum_isi_kontak_darurat'
                 ]));
             }
             $user->device = 0;
@@ -176,7 +190,6 @@ class HomeController extends Controller
             $data = Yfrekappresensi::where('user_id', $user_id)
                 ->orderBy('date', 'desc')
                 ->get();
-
             foreach ($data as $d) {
                 if ($d->no_scan == null) {
                     $tgl = tgl_doang($d->date);
