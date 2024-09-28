@@ -201,7 +201,6 @@ class UserMobile extends Component
 
 
         $this->clear_data();
-
         $data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
         if ($data_karyawan != null) {
             if ($data_karyawan->kontak_darurat && $data_karyawan->hp1)  $this->isEmergencyContact = true;

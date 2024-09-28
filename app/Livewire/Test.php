@@ -29,6 +29,7 @@ class Test extends Component
   public $today;
   public $cx;
   public $idLama, $idBaru;
+  public $karyawan_id;
 
 
 
@@ -197,8 +198,36 @@ class Test extends Component
     }
   }
 
+  public function changePresensiId()
+  {
+    $id = $this->karyawan_id;
+    $karyawan = Karyawan::where('id_karyawan', $id)->first();
+    if ($karyawan) {
+      $presensi = Yfrekappresensi::where('user_id', $karyawan->id_karyawan)->get();
+      foreach ($presensi as $p) {
+        $p->karyawan_id = $karyawan->id;
+        $p->save();
+      }
+      $this->dispatch(
+        'message',
+        type: 'success',
+        title: 'ID Karyawan di Update',
+        position: 'center'
+      );
+    } else {
+      $this->dispatch(
+        'message',
+        type: 'error',
+        title: 'ID Karyawan tidak ditemukan',
+        position: 'center'
+      );
+    }
+  }
+
   public function render()
   {
+
+
 
 
     return view('livewire.test');
