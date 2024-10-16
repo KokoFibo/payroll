@@ -5,17 +5,20 @@ use App\Livewire\Terwr;
 use App\Models\Payroll;
 use App\Livewire\DataLog;
 use App\Livewire\Profile;
+use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
 use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
+use App\Livewire\Headcount;
 use App\Livewire\Jabatanwr;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Rubahidwr;
+use App\Livewire\Timeoffwr;
 use App\Livewire\AddCompany;
 use App\Livewire\BankReport;
 use App\Livewire\Karyawanwr;
@@ -25,12 +28,14 @@ use App\Livewire\AddPresensi;
 use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
+use App\Livewire\Requesterwr;
 use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
 use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
+use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
@@ -50,10 +55,12 @@ use App\Livewire\MovePresensiData;
 use App\Livewire\Presensidetailwr;
 use App\Livewire\Removepresensiwr;
 use App\Livewire\SalaryAdjustment;
+use App\Livewire\Timeoffapprovewr;
 use App\Livewire\Updatekaryawanwr;
 use App\Livewire\ApplicantDiterima;
 use App\Livewire\KaryawanReinstate;
 use App\Livewire\Karyawansettingwr;
+use App\Livewire\Timeoutrequsterwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\PermohonanPersonnel;
@@ -74,12 +81,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Cutirequestwr;
-use App\Livewire\Requesterwr;
-use App\Livewire\Rubahid;
-use App\Livewire\Timeoffapprovewr;
-use App\Livewire\Timeoffwr;
-use App\Livewire\Timeoutrequsterwr;
 
 // Middleware
 Auth::routes([
@@ -202,6 +203,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
+                    Route::get('/headcount', Headcount::class);
+
 
 
 
