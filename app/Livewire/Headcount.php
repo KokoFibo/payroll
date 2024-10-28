@@ -388,9 +388,7 @@ class Headcount extends Component
         $nama_file = 'Yifang OS Headcount for ' . monthname($this->month) . ' ' . $this->year . '.xlsx';
 
 
-        // dd($this->month, $this->year, $nama_file);
         return Excel::download(new HeadcountExport($this->month, $this->year), $nama_file);
-        // return Excel::download(new HeadcountExport($this->month, $this->year));
     }
 
     public function render()
