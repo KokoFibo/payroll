@@ -20,11 +20,9 @@
                 </select>
                 <div class="d-flex justify-content-between">
                     <button wire:click='excel' class="btn btn-success mt-3">Proses</button>
-
                     <a href="/payroll"><button class="btn btn-dark mt-3">Back to Payroll</button></a>
-
-
                 </div>
+
                 <div class="text-center">
                     <button wire:loading wire:target='excel' class="btn btn-primary mt-3 mx-auto" type="button">
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
