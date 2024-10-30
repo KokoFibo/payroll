@@ -81,6 +81,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Gantipassworddeveloper;
 
 // Middleware
 Auth::routes([
@@ -269,6 +270,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
                             Route::get('/department', Departmentwr::class);
                             Route::get('/rubahid', Rubahid::class);
+                            Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
 
 
 
