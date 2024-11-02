@@ -58,8 +58,16 @@ class Test extends Component
 
   public function render()
   {
-    $this->passBaru = '';
+    $second_out = '23:31';
+    $perJam = 60;
+    if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
+      $t1 = strtotime('00:00:00');
+      $t2 = strtotime($second_out);
 
+      $diff = gmdate('H:i:s', $t1 - $t2);
+      $late = ceil(hoursToMinutes($diff) / $perJam);
+    }
+    dd($late);
 
 
 
