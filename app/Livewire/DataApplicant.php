@@ -9,6 +9,7 @@ use App\Models\Karyawan;
 use Livewire\WithPagination;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 
@@ -74,11 +75,30 @@ class DataApplicant extends Component
         $this->status = $data->status;
     }
 
+
+
     #[On('terima-confirmed')]
     public function diterima()
     {
         // dd($this->terima_id);
         $id = $this->terima_id;
+        $hasil_check = check_resigned_blacklist($id);
+        // dd($hasil_check);
+        if ($hasil_check == 1) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Karyawan ini sudah pernah RESIGNED',
+            );
+            return;
+        } else if ($hasil_check == 2) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Karyawan ini sudah pernah Blacklist',
+            );
+            return;
+        }
         $dataApplicant = Applicantdata::find($id);
         $dataKaryawan = Karyawan::where('id_file_karyawan', $dataApplicant->applicant_id)->first();
         if ($dataKaryawan != null) {
