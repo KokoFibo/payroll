@@ -81,6 +81,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Deleteduplicatepresensi;
 use App\Livewire\Gantipassworddeveloper;
 use App\Livewire\Movedata;
 
@@ -274,6 +275,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/rubahid', Rubahid::class);
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
                             Route::get('/movedata', Movedata::class);
+                            Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
 
 
 

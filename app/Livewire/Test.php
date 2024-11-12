@@ -90,9 +90,27 @@ class Test extends Component
 
   public function render()
   {
-    // $apiUrl = "https://payroll.yifang.co.id/api/getkaryawan/9427";
-    $id = 19425;
-    dd($this->getDataKaryawanApi("https://payroll.yifang.co.id/api/getkaryawan/" . $id));
+
+    $user_ids = Yfrekappresensi::whereYear('date', Carbon::now()->year)
+      ->whereMonth('date', Carbon::now()->month)
+      ->distinct()
+      ->pluck('user_id'); // Retrieves only unique user IDs
+
+    // $duplicates = DB::table('yfrekappresensis')
+    //   ->select('user_id', 'date', DB::raw('COUNT(*) as count'))
+    //   ->whereYear('date', Carbon::now()->year)
+    //   ->whereMonth('date', Carbon::now()->month)
+    //   ->groupBy('user_id', 'date')
+    //   ->having('count', '>', 1)
+    //   ->get();
+
+    // if ($duplicates->isNotEmpty()) {
+    //   dd($duplicates);
+    // } else {
+    //   dd('No duplicate records found for the current month and year.');
+    // }
+
+
 
 
 
