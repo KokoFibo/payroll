@@ -9,18 +9,19 @@ use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Department;
 use App\Models\Jamkerjaid;
+use App\Models\Rekapbackup;
 use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
-use App\Models\Department;
 use App\Models\Liburnasional;
-use App\Models\Personnelrequestform;
-use App\Models\Placement;
-use App\Models\Rekapbackup;
-use App\Models\Requester;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class Test extends Component
 {
@@ -56,20 +57,42 @@ class Test extends Component
     );
   }
 
+  public function getDataKaryawanApi($apiUrl)
+  {
+    try {
+      // Make the GET request
+      $response = Http::get($apiUrl);
+
+      // Check if the request was successful
+      if ($response->successful()) {
+        // Get the response data
+        $data = $response->json();
+
+        // Return or process the data
+        return $data;
+      } else {
+        // Handle request errors
+        return [
+          'status' => 'error',
+          'message' => 'Failed to fetch data from the API',
+          'error' => $response->body()
+        ];
+      }
+    } catch (\Exception $e) {
+      // Handle exceptions
+      return [
+        'status' => 'error',
+        'message' => 'An error occurred',
+        'error' => $e->getMessage()
+      ];
+    }
+  }
+
   public function render()
   {
-    $second_out = '23:31';
-    $perJam = 60;
-    if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59')) {
-      $t1 = strtotime('00:00:00');
-      $t2 = strtotime($second_out);
-
-      $diff = gmdate('H:i:s', $t1 - $t2);
-      $late = ceil(hoursToMinutes($diff) / $perJam);
-    }
-    dd($late);
-
-
+    // $apiUrl = "https://payroll.yifang.co.id/api/getkaryawan/9427";
+    $id = 19425;
+    dd($this->getDataKaryawanApi("https://payroll.yifang.co.id/api/getkaryawan/" . $id));
 
 
 

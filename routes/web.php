@@ -82,6 +82,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Gantipassworddeveloper;
+use App\Livewire\Movedata;
 
 // Middleware
 Auth::routes([
@@ -205,6 +206,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
                     Route::get('/headcount', Headcount::class);
+                    Route::get('/movedata', Movedata::class);
 
 
 

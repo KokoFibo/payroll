@@ -22,7 +22,40 @@ use App\Models\Yfrekappresensi;
 use App\Models\Timeoffrequester;
 use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+
+
+function getDataApi($apiUrl)
+{
+    try {
+        // Make the GET request
+        $response = Http::get($apiUrl);
+
+        // Check if the request was successful
+        if ($response->successful()) {
+            // Get the response data
+            $data = $response->json();
+
+            // Return or process the data
+            return $data;
+        } else {
+            // Handle request errors
+            return [
+                'status' => 'error',
+                'message' => 'Failed to fetch data from the API',
+                'error' => $response->body()
+            ];
+        }
+    } catch (\Exception $e) {
+        // Handle exceptions
+        return [
+            'status' => 'error',
+            'message' => 'An error occurred',
+            'error' => $e->getMessage()
+        ];
+    }
+}
 
 function check_resigned_blacklist($id)
 {
