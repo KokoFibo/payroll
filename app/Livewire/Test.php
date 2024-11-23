@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use App\Models\Ter;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Jabatan;
 use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
@@ -88,31 +90,56 @@ class Test extends Component
     }
   }
 
+  public function getJabatan_id($jabatan)
+  {
+    if ($jabatan) {
+      $data = Jabatan::where('nama_jabatan', $jabatan)->first();
+      // dd($data->id);
+      return $data->id;
+    }
+    return 0;
+  }
+  public function getCompany_id($company)
+  {
+    if ($company) {
+      $data = Company::where('company_name', $company)->first();
+      return $data->id;
+    }
+    return 0;
+  }
+  public function getPlacement_id($placement)
+  {
+    if ($placement) {
+      if ($placement == 'YCME') return 102;
+      if ($placement == 'YEV SMOOT') return 10;
+      if ($placement == 'YEV OFFERO') return 9;
+      if ($placement == 'YEV ELEKTRONIK') return 101;
+      $data = Placement::where('placement_name', $placement)->first();
+      return $data->id;
+    }
+    return 0;
+  }
+
+  public function getDepartment_id($department)
+  {
+    if ($department) {
+      $data = Department::where('nama_department', $department)->first();
+      return $data->id;
+    }
+    return 0;
+  }
+
   public function render()
   {
-
-    $user_ids = Yfrekappresensi::whereYear('date', Carbon::now()->year)
-      ->whereMonth('date', Carbon::now()->month)
-      ->distinct()
-      ->pluck('user_id'); // Retrieves only unique user IDs
-
-    // $duplicates = DB::table('yfrekappresensis')
-    //   ->select('user_id', 'date', DB::raw('COUNT(*) as count'))
-    //   ->whereYear('date', Carbon::now()->year)
-    //   ->whereMonth('date', Carbon::now()->month)
-    //   ->groupBy('user_id', 'date')
-    //   ->having('count', '>', 1)
-    //   ->get();
-
-    // if ($duplicates->isNotEmpty()) {
-    //   dd($duplicates);
-    // } else {
-    //   dd('No duplicate records found for the current month and year.');
-    // }
-
-
-
-
+    $data = Payroll::all();
+    foreach ($data as $d) {
+      $d->jabatan_id = $this->getJabatan_id($d->jabatan);
+      $d->company_id = $this->getCompany_id($d->company);
+      $d->placement_id = $this->getPlacement_id($d->placement);
+      $d->department_id = $this->getDepartment_id($d->departemen);
+      $d->save();
+    }
+    dd('done');
 
     return view('livewire.test');
   }
