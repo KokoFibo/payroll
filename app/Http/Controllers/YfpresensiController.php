@@ -402,6 +402,7 @@ class YfpresensiController extends Controller
                 ];
             }
         }
+        dd($Yfpresensidata[0]);
         try {
             foreach (array_chunk($Yfpresensidata, 200) as $item) {
                 Yfpresensi::insert($item);
