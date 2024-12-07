@@ -83,7 +83,9 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Deleteduplicatepresensi;
 use App\Livewire\Gantipassworddeveloper;
+use App\Livewire\Infokaryawan;
 use App\Livewire\Movedata;
+use Google\Service\Forms\Info;
 
 // Middleware
 Auth::routes([
@@ -167,6 +169,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/iuranlocker', IuranLocker::class);
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
                 Route::get('/kview', [KviewController::class, 'index']);
+                Route::get('/infokaryawan', Infokaryawan::class);
 
 
                 // YF PRESENSI
