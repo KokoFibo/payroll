@@ -109,7 +109,6 @@
             @endif
         </div>
 
-
         <div>
             <select class="form-select" wire:model.live="perpage">
                 {{-- <option selected>Open this select menu</option> --}}
@@ -258,6 +257,13 @@
                                         </td>
                                         <td>{{ $data->user_id }}</td>
                                         <td>{{ $data->karyawan->nama }}</td>
+
+                                        {{-- @if (is_libur_nasional($data->date) || is_sunday($data->date))
+                                            <td class="table-success">{{ $data->karyawan->nama }}</td>
+                                        @else
+                                            <td>{{ $data->karyawan->nama }}</td>
+                                        @endif --}}
+
 
 
                                         <td>{{ $data->karyawan->metode_penggajian }}</td>
