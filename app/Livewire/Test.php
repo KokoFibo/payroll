@@ -131,15 +131,8 @@ class Test extends Component
 
   public function render()
   {
-    $data = Payroll::all();
-    foreach ($data as $d) {
-      $d->jabatan_id = $this->getJabatan_id($d->jabatan);
-      $d->company_id = $this->getCompany_id($d->company);
-      $d->placement_id = $this->getPlacement_id($d->placement);
-      $d->department_id = $this->getDepartment_id($d->departemen);
-      $d->save();
-    }
-    dd('done');
+    $data = Karyawan::where('nomor_rekening', '')->count();
+    dd($data);
 
     return view('livewire.test');
   }
