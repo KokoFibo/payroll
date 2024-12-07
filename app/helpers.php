@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 
+
 function getDataApi($apiUrl)
 {
     try {
