@@ -549,23 +549,12 @@ class Yfpresensiindexwr extends Component
         // fil
 
         if ($this->is_noscan) {
-            // Fetch data where 'no_scan' is 'No Scan'
-            $datas = Yfrekappresensi::select([
-                'yfrekappresensis.*',
-                'karyawans.nama',
-                'karyawans.department_id',
-                'karyawans.jabatan_id'
-            ])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id', 'karyawans.jabatan_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->where('no_scan', 'No Scan')
                 ->paginate($this->perpage);
         } elseif ($this->is_kosong) {
-            // Fetch data where all attendance fields are null
-            $datas = Yfrekappresensi::select([
-                'yfrekappresensis.*',
-                'karyawans.nama',
-                'karyawans.department_id'
-            ])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->whereNull('first_in')
                 ->whereNull('first_out')
@@ -575,42 +564,44 @@ class Yfpresensiindexwr extends Component
                 ->whereNull('overtime_out')
                 ->paginate($this->perpage);
         } else {
-            // General case with ordering, searching, and filtering
-            $datas = Yfrekappresensi::select([
-                'yfrekappresensis.*',
-                'karyawans.nama',
-                'karyawans.jabatan_id'
-            ])
+            $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.jabatan_id'])
                 ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
                 ->join('jabatans', 'karyawans.jabatan_id', '=', 'jabatans.id')
+
                 ->orderBy($this->columnName, $this->direction)
-                ->orderBy('user_id', 'asc') // Optional additional sorting
-                ->orderBy('date', 'asc') // Optional additional sorting
-
-
-                ->when(empty($this->search), function ($query) {
-
-                    // Filter by date when no search term is provided
+                // hilangin ini kalau ngaco            
+                ->orderBy('user_id', 'asc')
+                ->orderBy('date', 'asc')
+                ->when($this->search == "", function ($query) {
+                    $query
+                        ->whereDate('date',  $this->tanggal);
                 })
-                ->when(!empty($this->search), function ($query) {
-                    // Filter by month and year when search term is provided
-                    $query->whereMonth('date', $this->bulan)
+                ->when($this->search, function ($query) {
+                    $query
+                        // ->whereDate('date',  $this->tanggal);
+                        // kedua ini diatur tergantung kebutuhan
+                        ->whereMonth('date', $this->bulan)
                         ->whereYear('date', $this->tahun);
                 })
 
+
+
                 ->where(function ($query) {
-                    // Apply additional filters based on the search term
-                    $query->when(!empty($this->search), function ($subQuery) {
-                        $search = trim($this->search);
-                        $subQuery->where('nama', 'LIKE', "%$search%")
-                            ->orWhere('user_id', $search)
-                            ->orWhere('nama_jabatan', 'LIKE', "%$search%")
-                            ->orWhere('placement_id', 'LIKE', "%$search%")
-                            ->orWhere('shift', 'LIKE', "%$search%")
-                            ->orWhere('metode_penggajian', 'LIKE', "%$search%");
+                    $query->when($this->search, function ($subQuery) {
+                        $subQuery
+                            ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('user_id', trim($this->search))
+                            // ->orWhere('departemen', 'LIKE', '%' . trim($this->search) . '%')
+                            // ->orWhere('jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('nama_jabatan', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('placement_id', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('shift', 'LIKE', '%' . trim($this->search) . '%')
+                            ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
+                        // ->whereMonth('date', $this->month)
+                        // ->whereYear('date', $this->year);
                     });
                 })
-
                 ->paginate($this->perpage);
         }
 
