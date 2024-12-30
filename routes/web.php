@@ -9,6 +9,7 @@ use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
+use App\Livewire\Movedata;
 use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
@@ -33,7 +34,9 @@ use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
+use App\Livewire\Infokaryawan;
 use App\Livewire\UserNotFound;
+use Google\Service\Forms\Info;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
@@ -49,6 +52,7 @@ use App\Livewire\Placementreport;
 use App\Livewire\UpdatedPresensi;
 use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
+use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\MovePresensiData;
@@ -63,12 +67,15 @@ use App\Livewire\Karyawansettingwr;
 use App\Livewire\Timeoutrequsterwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
+use App\Livewire\Checkabsensitanpaid;
 use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerControler;
 use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
+use App\Livewire\Gantipassworddeveloper;
 use App\Http\Controllers\KviewController;
+use App\Livewire\Deleteduplicatepresensi;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
@@ -81,12 +88,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Checkabsensitanpaid;
-use App\Livewire\Deleteduplicatepresensi;
-use App\Livewire\Gantipassworddeveloper;
-use App\Livewire\Infokaryawan;
-use App\Livewire\Movedata;
-use Google\Service\Forms\Info;
 
 // Middleware
 Auth::routes([
@@ -280,7 +281,9 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
-                            Route::get('cekabsensitanpaid', Checkabsensitanpaid::class);
+                            Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
+                            Route::get('/datatidaklengkap', Datatidaklengkap::class);
+
 
 
 

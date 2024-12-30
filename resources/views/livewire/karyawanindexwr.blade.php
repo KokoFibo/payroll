@@ -28,6 +28,11 @@
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
                     <div class="col-12 col-xl-3">
                         <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
+                        @if (isDataUtamaLengkap() > 0)
+                            <a href="/datatidaklengkap"><button class="btn btn-danger">Data Utama Tidak
+                                    Lengkap</button></a>
+                        @endif
+
                     </div>
                     <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
                         class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2  col-xl-9">
