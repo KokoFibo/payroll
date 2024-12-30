@@ -183,6 +183,11 @@
 
                 <div class="d-flex gap-2" wire:loading.class='invisible'>
                     @if (auth()->user()->role == 8)
+                        <a href="/cekabsensitanpaid"><button
+                                class="btn btn-primary nightowl-daylight">{{ __('Cek Absensi Tanpa ID') }}</button></a>
+
+                        <button wire:click="clear_lock()"
+                            class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')"
                             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>

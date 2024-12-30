@@ -81,6 +81,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Checkabsensitanpaid;
 use App\Livewire\Deleteduplicatepresensi;
 use App\Livewire\Gantipassworddeveloper;
 use App\Livewire\Infokaryawan;
@@ -279,6 +280,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
+                            Route::get('cekabsensitanpaid', Checkabsensitanpaid::class);
 
 
 
