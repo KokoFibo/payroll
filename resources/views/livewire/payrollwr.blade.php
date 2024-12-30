@@ -201,10 +201,19 @@
 
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
                     <button wire:click="buat_payroll('queue')"
-                        {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                         class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
                 </div>
             </div>
+            @if (isDataUtamaLengkap() > 0)
+                <div class='d-flex m-2 justify-content-center'>
+                    <h4 class='text-danger text-center text-bold mr-3'>Ada beberapa data utama karyawan yang belum
+                        lengkap!
+                    </h4>
+
+                    <a href="/datatidaklengkap"><button class="btn btn-danger">Silakan cek disini</button></a>
+                </div>
+            @endif
         @endif
 
         <div class="card">

@@ -572,7 +572,9 @@ function build_payroll($month, $year)
 
             $tambahan_shift_malam;
 
-
+        if ($data->karyawan->metode_penggajian == '') {
+            dd('metode penggajian belum diisi', $data->karyawan->id_karyawan);
+        }
 
 
         Payroll::create([
