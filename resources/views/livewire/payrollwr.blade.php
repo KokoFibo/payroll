@@ -95,6 +95,7 @@
 
             </div>
             <div class="col">
+                {{-- <p>Waktu Proses : {{ $waktuProses }}</p> --}}
                 <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
             </div>
             <div class="col">

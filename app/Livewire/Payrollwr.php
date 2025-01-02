@@ -49,6 +49,7 @@ class Payrollwr extends Component
     public $lock_slip_gaji;
     public $lock_data;
     public $select_month, $select_year;
+    public $waktuProses = 0;
 
     public function clear_lock()
     {
@@ -316,12 +317,12 @@ class Payrollwr extends Component
                 title: 'Data Presensi tidak ada',
             );
         } else {
-            // $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )');
             if ($queue == 'noQueue') {
+                $this->waktuProses = microtime(true) - $startTime;
                 $this->dispatch(
                     'message',
                     type: 'success',
-                    title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )',
+                    title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format($this->waktuProses, 2) . ' seconds )',
                 );
             }
         }
