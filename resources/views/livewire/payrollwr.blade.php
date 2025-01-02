@@ -61,7 +61,7 @@
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <strong>Congratulation!</strong> Payroll Succesfully rebuilt. {{ $waktuProses }}
                 <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
                     aria-label="Close"></button>
             </div>
@@ -95,6 +95,7 @@
 
             </div>
             <div class="col">
+                {{-- <p>Waktu Proses : {{ $waktuProses }}</p> --}}
                 <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
             </div>
             <div class="col">
