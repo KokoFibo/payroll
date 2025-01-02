@@ -30,7 +30,6 @@ function isDataUtamaLengkap()
     $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
         ->where(function ($query) {
             $query->where('metode_penggajian', '')
-                ->orWhere('gaji_pokok', '')
                 ->orWhere('company_id', 100)
                 ->orWhere('placement_id', 100)
                 ->orWhere('jabatan_id', 100);
@@ -969,6 +968,18 @@ function manfaat_libur_resigned($month, $year, $libur, $user_id, $tanggal_resign
     // dd($user_id, $manfaat_libur_resigned);
     // if ($user_id == '1145') dd($user_id, $manfaat_libur_resigned);
     return $manfaat_libur_resigned;
+}
+
+function delete_all_presensi_kosong()
+{
+
+    Yfrekappresensi::whereNull('first_in')
+        ->whereNull('first_out')
+        ->whereNull('second_in')
+        ->whereNull('second_out')
+        ->whereNull('overtime_in')
+        ->whereNull('overtime_out')
+        ->delete();
 }
 
 function check_absensi_kosong()

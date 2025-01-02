@@ -131,8 +131,7 @@ class Test extends Component
 
   public function render()
   {
-    $data = Karyawan::where('nomor_rekening', '')->count();
-    dd($data);
+    dd('ok');
 
     return view('livewire.test');
   }
