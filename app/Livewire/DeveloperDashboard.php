@@ -158,6 +158,17 @@ class DeveloperDashboard extends Component
             position: 'center'
         );
     }
+
+    public function delete_all_presensi_kosong()
+    {
+        delete_all_presensi_kosong();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Absensi kosong telah berhasil di hapus',
+            position: 'center'
+        );
+    }
     public function render()
     {
         return view('livewire.developer-dashboard');
