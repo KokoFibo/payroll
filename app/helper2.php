@@ -16,6 +16,8 @@ function build_payroll($month, $year)
     // $lock->rebuild_done = 2;
     // $lock->save();
 
+    $start = microtime(true);
+
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
@@ -911,6 +913,10 @@ function build_payroll($month, $year)
     $lock = Lock::find(1);
     $lock->rebuild_done = 1;
     $lock->save();
+
+    $end = microtime(true);
+    $executionTime = $end - $start;
+    dd("Execution time: {$executionTime} seconds");
 
     return 1;
 }
