@@ -141,7 +141,6 @@
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
                                 @endforeach
-                                <option value="2025">{{ year 2025 }}</option>
                             </select>
                         </div>
                         <div>
