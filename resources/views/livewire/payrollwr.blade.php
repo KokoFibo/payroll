@@ -61,7 +61,7 @@
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <strong>Congratulation!</strong> Payroll Rebuilt Succesfully.
                 <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
                     aria-label="Close"></button>
             </div>
@@ -141,6 +141,7 @@
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
                                 @endforeach
+                                <option value="2025">{{ year 2025 }}</option>
                             </select>
                         </div>
                         <div>
@@ -153,13 +154,12 @@
                                 @if ($data_bulan_ini > 0)
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif
-                                <option value="12">Dec</option>
 
                                 {{-- jika this month gak ada maka munculkan --}}
                                 {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif --}}
-                                {{-- <option value="9">Sept 9</option> --}}
+                                <option value="1">JAN 1</option>
 
                             </select>
 

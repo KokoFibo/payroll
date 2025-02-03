@@ -53,6 +53,7 @@ class Payrollwr extends Component
     public function clear_lock()
     {
         clear_locks();
+        delete_failed_jobs();
     }
 
     public function close_succesful_rebuilt()
