@@ -131,7 +131,17 @@ class Test extends Component
 
   public function render()
   {
-    dd('ok');
+    // Query untuk mendapatkan id_karyawan di payrolls yang tidak ada di user_id yfrekappresensis
+    $unmatchedKaryawan = DB::table('payrolls')
+      ->whereNotIn('id_karyawan', function ($query) {
+        $query->select('user_id')
+          ->from('yfrekappresensis');
+      })
+      ->whereMonth('date', 12) // Filter bulan Desember
+      ->whereYear('date', 2024) // Filter tahun 2024
+      ->get();
+
+    dd($unmatchedKaryawan->all());
 
     return view('livewire.test');
   }
