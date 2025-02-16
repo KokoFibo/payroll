@@ -88,6 +88,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\AddTambahan;
+use App\Livewire\UpdateTambahan;
 
 // Middleware
 Auth::routes([
@@ -168,6 +170,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/informasi', Informasiwr::class);
                 Route::get('/informationwr', Informationwr::class);
                 Route::get('/tambahan', Tambahanwr::class);
+                Route::get('/addtambahan', AddTambahan::class);
+                Route::get('/updatetambahan/{id}', UpdateTambahan::class);
                 Route::get('/iuranlocker', IuranLocker::class);
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
                 Route::get('/kview', [KviewController::class, 'index']);

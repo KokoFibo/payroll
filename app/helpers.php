@@ -1367,6 +1367,21 @@ function lama_resign($tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist)
 
 function convert_numeric($number)
 {
+    $number = trim($number, "Rp\u{A0}"); // Hapus "Rp" dan spasi khusus
+    $number = str_replace(',', '.', $number); // Ganti koma (,) dengan titik (.)
+
+    $arrNumber = explode('.', $number); // Pisahkan berdasarkan titik (.)
+    $numberString = '';
+
+    for ($i = 0; $i < count($arrNumber); $i++) {
+        $numberString .= $arrNumber[$i]; // Gabungkan kembali tanpa pemisah
+    }
+
+    return (int) $numberString; // Konversi ke integer
+}
+
+function convert_numeric_yang_pertama($number)
+{
     $number = trim($number, "Rp\u{A0}");
     $arrNumber = explode('.', $number);
     $numberString = '';
