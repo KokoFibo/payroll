@@ -1,9 +1,4 @@
 <div>
-    <h3>Ganti Password (Awas Jangan salah ketik ya!!)</h3>
-    <div class="mb-3">
-        <label class="form-label">New Password</label>
-        <input type="text" class="form-control" wire:model='passBaru'>
-    </div>
-    <button class="btn btn-primary" wire:click='proses'>Proses</button>
-
+    <input type="text" type-currency="IDR" wire:model='test'>
+    <p>{{ $test }}</p>
 </div>

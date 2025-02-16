@@ -82,7 +82,6 @@
     {{-- <body class="hold-transition sidebar-mini" style="font-family: 'Noto Sans';"> --}}
 
     <div class="wrapper">
-
         @include('layouts.navbar')
 
         @include('layouts.aside')
