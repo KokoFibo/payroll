@@ -142,32 +142,16 @@ class Test extends Component
 
   public function render()
   {
-    $filename = 'Applicants/Eum_qui_blanditiis_d_1994_03_13/ktp.png';
-    $url = Storage::url($filename);
-    // dd($url);
-    // $data = Rekapbackup::whereBetween('date', ['2024-01-01', '2024-06-30'])->delete();
-    // $data = Rekapbackup::whereBetween('date', ['2024-01-01', '2024-06-30'])->get();
-    // $data = Rekapbackup::all();
-    // $filename = "Applicants/Itaque_aut_minus_qui_1979_05_10/ktp-01.png";
-    // dd(get_filename($filename));
+    $user_kosong = [];
+    $user = User::select('username')->get(); // Fix dari all() ke get()
 
-
-
-    // $data = Rekapbackup::where('date', '>', '2023-12-31')->get();
-
-    // dd($data);
-    // C:\Users\kokon\OneDrive\Desktop\payroll\storage\app\public\Applicants\Ad_quibusdam_pariatu_1989_09_17
-    // $folderPath = 'public/Applicants/Ad_quibusdam_pariatu_1989_09_17';
-    // $zipFileName = 'testzip.zip';
-    // return $this->downloadFolderAsZip($folderPath, $zipFileName);
-
-    // $folder = 'public/Applicants/Ad_quibusdam_pariatu_1989_09_17';
-    // $this->dispatchBrowserEvent('redirect', ['url' => route('download.zip', ['folder' => $folder])]);
-
-
-    // dd('done');
-    return view('livewire.test', [
-      'url' => $url
-    ]);
+    foreach ($user as $k) {
+      if (!Karyawan::where('id_karyawan', $k->username)->exists()) {
+        // dd('User tidak ada', $k->id_karyawan); // Menampilkan ID karyawan yang tidak punya user
+        $user_kosong[] = $k->username;
+      }
+    }
+    dd($user_kosong);
+    return view('livewire.test');
   }
 }
