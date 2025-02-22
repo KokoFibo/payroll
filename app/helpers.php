@@ -25,6 +25,28 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function get_filename($filename)
+{
+    if ($filename == '') {
+        return '';
+    }
+    $data_arr = explode('/', $filename);
+    return ($data_arr[2]);
+}
+
+function underscore_filename($filename)
+{
+    $filename = preg_replace('/[^\x20-\x7E]/', '', $filename);
+
+    // Ganti spasi dengan underscore agar lebih kompatibel
+    $filename = str_replace(' ', '_', $filename);
+
+    // Pastikan hanya karakter yang aman untuk nama file
+    $filename = preg_replace('/[^a-zA-Z0-9._-]/', '', $filename);
+
+    return $filename;
+}
+
 function isDataUtamaLengkap()
 {
     $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])

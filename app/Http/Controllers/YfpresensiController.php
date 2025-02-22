@@ -95,32 +95,6 @@ class YfpresensiController extends Controller
         }
 
         return back()->with('success', 'Tidak ada data duplikat');
-
-
-        // if (collect($datasama)->count() > 0) {
-        //  $userid = [];
-        //     foreach ($datasama as $d) {
-        //         $userid = $userid + $userid.',';
-        //     }
-
-        //     $msg = ''Data Tidak bisa di upload karena terdapat user id yang sama :'
-        //     return back()->with('error', 'Data Tidak bisa di upload karena terdapat user id yang sama ' . $data->user_id);
-        // } else {
-
-        //     dd('aman');
-        // }
-
-        // try {
-        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
-        //         Yfpresensi::insert($item);
-        //     }
-        // } catch (\Exception $e) {
-        //     clear_locks();
-        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
-        // }
-
-
-
     }
 
     public function deleteByPabrik(Request $request)
@@ -192,16 +166,6 @@ class YfpresensiController extends Controller
             }
         }
 
-        // try {
-        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
-        //         Yfpresensi::insert($item);
-        //     }
-        // } catch (\Exception $e) {
-        //     clear_locks();
-        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
-        // }
-
-
         $unique = collect($Yfpresensidata)->unique('user_id');
         $cx = 0;
         foreach ($unique as $d) {
@@ -263,26 +227,18 @@ class YfpresensiController extends Controller
         return view('yfpresensi.index');
     }
 
+    public function clear_upload_lock()
+    {
+        $lock = Lock::find(1);
+        $lock->upload = false;
+        $lock->save();
+    }
+
     public function store(Request $request)
     {
-
-        // disini
-        // $missingArray = [];
-        // $missingArray = checkNonRegisterUser();
-        // if ($missingArray != null) {
-        //     $missingUserId = null;
-        //     foreach ($missingArray as $arr) {
-        //         $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
-        //     }
-        //     clear_locks();
-        //     return back()->with('error', 'Ada ' . count($missingArray) . ' Id karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ') - Data Tidak di Upload');
-        // }
-
-
         $lock = Lock::find(1);
         if ($lock->upload) {
-            $lock->upload = false;
-            $lock->save();
+            $this->clear_upload_lock();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
         } else {
             $lock->upload = true;
@@ -304,7 +260,8 @@ class YfpresensiController extends Controller
         $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
         $tgl2 = trim(explode(':', $tgl1)[1]);
         if ($tgl != $tgl2) {
-            clear_locks();
+            $this->clear_upload_lock();
+
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -359,7 +316,8 @@ class YfpresensiController extends Controller
                 } else {
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
-                clear_locks();
+                $this->clear_upload_lock();
+
 
                 return back()->with('error', $msg);
             }
@@ -376,7 +334,8 @@ class YfpresensiController extends Controller
                 if ($tgl_sama->isNotEmpty()) {
                     foreach ($tgl_sama as $data) {
                         if ($user_id == $data->user_id && $time != '') {
-                            clear_locks();
+                            $this->clear_upload_lock();
+
                             return back()->with('error', 'Gagal Upload, User ID kembar : ' . $data->user_id);
                         }
                     }
@@ -408,7 +367,8 @@ class YfpresensiController extends Controller
                 Yfpresensi::insert($item);
             }
         } catch (\Exception $e) {
-            clear_locks();
+            $this->clear_upload_lock();
+
             return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
         }
 
@@ -716,7 +676,8 @@ class YfpresensiController extends Controller
 
 
         Yfpresensi::query()->truncate();
-        clear_locks();
+        $this->clear_upload_lock();
+
         return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
 }
