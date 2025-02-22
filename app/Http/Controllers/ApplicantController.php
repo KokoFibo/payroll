@@ -29,23 +29,22 @@ class ApplicantController extends Controller
         $files = Storage::files($folderPath);
         $data = [];
 
-        // ganti ini jika karyawan sudah diterima
-        // $data_karyawan = Applicantdata::where('applicant_id', $folder)->first();
+        // Ambil data karyawan berdasarkan id_file_karyawan
         $data_karyawan = Karyawan::where('id_file_karyawan', $folder)->first();
 
-        $nama_karyawan = $data_karyawan->nama;
-
+        // Cek apakah data karyawan ditemukan
+        $nama_karyawan = $data_karyawan ? $data_karyawan->nama : 'Nama Tidak Ditemukan';
 
         foreach ($files as $file) {
             $extension = pathinfo($file, PATHINFO_EXTENSION);
             $data[] = [
-                'name' => basename($file), // Tambahkan Nama File
+                'name' => basename($file), // Nama file
                 'type' => in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']) ? 'image' : 'text',
                 'path' => storage_path("app/$file"),
             ];
         }
 
-        // Generate PDF
+        // Generate PDF dengan data yang sudah diproses
         $pdf = Pdf::loadView('pdf.merged-files', compact('folder', 'data', 'nama_karyawan'));
 
         return $pdf->download("{$folder}.pdf");
