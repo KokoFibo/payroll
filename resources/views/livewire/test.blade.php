@@ -1,4 +1,3 @@
 <div>
-    <input type="text" type-currency="IDR" wire:model='test'>
-    <p>{{ $test }}</p>
+    <img src="/storage/Applicants/Eum_qui_blanditiis_d_1994_03_13/ktp.png" alt="">
 </div>

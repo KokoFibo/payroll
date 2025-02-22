@@ -24,7 +24,7 @@ class Karyawanwr extends Component
     public $tunjangan_skill, $tunjangan_lembur_sabtu, $tunjangan_lama_kerja;
     public $iuran_air, $denda, $iuran_locker, $potongan_JHT, $gaji_bpjs, $potongan_JP, $potongan_JKK, $potongan_JKM, $potongan_kesehatan;
     public $no_npwp, $ptkp;
-    public $kontak_darurat, $hp1, $hp2;
+    public $kontak_darurat, $kontak_darurat2, $hp1, $hp2, $hubungan1, $hubungan2;
     public $tanggungan;
 
     public $id_karyawan_ini, $update, $status_off;
@@ -70,6 +70,11 @@ class Karyawanwr extends Component
         'kontak_darurat' => 'nullable',
         'hp1' => 'nullable',
         'hp2' => 'nullable',
+        'kontak_darurat2' => 'nullable',
+        'hubungan1' => 'nullable',
+        'hubungan2' => 'nullable',
+
+
         // IDENTITAS
         'jenis_identitas' => 'required',
         'no_identitas' => 'required',
@@ -155,9 +160,11 @@ class Karyawanwr extends Component
             $data->agama = $this->agama;
             $data->etnis = $this->etnis;
             $data->kontak_darurat = $this->kontak_darurat;
+            $data->kontak_darurat2 = $this->kontak_darurat2;
             $data->hp1 = $this->hp1;
             $data->hp2 = $this->hp2;
-
+            $data->hubungan1 = $this->hubungan1;
+            $data->hubungan2 = $this->hubungan2;
             $data->denda = $this->denda;
 
             // Identitas
@@ -273,9 +280,14 @@ class Karyawanwr extends Component
             $data->agama = $this->agama;
             $data->etnis = $this->etnis;
             $data->kontak_darurat = $this->kontak_darurat;
+            $data->kontak_darurat2 = $this->kontak_darurat2;
             $data->hp1 = $this->hp1;
             $data->hp2 = $this->hp2;
+            $data->hubungan1 = $this->hubungan1;
+            $data->hubungan2 = $this->hubungan2;
             $data->denda = $this->denda;
+
+
 
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;

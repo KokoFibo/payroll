@@ -2,6 +2,10 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+use Illuminate\Http\Response;
+
 use Carbon\Carbon;
 use App\Models\Ter;
 use App\Models\User;
@@ -130,20 +134,40 @@ class Test extends Component
     return 0;
   }
 
+
+
+
+
+
+
   public function render()
   {
-    // Query untuk mendapatkan id_karyawan di payrolls yang tidak ada di user_id yfrekappresensis
-    // $unmatchedKaryawan = DB::table('payrolls')
-    //   ->whereNotIn('id_karyawan', function ($query) {
-    //     $query->select('user_id')
-    //       ->from('yfrekappresensis');
-    //   })
-    //   ->whereMonth('date', 12) // Filter bulan Desember
-    //   ->whereYear('date', 2024) // Filter tahun 2024
-    //   ->get();
+    $filename = 'Applicants/Eum_qui_blanditiis_d_1994_03_13/ktp.png';
+    $url = Storage::url($filename);
+    // dd($url);
+    // $data = Rekapbackup::whereBetween('date', ['2024-01-01', '2024-06-30'])->delete();
+    // $data = Rekapbackup::whereBetween('date', ['2024-01-01', '2024-06-30'])->get();
+    // $data = Rekapbackup::all();
+    // $filename = "Applicants/Itaque_aut_minus_qui_1979_05_10/ktp-01.png";
+    // dd(get_filename($filename));
 
-    // dd($unmatchedKaryawan->all());
 
-    return view('livewire.test');
+
+    // $data = Rekapbackup::where('date', '>', '2023-12-31')->get();
+
+    // dd($data);
+    // C:\Users\kokon\OneDrive\Desktop\payroll\storage\app\public\Applicants\Ad_quibusdam_pariatu_1989_09_17
+    // $folderPath = 'public/Applicants/Ad_quibusdam_pariatu_1989_09_17';
+    // $zipFileName = 'testzip.zip';
+    // return $this->downloadFolderAsZip($folderPath, $zipFileName);
+
+    // $folder = 'public/Applicants/Ad_quibusdam_pariatu_1989_09_17';
+    // $this->dispatchBrowserEvent('redirect', ['url' => route('download.zip', ['folder' => $folder])]);
+
+
+    // dd('done');
+    return view('livewire.test', [
+      'url' => $url
+    ]);
   }
 }
