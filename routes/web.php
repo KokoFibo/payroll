@@ -88,7 +88,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Adddocument;
 use App\Livewire\AddTambahan;
+use App\Livewire\Excelpresensi;
 use App\Livewire\UpdateTambahan;
 
 // Middleware
@@ -138,6 +140,7 @@ Route::middleware(['auth'])->group(function () {
             return view('user_slipgaji');
         });
 
+        Route::get('/adddocument', Adddocument::class);
         Route::get('/usermobile', UserMobile::class);
         Route::get('/profile', Profile::class);
         Route::get('/userinformation', UserInformation::class);

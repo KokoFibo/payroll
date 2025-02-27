@@ -1,3 +1,4 @@
 <div>
-    <img src="/storage/Applicants/Eum_qui_blanditiis_d_1994_03_13/ktp.png" alt="">
+    <h2 class="text-lg font-semibold">Jumlah File dalam Applicants:</h2>
+    <p class="text-xl text-blue-600 font-bold">{{ $fileCount }}</p>
 </div>
