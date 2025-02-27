@@ -659,8 +659,7 @@
             {{-- Footer --}}
             @include('mobile-footer')
             {{--  end footer --}}
-            <livewire:upload-popup />
+            {{-- <livewire:upload-popup /> --}}
         </div>
     </div>
-
 </div>
