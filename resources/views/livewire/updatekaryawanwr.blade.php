@@ -151,7 +151,7 @@
                                 @foreach ($personal_files as $key => $fn)
                                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                                         <div class="card h-100 shadow-sm">
-                                            <div class="card-body d-flex flex-column">
+                                            <div class="card-body d-flex flex-column"> 
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h5 class="card-title">{{ get_filename($fn->filename) }}</h5>
                                                     <div>
