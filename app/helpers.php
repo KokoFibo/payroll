@@ -25,6 +25,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+
+
+function files($ktp_count)
+{
+    if ($ktp_count == 0) return '';
+    if ($ktp_count == 1) return 'file';
+    if ($ktp_count > 1) return 'files';
+}
+
 function get_filename($filename)
 {
     if ($filename == '') {
@@ -2225,6 +2234,7 @@ function hoursToMinutes($jam)
 }
 
 function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
+
 {
     // rubah angka ini utk bulan puasa
     $test = $placement_id;

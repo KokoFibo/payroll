@@ -39,7 +39,7 @@ class Test extends Component
   public $today;
   public $cx;
   public $test;
-
+  public $fileCount = 0;
 
 
   public function mount()
@@ -49,109 +49,20 @@ class Test extends Component
 
     $this->year = now()->year;
     $this->month = now()->month;
+    $this->countFiles();
   }
 
-  public $department_id, $placement_id;
-  public $passBaru;
-  // public $karyawan;
-
-  public function proses()
+  public function countFiles()
   {
-    $this->dispatch(
-      'message',
-      type: 'success',
-      title: 'Gak ngapa ngapain',
-    );
+    $files = Storage::disk('s3')->allFiles('Applicants/Eiusmod_sint_exercit_1987_07_13/'); // Ambil semua file di folder "applicants"
+    $this->fileCount = count($files);
   }
-
-  public function getDataKaryawanApi($apiUrl)
-  {
-    try {
-      // Make the GET request
-      $response = Http::get($apiUrl);
-
-      // Check if the request was successful
-      if ($response->successful()) {
-        // Get the response data
-        $data = $response->json();
-
-        // Return or process the data
-        return $data;
-      } else {
-        // Handle request errors
-        return [
-          'status' => 'error',
-          'message' => 'Failed to fetch data from the API',
-          'error' => $response->body()
-        ];
-      }
-    } catch (\Exception $e) {
-      // Handle exceptions
-      return [
-        'status' => 'error',
-        'message' => 'An error occurred',
-        'error' => $e->getMessage()
-      ];
-    }
-  }
-
-  public function getJabatan_id($jabatan)
-  {
-    if ($jabatan) {
-      $data = Jabatan::where('nama_jabatan', $jabatan)->first();
-      // dd($data->id);
-      return $data->id;
-    }
-    return 0;
-  }
-  public function getCompany_id($company)
-  {
-    if ($company) {
-      $data = Company::where('company_name', $company)->first();
-      return $data->id;
-    }
-    return 0;
-  }
-  public function getPlacement_id($placement)
-  {
-    if ($placement) {
-      if ($placement == 'YCME') return 102;
-      if ($placement == 'YEV SMOOT') return 10;
-      if ($placement == 'YEV OFFERO') return 9;
-      if ($placement == 'YEV ELEKTRONIK') return 101;
-      $data = Placement::where('placement_name', $placement)->first();
-      return $data->id;
-    }
-    return 0;
-  }
-
-  public function getDepartment_id($department)
-  {
-    if ($department) {
-      $data = Department::where('nama_department', $department)->first();
-      return $data->id;
-    }
-    return 0;
-  }
-
-
-
-
-
-
 
   public function render()
   {
-    $user_kosong = [];
-    $user = User::select('username')->get(); // Fix dari all() ke get()
 
-    foreach ($user as $k) {
-      if (!Karyawan::where('id_karyawan', $k->username)->exists()) {
-        // dd('User tidak ada', $k->id_karyawan); // Menampilkan ID karyawan yang tidak punya user
-        $user_kosong[] = $k->username;
-      }
-    }
-    dd($user_kosong);
-    return view('livewire.test');
+    return view('livewire.test', [
+      'fileCount' => $this->fileCount,
+    ]);
   }
 }

@@ -207,13 +207,6 @@ class Yfpresensiindexwr extends Component
                     $tgl = tgl_doang($d->date);
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
-                    //evaluasi ini
-                    // if ($d->karyawan->jabatan_id === 17) {
-                    //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
-                    // }
-                    // if ($d->user_id == '2610' && $d->date == '2024-03-31') {
-                    //     dd($jam_kerja, $terlambat);
-                    // }
 
                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement_id);
                     if (is_sunday($d->date)) {
@@ -546,7 +539,7 @@ class Yfpresensiindexwr extends Component
 
 
 
-        // fil
+        // fill
 
         if ($this->is_noscan) {
             $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id', 'karyawans.jabatan_id'])

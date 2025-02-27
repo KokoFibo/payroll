@@ -2,7 +2,9 @@
     <div>
         <div class="flex flex-col h-screen">
             <div class=header>
-                <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
+                @include('mobile-header')
+
+                {{-- <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between items-center">
                         <div>
                             <img src="{{ asset('images/logo-only.png') }}" class="ml-3"alt="Yifang Logo"
@@ -37,7 +39,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div class="py-2"> --}}
                 <div>
                     <h2 class="bg-gray-500 text-center text-white text-xl py-2 px-5 mt-3">Informasi Terkini
@@ -48,7 +50,7 @@
             </div>
             <div class="main  flex-1 overflow-y-auto ">
                 {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
-                <div class="w-screen flex px-3  mt-3 flex flex-col ">
+                <div class="w-screen flex px-3  mt-3  flex-col ">
                     @foreach ($data as $d)
                         <div class="bg-white shadow rounded-xl mt-3 p-3">
                             <div class="flex items-center gap-4">
