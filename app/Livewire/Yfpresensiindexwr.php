@@ -401,6 +401,7 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
         $data->late_history = $data->late;
 
+        // jadwal puasa
         // dd($data->late);
         // ================================
         $is_saturday = is_saturday($data->date);

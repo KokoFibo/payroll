@@ -129,8 +129,6 @@ class ApplicantController extends Controller
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
 
-
-
     public function login(Request $request)
     {
         $validated = $request->validate([
