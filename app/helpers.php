@@ -1615,19 +1615,35 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         // if ( $t2 <= strtotime('23:29:00'))  || ($t2 > strtotime('15:00:00') && $t2 < strtotime('23:29:00')) {
                         //     return $lembur = 0;
                         // }
-                        if ($t2 <= strtotime('23:29:00')) {
+                        $t23_29 = strtotime('23:29:00');
+                        $t23_30 = strtotime('23:30:00');
+                        $t23_00 = Carbon::parse('23:00:00');
+                        $t00_00 = strtotime('00:00:00');
+                        $t05_00 = strtotime('05:00:00');
+
+                        $t2 = strtotime($second_out);
+                        $t20_00 = strtotime('20:00:00');
+                        $t23_29 = strtotime('23:29:00');
+
+                        // Jika $t2 berada di antara 22:00:00 dan 23:29:00, lembur = 0
+                        if ($t2 >= $t20_00 && $t2 <= $t23_29) {
                             return $lembur = 0;
                         }
 
-                        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('23:00:00')) / 60;
+
+                        if ($t2 >= strtotime('23:30:00') || ($t2 >= strtotime('00:00:00') && $t2 <= $t05_00)) {
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
+                        }
+
+                        // Default jika tidak masuk kondisi apapun
                     } else {
                         // if ($t2 < strtotime('05:00:00') && $t2 <= strtotime('23:29:00')) {
                         //     return $lembur = 0;
                         // }
-                        if ($t2 < strtotime('05:00:00')) {
+                        if ($t2 < strtotime('05:30:00')) {
                             return $lembur = 0;
                         }
-                        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('04:00:00')) / 60;
+                        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('05:00:00')) / 60;
                     }
                 }
             }
