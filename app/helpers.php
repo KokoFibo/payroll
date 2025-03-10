@@ -25,7 +25,106 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
+{
 
+    // $this->dataArr = collect();
+    // $total_hari_kerja = 0;
+    // $total_jam_kerja = 0;
+    // $total_jam_lembur = 0;
+    // $total_keterlambatan = 0;
+    // $langsungLembur = 0;
+    // $tambahan_shift_malam = 0;
+    // $total_tambahan_shift_malam = 0;
+
+
+
+    $tambahan_shift_malam = 0;
+    if ($no_scan === null) {
+        $tgl = tgl_doang($date);
+        $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
+        $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
+
+        $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
+        if (is_sunday($date)) {
+            $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 * 2
+                + $langsungLembur * 2;
+        } else {
+            $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
+        }
+
+        if ($shift == 'Malam') {
+            if (is_saturday($date)) {
+                if ($jam_kerja >= 6) {
+                    // $jam_lembur = $jam_lembur + 1;
+                    $tambahan_shift_malam = 1;
+                }
+            } else if (is_sunday($date)) {
+                if ($jam_kerja >= 16) {
+                    // $jam_lembur = $jam_lembur + 2;
+                    $tambahan_shift_malam = 1;
+                }
+            } else {
+                if ($jam_kerja >= 8) {
+                    // $jam_lembur = $jam_lembur + 1;
+                    $tambahan_shift_malam = 1;
+                }
+            }
+        }
+        // 22 driver
+        if (($jam_lembur >= 9) && (is_sunday($date) == false) && ($jabatan_id != 22)) {
+            $jam_lembur = 0;
+        }
+        // yig = 12, ysm = 13
+        if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
+            if (is_friday($date)) {
+                $jam_kerja = 7.5;
+            } elseif (is_saturday($date)) {
+                $jam_kerja = 6;
+            } else {
+                $jam_kerja = 8;
+            }
+        }
+        if ($jabatan_id == 17 && is_sunday($date)) {
+            $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
+        }
+        if ($jabatan_id == 17 && is_saturday($date)) {
+            // $jam_lembur = 0;
+        }
+        // 23 translator
+        if ($jabatan_id != 23) {
+            if (
+                is_libur_nasional($date) &&  !is_sunday($date)
+                && $jabatan_id != 23
+
+            ) {
+                $jam_kerja *= 2;
+                $jam_lembur *= 2;
+            }
+        } else {
+            if (is_sunday($date)) {
+                $jam_kerja /= 2;
+                $jam_lembur /= 2;
+            }
+        }
+
+        // $this->dataArr->push([
+        //     'tgl' => $tgl,
+        //     'jam_kerja' => $jam_kerja,
+        //     'terlambat' => $terlambat,
+        //     'jam_lembur' => $jam_lembur,
+        //     'tambahan_shift_malam' => $tambahan_shift_malam,
+        // ]);
+
+        return [
+            'tgl' => $tgl,
+            'jam_kerja' => $jam_kerja,
+            'terlambat' => $terlambat,
+            'jam_lembur' => $jam_lembur,
+            'tambahan_shift_malam' => $tambahan_shift_malam
+        ];
+    }
+}
 
 function files($ktp_count)
 {
