@@ -482,6 +482,23 @@ class Yfpresensiindexwr extends Component
                 }
             }
         }
+        $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+        $hasil = saveDetail($data->user_id, $data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->late, $data->shift, $data->date, $dataKaryawan->jabatan_id, $data->no_scan, $dataKaryawan->placement_id, $data->overtime_in, $data->overtime_out);
+        // dd($hasil['jam_kerja']);
+        $data->total_hari_kerja = 0;
+        $data->total_jam_kerja = 0;
+        $data->total_jam_lembur = 0;
+
+        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
+            $data->total_hari_kerja = 1;
+        }
+
+        if (isset($hasil['jam_kerja'])) {
+            $data->total_jam_kerja = $hasil['jam_kerja'];
+        }
+        if (isset($hasil['jam_lembur'])) {
+            $data->total_jam_lembur = $hasil['jam_lembur'];
+        }
 
         $data->save();
         $this->btnEdit = true;

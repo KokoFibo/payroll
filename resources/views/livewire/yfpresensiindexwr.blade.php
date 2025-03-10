@@ -186,6 +186,17 @@
                                 <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                @if (auth()->user()->role == 8)
+                                    <th wire:click="sortColumnName('date')">{{ __('Jam Kerja') }} <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th wire:click="sortColumnName('date')">{{ __('Jam Lembur') }} <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                    <th wire:click="sortColumnName('date')">{{ __('Hari Kerja') }} <i
+                                            class="fa-solid fa-sort"></i>
+                                    </th>
+                                @endif
                                 <th wire:click="sortColumnName('first_in')">{{ __('First in') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -271,6 +282,12 @@
                                         <td>{{ $data->karyawan->placement->placement_name }}</td>
                                         <td>{{ $data->karyawan->jabatan->nama_jabatan }}</td>
                                         <td>{{ format_tgl($data->date) }}</td>
+                                        @if (auth()->user()->role == 8)
+                                            <td>{{ $data->total_jam_kerja }}</td>
+                                            <td>{{ $data->total_jam_lembur }}</td>
+                                            <td>{{ $data->total_hari_kerja }}</td>
+                                        @endif
+
                                         <td x-show="!edit"
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date, $data->karyawan->placement_id) ? 'text-danger' : '' }}">
                                             {{ format_jam($data->first_in) }} </td>
