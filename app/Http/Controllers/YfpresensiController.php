@@ -482,14 +482,14 @@ class YfpresensiController extends Controller
                                 case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
                                     if ($first_in == '') $first_in = $tp->time;
                                     break;
-                                case Carbon::parse($tp->time)->betweenIncluded('17:01', '21:30'):
+                                case Carbon::parse($tp->time)->betweenIncluded('17:01', '19:30'):
                                     if ($first_out == null) {
                                         $first_out = $tp->time;
                                     } else {
                                         $second_in = $tp->time;
                                     }
                                     break;
-                                case Carbon::parse($tp->time)->betweenIncluded('21:31', '23:59'):
+                                case Carbon::parse($tp->time)->betweenIncluded('17:30', '19:30'):
                                     if ($second_in == '') $second_in = $tp->time;
                                     break;
 
