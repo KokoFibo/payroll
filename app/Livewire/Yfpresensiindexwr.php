@@ -61,6 +61,11 @@ class Yfpresensiindexwr extends Component
     public $data_kosong;
     public $is_noscan, $is_kosong;
 
+
+
+    public $totalHadir, $totalHadirPagi, $overallNoScan, $totalNoScan;
+    public $totalNoScanPagi, $totalLate, $totalLatePagi, $overtime, $overtimePagi, $absensiKosong;
+
     public function prev()
     {
         $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->subDay();
@@ -99,6 +104,41 @@ class Yfpresensiindexwr extends Component
             dd($data->karyawan_id);
             return $e->getMessage();
         }
+        $this->totalHadir = Yfrekappresensi::query()
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->totalHadirPagi = Yfrekappresensi::where('shift', 'Pagi')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
+        $this->totalNoScan = Yfrekappresensi::where('no_scan', 'No Scan')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->totalNoScanPagi = Yfrekappresensi::where('no_scan', 'No Scan')
+            ->where('shift', 'Pagi')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->totalLate = Yfrekappresensi::where('late', '>', '0')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->totalLatePagi = Yfrekappresensi::where('late', '>', '0')
+            ->where('shift', 'Pagi')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->overtime = Yfrekappresensi::where('overtime_in', '!=', null)
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->overtimePagi = Yfrekappresensi::where('overtime_in', '!=', null)
+            ->where('shift', 'Pagi')
+            ->where('date', '=', $this->tanggal)
+            ->count();
+        $this->absensiKosong =  $data = Yfrekappresensi::where('first_in', null)
+            ->where('first_out', null)
+            ->where('second_in', null)
+            ->where('second_out', null)
+            ->where('overtime_in', null)
+            ->where('overtime_out', null)
+            ->count();
     }
 
     public function delete_no_scan($id)
@@ -486,43 +526,8 @@ class Yfpresensiindexwr extends Component
                 $this->tanggal = Carbon::parse($lastDate->date)->format('Y-m-d');
             }
         }
-        $totalHadir = Yfrekappresensi::query()
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $totalHadirPagi = Yfrekappresensi::where('shift', 'Pagi')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
-        $totalNoScan = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $totalNoScanPagi = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->where('shift', 'Pagi')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $totalLate = Yfrekappresensi::where('late', '>', '0')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $totalLatePagi = Yfrekappresensi::where('late', '>', '0')
-            ->where('shift', 'Pagi')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $overtime = Yfrekappresensi::where('overtime_in', '!=', null)
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $overtimePagi = Yfrekappresensi::where('overtime_in', '!=', null)
-            ->where('shift', 'Pagi')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $absensiKosong =
-            $data = Yfrekappresensi::where('first_in', null)
-            ->where('first_out', null)
-            ->where('second_in', null)
-            ->where('second_out', null)
-            ->where('overtime_in', null)
-            ->where('overtime_out', null)
-            ->count();
-        if ($absensiKosong > 0) {
+
+        if ($this->absensiKosong > 0) {
             $id_kosong = Yfrekappresensi::select('user_id')
                 ->whereNull('first_in')
                 ->whereNull('first_out')
@@ -577,9 +582,6 @@ class Yfpresensiindexwr extends Component
                         ->whereMonth('date', $this->bulan)
                         ->whereYear('date', $this->tahun);
                 })
-
-
-
                 ->where(function ($query) {
                     $query->when($this->search, function ($subQuery) {
                         $subQuery
@@ -599,21 +601,8 @@ class Yfpresensiindexwr extends Component
                 ->paginate($this->perpage);
         }
 
-
-
-
         return view('livewire.yfpresensiindexwr', compact([
-            'datas',
-            'totalHadir',
-            'totalHadirPagi',
-            'totalNoScan',
-            'totalNoScanPagi',
-            'totalLate',
-            'totalLatePagi',
-            'overallNoScan',
-            'overtime',
-            'overtimePagi',
-            'absensiKosong'
+            'datas'
         ]));
     }
 }

@@ -76,6 +76,7 @@ return new class extends Migration
             $table->string('ptkp');
             $table->integer('pph21')->nullable();
             $table->integer('total_bpjs')->nullable();
+            $table->integer('gaji_bulan_ini')->nullable();
 
 
             $table->timestamps();
