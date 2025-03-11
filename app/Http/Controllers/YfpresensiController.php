@@ -24,107 +24,6 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class YfpresensiController extends Controller
 {
-    // public function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
-    // {
-
-    //     $this->dataArr = collect();
-    //     $total_hari_kerja = 0;
-    //     $total_jam_kerja = 0;
-    //     $total_jam_lembur = 0;
-    //     $total_keterlambatan = 0;
-    //     $langsungLembur = 0;
-    //     $tambahan_shift_malam = 0;
-    //     $total_tambahan_shift_malam = 0;
-
-
-
-    //     $tambahan_shift_malam = 0;
-    //     if ($no_scan === null) {
-    //         $tgl = tgl_doang($date);
-    //         $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
-    //         $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
-
-    //         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
-    //         if (is_sunday($date)) {
-    //             $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 * 2
-    //                 + $langsungLembur * 2;
-    //         } else {
-    //             $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
-    //         }
-
-    //         if ($shift == 'Malam') {
-    //             if (is_saturday($date)) {
-    //                 if ($jam_kerja >= 6) {
-    //                     // $jam_lembur = $jam_lembur + 1;
-    //                     $tambahan_shift_malam = 1;
-    //                 }
-    //             } else if (is_sunday($date)) {
-    //                 if ($jam_kerja >= 16) {
-    //                     // $jam_lembur = $jam_lembur + 2;
-    //                     $tambahan_shift_malam = 1;
-    //                 }
-    //             } else {
-    //                 if ($jam_kerja >= 8) {
-    //                     // $jam_lembur = $jam_lembur + 1;
-    //                     $tambahan_shift_malam = 1;
-    //                 }
-    //             }
-    //         }
-    //         // 22 driver
-    //         if (($jam_lembur >= 9) && (is_sunday($date) == false) && ($jabatan_id != 22)) {
-    //             $jam_lembur = 0;
-    //         }
-    //         // yig = 12, ysm = 13
-    //         if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
-    //             if (is_friday($date)) {
-    //                 $jam_kerja = 7.5;
-    //             } elseif (is_saturday($date)) {
-    //                 $jam_kerja = 6;
-    //             } else {
-    //                 $jam_kerja = 8;
-    //             }
-    //         }
-    //         if ($jabatan_id == 17 && is_sunday($date)) {
-    //             $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
-    //         }
-    //         if ($jabatan_id == 17 && is_saturday($date)) {
-    //             // $jam_lembur = 0;
-    //         }
-    //         // 23 translator
-    //         if ($jabatan_id != 23) {
-    //             if (
-    //                 is_libur_nasional($date) &&  !is_sunday($date)
-    //                 && $jabatan_id != 23
-
-    //             ) {
-    //                 $jam_kerja *= 2;
-    //                 $jam_lembur *= 2;
-    //             }
-    //         } else {
-    //             if (is_sunday($date)) {
-    //                 $jam_kerja /= 2;
-    //                 $jam_lembur /= 2;
-    //             }
-    //         }
-
-    //         // $this->dataArr->push([
-    //         //     'tgl' => $tgl,
-    //         //     'jam_kerja' => $jam_kerja,
-    //         //     'terlambat' => $terlambat,
-    //         //     'jam_lembur' => $jam_lembur,
-    //         //     'tambahan_shift_malam' => $tambahan_shift_malam,
-    //         // ]);
-
-    //         return [
-    //             'tgl' => $tgl,
-    //             'jam_kerja' => $jam_kerja,
-    //             'terlambat' => $terlambat,
-    //             'jam_lembur' => $jam_lembur,
-    //             'tambahan_shift_malam' => $tambahan_shift_malam
-    //         ];
-    //     }
-    // }
-
     public function compare(Request $request)
     {
         $request->validate([
@@ -481,8 +380,6 @@ class YfpresensiController extends Controller
                 Yfpresensi::where('user_id', $dyf->user_id)->delete();
             }
         }
-        // dd('stop');
-
 
 
         $jumlahKaryawanHadir = DB::table('yfpresensis')
@@ -526,7 +423,6 @@ class YfpresensiController extends Controller
                     } else {
                         $shift = 'Malam';
                     }
-
                     if ($shift == 'Pagi') {
                         // SHIFT PAGI
                         $flag = 0;
@@ -536,18 +432,6 @@ class YfpresensiController extends Controller
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
                                 if ($first_out == '') $first_out = $tp->time;
                                 else $second_in = $tp->time;
-                                // if ($flag == 0) {
-                                //     $first_out = $tp->time;
-                                //     if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
-                                //         $flag = 1;
-                                //     } else {
-                                //         $flag = 2;
-                                //     }
-                                // }
-                                // // ook
-                                // if ($flag == 1) {
-                                //     $second_in = $tp->time;
-                                // }
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 if ($second_in == '') $second_in = $tp->time;
                                 // perubahan second_out dan overtime_in yg tidak terdeteksi,  untuk jam kerja sabtu 
@@ -663,7 +547,6 @@ class YfpresensiController extends Controller
                     // }
                 }
             } else {
-
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
