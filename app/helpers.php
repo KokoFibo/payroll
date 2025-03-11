@@ -28,17 +28,6 @@ use Illuminate\Support\Facades\Storage;
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {
 
-    // $this->dataArr = collect();
-    // $total_hari_kerja = 0;
-    // $total_jam_kerja = 0;
-    // $total_jam_lembur = 0;
-    // $total_keterlambatan = 0;
-    // $langsungLembur = 0;
-    // $tambahan_shift_malam = 0;
-    // $total_tambahan_shift_malam = 0;
-
-
-
     $tambahan_shift_malam = 0;
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
@@ -76,7 +65,8 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             $jam_lembur = 0;
         }
         // yig = 12, ysm = 13
-        if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
+        // if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
+        if ($jabatan_id == 17) {
             if (is_friday($date)) {
                 $jam_kerja = 7.5;
             } elseif (is_saturday($date)) {
@@ -1774,17 +1764,17 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             return $lembur = 0;
                         } else {
                             // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
-                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00')) / 60;
+                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('16:30:00')) / 60;
                         }
                     } else {
-                        if ($t2 < strtotime('20:30:00') && $t2 > strtotime('12:00:00')) {
+                        if ($t2 < strtotime('20:00:00') && $t2 > strtotime('12:00:00')) {
                             // dd($t2, 'bukan sabtu');
                             return $lembur = 0;
                         } else {
-                            if ($t2 <= strtotime('23:59:00') && $t2 >= strtotime('20:30:00')) {
+                            if ($t2 <= strtotime('23:59:00') && $t2 >= strtotime('20:00:00')) {
 
 
-                                return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00')) / 60;
+                                return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('19:30:00')) / 60;
                             } else {
 
                                 return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60 + 3.5;
@@ -2281,14 +2271,6 @@ function is_jabatan_khusus($jabatan)
 
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
 {
-    // koko
-    // $late = null;
-    // $late1 = null;
-    // $late2 = null;
-    // $late3 = null;
-    // $late4 = null;
-    // ffff
-
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
         $jabatan = $data_jabatan->jabatan_id;
