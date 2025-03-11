@@ -1730,8 +1730,14 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         }
 
 
-                        if ($t2 >= strtotime('23:30:00') || ($t2 >= strtotime('00:00:00') && $t2 <= $t05_00)) {
+                        // if ($t2 >= strtotime('23:30:00') || ($t2 >= strtotime('00:00:00') && $t2 <= $t05_00)) {
+                        //     $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
+                        // }
+                        if ($t2 >= strtotime('00:00:00') && $t2 <= $t05_00) {
                             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
+                        }
+                        if ($t2 >= strtotime('23:30:00')) {
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes($t23_00) / 60;
                         }
 
                         // Default jika tidak masuk kondisi apapun
@@ -2491,7 +2497,7 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
             if (is_saturday($tgl)) {
                 // if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
                 if (Carbon::parse($second_out)->betweenIncluded('19:00', $jam_secondOut_sore_sabtu)) {
-                    $t1 = strtotime($strtime_secondOut_pagi_sabtu);
+                    $t1 = strtotime($strtime_secondOut_sore_sabtu);
                     $t2 = strtotime($second_out);
 
                     $diff = gmdate('H:i:s', $t1 - $t2);
