@@ -104,7 +104,7 @@
             {{-- Second row --}}
             <div class="row g-4">
                 <!-- Card 1 -->
-                <div class="col-md-4">
+                <div class="col-md-4 d-flex gap-3">
                     <div class="card">
                         <div class="card-body text-center">
                             <h5 class="card-title">Tanpa No Rekening Bank</h5>
@@ -113,6 +113,13 @@
                             @else
                                 <p class="display-4">{{ $jumlahTanpaRekening }}</p>
                             @endif
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Belum upload dokumen</h5>
+                            <p class="display-4">{{ $total_karyawan_aktif - $karyawan_berdokumen }}</p>
                         </div>
                     </div>
                 </div>
@@ -136,6 +143,8 @@
                 </div>
 
             </div>
+        </div>
+        <div class="row g-4">
 
             <!-- Table -->
             <div class="mt-5">

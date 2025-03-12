@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Applicantfile;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Illuminate\Http\Response;
@@ -60,6 +61,20 @@ class Test extends Component
 
   public function render()
   {
+    $allDataCount = Karyawan::count();
+    $dataCount = Karyawan::whereNotNull('id_file_karyawan')->count();
+    // dd($allDataCount, $dataCount);
+
+    $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
+    $data_berisi = 0;
+    foreach ($data as $d) {
+      $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
+      if ($applicanteFiles > 0) $data_berisi++;
+    }
+    // $data_berisi = Karyawan::whereNotNull('id_file_karyawan')
+    //   ->whereHas('applicantFiles') // Langsung filter yang memiliki file
+    //   ->count();
+    dd($allDataCount, $dataCount, $data_berisi);
 
     return view('livewire.test', [
       'fileCount' => $this->fileCount,
