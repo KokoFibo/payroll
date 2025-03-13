@@ -1616,6 +1616,13 @@ function clear_locks()
     $lock->payroll = 0;
     $lock->save();
 }
+
+function is_lock()
+{
+    $lock = Lock::find(1);
+    if ($lock->upload == 1) return true;
+    else return false;
+}
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 {
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lock;
 use App\Livewire\Test;
 use App\Livewire\Terwr;
 use App\Models\Payroll;
@@ -25,7 +26,9 @@ use App\Livewire\BankReport;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
+use App\Livewire\Adddocument;
 use App\Livewire\AddPresensi;
+use App\Livewire\AddTambahan;
 use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
@@ -40,8 +43,10 @@ use Google\Service\Forms\Info;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
+use App\Livewire\Excelpresensi;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
+use App\Livewire\UpdateTambahan;
 use App\Livewire\UserRegulation;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
@@ -88,10 +93,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Adddocument;
-use App\Livewire\AddTambahan;
-use App\Livewire\Excelpresensi;
-use App\Livewire\UpdateTambahan;
 
 // Middleware
 Auth::routes([
@@ -193,8 +194,14 @@ Route::middleware(['auth'])->group(function () {
 
                 // YF PRESENSI
                 Route::get('/yfupload', function () {
-                    return view('yfpresensi.upload');
+                    $lock = Lock::find(1);
+                    $is_uploadable = !$lock->upload;
+                    // dd('$is_uploadable', $is_uploadable);
+                    return view('yfpresensi.upload', [
+                        'is_uploadable' => $is_uploadable
+                    ]);
                 });
+
                 Route::get('/yfindex', [YfpresensiController::class, 'index']);
                 Route::post('/yfstore', [YfpresensiController::class, 'store']);
                 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
