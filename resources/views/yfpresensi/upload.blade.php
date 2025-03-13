@@ -11,7 +11,7 @@
                 <h5>Import file presensi harian</h5>
             </div>
             <div class="card-body">
-                <p>$is_uploadable: {{ $is_uploadable }}</p>
+
                 @if ($is_uploadable == false)
                     <p>Harap kembali lagi, belum bisa upload file</p>
                 @else
