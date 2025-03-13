@@ -13,7 +13,7 @@
             <div class="card-body">
 
                 @if ($is_uploadable == false)
-                    <p>Harap kembali lagi, belum bisa upload file</p>
+                    <p>Harap kembali sebentar lagi...</p>
                 @else
                     <form action="/yfstore" method="POST" enctype="multipart/form-data">
                         @csrf
