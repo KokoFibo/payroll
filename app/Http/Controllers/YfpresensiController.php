@@ -264,7 +264,6 @@ class YfpresensiController extends Controller
         $tgl2 = trim(explode(':', $tgl1)[1]);
         if ($tgl != $tgl2) {
             $this->clear_upload_lock();
-
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -320,8 +319,6 @@ class YfpresensiController extends Controller
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
                 $this->clear_upload_lock();
-
-
                 return back()->with('error', $msg);
             }
         }

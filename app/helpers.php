@@ -1746,8 +1746,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                     }
                 }
             }
-
-            return $diff;
+            if (isset($diff) && $diff !== null) return $diff;
+            // return $diff;
         } else {
             return $lembur = 0;
         }
