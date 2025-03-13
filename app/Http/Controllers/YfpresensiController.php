@@ -26,9 +26,13 @@ class YfpresensiController extends Controller
 {
     public function compare(Request $request)
     {
+
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
+
+
+
 
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
@@ -237,7 +241,7 @@ class YfpresensiController extends Controller
     {
         $lock = Lock::find(1);
         if ($lock->upload) {
-            $this->clear_upload_lock();
+            // $this->clear_upload_lock();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
         } else {
             $lock->upload = true;
@@ -260,7 +264,6 @@ class YfpresensiController extends Controller
         $tgl2 = trim(explode(':', $tgl1)[1]);
         if ($tgl != $tgl2) {
             $this->clear_upload_lock();
-
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -316,8 +319,6 @@ class YfpresensiController extends Controller
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
                 $this->clear_upload_lock();
-
-
                 return back()->with('error', $msg);
             }
         }
