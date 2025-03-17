@@ -17,7 +17,7 @@ class Profile extends Component
     public $new_password;
     public $confirm_password;
     public $language;
-    public $kontak_darurat, $hp1, $hp2, $id;
+    public $kontak_darurat, $kontak_darurat2, $hp1, $hp2, $id, $hubungan1, $hubungan2;
     public $etnis;
 
     public function updateEtnis()
@@ -144,30 +144,34 @@ class Profile extends Component
         if (auth()->user()->language == 'Cn') {
             $this->validate([
                 'kontak_darurat' => 'required',
+                'kontak_darurat2' => 'nullable',
+                'hubungan1' => 'nullable',
+                'hubungan2' => 'nullable',
                 'hp1' => 'required|numeric|min_digits:10',
-                'hp2' => 'nullable|numeric|min_digits:10',
+                'hp2' => 'nullable',
             ], [
                 'kontak_darurat.required' => '必填项',
                 'hp1.required' => '必填项',
                 'hp1.numeric' => '这应该是数字0到9',
                 'hp1.min_digits' => '最少需要10位数字',
-                'hp2.numeric' => '这应该是数字0到9',
-                'hp2.min_digits' => '最少需要10位数字',
+
 
             ]);
         } else {
 
             $this->validate([
                 'kontak_darurat' => 'required',
+                'kontak_darurat2' => 'nullable',
+                'hubungan1' => 'nullable',
+                'hubungan2' => 'nullable',
                 'hp1' => 'required|numeric|min_digits:10',
-                'hp2' => 'nullable|numeric|min_digits:10',
+                'hp2' => 'nullable',
             ], [
                 'kontak_darurat.required' => 'Wajib diisi',
                 'hp1.required' => 'Wajib diisi',
                 'hp1.numeric' => 'Harus berupa angka 0..9',
                 'hp1.min_digits' => 'Minimal 10 digit',
-                'hp2.numeric' => 'Harus berupa angka 0..9',
-                'hp2.min_digits' => 'Minimal 10 digit',
+
 
             ]);
         }
@@ -177,7 +181,10 @@ class Profile extends Component
             $this->dispatch('error', message: 'Data Karyawan tidak ada');
             return;
         }
+        $data->hubungan1 = $this->hubungan1;
+        $data->hubungan2 = $this->hubungan2;
         $data->kontak_darurat = $this->kontak_darurat;
+        $data->kontak_darurat2 = $this->kontak_darurat2;
         $data->hp1 = $this->hp1;
         $data->hp2 = $this->hp2;
         $data->save();

@@ -1,7 +1,7 @@
 <div>
     <div>
         {{-- <div class="h-screen"> --}}
-        <div class="flex flex-col h-screen">
+        <div class="flex flex-col h-screen mb-[100px]">
 
             <div class=header>
                 {{-- <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
@@ -168,36 +168,68 @@
                 </div>
                 {{-- Update Kontak Darurat --}}
                 <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+                    <div class="flex flex-col gap-3">
 
-                    <div>
-                        {{-- <label class="block text-sm font-medium  text-gray-900">Email Baru</label> --}}
-                        <div class="relative mt-1 rounded-md shadow-sm mb-2">
-                            <input type="text" wire:model="kontak_darurat"
-                                placeholder="{{ __('Nama kontak darurat') }}"
-                                class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
-                            @error('kontak_darurat')
-                                <div class="text-red-500">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        <div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-2">
+                                <input type="text" wire:model="kontak_darurat"
+                                    placeholder="{{ __('Nama kontak darurat') }}"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('kontak_darurat')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-2">
+                                <input type="text" wire:model="hp1" placeholder="{{ __('Handphone') }} 1"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('hp1')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-2">
+                                <input type="text" wire:model="hubungan1"
+                                    placeholder="{{ __('Hubungan dengan Kontak Darurat 1') }}"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('hubungan1')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="relative mt-1 rounded-md shadow-sm mb-2">
-                            <input type="text" wire:model="hp1" placeholder="{{ __('Handphone') }} 1"
-                                class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
-                            @error('hp1')
-                                <div class="text-red-500">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="relative mt-1 rounded-md shadow-sm mb-1">
-                            <input type="text" wire:model="hp2" placeholder="{{ __('Handphone') }} 2"
-                                class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
-                            @error('hp2')
-                                <div class="text-red-500">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        <div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-2">
+                                <input type="text" wire:model="kontak_darurat2" placeholder="Nama Kontak Darurat 2"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('kontak_darurat2')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-1">
+                                <input type="text" wire:model="hp2" placeholder="Nomor HP Kontak Darurat 2"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('hp2')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="relative mt-1 rounded-md shadow-sm mb-2">
+                                <input type="text" wire:model="hubungan2"
+                                    placeholder="Hubungan dengan Kontak Darurat 2"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                @error('hubungan2')
+                                    <div class="text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -209,6 +241,7 @@
 
             {{-- Footer --}}
             @include('mobile-footer')
+
         </div>
     </div>
 
