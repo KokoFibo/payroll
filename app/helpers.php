@@ -25,20 +25,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-function selisihBulan($tgl)
+function selisihBulan($tgl, $tanggal_akhir)
 {
-    return Carbon::parse($tgl)->diffInMonths(Carbon::now());
+    // return Carbon::parse($tgl)->diffInMonths(Carbon::now());
+    return Carbon::parse($tgl)->diffInMonths(Carbon::parse($tanggal_akhir));
 }
 function selisihHari($tgl, $tanggal_akhir)
 {
     return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
 }
 
-function hitungTHR($id, $tgl, $gaji)
+function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
 {
 
     $thr = 0;
-    $tanggal_akhir = '2025-03-20';
     $selisih_hari = selisihHari($tgl, $tanggal_akhir);
     if ($selisih_hari > 365) {
         $thr = $gaji;
@@ -52,7 +52,6 @@ function hitungTHR($id, $tgl, $gaji)
 
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {
-
     $tambahan_shift_malam = 0;
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
