@@ -25,6 +25,31 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function selisihBulan($tgl)
+{
+    return Carbon::parse($tgl)->diffInMonths(Carbon::now());
+}
+function selisihHari($tgl, $tanggal_akhir)
+{
+    return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+}
+
+function hitungTHR($id, $tgl, $gaji)
+{
+
+    $thr = 0;
+    $tanggal_akhir = '2025-03-20';
+    $selisih_hari = selisihHari($tgl, $tanggal_akhir);
+    if ($selisih_hari > 365) {
+        $thr = $gaji;
+    } else {
+        $karyawan = Karyawan::where('id_karyawan', $id)->first();
+        // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+        $thr =  $selisih_hari / 365 * $gaji;
+    }
+    return $thr;
+}
+
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {
 
