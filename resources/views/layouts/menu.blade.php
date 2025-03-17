@@ -176,7 +176,7 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
 
-            @if (Auth::user()->role > 6)
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
                         <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
