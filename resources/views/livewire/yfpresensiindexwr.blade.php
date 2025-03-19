@@ -6,7 +6,7 @@
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
                 <div class="d-flex flex-row">
-                    <div class="col-4 text-center nightowl-daylight">{{ __('Hadir') }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ __('Had1r') }}</div>
                     <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
                     <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
                 </div>
