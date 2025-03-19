@@ -274,7 +274,7 @@ function build_payroll1($month, $year)
         $total_potongan_dari_karyawan = $d->karyawan->iuran_air + $d->karyawan->iuran_locker;
         $pajak = 0;
         $manfaat_libur = 0;
-        $manfaat_libur = manfaat_libur($month, $year, $libur, $d->user_id);
+        $manfaat_libur = manfaat_libur($month, $year, $libur, $d->user_id, $d->tanggal_bergabung);
 
         $gaji_karyawan_bulanan = ($d->karyawan->gaji_pokok / $total_n_hari_kerja) * ($total_hari_kerja + $manfaat_libur);
 
