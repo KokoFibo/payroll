@@ -6,7 +6,7 @@
         <div class="col-12 col-xl-3 bg-success py-2" style=" border-radius: 10px;">
             @if ($absensiKosong == 0)
                 <div class="d-flex flex-row">
-                    <div class="col-4 text-center nightowl-daylight">{{ __('Had1r') }}</div>
+                    <div class="col-4 text-center nightowl-daylight">{{ __('Hadir') }}</div>
                     <div class="col-4 text-center nightowl-daylight">{{ __('Pagi') }}</div>
                     <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
                 </div>
@@ -144,7 +144,7 @@
                         @if (auth()->user()->role == 8)
                             <a href="/deleteduplicatepresensi">
                                 <button
-                                    class="btn btn-success nightowl-daylight">{{ __('Cek Duplikat') }}</button></a>
+                                    class="btn btn-success nightowl-daylight">{{ __('Cek Dupl1kat') }}</button></a>
                             <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
                                 <button
                                     class="btn btn-warning nightowl-daylight">{{ __('Delete Tgl Presensi') }}</button></a>
