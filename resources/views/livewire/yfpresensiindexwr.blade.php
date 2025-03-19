@@ -144,7 +144,7 @@
                         @if (auth()->user()->role == 8)
                             <a href="/deleteduplicatepresensi">
                                 <button
-                                    class="btn btn-success nightowl-daylight">{{ __('Cek Dupl1kat') }}</button></a>
+                                    class="btn btn-success nightowl-daylight">{{ __('Cek Duplikat') }}</button></a>
                             <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
                                 <button
                                     class="btn btn-warning nightowl-daylight">{{ __('Delete Tgl Presensi') }}</button></a>
