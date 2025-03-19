@@ -5,11 +5,11 @@
             <h3>Delete Tanggal Presensi</h3>
         </div>
         <div class="card-body">
-            <label class="form-label">Email address</label>
+            <label class="form-label">Tanggal</label>
             <input wire:model="tanggal" type="date" class="form-control">
             <div class="form-text">Masukkan tanggal yang akan di delete</div>
 
-            <button class="btn btn-danger mt-3" onclick="return confirm('Yakin data nya akan dihapus ?');"
+            <button class="btn btn-danger mt-3" wire:confirm='Yakin data nya akan dihapus ?'
                 wire:click="delete">Delete</button>
             <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
         </div>
@@ -19,18 +19,22 @@
             <h3>Delete Tanggal Presensi By Lokasi Pabrik</h3>
         </div>
         <div class="card-body">
-            <label class="form-label">Pilih Pabrik</label>
-            <select wire:model="lokasi" class="form-select form-select-lg mb-3" aria-label="Large select example">
-                <option value=" ">Open this select menu</option>
-                <option value="0">Kantor</option>
-                <option value="1">Pabrik 1</option>
-                <option value="2">Pabrik 2</option>
-            </select>
-            <label class="form-label">Email address</label>
-            <input wire:model="tanggal" type="date" class="form-control">
-            <div class="form-text">Masukkan tanggal yang akan di delete</div>
-            <button class="btn btn-danger mt-3" onclick="return confirm('Yakin data nya akan dihapus ?');"
-                wire:click="deleteByPabrik">Delete</button>
+
+            <a href="/yfuploaddelete"><button class="btn btn-danger mt-3">Go to upload data presensi yang mau
+                    di delete</button></a>
+
+            <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
+        </div>
+
+    </div>
+    <div class="card col-4 mx-auto">
+        <div class="card-header bg-success text-light text-center">
+            <h3>Compare Tanggal presensi untuk cari data kembar</h3>
+        </div>
+        <div class="card-body">
+
+            <a href="/yfuploadcompare"><button class="btn btn-success mt-3">Go to upload Compare</button></a>
+
             <button class="btn btn-dark mt-3" wire:click="exit">Exit</button>
         </div>
 

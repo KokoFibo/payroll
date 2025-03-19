@@ -6,8 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ url('favicon/favicon-32x32.png') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@bufferhead/nightowl@0.0.14/dist/nightowl.js"></script>
 
 
     <!-- CSRF Token -->
@@ -41,7 +44,11 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
     {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 
 
@@ -56,6 +63,7 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     {{-- @livewireStyles --}}
 
@@ -65,25 +73,23 @@
         background-color: #F4F6F9;
         /* background-color: #f7f7f7;
         background-image: url("https://www.transparenttextures.com/patterns/dimension.png"); */
-
+        font-family: "Noto Sans", sans-serif;
     }
 </style>
 
-<body style="font-family: 'nunito'; >
+<body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
 
-
-    <body class="hold-transition sidebar-mini">
+    {{-- <body class="hold-transition sidebar-mini" style="font-family: 'Noto Sans';"> --}}
 
     <div class="wrapper">
-
-
         @include('layouts.navbar')
 
         @include('layouts.aside')
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});">
-
+        {{-- nyalakan ini jika mau pakai background texture --}}
+        {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
+        <div class="content-wrapper">
             {{ $slot }}
 
         </div>
@@ -96,6 +102,10 @@
         {{-- @livewireScripts --}}
         {{-- flat picker bagus --}}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+
 
         <script>
             flatpickr("#tanggal", {
@@ -103,7 +113,7 @@
             });
         </script>
 
-
+    </div>
 
 </body>
 

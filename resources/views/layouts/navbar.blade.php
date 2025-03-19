@@ -1,5 +1,7 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-dark text-light py-3">
+
+<nav class="main-header navbar navbar-expand navbar-dark text-light py-3 nightowl-daylight"
+    style="background-color: black">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -7,14 +9,13 @@
         </li>
     </ul>
 
-    <h2 class="ml-auto text-bold  fs-3">{{ __('Yifang Investment Group Payroll System') }}</h2>
+    <h2 class="ml-auto text-bold  fs-3">{{ __('Yifang Investment Group Payroll System (OS)') }}</h2>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav
-                ml-auto">
+    <ul class="navbar-nav ml-auto flex gap-5">
 
         @if (auth()->user()->language == 'Cn')
-            <li>
+            <li class="nav-item">
                 @if (app()->getLocale() == 'id')
                     {{-- <a class="dropdown-item" href="{{ url('locale/en') }}">{{ __('english') }}</a> --}}
                     <a class="nav-link" href="{{ url('locale/cn') }}">{{ __('中文') }}</a>
@@ -31,6 +32,9 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" role="button"></a>
         </li>
     </ul>
 </nav>

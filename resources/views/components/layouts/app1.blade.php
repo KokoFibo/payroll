@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    kereen
     {{ $slot }}
 </body>
 

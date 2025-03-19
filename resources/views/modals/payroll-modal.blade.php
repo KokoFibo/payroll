@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div wire:ignore.self class="modal fade" id="payroll" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog  modal-lg" style="padding-bottom: 200px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Slip Gaji</h1>
@@ -33,7 +33,8 @@
                                     <tr>
                                         <td>Company / Placement</td>
                                         <td>
-                                            {{ $data_karyawan->company }} / {{ $data_karyawan->placement }}</td>
+                                            {{ $data_karyawan->company->company_name }} /
+                                            {{ $data_karyawan->placement->placement_name }}</td>
                                     </tr>
                                     @if ($data_karyawan->no_npwp != null)
                                         <tr>
@@ -82,6 +83,14 @@
                                         <td>
                                             Rp. {{ number_format($data_payroll->subtotal) }}</td>
                                     </tr>
+                                    @if ($data_payroll->gaji_libur != 0)
+                                        <tr>
+                                            <td>Gaji Libur</td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->gaji_libur) }}</td>
+                                        </tr>
+                                    @endif
+
                                     @if ($data_payroll->tambahan_shift_malam != 0)
                                         <tr>
                                             <td>Bonus Shift Malam
@@ -160,14 +169,46 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($data_karyawan->ptkp != 0)
+                                    @if ($data_payroll->tanggungan != 0)
                                         <tr>
-                                            <td>PTKP</td>
+                                            <td>BPJS Tanggungan
+                                            </td>
                                             <td>
-                                                Rp. {{ number_format($data_karyawan->ptkp) }}</td>
+                                                Rp. {{ number_format($data_payroll->tanggungan) }}
+                                            </td>
                                         </tr>
                                     @endif
 
+                                    @if ($data_payroll->denda_resigned != 0)
+                                        <tr>
+                                            <td>Lama Bekerja</td>
+                                            <td>
+
+                                                {{ selisih_hari($data_karyawan->tanggal_bergabung, $data_karyawan->tanggal_resigned) }}
+                                                Hari
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Denda Resigned</td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->denda_resigned) }}</td>
+                                        </tr>
+                                    @endif
+                                    @if ($data_karyawan->ptkp != '')
+                                        <tr>
+                                            <td>PTKP</td>
+                                            <td>
+                                                {{ $data_karyawan->ptkp }}</td>
+                                        </tr>
+                                    @endif
+                                    @if ($data_karyawan->ptkp != '')
+                                        <tr>
+                                            <td>PPh21</td>
+                                            <td>
+                                                Rp. {{ number_format($data_payroll->pph21) }}
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>Total Gaji</td>
                                         <td>
@@ -188,4 +229,5 @@
             </div>
         </div>
     </div>
+
 </div>

@@ -2,17 +2,33 @@
 
 namespace App\Livewire;
 
+use App\Models\Applicantfile;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+use Illuminate\Http\Response;
+
 use Carbon\Carbon;
+use App\Models\Ter;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Jabatan;
 use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Department;
 use App\Models\Jamkerjaid;
+use App\Models\Rekapbackup;
 use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\DB;
+use App\Models\Personnelrequestform;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class Test extends Component
 {
@@ -22,54 +38,46 @@ class Test extends Component
   public $month;
   public $year;
   public $today;
-
+  public $cx;
+  public $test;
+  public $fileCount = 0;
 
 
   public function mount()
   {
+    $this->cx = 0;
     $this->today = now();
 
     $this->year = now()->year;
     $this->month = now()->month;
+    $this->countFiles();
   }
 
-
-  public function delete()
+  public function countFiles()
   {
-    $data = Yfrekappresensi::where('first_in', null)
-      ->where('first_out', null)
-      ->where('second_in', null)
-      ->where('second_out', null)
-      ->where('overtime_in', null)
-      ->where('overtime_out', null)
-      ->get();
-
-    foreach ($data as $d) {
-      $data_delete = Yfrekappresensi::find($d->id);
-      $data_delete->delete();
-    }
-
-    $this->dispatch('success', message: 'Data Absensi Kosong semua sudah di delete');
+    $files = Storage::disk('s3')->allFiles('Applicants/Eiusmod_sint_exercit_1987_07_13/'); // Ambil semua file di folder "applicants"
+    $this->fileCount = count($files);
   }
+
   public function render()
   {
-    $data = Karyawan::whereMonth('tanggal_resigned', 12)->whereYear('tanggal_resigned', 2023)
-      ->orWhereMonth('tanggal_blacklist', 12)
-      ->orWhereYear('tanggal_blacklist', 2023)
-      ->paginate(10);
+    $allDataCount = Karyawan::count();
+    $dataCount = Karyawan::whereNotNull('id_file_karyawan')->count();
+    // dd($allDataCount, $dataCount);
 
-    $dataResigned = Karyawan::whereMonth('tanggal_resigned', 12)->whereYear('tanggal_resigned', 2023)
-      ->count();
-    $dataBlacklist = Karyawan::whereMonth('tanggal_blacklist', 12)->whereYear('tanggal_blacklist', 2023)
-      ->count();
+    $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
+    $data_berisi = 0;
+    foreach ($data as $d) {
+      $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
+      if ($applicanteFiles > 0) $data_berisi++;
+    }
+    // $data_berisi = Karyawan::whereNotNull('id_file_karyawan')
+    //   ->whereHas('applicantFiles') // Langsung filter yang memiliki file
+    //   ->count();
+    dd($allDataCount, $dataCount, $data_berisi);
 
-    $data = Karyawan::whereNotNull('tanggal_resigned')
-      ->whereMonth('tanggal_resigned', 12)->whereYear('tanggal_resigned', 2023)
-      ->whereRaw('DATEDIFF(tanggal_resigned, tanggal_bergabung) < 90')
-      ->paginate(10);
-
-    // dd($dataResigned, $dataBlacklist);
-
-    return view('livewire.test', compact(['data', 'dataResigned', 'dataBlacklist']));
+    return view('livewire.test', [
+      'fileCount' => $this->fileCount,
+    ]);
   }
 }

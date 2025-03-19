@@ -7,7 +7,7 @@
             {{-- <h5>
                 Hello, {{ namaDiAside($name) }} selamat datang di menu User Setting.
             </h5> --}}
-            <button class="mx-auto col-12 btn btn-success btn-large">
+            <button class="mx-auto col-12 btn btn-success btn-large  nightowl-daylight">
                 <h3 class="px-3">{{ __('User Settings') }}</h3>
             </button>
         </div>
@@ -29,7 +29,8 @@
                     @enderror
                 </div>
 
-                <button wire:click="changeEmail" class="btn btn-outline-success">{{ __('Simpan') }}</button>
+                <button wire:click="changeEmail"
+                    class="btn btn-outline-success  nightowl-daylight">{{ __('Simpan') }}</button>
             </div>
         </div>
         <div class="card mt-5 col-xl-8 col-12 mx-auto">
@@ -96,7 +97,8 @@
                         </div>
                     @enderror
                 </div>
-                <button wire:click="changePassword" class="btn btn-outline-success">{{ __('Simpan') }}</button>
+                <button wire:click="changePassword"
+                    class="btn btn-outline-success  nightowl-daylight">{{ __('Simpan') }}</button>
 
             </div>
 
@@ -114,11 +116,12 @@
                 </div>
                 <div class="form-check mb-4">
                     <input wire:model="language" value="Cn" class="form-check-input" type="radio"
-                        name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">{{ __('Mandarin') }}</label>
+                        name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">{{ __('Mandarin') }}</label>
                 </div>
 
-                <button wire:click="changeLanguage" class="btn btn-outline-success">{{ __('Simpan') }}</button>
+                <button wire:click="changeLanguage"
+                    class="btn btn-outline-success nightowl-daylight">{{ __('Simpan') }}</button>
 
             </div>
 

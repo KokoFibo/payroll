@@ -20,10 +20,16 @@ class AbsensiKosong extends Component
             ->where('overtime_in', null)
             ->where('overtime_out', null)
             ->get();
+
         foreach ($data as $d) {
             $data_delete = Yfrekappresensi::find($d->id);
             $data_delete->delete();
         }
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Semua data absensi kosong telah di delete',
+        );
     }
 
     public function render()

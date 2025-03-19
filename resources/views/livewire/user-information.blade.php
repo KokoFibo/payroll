@@ -2,11 +2,13 @@
     <div>
         <div class="flex flex-col h-screen">
             <div class=header>
-                <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
-                    <div class="flex justify-between">
+                @include('mobile-header')
+
+                {{-- <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
+                    <div class="flex justify-between items-center">
                         <div>
-                            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo"
-                                style="opacity: .8; width:150px">
+                            <img src="{{ asset('images/logo-only.png') }}" class="ml-3"alt="Yifang Logo"
+                                style="opacity: .8; width: 50px">
                         </div>
                         <div class="flex flex-col p-3 gap-5 items-end">
                             @if (auth()->user()->role < 4)
@@ -24,7 +26,7 @@
                                 </div>
                             @else
                                 <div>
-                                    <a href="/dashboard"><button
+                                    <a href="/"><button
                                             class="rounded-xl shadow bg-green-500 text-sm text-white px-3 py-1">Dasboard</button>
                                     </a>
 
@@ -37,10 +39,10 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div class="py-2"> --}}
-                <div class="flex justify-center">
-                    <h2 class="bg-gray-500 text-center text-white text-xl rounded-xl px-5 mt-3">Informasi Terkini
+                <div>
+                    <h2 class="bg-gray-500 text-center text-white text-xl py-2 px-5 mt-3">Informasi Terkini
                     </h2>
                 </div>
                 {{-- </div> --}}
@@ -48,7 +50,7 @@
             </div>
             <div class="main  flex-1 overflow-y-auto ">
                 {{-- <h2 class="bg-black text-center text-white text-xl rounded-xl px-5  ">Informasi Terkini</h2> --}}
-                <div class="w-screen flex px-3  mt-3 flex flex-col ">
+                <div class="w-screen flex px-3  mt-3  flex-col ">
                     @foreach ($data as $d)
                         <div class="bg-white shadow rounded-xl mt-3 p-3">
                             <div class="flex items-center gap-4">
@@ -78,11 +80,18 @@
                         class="{{ 'usermobile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
                             class="fa-solid fa-house"></i>
                     </button></a>
-                {{-- href="/userinformation" --}}
-                <a wire:navigate href="userinformation"><button
-                        class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                            class="fa-solid fa-circle-info"></i>
-                    </button></a>
+                @if (is_perbulan())
+                    <a href="timeoff"><button
+                            class="{{ 'timeoff' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
+                                class="fa-brands fa-wpforms"></i>
+                        </button></a>
+                @else
+                    {{-- href="/userinformation" --}}
+                    <a wire:navigate href="userinformation"><button
+                            class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
+                                class="fa-solid fa-circle-info"></i>
+                        </button></a>
+                @endif
 
                 <div>
                     <a href="{{ route('logout') }}"

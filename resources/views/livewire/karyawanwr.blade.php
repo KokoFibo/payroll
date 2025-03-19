@@ -5,7 +5,8 @@
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">
                 <h5>Tambah Data Karyawan
-                    <button wire:click="clear" class="btn btn-primary float-end">{{ __('Create New') }}</button>
+                    <button wire:click="clear"
+                        class="btn btn-primary float-end nightowl-daylight">{{ __('Create New') }}</button>
                 </h5>
             </div>
             <div class="card-body">
@@ -17,15 +18,18 @@
                         <button class="nav-link " id="nav-identitas-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-identitas" type="button" role="tab" aria-controls="nav-identitas"
                             aria-selected="false"><span class="fs-5">{{ __('Identitas') }}</span></button>
+
                         <button class="nav-link " id="nav-kepegawaian-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-kepegawaian" type="button" role="tab"
                             aria-controls="nav-kepegawaian" aria-selected="false"><span
                                 class="fs-5">{{ __('Data Kepegawaian') }}</span></button>
+
                         @if (Auth::user()->role != 1)
                             <button class="nav-link " id="nav-payroll-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll"
                                 aria-selected="false"><span class="fs-5">{{ __('Payroll') }}</span></button>
                         @endif
+
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -45,12 +49,17 @@
                     <div class="tab-pane fade p-3" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab">
                         @include('payroll')
                     </div>
-
-
                 </div>
+                {{-- Show Errors --}}
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li><span class='text-danger'>{{ $error }}</span></li>
+                    @endforeach
+                </ul>
                 <div class="d-flex gap-3 pb-3 px-3">
-                    <button wire:click="save" class="btn btn-primary mx-3">{{ __('Save') }}</button>
-                    <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
+                    <button wire:click="save"
+                        class="btn btn-primary mx-3 nightowl-daylight">{{ __('Save') }}</button>
+                    <button wire:click="exit" class="btn btn-dark mx-3 nightowl-daylight">{{ __('Exit') }}</button>
                 </div>
             </div>
         </div>

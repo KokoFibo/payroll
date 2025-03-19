@@ -33,10 +33,12 @@ return new class extends Migration
 
             $table->string('status_karyawan')->nullable();
             $table->date('tanggal_bergabung')->nullable();
-            $table->string('company')->nullable();
-            $table->string('placement')->nullable();
-            $table->string('departemen')->nullable();
-            $table->string('jabatan')->nullable();
+            $table->foreignId('company_id')->nullable();
+            $table->foreignId('placement_id')->nullable();
+            $table->foreignId('department_id')->nullable();
+            // $table->string('jabatan')->nullable();
+            $table->foreignId('jabatan_id')->nullable();
+
             $table->string('level_jabatan')->nullable();
             $table->string('nama_bank')->nullable();
             $table->string('nomor_rekening')->nullable();
@@ -67,6 +69,15 @@ return new class extends Migration
             $table->string('etnis')->nullable();
             $table->date('tanggal_resigned')->nullable();
             $table->date('tanggal_blacklist')->nullable();
+            $table->string('kontak_darurat')->nullable();
+            $table->string('kontak_darurat2')->nullable();
+            $table->string('hp1')->nullable();
+            $table->string('hp2')->nullable();
+            $table->string('hubungan1')->nullable();
+            $table->string('hubungan2')->nullable();
+            $table->integer('tanggungan')->nullable();
+            $table->integer('id_file_karyawan')->nullable();
+
 
 
             $table->timestamps();

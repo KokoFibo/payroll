@@ -1,5 +1,4 @@
 <div class="card">
-
     <div class="card-body">
         <div class="card">
             <div class="card-header bg-secondary">
@@ -54,7 +53,7 @@
                             <label class="form-label">{{ __('Tanggal Blacklist') }}</label>
                             <div>
                                 <input type="date"
-                                    class="date form-control @error('tanggal_blacklist') is-invalid @enderror""
+                                    class="date form-control @error('tanggal_blacklist') is-invalid @enderror"
                                     placeholder="mm-dd-yyyy" wire:model="tanggal_blacklist">
                                 @error('tanggal_blacklist')
                                     <div class="invalid-feedback">
@@ -66,38 +65,58 @@
                         {{-- @endif --}}
 
                     </div>
-                    <div class="col-md-4 {{ auth()->user()->role < 4 ? 'visually-hidden' : '' }}">
+                    <div class="col-md-4">
                         {{-- <div class="col-md-4"> --}}
                         <div class="mb-3">
                             <label class="form-label">{{ __('Tanggal Bergabung') }} <span
                                     class="text-danger">*</span></label>
                             <div>
-                                <input type="datetime:local" id="tanggal"
-                                    class="date form-control @error('tanggal_bergabung') is-invalid @enderror""
-                                    placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
-                                @error('tanggal_bergabung')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+
+                                @if (auth()->user()->role > 2)
+                                    <input type="datetime:local" id="tanggal"
+                                        class="date form-control @error('tanggal_bergabung') is-invalid @enderror"
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                                    @error('tanggal_bergabung')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                @else
+                                    <input type="datetime:local" id="tanggal" {{ $is_update ? 'disabled' : '' }}
+                                        class="date form-control @error('tanggal_bergabung') is-invalid @enderror"
+                                        placeholder="mm-dd-yyyy" wire:model="tanggal_bergabung">
+                                    @error('tanggal_bergabung')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                @endif
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Company') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('company') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="company">
+                            <select class="form-select @error('company_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="company_id">
                                 <option value=" ">{{ __('Pilih company') }}</option>
-                                <option value="ASB">ASB</option>
+                                @foreach ($pilih_company as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->company_name }}</option>
+                                    @endif
+                                @endforeach
+                                {{-- <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
                                 <option value="YEV">YEV</option>
                                 <option value="YIG">YIG</option>
                                 <option value="YSM">YSM</option>
+                                <option value="YAM">YAM</option>
+                                <option value="GAMA">GAMA</option>
+                                <option value="WAS">WAS</option> --}}
 
                             </select>
-                            @error('company')
+                            @error('company_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -108,11 +127,17 @@
 
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">{{ __('Departemen') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('departemen') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="departemen">
-                                <option value=" ">{{ __('Pilih departemen') }}</option>
-                                <option value="BD">BD</option>
+                            <label class="form-label">{{ __('Department') }} <span class="text-danger">*</span></label>
+                            <select class="form-select @error('department_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="department_id">
+                                <option value=" ">{{ __('Pilih Department') }}</option>
+                                @foreach ($pilih_department as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->nama_department }}</option>
+                                    @endif
+                                @endforeach
+
+                                {{-- <option value="BD">BD</option>
                                 <option value="Engineering">Engineering</option>
                                 <option value="EXIM">EXIM</option>
                                 <option value="Finance Accounting">Finance Accounting</option>
@@ -123,10 +148,10 @@
                                 <option value="Procurement">Procurement</option>
                                 <option value="Produksi">Produksi</option>
                                 <option value="Quality Control">Quality Control</option>
-                                <option value="Board of Director">Board of Director</option>
+                                <option value="Board of Director">Board of Director</option> --}}
 
                             </select>
-                            @error('departemen')
+                            @error('department_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -136,7 +161,16 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Jabatan') }} <span class="text-danger">*</span></label>
-                            <select class="form-select @error('jabatan') is-invalid @enderror"
+                            <select class="form-select @error('jabatan_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="jabatan_id">
+                                <option value=" ">{{ __('Pilih jabatan') }}</option>
+                                @foreach ($pilih_jabatan as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->nama_jabatan }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            {{-- <select class="form-select @error('jabatan') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="jabatan">
                                 <option value=" ">{{ __('Pilih jabatan') }}</option>
                                 <option value="Admin">{{ __('') }}Admin</option>
@@ -161,9 +195,11 @@
                                 <option value="Dapur Pabrik">Dapur Pabrik</option>
                                 <option value="QC Aging">QC Aging</option>
                                 <option value="Driver">Driver</option>
+                                <option value="Translator">Translator</option>
+                                <option value="Senior SPV">Senior SPV</option>
 
-                            </select>
-                            @error('jabatan')
+                            </select> --}}
+                            @error('jabatan_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -173,8 +209,7 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Level Jabatan') }}</label>
-                            <select class="form-select" aria-label="Default select example"
-                                wire:model="level_jabatan">
+                            <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
                                 <option value=" ">{{ __('Pilih level jabatan') }}</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
@@ -195,18 +230,30 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Placement') }} <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select @error('placement') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="placement">
+                            <select class="form-select @error('placement_id') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="placement_id">
                                 <option value=" ">{{ __('Pilih placement') }}</option>
-                                <option value="ASB">ASB</option>
+                                @foreach ($pilih_placement as $key => $nj)
+                                    @if ($nj->id != 100)
+                                        <option value="{{ $nj->id }}">{{ $nj->placement_name }}</option>
+                                    @endif
+                                @endforeach
+                                {{-- <option value="ASB">ASB</option>
                                 <option value="DPA">DPA</option>
                                 <option value="YCME">YCME</option>
                                 <option value="YIG">YIG</option>
                                 <option value="YSM">YSM</option>
+                                <option value="YAM">YAM</option>
+                                <option value="GAMA">GAMA</option>
+                                <option value="WAS">WAS</option>
                                 <option value="YEV">YEV</option>
+                                <option value="YEV SMOOT">YEV SMOOT</option>
+                                <option value="YEV OFFERO">YEV OFFERO</option>
+                                <option value="YEV SUNRA">YEV SUNRA</option>
+                                <option value="YEV AIMA">YEV AIMA</option> --}}
 
                             </select>
-                            @error('placement')
+                            @error('placement_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>

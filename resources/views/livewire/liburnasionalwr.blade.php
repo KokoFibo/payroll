@@ -21,7 +21,7 @@
 
 
                     <div class="mb-3">
-                        <label for="tanggalmulailibur" class="form-label">Tanggal mulai libur</label>
+                        <label for="tanggalmulailibur" class="form-label">Tanggal libur</label>
                         <input wire:model.live="tanggal_mulai_hari_libur" type="date"
                             class="form-control @error('tanggal_mulai_hari_libur') is-invalid @enderror""
                             id="tanggalmulailibur">
@@ -33,7 +33,7 @@
                     </div>
 
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="tanggalselesailibur" class="form-label">Tanggal selesai libur <span
                                 class="text-sm text-danger">(kosongkan jika hanya
                                 libur 1 hari)</span></label>
@@ -45,12 +45,12 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
-                    <div class="mb-3">
+                    </div> --}}
+                    {{-- <div class="mb-3">
                         <label for="jumlah_hari_libur" class="form-label">Jumlah Hari libur</label>
                         <input wire:model.live="jumlah_hari_libur" type="text" class="form-control"
                             id="jumlah_hari_libur" disabled>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="m-3">
@@ -61,14 +61,15 @@
                         @endif
                         <button wire:click="cancel" class="btn btn-dark">Cancel</button>
                     </div>
-                    <div class="m-3">
+                    {{-- <div class="m-3">
                         <button wire:click="exit" class="btn btn-success">Exit</button>
-                    </div>
+                    </div> --}}
                 </div>
 
             </div>
         </div>
     @endif
+    <h3 class="text-center pt-5 fw-semibold">{{ __('Libur Nasional') }}</h3>
     <div class="pt-5  d-flex flex-col flex-xl-row gap-xl-3 gap-2 justify-content-center align-items-center">
         <div>
             <select wire:model.live="year" class="form-select" aria-label="Default select example">
@@ -93,40 +94,59 @@
                 <option value="12">Desember</option>
             </select>
         </div>
-        <div>
-            <button wire:click="create_new" class="btn btn-primary">Create New</button>
-        </div>
+        @if (auth()->user()->role == 8)
+            <div>
+                <button wire:click="create_new" class="btn btn-primary">Create New</button>
+            </div>
+        @endif
+
     </div>
     <div class="m-3">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama Hari libur</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Akhir</th>
-                    <th>Jumlah Hari libur</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $index => $d)
+        <style>
+            td,
+            th {
+                white-space: nowrap;
+            }
+        </style>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $d->nama_hari_libur }}</td>
-                        {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
-                        <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
-                        <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td>
-                        <td>{{ $d->jumlah_hari_libur }}</td>
-                        <td>
-                            <button wire:click="edit({{ $d->id }})" class="btn-warning btn-sm">Edit</button>
-                            <button wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                wire:click="delete({{ $d->id }})" class="btn-danger btn-sm">Delete</button>
-                        </td>
+                        <th>#</th>
+                        <th>{{ __('Nama Hari Libur') }}</th>
+                        <th>{{ __('Tanggal Libur') }}</th>
+                        {{-- <th>Tanggal Akhir</th> --}}
+                        @if (auth()->user()->role == 8)
+                            <th>Jumlah Hari libur</th>
+                            <th></th>
+                        @endif
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                    @foreach ($data as $index => $d)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $d->nama_hari_libur }}</td>
+                            {{-- <td>{{ $data->firstItem() + $index }}</td> --}}
+                            <td>{{ format_tgl($d->tanggal_mulai_hari_libur) }}</td>
+                            {{-- <td>{{ format_tgl($d->tanggal_akhir_libur) }}</td> --}}
+                            @if (auth()->user()->role == 8)
+                                <td>{{ $d->jumlah_hari_libur }}</td>
+                                <td>
+                                    <button wire:click="edit({{ $d->id }})"
+                                        class="btn-warning btn-sm">Edit</button>
+                                    <button
+                                        wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                        wire:click="delete({{ $d->id }})"
+                                        class="btn-danger btn-sm">Delete</button>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>

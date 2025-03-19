@@ -1,7 +1,10 @@
 <div>
 
     @section('title', 'Karyawan')
-    @if (auth()->user()->role == 2 || auth()->user()->role == 3)
+
+    {{-- aktifkan ini supaya datanya bisa lengket --}}
+    {{-- <p>role : {{ Auth::user()->role }}</p> --}}
+    @if (auth()->user()->role == 5 || auth()->user()->role == 6)
         <div x-data="{
             search: $persist(@entangle('search').live),
             columnName: $persist(@entangle('columnName').live),
@@ -9,56 +12,31 @@
             selectStatus: $persist(@entangle('selectStatus').live),
             perpage: $persist(@entangle('perpage').live),
             page: $persist(@entangle('paginators.page').live),
-        
         }">
-
-
         </div>
     @endif
 
 
 
 
-    <div class="d-flex flex-column flex-xl-row gap-2 p-3 gap-xl-3 justify-content-end">
 
-        <div class="col-xl-2 col-12">
-            @if (Auth::user()->role > 3)
-                <select wire:model.live="selected_company" class="form-select" aria-label="Default select example">
-                    <option value="0"selected>{{ __('All Companies') }}</option>
-                    <option value="1">{{ __('Pabrik 1') }}</option>
-                    <option value="2">{{ __('Pabrik 2') }}</option>
-                    <option value="3">{{ __('Kantor') }}</option>
-                    <option value="4">ASB</option>
-                    <option value="5">DPA</option>
-                    <option value="6">YCME</option>
-                    <option value="7">YEV</option>
-                    <option value="8">YIG</option>
-                    <option value="9">YSM</option>
-                </select>
-            @endif
-
-        </div>
-        <div class="col-12 col-xl-1">
-            @if (Auth::user()->role > 3)
-                <div class="col-12">
-                    <button wire:click="excel" class="btn btn-success col-12">Excel</button></a>
-                </div>
-            @endif
-        </div>
-    </div>
-
-
-    <div class="px-4">
+    <div class="px-4 mt-3">
 
 
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
-                    <div class="col-12 col-xl-4">
+                    <div class="col-12 col-xl-3">
                         <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
+                        @if (isDataUtamaLengkap() > 0)
+                            <a href="/datatidaklengkap"><button class="btn btn-danger">Data Utama Tidak
+                                    Lengkap</button></a>
+                        @endif
+
                     </div>
-                    <div
-                        class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6">
+                    <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
+                        class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2  col-xl-9">
+
                         <div class="col-12 col-xl-3">
                             <select class="form-select" wire:model.live="perpage">
                                 {{-- <option selected>Open this select menu</option> --}}
@@ -73,19 +51,22 @@
                                 aria-label="Default select example">
                                 <option value="0">{{ __('All Status') }}</option>
                                 <option value="1">{{ __('Aktif') }}</option>
-                                <option value="2">{{ __('Non Aktif') }}</option>
+                                <option value="2">{{ __('Resigned') }}</option>
+                                <option value="3">{{ __('Blacklist') }}</option>
                             </select>
                         </div>
 
                         <div class="col-12 col-xl-3">
-                            <button wire:click="reset_filter" class="btn btn-success col-12">Refresh</button>
+                            <button wire:click="reset_filter"
+                                class="btn btn-success col-12">{{ __('Refresh') }}</button>
                         </div>
                         <div class="col-12 col-xl-3">
                             <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
                                         class="fa-solid fa-plus"></i>
-                                    {{ __('Karyawan baru') }}</button></a>
+                                    {{ __('Karyawan Baru') }}</button></a>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -113,17 +94,22 @@
                                     <input wire:model.live="search_nama" type="text" class="form-control"
                                         placeholder="{{ __('Nama Karyawan') }}">
                                 </th>
+
                                 <th style="width: 130px; border-style: none;">
                                     <div style="width: 130px">
                                         <select wire:model.live="search_company" class="form-select"
                                             aria-label="Default select example">
                                             <option value="">{{ __('Company') }}</option>
-                                            <option value="ASB">ASB</option>
+                                            {{-- <option value="ASB">ASB</option>
                                             <option value="DPA">DPA</option>
                                             <option value="YCME">YCME</option>
                                             <option value="YEV">YEV</option>
                                             <option value="YIG">YIG</option>
                                             <option value="YSM">YSM</option>
+                                            <option value="YAM">YAM</option> --}}
+                                            @foreach ($companies as $j)
+                                                <option value="{{ $j }}">{{ nama_company($j) }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </th>
@@ -132,19 +118,36 @@
                                         <select wire:model.live="search_placement" class="form-select"
                                             aria-label="Default select example">
                                             <option value="">{{ __('Placement') }}</option>
-                                            <option value="1">Pabrik 1</option>
-                                            <option value="2">Pabrik 2</option>
-                                            <option value="3">Kantor</option>
+                                            @foreach ($placements as $j)
+                                                {{-- <option value="{{ $j->id }}">{{ $j->placement_name }}</option> --}}
+                                                <option value="{{ $j }}">{{ nama_placement($j) }}
+                                                    {{-- <option value="{{ $j }}">{{ $j }} --}}
+                                                </option>
+                                            @endforeach
+                                            {{-- <option value="YCME">YCME</option>
+                                            <option value="YEV">YEV</option>
+                                            <option value="YAM">YAM</option>
+                                            <option value="YIG">YIG</option>
+                                            <option value="YSM">YSM</option> --}}
+                                            {{-- <option value="1">YCME</option>
+                                            <option value="2">YEV</option>
+                                            <option value="6">YAM</option>
+                                            <option value="4">YIG</option>
+                                            <option value="5">YSM</option> --}}
+
+
                                         </select>
                                     </div>
                                 </th>
+
+
                                 <th style="width: 200px; border-style: none;">
                                     <div style="width: 130px">
                                         <select wire:model.live="search_department" class="form-select"
                                             aria-label="Default select example">
                                             <option value="">{{ __('Department') }}</option>
                                             @foreach ($departments as $j)
-                                                <option value="{{ $j->departemen }}">{{ $j->departemen }}</option>
+                                                <option value="{{ $j }}">{{ nama_department($j) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -155,18 +158,88 @@
                                             aria-label="Default select example">
                                             <option value="">{{ __('Jabatan') }}</option>
                                             @foreach ($jabatans as $j)
-                                                <option value="{{ $j->jabatan }}">{{ $j->jabatan }}</option>
+                                                <option value="{{ $j }}">{{ nama_jabatan($j) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </th>
-                                @if (auth()->user()->role >= 4)
-                                    <th style="width: 150px; border-style: none;">
-                                        <button wire:click="excelByDepartment" class="btn btn-success btn-sm mb-1"
-                                            @if ($search_placement == null || $search_department == null) disabled @endif>Excel by
-                                            Departement</button>
+
+                                @if (auth()->user()->role >= 7)
+                                    <th style="width: 220px; border-style: none;">
+                                        <div style="width: 130px">
+                                            <select wire:model.live="search_etnis" class="form-select"
+                                                aria-label="Default select example">
+                                                <option value="">{{ __('Etnis') }}</option>
+                                                {{-- <option value="Jawa">{{ __('Jawa') }}</option>
+                                                <option value="Sunda">{{ __('Sunda') }}</option>
+                                                <option value="Tionghoa">{{ __('Tionghoa') }}</option>
+                                                <option value="China">{{ __('China') }}</option>
+                                                <option value="Lainnya">{{ __('Lainnya') }}</option>
+                                                <option value="kosong">{{ __('Masih Kosong') }}</option> --}}
+                                                @foreach ($etnises as $j)
+                                                    @if ($j == '')
+                                                        <option value="kosong">{{ __('Masih Kosong') }}</option>
+                                                    @else
+                                                        <option value="{{ $j }}">{{ $j }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </th>
                                 @endif
+
+                                @if (auth()->user()->role >= 6)
+                                    <th style="width: 150px; border-style: none;">
+                                        <button wire:loading.remove wire:click="excel"
+                                            class="btn btn-success col-12">Excel</button>
+                                    </th>
+                                    @if (auth()->user()->role == 8)
+                                        <th style="width: 150px; border-style: none;">
+                                            <a href="/usernotfound">
+                                                <button wire:loading.remove class="btn btn-primary col-12">User Not
+                                                    Found</button></a>
+                                        </th>
+                                    @endif
+                                    @if (auth()->user()->role >= 8)
+                                        <th style="width: 150px; border-style: none;">
+                                            <a href="/movedata">
+                                                <button wire:loading.remove class="btn btn-primary col-12">Move
+                                                    Data</button></a>
+                                        </th>
+                                    @endif
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/infokaryawan">
+                                            <button class="btn btn-info">Informasi</button> </a>
+                                    </th>
+
+                                    <th style=" border-style: none;">
+                                        <div wire:loading wire:target='excel' class="spinner-border text-primary"
+                                            role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                    <th style=" border-style: none;"></th>
+                                @endif
+
+
+                                @if ($is_tanggal_gajian || auth()->user()->role == 5)
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/iuranlocker"><button
+                                                class="btn btn-primary {{ is_data_locked() ? 'd-none' : '' }}">Hapus
+                                                Iuran Locker</button></a>
+                                    </th>
+                                @endif
+                                <th style="width: 150px; border-style: none;">
+                                    <a href="/infokaryawan">
+                                        <button class="btn btn-info">Informasi</button> </a>
+                                </th>
+
 
                             </tr>
 
@@ -175,26 +248,29 @@
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID Karyawan') }}
                                 </th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} </th>
-                                <th class="text-center" wire:click="sortColumnName('company')">
+                                <th class="text-center" wire:click="sortColumnName('company_id')">
                                     {{ __('Company') }} </th>
-                                <th class="text-center" wire:click="sortColumnName('placement')">
+                                <th class="text-center" wire:click="sortColumnName('placement_id')">
                                     {{ __('Placement') }}
 
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('departemen')">
-                                    {{ __('Departemen') }}
+                                <th class="text-center" wire:click="sortColumnName('department_id')">
+                                    {{ __('Department') }}
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('jabatan')">
+                                <th class="text-center" wire:click="sortColumnName('jabatan_id')">
                                     {{ __('Jabatan') }} </th>
-                                @if (Auth::user()->role > 3)
-                                    <th class="text-center" wire:click="sortColumnName('level_jabatan')">
-                                        {{ __('Level Jabatan') }}
+                                @if (Auth::user()->role > 6)
+                                    <th class="text-center" wire:click="sortColumnName('etnis')">
+                                        {{ __('Etnis') }}
+                                        {{-- level jabatan smeentar di hide dulu --}}
+                                        {{-- <th class="text-center" wire:click="sortColumnName('level_jabatan')">
+                                        {{ __('Level Jabatan') }} --}}
                                 @endif
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('status_karyawan')">
                                     {{ __('Status') }}
                                 </th>
-                                @if (Auth::user()->role > 3)
+                                @if (Auth::user()->role > 5)
                                     <th class="text-center" wire:click="sortColumnName('tanggal_bergabung')">
                                         {{ __('Lama Bekerja') }}
                                     </th>
@@ -205,6 +281,9 @@
                                 <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
                                     {{ __('Gaji Pokok') }}
                                 </th>
+                                <th class="text-center" wire:click="sortColumnName('gaji_bpjs')">
+                                    {{ __('Gaji BPJS') }}
+                                </th>
                                 <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
                                     {{ __('Overtime') }}
                                 </th>
@@ -214,7 +293,7 @@
                                 <th class="text-center" wire:click="sortColumnName('iuran_locker')">
                                     {{ __('Iuran Locker') }}
                                 </th>
-                                @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                @if ($selectStatus == 2 && auth()->user()->role > 6)
                                     <th class="text-center">
                                         {{ __('Lama bekerja') }}
                                     </th>
@@ -229,43 +308,68 @@
                                     <td>
                                         <div class="text-start">
                                             <a href="/karyawanupdate/{{ $data->id }}"><button
-                                                    class="btn btn-success btn-sm"><i
+                                                    class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
+                                            {{-- ok --}}
+                                            @if ($selectStatus == 2)
+                                                <a href="/karyawanreinstate/{{ $data->id }}"><button
+                                                        class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}">R</button></a>
+                                            @endif
 
 
-                                            @if (Auth::user()->role > 4)
+                                            @if (Auth::user()->role > 7)
                                                 <button wire:click="delete(`{{ $data->id }}`)"
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    class="btn btn-danger btn-sm"><i
+                                                    class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-solid fa-trash-can"></i></button>
+
+                                                {{-- <button wire:click="export(`{{ $data->id_karyawan }}`)" --}}
+                                                <button wire:click="export(`{{ $data->id }}`)"
+                                                    wire:confirm.prompt="Yakin mau di export?\n\nKetik EXPORT untuk konfirmasi|EXPORT"
+                                                    class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                        class="fa-solid fa-file-export"></i></button>
                                             @endif
                                         </div>
                                     </td>
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
-                                    <td class="text-center">{{ $data->company }}</td>
-                                    <td class="text-center">{{ $data->placement }}</td>
-                                    <td class="text-center">{{ $data->departemen }}</td>
-                                    <td class="text-center">{{ $data->jabatan }}</td>
-                                    @if (Auth::user()->role > 3)
-                                        <td class="text-center">{{ $data->level_jabatan }}</td>
+                                    <td class="text-center">{{ $data->company->company_name }}</td>
+                                    <td class="text-center">{{ $data->placement->placement_name }}</td>
+                                    <td class="text-center">{{ $data->department->nama_department }}</td>
+                                    <td class="text-center">{{ $data->jabatan->nama_jabatan }}</td>
+
+                                    @if (Auth::user()->role > 6)
+                                        <td class="text-center">{{ $data->etnis }}</td>
+                                        {{-- level jabatan smeentar di hide dulu --}}
+                                        {{-- <td class="text-center">{{ $data->level_jabatan }}</td> --}}
                                     @endif
                                     <td class="text-center">{{ $data->status_karyawan }}</td>
-                                    @if (
-                                        (auth()->user()->role == 2 && $data->gaji_pokok <= 4500000) ||
-                                            (auth()->user()->role == 3 && $data->gaji_pokok <= 10000000) ||
-                                            auth()->user()->role > 3)
-                                        @if (Auth::user()->role > 3)
-                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}</td>
+                                    {{-- @if 
+                                        // (auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) ||
+                                        //     (auth()->user()->role == 6 && $data->gaji_pokok <= 10000000) ||
+                                        //     auth()->user()->role > 6)  --}}
+
+                                    @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || auth()->user()->role >= 6)
+                                        @if (Auth::user()->role > 5)
+                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}
+                                            </td>
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
+                                        <td class="text-center">{{ number_format($data->gaji_bpjs) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_air) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     @endif
-                                    @if ($selectStatus == 2 && auth()->user()->role > 3)
+                                    @if ($selectStatus == 5 && auth()->user()->role > 6)
                                         <td class="text-center">
                                             {{ lama_resign($data->tanggal_bergabung, $data->tanggal_resigned, $data->tanggal_blacklist) }}
                                         </td>
@@ -283,7 +387,18 @@
             </div>
         </div>
     </div>
+    @script
+        <script>
+            document.addEventListener("reinstate", (event) => {
+                const data = event.detail;
+                Swal.fire({
+                    position: "center",
+                    icon: data.type,
+                    title: data.title,
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            });
+        </script>
+    @endscript
 </div>
-
-
-{{-- </div> --}}

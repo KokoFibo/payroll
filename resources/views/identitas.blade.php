@@ -17,7 +17,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">{{ __('Nomor Identitas') }} <span class="text-danger">*</span></label>
-            <input type="number" class="form-control @error('no_identitas') is-invalid @enderror"
+            <input type="text" class="form-control @error('no_identitas') is-invalid @enderror"
                 wire:model="no_identitas">
             @error('no_identitas')
                 <div class="invalid-feedback">

@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -35,13 +35,18 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    {{-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> --}}
+    {{-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script> --}}
+
 
 
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
 
     {{-- <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -50,6 +55,8 @@
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
+
 
 </head>
 
@@ -61,7 +68,10 @@
 {{-- <body style="font-family: 'nunito';"> --}}
 
 <body class="hold-transition sidebar-mini" style="font-family: 'nunito';">
+
+    {{-- <body class="hold-transition sidebar-mini" style="font-family: 'Noto Sans';"> --}}
     <div class="wrapper">
+
         @include('layouts.navbar')
         @include('layouts.aside')
 
@@ -72,25 +82,8 @@
         <!--/.content-wrapper -->
 
         @include('layouts.footer')
-
-        {{-- <script src="{{ asset('/sw.js') }}"></script>
-            <script>
-                if ("serviceWorker" in navigator) {
-                    // Register a service worker hosted at the root of the
-                    // site using the default scope.
-                    navigator.serviceWorker.register("/sw.js").then(
-                        (registration) => {
-                            console.log("Service worker registration succeeded:", registration);
-                        },
-                        (error) => {
-                            console.error(`Service worker registration failed: ${error}`);
-                        },
-                    );
-                } else {
-                    console.error("Service workers are not supported.");
-                }
-            </script> --}}
         @yield('js')
+    </div>
 </body>
 
 </html>

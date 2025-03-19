@@ -18,11 +18,26 @@ class Karyawansettingwr extends Component
     {
         if ($this->username != null) {
             $user = User::where('username', $this->username)->first();
+            if ($user == null) {
+                // $this->dispatch('error', message: 'ID: ' . $this->username . ' tidak terdapat pada table USER');
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: 'ID: ' . $this->username . ' tidak terdapat pada table USER',
+                );
+                return;
+            }
             $data = User::find($user->id);
+
             if ($data) {
                 $data->password = Hash::make(generatePassword($this->tanggal_lahir));
                 $data->save();
-                $this->dispatch('success', message: 'Password berhasil di reset');
+                // $this->dispatch('success', message: 'Password berhasil di reset');
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'ID: ' . $this->username . ' Password berhasil di reset',
+                );
             }
         }
     }

@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center py-5 ">
+        <div class="row justify-content-center py-5">
 
-            <img src="{{ asset('images/Yifang-transparant-logo.png') }}" alt="Yifang Logo" style="opacity: .8; width:350px">
+            <img src="{{ asset('images/logo-only.png') }}" alt="Yifang Logo" style="opacity: .8; width:150px">
         </div>
         <div class="row justify-content-center ">
             <div class="col-xl-6 ">
@@ -12,14 +12,16 @@
                     <div class="card-header text-light text-center" style="background-color: #EF4444; ">
                         <h5>{{ __('Login') }}</h5>
                     </div>
-                    <div class="card-body pt-4" style="background-color: #E5E7EB;">
-                        {{-- <h5 class="text-center py-2 text-bold">Login</h5> --}}
-                        <form method="POST" action="{{ route('login') }}">
+                    {{-- <div class="card-body pt-4" style="background-color: #E5E7EB;">
+                        <form method="POST" action="{{ route('login') }}"> --}}
+                    <div x-data="{ submitButtonDisabled: false }" class="card-body pt-4" style="background-color: #E5E7EB;">
+                        <form method="POST" action="{{ route('login') }}" x-on:submit="submitButtonDisabled = true">
+
                             @csrf
 
                             <div class="row mb-3">
                                 <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('No. ID') }}</label>
+                                    class="col-md-4 col-form-label text-md-end">{{ __('No ID') }}</label>
 
                                 <div class="col-md-6">
 
@@ -67,21 +69,11 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="row mb-3">
-                                          <div class="col-md-6 offset-md-4">
-                                                <div class="form-check">
-                                                      <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                                      <label class="form-check-label" for="remember">
-                                                            {{ __('Ingat Saya') }}
-                                                      </label>
-                                                </div>
-                                          </div>
-                                    </div> --}}
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary"
+                                    {{-- <button type="submit" class="btn btn-primary"  --}}
+                                    <button type="submit" class="btn btn-primary" x-bind:disabled="submitButtonDisabled"
                                         style="background-color: #EF4444; border-color: #EF4444;">
                                         {{ __('Login') }}
                                     </button>

@@ -1,6 +1,6 @@
  <div wire:ignore.self class="modal fade" id="update-form-modal" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-     <div class="modal-dialog modal-lg">
+     <div class="modal-dialog modal-lg" style="padding-bottom: 200px;">
          <div class="modal-content">
              <div class="modal-header">
                  <h1 class="modal-title fs-4" id="staticBackdropLabel">Data Presensi Karyawan</h1>
@@ -35,6 +35,7 @@
                  <table class="table table-hover  table-bordered">
                      <thead>
                          <tr>
+                             <th class="text-center">No.</th>
                              <th class="text-center">Tanggal</th>
                              <th class="text-center">Jam Kerja</th>
                              <th class="text-center">Jam Lembur</th>
@@ -45,8 +46,9 @@
                      <tbody>
 
 
-                         @foreach ($this->dataArr as $d)
-                             <tr>
+                         @foreach ($this->dataArr as $index => $d)
+                             <tr class="{{ $d['table_warning'] ? 'table-warning' : '' }}">
+                                 <td class="text-center">{{ $index + 1 }}</td>
                                  <td class="text-center">{{ $d['tgl'] }}</td>
                                  <td class="text-center">{{ $d['jam_kerja'] }}</td>
                                  <td class="text-center">{{ $d['jam_lembur'] }}</td>
@@ -65,6 +67,7 @@
 
 
                          <tr class="table-success">
+                             <th class="text-center fs-5"></th>
                              <th class="text-center fs-5">{{ $total_hari_kerja }}</th>
                              <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
                              <th class="text-center fs-5">{{ $total_jam_lembur }}</th>

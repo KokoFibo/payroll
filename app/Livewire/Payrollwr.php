@@ -8,12 +8,23 @@ use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Exports\PphExport;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Jobs\BuildPayrollJob;
 use App\Exports\PayrollExport;
 use App\Models\Yfrekappresensi;
+use App\Exports\BankReportExcel;
+use App\Exports\PlacementExport;
+use App\Exports\DepartmentExport;
+use App\Jobs\rebuildJob;
+use App\Models\Company;
+use App\Models\Department;
+use App\Models\Placement;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+
+
 
 class Payrollwr extends Component
 {
@@ -21,6 +32,9 @@ class Payrollwr extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $selected_company = 0;
+    public $selected_placement = 0;
+    public $selected_departemen = 0;
+    // public $departments;
     public $search;
     public $perpage = 10;
     public $month;
@@ -32,57 +46,131 @@ class Payrollwr extends Component
     public $data_karyawan;
     public $cx;
     public $lock_presensi;
+    public $lock_slip_gaji;
+    public $lock_data;
+    public $select_month, $select_year;
+
+    public function clear_lock()
+    {
+        clear_locks();
+        delete_failed_jobs();
+    }
+
+    public function close_succesful_rebuilt()
+    {
+        $rebuild = Lock::find(1);
+        $rebuild->rebuild_done = false;
+        $rebuild->save();
+    }
+
 
     public function export()
     {
         $nama_file = '';
-
-        switch ($this->selected_company) {
-            case 0:
+        if ($this->selected_company != 0) {
+            if ($this->selected_company == 0) {
                 $nama_file = 'semua_payroll.xlsx';
-                break;
-
-            case 1:
-                $nama_file = 'payroll_pabrik1.xlsx';
-                break;
-
-            case 2:
-                $nama_file = 'payroll_pabrik2.xlsx';
-                break;
-
-            case 3:
-                $nama_file = 'payroll_kantor.xlsx';
-                break;
-
-            case 4:
-                $nama_file = 'payroll_ASB.xlsx';
-                break;
-
-            case 5:
-                $nama_file = 'payroll_DPA.xlsx';
-                break;
-
-            case 6:
-                $nama_file = 'payroll_YCME.xlsx';
-                break;
-
-            case 7:
-                $nama_file = 'payroll_YEV.xlsx';
-                break;
-
-            case 8:
-                $nama_file = 'payroll_YIG.xlsx';
-                break;
-
-            case 9:
-                $nama_file = 'payroll_YSM.xlsx';
-                break;
+            } else {
+                $nama_file = 'payroll_company_' . nama_company($this->selected_company) . '.xlsx';
+            }
+        } elseif ($this->selected_placement != 0) {
+            if ($this->selected_placement == 0) {
+                $nama_file = 'semua_payroll.xlsx';
+            } else {
+                $nama_file = 'payroll_placement_' . nama_placement($this->selected_placement) . '.xlsx';
+            }
+        } else {
+            if ($this->selected_departemen == 0) {
+                $nama_file = 'semua_payroll.xlsx';
+            } else {
+                $nama_file = 'payroll_department_' . sambungKata($this->selected_departemen) . '.xlsx';
+            }
         }
 
-        // return Excel::download(new PayrollExport($payroll), $nama_file);
-        // $nama_file = "payroll.xlsx";
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
-        return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+
+
+        if ($this->selected_company != 0) {
+            return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+        } else if ($this->selected_placement != 0) {
+            return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
+        } else {
+            return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+        }
+    }
+
+
+    public function bankexcel()
+    {
+        $nama_file = '';
+        if ($this->selected_company != 0) {
+            if ($this->selected_company == 0) {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+                $nama_file = 'semua_karyawan_Bank.xlsx';
+            } else {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('company_id', $this->selected_company)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = nama_company($this->selected_company) . '_Company_Bank.xlsx';
+            }
+        } elseif ($this->selected_placement != 0) {
+            if ($this->selected_placement == 0) {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = 'semua_karyawan_Bank.xlsx';
+            } else {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('placement_id', $this->selected_placement)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = nama_placement($this->selected_placement) . '_Placement_Bank.xlsx';
+            }
+        } else {
+            if ($this->selected_departemen == 0) {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = 'semua_karyawan_Bank.xlsx';
+            } else {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('department_id', $this->selected_departemen)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+
+                $nama_file = sambungKata($this->selected_departemen) . '_Department_Bank.xlsx';
+            }
+        }
+
+        $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+        // $nama_file = 'test.xlsx';
+        // dd($this->selected_company, $this->selected_placement, $this->selected_departemen);
+
+        // return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+
+        return Excel::download(new BankReportExcel($this->status, $this->month, $this->year, $this->selected_company, $this->selected_placement, $this->selected_departemen), $nama_file,);
+
+        // return Excel::download(new BankReportExcel($payroll), $nama_file, $this->selected_company, $this->selected_placement, $this->selected_departemen);
     }
 
     public function showDetail($id_karyawan)
@@ -113,10 +201,13 @@ class Payrollwr extends Component
         $this->resetPage();
     }
 
-
-
     public function mount()
     {
+        // $this->departments = Karyawan::select('department_id')
+        //     ->distinct()
+        //     ->pluck('department_id')
+        //     ->toArray();
+
         $data = Payroll::first();
         if (now()->day < 5) {
             $this->year =
@@ -124,8 +215,11 @@ class Payrollwr extends Component
             $this->month =
                 now()->subMonth()->month;
         } else {
-            $this->year = now()->year;
-            $this->month = now()->month;
+            $data3 = Payroll::orderBy('date', 'desc')->first();
+            // $this->year = now()->year;
+            // $this->month = now()->month;
+            $this->year = Carbon::parse($data3->date)->year;
+            $this->month = Carbon::parse($data3->date)->month;
         }
 
         if ($data != null) {
@@ -139,6 +233,8 @@ class Payrollwr extends Component
 
         $lock = Lock::find(1);
         $this->lock_presensi = $lock->presensi;
+        $this->lock_slip_gaji = $lock->slip_gaji;
+        $this->lock_data = $lock->data;
     }
     public function updatedLockPresensi()
     {
@@ -147,375 +243,96 @@ class Payrollwr extends Component
         $lock->presensi = $this->lock_presensi;
         $lock->save();
     }
-
-    public function getPayrollQueue()
+    public function updatedLockSlipGaji()
     {
-        $this->dispatch(new BuildPayrollJob($this->month, $this->year));
+        // $lock=Lock::find(1);
+        $lock = Lock::first();
+        $lock->slip_gaji = $this->lock_slip_gaji;
+        $lock->save();
+    }
+    public function updatedLockData()
+    {
+        // $lock=Lock::find(1);
+        $lock = Lock::first();
+        $lock->data = $this->lock_data;
+        $lock->save();
     }
 
-    public function buat_payroll()
-    {
-        // supaya tidak dilakukan bersamaan
-        //     $lock = Lock::find(1);
-        //     if ($lock->build) {
-        //         $lock->build = 0;
-        //         return back()->with('error', 'Mohon dicoba sebentar lagi');
-        //     } else {
-        //         $lock->build = 1;
-        //         $lock->save();
-        //     }
 
-        $result  = build_payroll($this->month, $this->year);
-        if ($result == 0) {
-            $this->dispatch('error', message: 'Data Presensi tidak ada');
-        } else {
-            $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
+
+    // public function getPayrollQueue()
+    // {
+    //     $this->dispatch(new BuildPayrollJob($this->month, $this->year));
+    // }
+
+    public function buat_payroll($queue)
+    {
+
+        // supaya tidak dilakukan bersamaan
+        if (check_absensi_kosong()) {
+            clear_locks();
+            // $this->dispatch('error', message: 'Masih ada data kosong di presensi');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Masih ada data kosong di presensi',
+            );
+            return;
         }
-
-
-        //     $lock->build = false;
-        //     $lock->save();
-        return redirect()->to('/payroll');
-    }
-
-
-
-    // ok1
-    // #[On('getPayroll')]
-
-    public function getPayroll()
-    {
-        // supaya tidak dilakukan bersamaan
         $lock = Lock::find(1);
-        if ($lock->build) {
-            $lock->build = 0;
-            return back()->with('error', 'Mohon dicoba sebentar lagi');
+        if ($lock->build == 1) {
+            // $this->dispatch('error', message: 'Mohon dicoba sebentar lagi');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Mohon dicoba sebentar lagi',
+            );
+            return;
         } else {
             $lock->build = 1;
             $lock->save();
         }
 
-        $jamKerjaKosong = Jamkerjaid::count();
-        $adaPresensi = Yfrekappresensi::count();
-        if ($jamKerjaKosong == null && $adaPresensi == null) {
-            clear_locks();
-            $this->dispatch('error', message: 'Data Presensi Masih Kosong');
-            return back();
-        }
-
-        // AMBIL DATA TERAKHIR DARI REKAP PRESENSI PADA BULAN YBS
-        $last_data_date = Yfrekappresensi::query()
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->orderBy('date', 'desc')
-            ->first();
-
-        Jamkerjaid::whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->delete();
-
-        $jumlah_jam_terlambat = null;
-        $jumlah_menit_lembur = null;
-        $dt_name = null;
-        $dt_date = null;
-        $dt_karyawan_id = null;
-        $late = null;
-        $late1 = null;
-        $late2 = null;
-        $late3 = null;
-        $late4 = null;
-        $late5 = null;
-
-        $filterArray = Yfrekappresensi::whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            // ->where('status')
-            ->pluck('user_id')
-            ->unique();
-
-        // buat tabel user_id unique ook
-        foreach ($filterArray as $item) {
-            $filteredData = new Jamkerjaid();
-            $filteredData->user_id = $item;
-            $filteredData->karyawan_id = 1;
-            $filteredData->date = $this->year . '-' . $this->month . '-01';
-            $filteredData->save();
-        }
-
-        $filteredData = Jamkerjaid::with(['karyawan' => ['id_karyawan', 'jabatan', 'placement']])
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->get();
-
-        // disini mulai prosesnya
-        foreach ($filteredData as $data) {
-            $dataId = Yfrekappresensi::with('karyawan')
-
-                ->where('user_id', $data->user_id)
-                ->whereMonth('date', $this->month)
-                ->whereYear('date', $this->year)
-                ->orderBy('date', 'desc')
-                ->get();
-
-            if (!$dataId) {
-                dd('data kosong from Prindex.php', $dataId);
-            } else {
-                // ambil data per user id
-
-                $n_noscan = 0;
-                $total_hari_kerja = 0;
-                $total_jam_kerja = 0;
-                $total_jam_lembur = 0;
-                $langsungLembur = 0;
-                $tambahan_shift_malam = 0;
-                $total_keterlambatan = 0;
-                $total_tambahan_shift_malam = 0;
-                //loop ini utk 1 user selama 22 hari
-                foreach ($dataId as $d) {
-                    if ($d->no_scan === null) {
-                        // $tgl = tgl_doang($d->date);
-                        $jam_lembur = 0;
-                        $tambahan_shift_malam = 0;
-                        $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                        $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan);
-                        //evaluasi ini
-                        // if ($d->karyawan->jabatan === 'Satpam') {
-                        //     $jam_kerja = $terlambat >= 6 ? 0.5 : $jam_kerja;
-                        // }
-
-                        $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan);
-
-                        if (is_sunday($d->date)) {
-                            $jam_lembur = (hitungLembur($d->overtime_in, $d->overtime_out) / 60) * 2;
-                        } else {
-                            $jam_lembur = hitungLembur($d->overtime_in, $d->overtime_out) / 60 + $langsungLembur;
-                        }
-
-                        if ($d->shift == 'Malam') {
-                            if (is_saturday($d->date)) {
-                                if ($jam_kerja >= 6) {
-                                    $tambahan_shift_malam = 1;
-                                }
-                            } elseif (is_sunday($d->date)) {
-                                if ($jam_kerja >= 16) {
-                                    // $jam_lembur = $jam_lembur + 2;
-                                    $tambahan_shift_malam = 2;
-                                }
-                            } else {
-                                if ($jam_kerja >= 8) {
-                                    // $jam_lembur = $jam_lembur + 1;
-                                    $tambahan_shift_malam = 1;
-                                }
-                            }
-                        }
-                        if ($jam_lembur >= 9 && is_sunday($d->date) == false) {
-                            $jam_lembur = 0;
-                        }
-                        if ($d->karyawan->placement == 'YIG' || $d->karyawan->placement == 'YSM' || $d->karyawan->jabatan == 'Satpam') {
-                            if (is_friday($d->date)) {
-                                $jam_kerja = 7.5;
-                            } elseif (is_saturday($d->date)) {
-                                $jam_kerja = 6;
-                            } else {
-                                $jam_kerja = 8;
-                            }
-                        }
-
-                        if ($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-                            $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan);
-                        }
-
-                        if ($d->karyawan->jabatan == 'Satpam' && is_saturday($d->date)) {
-                            $jam_lembur = 0;
-                        }
-
-                        // if($d->karyawan->jabatan == 'Satpam' && is_sunday($d->date)) {
-
-                        //     $jam_kerja =  $jam_kerja * 2;
-                        //     $jam_lembur = $jam_lembur * 2;
-
-                        // }
-
-                        // if($d->karyawan->jabatan == 'Satpam') {
-                        //     if($jam_kerja >= 8){
-                        //         if( is_friday($d->date) ) {
-                        //             $jam_kerja = 7.5;
-                        //         } elseif (is_saturday($d->date)) {
-                        //             $jam_kerja = 6;
-                        //         } else {
-                        //             $jam_kerja = 8;
-                        //         }
-                        //     }
-                        // }
-
-                        $total_hari_kerja++;
-                        $total_jam_kerja = $total_jam_kerja + $jam_kerja;
-                        $total_jam_lembur = $total_jam_lembur + $jam_lembur;
-                        $total_keterlambatan = $total_keterlambatan + $terlambat;
-                        $total_tambahan_shift_malam = $total_tambahan_shift_malam + $tambahan_shift_malam;
-                    }
-                    if ($d->no_scan_history != null) {
-                        $n_noscan = $n_noscan + 1;
-                    }
-                }
-                if ($n_noscan == 0) {
-                    $n_noscan = null;
-                }
-
-                $data->total_hari_kerja = $total_hari_kerja;
-                $data->jumlah_jam_kerja = $total_jam_kerja;
-                $data->jumlah_menit_lembur = $total_jam_lembur;
-                $data->jumlah_jam_terlambat = $total_keterlambatan;
-                $data->tambahan_jam_shift_malam = $total_tambahan_shift_malam;
-                $data->total_noscan = $n_noscan;
-
-                // $data = Jamkerjaid::find($data->id);
-
-                $data->karyawan_id = $d->karyawan->id;
-                $data->date = buatTanggal($d->date);
-                $data->last_data_date = $last_data_date->date;
-                $data->save();
-            }
-            // DATA TOTAL per id yang sdh terkumpul ok4
-            // dd($data->user_id, $grand_total_hari_kerja, $grand_total_jam_kerja, $grand_total_jam_lembur, $grand_total_keterlambatan, $grand_total_tambahan_shift_malam, $grand_n_noscan);
-        }
-
-        $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
-        // $this->periode = $current_date->date;
-
-        $lock->build = false;
+        // hapus ini kalau sudah kelar develop
+        $lock->build = 1;
         $lock->save();
 
-        $this->dispatch('success', message: 'Data Payroll Karyawan Sudah di Built');
-        $this->rebuild();
-    }
-
-    // ok2
-    public function rebuild()
-    {
-        $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->get();
-
-        if ($datas->isEmpty()) {
-            $this->dispatch('error', message: 'Data Tidak Ditemukan');
-            return back();
+        $startTime = microtime(true);
+        if ($queue == 'noQueue') {
+            $result  = build_payroll($this->month, $this->year);
+        } else {
+            $lock = Lock::find(1);
+            $lock->rebuild_done = 2;
+            $lock->save();
+            dispatch(new rebuildJob($this->month, $this->year));
+            $result = 1;
         }
 
-        $subtotal = 0;
-        $denda_noscan = 0;
 
-        Payroll::whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->delete();
-
-        foreach ($datas as $data) {
-            $payroll = new Payroll();
-            $payroll->jamkerjaid_id = $data->id;
-            $payroll->nama = $data->karyawan->nama;
-            $payroll->id_karyawan = $data->karyawan->id_karyawan;
-            $payroll->jabatan = $data->karyawan->jabatan;
-            $payroll->company = $data->karyawan->company;
-            $payroll->placement = $data->karyawan->placement;
-            $payroll->status_karyawan = $data->karyawan->status_karyawan;
-            $payroll->metode_penggajian = $data->karyawan->metode_penggajian;
-            $payroll->nomor_rekening = $data->karyawan->nomor_rekening;
-            $payroll->nama_bank = $data->karyawan->nama_bank;
-            $payroll->gaji_pokok = $data->karyawan->gaji_pokok;
-            $payroll->gaji_lembur = $data->karyawan->gaji_overtime;
-            $payroll->gaji_bpjs = $data->karyawan->gaji_bpjs;
-            $payroll->jkk = $data->karyawan->jkk;
-            $payroll->jkm = $data->karyawan->jkm;
-            $payroll->hari_kerja = $data->total_hari_kerja;
-            $payroll->jam_kerja = $data->jumlah_jam_kerja;
-            $payroll->jam_lembur = $data->jumlah_menit_lembur;
-            $payroll->jumlah_jam_terlambat = $data->jumlah_jam_terlambat;
-            $payroll->total_noscan = $data->total_noscan;
-
-            //ok4
-            if ($data->total_noscan > 3 && $payroll->metode_penggajian == 'Perjam') {
-                $denda_noscan = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
-            } else {
-                $denda_noscan = 0;
+        if ($result == 0) {
+            // $this->dispatch('error', message: 'Data Presensi tidak ada');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data Presensi tidak ada',
+            );
+        } else {
+            if ($queue == 'noQueue') {
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Data Payroll Karyawan Sudah di Built ( ' . number_format((microtime(true) - $startTime), 2) . ' seconds )',
+                );
             }
-            // dari karyawan
-            $payroll->thr = $data->karyawan->bonus;
-            $payroll->tunjangan_jabatan = $data->karyawan->tunjangan_jabatan;
-            $payroll->tunjangan_bahasa = $data->karyawan->tunjangan_bahasa;
-            $payroll->tunjangan_skill = $data->karyawan->tunjangan_skill;
-            $payroll->tunjangan_lama_kerja = $data->karyawan->tunjangan_lama_kerja;
-            $payroll->tunjangan_lembur_sabtu = $data->karyawan->tunjangan_lembur_sabtu;
-
-            $payroll->iuran_air = $data->karyawan->iuran_air;
-            $payroll->iuran_locker = $data->karyawan->iuran_locker;
-            $payroll->tambahan_jam_shift_malam = $data->tambahan_jam_shift_malam;
-
-            $payroll->tambahan_shift_malam = $data->tambahan_jam_shift_malam * $payroll->gaji_lembur;
-
-            // if ($data->karyawan->placement == 'YIG' || $data->karyawan->placement == 'YSM'|| $data->karyawan->jabatan == 'Satpam') {
-            //     $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + ($payroll->jam_lembur * $data->karyawan->gaji_overtime);
-            // } else {
-            // }
-
-            $payroll->subtotal = $data->jumlah_jam_kerja * ($data->karyawan->gaji_pokok / 198) + $payroll->jam_lembur * $data->karyawan->gaji_overtime;
-
-            if ($data->karyawan->potongan_JP == 1) {
-                if ($data->karyawan->gaji_bpjs <= 9559600) {
-                    $payroll->jp = $data->karyawan->gaji_bpjs * 0.01;
-                } else {
-                    $payroll->jp = 9559600 * 0.01;
-                }
-            } else {
-                $payroll->jp = 0;
-            }
-
-            if ($data->karyawan->potongan_JHT == 1) {
-                $payroll->jht = $data->karyawan->gaji_bpjs * 0.02;
-            } else {
-                $payroll->jht = 0;
-            }
-
-            if ($data->karyawan->potongan_kesehatan == 1) {
-                $payroll->kesehatan = $data->karyawan->gaji_bpjs * 0.01;
-            } else {
-                $payroll->kesehatan = 0;
-            }
-
-            $payroll->pajak = 0;
-            if ($data->karyawan->potongan_JKK == 1) {
-                $payroll->jkk = 1;
-            } else {
-                $payroll->jkk = 0;
-            }
-            if ($data->karyawan->potongan_JKM == 1) {
-                $payroll->jkm = 1;
-            } else {
-                $payroll->jkm = 0;
-            }
-
-            if ($data->total_noscan == null) {
-                $payroll->denda_lupa_absen = 0;
-            } else {
-                if ($data->total_noscan <= 3) {
-                    $payroll->denda_lupa_absen = 0;
-                } else {
-                    $payroll->denda_lupa_absen = ($data->total_noscan - 3) * ($payroll->gaji_pokok / 198);
-                }
-            }
-
-            $payroll->date = $data->date;
-
-            $total_bonus_dari_karyawan = 0;
-            $total_potongan_dari_karyawan = 0;
-
-            $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
-            $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
-            $payroll->total = $payroll->subtotal + $total_bonus_dari_karyawan + $payroll->tambahan_shift_malam - $total_potongan_dari_karyawan - $payroll->pajak - $payroll->jp - $payroll->jht - $payroll->kesehatan - $payroll->denda_lupa_absen;
-            $payroll->save();
         }
-        $this->dispatch('success', message: 'Data Payrol succesfully Rebuild');
-        $this->bonus_potongan();
+
+
+        $lock->build = 0;
+        $lock->save();
+        $this->mount();
     }
+
+
 
     // ok3
     public function bonus_potongan()
@@ -544,10 +361,15 @@ class Payrollwr extends Component
             }
         }
 
-        $this->dispatch('success', message: 'Bonus dan Potangan added');
+        // $this->dispatch('success', message: 'Bonus dan Potangan added');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Bonus dan Potangan added',
+        );
     }
 
-    public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null)
+    public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null, $department_id = null)
     {
         return Payroll::query()
 
@@ -557,25 +379,83 @@ class Payrollwr extends Component
                     // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
                     ->where('id_karyawan',  trim($search))
                     ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('jabatan', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('company', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('jabatan_id', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('company_id', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('department_id', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
             })
-            ->when($placement, function ($query) use ($placement) {
-                $query->where('placement', $placement);
+            ->when($placement_id, function ($query) use ($placement_id) {
+                $query->where('placement_id', $placement_id);
             })
-            ->when($company, function ($query) use ($company) {
-                $query->where('company', $company);
+            ->when($company_id, function ($query) use ($company_id) {
+                $query->where('company_id', $company_id);
+            })
+            ->when($department_id, function ($query) use ($department_id) {
+                $query->where('department_id', $department_id);
             })
 
             ->orderBy($this->columnName, $this->direction);
     }
 
+    public function updatedSelectedCompany()
+    {
+        $this->selected_placement = 0;
+        $this->selected_departemen = 0;
+    }
+    public function updatedSelectedPlacement()
+    {
+        $this->selected_company = 0;
+        $this->selected_departemen = 0;
+    }
+    public function updatedSelectedDepartemen()
+    {
+        $this->selected_company = 0;
+        $this->selected_placement = 0;
+    }
+
+    public function updatedYear()
+    {
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        $this->month = $this->select_month[0];
+    }
+
     public function render()
     {
+
         $this->cx++;
 
+        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+        // ooo
+        // $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        //     ->distinct()
+        //     ->pluck('month')
+        //     ->toArray();
+        $months = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->year)
+            ->distinct()
+            ->orderBy('date', 'desc')
+            ->pluck('month')
+            ->toArray();
+
+        $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)->count();
+
+        if ($data_bulan_ini > 0) {
+            $months[] = $this->month;
+        }
+        // if (!in_array($this->month, $months)) {
+        //     $months[] = $this->month;
+        // }
+
+        $this->select_month = $months;
 
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
@@ -585,8 +465,8 @@ class Payrollwr extends Component
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
-        switch ($this->selected_company) {
-            case 0:
+        if ($this->selected_placement == 0 && $this->selected_departemen == 0) {
+            if ($this->selected_company == 0) {
                 $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
@@ -595,145 +475,75 @@ class Payrollwr extends Component
                 $payroll = $this->getPayrollQuery($statuses, $this->search)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 1:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->where('placement', 'YCME')
-                    ->sum('total');
-
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 2:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-
-                $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 3:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-
-                $payroll = Payroll::query()
-                    ->whereIn('status_karyawan', $statuses)
-                    ->when($this->search, function ($query) {
-                        $query
-                            ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                            ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                    })
-                    ->whereIn('placement', ['YIG', 'YSM'])
                     ->orderBy($this->columnName, $this->direction)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
                     ->paginate($this->perpage);
-                break;
-
-            case 4:
+            } else {
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'ASB')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
+                    ->where('company_id', $this->selected_company)
                     ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
 
-                    ->where('company', 'ASB')
+                $payroll = $this->getPayrollQuery($statuses, $this->search, '', $this->selected_company)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
-                break;
-
-            case 5:
+            }
+        } elseif ($this->selected_company == 0 && $this->selected_departemen == 0) {
+            if ($this->selected_placement == 0) {
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'DPA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-
-                    ->where('company', 'DPA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 6:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-
-                    ->where('company', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 7:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-
-                    ->where('company', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->paginate($this->perpage);
-                break;
-
-            case 8:
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YIG')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->sum('total');
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-
-                    ->where('company', 'YIG')
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
-                break;
-
-            case 9:
+            } else {
                 $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('company', 'YSM')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('placement_id', $this->selected_placement)
+                    ->sum('total');
+
+                $payroll = $this->getPayrollQuery($statuses, $this->search, $this->selected_placement, '', '')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
+            }
+        } else {
+            if ($this->selected_departemen == 0) {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                    ->where('company', 'YSM')
+
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
                     ->paginate($this->perpage);
-                break;
+            } else {
+
+
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('department_id', $this->selected_departemen)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', $this->selected_departemen)
+
+                    ->where('department_id', $this->selected_departemen)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
+            }
         }
-
-
 
         $tgl = Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
@@ -749,6 +559,20 @@ class Payrollwr extends Component
 
         $this->cx++;
 
-        return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong']));
+        $companies = Company::orderBy('company_name', 'ASC')->get();
+        $placements = Placement::orderBy('placement_name', 'ASC')->get();
+        $departments = Department::orderBy('nama_department', 'ASC')->get();
+        // dd($departments->all());
+
+        return view('livewire.payrollwr', compact([
+            'payroll',
+            'total',
+            'last_build',
+            'data_kosong',
+            'data_bulan_ini',
+            'companies',
+            'departments',
+            'placements',
+        ]));
     }
 }

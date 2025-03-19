@@ -28,39 +28,45 @@ class Changeuserrolewr extends Component
             $user->language = 'Id';
         }
         $user->save();
-        $this->dispatch('success', message: 'Role Karyawan berhasil di ganti');
+        // $this->dispatch('success', message: 'Role Karyawan berhasil di ganti');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'ID: ' . $this->username . ' Role Karyawan berhasil di ganti',
+        );
     }
 
     public function render()
     {
+
+
+
         if ($this->search) {
             $search = '%' . trim($this->search) . '%';
-            $data = Karyawan::where('id_karyawan', $this->search)
-                ->orWhere('nama', $this->search)
+            $data = User::where('username', $this->search)
+                ->orWhere('name', $this->search)
                 ->first();
             if ($data != null) {
                 $user = User::where('username', $data->id_karyawan)->first();
                 $this->username = $data->id_karyawan;
                 $this->tanggal_lahir = $data->tanggal_lahir;
+                $this->role = $data->role;
+                $this->user_id = $data->id;
             } else {
                 $data = null;
                 $this->id = null;
+                $this->role = null;
+                $this->user_id = null;
             }
         } else {
             $data = null;
             $this->id = null;
         }
-        if ($data != null) {
-            $user = User::where('username', $data->id_karyawan)->first();
-            if ($user) {
-                $this->role = $user->role;
-                $this->user_id = $user->id;
-            } else {
-                $this->role = null;
-            }
-        }
-        $dataRole = User::whereIn('role', [0, 2, 3, 4])
-            ->whereNotIn('username', [20000, 30000, 40000])
+
+
+
+        $dataRole = User::whereIn('role', [0, 2, 4, 5, 6, 7])
+            ->whereNotIn('username', [50000, 60000, 70000])
             ->orderBy('role', 'asc')->paginate(10);
 
         return view('livewire.changeuserrolewr', compact(['data', 'dataRole']));

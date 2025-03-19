@@ -5,7 +5,7 @@
 
         <div class="container">
             <div class="mx-auto  pt-4">
-                <button class="mx-auto col-12 btn btn-primary btn-large">
+                <button class="mx-auto col-12 btn btn-primary btn-large nightowl-daylight">
                     <h3 class="px-3">{{ __('Karyawan Settings') }}</h3>
                 </button>
                 <div class="card mt-5  mx-auto">
@@ -42,7 +42,7 @@
                                         <td>{{ format_tgl($data->tanggal_lahir) }}</td>
                                         <td>{{ $data->branch }}</td>
                                         <td>{{ $data->departemen }}</td>
-                                        <td>{{ $data->jabatan }}</td>
+                                        <td>{{ $data->jabatan->nama_jabatan }}</td>
                                     </tr>
                                 </tbody>
                             </table>

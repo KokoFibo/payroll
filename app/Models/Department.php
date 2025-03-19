@@ -8,7 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name',
-    ];
+    protected $guarded = [];
+
+    public function karyawan()
+    {
+        return $this->hasMany(Karyawan::class);
+    }
+    public function payroll()
+    {
+        return $this->hasMany(Payroll::class);
+    }
+
+    public function timeoffrequester()
+    {
+        return $this->hasMany(Timeoffrequester::class);
+    }
 }

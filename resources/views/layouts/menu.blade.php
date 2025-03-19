@@ -1,12 +1,13 @@
 <!-- Sidebar Menu -->
+
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
 with font-awesome or any other icon font library -->
 
-        <li class="nav-item {{ 'dashboard' == request()->path() ? 'bg-secondary rounded' : '' }}">
+        <li class="nav-item {{ '' == request()->path() ? 'bg-secondary rounded' : '' }}">
             {{-- <a href="/dashboard" class="nav-link"> --}}
-            <a href="/dashboard" class="nav-link">
+            <a href="/" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     {{ __('Dashboard') }}
@@ -14,7 +15,7 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
 
-        @if (Auth::user()->role > 1)
+        @if (Auth::user()->role >= 5)
             <li class="nav-item {{ 'karyawanindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/karyawanindex" class="nav-link">
                     <i class="nav-icon fa-solid fa-people-group"></i>
@@ -23,7 +24,67 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role > 4)
+        @endif
+
+        @if (Auth::user()->role >= 4)
+            <li class="nav-item {{ 'dataapplicant' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/dataapplicant" class="nav-link">
+                    <i class="nav-icon fa-solid fa-person-walking"></i>
+
+                    <p>
+                        {{ __('Data Applicant') }}
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (Auth::user()->role > 5 || Auth::user()->role == 2)
+            @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
+                <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/permohonan-personnel" class="nav-link">
+                        <i class="nav-icon fa-solid fa-people-arrows"></i>
+                        <p class="personnel-request">
+                            {{ __('Personnel Request') }}
+                            @if (auth()->user()->role >= 6 && check_for_new_approved_request() != 0)
+                                <span class="badge">{{ check_for_new_approved_request() }}
+                                </span>
+                            @endif
+                            @if (auth()->user()->role == 2 && check_for_new_applyingrequest() != 0)
+                                <span class="badge">{{ check_for_new_applyingrequest() }}
+                                </span>
+                            @endif
+
+                        </p>
+                    </a>
+                </li>
+            @endif
+
+        @endif
+        {{-- username 1146 = Mega --}}
+        {{-- @if (Auth::user()->role > 5 || Auth::user()->role == 2 || auth()->user()->username == '1146')
+            @if (isTimeoff(auth()->user()->username) || Auth::user()->role > 5 || auth()->user()->username == '1146')
+                <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/timeoff-approve" class="nav-link">
+                        <i class="nav-icon fa-regular fa-calendar"></i>
+                        <p class="personnel-request">
+                            {{ __('Time off Approval') }}
+                            @if ((auth()->user()->role >= 6 || auth()->user()->username == '1146') && check_for_new_Timeoff_request() != 0)
+                                <span class="badge">{{ check_for_new_Timeoff_request() }}
+                                </span>
+                            @endif
+                            @if (auth()->user()->role == 2 && check_for_menunggu_approval_Timeoff_request() != 0)
+                                <span class="badge">{{ check_for_menunggu_approval_Timeoff_request() }}
+                                </span>
+                            @endif
+                        </p>
+                    </a>
+                </li>
+            @endif
+        @endif --}}
+
+
+        @if (Auth::user()->role >= 5)
+
+            @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
                         <i class="nav-icon fa-solid fa-person-walking"></i>
@@ -42,7 +103,7 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
-            @if (Auth::user()->role > 4)
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'salaryadjustment' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/salaryadjustment" class="nav-link">
                         <i class="nav-icon fa-solid fa-sliders"></i>
@@ -58,16 +119,17 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 4)
-                <li class="nav-item {{ 'absensikosong' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/absensikosong" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard-check"></i>
-                        <p>{{ __('Absensi Kosong') }}</p>
+
+
+            {{-- @if (Auth::user()->role >= 5)
+                <li class="nav-item {{ 'addtimeoutrequester' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/addtimeoutrequester" class="nav-link">
+                        <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
+                        <p>
+                            {{ __('Add TimeOff Req') }}
+                        </p>
                     </a>
                 </li>
-            @endif
-
-            @if (Auth::user()->role > 1)
                 <li class="nav-item {{ 'payrollindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payrollindex" class="nav-link">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
@@ -76,13 +138,23 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
-            @endif
-            @if (Auth::user()->role > 3)
+            @endif --}}
+
+
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'payroll' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/payroll" class="nav-link">
                         <i class="nav-icon fas fa-dollar-sign"></i>
                         <p>
                             {{ __('Payroll') }}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'gajibpjs' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/gajibpjs" class="nav-link">
+                        <i class="nav-icon fa-solid fa-shield-halved"></i>
+                        <p>
+                            {{ __('BPJS/PTKP') }}
                         </p>
                     </a>
                 </li>
@@ -95,11 +167,26 @@ with font-awesome or any other icon font library -->
                     <p>{{ __('Add Information') }}</p>
                 </a>
             </li>
-            @if (Auth::user()->role > 3)
+            <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/liburnasional" class="nav-link">
+                    <i class="nav-icon fa-solid fa-holly-berry"></i>
+                    <p>
+                        {{ __('Libur Nasional') }}
+                    </p>
+                </a>
+            </li>
+
+            @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'usermobile' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/usermobile" class="nav-link">
                         <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
                         <p>{{ __('User Mobile') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'hitungthr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/hitungthr" class="nav-link">
+                        <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
+                        <p>{{ __('Hitung THR') }}</p>
                     </a>
                 </li>
             @endif
@@ -109,6 +196,7 @@ with font-awesome or any other icon font library -->
                     <i class="nav-icon fa-solid fa-gear nav-icon"></i>
                     <p>{{ __('Settings') }}<i class="right fas fa-angle-left"></i></p>
                 </a>
+
                 <ul class="nav nav-treeview">
                     <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                         <a href="/changeprofilewr" class="nav-link">
@@ -122,7 +210,7 @@ with font-awesome or any other icon font library -->
                             <p>{{ __('Karyawan Settings') }}</p>
                         </a>
                     </li>
-                    @if (Auth::user()->role > 3)
+                    @if (Auth::user()->role > 6)
                         <li
                             class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a href="/changeuserrolewr" class="nav-link">
@@ -134,13 +222,46 @@ with font-awesome or any other icon font library -->
                 </ul>
             </li>
 
-            @if (Auth::user()->role > 4)
-                <li class="nav-item {{ 'liburnasional' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/liburnasional" class="nav-link">
-                        <i class="nav-icon fa-solid fa-holly-berry"></i>
-                        <p>
-                            {{ __('Libur Nasional') }}
-                        </p>
+
+            @if (Auth::user()->role > 7)
+                <li class="nav-item {{ 'applicantditerima' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/applicantditerima" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Applicant diterima') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'changefield' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/changefield" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Change Field') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'developer-dashboard' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/developer-dashboard" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Developer Dashboard') }}</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/data-log" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Data Logs Dashboard') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/deletenoscan" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Delete Noscan') }}</p>
+                    </a>
+                </li>
+
+                <li
+                    class="nav-item {{ 'yfdeletetanggalpresensiwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr"
+                        class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Delete Tgl Presensi') }}</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -176,14 +297,28 @@ with font-awesome or any other icon font library -->
                                 <p>{{ __('') }}Delete Tgl Presensi</p>
                             </a>
                         </li>
-                        <li
-                            class="nav-item {{ 'yfdeletepresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a onclick="return confirm('Mau Truncate table Rekappresensi dan presensi?')"
-                                href="/yfdeletepresensi" class="nav-link">
+                        <li class="nav-item {{ 'moveback' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/moveback" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Move presensi data') }}</p>
+                    </a> --}}
+                            <a href="/moveback" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p class="text-danger">Truncate Table</p>
+                                <p>{{ __('Move Back data') }}</p>
                             </a>
                         </li>
+                        <li
+                            class="nav-item {{ 'movepresensidata' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            {{-- <a onclick="return confirm('Mau pindah data Presensi?')" href="/movepresensidata" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Move presensi data') }}</p>
+                    </a> --}}
+                            <a href="/movepresensidata" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Move presensi data') }}</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau delete No Scan?')" href="/deletenoscan" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -204,6 +339,7 @@ with font-awesome or any other icon font library -->
                                 <p>Missing ID</p>
                             </a>
                         </li>
+
                         <li
                             class="nav-item {{ 'importKaryawanExcel' == request()->path() ? 'bg-secondary rounded' : '' }}">
                             <a onclick="return confirm('Mau import karyawan dari excel bersih?')"
@@ -308,8 +444,28 @@ with font-awesome or any other icon font library -->
         </li>
     </ul>
 
+    <style>
+        .personnel-request {
+            position: relative;
+        }
 
-
+        .personnel-request .badge {
+            position: absolute;
+            top: 50%;
+            left: 115%;
+            transform: translate(-50%, -50%);
+            background-color: #dc3545;
+            /* Bootstrap bg-danger color */
+            color: white;
+            /* To ensure text is readable */
+            padding: 0.25em 0.6em;
+            /* Equivalent to Bootstrap badge padding */
+            border-radius: 50px;
+            /* Equivalent to Bootstrap rounded-pill */
+            font-size: 75%;
+            /* Equivalent to Bootstrap badge font size */
+        }
+    </style>
 
 </nav>
 <!-- /.sidebar-menu -->

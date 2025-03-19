@@ -3,41 +3,34 @@
 namespace App\Exports;
 
 use App\Models\Karyawan;
-// use Maatwebsite\Excel\Concerns\FromCollection;
-// use Maatwebsite\Excel\Concerns\FromQuery;
-// use Maatwebsite\Excel\Concerns\WithHeadings;
-// use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-// use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-
-use Style\Alignment;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithTitle;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles, WithMapping
+class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
 {
     /**
      * @return \Illuminate\Support\Collection
      */
-    protected $selected_company, $selectStatus;
+    protected $selected_placement, $selected_company, $selectStatus, $search_etnis;
 
-    public function __construct($selected_company, $selectStatus)
+    public function __construct($selected_placement, $selected_company, $selected_department, $selectStatus, $search_etnis)
     {
+        $this->selected_placement = $selected_placement;
         $this->selected_company = $selected_company;
+        $this->selected_department = $selected_department;
         $this->selectStatus = $selectStatus;
+        $this->search_etnis = $search_etnis;
     }
 
-    public function query()
+    public function view(): View
     {
+
         if ($this->selectStatus == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
@@ -45,76 +38,93 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
+        $data = Karyawan::whereIn('status_karyawan', $statuses);
 
-        switch ($this->selected_company) {
-            case 0:
-                return Karyawan::whereIn('status_karyawan', $statuses);
-                break;
-
-            case 1:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YCME');
-                break;
-
-            case 2:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('placement', 'YEV');
-                break;
-
-            case 3:
-                return Karyawan::whereIn('status_karyawan', $statuses)->whereIn('placement', ['YIG', 'YSM']);
-                break;
-
-            case 4:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'ASB');
-                break;
-
-            case 5:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'DPA');
-                break;
-
-            case 6:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YCME');
-                break;
-
-            case 7:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YEV');
-                break;
-
-            case 8:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YIG');
-                break;
-
-            case 9:
-                return Karyawan::whereIn('status_karyawan', $statuses)->where('company', 'YSM');
-                break;
+        if ($this->selected_placement) {
+            $data = $data->where('placement_id', $this->selected_placement);
         }
+
+        if ($this->selected_company) {
+            $data = $data->where('company_id', $this->selected_company);
+        }
+        if ($this->selected_department) {
+            $data = $data->where('department_id', $this->selected_department);
+        }
+        if ($this->search_etnis) {
+            $data = $data->where('etnis', $this->search_etnis);
+        }
+
+
+
+        $data = $data->get();
+
+        $placement = nama_placement($this->selected_placement);
+        $company = nama_company($this->selected_company);
+        $department = nama_department($this->selected_department);
+
+
+
+        // if ($placement && $company) {
+        //     $header_text = "Excel Karyawan Company $company, Placement $placement";
+        // } elseif ($placement) {
+        //     $header_text = "Excel Karyawan Placement $placement";
+        // } elseif ($company) {
+        //     $header_text = "Excel Karyawan Company $company";
+        // } else {
+        //     $header_text = 'Excel Seluruh Karyawan';
+        // }
+
+        if ($placement || $company || $department || $this->search_etnis) {
+            $header_text = 'Data Karyawan';
+            if ($company) $header_text = $header_text . ' Company ' . $company;
+            if ($placement) $header_text = $header_text . ' Placement ' . $placement;
+            if ($department) $header_text = $header_text . ' Department ' . $department;
+            if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
+        } else {
+            $header_text = 'Data Seluruh Karyawan';
+        }
+
+
+
+        return view('karyawan_excel_view', [
+            'data' => $data,
+            'header_text' => $header_text
+        ]);
     }
 
-    public function map($karyawan): array
-    {
-        return [$karyawan->id_karyawan, $karyawan->nama, $karyawan->company, $karyawan->placement, $karyawan->jabatan, 
-        $karyawan->status_karyawan, $karyawan->tanggal_bergabung, $karyawan->metode_penggajian, $karyawan->gaji_pokok, $karyawan->gaji_overtime, $karyawan->gaji_bpjs];
-    }
+
+
 
     public function columnFormats(): array
     {
         return [
             // 'C' => NumberFormat::FORMAT_TEXT,
             // 'D' => '0',
-           
-            'G' => NumberFormat::FORMAT_DATE_XLSX15,
-            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
-          
-           
+
+            'I' => NumberFormat::FORMAT_DATE_XLSX15,
+            'K' => "0",
+            'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+
         ];
     }
 
     public function headings(): array
     {
-        return [['Data Karyawan'], ['ID Karyawan', 'Nama', 'Company', 'Placement', 'Jabatan',
-        'Status Karyawan', 'Tanggal Bergabung','Metode Penggajian','Gaji Pokok', 'Gaji Lembur', 'Gaji BPJS', 
-         ]];
+        return [['Data Karyawan'], [
+            'ID Karyawan',
+            'Nama',
+            'Company',
+            'Placement',
+            'Jabatan',
+            'Status Karyawan',
+            'Tanggal Bergabung',
+            'Metode Penggajian',
+            'Gaji Pokok',
+            'Gaji Lembur',
+            'Gaji BPJS',
+        ]];
     }
 
     public function title(): string
@@ -134,5 +144,4 @@ class KaryawanExport implements FromQuery, WithHeadings, WithColumnFormatting, S
         // $sheet->getStyle('1')->getFont()->setBold(true);
         // $sheet->getStyle('2')->getFont()->setBold(true);
     }
-
 }

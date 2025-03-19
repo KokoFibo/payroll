@@ -5,8 +5,9 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Bonuspotongan;
 use Livewire\WithPagination;
+use App\Models\Bonuspotongan;
+use Illuminate\Support\Facades\DB;
 
 class Tambahanwr extends Component
 {
@@ -17,6 +18,30 @@ class Tambahanwr extends Component
     public $tanggal, $uang_makan, $bonus_lain, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
     public $year, $month;
+    public $columnName = 'user_id';
+    public $direction = 'desc';
+    public $select_month, $select_year;
+
+    public function refresh()
+    {
+        // $this->columnName = 'user_id';
+        // $this->direction = 'desc';
+        // $this->year = now()->year;
+        // $this->month = now()->month;
+        $this->mount();
+    }
+
+
+
+    public function sortColumnName($namaKolom)
+    {
+        $this->columnName = $namaKolom;
+        $this->direction = $this->swapDirection();
+    }
+    public function swapDirection()
+    {
+        return $this->direction === 'asc' ? 'desc' : 'asc';
+    }
 
     public function mount()
     {
@@ -25,6 +50,19 @@ class Tambahanwr extends Component
         $this->year = now()->year;
         $this->month = now()->month;
         $this->tanggal = now()->toDateString();
+        $this->columnName = 'user_id';
+        $this->direction = 'desc';
+
+
+        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
     }
 
     public function add()
@@ -65,7 +103,12 @@ class Tambahanwr extends Component
             $this->masker_hijau == null &&
             $this->potongan_lain == null
         ) {
-            $this->dispatch('error', message: 'Data tidak disimpan');
+            // $this->dispatch('error', message: 'Data tidak disimpan');
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data tidak disimpan',
+            );
             return;
         }
         if ($this->is_edit == false) {
@@ -93,9 +136,19 @@ class Tambahanwr extends Component
         $data->tanggal = date('Y-m-d', strtotime($this->tanggal));
         $data->save();
         if ($this->is_edit == false) {
-            $this->dispatch('success', message: 'Data sudah di Add');
+            // $this->dispatch('success', message: 'Data sudah di Add');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data sudah di Add',
+            );
         } else {
-            $this->dispatch('success', message: 'Data sudah di Update');
+            // $this->dispatch('success', message: 'Data sudah di Update');
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data sudah di Update',
+            );
         }
         $this->is_edit = false;
         $this->modal = false;
@@ -163,36 +216,58 @@ class Tambahanwr extends Component
     {
         $data_tambahan = Bonuspotongan::find($id);
         $data_tambahan->delete();
-        $this->dispatch('success', message: 'Data sudah di Delete');
+        // $this->dispatch('success', message: 'Data sudah di Delete');
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data sudah di Delete',
+        );
+    }
+
+    public function updatedYear()
+    {
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))->whereYear('tanggal', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        $this->month = $this->select_month[0];
     }
 
     public function render()
     {
-        // $oneYearAgo = Carbon::now()->subYear();
-        // $data = Karyawan::query()
-        // ->select('id', 'id_karyawan', 'nama')
-        // ->orderBy('id_karyawan', 'desc')
-        // ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
-        // ->where('tanggal_bergabung',  '>', $oneYearAgo)
-        // ->when($this->search, function ($query) {
-        //     $query
-        //     ->where('nama', 'LIKE', '%' . trim($this->search) . '%')
-        //     ->orWhere('id_karyawan', trim($this->search));
-        // })
-        // ->paginate(10);
 
-        $month_start = Carbon::now()
-            ->startOfMonth()
-            ->subMonth(1);
-        $month_end = Carbon::now()->endOfMonth();
+        $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
 
-        $data = Bonuspotongan::select(['bonuspotongans.*', 'karyawans.nama', 'karyawans.jabatan'])
+        $this->select_month = Bonuspotongan::select(DB::raw('MONTH(tanggal) as month'))->whereYear('tanggal', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->toArray();
+
+        // $month_start = Carbon::now()
+        //     ->startOfMonth()
+        //     ->subMonth(1);
+        // $month_end = Carbon::now()->endOfMonth();
+        $data = Bonuspotongan::select(['bonuspotongans.*', 'karyawans.nama', 'karyawans.jabatan_id'])
             ->join('karyawans', 'bonuspotongans.karyawan_id', '=', 'karyawans.id')
-            ->whereBetween('bonuspotongans.tanggal', [$month_start, $month_end])
-            ->where('karyawans.nama', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('karyawans.jabatan', 'LIKE', '%' . trim($this->search) . '%')
-            ->orWhere('bonuspotongans.user_id', trim($this->search))
-            ->orderBy('bonuspotongans.tanggal', 'desc')
+            // ->whereBetween('bonuspotongans.tanggal', [$month_start, $month_end])
+            ->whereMonth('bonuspotongans.tanggal', $this->month)
+            ->whereYear('bonuspotongans.tanggal', $this->year)
+
+            ->where(function ($query) {
+                $query->where('karyawans.nama', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('karyawans.jabatan_id', 'LIKE', '%' . trim($this->search) . '%')
+                    ->orWhere('bonuspotongans.user_id', trim($this->search));
+            })
+
+            // ->where('bonuspotongans.tanggal', '2024-01-22')
+            // ->where('karyawans.nama', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('karyawans.jabatan', 'LIKE', '%' . trim($this->search) . '%')
+            // ->orWhere('bonuspotongans.user_id', trim($this->search))
+            ->orderBy($this->columnName, $this->direction)
             ->paginate(10);
 
         return view('livewire.tambahanwr', compact('data'));

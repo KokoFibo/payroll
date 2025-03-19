@@ -2,8 +2,37 @@
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
         <div class="card ">
-            <div class="card-header bg-info">
-                <label class="col-sm-2  col-form-label">{{ __('Bonus dan Potongan') }}</label>
+            <div class="card-header bg-info nightowl-daylight">
+                <div class="d-flex justify-content-between">
+
+                    <label class=" col-form-label">{{ __('Bonus dan Potongan') }}</label>
+                    {{-- spinner --}}
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="columnName">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="direction">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="year">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status" wire:loading wire:target="month">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    {{-- end spinner --}}
+                    <div class="">
+                        {{-- <button wire:click="add"
+                            class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
+                            {{ is_data_locked() ? 'disabled' : '' }}>
+                            {{ __('Add New') }}
+                        </button> --}}
+                        <a href="/addtambahan"> <button
+                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
+                                {{ is_data_locked() ? 'disabled' : '' }}>
+                                {{ __('Add New') }}
+                            </button></a>
+                    </div>
+                </div>
             </div>
             @if ($modal == true)
                 <div class="card-body">
@@ -14,26 +43,30 @@
                             <input wire:model.live="user_id" type="numeric" class="form-control" id="user_id">
                         </div>
                         <div class="mb-3 col-12 col-xl-3">
-                            <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
+                            <label for="nama_karyawan" class="form-label">{{ __('Nama Karyawan') }}</label>
                             <input wire:model.live="nama_karyawan" type="text" class="form-control"
                                 id="nama_karyawan" disabled>
                         </div>
+
 
                     </div>
                     <div class="mb-3 col-12 col-xl-2">
                         <label class="form-label">{{ __('Tanggal') }} (mm/dd/yyyy)</label>
                         <input wire:model="tanggal" class="form-control" type="date">
                     </div>
+
                     <div class="card mt-lg-3 mt-2">
-                        <div class="card-header bg-success">
+                        <div class="card-header bg-success nightowl-daylight">
                             <h5>Bonus</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-flex flex-xl-row flex-column gap-xl-3 gap-2">
 
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('Uang Makan') }}</label>
-                                    <input wire:model="uang_makan" type="number" class="form-control">
+                                    <label class="form-label">{{ __('Uang Makan1') }}</label>
+                                    {{-- <input wire:model="uang_makan" type="number" class="form-control"> --}}
+                                    <input wire:model="uang_makan" type="text" type-currency="IDR"
+                                        class="form-control">
                                 </div>
 
                                 <div class="mb-3">
@@ -45,7 +78,7 @@
                     </div>
 
                     <div class="card mt-lg-3 mt-2">
-                        <div class="card-header bg-info">
+                        <div class="card-header bg-info nightowl-daylight">
                             <h5>Potongan</h5>
                         </div>
                         <div class="card-body ">
@@ -108,12 +141,11 @@
 
                         {{-- </div> --}}
                     </div>
-
-
-
                     <div class="d-flex gap-5">
-                        <button wire:click="save" class="btn btn-success">{{ __('Save') }}</button>
-                        <button wire:click="cancel" class="btn btn-dark">{{ __('Cancel') }}</button>
+                        <button wire:click="save"
+                            class="btn btn-success nightowl-daylight">{{ __('Save') }}</button>
+                        <button wire:click="cancel"
+                            class="btn btn-dark nightowl-daylight">{{ __('Cancel') }}</button>
                     </div>
                 </div>
             @endif
@@ -133,16 +165,46 @@
 
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex flex-column flex-lg-row justify-content-between">
-                        <div class="input-group col-12 col-xl-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="input-group col-12 col-md-4">
                             <button class="btn btn-primary" type="button"><i
                                     class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
+                            <button wire:click='refresh'
+                                class="ml-3 btn btn-success d-none d-md-inline">Refresh</button>
                         </div>
-                        <div class="mt-2 mt-lg-0">
-                            <button wire:click="add" class="btn btn-primary col-12 ">Add New</button>
+
+                        <div class="d-flex gap-2 col-12 col-md-4 mt-2 mt-md-0">
+                            <select class="form-select" wire:model.live="columnName">
+                                <option value="user_id">Id Karyawan</option>
+                                <option value="id">Data Terakhir</option>
+                            </select>
+                            <select class="form-select" wire:model.live="direction">
+                                <option value="desc">Descending</option>
+                                <option value="asc">Ascending</option>
+                            </select>
                         </div>
+
+
+
+                        <div class="d-flex gap-2 col-12 col-md-4 mt-2 mt-md-0">
+                            <select class="form-select" wire:model.live="year">
+                                @foreach ($select_year as $sy)
+                                    <option value="{{ $sy }}">{{ $sy }}</option>
+                                @endforeach
+                            </select>
+                            <select class="form-select" wire:model.live="month">
+                                @foreach ($select_month as $sm)
+                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+
+                        <button wire:click='refresh'
+                            class="mt-2 mt-lg-0 ml-3 btn btn-success d-md-none">Refresh</button>
                     </div>
 
                 </div>
@@ -154,21 +216,22 @@
                                     <tr>
                                         <th></th>
                                         {{-- <th>{{ __('id') }}</th> --}}
-                                        <th>{{ __('ID Karyawan') }}</th>
-                                        <th>{{ __('Nama Karyawan') }}</th>
-                                        <th>{{ __('Jabatan') }}</th>
-                                        <th>{{ __('Tanggal') }}</th>
-                                        <th>{{ __('Uang Makan') }}</th>
-                                        <th>{{ __('Bonus Lain') }}</th>
-                                        <th>{{ __('Baju ESD') }}</th>
-                                        <th>{{ __('Gelas') }}</th>
-                                        <th>{{ __('Sandal') }}</th>
-                                        <th>{{ __('Seragam') }}</th>
-                                        <th>{{ __('Sport Bra') }}</th>
-                                        <th>{{ __('Hijab Instan') }}</th>
-                                        <th>{{ __('ID Card Hilang') }}</th>
-                                        <th>{{ __('Masker Hijau') }}</th>
-                                        <th>{{ __('Seragam') }}</th>
+                                        <th wire:click="sortColumnName('user_id')">{{ __('ID Karyawan') }}</th>
+                                        <th wire:click="sortColumnName('nama')">{{ __('Nama Karyawan') }}</th>
+                                        <th wire:click="sortColumnName('jabatan_id')">{{ __('Jabatan') }}</th>
+                                        <th wire:click="sortColumnName('tanggal')">{{ __('Tanggal') }}</th>
+                                        <th wire:click="sortColumnName('uang_makan')">{{ __('Uang Makan') }}</th>
+                                        <th wire:click="sortColumnName('bonus_lain')">{{ __('Bonus Lain') }}</th>
+                                        <th wire:click="sortColumnName('baju_esd')">{{ __('Baju ESD') }}</th>
+                                        <th wire:click="sortColumnName('gelas')">{{ __('Gelas') }}</th>
+                                        <th wire:click="sortColumnName('sandal')">{{ __('Sandal') }}</th>
+                                        <th wire:click="sortColumnName('seragam')">{{ __('Seragam') }}</th>
+                                        <th wire:click="sortColumnName('sport_bra')">{{ __('Sport Bra') }}</th>
+                                        <th wire:click="sortColumnName('hijab_instan')">{{ __('Hijab Instan') }}</th>
+                                        <th wire:click="sortColumnName('id_card_hilang')">{{ __('ID Card Hilang') }}
+                                        </th>
+                                        <th wire:click="sortColumnName('masker_hijau')">{{ __('Masker Hijau') }}</th>
+                                        <th wire:click="sortColumnName('potongan_lain')">{{ __('Seragam') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -176,15 +239,20 @@
                                         <tr>
                                             <td>
                                                 <div class="text-center">
-                                                    <div class="btn-group  gap-2" role="group"
+                                                    <div class="btn-group  gap-2 nightowl-daylight" role="group"
                                                         aria-label="Basic mixed styles example">
-                                                        <button wire:click="update({{ $d->id }})"
-                                                            type="button" class="btn btn-warning btn-sm"><i
-                                                                class="fa-regular fa-pen-to-square"></i></button>
+                                                        {{-- <button wire:click="update({{ $d->id }})"
+                                                            type="button"
+                                                            class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                                class="fa-regular fa-pen-to-square"></i></button> --}}
+                                                        <a href="/updatetambahan/{{ $d->id }}"><button
+                                                                type="button"
+                                                                class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                                    class="fa-regular fa-pen-to-square"></i></button></a>
                                                         <button
                                                             wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE""
                                                             wire:click="delete({{ $d->id }})" type="button"
-                                                            class="btn btn-danger btn-sm"><i
+                                                            class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                                 class="fa-solid fa-trash-can"></i></button>
                                                     </div>
                                                 </div>
@@ -192,19 +260,19 @@
                                             {{-- <td>{{ $d->id }}</td> --}}
                                             <td>{{ $d->user_id }}</td>
                                             <td>{{ $d->karyawan->nama }}</td>
-                                            <td>{{ $d->karyawan->jabatan }}</td>
+                                            <td>{{ $d->karyawan->jabatan->nama_jabatan }}</td>
                                             <td>{{ format_tgl($d->tanggal) }}</td>
-                                            <td>{{ number_format($d->uang_makan) }}</td>
-                                            <td>{{ number_format($d->bonus_lain) }}</td>
-                                            <td>{{ number_format($d->baju_esd) }}</td>
-                                            <td>{{ number_format($d->gelas) }}</td>
-                                            <td>{{ number_format($d->sandal) }}</td>
-                                            <td>{{ number_format($d->seragam) }}</td>
-                                            <td>{{ number_format($d->sport_bra) }}</td>
-                                            <td>{{ number_format($d->hijab_instan) }}</td>
-                                            <td>{{ number_format($d->id_card_hilang) }}</td>
-                                            <td>{{ number_format($d->masker_hijau) }}</td>
-                                            <td>{{ number_format($d->potongan_lain) }}</td>
+                                            <td class="text-end">{{ number_format($d->uang_makan) }}</td>
+                                            <td class="text-end">{{ number_format($d->bonus_lain) }}</td>
+                                            <td class="text-end">{{ number_format($d->baju_esd) }}</td>
+                                            <td class="text-end">{{ number_format($d->gelas) }}</td>
+                                            <td class="text-end">{{ number_format($d->sandal) }}</td>
+                                            <td class="text-end">{{ number_format($d->seragam) }}</td>
+                                            <td class="text-end">{{ number_format($d->sport_bra) }}</td>
+                                            <td class="text-end">{{ number_format($d->hijab_instan) }}</td>
+                                            <td class="text-end">{{ number_format($d->id_card_hilang) }}</td>
+                                            <td class="text-end">{{ number_format($d->masker_hijau) }}</td>
+                                            <td class="text-end">{{ number_format($d->potongan_lain) }}</td>
 
                                             {{-- <td>
                                                 @if (ada_tambahan($d->id_karyawan))
@@ -239,4 +307,5 @@
             </div>
         @endif
     </div>
+
 </div>
