@@ -116,6 +116,7 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+
         ];
     }
 }
