@@ -299,7 +299,7 @@ class Payrollwr extends Component
 
         $startTime = microtime(true);
         if ($queue == 'noQueue') {
-            $result  = build_payroll($this->month, $this->year);
+            $result  = build_payroll_os($this->month, $this->year);
         } else {
             $lock = Lock::find(1);
             $lock->rebuild_done = 2;
