@@ -29,6 +29,6 @@ class rebuildJob implements ShouldQueue
      */
     public function handle(): void
     {
-        build_payroll($this->month, $this->year);
+        build_payroll_os($this->month, $this->year);
     }
 }

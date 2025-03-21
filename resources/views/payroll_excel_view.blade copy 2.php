@@ -113,7 +113,6 @@
             </tr>
         </thead>
         <tbody>
-
             @foreach ($data as $key => $d)
                 @php
                     if ($d->gaji_bpjs >= 12000000) {
