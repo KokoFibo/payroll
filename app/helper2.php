@@ -12,7 +12,7 @@ use App\Models\Yfrekappresensi;
 
 //Ori
 
-function build_payroll($month, $year)
+function build_payroll_os($month, $year)
 {
     // $lock = Lock::find(1);
     // $lock->rebuild_done = 2;
