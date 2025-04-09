@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="d-flex flex-wrap gap-2 pb-3 px-3 justify-content-center" wire:loading.remove>
-                    @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
+                    @if (($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist') || auth()->user()->role == 8)
                         <button wire:click="update1" class="btn btn-primary">{{ __('Update') }}</button>
                     @endif
 
