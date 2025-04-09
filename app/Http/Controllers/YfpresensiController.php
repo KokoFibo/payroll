@@ -731,6 +731,13 @@ class YfpresensiController extends Controller
             //             'terlambat' => $terlambat,
             //             'jam_lembur' => $jam_lembur,
             //             'tambahan_shift_malam' => $tambahan_shift_malam
+
+            // perhitungan jam kerja libur
+            // garap kalau sudah gak libur
+            // $jam_kerja_libur = 0;
+            // if (is_sunday($tgl) || is_libur_nasional($tgl)) {
+            //     $jam_kerja_libur = $total_jam_kerja;
+            // }
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
@@ -745,6 +752,7 @@ class YfpresensiController extends Controller
                 'total_jam_kerja' => $total_jam_kerja,
                 'total_hari_kerja' => $total_hari_kerja,
                 'total_jam_lembur' => $total_jam_lembur,
+                // 'total_jam_kerja_libur' => $jam_kerja_libur,
 
                 'shift' => $shift,
                 'late' => $late,

@@ -31,6 +31,7 @@ return new class extends Migration
             $table->decimal('total_jam_kerja', 6, 1)->nullable();
             $table->decimal('total_hari_kerja', 5, 1)->nullable();
             $table->decimal('total_jam_lembur', 6, 1)->nullable();
+            $table->decimal('total_jam_kerja_libur', 6, 1)->nullable();
 
             $table->integer('late')->nullable();
             $table->string('no_scan')->nullable();

@@ -59,25 +59,38 @@ class Test extends Component
     $this->fileCount = count($files);
   }
 
+  public function BuildNew()
+  {
+    build_payroll_os_new(3, 2025);
+  }
+
   public function render()
   {
-    $allDataCount = Karyawan::count();
-    $dataCount = Karyawan::whereNotNull('id_file_karyawan')->count();
-    // dd($allDataCount, $dataCount);
+    dd('Aman');
+    $this->year = 2025;
+    $this->month = 3;
 
-    $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
-    $data_berisi = 0;
-    foreach ($data as $d) {
-      $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
-      if ($applicanteFiles > 0) $data_berisi++;
-    }
-    // $data_berisi = Karyawan::whereNotNull('id_file_karyawan')
-    //   ->whereHas('applicantFiles') // Langsung filter yang memiliki file
-    //   ->count();
-    dd($allDataCount, $dataCount, $data_berisi);
+    $startOfMonth = Carbon::parse($this->year . '-' . $this->month . '-01');
+    $endOfMonth = $startOfMonth->copy()->endOfMonth();
+    $presensiData = Yfrekappresensi::whereBetween('date', [$startOfMonth, $endOfMonth])
+      ->whereNotNull('karyawan_id')
+      ->selectRaw('
+        user_id,
+        SUM(total_hari_kerja) as hari_kerja,
+        SUM(total_jam_kerja) as jam_kerja,
+        SUM(total_jam_lembur) as jam_lembur,
+        SUM(late) as jumlah_jam_terlambat,
+        SUM(CASE WHEN shift = "Malam" AND total_jam_kerja >= 8 THEN 1 ELSE 0 END) as tambahan_jam_shift_malam
+    ')
+      ->groupBy('user_id')
+      ->orderBy('user_id')
+      ->get();
 
-    return view('livewire.test', [
-      'fileCount' => $this->fileCount,
-    ]);
+    // foreach ($presensiData as $p) {
+
+    //   dd($p->user_id);
+    // }
+
+    return view('livewire.test');
   }
 }
