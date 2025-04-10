@@ -255,7 +255,7 @@ class Applicant extends Component
             'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'images', new AllowedFileExtension],
             // public $ktp, $kk, $ijazah, $nilai, $cv, $pasfoto;
             // public $npwp, $paklaring, $bpjs, $skck, $sertifikat, $bri;
         ];
@@ -457,6 +457,10 @@ class Applicant extends Component
     }
     public function updatedBri()
     {
+        dd([
+            'mime' => $this->bri[0]->getMimeType(),
+            'extension' => $this->bri[0]->getClientOriginalExtension(),
+        ]);
         $this->validate([
             'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
             'kk.*'         => ['nullable', 'image', 'max:4096'],
