@@ -255,7 +255,7 @@ class Applicant extends Component
             'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            // 'bri.*' => ['nullable', 'images', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'images', new AllowedFileExtension],
             // public $ktp, $kk, $ijazah, $nilai, $cv, $pasfoto;
             // public $npwp, $paklaring, $bpjs, $skck, $sertifikat, $bri;
         ];
@@ -470,7 +470,7 @@ class Applicant extends Component
             'bpjs.*'       => ['nullable', 'image', 'max:4096'],
             'skck.*'       => ['nullable', 'image', 'max:4096'],
             'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            'bri.*'        => ['nullable', 'image', new AllowedFileExtension],
         ]);
     }
     // public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
