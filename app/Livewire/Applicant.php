@@ -470,7 +470,7 @@ class Applicant extends Component
             'bpjs.*'       => ['nullable', 'image', 'max:4096'],
             'skck.*'       => ['nullable', 'image', 'max:4096'],
             'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*'        => ['nullable', 'image', 'max:4096'],
         ]);
     }
     // public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
