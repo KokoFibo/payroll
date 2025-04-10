@@ -468,7 +468,7 @@
         'bpjs' => 'Upload Kartu BPJS Ketenagakerjaan',
         'skck' => 'Upload SKCK',
         'sertifikat' => 'Upload Sertifikat',
-        'bri' => 'Upload Buku Tabungan Bank BRI',
+        'bri' => 'Upload Buku Tabungan Bank BR1',
     ] as $field => $label)
                         <div>
                             <label class="block text-sm font-medium text-gray-900 mb-2">
