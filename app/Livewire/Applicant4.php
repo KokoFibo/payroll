@@ -160,42 +160,55 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
+            'files.*.mimes' => 'Hanya menerima file png, jpg dan jpeg',
             'files.*.max' => 'Max file size 1Mb',
             'ktp.*.required' => 'File KTP wajib diunggah.',
             'ktp.*.image' => 'File KTP harus berupa gambar.',
+            'ktp.*.mimes' => 'File KTP harus dalam format: jpeg, png, jpg.',
             'ktp.*.max' => 'Ukuran file KTP maksimal 2MB.',
             'kk.*.required' => 'File kartu keluarga wajib diunggah.',
             'kk.*.image' => 'File kartu keluarga harus berupa gambar.',
+            'kk.*.mimes' => 'File kartu keluarga harus dalam format: jpeg, png, jpg.',
             'kk.*.max' => 'Ukuran file kartu keluarga maksimal 2MB.',
             'ijazah.*.required' => 'File IJAZAH wajib diunggah.',
             'ijazah.*.image' => 'File IJAZAH harus berupa gambar.',
+            'ijazah.*.mimes' => 'File IJAZAH harus dalam format: jpeg, png, jpg.',
             'ijazah.*.max' => 'Ukuran file IJAZAH maksimal 2MB.',
             'nilai.*.required' => 'File NILAI wajib diunggah.',
             'nilai.*.image' => 'File NILAI harus berupa gambar.',
+            'nilai.*.mimes' => 'File NILAI harus dalam format: jpeg, png, jpg.',
             'nilai.*.max' => 'Ukuran file NILAI maksimal 2MB.',
             'cv.*.required' => 'File CV wajib diunggah.',
             'cv.*.image' => 'File CV harus berupa gambar.',
+            'cv.*.mimes' => 'File CV harus dalam format: jpeg, png, jpg.',
             'cv.*.max' => 'Ukuran file CV maksimal 2MB.',
             'pasfoto.*.required' => 'File PASFOTO wajib diunggah.',
             'pasfoto.*.image' => 'File PASFOTO harus berupa gambar.',
+            'pasfoto.*.mimes' => 'File PASFOTO harus dalam format: jpeg, png, jpg.',
             'pasfoto.*.max' => 'Ukuran file PASFOTO maksimal 2MB.',
             'npwp.*.required' => 'File NPWP wajib diunggah.',
             'npwp.*.image' => 'File NPWP harus berupa gambar.',
+            'npwp.*.mimes' => 'File NPWP harus dalam format: jpeg, png, jpg.',
             'npwp.*.max' => 'Ukuran file NPWP maksimal 2MB.',
             'paklaring.*.required' => 'File PAKLARING wajib diunggah.',
             'paklaring.*.image' => 'File PAKLARING harus berupa gambar.',
+            'paklaring.*.mimes' => 'File PAKLARING harus dalam format: jpeg, png, jpg.',
             'paklaring.*.max' => 'Ukuran file PAKLARING maksimal 2MB.',
             'bpjs.*.required' => 'File BPJS wajib diunggah.',
             'bpjs.*.image' => 'File BPJS harus berupa gambar.',
+            'bpjs.*.mimes' => 'File BPJS harus dalam format: jpeg, png, jpg.',
             'bpjs.*.max' => 'Ukuran file BPJS maksimal 2MB.',
             'skck.*.required' => 'File SKCK wajib diunggah.',
             'skck.*.image' => 'File SKCK harus berupa gambar.',
+            'skck.*.mimes' => 'File SKCK harus dalam format: jpeg, png, jpg.',
             'skck.*.max' => 'Ukuran file SKCK maksimal 2MB.',
             'sertifikat.*.required' => 'File SERTIFIKAT wajib diunggah.',
             'sertifikat.*.image' => 'File SERTIFIKAT harus berupa gambar.',
+            'sertifikat.*.mimes' => 'File SERTIFIKAT harus dalam format: jpeg, png, jpg.',
             'sertifikat.*.max' => 'Ukuran file SERTIFIKAT maksimal 2MB.',
             'bri.*.required' => 'File BRI wajib diunggah.',
             'bri.*.image' => 'File BRI harus berupa gambar.',
+            'bri.*.mimes' => 'File BRI harus dalam format: jpeg, png, jpg.',
             'bri.*.max' => 'Ukuran file BRI maksimal 2MB.',
 
 
@@ -243,19 +256,19 @@ class Applicant extends Component
             'alamat_tinggal_sekarang' => 'required',
             // 'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
             // 'files.*' =>  ['nullable',  new AllowedFileExtension]
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'ktp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'kk.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'ijazah.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'nilai.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'cv.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'pasfoto.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'files.*' => ['nullable', 'image', new AllowedFileExtension],
+            'ktp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'kk.*' => ['nullable', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['nullable', 'image', new AllowedFileExtension],
+            'nilai.*' => ['nullable', 'image', new AllowedFileExtension],
+            'cv.*' => ['nullable', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['nullable', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
             // public $ktp, $kk, $ijazah, $nilai, $cv, $pasfoto;
             // public $npwp, $paklaring, $bpjs, $skck, $sertifikat, $bri;
         ];
@@ -268,18 +281,18 @@ class Applicant extends Component
 
         $this->validate([
             // 'kk' => 'required|image|max:2048'
-            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
 
         ]);
     }
@@ -287,189 +300,209 @@ class Applicant extends Component
     {
         $this->validate([
             // 'kk' => 'required|image|max:2048'
-            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
 
         ]);
     }
     public function updatedIjazah()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedNilai()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedCv()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedPasfoto()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedNpwp()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedPaklaring()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedBpjs()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedSkck()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedSertifikat()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     public function updatedBri()
     {
         $this->validate([
-            'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
-            'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
-            'nilai.*'      => ['nullable', 'image', 'max:4096'],
-            'cv.*'         => ['nullable', 'image', 'max:4096'],
-            'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
-            'npwp.*'       => ['nullable', 'image', 'max:4096'],
-            'paklaring.*'  => ['nullable', 'image', 'max:4096'],
-            'bpjs.*'       => ['nullable', 'image', 'max:4096'],
-            'skck.*'       => ['nullable', 'image', 'max:4096'],
-            'sertifikat.*' => ['nullable', 'image', 'max:4096'],
-            'bri.*'        => ['nullable', 'image', 'max:4096'],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'image', new AllowedFileExtension],
+            'kk.*' => ['required', 'image', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'image', new AllowedFileExtension],
+            'nilai.*' => ['required', 'image', new AllowedFileExtension],
+            'cv.*' => ['required', 'image', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'image', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'image', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'image', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'image', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'image', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'image', new AllowedFileExtension],
+
         ]);
     }
     // public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
