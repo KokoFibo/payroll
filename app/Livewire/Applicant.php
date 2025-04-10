@@ -307,7 +307,7 @@ class Applicant extends Component
         $this->validate([
             'ktp.*'        => ['nullable', 'image', 'max:4096'], // max 4MB
             'kk.*'         => ['nullable', 'image', 'max:4096'],
-            'ijazah.*'     => ['nullable', 'image', 'max:4096'],
+            'ijazah.*'     => ['nullable', 'image', new AllowedFileExtension],
             'nilai.*'      => ['nullable', 'image', 'max:4096'],
             'cv.*'         => ['nullable', 'image', 'max:4096'],
             'pasfoto.*'    => ['nullable', 'image', 'max:4096'],
