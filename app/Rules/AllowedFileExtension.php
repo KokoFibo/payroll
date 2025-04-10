@@ -16,13 +16,7 @@ class AllowedFileExtension implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
 
-        dd([
-            'ext' => $value->getClientOriginalExtension(),
-            'mime' => $value->getMimeType(),
-            'real_mime' => mime_content_type($value->getPathname()),
-            'path' => $value->getPathname(),
-            'is_file' => file_exists($value->getPathname()),
-        ]);
+
         if (!$value instanceof \Illuminate\Http\UploadedFile) {
             $fail('File tidak valid.');
             return;

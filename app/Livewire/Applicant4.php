@@ -488,6 +488,7 @@ class Applicant extends Component
     }
     public function updatedBri()
     {
+
         $this->validate([
             // 'kk' => 'required|image|max:2048'
             'ktp.*' => ['required', 'image', new AllowedFileExtension],
