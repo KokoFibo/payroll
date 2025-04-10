@@ -14,12 +14,13 @@ class AllowedFileExtension implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (
-            strtolower($value->getClientOriginalExtension()) != 'jpg' &&
-            strtolower($value->getClientOriginalExtension()) != 'jpeg' &&
-            strtolower($value->getClientOriginalExtension()) != 'png'
-        ) {
-            $fail('Hanya menerima file png, jpg dan jpeg');
+        if (!$value instanceof \Illuminate\Http\UploadedFile) {
+            $fail('File tidak valid.');
+            return;
+        }
+
+        if (!Str::startsWith($value->getMimeType(), 'image/')) {
+            $fail('File harus berupa gambar.');
         }
     }
 }
