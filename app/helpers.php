@@ -1201,6 +1201,10 @@ function is_puasa($tgl)
 
 function is_libur_nasional($tanggal)
 {
+    if ($tanggal === '2025-04-18') {
+        return false;
+    }
+
     $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
     if ($data != null) return true;
     return false;
@@ -1629,6 +1633,9 @@ function absen_kosong($first_in, $first_out, $second_in, $second_out, $overtime_
 
 function is_sunday($tgl)
 {
+    if ($tgl === '2025-04-13') {
+        return false;
+    }
     if ($tgl) {
         return Carbon::parse($tgl)->isSunday();
     }
@@ -1834,10 +1841,17 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                 if ($shift == 'Pagi') {
                     // Shift Pagi
                     if (is_saturday($tgl)) {
-                        if ($t2 < strtotime('15:30:00')) {
-                            return $lembur = 0;
+                        if ($tgl == '2025-04-18') {
+                            if ($t2 < strtotime('16:00:00')) {
+                                return $lembur = 0;
+                            }
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                        } else {
+                            if ($t2 < strtotime('15:30:00')) {
+                                return $lembur = 0;
+                            }
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                         }
-                        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                     } else {
                         if ($t2 < strtotime('17:30:00')) {
                             return $lembur = 0;
@@ -2301,6 +2315,9 @@ function is_jabatan_khusus($jabatan)
 
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
 {
+    if ($tgl === '2025-04-18') {
+        return $late = 0;
+    }
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
         $jabatan = $data_jabatan->jabatan_id;
@@ -3066,6 +3083,9 @@ function format_jam($jam)
 
 function is_friday($tgl)
 {
+    if ($tgl === '2025-04-18') {
+        return false;
+    }
     if ($tgl) {
         return Carbon::parse($tgl)->isFriday();
     }
@@ -3073,6 +3093,9 @@ function is_friday($tgl)
 
 function is_saturday($tgl)
 {
+    if ($tgl === '2025-04-18') {
+        return true;
+    }
     if ($tgl) {
         // if ( Carbon::parse( $tgl )->isSaturday() ) {
         //     return true;
