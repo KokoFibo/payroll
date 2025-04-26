@@ -738,6 +738,7 @@ class YfpresensiController extends Controller
             // if (is_sunday($tgl) || is_libur_nasional($tgl)) {
             //     $jam_kerja_libur = $total_jam_kerja;
             // }
+            if ($kh->date == '2025-04-18') $late = null;
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
