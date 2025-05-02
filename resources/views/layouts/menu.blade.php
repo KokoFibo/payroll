@@ -189,6 +189,12 @@ with font-awesome or any other icon font library -->
                         <p>{{ __('Hitung THR') }}</p>
                     </a>
                 </li>
+                <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/data-log" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('History Gaji') }}</p>
+                    </a>
+                </li>
             @endif
 
             <li class="nav-item">
@@ -243,12 +249,7 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
 
-                <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/data-log" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>{{ __('Data Logs Dashboard') }}</p>
-                    </a>
-                </li>
+
                 <li class="nav-item {{ 'deletenoscan' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/deletenoscan" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
