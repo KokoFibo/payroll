@@ -1682,7 +1682,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             return $lembur = 0;
                         } else {
                             // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
-                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('16:30:00')) / 60;
+                            // return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('16:30:00')) / 60;
+                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00')) / 60;
                         }
                     } else {
                         if ($t2 < strtotime('20:00:00') && $t2 > strtotime('11:30:00')) {
@@ -1691,8 +1692,9 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         } else {
                             if ($t2 <= strtotime('23:29:00') && $t2 >= strtotime('20:00:00')) {
 
+                                return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('20:00:00')) / 60;
 
-                                return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('19:30:00')) / 60;
+                                // return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('19:30:00')) / 60;
                             } else {
 
                                 return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60 + 3.5;
@@ -1801,7 +1803,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             return $lembur = 0;
                         } else {
                             // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00'))/60;
-                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('16:30:00')) / 60;
+                            // return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('16:30:00')) / 60;
+                            return Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('17:00:00')) / 60;
                         }
                     } else {
                         if ($t2 < strtotime('20:30:00') && $t2 > strtotime('12:00:00')) {
