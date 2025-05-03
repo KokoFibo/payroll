@@ -15,6 +15,7 @@ use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
 use App\Livewire\Headcount;
+use App\Livewire\Hitungthr;
 use App\Livewire\Jabatanwr;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
@@ -23,6 +24,7 @@ use App\Livewire\Rubahidwr;
 use App\Livewire\Timeoffwr;
 use App\Livewire\AddCompany;
 use App\Livewire\BankReport;
+use App\Livewire\CreateUser;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
@@ -93,7 +95,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Hitungthr;
 
 // Middleware
 Auth::routes([
@@ -308,6 +309,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
+                            Route::get('/createuser', CreateUser::class);
+
 
 
 
