@@ -392,15 +392,22 @@ function build_payroll_os($month, $year)
         // $beginning_date = new DateTime("$year-$month-01");
         $beginning_date = buat_tanggal($month, $year);
         // hehehe
-        if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
+        // if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
+        //     $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
+        // } else {
+        //     $manfaat_libur = $libur->count();
+        //     $cx++;
+        // }
+        // if ($data->karyawan->metode_penggajian == 'Perbulan') {
+        if ($data->karyawan->metode_penggajian == 'Perbulan' && ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned')) {
             $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
         } else {
             $manfaat_libur = $libur->count();
             $cx++;
         }
 
-
-
+        // if ($data->karyawan->id_karyawan == 4753) dd('$manfaat_libur: ', $manfaat_libur);
+        // }
 
         // $status_resign = ($data->karyawan->status_karyawan == 'Resigned') && (check_resigned_validity($month, $year, $data->karyawan->tanggal_resigned));
 

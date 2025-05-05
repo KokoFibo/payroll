@@ -1016,7 +1016,7 @@ function shortJam($jam)
 //     return $manfaat_libur;
 // }
 
-function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
+function manfaat_libur2($month, $year, $libur, $user_id, $tgl_bergabung)
 {
     $data_awal = Yfrekappresensi::where('user_id', $user_id)
         ->whereMonth('date', $month)
@@ -1087,6 +1087,89 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 
 
     //   && $tgl_bergabung < $tgl_libur
+
+    return $manfaat_libur;
+}
+
+function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
+{
+    $data_awal = Yfrekappresensi::where('user_id', $user_id)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->orderBy('date', 'asc')
+        ->first();
+    $data_akhir = Yfrekappresensi::where('user_id', $user_id)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->orderBy('date', 'desc')
+        ->first();
+
+    // Check if $data is null
+    if (!$data_awal) {
+        return 0; // No data found, so no benefit from holidays
+    }
+
+    $tgl_mulai_kerja = $data_awal->date;
+    $tgl_akhir_kerja = $data_akhir->date;
+
+    $is_karyawan_lama = false;
+
+    $beginning_date = buat_tanggal($month, $year);
+    // $tgl_bergabung = '2025-01-01';
+    // $beginning_date = '2025-03-01';
+    $is_karyawan_lama = new DateTime($tgl_bergabung) <= new DateTime($beginning_date);
+
+
+
+    // if ($user_id == 8227 && $is_karyawan_lama) return $libur->count();
+
+    // lll
+    // dd(new DateTime($tgl_bergabung), new DateTime($beginning_date));
+    // if ($user_id == 8230) dd($user_id, $is_karyawan_lama, $tgl_bergabung, $beginning_date);
+    if ($is_karyawan_lama) {
+        return $libur->count();
+    }
+
+
+    $manfaat_libur = 0;
+    // dd($libur->count());
+    $is_tgl_1 = false;
+    foreach ($libur as $l) {
+        $tgl_libur = $l->tanggal_mulai_hari_libur;
+
+        // Check if the holiday falls on the first day of the month
+        $tgl_libur_obj = Carbon::parse($tgl_libur);
+
+        // if ($user_id == 8230) dd($user_id, $is_karyawan_lama, $tgl_bergabung, $beginning_date, $manfaat_libur, $tgl_mulai_kerja, $tgl_akhir_kerja, $tgl_libur);
+        // if ($user_id == 8230) dd($tgl_akhir_kerja >= $tgl_libur);
+        // if ($tgl_mulai_kerja <= $tgl_libur && $tgl_akhir_kerja >= $tgl_libur) {
+        if ($tgl_mulai_kerja <= $tgl_libur) {
+            $manfaat_libur++;
+        }
+
+        if ($tgl_libur_obj->day == 1) {
+            $is_tgl_1 = true;
+        }
+
+
+        // Check if the holiday falls after the start date of work or joining date
+    }
+    // if ($user_id == 1076) dd($manfaat_libur, $is_tgl_1);
+
+
+
+    // if ($is_karyawan_lama) {
+
+    //     if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0)) {
+    //         $manfaat_libur++;
+    //     }
+    // }
+
+    // if (($is_tgl_1 && $manfaat_libur != 0 && $is_karyawan_lama) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
+    //     $manfaat_libur++;
+    // }
+
+
 
     return $manfaat_libur;
 }
