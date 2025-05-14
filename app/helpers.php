@@ -2575,7 +2575,7 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
         $jam_secondOut_sore = '04:59';
         $strtime_secondOut_sore = '05:00:00';
         $jam_secondOut_sore_sabtu = '23:59';
-        $strtime_secondOut_pagi_sabtu = '23:59:00';
+        $strtime_secondOut_sore_sabtu = '23:59:00';
     }
     $perJam = 60;
     $late = null;
