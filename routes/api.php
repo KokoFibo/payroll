@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\LarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::get('store/{id}', [ApiController::class, 'store']);
 Route::delete('delete_karyawan_yf_aja/{id}', [ApiController::class, 'delete_data_karyawan_yf_aja']);
 Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_user_yf_aja']);
 // Route::post('store', [ApiController::class, 'store']);
+
+Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
