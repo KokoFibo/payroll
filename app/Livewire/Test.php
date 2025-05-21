@@ -64,32 +64,27 @@ class Test extends Component
     build_payroll_os_new(3, 2025);
   }
 
+
+  public function fetchData($month, $year, $placement_id)
+  {
+    $this->error = null;
+
+    try {
+      $response = Http::get(url("/api/os-placement/{$month}/{$year}/{$placement_id}"));
+
+      if ($response->ok() && $response['status']) {
+        return  $response['data'];
+      } else {
+        return  $response['message'] ?? 'Gagal mengambil data';
+      }
+    } catch (\Exception $e) {
+      return 'Terjadi kesalahan saat mengambil data: ' . $e->getMessage();
+    }
+  }
+
   public function render()
   {
-    dd('Aman');
-    $this->year = 2025;
-    $this->month = 3;
-
-    $startOfMonth = Carbon::parse($this->year . '-' . $this->month . '-01');
-    $endOfMonth = $startOfMonth->copy()->endOfMonth();
-    $presensiData = Yfrekappresensi::whereBetween('date', [$startOfMonth, $endOfMonth])
-      ->whereNotNull('karyawan_id')
-      ->selectRaw('
-        user_id,
-        SUM(total_hari_kerja) as hari_kerja,
-        SUM(total_jam_kerja) as jam_kerja,
-        SUM(total_jam_lembur) as jam_lembur,
-        SUM(late) as jumlah_jam_terlambat,
-        SUM(CASE WHEN shift = "Malam" AND total_jam_kerja >= 8 THEN 1 ELSE 0 END) as tambahan_jam_shift_malam
-    ')
-      ->groupBy('user_id')
-      ->orderBy('user_id')
-      ->get();
-
-    // foreach ($presensiData as $p) {
-
-    //   dd($p->user_id);
-    // }
+    dd($this->fetchData(4, 2025, 5));
 
     return view('livewire.test');
   }
