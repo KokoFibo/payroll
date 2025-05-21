@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\LaporanApiController;
 use App\Http\Controllers\LarkController;
 
 /*
@@ -28,3 +29,5 @@ Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_use
 // Route::post('store', [ApiController::class, 'store']);
 
 Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
+
+Route::get('os-placement/{month}/{year}/{placement_id}', [LaporanApiController::class, 'osPlacement']);
