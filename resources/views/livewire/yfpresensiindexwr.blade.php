@@ -196,6 +196,12 @@
                                 <th wire:click="sortColumnName('date')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('date')">{{ __('Tambahan Shift Malam') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('date')">{{ __('Shift') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
 
                                 <th wire:click="sortColumnName('first_in')">{{ __('First in') }} <i
                                         class="fa-solid fa-sort"></i>
@@ -257,6 +263,13 @@
                                                 wire:click="showDetail({{ $data->user_id }})" data-bs-toggle="modal"
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
+                                            @if (Auth::user()->role == 8)
+                                                <button type="button"
+                                                    class="btn btn-warning btn-sm nightowl-daylight"
+                                                    wire:click="showDetail_asli({{ $data->user_id }})"
+                                                    data-bs-toggle="modal" data-bs-target="#update-form-modal"><i
+                                                        class="fa-solid fa-magnifying-glass"></i>Asli</button>
+                                            @endif
 
                                             @if (Auth::user()->role > 5)
                                                 <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
@@ -286,6 +299,8 @@
                                         <td>{{ $data->total_jam_kerja }}</td>
                                         <td>{{ $data->total_jam_lembur }}</td>
                                         <td>{{ $data->total_hari_kerja }}</td>
+                                        <td>{{ $data->shift_malam }}</td>
+                                        <td>{{ $data->shift }}</td>
 
                                         <td x-show="!edit"
                                             class="{{ checkFirstInLate($data->first_in, $data->shift, $data->date, $data->karyawan->placement_id) ? 'text-danger' : '' }}">

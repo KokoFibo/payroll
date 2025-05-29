@@ -5,6 +5,7 @@ use App\Livewire\Test;
 use App\Livewire\Terwr;
 use App\Models\Payroll;
 use App\Livewire\DataLog;
+use App\Livewire\Laporan;
 use App\Livewire\Profile;
 use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
@@ -39,6 +40,7 @@ use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
+use App\Livewire\Harikhususwr;
 use App\Livewire\Infokaryawan;
 use App\Livewire\UserNotFound;
 use Google\Service\Forms\Info;
@@ -81,6 +83,7 @@ use App\Http\Controllers\TerControler;
 use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Gantipassworddeveloper;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\KviewController;
 use App\Livewire\Deleteduplicatepresensi;
 use App\Http\Controllers\LogoutController;
@@ -95,7 +98,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Laporan;
 
 // Middleware
 Auth::routes([
@@ -206,6 +208,8 @@ Route::middleware(['auth'])->group(function () {
                 });
 
                 Route::get('/yfindex', [YfpresensiController::class, 'index']);
+                // route bawah ini untuk percabangan
+                // Route::post('/yfstore', [YfpresensiController::class, 'check_store']);
                 Route::post('/yfstore', [YfpresensiController::class, 'store']);
                 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
                 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
@@ -255,6 +259,13 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/reportindex', [ReportController::class, 'index']);
                         Route::post('/createexcel', [ReportController::class, 'createExcel']);
                         Route::get('/bankreport', BankReport::class);
+                        Route::get('/multiple-excel-form', [ExcelController::class, 'downloadKaryawanZip']);
+                        Route::get('/test-view', function () {
+                            $karyawans = \App\Models\Karyawan::limit(5)->get();
+                            return view('karyawan_excel_form_view', ['karyawans' => $karyawans, 'header_text' => 'ini header text nya']);
+                        });
+                        Route::get('/test-export', [ExcelController::class, 'testExport']);
+
 
 
                         // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
@@ -312,6 +323,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
                             Route::get('/createuser', CreateUser::class);
                             Route::get('/laporan', Laporan::class);
+                            Route::get('/harikhusus', Harikhususwr::class);
 
 
 

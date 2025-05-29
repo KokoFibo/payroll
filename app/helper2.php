@@ -176,10 +176,7 @@ function build_payroll_os($month, $year)
                     // Jika hari libur nasional
                     // 23 = translator
                     if ($d->karyawan->jabatan_id != 23) {
-                        if (
-                            is_libur_nasional($d->date) &&  !is_sunday($d->date)
-
-                        ) {
+                        if (is_libur_nasional($d->date) &&  !is_sunday($d->date)) {
                             $jam_kerja *= 2;
                             $jam_lembur *= 2;
                         }
