@@ -767,7 +767,7 @@ class YfpresensiController extends Controller
             // if (is_sunday($tgl) || is_libur_nasional($tgl)) {
             //     $jam_kerja_libur = $total_jam_kerja;
             // }
-            if ($kh->date == '2025-04-18') $late = null;
+            if ($kh->date == '2025-05-30') $late = null;
             if ($shift == 'Malam') {
                 $tgl_khusus = Harikhusus::where('date', $tgl)->first();
                 if ($tgl_khusus) {
