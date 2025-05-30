@@ -189,8 +189,7 @@
 
                         <button wire:click="clear_lock()"
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
-                        <button wire:click="buat_payroll('noQueue')"
-                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
                     @endif
                     <a href="/ter"><button
