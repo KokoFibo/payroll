@@ -769,42 +769,58 @@ class YfpresensiController extends Controller
             // }
             if ($kh->date == '2025-05-30') $late = null;
             if ($shift == 'Malam') {
-                $tgl_khusus = Harikhusus::where('date', $tgl)->first();
-                if ($tgl_khusus) {
-                    // tanggal khusus
-                    if (khusus_is_saturday($tgl)) {
-                        if ($total_jam_kerja >= 6) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else if (khusus_is_sunday($tgl)) {
-                        if ($total_jam_kerja >= 16) {
-                            // $jam_lembur = $jam_lembur + 2;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else {
-                        if ($total_jam_kerja >= 8) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
+                // $tgl_khusus = Harikhusus::where('date', $tgl)->first();
+                // if ($tgl_khusus) {
+                //     // tanggal khusus
+                //     if (khusus_is_saturday($tgl)) {
+                //         if ($total_jam_kerja >= 6) {
+                //             // $jam_lembur = $jam_lembur + 1;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     } else if (khusus_is_sunday($tgl)) {
+                //         if ($total_jam_kerja >= 16) {
+                //             // $jam_lembur = $jam_lembur + 2;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     } else {
+                //         if ($total_jam_kerja >= 8) {
+                //             // $jam_lembur = $jam_lembur + 1;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     }
+                // } else {
+                //     // bukan Tanggal Khusus
+                //     if (is_saturday($tgl)) {
+                //         if ($total_jam_kerja >= 6) {
+                //             // $jam_lembur = $jam_lembur + 1;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     } else if (is_sunday($tgl)) {
+                //         if ($total_jam_kerja >= 16) {
+                //             // $jam_lembur = $jam_lembur + 2;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     } else {
+                //         if ($total_jam_kerja >= 8) {
+                //             // $jam_lembur = $jam_lembur + 1;
+                //             $tambahan_shift_malam = 1;
+                //         }
+                //     }
+                // }
+                if (is_saturday($tgl)) {
+                    if ($total_jam_kerja >= 6) {
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
+                    }
+                } else if (is_sunday($tgl)) {
+                    if ($total_jam_kerja >= 16) {
+                        // $jam_lembur = $jam_lembur + 2;
+                        $tambahan_shift_malam = 1;
                     }
                 } else {
-                    // bukan Tanggal Khusus
-                    if (is_saturday($tgl)) {
-                        if ($total_jam_kerja >= 6) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else if (is_sunday($tgl)) {
-                        if ($total_jam_kerja >= 16) {
-                            // $jam_lembur = $jam_lembur + 2;
-                            $tambahan_shift_malam = 1;
-                        }
-                    } else {
-                        if ($total_jam_kerja >= 8) {
-                            // $jam_lembur = $jam_lembur + 1;
-                            $tambahan_shift_malam = 1;
-                        }
+                    if ($total_jam_kerja >= 8) {
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
                     }
                 }
             } else {
