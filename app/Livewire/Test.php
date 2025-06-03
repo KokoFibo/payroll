@@ -40,7 +40,6 @@ class Test extends Component
   public $today;
   public $cx;
   public $test;
-  public $fileCount = 0;
 
 
   public function mount()
@@ -50,41 +49,11 @@ class Test extends Component
 
     $this->year = now()->year;
     $this->month = now()->month;
-    $this->countFiles();
   }
 
-  public function countFiles()
-  {
-    $files = Storage::disk('s3')->allFiles('Applicants/Eiusmod_sint_exercit_1987_07_13/'); // Ambil semua file di folder "applicants"
-    $this->fileCount = count($files);
-  }
-
-  public function BuildNew()
-  {
-    build_payroll_os_new(3, 2025);
-  }
-
-
-  public function fetchData($month, $year, $placement_id)
-  {
-    $this->error = null;
-
-    try {
-      $response = Http::get(url("/api/os-placement/{$month}/{$year}/{$placement_id}"));
-
-      if ($response->ok() && $response['status']) {
-        return  $response['data'];
-      } else {
-        return  $response['message'] ?? 'Gagal mengambil data';
-      }
-    } catch (\Exception $e) {
-      return 'Terjadi kesalahan saat mengambil data: ' . $e->getMessage();
-    }
-  }
 
   public function render()
   {
-    dd($this->fetchData(4, 2025, 5));
 
     return view('livewire.test');
   }

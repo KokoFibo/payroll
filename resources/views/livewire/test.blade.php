@@ -1,3 +1,3 @@
 <div>
-    <button class="btn btn-primary" wire:click='BuildNew'>Build New Payroll</button>
+    <button class="btn btn-primary">Aman bro</button>
 </div>
