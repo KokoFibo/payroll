@@ -682,11 +682,14 @@ function nama_company($id)
 }
 function nama_placement($id)
 {
+
     if ($id != null) {
         $data = Placement::find($id);
         return $data->placement_name;
     }
 }
+
+
 function nama_jabatan($id)
 {
     if ($id != null) {
