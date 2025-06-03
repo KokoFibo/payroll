@@ -150,15 +150,15 @@
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
 
-                                @if ($data_bulan_ini > 0)
+                                {{-- @if ($data_bulan_ini > 0)
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif
+                                @endif --}}
+                                <option value="5">Mei 2024</option>
 
                                 {{-- jika this month gak ada maka munculkan --}}
                                 {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif --}}
-                                <option value="1">JAN 1</option>
 
                             </select>
 
