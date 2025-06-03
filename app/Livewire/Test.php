@@ -55,8 +55,11 @@ class Test extends Component
   public function render()
   {
 
-    // $payrollTerakhir = Payroll::latest('date')->first();
-    // dd($payrollTerakhir->date);
+    // $placements = Placement::orderBy('placement_name', 'ASC')->get();
+    // foreach ($placements as $placement) {
+    //   echo $placement->placement_name . '<br>';
+    // }
+
 
     return view('livewire.test');
   }

@@ -119,28 +119,77 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
 
         // Ambil data dari Januari hingga bulan ini
         $laporan_bulanan = collect();
+        // foreach (range(1, now()->month) as $bulan) {
+        //     $laporan = DB::table('payrolls')
+        //         ->selectRaw('placement_id, SUM(total) as total_gaji, COUNT(DISTINCT id_karyawan) as jumlah_karyawan, 
+        //         SUM(tambahan_shift_malam) as tambahan_shift_malam,
+        //         SUM(jam_kerja) as jam_kerja,  
+        //         SUM(jam_lembur) as jam_lembur, 
+        //         SUM(bonus1x) as bonus1x, 
+        //         SUM(potongan1x) + sum(denda_lupa_absen) + sum(denda_resigned)+ sum(iuran_air) as potongan1x,
+        //         SUM(gaji_pokok/198*jam_kerja) as total_gaji_pokok,
+        //         SUM(gaji_lembur*jam_lembur) as total_lemburan
+        //         ')
+        //         ->where('metode_penggajian', 'Perjam')
+        //         ->whereYear('date', $tahun)
+        //         ->whereMonth('date', $bulan)
+        //         ->groupBy('placement_id')
+        //         ->get()
+        //         ->map(function ($row) use ($bulan) {
+        //             return (object)[
+        //                 'bulan' => $bulan,
+        //                 'placement_id' => $row->placement_id,
+        //                 'total_gaji' => $row->total_gaji,
+        //                 'jumlah_karyawan' => $row->jumlah_karyawan,
+        //                 'tambahan_shift_malam' => $row->tambahan_shift_malam,
+        //                 'jam_kerja' => $row->jam_kerja,
+        //                 'jam_lembur' => $row->jam_lembur,
+        //                 'bonus1x' => $row->bonus1x,
+        //                 'potongan1x' => $row->potongan1x,
+        //                 'total_gaji_pokok' => $row->total_gaji_pokok,
+        //                 'total_lemburan' => $row->total_lemburan,
+        //                 // 'rata_rata_gaji' => $row->total_gaji_pokok / $row->total_gaji,
+        //                 'rata_rata_gaji' => $row->jumlah_karyawan > 0
+        //                     ? $row->total_gaji_pokok / $row->jumlah_karyawan
+        //                     : 0,
+
+        //                 'rata_rata_gaji_perjam' => $row->jam_kerja > 0
+        //                     ? $row->total_gaji_pokok / $row->jam_kerja
+        //                     : 0,
+
+        //                 'rata_rata_lembur_perjam' => $row->jam_lembur > 0
+        //                     ? ($row->total_lemburan ?? 0) / $row->jam_lembur
+        //                     : 0,
+        //             ];
+        //         });
+
+        //     $laporan_bulanan = $laporan_bulanan->merge($laporan);
+        // }
+
         foreach (range(1, now()->month) as $bulan) {
             $laporan = DB::table('payrolls')
-                ->selectRaw('placement_id, SUM(total) as total_gaji, COUNT(DISTINCT id_karyawan) as jumlah_karyawan, 
-                SUM(tambahan_shift_malam) as tambahan_shift_malam,
-                SUM(jam_kerja) as jam_kerja,  
-                SUM(jam_lembur) as jam_lembur, 
-                SUM(bonus1x) as bonus1x, 
-                SUM(potongan1x) + sum(denda_lupa_absen) + sum(denda_resigned)+ sum(iuran_air) as potongan1x,
-                SUM(gaji_pokok/198*jam_kerja) as total_gaji_pokok,
-                SUM(gaji_lembur*jam_lembur) as total_lemburan
-                
+                ->join('placements', 'payrolls.placement_id', '=', 'placements.id')
+                ->selectRaw('placements.placement_name as placement_name, placement_id, 
 
-                ')
+                    SUM(total) as total_gaji, 
+                    COUNT(DISTINCT id_karyawan) as jumlah_karyawan, 
+                    SUM(tambahan_shift_malam) as tambahan_shift_malam,
+                    SUM(jam_kerja) as jam_kerja,  
+                    SUM(jam_lembur) as jam_lembur, 
+                    SUM(bonus1x) as bonus1x, 
+                    SUM(potongan1x) + SUM(denda_lupa_absen) + SUM(denda_resigned) + SUM(iuran_air) as potongan1x,
+                    SUM(gaji_pokok/198*jam_kerja) as total_gaji_pokok,
+                    SUM(gaji_lembur*jam_lembur) as total_lemburan')
                 ->where('metode_penggajian', 'Perjam')
                 ->whereYear('date', $tahun)
                 ->whereMonth('date', $bulan)
-                ->groupBy('placement_id')
+                ->groupBy('placement_id', 'placements.placement_name')
                 ->get()
                 ->map(function ($row) use ($bulan) {
                     return (object)[
                         'bulan' => $bulan,
                         'placement_id' => $row->placement_id,
+                        'placement_name' => $row->placement_name,
                         'total_gaji' => $row->total_gaji,
                         'jumlah_karyawan' => $row->jumlah_karyawan,
                         'tambahan_shift_malam' => $row->tambahan_shift_malam,
@@ -150,15 +199,12 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
                         'potongan1x' => $row->potongan1x,
                         'total_gaji_pokok' => $row->total_gaji_pokok,
                         'total_lemburan' => $row->total_lemburan,
-                        // 'rata_rata_gaji' => $row->total_gaji_pokok / $row->total_gaji,
                         'rata_rata_gaji' => $row->jumlah_karyawan > 0
                             ? $row->total_gaji_pokok / $row->jumlah_karyawan
                             : 0,
-
                         'rata_rata_gaji_perjam' => $row->jam_kerja > 0
                             ? $row->total_gaji_pokok / $row->jam_kerja
                             : 0,
-
                         'rata_rata_lembur_perjam' => $row->jam_lembur > 0
                             ? ($row->total_lemburan ?? 0) / $row->jam_lembur
                             : 0,
@@ -167,6 +213,14 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
 
             $laporan_bulanan = $laporan_bulanan->merge($laporan);
         }
+
+        // Sort final data berdasarkan placement_name
+        // $laporan_bulanan = $laporan_bulanan->sortBy('placement_name')->values();
+
+        $laporan_bulanan = $laporan_bulanan->sortBy([
+            ['bulan', 'desc'],
+            ['placement_name', 'asc'],
+        ])->values();
 
         // return view('livewire.laporan', [
         return view('payroll_excel_detail_report_view', [
