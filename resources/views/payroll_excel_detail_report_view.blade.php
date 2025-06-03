@@ -107,29 +107,29 @@
                                     <td style="border: 1px solid black;text-align: center;">{{ $row->jumlah_karyawan }}
                                     </td>
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->total_gaji) }}
+                                        {{ $row->total_gaji }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->tambahan_shift_malam) }}
+                                        {{ $row->tambahan_shift_malam }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->total_gaji_pokok) }}
+                                        {{ $row->total_gaji_pokok }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->total_gaji) }}
+                                        {{ $row->jam_kerja }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->total_lemburan) }}
+                                        {{ $row->total_lemburan }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->jam_lembur) }}
+                                        {{ $row->jam_lembur }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->bonus1x) }}
+                                        {{ $row->bonus1x }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->potongan1x) }}
+                                        {{ $row->potongan1x }}
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->rata_rata_gaji) }}
+                                        {{ $row->rata_rata_gaji }}
                                     </td>
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->rata_rata_gaji_perjam) }}
+                                        {{ $row->rata_rata_gaji_perjam }}
                                     </td>
                                     <td style="border: 1px solid black;text-align: center;">
-                                        {{ number_format($row->rata_rata_lembur_perjam) }}
+                                        {{ $row->rata_rata_lembur_perjam }}
                                     </td>
                                 </tr>
                             @endforeach
