@@ -49,15 +49,7 @@
         }
     </style>
     <div class="p-2">
-        {{-- <p>selected_company : {{ $selected_company }}</p>
-        <p>selected_placement : {{ $selected_placement }}</p>
-        <p>selected_departemen : {{ $selected_departemen }}</p> --}}
-        {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
-            {{ jumlah_libur_nasional($month, $year) }}</p> --}}
-        {{-- @if (auth()->user()->role == 8) --}}
-        {{-- <p>$data_bulan_ini ; {{ $data_bulan_ini }}</p> --}}
-        {{-- <p>Month : {{ $month }}</p>
-        <p>Year : {{ $year }}</p> --}}
+
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -149,17 +141,6 @@
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
-
-                                {{-- @if ($data_bulan_ini > 0)
-                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif --}}
-                                <option value="5">Mei 2024</option>
-
-                                {{-- jika this month gak ada maka munculkan --}}
-                                {{-- @if (!in_array(now()->month, $select_month))
-                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif --}}
-
                             </select>
 
                         </div>

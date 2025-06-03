@@ -201,7 +201,7 @@
                                 <th wire:click="sortColumnName('date')">{{ __('Hari Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('date')">{{ __('Tambahan Shift Malam') }} <i
+                                <th wire:click="sortColumnName('shift_malam')">{{ __('Tambahan Shift Malam') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('date')">{{ __('Shift') }} <i

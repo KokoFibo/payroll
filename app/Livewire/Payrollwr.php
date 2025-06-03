@@ -214,6 +214,7 @@ class Payrollwr extends Component
         //     ->distinct()
         //     ->pluck('department_id')
         //     ->toArray();
+        $this->bulan(); // Panggil fungsi bulan untuk memperbarui daftar bulan
 
         $data = Payroll::first();
         if (now()->day < 5) {
@@ -423,12 +424,54 @@ class Payrollwr extends Component
 
     public function updatedYear()
     {
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        // $payrollTerakhir = Payroll::latest('date')->first();
+
+        // $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        // ->distinct()
+        // ->pluck('month')
+        // ->toArray();
+        // if(bulan dan tahun sekarang - dengan bulan dan tahun payrollTerakhir == 2) {
+        //     tambahkan bulan dan tahun dari payrollTerakhir +1 bulan kedalam array $this->select_month
+        // }
+
+
+
+        // $this->month = $this->select_month[0];
+
+        $this->bulan(); // Panggil fungsi bulan untuk memperbarui daftar bulan
+    }
+
+    public function bulan()
+    {
+        $this->year ??= now()->year;
+
+        $payrollTerakhir = Payroll::latest('date')->first();
+
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->year)
             ->distinct()
             ->pluck('month')
+            ->filter() // Filter null jika ada
             ->toArray();
 
-        $this->month = $this->select_month[0];
+        // Jika null tetap aman
+        $this->select_month = $this->select_month ?? [];
+
+        if ($payrollTerakhir &&  $this->year == now()->year) {
+
+            $tanggalTerakhir = Carbon::parse($payrollTerakhir->date);
+            $tanggalSekarang = Carbon::now();
+
+            $selisihBulan = $tanggalSekarang->diffInMonths($tanggalTerakhir);
+            if ($selisihBulan == 2) {
+                $bulanSetelah = $tanggalTerakhir->copy()->addMonth();
+                $bulanTambahan = (int) $bulanSetelah->format('m');
+
+                if (!in_array($bulanTambahan, $this->select_month)) {
+                    $this->select_month[] = $bulanTambahan;
+                }
+            }
+        }
     }
 
     public function render()
@@ -441,10 +484,7 @@ class Payrollwr extends Component
             ->pluck('year')
             ->toArray();
         // ooo
-        // $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
-        //     ->distinct()
-        //     ->pluck('month')
-        //     ->toArray();
+
         $months = Payroll::select(DB::raw('MONTH(date) as month'))
             ->whereYear('date', $this->year)
             ->distinct()
@@ -452,17 +492,13 @@ class Payrollwr extends Component
             ->pluck('month')
             ->toArray();
 
-        $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
-            ->whereMonth('date', now()->month)->count();
+        // $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
+        //     ->whereMonth('date', now()->month)->count();
 
-        if ($data_bulan_ini > 0) {
-            $months[] = $this->month;
-        }
-        // if (!in_array($this->month, $months)) {
+        // if ($data_bulan_ini > 0) {
         //     $months[] = $this->month;
         // }
 
-        $this->select_month = $months;
 
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
@@ -576,7 +612,7 @@ class Payrollwr extends Component
             'total',
             'last_build',
             'data_kosong',
-            'data_bulan_ini',
+            // 'data_bulan_ini',
             'companies',
             'departments',
             'placements',
