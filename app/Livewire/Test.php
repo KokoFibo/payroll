@@ -55,8 +55,8 @@ class Test extends Component
   public function render()
   {
 
-    $payrollTerakhir = Payroll::latest('date')->first();
-    dd($payrollTerakhir->date);
+    // $payrollTerakhir = Payroll::latest('date')->first();
+    // dd($payrollTerakhir->date);
 
     return view('livewire.test');
   }
