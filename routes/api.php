@@ -31,3 +31,4 @@ Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_use
 Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
 
 Route::get('os-placement/{month}/{year}/{placement_id}', [LaporanApiController::class, 'osPlacement']);
+Route::get('os-placement-name/{month}/{year}/{placement_name}', [LaporanApiController::class, 'osPlacementName']);

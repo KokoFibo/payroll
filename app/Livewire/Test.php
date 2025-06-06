@@ -55,10 +55,8 @@ class Test extends Component
   public function render()
   {
 
-    // $placements = Placement::orderBy('placement_name', 'ASC')->get();
-    // foreach ($placements as $placement) {
-    //   echo $placement->placement_name . '<br>';
-    // }
+    $payrolls = Payroll::whereMonth('date', 5)->whereYear('date', 2025)->where('placement_id', 102)->count();
+    dd($payrolls);
 
 
     return view('livewire.test');
