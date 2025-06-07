@@ -255,11 +255,13 @@ class Yfpresensiindexwr extends Component
         //ok2
         if ($data != null) {
             foreach ($data as $d) {
+
                 $tambahan_shift_malam = 0;
                 if ($d->no_scan === null) {
                     $tgl = tgl_doang($d->date);
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
+                    // if ($d->date == '2025-05-30') dd($d->user_id, $jam_kerja, $terlambat, $d->date);
 
                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement_id);
                     if (is_sunday($d->date)) {
@@ -332,7 +334,6 @@ class Yfpresensiindexwr extends Component
                     if (is_sunday($d->date) || is_libur_nasional($d->date)) {
                         $table_warning = true;
                     }
-
                     $this->dataArr->push([
                         'tgl' => $tgl,
                         'jam_kerja' => $jam_kerja,
@@ -614,6 +615,7 @@ class Yfpresensiindexwr extends Component
         $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
         $hasil = saveDetail($data->user_id, $data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->late, $data->shift, $data->date, $dataKaryawan->jabatan_id, $data->no_scan, $dataKaryawan->placement_id, $data->overtime_in, $data->overtime_out);
         // dd($hasil['jam_kerja']);
+        // if ($data->user_id == 2152) dd($data->user_id, $hasil['jam_kerja']);
         $data->total_hari_kerja = 0;
         $data->total_jam_kerja = 0;
         $data->total_jam_lembur = 0;
@@ -628,11 +630,20 @@ class Yfpresensiindexwr extends Component
         if (isset($hasil['jam_lembur'])) {
             $data->total_jam_lembur = $hasil['jam_lembur'];
         }
+        // $setengah_hari = (
+        //     ($data->first_in === null && $data->first_out !== null) ||
+        //     ($data->second_in === null && $data->second_out === null)
+        // );
 
-        if ($data->date === '2025-05-30') {
-            $data->late == null;
-            $data->late_history = null;
-        }
+
+
+        // if ($data->date === '2025-05-30' && !$setengah_hari) {
+
+
+        // if ($data->date === '2025-05-30') {
+        //     $data->late == null;
+        //     $data->late_history = null;
+        // }
 
         $data->save();
         $this->btnEdit = true;

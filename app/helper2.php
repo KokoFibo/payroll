@@ -119,6 +119,17 @@ function build_payroll_os($month, $year)
             $get_placement = get_placement($dataId[0]->user_id);
             foreach ($dataId as $d) {
                 if ($d->no_scan === null) {
+                    $setengah_hari = (
+                        ($d->first_in === null && $d->first_out !== null) ||
+                        ($d->second_in === null && $d->second_out === null)
+                    );
+
+                    if ($d->date === '2025-05-30' && !$setengah_hari) {
+                        $d->late = 0;
+                    }
+
+
+
                     $jam_lembur = 0;
                     $tambahan_shift_malam = 0;
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, $get_placement);
