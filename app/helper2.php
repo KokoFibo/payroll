@@ -652,6 +652,7 @@ function build_payroll_os($month, $year)
     }
 
     // $chunks = array_chunk($payrollArr, 100);
+
     // foreach ($chunks as $chunk) {
     //     Payroll::insert($chunk);
     // }
