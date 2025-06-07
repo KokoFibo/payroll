@@ -2414,7 +2414,14 @@ function is_jabatan_khusus($jabatan)
 
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
 {
-    if ($tgl === '2025-05-30') {
+    // bugs
+
+    $setengah_hari = (
+        ($first_in === null && $first_out !== null) ||
+        ($second_in === null && $second_out === null)
+    );
+
+    if ($tgl === '2025-05-30' && !$setengah_hari) {
         return $late = 0;
     }
     try {
@@ -2593,8 +2600,9 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
 
     if ($second_out != null) {
         if ($shift == 'Pagi') {
-            // Shift Pagi
+            // Shift Pagioi
             if (is_saturday($tgl)) {
+
                 if (Carbon::parse($second_out)->betweenIncluded('12:00', $jam_secondOut_pagi_sabtu)) {
                     $t1 = strtotime($strtime_secondOut_pagi_sabtu);
                     $t2 = strtotime($second_out);

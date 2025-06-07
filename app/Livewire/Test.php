@@ -54,11 +54,27 @@ class Test extends Component
 
   public function render()
   {
-
-    // $data = Yfrekappresensi::whereMonth('date', 5)->whereYear('date', 2025)->count();
+    $data = Yfrekappresensi::where('date', '2025-05-30')->where('user_id', 3390)->first();
+    // $data = Yfrekappresensi::where('date', '2025-05-30')->where('no_scan', 'No Scan')->delete();
     // dd($data);
 
+    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
+      ->where('yfrekappresensis.date', '2025-05-30')
+      ->where(function ($query) {
+        $query->where(function ($q) {
+          $q->whereNull('yfrekappresensis.first_in')
+            ->whereNull('yfrekappresensis.first_out');
+        })->orWhere(function ($q) {
+          $q->whereNull('yfrekappresensis.second_in')
+            ->whereNull('yfrekappresensis.second_out');
+        });
+      })
+      ->get();
+
+
     //51857 hari ini
-    return view('livewire.test');
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }

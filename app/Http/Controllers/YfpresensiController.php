@@ -755,7 +755,17 @@ class YfpresensiController extends Controller
                 $total_jam_lembur = $hasil['jam_lembur'];
             }
 
-            if ($kh->date == '2025-05-30') $late = null;
+            // if ($kh->date == '2025-05-30') $late = null;
+
+            $setengah_hari = (
+                ($first_in === null && $first_out !== null) ||
+                ($second_in === null && $second_out === null)
+            );
+
+            if ($kh->date === '2025-05-30' && !$setengah_hari) {
+                $late = 0;
+            }
+
             if ($shift == 'Malam') {
 
                 if (is_saturday($tgl)) {
