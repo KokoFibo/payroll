@@ -610,6 +610,7 @@ class Yfpresensiindexwr extends Component
                 }
             }
         }
+
         $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
         $hasil = saveDetail($data->user_id, $data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->late, $data->shift, $data->date, $dataKaryawan->jabatan_id, $data->no_scan, $dataKaryawan->placement_id, $data->overtime_in, $data->overtime_out);
         // dd($hasil['jam_kerja']);
@@ -632,6 +633,7 @@ class Yfpresensiindexwr extends Component
             $data->late == null;
             $data->late_history = null;
         }
+
         $data->save();
         $this->btnEdit = true;
 
