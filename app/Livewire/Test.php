@@ -55,10 +55,10 @@ class Test extends Component
   public function render()
   {
 
-    $payrolls = Payroll::whereMonth('date', 5)->whereYear('date', 2025)->where('placement_id', 102)->count();
-    dd($payrolls);
+    // $data = Yfrekappresensi::whereMonth('date', 5)->whereYear('date', 2025)->count();
+    // dd($data);
 
-
+    //51857 hari ini
     return view('livewire.test');
   }
 }

@@ -229,7 +229,7 @@ class Yfpresensiindexwr extends Component
     }
 
     //ok1
-    public function showDetail_asli($user_id)
+    public function showDetail($user_id)
     {
         $this->user_id = $user_id;
 
@@ -362,7 +362,7 @@ class Yfpresensiindexwr extends Component
             $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
         }
     }
-    public function showDetail($user_id)
+    public function showDetail_baru($user_id)
     {
         $this->user_id = $user_id;
 
