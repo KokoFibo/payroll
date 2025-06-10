@@ -18,8 +18,11 @@ use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
+use App\Exports\KaryawanTemplateExport;
 use App\Exports\KaryawanByDepartmentExport;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
 
 class Karyawanindexwr extends Component
 {
@@ -303,6 +306,9 @@ class Karyawanindexwr extends Component
     {
         $this->resetPage();
     }
+
+
+
 
     public function excel()
     {
