@@ -58,6 +58,18 @@ class Test extends Component
     // $data = Yfrekappresensi::where('date', '2025-05-30')->where('no_scan', 'No Scan')->delete();
     // dd($data);
 
+    // $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
+    //   // ->where('yfrekappresensis.date', '2025-05-30')
+    //   ->whereMonth('yfrekappresensis.date', 5)
+    //   ->whereYear('yfrekappresensis.date', 2025)
+    //   ->where('karyawans.status_karyawan', 'Blacklist')
+    //   ->where('karyawans.tanggal_blacklist', '<', '2025-05-01') // ini kuncinya
+    //   ->distinct()
+    //   ->pluck('yfrekappresensis.user_id');
+
+    // dd($data);
+
+
     $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
       ->where('yfrekappresensis.date', '2025-05-30')
       ->where(function ($query) {
