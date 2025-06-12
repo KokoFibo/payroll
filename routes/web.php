@@ -261,6 +261,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/bankreport', BankReport::class);
                         Route::get('/multiple-excel-form', [ExcelController::class, 'downloadKaryawanZip']);
                         Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
+                        Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
                         Route::get('/test-view', function () {
                             $karyawans = \App\Models\Karyawan::limit(5)->get();
                             return view('karyawan_excel_form_view', ['karyawans' => $karyawans, 'header_text' => 'ini header text nya']);
