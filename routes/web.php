@@ -98,6 +98,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Http\Controllers\SalaryAdjustController;
 
 // Middleware
 Auth::routes([
@@ -267,6 +268,17 @@ Route::middleware(['auth'])->group(function () {
                             return view('karyawan_excel_form_view', ['karyawans' => $karyawans, 'header_text' => 'ini header text nya']);
                         });
                         Route::get('/test-export', [ExcelController::class, 'testExport']);
+
+                        Route::get('/bulk-upload-salary-adjust', function () {
+                            $lock = Lock::find(1);
+                            $is_uploadable = !$lock->upload;
+                            // dd('$is_uploadable', $is_uploadable);
+                            return view('upload-form-salary-adjust', [
+                                'is_uploadable' => $is_uploadable
+                            ]);
+                        });
+                        Route::post('/yfstore', [SalaryAdjustController::class, 'import']);
+
 
 
 
