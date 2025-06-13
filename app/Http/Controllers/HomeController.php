@@ -183,7 +183,10 @@ class HomeController extends Controller
                     'jumlah_karyawan_Resigned_hari_ini',
                     'jumlah_karyawan_blacklist_hari_ini',
                     'belum_isi_etnis',
-                    'belum_isi_kontak_darurat'
+                    'belum_isi_kontak_darurat',
+                    'jumlah_karyawan_baru_minggu_lalu',
+                    'jumlah_karyawan_resign_minggu_lalu',
+                    'jumlah_karyawan_blacklist_minggu_lalu'
                 ]));
             }
             $user->device = 0;
