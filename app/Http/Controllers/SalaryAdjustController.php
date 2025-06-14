@@ -146,13 +146,14 @@ class SalaryAdjustController extends Controller
             'Perubahan Lemburan',
             'Bonus'
         ];
-        $actualHeader = $rows[4] ?? [];
+        // $actualHeader = $rows[4] ?? [];
 
-        if (array_diff($expectedHeader, $actualHeader)) {
-            return back()->withErrors(['file' => 'Header file tidak sesuai format yang diharapkan.']);
-        }
+        // if (array_diff($expectedHeader, $actualHeader)) {
+        //     return back()->withErrors(['file' => 'Header file tidak sesuai format yang diharapkan.']);
+        // }
 
-        $tanggal = $this->extractTanggal($rows[2][1]);
+        // $tanggal = $this->extractTanggal($rows[2][1]);
+        $tanggal = Carbon::today()->toDateString();
         // dd($rows[2][1], $tanggal);
         $jumlahUpdate = 0;
 
@@ -196,7 +197,7 @@ class SalaryAdjustController extends Controller
                 }
             }
             // Skip jika ID kosong atau tidak ada data gaji/lembur
-            if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null)) {
+            if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null && $bonus_baru === null)) {
                 continue;
             }
 
@@ -227,12 +228,13 @@ class SalaryAdjustController extends Controller
                     $jumlahUpdate++;
                 }
                 // if ($bonus_baru !== null) {
+
                 if ($bonus_baru > 0) {
                     $data = Bonuspotongan::where('user_id', $id_karyawan)
                         ->whereMonth('tanggal', Carbon::parse($tanggal)->format('m'))
                         ->whereYear('tanggal', Carbon::parse($tanggal)->format('Y'))
                         ->first();
-                    // if ($id_karyawan == 2172) dd($data);
+                    // if ($id_karyawan == 10063) dd($data);
                     if (!$data) {
                         // Simpan baru jika belum ada
                         $data = new Bonuspotongan;
@@ -241,14 +243,15 @@ class SalaryAdjustController extends Controller
                         $data->tanggal = Carbon::parse($tanggal)->format('Y-m-d');
                         $data->bonus_lain = $bonus_baru;
                         $data->save();
+                        $jumlahUpdate++;
                     } else {
                         // Update jika sudah ada
-                        $data->bonus_lain = $bonus_baru;
-                        $data->save();
+                        if ($data->bonus_lain != $bonus_baru) {
+                            $data->bonus_lain = $bonus_baru;
+                            $data->save();
+                            $jumlahUpdate++;
+                        }
                     }
-
-                    if (!$updated)
-                        $jumlahUpdate++;
                 }
             }
         }
