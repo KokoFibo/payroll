@@ -279,7 +279,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/test-export', [ExcelController::class, 'testExport']);
 
 
-                        Route::post('/yfstore', [SalaryAdjustController::class, 'import']);
+                        Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
 
 
 
