@@ -13,7 +13,7 @@
             </tr>
 
             <tr>
-                <th style="border: 1px solid black;text-align: center;">Placement</th>
+                <th style="border: 1px solid black;text-align: center;">Directorate</th>
                 <th style="border: 1px solid black;text-align: center;">Company</th>
                 <th style="border: 1px solid black;text-align: center;">No. Staff</th>
                 <th style="border: 1px solid black;text-align: center;">Amount</th>
@@ -71,7 +71,8 @@
                     <table class="min-w-full text-sm text-left border">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th style="border: 1px solid black;text-align: center;font-weight: bold;">Placement</th>
+                                <th style="border: 1px solid black;text-align: center;font-weight: bold;">Directorate
+                                </th>
                                 <th style="border: 1px solid black;text-align: center;font-weight: bold;">Jumlah
                                     Karyawan</th>
                                 <th style="border: 1px solid black;text-align: center;font-weight: bold;">Total Salary
