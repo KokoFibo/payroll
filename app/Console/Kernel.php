@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $result  = build_payroll(now()->month, now()->year);
         })->dailyAt('1:00');
+        // $schedule->command('survey:kirim')->dailyAt('08:00');
     }
 
     /**
