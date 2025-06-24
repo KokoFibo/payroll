@@ -203,7 +203,7 @@ class ExcelController extends Controller
 
         $grouped = $filtered->groupBy('placement_id');
 
-        $zipFilename = 'exports/Template Form Salary Adjust by Placement only For OS.zip';
+        $zipFilename = 'exports/Template Form Salary Adjust by Directorate only For OS.zip';
         $zipPath = storage_path("app/{$zipFilename}");
 
         $zip = new ZipArchive;
@@ -221,13 +221,13 @@ class ExcelController extends Controller
 
             \Log::info("📦 Proses: placement_id = $placementId, count = " . $karyawanGroup->count());
 
-            $relativePath = "exports/placement_{$nama_placement}.xlsx";
-            $header_text = "Data Karyawan OS Placement {$nama_placement} - " . now()->format('d-m-Y H:i:s');
+            $relativePath = "exports/Directorate_{$nama_placement}.xlsx";
+            $header_text = "Data Karyawan OS Directorate {$nama_placement} - " . now()->format('d-m-Y H:i:s');
             $stored = Excel::store(new KaryawanTemplateExport($karyawanGroup, $header_text), $relativePath, 'local');
             $fullPath = storage_path("app/{$relativePath}");
 
             if ($stored && file_exists($fullPath)) {
-                $zip->addFile($fullPath, "placement_{$nama_placement}/placement_{$nama_placement}_OS.xlsx");
+                $zip->addFile($fullPath, "Directorate_{$nama_placement}/Directorate_{$nama_placement}_OS.xlsx");
                 $storedFiles[] = $relativePath;
                 \Log::info("✅ Berhasil simpan Excel di: {$fullPath}");
             } else {

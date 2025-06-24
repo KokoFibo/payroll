@@ -69,7 +69,7 @@
                 <th style="text-align: center;">Nama Karyawan</th>
                 <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Company</th>
-                <th style="text-align: center;">Placement</th>
+                <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Department</th>
                 <th style="text-align: center;">Bank</th>
                 <th style="text-align: center;">No. Rekening</th>
@@ -95,8 +95,6 @@
                     <td style="text-align: center;">{{ $d->nama_bank }}</td>
                     <td style="text-align: center;">{{ $d->nomor_rekening }}</td>
                     <td style="text-align: center;">{{ $d->total }}</td>
-
-
                 </tr>
             @endforeach
             <tr>

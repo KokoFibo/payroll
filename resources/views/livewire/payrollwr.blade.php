@@ -214,7 +214,7 @@
                     <div>
                         <select wire:model.live="selected_placement" class="form-select"
                             aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Placement') }}</option>
+                            <option value="0"selected>{{ __('All Directorates') }}</option>
                             @foreach ($placements as $p)
                                 <option value="{{ $p->id }}">{{ $p->placement_name }}
                             @endforeach
@@ -306,7 +306,7 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
+                                <th wire:click="sortColumnName('placement')">{{ __('Directorate') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('company')">{{ __('Company') }} <i

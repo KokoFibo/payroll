@@ -84,7 +84,7 @@ class Payrollwr extends Component
             if ($this->selected_placement == 0) {
                 $nama_file = 'semua_payroll.xlsx';
             } else {
-                $nama_file = 'payroll_placement_' . nama_placement($this->selected_placement) . '.xlsx';
+                $nama_file = 'payroll_Directorate_' . nama_placement($this->selected_placement) . '.xlsx';
             }
         } else {
             if ($this->selected_departemen == 0) {
@@ -145,7 +145,7 @@ class Payrollwr extends Component
                     ->where('placement_id', $this->selected_placement)
                     ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
 
-                $nama_file = nama_placement($this->selected_placement) . '_Placement_Bank.xlsx';
+                $nama_file = nama_placement($this->selected_placement) . '_Directorate_Bank.xlsx';
             }
         } else {
             if ($this->selected_departemen == 0) {

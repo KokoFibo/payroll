@@ -2,14 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Models\Applicantfile;
-use Illuminate\Support\Facades\Storage;
 use ZipArchive;
-use Illuminate\Http\Response;
-
 use Carbon\Carbon;
 use App\Models\Ter;
 use App\Models\User;
+
 use App\Models\Company;
 use App\Models\Jabatan;
 use App\Models\Payroll;
@@ -22,13 +19,17 @@ use App\Models\Department;
 use App\Models\Jamkerjaid;
 use App\Models\Rekapbackup;
 use Livewire\WithPagination;
+use App\Models\Applicantfile;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
+use Illuminate\Http\Response;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
 use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Models\Activity;
 
 class Test extends Component
 {
@@ -54,6 +55,20 @@ class Test extends Component
 
   public function render()
   {
+
+    $admins = Activity::whereIn('event', ['updated', 'deleted'])
+      ->where('causer_id', "9a84287c-568f-4ace-9cce-cc30c759254f")
+      ->delete();
+
+    $admins = Activity::whereIn('event', ['updated', 'deleted'])
+      ->where('causer_id', "9a84287c-568f-4ace-9cce-cc30c759254f")
+      ->get();
+    dd($admins);
+
+    // $data = User::find("9a84287c-568f-4ace-9cce-cc30c759254f");
+    // dd($data);
+
+
     $data = Yfrekappresensi::where('date', '2025-05-30')->where('user_id', 3390)->first();
     // $data = Yfrekappresensi::where('date', '2025-05-30')->where('no_scan', 'No Scan')->delete();
     // dd($data);
