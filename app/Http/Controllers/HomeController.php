@@ -133,6 +133,8 @@ class HomeController extends Controller
         $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
         $karyawan_aktif_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
 
+
+
         if ($desktop) {
             $user->device = 1;
             $user->save();
