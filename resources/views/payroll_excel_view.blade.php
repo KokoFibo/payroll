@@ -84,6 +84,7 @@
                 <th style="text-align: center;">Gaji Lembur</th>
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
+                <th style="text-align: center;">Tunjangan Makan</th>
                 <th style="text-align: center;">Potongan 1X</th>
                 <th style="text-align: center;">Total NoScan</th>
                 <th style="text-align: center;">Denda Lupa Absen</th>
@@ -222,6 +223,7 @@
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
+                    <td style="text-align: right">1300000</td>
                     <td style="text-align: right"> {{ $d->potongan1x }}</td>
                     <td> {{ $d->total_noscan }}</td>
                     <td style="text-align: right"> {{ $d->denda_lupa_absen }}</td>

@@ -101,6 +101,7 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
             'W' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'X' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'Y' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'Z' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
 
             'AA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
@@ -114,8 +115,11 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
             'AJ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AR' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
 
         ];
     }
