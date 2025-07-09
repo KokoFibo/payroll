@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('golongan_darah');
             $table->string('agama');
             $table->string('etnis');
+            $table->string('ptkp')->nullable();
             $table->string('nama_contact_darurat');
             $table->string('nama_contact_darurat_2');
             $table->string('contact_darurat_1');
