@@ -54,7 +54,6 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
     public $payroll_data, $total_data;
-
     public   $companies, $departments, $placements;
 
     public function excelDetailReport()
