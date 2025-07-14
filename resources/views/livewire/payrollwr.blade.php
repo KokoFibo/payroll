@@ -124,6 +124,13 @@
         @if (!check_rebuilding())
 
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
+                {{-- <p>directorate: {{ $selected_placement }}</p>
+                <p>company: {{ $selected_company }}</p>
+                <p>department: {{ $selected_departemen }}</p>
+                <p>search: {{ $search }}</p>
+                <p>month {{ $month }}</p>
+                <p>month {{ $year }}</p>
+                <p>search: {{ $search }}</p> --}}
                 <div class="d-flex gap-2 flex-lg-row flex-column">
                     <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
                         {{ number_format($total) }}</button>

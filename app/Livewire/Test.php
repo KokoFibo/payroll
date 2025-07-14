@@ -55,8 +55,9 @@ class Test extends Component
 
   public function render()
   {
+    $nama = "Perincian Payroll untuk Directorate: 1st Factory, Company: GAMA,";
 
-
+    dd(monthName(6));
     // $data = User::find("9a84287c-568f-4ace-9cce-cc30c759254f");
     // dd($data);
 
