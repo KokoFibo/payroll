@@ -256,6 +256,8 @@ Route::middleware(['auth'])->group(function () {
                     // Route::get('/movedata', Movedata::class);
                     Route::get('hitungthr', Hitungthr::class);
                     Route::get('/data-log', DataLog::class)->name('datalog');
+                    Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
+
 
 
 
@@ -279,7 +281,6 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/test-export', [ExcelController::class, 'testExport']);
 
 
-                        Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
 
 
 
