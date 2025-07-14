@@ -22,6 +22,9 @@ use App\Exports\BankReportExcel;
 use App\Exports\PlacementExport;
 use App\Exports\DepartmentExport;
 use App\Exports\ExcelDetailReport;
+use App\Exports\PayrollExportFLexible;
+use Aws\History;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -50,6 +53,8 @@ class Payrollwr extends Component
     public $lock_slip_gaji;
     public $lock_data;
     public $select_month, $select_year;
+    public $payroll_data, $total_data;
+    public   $companies, $departments, $placements;
 
     public function excelDetailReport()
     {
@@ -74,36 +79,58 @@ class Payrollwr extends Component
     public function export()
     {
         $nama_file = '';
+        $nama_company = '';
+        $nama_directorate = '';
+        $nama_departement = '';
         if ($this->selected_company != 0) {
             if ($this->selected_company == 0) {
-                $nama_file = 'semua_payroll.xlsx';
+                $nama_company = 'all-companies-';
             } else {
-                $nama_file = 'payroll_company_' . nama_company($this->selected_company) . '.xlsx';
+                $nama_company = 'company-' . nama_company($this->selected_company) . '-';
             }
-        } elseif ($this->selected_placement != 0) {
+        }
+        if ($this->selected_placement != 0) {
             if ($this->selected_placement == 0) {
-                $nama_file = 'semua_payroll.xlsx';
+                $nama_directorate = 'all-directorates-';
             } else {
-                $nama_file = 'payroll_Directorate_' . nama_placement($this->selected_placement) . '.xlsx';
+                $nama_directorate = 'directorate-' . nama_placement($this->selected_placement) . '-';
             }
-        } else {
+        }
+        if ($this->selected_departemen != 0) {
             if ($this->selected_departemen == 0) {
-                $nama_file = 'semua_payroll.xlsx';
+                $nama_departement = 'all-department-';
             } else {
-                $nama_file = 'payroll_department_' . sambungKata($this->selected_departemen) . '.xlsx';
+                $nama_departement = 'department-' . nama_department($this->selected_departemen) . '-';
             }
         }
 
-        $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+        if ($this->selected_company == 0 && $this->selected_placement == 0 && $this->selected_departemen == 0) {
 
-
-        if ($this->selected_company != 0) {
-            return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
-        } else if ($this->selected_placement != 0) {
-            return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
+            $nama_file = 'Payroll-all-' . monthName($this->month) . '-' . $this->year . '.xlsx';
         } else {
-            return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+
+            $nama_file = 'Payroll-' . $nama_directorate . $nama_company . $nama_departement . monthName($this->month) . '-' . $this->year . '.xlsx';
         }
+
+        if ($this->search != null) {
+            $nama_file = 'Payroll-' . $nama_directorate . $nama_company . $nama_departement . 'search-' . $this->search . '-' . monthName($this->month) . '-' . $this->year . '.xlsx';
+        }
+
+        // $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
+        // dd($nama_file);
+
+
+        return Excel::download(new PayrollExportFLexible($this->columnName, $this->direction, $this->search,  $this->selected_company, $this->selected_placement, $this->selected_departemen, $this->status, $this->month, $this->year), $nama_file,);
+
+        // return Excel::download(new PayrollExport($this->selected_placement, $this->selected_company, $this->selected_departemen,  $this->status, $this->month, $this->year), $nama_file);
+
+        // if ($this->selected_company != 0) {
+        //     return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+        // } else if ($this->selected_placement != 0) {
+        //     return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
+        // } else {
+        //     return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+        // }
     }
 
 
@@ -175,9 +202,8 @@ class Payrollwr extends Component
 
         // return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
 
-        return Excel::download(new BankReportExcel($this->status, $this->month, $this->year, $this->selected_company, $this->selected_placement, $this->selected_departemen), $nama_file,);
 
-        // return Excel::download(new BankReportExcel($payroll), $nama_file, $this->selected_company, $this->selected_placement, $this->selected_departemen);
+        return Excel::download(new BankReportExcel($payroll), $nama_file, $this->selected_company, $this->selected_placement, $this->selected_departemen);
     }
 
     public function showDetail($id_karyawan)
@@ -210,6 +236,10 @@ class Payrollwr extends Component
 
     public function mount()
     {
+
+        $this->placements = Placement::orderBy('placement_name', 'ASC')->get();
+        $this->companies = Company::orderBy('company_name', 'ASC')->get();
+        $this->departments = Department::orderBy('nama_department', 'ASC')->get();
         // $this->departments = Karyawan::select('department_id')
         //     ->distinct()
         //     ->pluck('department_id')
@@ -408,19 +438,50 @@ class Payrollwr extends Component
 
     public function updatedSelectedCompany()
     {
-        $this->selected_placement = 0;
-        $this->selected_departemen = 0;
+        $department_ids = Payroll::where('company_id', $this->selected_company)
+            ->whereMonth('date', $this->month)
+            ->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('department_id');
+
+        $this->departments = Department::whereIn('id', $department_ids)
+            ->orderBy('nama_department', 'ASC')
+            ->get();
     }
     public function updatedSelectedPlacement()
     {
-        $this->selected_company = 0;
-        $this->selected_departemen = 0;
+        $this->placements = Placement::orderBy('placement_name', 'ASC')->get();
+
+
+        $company_ids = Payroll::where('placement_id', $this->selected_placement)
+            ->whereMonth('date', $this->month)
+            ->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('company_id');
+
+        $this->companies = Company::whereIn('id', $company_ids)
+            ->orderBy('company_name', 'ASC')
+            ->get();
+
+        $department_ids = Payroll::where('placement_id', $this->selected_placement)
+            ->whereMonth('date', $this->month)
+            ->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('department_id');
+
+        $this->departments = Department::whereIn('id', $department_ids)
+            ->orderBy('nama_department', 'ASC')
+            ->get();
+
+
+
+        // $this->departments = Department::orderBy('nama_department', 'ASC')->get();
     }
-    public function updatedSelectedDepartemen()
-    {
-        $this->selected_company = 0;
-        $this->selected_placement = 0;
-    }
+    // public function updatedSelectedDepartemen()
+    // {
+    //     $this->selected_company = 0;
+    //     $this->selected_placement = 0;
+    // }
 
     public function updatedYear()
     {
@@ -474,6 +535,16 @@ class Payrollwr extends Component
         }
     }
 
+    private function applyCommonFilters($query)
+    {
+        return $query
+            ->when($this->selected_company != 0, fn($q) => $q->where('company_id', $this->selected_company))
+            ->when($this->selected_placement != 0, fn($q) => $q->where('placement_id', $this->selected_placement))
+            ->when($this->selected_departemen != 0, fn($q) => $q->where('department_id', $this->selected_departemen))
+            ->whereMonth('date', $this->month)
+            ->whereYear('date', $this->year);
+    }
+
     public function render()
     {
 
@@ -508,85 +579,131 @@ class Payrollwr extends Component
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
-        if ($this->selected_placement == 0 && $this->selected_departemen == 0) {
-            if ($this->selected_company == 0) {
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
+        $total = $this->applyCommonFilters(
+            Payroll::whereIn('status_karyawan', $statuses)
+        )->sum('total');
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            } else {
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->where('company_id', $this->selected_company)
-                    ->sum('total');
+        $payroll = $this->applyCommonFilters(
+            $this->getPayrollQuery($statuses, $this->search)
+        )->orderBy($this->columnName, $this->direction)
+            ->paginate($this->perpage);
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', $this->selected_company)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            }
-        } elseif ($this->selected_company == 0 && $this->selected_departemen == 0) {
-            if ($this->selected_placement == 0) {
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
+        // $this->payroll_data = $payroll;
+        // $this->total_data = $total;
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            } else {
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->where('placement_id', $this->selected_placement)
-                    ->sum('total');
+        // $total = Payroll::whereIn('status_karyawan', $statuses)
+        //     ->when($this->selected_company != 0, fn($q) => $q->where('company_id', $this->selected_company))
+        //     ->when($this->selected_placement != 0, fn($q) => $q->where('placement_id', $this->selected_placement))
+        //     ->when($this->selected_departemen != 0, fn($q) => $q->where('department_id', $this->selected_departemen))
+        //     ->whereMonth('date', $this->month)
+        //     ->whereYear('date', $this->year)
+        //     ->sum('total');
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search, $this->selected_placement, '', '')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            }
-        } else {
-            if ($this->selected_departemen == 0) {
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
+        // $payroll = $this->getPayrollQuery($statuses, $this->search)
+        //     ->when($this->selected_company != 0, fn($q) => $q->where('company_id', $this->selected_company))
+        //     ->when($this->selected_placement != 0, fn($q) => $q->where('placement_id', $this->selected_placement))
+        //     ->when($this->selected_departemen != 0, fn($q) => $q->where('department_id', $this->selected_departemen))
+        //     ->whereMonth('date', $this->month)
+        //     ->whereYear('date', $this->year)
+        //     ->orderBy($this->columnName, $this->direction)
+        //     ->paginate($this->perpage);
 
-                $payroll = $this->getPayrollQuery($statuses, $this->search)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            } else {
+        // $total = Payroll::whereIn('status_karyawan', $statuses)
+        //     ->where('company_id', $this->selected_company)
+        //     ->where('placement_id', $this->selected_placement)
+        //     ->where('department_id', $this->selected_departemen)
+        //     ->whereMonth('date', $this->month)
+        //     ->whereYear('date', $this->year)
+        //     ->sum('total');
+
+        // $payroll = $this->getPayrollQuery($statuses, $this->search)
+        //     ->where('company_id', $this->selected_company)
+        //     ->where('placement_id', $this->selected_placement)
+        //     ->where('department_id', $this->selected_departemen)
+        //     ->whereMonth('date', $this->month)
+        //     ->whereYear('date', $this->year)
+        //     ->orderBy($this->columnName, $this->direction)
+        //     ->paginate($this->perpage);
+
+        // if ($this->selected_placement == 0 && $this->selected_departemen == 0) {
+        //     if ($this->selected_company == 0) {
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->sum('total');
+
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     } else {
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->where('company_id', $this->selected_company)
+        //             ->sum('total');
+
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search, '', $this->selected_company)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     }
+        // } elseif ($this->selected_company == 0 && $this->selected_departemen == 0) {
+        //     if ($this->selected_placement == 0) {
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->sum('total');
+
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     } else {
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->where('placement_id', $this->selected_placement)
+        //             ->sum('total');
+
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search, $this->selected_placement, '', '')
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     }
+        // } else {
+        //     if ($this->selected_departemen == 0) {
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->sum('total');
+
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     } else {
 
 
-                $total = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('department_id', $this->selected_departemen)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->sum('total');
-                $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', $this->selected_departemen)
+        //         $total = Payroll::whereIn('status_karyawan', $statuses)
+        //             ->where('department_id', $this->selected_departemen)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->sum('total');
+        //         $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', $this->selected_departemen)
 
-                    ->where('department_id', $this->selected_departemen)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy($this->columnName, $this->direction)
-                    ->paginate($this->perpage);
-            }
-        }
+        //             ->where('department_id', $this->selected_departemen)
+        //             ->whereMonth('date', $this->month)
+        //             ->whereYear('date', $this->year)
+        //             ->orderBy($this->columnName, $this->direction)
+        //             ->paginate($this->perpage);
+        //     }
+        // }
 
         $tgl = Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)
@@ -602,20 +719,33 @@ class Payrollwr extends Component
 
         $this->cx++;
 
-        $companies = Company::orderBy('company_name', 'ASC')->get();
-        $placements = Placement::orderBy('placement_name', 'ASC')->get();
-        $departments = Department::orderBy('nama_department', 'ASC')->get();
+
         // dd($departments->all());
 
-        return view('livewire.payrollwr', compact([
-            'payroll',
-            'total',
-            'last_build',
-            'data_kosong',
-            // 'data_bulan_ini',
-            'companies',
-            'departments',
-            'placements',
-        ]));
+
+        return view('livewire.payrollwr', [
+            'payroll' => $payroll,
+            'total' => $total,
+            'last_build' => $last_build,
+            'data_kosong' => $data_kosong,
+            // 'data_bulan_ini' => $data_bulan_ini,
+            // 'companies' => $this->companies,
+            // 'departments' => $this->departments,
+            // 'placements' => $this->placements,
+        ]);
+
+
+        // return view('livewire.payrollwr', compact([
+        //     'payroll',
+        //     'total',
+        //     'last_build',
+        //     'data_kosong',
+        //     // 'data_bulan_ini',
+        //     'companies',
+        //     'departments',
+        //     'placements',
+        // ]));
+
+
     }
 }

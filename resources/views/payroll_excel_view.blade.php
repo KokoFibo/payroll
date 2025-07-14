@@ -16,10 +16,50 @@
     <table class="table">
         <thead>
             <tr>
-                <th colspan="5" style="font-size:20px;  text-align:center">
+                <th colspan="10" style="font-size:20px; text-align: center;">
                     <h3>{{ $header_text }}</h3>
                 </th>
             </tr>
+            @if ($search != null)
+                <tr>
+                    <th>
+                        <h3>Search by : </h3>
+                    </th>
+                    <th>
+                        {{ $search }}
+                    </th>
+                </tr>
+            @endif
+            @if ($nama_directorate != null)
+                <tr>
+                    <th>
+                        <h3>Directorate :</h3>
+                    </th>
+                    <th>
+                        <h3> {{ $nama_directorate }}</h3>
+                    </th>
+                </tr>
+            @endif
+            @if ($nama_company != null)
+                <tr>
+                    <th>
+                        <h3>Company :</h3>
+                    </th>
+                    <th>
+                        <h3>{{ $nama_company }}</h3>
+                    </th>
+                </tr>
+            @endif
+            @if ($nama_departement != null)
+                <tr>
+                    <th>
+                        <h3>Department :</h3>
+                    </th>
+                    <th>
+                        <h3>{{ $nama_departement }}</h3>
+                    </th>
+                </tr>
+            @endif
             {{-- TR baris atas utk colspan --}}
             <tr>
                 <th></th>
