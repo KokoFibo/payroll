@@ -630,6 +630,30 @@ class Yfpresensiindexwr extends Component
         if (isset($hasil['jam_lembur'])) {
             $data->total_jam_lembur = $hasil['jam_lembur'];
         }
+
+        // hitung tambahan shift malam
+
+        if ($data->shift == 'Malam') {
+            if (is_saturday($data->date)) {
+                if ($data->total_jam_kerja >= 6) {
+                    // $jam_lembur = $jam_lembur + 1;
+                    $data->shift_malam = 1;
+                }
+            } else if (is_sunday($data->date)) {
+                if ($data->total_jam_kerja >= 16) {
+                    // $jam_lembur = $jam_lembur + 2;
+                    $data->shift_malam = 1;
+                }
+            } else {
+                if ($data->total_jam_kerja >= 8) {
+                    // $jam_lembur = $jam_lembur + 1;
+                    $data->shift_malam = 1;
+                }
+            }
+        } else {
+            $data->shift_malam = 0;
+        }
+
         // $setengah_hari = (
         //     ($data->first_in === null && $data->first_out !== null) ||
         //     ($data->second_in === null && $data->second_out === null)
