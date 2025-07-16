@@ -648,12 +648,16 @@ class Yfpresensiindexwr extends Component
                 if ($data->total_jam_kerja >= 8) {
                     // $jam_lembur = $jam_lembur + 1;
                     $data->shift_malam = 1;
+                } else {
+                    $data->shift_malam = 0;
                 }
             }
         } else {
             $data->shift_malam = 0;
         }
-
+        // if ($data->date == '2025-07-11' && $data->user_id == 4125) {
+        //     dd($data->date, $data->user_id, $data->total_jam_kerja, $data->shift_malam);
+        // }
         // $setengah_hari = (
         //     ($data->first_in === null && $data->first_out !== null) ||
         //     ($data->second_in === null && $data->second_out === null)
