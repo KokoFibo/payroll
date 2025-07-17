@@ -86,13 +86,14 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
                 }
             }
         }
+
         // 22 driver
         if (($jam_lembur >= 9) && (is_sunday($date) == false) && ($jabatan_id != 22)) {
             $jam_lembur = 0;
         }
         // yig = 12, ysm = 13
         // if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
-        if ($jabatan_id == 17) {
+        if ($jabatan_id == 17  && $shift == 'Pagi') {
             if (is_friday($date)) {
                 $jam_kerja = 7.5;
             } elseif (is_saturday($date)) {
@@ -104,9 +105,14 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         if ($jabatan_id == 17 && is_sunday($date)) {
             $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
         }
-        if ($jabatan_id == 17 && is_saturday($date)) {
-            // $jam_lembur = 0;
+        if ($jabatan_id == 17 && is_friday($date) && $shift == 'Malam') {
+            if ($jam_kerja >= 8) {
+                $jam_kerja = 8;
+                $tambahan_shift_malam = 1;
+            }
         }
+
+
         // 23 translator
         if ($jabatan_id != 23) {
             if (
