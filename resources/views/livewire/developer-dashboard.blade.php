@@ -8,6 +8,8 @@
         <a href="/usernotfound"><button class="btn btn-primary col-12">User Not Found</button></a>
         <a href="/rubahid"><button class="btn btn-primary">Rubah ID</button></a>
         <a href="/createuser"><button class="btn btn-primary">Create User Untuk Role</button></a>
+        <a href="/jobgrade"><button class="btn btn-primary">Job Grade</button></a>
+
 
 
 
