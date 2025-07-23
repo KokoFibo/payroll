@@ -655,6 +655,18 @@ class Yfpresensiindexwr extends Component
         } else {
             $data->shift_malam = 0;
         }
+
+
+        // khusus untuk security kode jabatan 17
+        if ($dataKaryawan->jabatan_id == 17 && $data->shift == 'Malam') {
+            if (is_sunday($data->date) || is_libur_nasional($data->date)) {
+                $data->total_jam_kerja = min($data->total_jam_kerja, 16);
+            } elseif (is_saturday($data->date)) {
+                $data->total_jam_kerja = min($data->total_jam_kerja, 6);
+            } else {
+                $data->total_jam_kerja = min($data->total_jam_kerja, 8);
+            }
+        }
         // if ($data->date == '2025-07-11' && $data->user_id == 4125) {
         //     dd($data->date, $data->user_id, $data->total_jam_kerja, $data->shift_malam);
         // }

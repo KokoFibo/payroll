@@ -155,9 +155,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/userregulation', UserRegulation::class);
         Route::get('/timeoff', Timeoffwr::class);
 
-
-
-
         // Junior Admin
         Route::middleware(['JuniorAdmin'])->group(function () {
             Route::get('/dataapplicant', DataApplicant::class);

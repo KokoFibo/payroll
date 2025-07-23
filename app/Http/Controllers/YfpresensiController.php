@@ -788,6 +788,19 @@ class YfpresensiController extends Controller
                 $tambahan_shift_malam = 0;
             }
 
+            // khusus untuk security kode jabatan 17
+            if ($dataKaryawan->jabatan_id == 17 && $shift == 'Malam') {
+                if (is_sunday($tgl) || is_libur_nasional($tgl)) {
+                    $total_jam_kerja = min($total_jam_kerja, 16);
+                } elseif (is_saturday($tgl)) {
+                    $total_jam_kerja = min($total_jam_kerja, 6);
+                } else {
+                    $total_jam_kerja = min($total_jam_kerja, 8);
+                }
+            }
+
+
+
             Yfrekappresensi::create([
                 'shift_malam' => $tambahan_shift_malam ?? 0,
                 'user_id' => $user_id,
