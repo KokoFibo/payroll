@@ -54,7 +54,7 @@ class KaryawanTemplateExport implements FromView,  ShouldAutoSize, WithColumnFor
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            // 'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
