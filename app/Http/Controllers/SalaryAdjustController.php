@@ -179,6 +179,7 @@ class SalaryAdjustController extends Controller
                 }
             }
 
+
             // Validasi LEMBUR BARU
             if ($lembur_raw !== null && $lembur_raw !== '') {
                 if (preg_match('/^[\d,\.]+$/', $lembur_raw)) {
@@ -209,9 +210,11 @@ class SalaryAdjustController extends Controller
             if ($karyawan) {
                 $updated = false;
 
+
                 // Update gaji_pokok jika berbeda atau meskipun 0
                 if ($gaji_sesudah !== null && $karyawan->gaji_pokok != $gaji_sesudah) {
                     $karyawan->gaji_pokok = $gaji_sesudah;
+
                     $updated = true;
                 }
 
