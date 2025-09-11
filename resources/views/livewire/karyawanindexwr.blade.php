@@ -260,10 +260,7 @@
                                                 Iuran Locker</button></a>
                                     </th>
                                 @endif
-                                {{-- <th style="width: 150px; border-style: none;">
-                                    <a href="/infokaryawan">
-                                        <button class="btn btn-info">Informasi</button> </a>
-                                </th> --}}
+
 
 
                             </tr>
