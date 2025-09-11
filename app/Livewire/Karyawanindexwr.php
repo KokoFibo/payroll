@@ -63,7 +63,7 @@ class Karyawanindexwr extends Component
     {
         if ($id) {
 
-            $respStore = Http::get('https://salary.accel365.id/api/store/' . $id);
+            $respStore = Http::get('https://salary.yifang.co.id/api/store/' . $id);
             if ($respStore->successful()) {
                 $this->dispatch(
                     'message',
