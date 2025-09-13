@@ -219,6 +219,8 @@ class SalaryAdjustController extends Controller
 
             if ($karyawan) {
                 $updated = false;
+                $updateJob = false;
+
 
 
                 // Update gaji_pokok jika berbeda atau meskipun 0
@@ -238,12 +240,12 @@ class SalaryAdjustController extends Controller
                     $jobGrade_sesudah = $jobgrades[$jobGrade_raw];
                     $karyawan->level_jabatan = $jobGrade_sesudah;
 
-                    $updated = true;
+                    $updateJob = true;
                 } else {
                     // Kalau tidak ditemukan, kasih default value
                     $jobGrade_sesudah  = null;
                     $karyawan->level_jabatan = $jobGrade_sesudah;
-                    $updated = true;
+                    $updateJob = true;
                 }
 
                 if ($updated) {
@@ -252,6 +254,12 @@ class SalaryAdjustController extends Controller
                     $karyawan->save();
                     $jumlahUpdate++;
                 }
+                if ($updateJob) {
+                    $karyawan->save();
+                }
+
+
+
                 // if ($bonus_baru !== null) {
 
                 if ($bonus_baru > 0) {
