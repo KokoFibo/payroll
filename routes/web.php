@@ -43,6 +43,7 @@ use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
 use App\Livewire\Harikhususwr;
 use App\Livewire\Infokaryawan;
+use App\Livewire\Switchdatewr;
 use App\Livewire\UserNotFound;
 use Google\Service\Forms\Info;
 use App\Livewire\AbsensiKosong;
@@ -340,6 +341,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/laporan', Laporan::class);
                             Route::get('/harikhusus', Harikhususwr::class);
                             Route::get('/jobgrade', Jobgradewr::class);
+                            Route::get('swichdate', Switchdatewr::class);
 
 
 
