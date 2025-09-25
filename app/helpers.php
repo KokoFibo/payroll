@@ -1949,11 +1949,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         // if ($tgl == '2025-09-05') {
                         if ($tgl == $tgl_khusus) {
                             // rubah disini jika ada perubahan jam lembur
-                            // if ($t2 < strtotime('16:00:00')) {
-                            // return $lembur = 0;
-                            // }
-                            // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
-                            // if ($t2 < strtotime('15:30:00')) {
+                            // ini perhitungan utk hari 08:00 - 15:30
+                            // di hitung hari 6 jam, untuk lembur mulai 15:30
                             if ($t2 < strtotime('16:00:00')) {
                                 return $lembur = 0;
                             }
@@ -2428,14 +2425,15 @@ function is_jabatan_khusus($jabatan)
 function late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $id)
 {
     // bugs
-
+    $hari_khusus = cek_hari_khusus($tgl);
     $setengah_hari = (
         ($first_in === null && $first_out !== null) ||
         ($second_in === null && $second_out === null)
     );
-
-    if ($tgl === '2025-09-05' && !$setengah_hari) {
-        return $late = 0;
+    if ($hari_khusus) {
+        if ($tgl === $hari_khusus->date && !$setengah_hari) {
+            return $late = 0;
+        }
     }
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
