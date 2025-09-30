@@ -55,8 +55,9 @@ class Test extends Component
 
   public function render()
   {
-    $karyawans = Karyawan::where('level_jabatan', '!=', "")->first();
-    dd($karyawans);
+    dd('aman');
+    $data = Yfrekappresensi::whereMonth('date', 9)->where('no_scan', '!=', null)->get();
+    dd($data);
     // $data = User::find("9a84287c-568f-4ace-9cce-cc30c759254f");
     // dd($data);
 
