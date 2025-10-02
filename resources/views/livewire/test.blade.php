@@ -1,41 +1,39 @@
 <div>
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>First in</th>
-                <th>First out</th>
-                <th>Second in</th>
-                <th>Second out</th>
-                <th>total_jam_kerja</th>
-                <th>total_jam_lembur</th>
-                <th>gaji</th>
-                <th>late</th>
+                <th>Name</th>
+                <th>Company ID</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $total = 0;
-            @endphp
-            @foreach ($data as $key => $d)
+            @foreach ($data as $item)
                 <tr>
-                    <td>{{ $d->user_id }}</td>
-                    <td>{{ $d->first_in }}</td>
-                    <td>{{ $d->first_out }}</td>
-                    <td>{{ $d->second_in }}</td>
-                    <td>{{ $d->second_out }}</td>
-                    <td>{{ $d->total_jam_kerja }}</td>
-                    <td>{{ $d->total_jam_lembur }}</td>
-                    <td>{{ number_format(($d->gaji_pokok / 198) * 2) }}</td>
-                    <td>{{ $d->late }}</td>
+                    <td>{{ $item->id_karyawan }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td>{{ nama_company($item->company_id) }}</td>
                 </tr>
-                @php
-                    $total = $total + ($d->gaji_pokok / 198) * 2;
-                @endphp
             @endforeach
-            <tr>
-                <td>Total Selisih{{ number_format($total) }} dari 5.480.135.178</td>
-            </tr>
+
         </tbody>
     </table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID User</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($presensis as $item)
+                <tr>
+                    <td>{{ $item->user_id }}</td>
+
+                </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+    <button class="btn btn-primary" wire:click="deleteSTI">Delete all STI</button>
 </div>
