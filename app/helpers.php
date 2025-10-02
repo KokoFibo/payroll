@@ -1134,8 +1134,7 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
     $is_karyawan_lama = false;
 
     $beginning_date = buat_tanggal($month, $year);
-    // $tgl_bergabung = '2025-01-01';
-    // $beginning_date = '2025-03-01';
+
     $is_karyawan_lama = new DateTime($tgl_bergabung) <= new DateTime($beginning_date);
 
 
