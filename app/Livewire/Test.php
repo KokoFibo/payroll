@@ -53,48 +53,50 @@ class Test extends Component
   }
 
 
+  public function deleteSTI()
+  {
+    // company sti = 101
+    // placement sti = 104
+    DB::transaction(function () {
+      // Ambil semua karyawan dari placement_id = 104
+      $karyawans = Karyawan::where('placement_id', 104)->get();
+
+      foreach ($karyawans as $karyawan) {
+        // Hapus user
+        User::where('username', $karyawan->id_karyawan)->delete();
+
+        // Hapus presensi bulan 9 / 2025
+        Yfrekappresensi::where('user_id', $karyawan->id_karyawan)
+          ->whereMonth('date', 9)
+          ->whereYear('date', 2025)
+          ->delete();
+      }
+
+      // Hapus karyawan terakhir
+      Karyawan::where('placement_id', 104)->delete();
+      $this->dispatch(
+        'message',
+        type: 'success',
+        title: 'Semua data STI telah didelete'
+      );
+    });
+  }
+
   public function render()
   {
-    dd('aman');
-    $data = Yfrekappresensi::whereMonth('date', 9)->where('no_scan', '!=', null)->get();
-    dd($data);
-    // $data = User::find("9a84287c-568f-4ace-9cce-cc30c759254f");
-    // dd($data);
+    $data = Karyawan::where('placement_id', 104)->get();
+    // Ambil semua id_karyawan dari placement_id 104
+    $karyawanIds = Karyawan::where('placement_id', 104)->pluck('id_karyawan');
 
-
-    $data = Yfrekappresensi::where('date', '2025-05-30')->where('user_id', 3390)->first();
-    // $data = Yfrekappresensi::where('date', '2025-05-30')->where('no_scan', 'No Scan')->delete();
-    // dd($data);
-
-    // $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
-    //   // ->where('yfrekappresensis.date', '2025-05-30')
-    //   ->whereMonth('yfrekappresensis.date', 5)
-    //   ->whereYear('yfrekappresensis.date', 2025)
-    //   ->where('karyawans.status_karyawan', 'Blacklist')
-    //   ->where('karyawans.tanggal_blacklist', '<', '2025-05-01') // ini kuncinya
-    //   ->distinct()
-    //   ->pluck('yfrekappresensis.user_id');
-
-    // dd($data);
-
-
-    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
-      ->where('yfrekappresensis.date', '2025-05-30')
-      ->where(function ($query) {
-        $query->where(function ($q) {
-          $q->whereNull('yfrekappresensis.first_in')
-            ->whereNull('yfrekappresensis.first_out');
-        })->orWhere(function ($q) {
-          $q->whereNull('yfrekappresensis.second_in')
-            ->whereNull('yfrekappresensis.second_out');
-        });
-      })
+    // Ambil semua presensi dari user tersebut untuk bulan 9 / 2025
+    $presensis = Yfrekappresensi::whereIn('user_id', $karyawanIds)
+      ->whereMonth('date', 9)
+      ->whereYear('date', 2025)
       ->get();
-
-
-    //51857 hari ini
+    // dd($presensis);
     return view('livewire.test', [
-      'data' => $data
+      'data' => $data,
+      'presensis' => $presensis,
     ]);
   }
 }
