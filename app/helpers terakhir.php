@@ -1302,9 +1302,9 @@ function is_puasa($tgl)
 
 function is_libur_nasional($tanggal)
 {
-    // if ($tanggal === '2025-04-18') {
-    //     return false;
-    // }
+    if ($tanggal === '2025-04-18') {
+        return false;
+    }
 
     $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
     if ($data != null) return true;
@@ -1751,11 +1751,6 @@ function is_lock()
 }
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 {
-
-    $is_saturday = is_saturday($tgl);
-
-
-
     $data = cek_hari_khusus($tgl);
     if ($data) {
         $tgl_khusus = $data->date;
@@ -1766,7 +1761,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
     // betulin
     if ($second_out != null) {
         $t2 = strtotime($second_out);
-        if (!$is_saturday && $shift == 'Pagi' && $t2 < strtotime('04:00:00')) {
+        if (!is_saturday($tgl) && $shift == 'Pagi' && $t2 < strtotime('04:00:00')) {
             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('00:00:00')) / 60;
             $diff = $diff + 7;
             return $diff;
@@ -1778,7 +1773,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             $t2 = strtotime($second_out);
             if ($jabatan == 17) {
                 if ($shift == 'Pagi') {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // rubah disini utk perubahan jam lembur satpam
                         if ($t2 < strtotime('17:00:00')) {
                             // dd($t2, 'bukan sabtu');
@@ -1807,7 +1802,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         // kl
                     }
                 } else {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // rubah disini utk perubahan jam lembur satpam malam
                         if ($t2 < strtotime('05:00:00')) {
                             return $lembur = 0;
@@ -1827,7 +1822,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             } else {
                 if ($shift == 'Pagi') {
                     // Shift Pagi
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         if ($t2 < strtotime('15:00:00')) {
                             return $lembur = 0;
                         }
@@ -1840,7 +1835,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                     }
                 } else {
                     //Shift Malam
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // if ($t2 < (strtotime('00:30:00') && $t2 <= strtotime('23:59:00')) || ($t2 > strtotime('15:00:00') && $t2 < strtotime('23:59:00'))) {
                         //     return $lembur = 0;
                         // }
@@ -1899,7 +1894,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             // ini puasa kah
             if ($jabatan == 17) {
                 if ($shift == 'Pagi') {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // rubah disini utk perubahan jam lembur satpam
                         if ($t2 < strtotime('17:30:00')) {
                             // dd($t2, 'bukan sabtu');
@@ -1929,7 +1924,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         // kl
                     }
                 } else {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // rubah disini utk perubahan jam lembur satpam malam
                         if ($t2 < strtotime('05:30:00')) {
                             return $lembur = 0;
@@ -1949,7 +1944,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             } else {
                 if ($shift == 'Pagi') {
                     // Shift Pagi
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         // if ($tgl == '2025-09-05') {
                         if ($tgl == $tgl_khusus) {
                             // rubah disini jika ada perubahan jam lembur
@@ -1973,7 +1968,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                     }
                 } else {
                     //Shift Malam
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         if ($t2 < (strtotime('00:30:00') && $t2 <= strtotime('23:59:00')) || ($t2 > strtotime('15:00:00') && $t2 < strtotime('23:59:00'))) {
                             return $lembur = 0;
                         }
@@ -2003,23 +1998,19 @@ function tgl_doang($tgl)
 function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement_id)
 {
     $perJam = 60;
-    $is_saturday = is_saturday($tgl);
-    $is_sunday = is_sunday($tgl);
-    $is_friday = is_friday($tgl);
-
     if (is_puasa($tgl)) {
         if ($late == null) {
             if ($shift == 'Pagi') {
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     $jam_kerja = 6;
-                } elseif ($is_friday) {
+                } elseif (is_friday($tgl)) {
                     $jam_kerja = 7.5;
                 } else {
                     $jam_kerja = 8;
                 }
             } else {
                 $jam_kerja = 8;
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     $jam_kerja = 6;
                 } else {
                     $jam_kerja = 8;
@@ -2033,7 +2024,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
                 $jam_kerja = 0;
             } elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     if ($first_in === null && $first_out === null) {
                         $jam_kerja = 2 - $total_late;
                         // $jam_kerja = 2 ;
@@ -2047,15 +2038,15 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
                 }
             } else {
                 if ($shift == 'Pagi') {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         $jam_kerja = 6 - $total_late;
-                    } elseif ($is_friday) {
+                    } elseif (is_friday($tgl)) {
                         $jam_kerja = 7.5 - $total_late;
                     } else {
                         $jam_kerja = 8 - $total_late;
                     }
                 } else {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         $jam_kerja = 6 - $total_late;
                     } else {
                         $jam_kerja = 8 - $total_late;
@@ -2066,16 +2057,16 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     } else {
         if ($late == null) {
             if ($shift == 'Pagi') {
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     $jam_kerja = 6;
-                } elseif ($is_friday) {
+                } elseif (is_friday($tgl)) {
                     $jam_kerja = 7.5;
                 } else {
                     $jam_kerja = 8;
                 }
             } else {
                 $jam_kerja = 8;
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     $jam_kerja = 6;
                 } else {
                     $jam_kerja = 8;
@@ -2089,7 +2080,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
                 $jam_kerja = 0;
             } elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
-                if ($is_saturday) {
+                if (is_saturday($tgl)) {
                     if ($first_in === null && $first_out === null) {
                         $jam_kerja = 2 - $total_late;
                         // $jam_kerja = 2 ;
@@ -2103,15 +2094,15 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
                 }
             } else {
                 if ($shift == 'Pagi') {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         $jam_kerja = 6 - $total_late;
-                    } elseif ($is_friday) {
+                    } elseif (is_friday($tgl)) {
                         $jam_kerja = 7.5 - $total_late;
                     } else {
                         $jam_kerja = 8 - $total_late;
                     }
                 } else {
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         $jam_kerja = 6 - $total_late;
                     } else {
                         $jam_kerja = 8 - $total_late;
@@ -2124,7 +2115,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
 
 
     // lolo
-    if ($is_sunday) {
+    if (is_sunday($tgl)) {
 
         // $t1 = strtotime($first_in);
         // $t2 = strtotime($second_out);
@@ -2149,7 +2140,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         // $jam_kerja = $jam * 2;
         $jam_kerja *= 2;
     }
-    if ($jabatan == 17 && $is_sunday == false) {
+    if ($jabatan == 17 && is_sunday($tgl) == false) {
         $jam_kerja = 12;
         // $jam_kerja = $jam_kerja - $total_late;
     }
@@ -2517,10 +2508,8 @@ function hoursToMinutes($jam)
 }
 
 function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
+
 {
-    $is_saturday = is_saturday($tgl);
-    $is_sunday = is_sunday($tgl);
-    $is_friday = is_friday($tgl);
     // rubah angka ini utk bulan puasa
     $test = $placement_id;
     if (is_puasa($tgl)) {
@@ -2553,13 +2542,13 @@ function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
                 $diff = gmdate('H:i:s', $t2 - $t1);
                 $late = ceil(hoursToMinutes($diff) / $perJam);
                 if ($late <= 5 && $late > 3.5) {
-                    if ($is_friday) {
+                    if (is_friday($tgl)) {
                         $late = 3.5;
                     } else {
                         $late = 4;
                     }
                 } elseif ($late > 5) {
-                    if ($is_friday) {
+                    if (is_friday($tgl)) {
                         $late = $late - 1.5;
                     } else {
                         $late = $late - 1;
@@ -2567,7 +2556,7 @@ function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
                 }
             }
         } else {
-            if ($is_saturday) {
+            if (is_saturday($tgl)) {
                 if (Carbon::parse($check_in)->betweenIncluded('14:00', $jam_mulai_sore_sabtu)) {
                     $late = null;
                 } else {
@@ -2593,13 +2582,125 @@ function checkFirstInLate($check_in, $shift, $tgl, $placement_id)
     return $late;
 }
 
-function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
+function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
 {
+    if (is_puasa($tgl)) {
+        $jam_secondOut_pagi = '16:29';
+        $strtime_secondOut_pagi = '16:30:00';
+        $jam_secondOut_pagi_sabtu = '14:29';
+        $strtime_secondOut_pagi_sabtu = '15:00:00';
+
+        $jam_secondOut_sore = '04:59';
+        $strtime_secondOut_sore = '05:00:00';
+        $jam_secondOut_sore_sabtu = '22:59';
+        $strtime_secondOut_sore_sabtu = '23:00:00';
+    } else {
+        $jam_secondOut_pagi = '16:59';
+        $strtime_secondOut_pagi = '17:00:00';
+        $jam_secondOut_pagi_sabtu = '14:59';
+        $strtime_secondOut_pagi_sabtu = '15:00:00';
+
+        $jam_secondOut_sore = '04:59';
+        $strtime_secondOut_sore = '05:00:00';
+        $jam_secondOut_sore_sabtu = '23:59';
+        $strtime_secondOut_sore_sabtu = '23:59:00';
+    }
     $perJam = 60;
     $late = null;
 
-    $is_saturday = is_saturday($tgl);
+    if ($second_out != null) {
+        if ($shift == 'Pagi') {
+            // Shift Pagioi
+            if (is_saturday($tgl)) {
 
+                if (Carbon::parse($second_out)->betweenIncluded('12:00', $jam_secondOut_pagi_sabtu)) {
+                    $t1 = strtotime($strtime_secondOut_pagi_sabtu);
+                    $t2 = strtotime($second_out);
+                    //kkk
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                } else {
+                    $late = null;
+                }
+            } else {
+                if (Carbon::parse($second_out)->betweenIncluded('12:00', $jam_secondOut_pagi)) {
+                    $t1 = strtotime($strtime_secondOut_pagi);
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                } else if (Carbon::parse($second_out)->betweenIncluded('09:00', '11:59')) {
+                    $t1 = strtotime('12:00:00');
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam + 4);
+                } else {
+                    $late = null;
+                }
+            }
+        } else {
+            if (is_saturday($tgl)) {
+                // if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
+                if (Carbon::parse($second_out)->betweenIncluded('19:00', $jam_secondOut_sore_sabtu)) {
+                    $t1 = strtotime($strtime_secondOut_sore_sabtu);
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+                } else {
+                    $late = null;
+                }
+            } else {
+                if (Carbon::parse($second_out)->betweenIncluded('00:00', $jam_secondOut_sore)) {
+                    $t1 = strtotime($strtime_secondOut_sore);
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam);
+
+                    // ook
+                } elseif (Carbon::parse($second_out)->betweenIncluded('19:00', $jam_secondOut_sore_sabtu)) {
+                    $t1 = strtotime($strtime_secondOut_pagi_sabtu);
+                    $t2 = strtotime($second_out);
+
+                    $diff = gmdate('H:i:s', $t1 - $t2);
+                    $late = ceil(hoursToMinutes($diff) / $perJam) + 4;
+                } else {
+                    $late = null;
+                }
+            }
+        }
+    }
+    return $late;
+}
+
+function checkOvertimeInLate($overtime_in, $shift, $tgl)
+{
+    $persetengahJam = 30;
+    $late = null;
+    if ($overtime_in != null) {
+        if ($shift == 'Pagi') {
+            // Shift Pagi
+            if (Carbon::parse($overtime_in)->betweenIncluded('12:00', '18:33')) {
+                $late = null;
+            } else {
+                $t1 = strtotime('18:33:00');
+                $t2 = strtotime($overtime_in);
+
+                $diff = gmdate('H:i:s', $t2 - $t1);
+                $late = ceil(hoursToMinutes($diff) / $persetengahJam);
+            }
+        }
+    }
+    return $late;
+}
+
+function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
+{
+    //ok
+    $perJam = 60;
+    $late = null;
 
     if (is_puasa($tgl)) {
         if (is_jabatan_khusus($jabatan) == 1) {
@@ -2648,7 +2749,7 @@ function checkFirstOutLate($first_out, $shift, $tgl, $jabatan, $placement_id)
                         $late = null;
                     }
                 } else { // shift malam
-                    if ($is_saturday) {
+                    if (is_saturday($tgl)) {
                         if (Carbon::parse($first_out)->betweenIncluded('17:01', '20:29')) {
                             $t1 = strtotime('20:30:00');
                             $t2 = strtotime($first_out);
@@ -2680,7 +2781,6 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
 {
     $perJam = 60;
     $late = null;
-    $is_saturday = is_saturday($tgl);
 
 
     if (is_puasa($tgl)) {
@@ -2884,7 +2984,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
                                 $late = ceil(hoursToMinutes($diff) / $perJam);
                             }
                         } else {
-                            if ($is_saturday) {
+                            if (is_saturday($tgl)) {
                                 if (Carbon::parse($second_in)->betweenIncluded('20:01', '22:03')) {
                                     $late = null;
                                 } else {
@@ -2908,7 +3008,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
                         }
                     }
                 } else { //shift Malam
-                    if ($is_saturday) { //ini ya 
+                    if (is_saturday($tgl)) { //ini ya 
                         if ($firstOut != null) {
                             if (Carbon::parse($firstOut)->betweenIncluded('17:00', '20:59')) {
                                 $groupIstirahat = 1;
@@ -3002,7 +3102,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
                         } else {
                             //jika first out null
 
-                            if ($is_saturday) {
+                            if (is_saturday($tgl)) {
                                 if (Carbon::parse($second_in)->betweenIncluded('20:01', '22:03')) {
                                     $late = null;
                                 } else {
@@ -3031,126 +3131,6 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
     }
     return $late;
 }
-
-function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
-{
-    $is_saturday = is_saturday($tgl);
-
-    if (is_puasa($tgl)) {
-        $jam_secondOut_pagi = '16:29';
-        $strtime_secondOut_pagi = '16:30:00';
-        $jam_secondOut_pagi_sabtu = '14:29';
-        $strtime_secondOut_pagi_sabtu = '15:00:00';
-
-        $jam_secondOut_sore = '04:59';
-        $strtime_secondOut_sore = '05:00:00';
-        $jam_secondOut_sore_sabtu = '22:59';
-        $strtime_secondOut_sore_sabtu = '23:00:00';
-    } else {
-        $jam_secondOut_pagi = '16:59';
-        $strtime_secondOut_pagi = '17:00:00';
-        $jam_secondOut_pagi_sabtu = '14:59';
-        $strtime_secondOut_pagi_sabtu = '15:00:00';
-
-        $jam_secondOut_sore = '04:59';
-        $strtime_secondOut_sore = '05:00:00';
-        $jam_secondOut_sore_sabtu = '23:59';
-        $strtime_secondOut_sore_sabtu = '23:59:00';
-    }
-    $perJam = 60;
-    $late = null;
-
-    if ($second_out != null) {
-        if ($shift == 'Pagi') {
-            // Shift Pagioi
-            if ($is_saturday) {
-
-                if (Carbon::parse($second_out)->betweenIncluded('12:00', $jam_secondOut_pagi_sabtu)) {
-                    $t1 = strtotime($strtime_secondOut_pagi_sabtu);
-                    $t2 = strtotime($second_out);
-                    //kkk
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
-                } else {
-                    $late = null;
-                }
-            } else {
-                if (Carbon::parse($second_out)->betweenIncluded('12:00', $jam_secondOut_pagi)) {
-                    $t1 = strtotime($strtime_secondOut_pagi);
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
-                } else if (Carbon::parse($second_out)->betweenIncluded('09:00', '11:59')) {
-                    $t1 = strtotime('12:00:00');
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam + 4);
-                } else {
-                    $late = null;
-                }
-            }
-        } else {
-            if ($is_saturday) {
-                // if (Carbon::parse($second_out)->betweenIncluded('19:00', '23:59') ) {
-                if (Carbon::parse($second_out)->betweenIncluded('19:00', $jam_secondOut_sore_sabtu)) {
-                    $t1 = strtotime($strtime_secondOut_sore_sabtu);
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
-                } else {
-                    $late = null;
-                }
-            } else {
-                if (Carbon::parse($second_out)->betweenIncluded('00:00', $jam_secondOut_sore)) {
-                    $t1 = strtotime($strtime_secondOut_sore);
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam);
-
-                    // ook
-                } elseif (Carbon::parse($second_out)->betweenIncluded('19:00', $jam_secondOut_sore_sabtu)) {
-                    $t1 = strtotime($strtime_secondOut_pagi_sabtu);
-                    $t2 = strtotime($second_out);
-
-                    $diff = gmdate('H:i:s', $t1 - $t2);
-                    $late = ceil(hoursToMinutes($diff) / $perJam) + 4;
-                } else {
-                    $late = null;
-                }
-            }
-        }
-    }
-    return $late;
-}
-
-function checkOvertimeInLate($overtime_in, $shift, $tgl)
-{
-    $persetengahJam = 30;
-    $late = null;
-    if ($overtime_in != null) {
-        if ($shift == 'Pagi') {
-            // Shift Pagi
-            if (Carbon::parse($overtime_in)->betweenIncluded('12:00', '18:33')) {
-                $late = null;
-            } else {
-                $t1 = strtotime('18:33:00');
-                $t2 = strtotime($overtime_in);
-
-                $diff = gmdate('H:i:s', $t2 - $t1);
-                $late = ceil(hoursToMinutes($diff) / $persetengahJam);
-            }
-        }
-    }
-    return $late;
-}
-
-
-
-
 
 
 function noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out)

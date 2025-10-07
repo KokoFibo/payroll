@@ -145,6 +145,8 @@
                         <div>
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option>  --}}
+
+                                <option value="9">sep</option>
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
@@ -157,6 +159,10 @@
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span
                                 role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
+                        </button>
+                        <button wire:loading wire:target='newRebuild' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Data... jangan tekan apapun.') }}</span>
                         </button>
                         <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -179,6 +185,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
+                        <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('New Rebuild') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
