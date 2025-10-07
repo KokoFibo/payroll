@@ -193,7 +193,7 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
-                                <th wire:click="sortColumnName('date')">{{ __('Jam Kerja') }} <i
+                                <th wire:click="sortColumnName('total_jam_kerja')">{{ __('Jam Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('date')">{{ __('Jam Lembur') }} <i

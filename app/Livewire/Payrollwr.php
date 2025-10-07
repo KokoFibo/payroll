@@ -56,6 +56,16 @@ class Payrollwr extends Component
     public $payroll_data, $total_data;
     public   $companies, $departments, $placements;
 
+    public function newRebuild()
+    {
+        quickRebuild($this->month, $this->year);
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data berhasil di build',
+        );
+    }
+
     public function excelDetailReport()
     {
         $nama_file = 'OS Detail Report ' . nama_bulan($this->month) . ' ' . $this->year . '.xlsx';

@@ -84,19 +84,93 @@ class Test extends Component
 
   public function render()
   {
-    $data = Karyawan::where('placement_id', 104)->get();
-    // Ambil semua id_karyawan dari placement_id 104
-    $karyawanIds = Karyawan::where('placement_id', 104)->pluck('id_karyawan');
+    $year = 2025;
+    $month = 9;
 
-    // Ambil semua presensi dari user tersebut untuk bulan 9 / 2025
-    $presensis = Yfrekappresensi::whereIn('user_id', $karyawanIds)
-      ->whereMonth('date', 9)
-      ->whereYear('date', 2025)
+    $hitung = Yfrekappresensi::whereYear('date', $year)
+      ->whereMonth('date', $month)
+      ->where('user_id', 2334)
+      ->sum('shift_malam');
+
+    dd('hitung: ' . $hitung);
+    // untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
+    $data = Payroll::whereYear('date', $year)
+      ->whereMonth('date', $month)
+      ->where('metode_penggajian', 'Perbulan')
       ->get();
-    // dd($presensis);
+
+    foreach ($data as $d) {
+      $presensis = Yfrekappresensi::whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->where('user_id', $d->id_karyawan)
+        ->get();
+
+      foreach ($presensis as $p) {
+        if (is_sunday($p->date) || is_libur_nasional($p->date)) {
+          $p->total_hari_kerja = 0;
+          $p->save();
+        }
+      }
+    }
+
+    dd('done');
+    // end untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
+
+    $payrolls = Payroll::whereYear('date', $year)
+      ->whereMonth('date', $month)
+      ->get();
+
+    $liburDates = Liburnasional::whereYear('tanggal_mulai_hari_libur', $year)
+      ->whereMonth('tanggal_mulai_hari_libur', $month)
+      ->pluck('tanggal_mulai_hari_libur')
+      ->toArray();
+
+    $beda = [];
+    $jumlahSama = 0;
+
+    foreach ($payrolls as $payroll) {
+      // ambil semua presensi milik karyawan
+      $presensis = Yfrekappresensi::whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->where('user_id', $payroll->id_karyawan)
+        ->get();
+
+      if ($presensis->isEmpty()) {
+        continue;
+      }
+
+      // hitung total hari kerja (exclude Minggu & tanggal libur)
+      $totalHariKerja = $presensis->reject(function ($p) use ($liburDates) {
+        return is_sunday($p->date) || in_array($p->date, $liburDates);
+      })->count();
+
+      // hitung total jam kerja dan lembur
+      $totalJamKerja = $presensis->sum('total_jam_kerja');
+      $totalJamLembur = $presensis->sum('total_jam_lembur');
+
+      // cek perbedaan data
+      if (
+        $payroll->hari_kerja != $totalHariKerja ||
+        $payroll->jam_kerja != $totalJamKerja ||
+        $payroll->jam_lembur != $totalJamLembur
+      ) {
+        $beda[] = [
+          'id_karyawan' => $payroll->id_karyawan,
+          'hari_kerja_payroll' => $payroll->hari_kerja,
+          'hari_kerja_presensi' => $totalHariKerja,
+          'jam_kerja_payroll' => $payroll->jam_kerja,
+          'jam_kerja_presensi' => $totalJamKerja,
+          'jam_lembur_payroll' => $payroll->jam_lembur,
+          'jam_lembur_presensi' => $totalJamLembur,
+        ];
+      } else {
+        $jumlahSama++;
+      }
+    }
+
     return view('livewire.test', [
-      'data' => $data,
-      'presensis' => $presensis,
+      'beda' => $beda,
+      'jumlah_sama' => $jumlahSama,
     ]);
   }
 }

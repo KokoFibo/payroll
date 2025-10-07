@@ -179,6 +179,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
+                        <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('New Rebuild') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
