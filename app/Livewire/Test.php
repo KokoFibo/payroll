@@ -87,12 +87,7 @@ class Test extends Component
     $year = 2025;
     $month = 9;
 
-    $hitung = Yfrekappresensi::whereYear('date', $year)
-      ->whereMonth('date', $month)
-      ->where('user_id', 2334)
-      ->sum('shift_malam');
 
-    dd('hitung: ' . $hitung);
     // untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
     $data = Payroll::whereYear('date', $year)
       ->whereMonth('date', $month)

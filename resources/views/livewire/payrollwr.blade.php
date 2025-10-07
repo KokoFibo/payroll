@@ -145,6 +145,8 @@
                         <div>
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option>  --}}
+
+                                <option value="9">sep</option>
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
@@ -157,6 +159,10 @@
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span
                                 role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
+                        </button>
+                        <button wire:loading wire:target='newRebuild' class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building Data... jangan tekan apapun.') }}</span>
                         </button>
                         <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
