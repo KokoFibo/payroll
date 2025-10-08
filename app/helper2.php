@@ -670,6 +670,8 @@ function build_payroll_os($month, $year)
 
     // dd('payroll done');
     // ok 3
+
+
     // Bonus dan Potongan
 
     $bonus = 0;

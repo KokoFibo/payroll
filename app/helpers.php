@@ -1016,24 +1016,6 @@ function shortJam($jam)
     }
 }
 
-// function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
-// {
-//     $data = Yfrekappresensi::where('user_id', $user_id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date', 'asc')->first();
-//     $tgl_mulai_kerja = Carbon::parse($data->date)->day;
-//     dd($tgl_mulai_kerja);
-//     $manfaat_libur = 0;
-//     foreach ($libur as $l) {
-//         $tgl_libur = Carbon::parse($l->tanggal_mulai_hari_libur)->day;
-//         if ($tgl_libur == 1)  $manfaat_libur++;
-//         if (
-//             $tgl_mulai_kerja < $tgl_libur || $tgl_bergabung
-//             < $tgl_libur
-//         ) $manfaat_libur++;
-//     }
-
-
-//     return $manfaat_libur;
-// }
 
 function manfaat_libur2($month, $year, $libur, $user_id, $tgl_bergabung)
 {
@@ -1191,6 +1173,8 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 
     return $manfaat_libur;
 }
+
+
 
 function manfaat_libur_resigned($month, $year, $libur, $user_id, $tanggal_resigned)
 {

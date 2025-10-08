@@ -200,10 +200,12 @@ class PayrollExportFLexible implements FromView,  ShouldAutoSize, WithColumnForm
             'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AR' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'AR' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AS' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
 
         ];
     }

@@ -123,6 +123,7 @@
                 <th style="text-align: center;">Tambahan Shift Malam</th>
                 <th style="text-align: center;">Gaji Pokok</th>
                 <th style="text-align: center;">Gaji Lembur</th>
+                <th style="text-align: center;">Subtotal1</th>
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
                 <th style="text-align: center;">Tunjangan Makan</th>
@@ -262,6 +263,7 @@
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->subtotal }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
                     <td style="text-align: right">1300000</td>
