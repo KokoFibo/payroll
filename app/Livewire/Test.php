@@ -101,14 +101,14 @@ class Test extends Component
         ->get();
 
       foreach ($presensis as $p) {
-        if (is_sunday($p->date) || is_libur_nasional($p->date)) {
-          $p->total_hari_kerja = 0;
+        if (is_sunday($p->date)) {
+          $p->total_hari_kerja = 2;
           $p->save();
         }
       }
     }
 
-    dd('done');
+    dd('done21');
     // end untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
 
     $payrolls = Payroll::whereYear('date', $year)

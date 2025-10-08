@@ -13,11 +13,12 @@ use App\Models\Tambahan;
 use App\Models\Placement;
 use App\Models\Requester;
 use App\Models\Department;
+use App\Models\Harikhusus;
 use Illuminate\Support\Str;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
+use App\Models\Bonuspotongan;
 use App\Models\Dashboarddata;
-use App\Models\Harikhusus;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
 use App\Models\Timeoffrequester;
@@ -179,6 +180,7 @@ function quickRebuild($month, $year)
         $gaji_libur = 0;
 
         $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
+        if ($gaji_libur > 0) dd($karyawan->id_karyawan);
 
         $total_bonus_dari_karyawan = $karyawan->bonus + $karyawan->tunjangan_jabatan + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_skill + $karyawan->tunjangan_lembur_sabtu + $karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $karyawan->iuran_air + $karyawan->iuran_locker;
@@ -335,26 +337,135 @@ function quickRebuild($month, $year)
             // 'created_at' => now()->toDateTimeString(),
             // 'updated_at' => now()->toDateTimeString()
         ]);
-        // dd(
-        //     $total_hari_kerja,
-        //     $total_jam_kerja,
-        //     $total_jam_lembur,
-        //     $total_jam_kerja_libur,
-        //     $no_scan_history,
-        //     $late_history,
-        //     $late,
-        //     $jp,
-        //     $jht,
-        //     $kesehatan,
-        //     $tanggungan,
-        //     $jkk,
-        //     $jkm,
-        //     $denda_noscan,
-        //     $denda_lupa_absen,
-        //     $subtotal,
-        //     $user_id
-        // ); // ← ini akan berhenti di iterasi pertama
     }
+
+
+    // Bonus dan Potongan
+
+    $bonus = 0;
+    $potongaan = 0;
+    $all_bonus = 0;
+    $all_potongan = 0;
+    $bonuspotongan = Bonuspotongan::whereMonth('tanggal', $month)
+        ->whereYear('tanggal', $year)
+        ->get();
+
+    foreach ($bonuspotongan as $d) {
+        $all_bonus = $d->uang_makan + $d->bonus_lain;
+        $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
+        $id_payroll = Payroll::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->where('id_karyawan', $d->user_id)
+            ->first();
+        if ($id_payroll != null) {
+            $payroll = Payroll::find($id_payroll->id);
+            $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
+            $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
+            $payroll->total = $payroll->total + $all_bonus - $all_potongan;
+            $payroll->save();
+        }
+    }
+
+    // hitung ulang PPH21 utk karyawan bulanan yang ada bonus tambahan
+
+    $karyawanWithBonus = Payroll::whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->where('metode_penggajian', 'Perbulan')
+        ->where('bonus1x', '>', 0)->get();
+
+    foreach ($karyawanWithBonus as $kb) {
+
+        $total_bpjs_company = 0;
+        $total_bpjs_lama = $kb->total_bpjs;
+        $total_bpjs_company = $total_bpjs_lama + $kb->bonus1x;
+
+        $pph21_lama = $kb->pph21;
+        $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
+        $total_lama = $kb->total;
+        $kb->pph21 = $pph21simple;
+        $kb->total = $total_lama + $pph21_lama - $pph21simple;
+        $kb->total_bpjs = $total_bpjs_company;
+        $kb->save();
+        // if ($kb->id_karyawan == 101) {
+        //     dd($pph21_lama - $pph21simple);
+        // }
+    }
+
+
+    // ok 4
+    // perhitungan untuk karyawan yg resign sebelum 3 bulan
+
+    $data = Karyawan::where('tanggal_resigned', '!=', null)
+        ->whereMonth('tanggal_resigned', $month)
+        ->whereYear('tanggal_resigned', $year)
+        ->get();
+
+    foreach ($data as $d) {
+        $lama_bekerja = lama_bekerja($d->tanggal_bergabung, $d->tanggal_resigned);
+        if ($lama_bekerja <= 90) {
+            $data_payrolls = Payroll::where('id_karyawan', $d->id_karyawan)
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->first();
+
+            // try {
+            //     $data_payroll = Payroll::find($data_payrolls->id);
+            // } catch (\Exception $e) {
+            //     dd($e->getMessage(), $d->id_karyawan, $lama_bekerja);
+            //     return $e->getMessage();
+            // }
+
+            if ($data_payrolls != null) {
+                $data_payroll = Payroll::find($data_payrolls->id);
+            } else {
+                $data_payroll = null;
+            }
+
+            if ($data_payroll != null) {
+                if (trim($data_payroll->metode_penggajian) == 'Perbulan') {
+                    $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / $total_n_hari_kerja);
+                } else {
+                    $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
+                }
+                $data_payroll->total = $data_payroll->total - $data_payroll->denda_resigned;
+                if ($data_payroll->total < 0) {
+                    $data_payroll->total = 0;
+                }
+                $data_payroll->save();
+            }
+        }
+    }
+
+    // ok 5
+    //  Zheng Guixin 1
+    // Eddy Chan 2
+    // Yang Xiwen 3
+    // Rudy Chan 4
+    // Yin kai 5
+    // Li meilian 25
+    // Wanto 6435
+    // Chan Kai Wan 6
+
+
+    $idArrTKA = [1, 3, 5, 25, 6];
+    $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
+
+
+
+
+    // ok 6
+    // Libur nasional dan resigned sebelum 3 bulan bekerja
+
+    // $jumlah_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+    //     ->whereYear('tanggal_mulai_hari_libur', $year)
+    //     ->sum('jumlah_hari_libur');
+
+    // $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
+
+    $lock = Lock::find(1);
+    $lock->rebuild_done = 1;
+    $lock->save();
 
     return;
 }

@@ -162,7 +162,7 @@
                         </button>
                         <button wire:loading wire:target='newRebuild' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">{{ __('Building Data... jangan tekan apapun.') }}</span>
+                            <span role="status">{{ __('Building Payroll ... please wait.') }}</span>
                         </button>
                         <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
