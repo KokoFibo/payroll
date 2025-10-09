@@ -180,7 +180,7 @@ function quickRebuild($month, $year)
         $gaji_libur = 0;
 
         $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
-        if ($gaji_libur > 0) dd($karyawan->id_karyawan);
+        // if ($total_jam_kerja_libur > 0) dd($karyawan->id_karyawan);
 
         $total_bonus_dari_karyawan = $karyawan->bonus + $karyawan->tunjangan_jabatan + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_skill + $karyawan->tunjangan_lembur_sabtu + $karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $karyawan->iuran_air + $karyawan->iuran_locker;
