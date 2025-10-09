@@ -97,6 +97,7 @@ function quickRebuild($month, $year)
             $late += $d->late;
             $tanggal = $d->date;
         }
+        if ($user_id == 8044) dd($shift_malam,  $late);
         // $hitung = Yfrekappresensi::whereYear('date', $year)
         //     ->whereMonth('date', $month)
         //     ->where('user_id', $user_id)
