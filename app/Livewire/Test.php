@@ -94,41 +94,53 @@ class Test extends Component
       ->where('metode_penggajian', 'Perbulan')
       ->get();
 
-    foreach ($data as $d) {
-      $presensis = Yfrekappresensi::whereYear('date', $year)
-        ->whereMonth('date', $month)
-        ->where('user_id', $d->id_karyawan)
-        ->get();
+    // Ambil semua presensi untuk user yang ada di payroll
+    $userIds = $data->pluck('id_karyawan')->unique();
 
-      foreach ($presensis as $p) {
+    $presensisAll = Yfrekappresensi::whereYear('date', $year)
+      ->whereMonth('date', $month)
+      ->whereIn('user_id', $userIds)
+      ->get()
+      ->groupBy('user_id');
+
+    foreach ($data as $d) {
+      if (!isset($presensisAll[$d->id_karyawan])) continue;
+
+      foreach ($presensisAll[$d->id_karyawan] as $p) {
         $isSunday = is_sunday($p->date);
         $isLibur = is_libur_nasional($p->date);
         $isFriday = is_friday($p->date);
         $isSaturday = is_saturday($p->date);
 
-        // Default tidak ada perubahan
+        // Default nilai awal
         $p->total_hari_kerja = $p->total_hari_kerja ?? 0;
         $p->total_jam_kerja_libur = $p->total_jam_kerja_libur ?? 0;
 
-        // Jika hari Minggu
+        // Prioritas Minggu dulu
         if ($isSunday) {
           $p->total_hari_kerja = 2;
           $p->total_jam_kerja_libur = 16;
         }
-
-        // Jika hari libur nasional
-        if ($isLibur) {
+        // Kalau bukan Minggu tapi Libur Nasional
+        elseif ($isLibur) {
           if ($isFriday) {
             $p->total_jam_kerja_libur = 15;
           } elseif ($isSaturday) {
             $p->total_jam_kerja_libur = 12;
+          } else {
+            $p->total_jam_kerja_libur = 16;
           }
         }
 
-        // Simpan hanya sekali
-        $p->save();
+        $p->updateQuietly([
+          'total_hari_kerja' => $p->total_hari_kerja,
+          'total_jam_kerja_libur' => $p->total_jam_kerja_libur,
+        ]);
+
+        // $p->save(); // Simpan hanya sekali
       }
     }
+
 
     dd('done21');
     // end untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
