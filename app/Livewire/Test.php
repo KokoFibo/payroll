@@ -101,10 +101,32 @@ class Test extends Component
         ->get();
 
       foreach ($presensis as $p) {
-        if (is_sunday($p->date)) {
+        $isSunday = is_sunday($p->date);
+        $isLibur = is_libur_nasional($p->date);
+        $isFriday = is_friday($p->date);
+        $isSaturday = is_saturday($p->date);
+
+        // Default tidak ada perubahan
+        $p->total_hari_kerja = $p->total_hari_kerja ?? 0;
+        $p->total_jam_kerja_libur = $p->total_jam_kerja_libur ?? 0;
+
+        // Jika hari Minggu
+        if ($isSunday) {
           $p->total_hari_kerja = 2;
-          $p->save();
+          $p->total_jam_kerja_libur = 16;
         }
+
+        // Jika hari libur nasional
+        if ($isLibur) {
+          if ($isFriday) {
+            $p->total_jam_kerja_libur = 15;
+          } elseif ($isSaturday) {
+            $p->total_jam_kerja_libur = 12;
+          }
+        }
+
+        // Simpan hanya sekali
+        $p->save();
       }
     }
 

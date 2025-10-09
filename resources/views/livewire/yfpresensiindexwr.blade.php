@@ -234,6 +234,10 @@
                                 </th>
                                 <th wire:click="sortColumnName('shift')">{{ __('Shift') }} <i
                                         class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('total_jam_kerja_libur')">
+                                    {{ __('Total Jam Kerja Libur') }}
+                                    <i class="fa-solid fa-sort"></i>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -432,6 +436,8 @@
                                             @endif
                                         </td>
                                         <td>{{ $data->shift }}</td>
+                                        <td>{{ $data->total_jam_kerja_libur }}</td>
+
                                     </tr>
                                 @endforeach
                             @else
