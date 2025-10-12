@@ -63,6 +63,8 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     {{-- @livewireStyles --}}
@@ -90,6 +92,7 @@
         {{-- nyalakan ini jika mau pakai background texture --}}
         {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
         <div class="content-wrapper">
+
             {{ $slot }}
 
         </div>

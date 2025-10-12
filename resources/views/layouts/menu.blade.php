@@ -116,7 +116,13 @@ with font-awesome or any other icon font library -->
             <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/yfpresensiindexwr" class="nav-link">
                     <i class="nav-icon fas fa-clipboard-check"></i>
-                    <p>{{ __('Presensi') }}</p>
+                    <p>{{ __('Old Presensi') }}</p>
+                </a>
+            </li>
+            <li class="nav-item {{ 'newpresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/newpresensi" class="nav-link">
+                    <i class="nav-icon fas fa-clipboard-check"></i>
+                    <p>{{ __('New Presensi') }}</p>
                 </a>
             </li>
 

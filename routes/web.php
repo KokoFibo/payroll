@@ -66,7 +66,6 @@ use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\MovePresensiData;
-use App\Livewire\Presensidetailwr;
 use App\Livewire\Removepresensiwr;
 use App\Livewire\SalaryAdjustment;
 use App\Livewire\Timeoffapprovewr;
@@ -100,6 +99,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Newpresensi;
 
 // Middleware
 Auth::routes([
@@ -212,7 +212,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/yfstore', [YfpresensiController::class, 'store']);
                 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
                 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
-                Route::get('/presensidetailwr', Presensidetailwr::class);
+                Route::get('/newpresensi', Newpresensi::class);
 
                 // Presensi Summary Excel
                 Route::get('/presensisummaryindex', [ReportController::class, 'presensi_summary_index']);

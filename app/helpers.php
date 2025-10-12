@@ -144,6 +144,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         //     'jam_lembur' => $jam_lembur,
         //     'tambahan_shift_malam' => $tambahan_shift_malam,
         // ]);
+        if ($terlambat > 0) $tambahan_shift_malam = 0;
 
         return [
             'tgl' => $tgl,
@@ -1982,6 +1983,14 @@ function tgl_doang($tgl)
 {
     $dt = Carbon::parse($tgl);
     return $dt->day;
+}
+
+function tgl_lengkap($tgl)
+{
+    if (!$tgl) return null;
+    return Carbon::parse($tgl)
+        ->locale('id')
+        ->translatedFormat('d M Y');
 }
 
 function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement_id)

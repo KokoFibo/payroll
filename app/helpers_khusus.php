@@ -97,7 +97,6 @@ function quickRebuild($month, $year)
             $late += $d->late;
             $tanggal = $d->date;
         }
-        if ($user_id == 8044) dd($shift_malam,  $late);
         // $hitung = Yfrekappresensi::whereYear('date', $year)
         //     ->whereMonth('date', $month)
         //     ->where('user_id', $user_id)
@@ -333,7 +332,8 @@ function quickRebuild($month, $year)
             'subtotal' => $subtotal,
             'date' => buatTanggal($tanggal),
             'pph21' => $pph21,
-            'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
+            // 'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
+            'total' => $subtotal + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
             'total_bpjs' => $total_bpjs,
             // 'created_at' => now()->toDateTimeString(),
             // 'updated_at' => now()->toDateTimeString()
