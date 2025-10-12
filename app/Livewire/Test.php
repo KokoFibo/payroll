@@ -87,6 +87,18 @@ class Test extends Component
     $year = 2025;
     $month = 9;
 
+    $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id'])
+      ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+      ->whereNull('first_in')
+      ->whereNull('first_out')
+      ->whereNull('second_in')
+      ->whereNull('second_out')
+      ->whereNull('overtime_in')
+      ->whereNull('overtime_out')
+      ->get();
+
+    dd($datas);
+
 
     // untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
     $data = Payroll::whereYear('date', $year)
@@ -102,6 +114,7 @@ class Test extends Component
       ->whereIn('user_id', $userIds)
       ->get()
       ->groupBy('user_id');
+
 
     foreach ($data as $d) {
       if (!isset($presensisAll[$d->id_karyawan])) continue;
