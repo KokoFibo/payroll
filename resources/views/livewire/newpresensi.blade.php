@@ -45,7 +45,8 @@
                     class="form-control form-control-sm" style="width: 200px;" />
 
                 <!-- 🏢 Filter Placement -->
-                <select wire:model.live="placementFilter" class="form-select form-select-sm" style="width: 180px;">
+                <select wire:model.live="placementFilter" wire:change="reload_placement_jabatan"
+                    class="form-select form-select-sm" style="width: 180px;">
                     <option value="">Semua Directorate</option>
                     @foreach ($placements as $p)
                         <option value="{{ $p->id }}">{{ $p->placement_name }}</option>
@@ -221,7 +222,10 @@
         <div class="modal-dialog " role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Jam Kerja</h5>
+                    <div>
+                        <h5 class="modal-title" id="editModalLabel">Edit Jam Kerja</h5>
+                        <h6>{{ $show_name }} ({{ $show_id }})</h6>
+                    </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                         wire:click="closeModal">
                         <span aria-hidden="true">&times;</span>

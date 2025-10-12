@@ -3,15 +3,17 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
+use App\Models\Lock;
 use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Placement;
 use App\Models\Harikhusus;
-use App\Models\Lock;
-use App\Models\Yfrekappresensi;
-use Illuminate\Pagination\Paginator;
 use Livewire\WithPagination;
+use App\Models\Yfrekappresensi;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 
 
 class Newpresensi extends Component
@@ -38,6 +40,7 @@ class Newpresensi extends Component
     public $rowsPerPage;
     public $showDetailModal = false;
 
+
     // variable untuk menampilkan detail
     public $dataArr = [];
     public $total_hari_kerja;
@@ -47,6 +50,53 @@ class Newpresensi extends Component
     public $total_tambahan_shift_malam;
     public $month, $year, $user_id, $name;
     public $is_presensi_locked, $is_sunday, $is_hari_libur_nasional, $is_friday;
+    public $show_name, $show_id;
+
+    public $placements, $jabatans, $bulan_terakhir;
+
+
+
+    public function reload_placement_jabatan()
+    {
+        $this->placements = DB::table('placements')
+            ->select('placements.id', 'placements.placement_name')
+            ->join('karyawans', 'karyawans.placement_id', '=', 'placements.id')
+            ->join('yfrekappresensis', 'yfrekappresensis.user_id', '=', 'karyawans.id_karyawan')
+            ->whereMonth('yfrekappresensis.date', $this->month)
+            ->whereYear('yfrekappresensis.date', $this->year)
+            ->groupBy('placements.id', 'placements.placement_name')
+            ->orderBy('placements.placement_name')
+            ->get();
+
+        $this->jabatans = DB::table('jabatans')
+            ->select('jabatans.id', 'jabatans.nama_jabatan')
+            ->join('karyawans', 'karyawans.jabatan_id', '=', 'jabatans.id')
+            ->join('yfrekappresensis', 'yfrekappresensis.user_id', '=', 'karyawans.id_karyawan')
+            // Jika placementFilter == 'all', jangan filter placement_id
+            ->when($this->placementFilter && $this->placementFilter !== '', function ($query) {
+                $query->where('karyawans.placement_id', $this->placementFilter);
+            })
+            ->whereMonth('yfrekappresensis.date', $this->month)
+            ->whereYear('yfrekappresensis.date', $this->year)
+            ->groupBy('jabatans.id', 'jabatans.nama_jabatan')
+            ->orderBy('jabatans.nama_jabatan')
+            ->get();
+
+
+
+        // Dropdown jabatan berdasarkan placement (tanpa kolom placement_id)
+        // $this->jabatans = Jabatan::whereIn('id', function ($q) {
+        //     $q->select('jabatan_id')
+        //         ->from('karyawans')
+        //         ->when($this->placementFilter, function ($sub) {
+        //             $sub->where('placement_id', $this->placementFilter);
+        //         })
+        //         ->whereNotNull('jabatan_id');
+        // })
+        //     ->orderBy('nama_jabatan')
+        //     ->get();
+    }
+
 
     public function check_presensi_locked()
     {
@@ -238,6 +288,9 @@ class Newpresensi extends Component
             $this->shift = $data->shift;
             $this->date = $data->date;
 
+            $this->show_name = getName($data->user_id);
+            $this->show_id = $data->user_id;
+
             // 🔥 Tampilkan modal lewat event browser
             $this->dispatch('show-edit-modal');
         }
@@ -426,6 +479,8 @@ class Newpresensi extends Component
         $this->is_sunday = $tgl->isSunday();
         $this->is_hari_libur_nasional = is_libur_nasional($tgl);
         $this->is_friday = is_friday($tgl);
+        $this->bulan_terakhir = $this->month;
+        $this->reload_placement_jabatan();
     }
 
     public function delete($id)
@@ -458,10 +513,19 @@ class Newpresensi extends Component
             ->subDay()
             ->toDateString();
 
+        $this->bulan = Carbon::parse($this->tanggal)->month;
+        $this->tahun = Carbon::parse($this->tanggal)->year;
+        $this->month = Carbon::parse($this->tanggal)->month;
+        $this->year = Carbon::parse($this->tanggal)->year;
+
         $this->is_sunday = Carbon::parse($this->tanggal)->isSunday();
         $this->is_hari_libur_nasional = is_libur_nasional($this->tanggal);
         $this->is_friday = is_friday($this->tanggal);
 
+        if ($this->bulan_terakhir != $this->month) {
+            $this->bulan_terakhir = $this->month;
+            $this->reload_placement_jabatan();
+        }
 
         $this->resetPage();
     }
@@ -473,9 +537,19 @@ class Newpresensi extends Component
             ->toDateString();
         // $this->month = $this->tanggal->month;
         // $this->year = $this->tanggal->year;
+
+        $this->bulan = Carbon::parse($this->tanggal)->month;
+        $this->tahun = Carbon::parse($this->tanggal)->year;
+        $this->month = Carbon::parse($this->tanggal)->month;
+        $this->year = Carbon::parse($this->tanggal)->year;
+
         $this->is_sunday = Carbon::parse($this->tanggal)->isSunday();
         $this->is_hari_libur_nasional = is_libur_nasional($this->tanggal);
         $this->is_friday = is_friday($this->tanggal);
+        if ($this->bulan_terakhir != $this->month) {
+            $this->bulan_terakhir = $this->month;
+            $this->reload_placement_jabatan();
+        }
         $this->resetPage();
     }
 
@@ -491,6 +565,10 @@ class Newpresensi extends Component
         $this->is_sunday = Carbon::parse($this->tanggal)->isSunday();
         $this->is_hari_libur_nasional = is_libur_nasional($this->tanggal);
         $this->is_friday = is_friday($this->tanggal);
+        if ($this->bulan_terakhir != $this->month) {
+            $this->bulan_terakhir = $this->month;
+            $this->reload_placement_jabatan();
+        }
         $this->resetPage();
     }
 
@@ -586,22 +664,17 @@ class Newpresensi extends Component
 
 
 
-        // Dropdown placement
-        $placements = Placement::select('id', 'placement_name')
-            ->orderBy('placement_name')
-            ->get();
 
-        // Dropdown jabatan berdasarkan placement (tanpa kolom placement_id)
-        $jabatans = Jabatan::whereIn('id', function ($q) {
-            $q->select('jabatan_id')
-                ->from('karyawans')
-                ->when($this->placementFilter, function ($sub) {
-                    $sub->where('placement_id', $this->placementFilter);
-                })
-                ->whereNotNull('jabatan_id');
-        })
-            ->orderBy('nama_jabatan')
-            ->get();
+
+
+
+
+        // Dropdown placement
+        // $placements = Placement::select('id', 'placement_name')
+        //     ->orderBy('placement_name')
+        //     ->get();
+
+
 
 
 
@@ -611,8 +684,7 @@ class Newpresensi extends Component
 
         return view('livewire.newpresensi', [
             'datas' => $datas,
-            'placements' => $placements,
-            'jabatans' => $jabatans,
+
         ]);
     }
 }
