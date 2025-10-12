@@ -125,7 +125,7 @@ with font-awesome or any other icon font library -->
             <li class="nav-item {{ 'newpresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/newpresensi" class="nav-link">
                     <i class="nav-icon fas fa-clipboard-check"></i>
-                    <p>{{ __('New Presensi') }}</p>
+                    <p>{{ __('Presensi') }}</p>
                 </a>
             </li>
 
