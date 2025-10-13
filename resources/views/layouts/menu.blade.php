@@ -83,7 +83,6 @@ with font-awesome or any other icon font library -->
 
 
         @if (Auth::user()->role >= 5)
-
             @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'dataresigned' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/dataresigned" class="nav-link">
