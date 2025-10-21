@@ -1,4 +1,4 @@
-<div class="sidebar bg-dark text-white d-flex flex-column justify-content-between vh-100 py-2">
+<div class="sidebar bg-dark text-white d-flex flex-column justify-content-between vh-100 p-2">
     <!-- Bagian Atas -->
     <div class="d-flex flex-column overflow-auto">
         <!-- Logo -->
