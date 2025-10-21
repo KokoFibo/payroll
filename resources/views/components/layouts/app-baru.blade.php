@@ -132,9 +132,13 @@
 
         /* Main Content */
         .main-content {
-            margin-left: var(--sidebar-width);
+            /* width: 100% */
+            /* width: calc(100% - var(--sidebar-width)-30px); */
+            width: calc(100% - 220px);
+            /* margin-left: var(--sidebar-width); */
+            margin-left: calc(var(--sidebar-width) - 30px);
             /* margin-left: 220px; */
-            min-height: 100vh;
+            /* min-height: 100vh; */
             transition: margin-left 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -185,68 +189,74 @@
 
 <body>
 
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <div class="logo">
-            <i class="bi bi-box"></i> <span class="text">Yifang</span>
-        </div>
+    <div class="d-flex" style="width: 100%;">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            {{-- <div class="logo">
+                <i class="bi bi-box"></i> <span class="text">Yifang</span>
+            </div> --}}
 
-        <div class="menu-container">
-            @include('layouts.menu-baru')
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div id="main-content" class="main-content">
-
-        <header>
-            <div class="d-flex align-items-center">
-                <button id="toggleSidebar" class="btn btn-outline-light me-2 ps-2"><i class="bi bi-list"></i></button>
-                {{-- <h5 class="mb-0">Dashboard</h5> --}}
-
+            <div class="menu-container">
+                @include('layouts.menu-baru')
             </div>
-            <div class="header-title">Yifang Investment Group Payroll System (OS)</div>
-            <div class="welcome">
-                @if (auth()->user()->language == 'Cn')
-                    @if (app()->getLocale() == 'id')
-                        {{-- <a class="dropdown-item" href="{{ url('locale/en') }}">{{ __('english') }}</a> --}}
-                        <a class="nav-link" href="{{ url('locale/cn') }}">{{ __('中文') }}</a>
-                    @endif
-                    @if (app()->getLocale() == 'cn')
-                        <a class="nav-link" href="{{ url('locale/id') }}">{{ __('英语') }}</a>
-                    @endif
-                @endif
-                <div>
-                    Welcome, {{ auth()->user()->name }}
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content" class="main-content">
+
+            <header style="width: 100%">
+                <div class="d-flex align-items-center">
+                    <button id="toggleSidebar" class="btn btn-outline-light " style="margin-left: 30px"><i
+                            class="bi bi-list"></i></button>
+                    {{-- <h5 class="mb-0">Dashboard</h5> --}}
                 </div>
+                <div class="header-title">Yifang Investment Group Payroll System (OS)</div>
+                <div class="welcome">
+                    @if (auth()->user()->language == 'Cn')
+                        @if (app()->getLocale() == 'id')
+                            {{-- <a class="dropdown-item" href="{{ url('locale/en') }}">{{ __('english') }}</a> --}}
+                            <a class="nav-link" href="{{ url('locale/cn') }}">{{ __('中文') }}</a>
+                        @endif
+                        @if (app()->getLocale() == 'cn')
+                            <a class="nav-link" href="{{ url('locale/id') }}">{{ __('英语') }}</a>
+                        @endif
+                    @endif
+                    <div style="margin-right: 30px">
+                        Welcome, {{ auth()->user()->name }}
+                    </div>
+                </div>
+
+            </header>
+
+            <main>
+                <div>
+                    <div class="container-fluid-aja">
+                        {{ $slot ?? 'Konten ...' }}
+
+                    </div>
+            </main>
+
+            <style>
+                .container-fluid-aja {
+                    /* width: calc(100% - var(--sidebar-width)); */
+                    width: 100%;
+                    /* margin: 0 auto; */
+                    transition: width 0.3s ease;
+                }
+
+                /* Kalau sidebar disembunyikan */
+                .sidebar-hidden .container-fluid-aja {
+                    width: 100%;
+                }
+            </style>
+            <div class="mt-5">
+
             </div>
 
-        </header>
-
-        <main>
-            <div class="container-fluid">
-                {{ $slot ?? 'Konten ...' }}
-
-            </div>
-        </main>
-
-        <style>
-            .container-fluid {
-                /* width: calc(100% - var(--sidebar-width)); */
-                width: 100%;
-                margin: 0 auto;
-                transition: width 0.3s ease;
-            }
-
-            /* Kalau sidebar disembunyikan */
-            .sidebar-hidden .container-fluid {
-                width: 100%;
-            }
-        </style>
-
-        <footer>
-            Copyright © 2025 Yifang Investment Group | All rights reserved.
-        </footer>
+            {{-- <footer >
+                Copyright © 2025 Yifang Investment Group | All rights reserved.
+            </footer> --}}
+        </div>
     </div>
 
     <!-- JS -->
@@ -260,10 +270,16 @@
             if (sidebar.style.display === 'none') {
                 sidebar.style.display = 'flex';
                 // mainContent.style.marginLeft = 'var(--sidebar-width)';
-                mainContent.style.marginLeft = '220px';
+                mainContent.style.marginLeft = 'calc(var(--sidebar-width) - 30px)';
+                mainContent.style.width = 'calc(100% - 220px)';
+
+                //  width: calc(100% - 220px);
+                /* margin-left: var(--sidebar-width); */
+                // mainContent.style.marginLeft = '220px';
             } else {
                 sidebar.style.display = 'none';
                 mainContent.style.marginLeft = '0';
+                mainContent.style.width = '100%';
             }
         });
 

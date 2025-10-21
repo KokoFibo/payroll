@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiPresensiController;
 use App\Http\Controllers\LaporanApiController;
 use App\Http\Controllers\LarkController;
 
@@ -32,3 +33,5 @@ Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
 
 Route::get('os-placement/{month}/{year}/{placement_id}', [LaporanApiController::class, 'osPlacement']);
 Route::get('os-placement-name/{month}/{year}/{placement_name}', [LaporanApiController::class, 'osPlacementName']);
+
+route::get('user-presensi/{month}/{year}/{user_id}', [ApiPresensiController::class, 'userPresensi']);
