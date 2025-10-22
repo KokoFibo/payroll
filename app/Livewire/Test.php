@@ -87,132 +87,23 @@ class Test extends Component
     $year = 2025;
     $month = 9;
 
-    $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id'])
-      ->join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-      ->whereNull('first_in')
-      ->whereNull('first_out')
-      ->whereNull('second_in')
-      ->whereNull('second_out')
-      ->whereNull('overtime_in')
-      ->whereNull('overtime_out')
+    $periods = Yfrekappresensi::selectRaw('YEAR(date) as year, MONTH(date) as month')
+      ->where('user_id', 2449)
+      ->distinct()
+      ->orderByDesc('year')
+      ->orderByDesc('month')
       ->get();
 
-    dd($datas);
+    dd($periods);
 
-
-    // untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
-    $data = Payroll::whereYear('date', $year)
-      ->whereMonth('date', $month)
-      ->where('metode_penggajian', 'Perbulan')
-      ->get();
-
-    // Ambil semua presensi untuk user yang ada di payroll
-    $userIds = $data->pluck('id_karyawan')->unique();
-
-    $presensisAll = Yfrekappresensi::whereYear('date', $year)
-      ->whereMonth('date', $month)
-      ->whereIn('user_id', $userIds)
-      ->get()
-      ->groupBy('user_id');
-
-
-    foreach ($data as $d) {
-      if (!isset($presensisAll[$d->id_karyawan])) continue;
-
-      foreach ($presensisAll[$d->id_karyawan] as $p) {
-        $isSunday = is_sunday($p->date);
-        $isLibur = is_libur_nasional($p->date);
-        $isFriday = is_friday($p->date);
-        $isSaturday = is_saturday($p->date);
-
-        // Default nilai awal
-        $p->total_hari_kerja = $p->total_hari_kerja ?? 0;
-        $p->total_jam_kerja_libur = $p->total_jam_kerja_libur ?? 0;
-
-        // Prioritas Minggu dulu
-        if ($isSunday) {
-          $p->total_hari_kerja = 2;
-          $p->total_jam_kerja_libur = 16;
-        }
-        // Kalau bukan Minggu tapi Libur Nasional
-        elseif ($isLibur) {
-          if ($isFriday) {
-            $p->total_jam_kerja_libur = 15;
-          } elseif ($isSaturday) {
-            $p->total_jam_kerja_libur = 12;
-          } else {
-            $p->total_jam_kerja_libur = 16;
-          }
-        }
-
-        $p->updateQuietly([
-          'total_hari_kerja' => $p->total_hari_kerja,
-          'total_jam_kerja_libur' => $p->total_jam_kerja_libur,
-        ]);
-
-        // $p->save(); // Simpan hanya sekali
-      }
-    }
-
-
-    dd('done21');
-    // end untuk ganti hari kerja jadi 0 jika hari minggu atau libur nasional untuk status perbulan
-
-    $payrolls = Payroll::whereYear('date', $year)
-      ->whereMonth('date', $month)
-      ->get();
-
-    $liburDates = Liburnasional::whereYear('tanggal_mulai_hari_libur', $year)
-      ->whereMonth('tanggal_mulai_hari_libur', $month)
-      ->pluck('tanggal_mulai_hari_libur')
-      ->toArray();
-
-    $beda = [];
-    $jumlahSama = 0;
-
-    foreach ($payrolls as $payroll) {
-      // ambil semua presensi milik karyawan
-      $presensis = Yfrekappresensi::whereYear('date', $year)
-        ->whereMonth('date', $month)
-        ->where('user_id', $payroll->id_karyawan)
-        ->get();
-
-      if ($presensis->isEmpty()) {
-        continue;
-      }
-
-      // hitung total hari kerja (exclude Minggu & tanggal libur)
-      $totalHariKerja = $presensis->reject(function ($p) use ($liburDates) {
-        return is_sunday($p->date) || in_array($p->date, $liburDates);
-      })->count();
-
-      // hitung total jam kerja dan lembur
-      $totalJamKerja = $presensis->sum('total_jam_kerja');
-      $totalJamLembur = $presensis->sum('total_jam_lembur');
-
-      // cek perbedaan data
-      if (
-        $payroll->hari_kerja != $totalHariKerja ||
-        $payroll->jam_kerja != $totalJamKerja ||
-        $payroll->jam_lembur != $totalJamLembur
-      ) {
-        $beda[] = [
-          'id_karyawan' => $payroll->id_karyawan,
-          'hari_kerja_payroll' => $payroll->hari_kerja,
-          'hari_kerja_presensi' => $totalHariKerja,
-          'jam_kerja_payroll' => $payroll->jam_kerja,
-          'jam_kerja_presensi' => $totalJamKerja,
-          'jam_lembur_payroll' => $payroll->jam_lembur,
-          'jam_lembur_presensi' => $totalJamLembur,
-        ];
-      } else {
-        $jumlahSama++;
-      }
-    }
-
-    return view('livewire.test', [
-      'beda' => $beda,
-      'jumlah_sama' => $jumlahSama,
+    return response()->json([
+      'success' => true,
+      'data' => $periods
     ]);
+
+
+
+
+    return view('livewire.test');
   }
 }
