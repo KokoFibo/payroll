@@ -44,17 +44,44 @@
     </div>
     {{-- tabel per jam  --}}
     <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0">Statistik Aktivitas per Hari & Jam</h5>
-            <select wire:model="period" class="form-select form-select-sm" style="width: auto;">
-                <option value="week">1 Minggu</option>
-                <option value="2weeks">2 Minggu</option>
-                <option value="month">1 Bulan</option>
-            </select>
+
+            <div class="d-flex gap-2 align-items-center">
+                <!-- 🔹 Filter Periode -->
+                <select wire:model="period" class="form-select form-select-sm" style="width: auto;">
+                    <option value="week">1 Minggu</option>
+                    <option value="2weeks">2 Minggu</option>
+                    <option value="month">1 Bulan</option>
+                </select>
+
+                <!-- 🔹 Select Bulan yang tersedia -->
+                <select wire:model="deleteMonth" class="form-select form-select-sm" style="width: auto;">
+                    <option value="">Pilih Bulan</option>
+                    @foreach ($availableMonths as $m)
+                        <option value="{{ $m['value'] }}">{{ $m['label'] }}</option>
+                    @endforeach
+                </select>
+
+                <!-- 🔹 Tombol hapus -->
+                <button wire:click="deleteByMonth"
+                    onclick="return confirm('Yakin ingin hapus semua data pada bulan ini?')"
+                    class="btn btn-danger btn-sm">
+                    Hapus Bulan
+                </button>
+            </div>
         </div>
 
         <div class="card-body">
-            @if (count($data_per_hari) > 0)
+            @if (session()->has('success'))
+                <div class="alert alert-success py-2">{{ session('success') }}</div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger py-2">{{ session('error') }}</div>
+            @endif
+
+            @if (!empty($data_per_hari) && count($data_per_hari) > 0)
                 @foreach ($data_per_hari as $hari)
                     <div class="mb-4 border rounded">
                         <div class="bg-light p-2 fw-bold">
@@ -85,6 +112,8 @@
             @endif
         </div>
     </div>
+
+
 
 
 </div>
