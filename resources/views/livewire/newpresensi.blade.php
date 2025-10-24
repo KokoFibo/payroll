@@ -109,7 +109,7 @@
                                     'user_id' => '',
                                     'user_id' => 'User ID',
                                     'nama' => 'Nama',
-                                    'date' => 'Date',
+                                    'date' => 'Tanggal',
                                     'metode_penggajian' => 'Metode Penggajian',
                                     'placement_id' => 'Directorate',
                                     'jabatan_id' => 'Jabatan',
