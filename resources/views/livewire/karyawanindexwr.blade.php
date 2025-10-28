@@ -27,7 +27,7 @@
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
                     <div class="col-12 col-xl-3">
-                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
+                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }} </h3>
                         @if (isDataUtamaLengkap() > 0)
                             <a href="/datatidaklengkap"><button class="btn btn-danger">Data Utama Tidak
                                     Lengkap</button></a>
@@ -51,6 +51,7 @@
                                 aria-label="Default select example">
                                 <option value="0">{{ __('All Status') }}</option>
                                 <option value="1">{{ __('Aktif') }}</option>
+                                <option value="4">{{ __('Dirumahkan') }}</option>
                                 <option value="2">{{ __('Resigned') }}</option>
                                 <option value="3">{{ __('Blacklist') }}</option>
                             </select>

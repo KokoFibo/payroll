@@ -47,6 +47,8 @@
                 z-index: 3;
             }
         }
+
+        nama
     </style>
     <div class="p-2">
 
@@ -138,18 +140,16 @@
                         <div>
                             <select class="form-select" wire:model.live="year">
                                 @foreach ($select_year as $sy)
-                                    <option value="{{ $sy }}">{{ $sy }}</option>
+                                    <option value="2025">2025</option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
                             <select class="form-select" wire:model.live="month">
-                                {{-- <option selected>Open this select menu</option>  --}}
 
-                                <option value="9">sep</option>
-                                @foreach ($select_month as $sm)
-                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
-                                @endforeach
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
                             </select>
 
                         </div>
@@ -187,6 +187,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
                         <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('New Rebuild') }}</button>
+                        <button wire:click="fetchData" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('golang fetchdata') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
@@ -314,7 +316,7 @@
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('id_karyawan')">
-                                    {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
+                                    {{ __('bulan') }} <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('date')">{{ __('Date') }} <i
@@ -538,7 +540,7 @@
                 {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }} )
             </p>
 
-            <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
+
         </div>
     </div>
     @if ($data_payroll != null && $data_karyawan != null)

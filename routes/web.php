@@ -100,6 +100,7 @@ use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Newpresensi;
+use App\Livewire\Payroll2;
 
 // Middleware
 Auth::routes([
@@ -243,6 +244,7 @@ Route::middleware(['auth'])->group(function () {
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
                     Route::get('/payroll', Payrollwr::class);
+                    Route::get('/payroll2', Payroll2::class);
                     Route::get('getexcel', [TerControler::class, 'index']);
                     Route::post('upload/ter', [TerControler::class, 'upload']);
                     Route::get('ter', Terwr::class);
