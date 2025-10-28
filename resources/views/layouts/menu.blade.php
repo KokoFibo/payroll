@@ -147,7 +147,16 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif --}}
-
+            @if (Auth::user()->role == 8)
+                <li class="nav-item {{ 'payroll' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/payroll2" class="nav-link">
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
+                            {{ __('Payroll2') }}
+                        </p>
+                    </a>
+                </li>
+            @endif
 
             @if (Auth::user()->role >= 6)
                 <li class="nav-item {{ 'payroll' == request()->path() ? 'bg-secondary rounded' : '' }}">
@@ -158,6 +167,7 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+
                 <li class="nav-item {{ 'gajibpjs' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/gajibpjs" class="nav-link">
                         <i class="nav-icon fa-solid fa-shield-halved"></i>
