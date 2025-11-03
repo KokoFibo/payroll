@@ -81,6 +81,8 @@ function quickRebuild($month, $year)
         $shift_malam = 0;
         $late = 0;
         $tanggal = null;
+        $hari_kerja_libur = 0;
+        $jam_lembur_libur = 0;
 
         foreach ($data as $d) {
             $total_hari_kerja += $d->total_hari_kerja;
@@ -89,6 +91,14 @@ function quickRebuild($month, $year)
             $total_jam_kerja_libur += $d->total_jam_kerja_libur;
             if ($d->no_scan_history) $no_scan_history++;
             if ($d->late_history) $late_history++;
+
+            // $hari_kerja_libur = 0;
+            // $jam_lembur_libur = 0;
+
+            if (is_sunday($d->date) || is_libur_nasional($d->date)) {
+                $hari_kerja_libur++;
+                $jam_lembur_libur += $d->total_jam_lembur;
+            }
             // $no_scan_history += $d->no_scan_history;
             // $late_history += $d->late_history;
 
@@ -97,14 +107,6 @@ function quickRebuild($month, $year)
             $late += $d->late;
             $tanggal = $d->date;
         }
-        // $hitung = Yfrekappresensi::whereYear('date', $year)
-        //     ->whereMonth('date', $month)
-        //     ->where('user_id', $user_id)
-        //     ->sum('shift_malam');
-
-        // if ($hitung != $shift_malam) {
-        //     dd('ada yang beda nih : shift malam: ' . $shift_malam . ' , hitung: ' . $hitung . ' ,user id:' . $user_id);
-        // }
 
 
 
@@ -179,7 +181,20 @@ function quickRebuild($month, $year)
         $total_potongan_dari_karyawan = 0;
         $gaji_libur = 0;
 
-        $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
+        // if ($user_id == 2174) {
+        //     dd($hari_kerja_libur, $jam_lembur_libur, $user_id);
+        // }
+        if ($karyawan->metode_penggajian == 'Perjam') {
+            $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
+        } else {
+            $gaji_libur = ($hari_kerja_libur * ($karyawan->gaji_pokok / $total_n_hari_kerja) * 2);
+        }
+        // if ($karyawan->metode_penggajian == 'Perjam') {
+        //     $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198) + ($jam_lembur_libur * $karyawan->gaji_overtime * 2));
+        // } else {
+        //     $gaji_libur = ($hari_kerja_libur * ($karyawan->gaji_pokok / $total_n_hari_kerja) * 2) + ($jam_lembur_libur * $karyawan->gaji_overtime * 2);
+        // }
+
         // if ($total_jam_kerja_libur > 0) dd($karyawan->id_karyawan);
 
         $total_bonus_dari_karyawan = $karyawan->bonus + $karyawan->tunjangan_jabatan + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_skill + $karyawan->tunjangan_lembur_sabtu + $karyawan->tunjangan_lama_kerja;
