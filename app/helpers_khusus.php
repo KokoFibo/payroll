@@ -210,7 +210,7 @@ function quickRebuild($month, $year)
             $cx++;
         }
 
-        $gaji_karyawan_bulanan = ($karyawan->gaji_pokok / $total_n_hari_kerja) * ($total_hari_kerja + $manfaat_libur);
+        $gaji_karyawan_bulanan = ($karyawan->gaji_pokok / $total_n_hari_kerja) * ($total_hari_kerja + $manfaat_libur + $hari_kerja_libur);
 
         if (trim($karyawan->metode_penggajian) == 'Perjam') {
             $subtotal = $total_jam_kerja * ($karyawan->gaji_pokok / 198) + $total_jam_lembur * $karyawan->gaji_overtime;
