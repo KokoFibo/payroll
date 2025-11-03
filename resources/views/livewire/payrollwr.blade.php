@@ -185,8 +185,6 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
-                        <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
-                            class="btn btn-primary nightowl-daylight">{{ __('New Rebuild') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
@@ -198,8 +196,12 @@
                         class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
 
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
-                    <button wire:click="buat_payroll('queue')"
-                        {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
+                    @if (auth()->user()->role == 8)
+                        <button wire:click="buat_payroll('queue')"
+                            {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
+                            class="btn btn-primary nightowl-daylight">{{ __('old Rebuild') }}</button>
+                    @endif
+                    <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                         class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
                 </div>
             </div>
