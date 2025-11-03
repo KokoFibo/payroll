@@ -41,7 +41,12 @@
 
                         <tr class="table-success">
                             <th class="text-center fs-5"></th>
-                            <th class="text-center fs-5">{{ $total_hari_kerja }} + {{ $total_hari_kerja_libur }}</th>
+                            @if ($total_hari_kerja_libur > 0)
+                                <th class="text-center fs-5">{{ $total_hari_kerja }} + {{ $total_hari_kerja_libur }}
+                                </th>
+                            @else
+                                <th class="text-center fs-5">{{ $total_hari_kerja }}</th>
+                            @endif
                             <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
                             <th class="text-center fs-5">{{ $total_jam_lembur }}</th>
                             <th class="text-center fs-5">{{ $total_keterlambatan }}</th>
