@@ -199,6 +199,8 @@ class YfpresensiController extends Controller
                 ->where('user_id', $kh->user_id)
                 ->get();
             $is_saturday = khusus_is_saturday($kh->date);
+            $is_sunday = is_sunday($kh->date);
+            $is_libur_nasional = is_libur_nasional($kh->date);
             // Batasanm Puasa
 
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
@@ -503,6 +505,8 @@ class YfpresensiController extends Controller
             $total_hari_kerja = 0;
             $total_jam_kerja = 0;
             $total_jam_lembur = 0;
+            $total_hari_kerja_libur = 0;
+            $total_jam_lembur_libur = 0;
 
             if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
                 $total_hari_kerja = 1;
@@ -514,6 +518,13 @@ class YfpresensiController extends Controller
             if (isset($hasil['jam_lembur'])) {
                 $total_jam_lembur = $hasil['jam_lembur'];
             }
+
+            if ($is_sunday || $is_libur_nasional) {
+                $total_hari_kerja_libur = 1;
+                $total_jam_lembur_libur = $total_jam_lembur;
+            }
+
+
 
             if (is_friday($kh->date)) $late = null;
             Yfrekappresensi::create([
@@ -531,6 +542,8 @@ class YfpresensiController extends Controller
                 'total_hari_kerja' => $total_hari_kerja,
                 'total_jam_lembur' => $total_jam_lembur,
                 // 'total_jam_kerja_libur' => $jam_kerja_libur,
+                'total_hari_kerja_libur' => $total_hari_kerja_libur,
+                'total_jam_lembur_libur' => $total_jam_lembur_libur,
 
                 'shift' => $shift,
                 'late' => $late,

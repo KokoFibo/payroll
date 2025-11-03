@@ -752,6 +752,8 @@ class YfpresensiController extends Controller
             $total_jam_kerja = 0;
             $total_jam_lembur = 0;
             $jam_kerja_libur = 0;
+            $total_hari_kerja_libur = 0;
+            $total_jam_lembur_libur = 0;
 
             if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
                 $total_hari_kerja = 1;
@@ -826,6 +828,11 @@ class YfpresensiController extends Controller
             }
             if ($late > 0) $tambahan_shift_malam = 0;
 
+            if ($is_sunday || $is_hari_libur_nasional) {
+                $total_hari_kerja_libur = 1;
+                $total_jam_lembur_libur = $total_jam_lembur;
+            }
+
             Yfrekappresensi::create([
                 'shift_malam' => $tambahan_shift_malam ?? 0,
                 'user_id' => $user_id,
@@ -842,6 +849,9 @@ class YfpresensiController extends Controller
                 'total_hari_kerja' => $total_hari_kerja,
                 'total_jam_lembur' => $total_jam_lembur,
                 'total_jam_kerja_libur' => $jam_kerja_libur,
+
+                'total_hari_kerja_libur' => $total_hari_kerja_libur = 1,
+                'total_jam_lembur_libur' => total_jam_lembur_libur,
 
                 'shift' => $shift,
                 'late' => $late,

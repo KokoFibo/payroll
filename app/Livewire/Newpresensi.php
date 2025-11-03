@@ -52,6 +52,7 @@ class Newpresensi extends Component
     public $month, $year, $user_id, $name;
     public $is_presensi_locked, $is_sunday, $is_hari_libur_nasional, $is_friday;
     public $show_name, $show_id, $delete_id;
+    public $total_hari_kerja_libur;
 
     public $placements, $jabatans, $bulan_terakhir;
 
@@ -147,6 +148,9 @@ class Newpresensi extends Component
         $total_tambahan_shift_malam = 0;
 
 
+        $total_hari_kerja_libur = 0;
+
+
 
         $data = Yfrekappresensi::with('karyawan')->where('user_id', $user_id)
             ->whereMonth('date', $this->month)
@@ -164,9 +168,10 @@ class Newpresensi extends Component
                     $tgl = tgl_lengkap($d->date);
 
                     $jam_kerja = $d->total_jam_kerja;
-                    $jam_kerja = $d->total_jam_kerja;
                     $terlambat = $d->late;
                     $jam_lembur = $d->total_jam_lembur;
+                    $hari_kerja_libur = $d->total_hari_kerja_libur;
+
                     //    $tambahan_shift_malam = $d->date
 
                     $table_warning = false;
@@ -226,19 +231,21 @@ class Newpresensi extends Component
                         'jam_lembur' => $jam_lembur,
                         'tambahan_shift_malam' => $tambahan_shift_malam,
                         'table_warning' => $table_warning,
+                        'hari_kerja_libur' => $hari_kerja_libur,
 
                     ]);
 
                     $total_hari_kerja++;
 
-                    if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                        $total_hari_kerja--;
-                    }
+                    // if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                    //     $total_hari_kerja--;
+                    // }
 
                     $total_jam_kerja += $jam_kerja;
                     $total_jam_lembur += $jam_lembur;
                     $total_keterlambatan += $terlambat;
                     $total_tambahan_shift_malam += $tambahan_shift_malam;
+                    $total_hari_kerja_libur += $hari_kerja_libur;
                 }
             }
             $this->total_hari_kerja = $total_hari_kerja;
@@ -246,6 +253,7 @@ class Newpresensi extends Component
             $this->total_jam_lembur = $total_jam_lembur;
             $this->total_keterlambatan = $total_keterlambatan;
             $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
+            $this->total_hari_kerja_libur = $total_hari_kerja_libur;
         }
     }
 

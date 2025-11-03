@@ -85,16 +85,24 @@ class Test extends Component
   public function render()
   {
     $year = 2025;
-    $month = 9;
+    $month = 10;
 
-    $periods = Yfrekappresensi::selectRaw('YEAR(date) as year, MONTH(date) as month')
-      ->where('user_id', 2449)
-      ->distinct()
-      ->orderByDesc('year')
-      ->orderByDesc('month')
+    $datas = Yfrekappresensi::whereMonth('date', $month)
+      ->whereYear('date', $year)
       ->get();
 
-    dd($periods);
+    foreach ($datas as $data) {
+      $is_sunday = is_sunday($data->date);
+      $is_hari_libur_nasional = is_libur_nasional($data->date);
+
+      if ($is_sunday || $is_hari_libur_nasional) {
+        $data->total_hari_kerja_libur = 1;
+        $data->total_jam_lembur_libur = $data->total_jam_lembur;
+        $data->save();
+      }
+    }
+
+    dd('done');
 
     return response()->json([
       'success' => true,
