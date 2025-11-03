@@ -92,13 +92,13 @@ function quickRebuild($month, $year)
             if ($d->no_scan_history) $no_scan_history++;
             if ($d->late_history) $late_history++;
 
-            // $hari_kerja_libur = 0;
-            // $jam_lembur_libur = 0;
+            $hari_kerja_libur  += $d->total_hari_kerja_libur;
+            $jam_lembur_libur  += $d->total_jam_lembur_libur;
 
-            if (is_sunday($d->date) || is_libur_nasional($d->date)) {
-                $hari_kerja_libur++;
-                $jam_lembur_libur += $d->total_jam_lembur;
-            }
+            // if (is_sunday($d->date) || is_libur_nasional($d->date)) {
+            //     $hari_kerja_libur++;
+            //     $jam_lembur_libur += $d->total_jam_lembur;
+            // }
             // $no_scan_history += $d->no_scan_history;
             // $late_history += $d->late_history;
 

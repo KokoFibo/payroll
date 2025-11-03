@@ -35,13 +35,13 @@
                                 <td class="text-center">{{ $d['jam_kerja'] }}</td>
                                 <td class="text-center">{{ $d['jam_lembur'] }}</td>
                                 <td class="text-center">{{ $d['terlambat'] }}</td>
-                                <td class="text-center">{{ $d['tambahan_shift_malam'] }}</td>
+                                <td class="text-center">{{ $d['tambahan_shift_malam'] }} </td>
                             </tr>
                         @endforeach
 
                         <tr class="table-success">
                             <th class="text-center fs-5"></th>
-                            <th class="text-center fs-5">{{ $total_hari_kerja }}</th>
+                            <th class="text-center fs-5">{{ $total_hari_kerja }} + {{ $total_hari_kerja_libur }}</th>
                             <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
                             <th class="text-center fs-5">{{ $total_jam_lembur }}</th>
                             <th class="text-center fs-5">{{ $total_keterlambatan }}</th>
