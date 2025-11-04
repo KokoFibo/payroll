@@ -313,9 +313,9 @@ class UserMobile extends Component
 
                 $this->total_hari_kerja++;
 
-                if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
-                    $this->total_hari_kerja--;
-                }
+                // if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
+                //     $this->total_hari_kerja--;
+                // }
 
 
 

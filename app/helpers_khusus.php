@@ -92,7 +92,9 @@ function quickRebuild($month, $year)
             if ($d->no_scan_history) $no_scan_history++;
             if ($d->late_history) $late_history++;
 
+
             $hari_kerja_libur  += $d->total_hari_kerja_libur;
+
             $jam_lembur_libur  += $d->total_jam_lembur_libur;
 
             $shift_malam +=  $d->shift_malam;
@@ -284,6 +286,9 @@ function quickRebuild($month, $year)
         if ($karyawan->metode_penggajian == '') {
             dd('metode penggajian belum diisi', $karyawan->id_karyawan);
         }
+        if ($karyawan->metode_penggajian == 'Perjam') {
+            $hari_kerja_libur = 0;
+        }
 
         Payroll::create([
             'jp' => $jp,
@@ -317,9 +322,6 @@ function quickRebuild($month, $year)
 
             // 'jkk' => $karyawan->jkk,
             // 'jkm' => $karyawan->jkm,
-
-
-
 
             'hari_kerja_libur' => $hari_kerja_libur,
             'jam_lembur_libur' => $jam_lembur_libur,

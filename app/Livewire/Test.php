@@ -87,6 +87,16 @@ class Test extends Component
     $year = 2025;
     $month = 10;
 
+    $data = Payroll::whereMonth('date', $month)
+      ->whereYear('date', $year)
+      ->where('id_karyawan', 2174)
+      ->first();
+
+    dd($data);
+
+
+
+
     $datas = Yfrekappresensi::whereMonth('date', $month)
       ->whereYear('date', $year)
       ->get();

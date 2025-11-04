@@ -111,7 +111,7 @@
                                         class="bg-gray-800 text-white  px-3 py-1 rounded-xl text-sm">{{ __('Slip Gaji') }}</button>
                                 @else
                                     <button wire:click="detail_gaji"
-                                        class="bg-white text-black font-semibold px-3 py-1 rounded-xl text-sm">{{ __('Detail Gaji') }}</button>
+                                        class="bg-white text-black font-semibold px-3 py-1 rounded-xl text-sm">{{ __('Presensi') }}</button>
                                 @endif
 
                             </div>
@@ -149,9 +149,10 @@
 
                                     <div>
                                         <p class="text-sm">{{ __('Hari') }}</p>
-                                        <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p>
+                                        {{-- <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p> --}}
+                                        <p class="font-bold text-green-500 text-lg">
+                                            {{ $data_payroll->hari_kerja + $data_payroll->hari_kerja_libur }}</p>
                                     </div>
-
                                     <div>
                                         <p class="text-sm">{{ __('J. Kerja') }}</p>
                                         <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
@@ -248,7 +249,8 @@
                                                 {{ __('T. Hari Kerja') }}
                                             </td>
                                             <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                {{ $data_payroll->hari_kerja }} {{ __('hari') }}</td>
+                                                {{ $data_payroll->hari_kerja + $data_payroll->hari_kerja_libur }}
+                                                {{ __('hari') }}</td>
                                         </tr>
                                         @if ($data_payroll->gaji_lembur != 0)
                                             <tr>
@@ -349,8 +351,9 @@
                                                 </td>
                                             </tr>
                                         @endif
-                                        {{-- @if ($data_payroll->gaji_pokok >= 4500000) --}}
-                                        @if ($data_payroll->gaji_libur != 0)
+
+                                        {{-- untuk menampilkan gaji libur --}}
+                                        {{-- @if ($data_payroll->gaji_libur != 0)
                                             <tr>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Gaji Libur
                                                 </td>
@@ -358,7 +361,7 @@
                                                     Rp. {{ number_format($data_payroll->gaji_libur) }}
                                                 </td>
                                             </tr>
-                                        @endif
+                                        @endif --}}
                                         @if ($data_payroll->jht != 0)
                                             <tr>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
