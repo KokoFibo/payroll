@@ -755,7 +755,7 @@ class YfpresensiController extends Controller
             $total_hari_kerja_libur = 0;
             $total_jam_lembur_libur = 0;
 
-            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
+            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 1) {
                 $total_hari_kerja = 1;
             }
 
