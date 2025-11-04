@@ -123,6 +123,9 @@
                                     'total_hari_kerja' => 'Total Hari Kerja',
                                     'total_jam_lembur' => 'Total Jam Lembur',
                                     'total_jam_kerja_libur' => 'Total Jam Kerja Libur',
+                                    'total_hari_kerja_libur' => 'Total Hari Kerja Libur',
+                                    'total_jam_lembur_libur' => 'Total Jam Lembur Libur',
+
                                     'late' => 'Late',
                                     'no_scan' => 'No Scan',
                                     'shift' => 'Shift',
@@ -133,9 +136,9 @@
                             </th>
                             @foreach ($columns as $field => $label)
                                 {{-- hanya tampilkan kolom total_jam_kerja_libur kalau role == 8 --}}
-                                @if ($field === 'total_jam_kerja_libur' && Auth::user()->role != 8)
+                                {{-- @if ($field === 'total_jam_kerja_libur' && Auth::user()->role != 8)
                                     @continue
-                                @endif
+                                @endif --}}
                                 <th wire:click="sortBy('{{ $field }}')" style="cursor:pointer;">
                                     {{ $label }}
                                     @if ($sortField === $field)
@@ -198,6 +201,8 @@
                                 <td>{{ $data->total_jam_lembur }}</td>
                                 @if (Auth::user()->role == 8)
                                     <td>{{ $data->total_jam_kerja_libur }}</td>
+                                    <td>{{ $data->total_hari_kerja_libur }}</td>
+                                    <td>{{ $data->total_jam_lembur_libur }}</td>
                                 @endif
                                 <td>{{ $data->late }}</td>
                                 {{-- <td>{{ $data->no_scan }}</td> --}}

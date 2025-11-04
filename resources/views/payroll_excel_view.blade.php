@@ -256,7 +256,7 @@
                     <td style="text-align: center"> {{ nama_placement($d->placement_id) }}</td>
                     <td style="text-align: center"> {{ nama_department($d->department_id) }}</td>
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
-                    <td> {{ $d->hari_kerja }}</td>
+                    <td> {{ $d->hari_kerja + $d->hari_kerja_libur }}</td>
                     <td> {{ $d->jam_kerja }}</td>
                     <td> {{ $d->jam_lembur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
