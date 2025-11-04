@@ -447,7 +447,7 @@ class Newpresensi extends Component
         $data->total_jam_kerja = 0;
         $data->total_jam_lembur = 0;
 
-        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
+        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 1) {
             $data->total_hari_kerja = 1;
         }
 
@@ -662,7 +662,8 @@ class Newpresensi extends Component
 
     public function render()
     {
-
+        $bulan = date('m', strtotime($this->tanggal));
+        $tahun = date('Y', strtotime($this->tanggal));
         if (! $this->is_kosong) {
             $query = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
                 ->select(
@@ -672,9 +673,14 @@ class Newpresensi extends Component
                     'karyawans.placement_id',
                     'karyawans.jabatan_id'
                 )
-                ->where('yfrekappresensis.date', $this->tanggal);
+                // ->where('yfrekappresensis.date', $this->tanggal);
+                // ->whereMonth('yfrekappresensis.date', $this->tanggal)
+                // ->whereYear('yfrekappresensis.date', $this->tanggal);
+                ->whereMonth('yfrekappresensis.date', $bulan)
+                ->whereYear('yfrekappresensis.date', $tahun);
 
 
+            // ->where('yfrekappresensis.date', $this->tanggal);
 
             // 🔍 Filter search
             if (!empty($this->search)) {
