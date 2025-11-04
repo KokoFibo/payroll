@@ -672,12 +672,17 @@ class Newpresensi extends Component
                     'karyawans.metode_penggajian',
                     'karyawans.placement_id',
                     'karyawans.jabatan_id'
-                )
-                // ->where('yfrekappresensis.date', $this->tanggal);
-                // ->whereMonth('yfrekappresensis.date', $this->tanggal)
-                // ->whereYear('yfrekappresensis.date', $this->tanggal);
-                ->whereMonth('yfrekappresensis.date', $bulan)
-                ->whereYear('yfrekappresensis.date', $tahun);
+                );
+
+            if (empty($this->search)) {
+                $query->where('yfrekappresensis.date', $this->tanggal);
+            } else {
+                $query->whereMonth('yfrekappresensis.date', date('m', strtotime($this->tanggal)))
+                    ->whereYear('yfrekappresensis.date', date('Y', strtotime($this->tanggal)));
+            }
+            // ->whereMonth('yfrekappresensis.date', $this->tanggal)
+            // ->whereYear('yfrekappresensis.date', $this->tanggal);
+
 
 
             // ->where('yfrekappresensis.date', $this->tanggal);
@@ -687,6 +692,11 @@ class Newpresensi extends Component
                 $query->where(function ($q) {
                     $q->where('karyawans.nama', 'like', '%' . $this->search . '%')
                         ->orWhere('yfrekappresensis.user_id', 'like', '%' . $this->search . '%');
+                    // ->whereMonth(
+                    //     'yfrekappresensis.date',
+                    //     date('m', strtotime($this->tanggal))
+                    // )
+                    // ->whereYear('yfrekappresensis.date', date('Y', strtotime($this->tanggal)));
                 });
             }
 
