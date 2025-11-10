@@ -84,44 +84,32 @@ class Test extends Component
 
   public function render()
   {
+    dd("aman");
     $year = 2025;
     $month = 10;
 
-    $data = Payroll::whereMonth('date', $month)
-      ->whereYear('date', $year)
-      ->where('id_karyawan', 2174)
-      ->first();
-
-    dd($data);
-
-
-
-
-    $datas = Yfrekappresensi::whereMonth('date', $month)
-      ->whereYear('date', $year)
+    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
+      ->select(
+        'yfrekappresensis.*',
+        'karyawans.metode_penggajian',
+        'karyawans.nama'
+      )
+      ->whereMonth('yfrekappresensis.date', $month)
+      ->whereYear('yfrekappresensis.date', $year)
+      ->where('karyawans.metode_penggajian', 'Perbulan')
+      // ->where('total_jam_kerja_libur', '>', 0)
+      // ->where('total_jam_kerja_libur', '<', 4)
+      // ->where('total_jam_kerja', '<', 4)
       ->get();
 
-    foreach ($datas as $data) {
-      $is_sunday = is_sunday($data->date);
-      $is_hari_libur_nasional = is_libur_nasional($data->date);
+    // dd($data);
 
-      if ($is_sunday || $is_hari_libur_nasional) {
-        $data->total_hari_kerja_libur = 1;
-        $data->total_jam_lembur_libur = $data->total_jam_lembur;
-        $data->save();
-      }
-    }
 
-    dd('done');
 
-    return response()->json([
-      'success' => true,
-      'data' => $periods
+
+
+    return view('livewire.test', [
+      'data' => $data
     ]);
-
-
-
-
-    return view('livewire.test');
   }
 }

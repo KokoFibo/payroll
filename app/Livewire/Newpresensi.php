@@ -504,6 +504,14 @@ class Newpresensi extends Component
                 $berhasil = 2;
             }
         }
+
+        if ($dataKaryawan->metode_penggajian == "Perbulan") {
+            if ($data->total_jam_kerja > 0) {
+                $data->total_hari_kerja = 1;
+            }
+        }
+
+
         $data->save();
         $this->delete_no_scan_history = false;
         $this->is_delete = false;
