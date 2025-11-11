@@ -84,7 +84,6 @@ class Test extends Component
 
   public function render()
   {
-    dd("aman");
     $year = 2025;
     $month = 10;
 
@@ -97,19 +96,16 @@ class Test extends Component
       ->whereMonth('yfrekappresensis.date', $month)
       ->whereYear('yfrekappresensis.date', $year)
       ->where('karyawans.metode_penggajian', 'Perbulan')
-      // ->where('total_jam_kerja_libur', '>', 0)
       // ->where('total_jam_kerja_libur', '<', 4)
-      // ->where('total_jam_kerja', '<', 4)
+      ->where('total_jam_kerja', '<=', 7)
+      ->where('total_hari_kerja', 0)
       ->get();
-
+    $total = 0;
+    $total = $data->count();
     // dd($data);
-
-
-
-
-
     return view('livewire.test', [
-      'data' => $data
+      'data' => $data,
+      'total' => $total
     ]);
   }
 }

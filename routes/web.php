@@ -101,6 +101,7 @@ use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Newpresensi;
 use App\Livewire\Payroll2;
+use App\Livewire\PerbulanKurangBayar;
 
 // Middleware
 Auth::routes([
@@ -342,6 +343,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/laporan', Laporan::class);
                             Route::get('/harikhusus', Harikhususwr::class);
                             Route::get('/jobgrade', Jobgradewr::class);
+                            Route::get('/cekperbulan', PerbulanKurangBayar::class);
 
 
 
