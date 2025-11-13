@@ -3,9 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\ApiPresensiController;
-use App\Http\Controllers\LaporanApiController;
 use App\Http\Controllers\LarkController;
+use App\Http\Controllers\LaporanApiController;
+use App\Http\Controllers\ApiPresensiController;
+use App\Http\Controllers\UserSyncController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,5 @@ Route::get('/user-presensi/{month}/{year}/{user_id}', [ApiPresensiController::cl
 Route::get('/user-presensi-periods/{user_id}', [ApiPresensiController::class, 'getPeriods']);
 
 Route::get('/user-presensi-summary/{month}/{year}/{user_id}', [ApiPresensiController::class, 'summary']);
+
+Route::get('/users/export', [UserSyncController::class, 'export']);
