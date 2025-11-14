@@ -330,10 +330,8 @@ class UserMobile extends Component
             if ($d->no_scan != 'No Scan') $lanjut = true;
         }
 
-        $this->data_payroll = Payroll::with('jamkerjaid')
-
-            // block code dibawah ini untuk BISA tampilkan slip gaji bulan lalu
-            ->whereMonth('date', $this->selectedMonth)
+        // $this->data_payroll = Payroll::with('jamkerjaid')
+        $this->data_payroll = Payroll::whereMonth('date', $this->selectedMonth)
             ->whereYear('date', $this->selectedYear)
 
             // block code dibawah ini untuk TIDAK BISA tampilkan slip gaji bulan lalu
@@ -341,8 +339,17 @@ class UserMobile extends Component
             // ->whereYear('date', $this->latest_year)
 
             ->where('id_karyawan', $this->user_id)->first();
-        $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
+        if (!$this->data_payroll) {
+            $this->data_payroll = new Payroll([
+                'hari_kerja' => 0,
+                'jam_kerja' => 0,
+                'jam_lembur' => 0,
+                'keterlambatan' => 0,
+            ]);
+        }
 
+        // dd($this->data_payroll, $this->selectedMonth, $this->selectedYear);
+        $this->data_karyawan = Karyawan::where('id_karyawan', $this->user_id)->first();
 
         return view('livewire.user-mobile', compact(['data', 'lanjut']))->layout('layouts.polos');
     }

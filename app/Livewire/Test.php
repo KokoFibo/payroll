@@ -87,6 +87,10 @@ class Test extends Component
     $year = 2025;
     $month = 10;
 
+    $data = Yfrekappresensi::where('id_karyawan', 985)->whereMonth('date', $month)
+      ->whereYear('date', $year)->get();
+    dd($data);
+
     $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
       ->select(
         'yfrekappresensis.*',

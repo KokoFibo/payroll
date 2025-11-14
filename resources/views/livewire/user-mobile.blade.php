@@ -151,7 +151,8 @@
                                         <p class="text-sm">{{ __('Hari') }}</p>
                                         {{-- <p class="font-bold text-green-500 text-lg">{{ $total_hari_kerja }}</p> --}}
                                         <p class="font-bold text-green-500 text-lg">
-                                            {{ $data_payroll->hari_kerja + $data_payroll->hari_kerja_libur }}</p>
+                                            {{-- {{ $data_payroll->hari_kerja + $data_payroll->hari_kerja_libur }}</p> --}}
+                                            {{ $total_hari_kerja }}
                                     </div>
                                     <div>
                                         <p class="text-sm">{{ __('J. Kerja') }}</p>
