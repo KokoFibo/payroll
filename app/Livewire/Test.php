@@ -86,6 +86,8 @@ class Test extends Component
   {
     $year = 2025;
     $month = 10;
+    dd('aman');
+
 
     $data = Yfrekappresensi::where('user_id', 985)
       ->get(['date'])
