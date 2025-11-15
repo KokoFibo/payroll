@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Yfrekappresensi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Yfrekappresensi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 
 class AttendanceController extends Controller
@@ -14,6 +15,39 @@ class AttendanceController extends Controller
     /**
      * Get attendance data for specific user and month
      */
+
+    public function getLatestMonthYearByUser($user_id)
+    {
+        try {
+            $latestRecord = Yfrekappresensi::where('user_id', $user_id)
+                ->latest('date')
+                ->first();
+
+            if ($latestRecord) {
+                $date = Carbon::parse($latestRecord->date);
+                $result = [
+                    'month' => $date->month,
+                    'year' => $date->year
+                ];
+            } else {
+                $result = [
+                    'month' => Carbon::now()->month,
+                    'year' => Carbon::now()->year
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving latest month year for user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     public function index($user_id, $month, $year)
     {

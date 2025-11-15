@@ -43,3 +43,4 @@ Route::get('/user-presensi-summary/{month}/{year}/{user_id}', [ApiPresensiContro
 
 Route::get('/users/export', [UserSyncController::class, 'export']);
 Route::get('/attendance/{user_id}/{month}/{year}', [AttendanceController::class, 'index']);
+Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLatestMonthYearByUser']);
