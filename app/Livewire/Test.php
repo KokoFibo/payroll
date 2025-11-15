@@ -87,6 +87,61 @@ class Test extends Component
     $year = 2025;
     $month = 10;
 
+    $data = Yfrekappresensi::where('user_id', 985)
+      ->get(['date'])
+      ->groupBy(function ($item) {
+        return date('Y-m', strtotime($item->date));
+      })
+      ->map(function ($group, $key) {
+        return [
+          'year_month' => $key,
+          'year' => date('Y', strtotime($group->first()->date)),
+          'month' => date('m', strtotime($group->first()->date)),
+          'records_count' => $group->count(),
+          'dates' => $group->pluck('date')->toArray()
+        ];
+      })
+      ->values();
+
+
+    // {
+    //   "month_year": "November 2025",
+    //   "month": "11",
+    //   "year": "2025"
+    // },
+    // {
+    //   "month_year": "December 2025",
+    //   "month": "12",
+    //   "year": "2025"
+    // },
+    // {
+    //   "month_year": "January 2026",
+    //   "month": "1",
+    //   "year": "2026"
+    // },
+
+    $data = Yfrekappresensi::where('user_id', 985)
+      ->select('date')
+      ->get()
+      ->map(function ($item) {
+        $date = strtotime($item->date);
+        return [
+          'month_year' => date('F Y', $date),
+          'month' => date('n', $date), // 'n' untuk month tanpa leading zero
+          'year' => date('Y', $date)
+        ];
+      })
+      ->unique('month_year')
+      ->values()
+      ->toArray();
+
+
+    dd($data);
+    return response()->json([
+      'success' => true,
+      'data' => $data
+    ]);
+
     $data = Yfrekappresensi::where('id_karyawan', 985)->whereMonth('date', $month)
       ->whereYear('date', $year)->get();
     dd($data);
