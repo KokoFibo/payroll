@@ -28,7 +28,7 @@ class AttendanceController extends Controller
                 $result = [
                     'month' => $date->month,
                     'year' => $date->year,
-                    'month_year' => date('F Y', $date),
+                    'month_year' => $date->format('F Y'),
                 ];
             } else {
                 $result = [

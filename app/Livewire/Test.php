@@ -89,6 +89,7 @@ class Test extends Component
     dd('aman');
 
 
+
     $data = Yfrekappresensi::where('user_id', 985)
       ->get(['date'])
       ->groupBy(function ($item) {
