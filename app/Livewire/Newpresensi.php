@@ -384,6 +384,12 @@ class Newpresensi extends Component
 
         $data = Yfrekappresensi::find($this->editId);
 
+
+        $is_hari_libur_nasional = is_libur_nasional($data->date);
+        $is_sunday = is_sunday($data->date);
+
+
+
         $data->first_in = $this->first_in;
         $data->first_out = $this->first_out;
         $data->second_in = $this->second_in;
@@ -446,6 +452,9 @@ class Newpresensi extends Component
         $data->total_hari_kerja = 0;
         $data->total_jam_kerja = 0;
         $data->total_jam_lembur = 0;
+        $data->total_hari_kerja_libur = 0;
+        $data->total_jam_kerja_libur = 0;
+        $data->total_jam_lembur_libur = 0;
 
         if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 1) {
             $data->total_hari_kerja = 1;
@@ -505,11 +514,18 @@ class Newpresensi extends Component
             }
         }
 
-        if ($dataKaryawan->metode_penggajian == "Perbulan") {
-            if ($data->total_jam_kerja > 0) {
-                $data->total_hari_kerja = 1;
-            }
+        // if ($dataKaryawan->metode_penggajian == "Perbulan") {
+        //     if ($data->total_jam_kerja > 0) {
+        //         $data->total_hari_kerja = 1;
+        //     }
+        // }
+
+        if ($is_hari_libur_nasional || $is_sunday) {
+            $data->total_hari_kerja_libur = 0;
+            $data->total_jam_kerja_libur = $data->total_jam_kerja;
+            $data->total_jam_lembur_libur = $data->total_jam_lembur;
         }
+
 
 
         $data->save();

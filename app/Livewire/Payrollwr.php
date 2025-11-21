@@ -738,24 +738,6 @@ class Payrollwr extends Component
             'total' => $total,
             'last_build' => $last_build,
             'data_kosong' => $data_kosong,
-            // 'data_bulan_ini' => $data_bulan_ini,
-            // 'companies' => $this->companies,
-            // 'departments' => $this->departments,
-            // 'placements' => $this->placements,
         ]);
-
-
-        // return view('livewire.payrollwr', compact([
-        //     'payroll',
-        //     'total',
-        //     'last_build',
-        //     'data_kosong',
-        //     // 'data_bulan_ini',
-        //     'companies',
-        //     'departments',
-        //     'placements',
-        // ]));
-
-
     }
 }

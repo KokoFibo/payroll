@@ -61,6 +61,11 @@ function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
 
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {
+    $is_sunday = is_sunday($date);
+    $is_libur_nasional = is_libur_nasional($date);
+    $is_saturday =  is_saturday($date);
+    $is_friday = is_friday($date);
+
     $tambahan_shift_malam = 0;
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
@@ -68,20 +73,21 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
 
         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
-        if (is_sunday($date)) {
-            $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 * 2
-                + $langsungLembur * 2;
-        } else {
-            $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
-        }
+        // if ($is_sunday) {
+        // $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 * 2
+        // + $langsungLembur * 2;
+        // } else {
+        // $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
+        // }
+        $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
 
         if ($shift == 'Malam') {
-            if (is_saturday($date)) {
+            if ($is_saturday) {
                 if ($jam_kerja >= 6) {
                     // $jam_lembur = $jam_lembur + 1;
                     $tambahan_shift_malam = 1;
                 }
-            } else if (is_sunday($date)) {
+            } else if ($is_sunday) {
                 if ($jam_kerja >= 16) {
                     // $jam_lembur = $jam_lembur + 2;
                     $tambahan_shift_malam = 1;
@@ -95,24 +101,24 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         }
 
         // 22 driver
-        if (($jam_lembur >= 9) && (is_sunday($date) == false) && ($jabatan_id != 22)) {
+        if (($jam_lembur >= 9) && ($is_sunday == false) && ($jabatan_id != 22)) {
             $jam_lembur = 0;
         }
         // yig = 12, ysm = 13
         // if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
-        if ($jabatan_id == 17  && $shift == 'Pagi') {
-            if (is_friday($date)) {
+        if ($jabatan_id == 17 && $shift == 'Pagi') {
+            if ($is_friday) {
                 $jam_kerja = 7.5;
-            } elseif (is_saturday($date)) {
+            } elseif ($is_saturday) {
                 $jam_kerja = 6;
             } else {
                 $jam_kerja = 8;
             }
         }
-        if ($jabatan_id == 17 && is_sunday($date)) {
+        if ($jabatan_id == 17 && $is_sunday) {
             $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
         }
-        if ($jabatan_id == 17 && is_friday($date) && $shift == 'Malam') {
+        if ($jabatan_id == 17 && $is_friday && $shift == 'Malam') {
             if ($jam_kerja >= 8) {
                 $jam_kerja = 8;
                 $tambahan_shift_malam = 1;
@@ -123,7 +129,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         // 23 translator
         if ($jabatan_id != 23) {
             if (
-                is_libur_nasional($date) &&  !is_sunday($date)
+                $is_libur_nasional && !$is_sunday
                 && $jabatan_id != 23
 
             ) {
@@ -131,21 +137,20 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
                 $jam_lembur *= 2;
             }
         } else {
-            if (is_sunday($date)) {
+            if ($is_sunday) {
                 $jam_kerja /= 2;
                 $jam_lembur /= 2;
             }
         }
 
         // $this->dataArr->push([
-        //     'tgl' => $tgl,
-        //     'jam_kerja' => $jam_kerja,
-        //     'terlambat' => $terlambat,
-        //     'jam_lembur' => $jam_lembur,
-        //     'tambahan_shift_malam' => $tambahan_shift_malam,
+        // 'tgl' => $tgl,
+        // 'jam_kerja' => $jam_kerja,
+        // 'terlambat' => $terlambat,
+        // 'jam_lembur' => $jam_lembur,
+        // 'tambahan_shift_malam' => $tambahan_shift_malam,
         // ]);
         if ($terlambat > 0) $tambahan_shift_malam = 0;
-
         return [
             'tgl' => $tgl,
             'jam_kerja' => $jam_kerja,
@@ -2117,36 +2122,15 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
 
 
     // lolo
-    if ($is_sunday) {
+    // if ($is_sunday) {
 
-        // $t1 = strtotime($first_in);
-        // $t2 = strtotime($second_out);
-        // $t1 = strtotime(pembulatanJamOvertimeIn($first_in));
-        // $t2 = strtotime(pembulatanJamOvertimeOut($second_out));
+    //     $jam_kerja *= 2;
+    // }
 
-
-
-        // $diff = gmdate('H:i:s', $t2 - $t1);
-
-        // $diff = explode(':', $diff);
-        // $jam = (int) $diff[0];
-        // $menit = (int) $diff[1];
-
-        // if ($menit >= 45) {
-        //     $jam = $jam + 1;
-        // } elseif ($menit < 45 && $menit > 15) {
-        //     $jam = $jam + 0.5;
-        // } else {
-        //     $jam;
-        // }
-        // $jam_kerja = $jam * 2;
-        $jam_kerja *= 2;
-    }
     if ($jabatan == 17 && $is_sunday == false) {
         $jam_kerja = 12;
         // $jam_kerja = $jam_kerja - $total_late;
     }
-
     return $jam_kerja;
 }
 
