@@ -53,121 +53,60 @@ class Test extends Component
   }
 
 
-  public function deleteSTI()
-  {
-    // company sti = 101
-    // placement sti = 104
-    DB::transaction(function () {
-      // Ambil semua karyawan dari placement_id = 104
-      $karyawans = Karyawan::where('placement_id', 104)->get();
 
-      foreach ($karyawans as $karyawan) {
-        // Hapus user
-        User::where('username', $karyawan->id_karyawan)->delete();
-
-        // Hapus presensi bulan 9 / 2025
-        Yfrekappresensi::where('user_id', $karyawan->id_karyawan)
-          ->whereMonth('date', 9)
-          ->whereYear('date', 2025)
-          ->delete();
-      }
-
-      // Hapus karyawan terakhir
-      Karyawan::where('placement_id', 104)->delete();
-      $this->dispatch(
-        'message',
-        type: 'success',
-        title: 'Semua data STI telah didelete'
-      );
-    });
-  }
 
   public function render()
   {
+
+
     $year = 2025;
-    $month = 10;
+    $month = 11;
+    // $user_id = 3084;
+    // $user_id = 3251;
     dd('aman');
+    $data = Yfrekappresensi::whereYear('date', $year)
+      ->whereMonth('date', $month)
+      ->where('late', '>', 0) // hanya ambil yang terlambat
+      ->select('user_id')
+      ->selectRaw('COUNT(*) as total_terlambat') // hitung jumlahnya
+      ->groupBy('user_id')
+      ->get();
+
+    // Lihat hasilnya
+    dd($data);
+    foreach ($data as $d) {
+      $d->total_jam_kerja = $d->total_jam_kerja / 2;
+      $d->total_jam_kerja_libur = $d->total_jam_kerja;
+      $d->total_jam_lembur = $d->total_jam_lembur / 2;
+      $d->total_jam_lembur_libur = $d->total_jam_lembur;
+      $d->total_hari_kerja_libur = 0;
+      $d->save();
+    }
+
+    dd('done');
 
 
 
-    $data = Yfrekappresensi::where('user_id', 985)
-      ->get(['date'])
-      ->groupBy(function ($item) {
-        return date('Y-m', strtotime($item->date));
-      })
-      ->map(function ($group, $key) {
-        return [
-          'year_month' => $key,
-          'year' => date('Y', strtotime($group->first()->date)),
-          'month' => date('m', strtotime($group->first()->date)),
-          'records_count' => $group->count(),
-          'dates' => $group->pluck('date')->toArray()
-        ];
-      })
-      ->values();
 
-
-    // {
-    //   "month_year": "November 2025",
-    //   "month": "11",
-    //   "year": "2025"
-    // },
-    // {
-    //   "month_year": "December 2025",
-    //   "month": "12",
-    //   "year": "2025"
-    // },
-    // {
-    //   "month_year": "January 2026",
-    //   "month": "1",
-    //   "year": "2026"
-    // },
-
-    $data = Yfrekappresensi::where('user_id', 985)
-      ->select('date')
-      ->get()
-      ->map(function ($item) {
-        $date = strtotime($item->date);
-        return [
-          'month_year' => date('F Y', $date),
-          'month' => date('n', $date), // 'n' untuk month tanpa leading zero
-          'year' => date('Y', $date)
-        ];
-      })
-      ->unique('month_year')
-      ->values()
+    // ambil list tanggal libur nasional
+    $libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+      ->whereYear('tanggal_mulai_hari_libur', $year)
+      ->pluck('tanggal_mulai_hari_libur')
       ->toArray();
 
-
-    dd($data);
-    return response()->json([
-      'success' => true,
-      'data' => $data
-    ]);
-
-    $data = Yfrekappresensi::where('id_karyawan', 985)->whereMonth('date', $month)
-      ->whereYear('date', $year)->get();
-    dd($data);
-
-    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
-      ->select(
-        'yfrekappresensis.*',
-        'karyawans.metode_penggajian',
-        'karyawans.nama'
-      )
-      ->whereMonth('yfrekappresensis.date', $month)
-      ->whereYear('yfrekappresensis.date', $year)
-      ->where('karyawans.metode_penggajian', 'Perbulan')
-      // ->where('total_jam_kerja_libur', '<', 4)
-      ->where('total_jam_kerja', '<=', 7)
-      ->where('total_hari_kerja', 0)
+    // $data = Yfrekappresensi::where('user_id', $user_id)
+    $data = Yfrekappresensi::whereMonth('date', $month)
+      ->whereYear('date', $year)
+      ->where(function ($q) use ($libur_nasional) {
+        $q->whereRaw('DAYOFWEEK(DATE(date)) = 1')  // hari minggu
+          ->orWhereIn(DB::raw('DATE(date)'), $libur_nasional); // libur nasional
+      })
       ->get();
-    $total = 0;
-    $total = $data->count();
-    // dd($data);
-    return view('livewire.test', [
-      'data' => $data,
-      'total' => $total
-    ]);
+
+    dd($data);
+
+    // dd($libur_nasional);
+
+    return view('livewire.test');
   }
 }
