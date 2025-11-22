@@ -86,7 +86,7 @@
 
             <div>
                 <strong>Tidak ada data!</strong><br>
-                Tidak ditemukan data no-scan pada
+                Tidak ditemukan data karyawan lembur diatas 20 jam pada
                 <span class="badge bg-primary">{{ $periodeLembur }}</span>.
             </div>
 
