@@ -345,14 +345,6 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/jobgrade', Jobgradewr::class);
                             Route::get('/cekperbulan', PerbulanKurangBayar::class);
 
-
-
-
-
-
-
-
-
                             // TEST
                             Route::get('/test', Test::class)->name('test');
                             Route::get('/testaja', [Testaja::class, 'index']);

@@ -21,7 +21,6 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
      * @return \Illuminate\Support\Collection
      */
     use Exportable;
-
     protected $data;
 
     protected $selected_company, $status, $month, $year;
