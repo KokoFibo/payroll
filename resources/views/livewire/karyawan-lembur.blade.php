@@ -4,7 +4,7 @@
 
             <h4>
                 Karyawan Lembur diatas 20 jam — Total:
-                <span class="text-danger">{{ $total_karyawan_lembur }} Orang</span>
+                <span class="text-danger">{{ $total_karyawan_lembur }}</span>
                 <span class=" ms-2">{{ $periodeLembur }}</span>
             </h4>
 

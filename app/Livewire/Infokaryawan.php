@@ -16,8 +16,13 @@ class Infokaryawan extends Component
 {
     public $month, $year;
     public $showKaryawanTanpaEmail = false;
+    public $showKaryawanTanpaRekening = false;
 
 
+    public function toggleKaryawanTanpaRekening()
+    {
+        $this->showKaryawanTanpaRekening = !$this->showKaryawanTanpaRekening;
+    }
     public function toggleKaryawanTanpaEmail()
     {
         $this->showKaryawanTanpaEmail = !$this->showKaryawanTanpaEmail;

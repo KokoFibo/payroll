@@ -4,7 +4,7 @@
 
             <h4>
                 Karyawan (Perbulan) Terlambat — Total:
-                <span class="text-danger">{{ $total_karyawan_telat }} Orang</span>
+                <span class="text-danger">{{ $total_karyawan_telat }}</span>
                 <span class=" ms-2">{{ $periodeTerlambat }}</span>
             </h4>
 

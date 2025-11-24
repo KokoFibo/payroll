@@ -4,7 +4,7 @@
 
             <h4>
                 Karyawan (Perbulan) No Scan — Total:
-                <span class="text-danger">{{ $total_karyawan_noscan }} Orang</span>
+                <span class="text-danger">{{ $total_karyawan_noscan }}</span>
                 <span class=" ms-2">{{ $periodeNoscan }}</span>
             </h4>
 
