@@ -30,13 +30,16 @@ class Infokaryawan extends Component
 
         // $total_karyawan_hadir_hari_ini = Yfrekappresensi::whereDate('date', today())->count();
 
-        $jumlahTanpaRekening = Karyawan::where('nomor_rekening', '')
-            ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])
-            ->count();
 
-        $dataTanpaRekening = Karyawan::where('nomor_rekening', '')
+        $dataTanpaRekening = Karyawan::where(function ($q) {
+            $q->where('nomor_rekening', '')
+                ->orWhereNull('nomor_rekening');
+        })
             ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])
             ->get();
+
+
+        $jumlahTanpaRekening = $dataTanpaRekening->count();
 
         $total_karyawan_perbulan = Karyawan::where('metode_penggajian', 'Perbulan')
             ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();

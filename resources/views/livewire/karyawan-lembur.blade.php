@@ -42,6 +42,9 @@
                             <th>#</th>
                             <th>ID Karyawan</th>
                             <th>Nama</th>
+                            <th>Company</th>
+                            <th>Directorate</th>
+                            <th>Department</th>
                             <th>Jabatan</th>
                             <th>Status</th>
                             <th>Company</th>
@@ -54,6 +57,9 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $dtr->user_id }}</td>
                                 <td>{{ $dtr->nama }}</td>
+                                <td>{{ nama_company($dtr->company_id) }}</td>
+                                <td>{{ nama_placement($dtr->placement_id) }}</td>
+                                <td>{{ nama_department($dtr->department_id) }}</td>
                                 <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
                                 <td>{{ $dtr->status_karyawan }}</td>
                                 <td>{{ nama_company($dtr->company_id) }}</td>

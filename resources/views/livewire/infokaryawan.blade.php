@@ -160,13 +160,17 @@
             @if ($dataTanpaRekening->isNotEmpty())
                 <div class="row g-4">
                     <div class="mt-5">
-                        <h4>Karyawan tanpa nomor rekening bank</h4>
+                        <h4>Karyawan tanpa nomor rekening bank : <span class="text-danger">
+                                {{ $jumlahTanpaRekening }}</span></h4>
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
                                 <tr>
                                     <th>#</th>
                                     <th>ID Karyawan</th>
                                     <th>Nama</th>
+                                    <th>Company</th>
+                                    <th>Directorate</th>
+                                    <th>Department</th>
                                     <th>Jabatan</th>
                                     <th>Status</th>
                                     <th>Bank</th>
@@ -179,6 +183,9 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $dtr->id_karyawan }}</td>
                                         <td>{{ $dtr->nama }}</td>
+                                        <td>{{ nama_company($dtr->company_id) }}</td>
+                                        <td>{{ nama_placement($dtr->placement_id) }}</td>
+                                        <td>{{ nama_department($dtr->department_id) }}</td>
                                         <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
                                         <td>{{ $dtr->status_karyawan }}</td>
                                         <td>{{ $dtr->nama_bank }}</td>
@@ -199,7 +206,8 @@
             @if ($karyawan_tanpa_email->isNotEmpty())
                 <div class="row g-4">
                     <div class="mt-5">
-                        <h4>Karyawan tanpa Email</h4>
+                        <h4>Karyawan tanpa Email: <span class="text-danger">
+                                {{ $jumlah_karyawan_tanpa_email }}</span></h4>
                         <button class="btn btn-sm btn-primary mb-3" wire:click="toggleKaryawanTanpaEmail">
                             {{ $showKaryawanTanpaEmail ? 'Hide Details' : 'Show Details' }}
                         </button>
@@ -211,6 +219,9 @@
                                         <th>#</th>
                                         <th>ID Karyawan</th>
                                         <th>Nama</th>
+                                        <th>Company</th>
+                                        <th>Directorate</th>
+                                        <th>Department</th>
                                         <th>Jabatan</th>
                                         <th>Status</th>
                                         <th>Email</th>
@@ -222,6 +233,9 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $dtr->id_karyawan }}</td>
                                             <td>{{ $dtr->nama }}</td>
+                                            <td>{{ nama_company($dtr->company_id) }}</td>
+                                            <td>{{ nama_placement($dtr->placement_id) }}</td>
+                                            <td>{{ nama_department($dtr->department_id) }}</td>
                                             <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
                                             <td>{{ $dtr->status_karyawan }}</td>
 
