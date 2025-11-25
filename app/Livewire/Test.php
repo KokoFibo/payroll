@@ -58,28 +58,29 @@ class Test extends Component
   public function render()
   {
 
-
+    dd('aman');
     $year = 2025;
     $month = 11;
     // $user_id = 3084;
     // $user_id = 3251;
-    dd('aman');
-    $data = Yfrekappresensi::whereYear('date', $year)
-      ->whereMonth('date', $month)
-      ->where('late', '>', 0) // hanya ambil yang terlambat
-      ->select('user_id')
-      ->selectRaw('COUNT(*) as total_terlambat') // hitung jumlahnya
-      ->groupBy('user_id')
+    $data = Yfrekappresensi::where('date', '2025-11-09')
       ->get();
-
     // Lihat hasilnya
-    dd($data);
     foreach ($data as $d) {
       $d->total_jam_kerja = $d->total_jam_kerja / 2;
       $d->total_jam_kerja_libur = $d->total_jam_kerja;
       $d->total_jam_lembur = $d->total_jam_lembur / 2;
       $d->total_jam_lembur_libur = $d->total_jam_lembur;
       $d->total_hari_kerja_libur = 0;
+      $d->total_hari_kerja = 0;
+      if ($d->total_jam_kerja < 0) {
+        $d->total_jam_kerja = 0;
+        $d->total_jam_kerja_libur = 0;
+      }
+      if ($d->total_jam_lembur < 0) {
+        $d->total_jam_lembur = 0;
+        $d->total_jam_lembur_libur = 0;
+      }
       $d->save();
     }
 

@@ -156,12 +156,14 @@
                                     </div>
                                     <div>
                                         <p class="text-sm">{{ __('J. Kerja') }}</p>
-                                        <p class="font-bold text-green-500 text-lg">{{ $total_jam_kerja }}</p>
+                                        <p class="font-bold text-green-500 text-lg">
+                                            {{ $total_jam_kerja }}</p>
                                     </div>
 
                                     <div>
                                         <p class="text-sm">{{ __('J. Lembur') }}</p>
-                                        <p class="font-bold text-green-500 text-lg">{{ $total_jam_lembur }}</p>
+                                        <p class="font-bold text-green-500 text-lg">
+                                            {{ $total_jam_lembur }}</p>
                                     </div>
 
                                     <div>
@@ -184,9 +186,9 @@
                     </div>
                     {{-- End Summary --}}
                 @endif
-
-
             </div>
+
+            {{-- slip gaji --}}
             @if ($show)
 
                 {{-- Main Table --}}
@@ -258,7 +260,8 @@
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     {{ __('T. Jam Kerja') }}</td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                    {{ $data_payroll->jam_kerja }} {{ __('jam') }}</td>
+                                                    {{ $data_payroll->jam_kerja }}
+                                                    {{ __('jam1') }}</td>
                                             </tr>
 
                                             <tr>
@@ -266,7 +269,8 @@
                                                     {{ __('T. Jam Lembur') }}
                                                 </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
-                                                    {{ $data_payroll->jam_lembur }} {{ __('jam') }}</td>
+                                                    {{ $data_payroll->jam_lembur }}
+                                                    {{ __('jam') }}</td>
                                             </tr>
                                         @endif
 
@@ -624,13 +628,16 @@
                                                                 $jam_lembur /= 2;
                                                             }
                                                         @endphp
-                                                        {{ $jam_kerja }}
+                                                        {{-- {{ $jam_kerja }} --}}
+                                                        {{ $d->total_jam_kerja + $d->total_jam_kerja_libur }}
                                                     </p>
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-gray-500 text-sm">{{ __('J. Lembur') }}</p>
                                                     <p class="font-bold text-blue-500">
-                                                        {{ $jam_lembur }}
+                                                        {{-- {{ $jam_lembur }} --}}
+                                                        {{ $d->total_jam_lembur + $d->total_jam_lembur_libur }}
+
                                                     </p>
                                                 </td>
                                                 <td class="text-center">
