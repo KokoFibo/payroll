@@ -522,6 +522,7 @@ class Newpresensi extends Component
 
         if ($is_hari_libur_nasional || $is_sunday) {
             $data->total_hari_kerja_libur = 0;
+            $data->total_hari_kerja = 0;
             $data->total_jam_kerja_libur = $data->total_jam_kerja;
             $data->total_jam_lembur_libur = $data->total_jam_lembur;
         }
