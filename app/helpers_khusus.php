@@ -73,6 +73,7 @@ function quickRebuild($month, $year)
         $total_hari_kerja = 0;
         $total_jam_kerja = 0;
         $total_jam_lembur = 0;
+
         $no_scan_history = 0;
         $late_history = 0;
         $shift_malam = 0;
@@ -175,18 +176,16 @@ function quickRebuild($month, $year)
         $gaji_libur = 0;
 
 
-        if ($karyawan->metode_penggajian == 'Perjam') {
-            $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
-        } else {
-            $gaji_libur = ($hari_kerja_libur * ($karyawan->gaji_pokok / $total_n_hari_kerja) * 2);
-        }
         // if ($karyawan->metode_penggajian == 'Perjam') {
-        //     $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198) + ($jam_lembur_libur * $karyawan->gaji_overtime * 2));
+        //     $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
         // } else {
-        //     $gaji_libur = ($hari_kerja_libur * ($karyawan->gaji_pokok / $total_n_hari_kerja) * 2) + ($jam_lembur_libur * $karyawan->gaji_overtime * 2);
+        //     $gaji_libur = ($hari_kerja_libur * ($karyawan->gaji_pokok / $total_n_hari_kerja) * 2);
         // }
 
-        // if ($total_jam_kerja_libur > 0) dd($karyawan->id_karyawan);
+        $gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198));
+
+
+
 
         $total_bonus_dari_karyawan = $karyawan->bonus + $karyawan->tunjangan_jabatan + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_skill + $karyawan->tunjangan_lembur_sabtu + $karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $karyawan->iuran_air + $karyawan->iuran_locker;
@@ -298,7 +297,6 @@ function quickRebuild($month, $year)
         if ($karyawan->metode_penggajian == 'Perjam') {
             $hari_kerja_libur = 0;
         }
-
         Payroll::create([
             'jp' => $jp,
             'jht' => $jht,
@@ -334,6 +332,7 @@ function quickRebuild($month, $year)
 
             'hari_kerja_libur' => $hari_kerja_libur,
             'jam_lembur_libur' => $jam_lembur_libur,
+            'jam_kerja_libur' => $total_jam_kerja_libur,
 
 
             'hari_kerja' => $total_hari_kerja,

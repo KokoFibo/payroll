@@ -150,6 +150,7 @@
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
+                                <option value="11">November 2025</option>
                             </select>
 
                         </div>
@@ -185,6 +186,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
+                        <button wire:click="rebuildOptimized" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild optimized') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
@@ -345,6 +348,12 @@
                                 <th wire:click="sortColumnName('jam_lembur')">{{ __('Jam Lembur') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('jam_kerja')">{{ __('Jam Kerja Libur') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
+                                <th wire:click="sortColumnName('jam_lembur')">{{ __('Jam Lembur Libur') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('jumlah_jam_terlambat')">{{ __('Terlambat') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -447,6 +456,8 @@
                                             <td class="text-end">{{ $p->hari_kerja }}</td>
                                             <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
                                             <td class="text-end">{{ $p->jam_lembur }}</td>
+                                            <td class="text-end">{{ number_format($p->jam_kerja_libur, 1) }}</td>
+                                            <td class="text-end">{{ $p->jam_lembur_libur }}</td>
                                             <td class="text-end">{{ $p->jumlah_jam_terlambat }}</td>
                                             <td class="text-end">{{ number_format($p->gaji_pokok) }}</td>
                                             <td class="text-end">

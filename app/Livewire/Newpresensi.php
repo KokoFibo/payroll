@@ -294,7 +294,6 @@ class Newpresensi extends Component
 
     public function filterKosong()
     {
-
         $this->is_kosong = true;
         $this->resetPage();
     }
@@ -756,7 +755,7 @@ class Newpresensi extends Component
                 ->whereNull('yfrekappresensis.overtime_in')
                 ->whereNull('yfrekappresensis.overtime_out')
                 ->paginate($this->rowsPerPage);
-            $this->is_kosong = false;
+            // $this->is_kosong = false;
         }
         if ($this->is_no_scan) {
             $datas = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
@@ -771,30 +770,10 @@ class Newpresensi extends Component
                 ->whereYear('yfrekappresensis.date', Carbon::parse($this->tanggal)->year)
                 ->where('no_scan', 'No Scan')
                 ->paginate($this->rowsPerPage);
-            $this->is_no_scan = false;
+            // $this->is_no_scan = false;
         }
-
-
-
-
-
-
-
-
-
-        // Dropdown placement
-        // $placements = Placement::select('id', 'placement_name')
-        //     ->orderBy('placement_name')
-        //     ->get();
-
-
-
-
-
         $this->is_presensi_locked = $this->check_presensi_locked();
-
         $this->checkData();
-
         return view('livewire.newpresensi', [
             'datas' => $datas,
 
