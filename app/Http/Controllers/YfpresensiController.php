@@ -755,7 +755,7 @@ class YfpresensiController extends Controller
             $total_hari_kerja_libur = 0;
             $total_jam_lembur_libur = 0;
 
-            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 1) {
+            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] >= 1) {
                 $total_hari_kerja = 1;
             }
 
@@ -788,7 +788,7 @@ class YfpresensiController extends Controller
                         $tambahan_shift_malam = 1;
                     }
                 } else if ($is_sunday || $is_hari_libur_nasional) {
-                    if ($total_jam_kerja > 0) {
+                    if ($total_jam_kerja >= 8) {
                         // $jam_lembur = $jam_lembur + 2;
                         $tambahan_shift_malam = 1;
                     }

@@ -455,7 +455,7 @@ class Newpresensi extends Component
         $data->total_jam_kerja_libur = 0;
         $data->total_jam_lembur_libur = 0;
 
-        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 1) {
+        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] >= 1) {
             $data->total_hari_kerja = 1;
         }
 
@@ -475,7 +475,7 @@ class Newpresensi extends Component
                     $data->shift_malam = 1;
                 }
             } else if (is_sunday($data->date) || is_libur_nasional($data->date)) {
-                if ($data->total_jam_kerja > 0) {
+                if ($data->total_jam_kerja >= 8) {
                     // $jam_lembur = $jam_lembur + 2;
                     $data->shift_malam = 1;
                 }
