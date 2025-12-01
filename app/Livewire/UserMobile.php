@@ -34,6 +34,8 @@ class UserMobile extends Component
     public $latest_month, $latest_year;
     public $is_detail;
     public $show;
+    public $total_jam_lembur_libur;
+    public $total_jam_kerja_libur;
 
 
     // public function close () {
@@ -168,6 +170,8 @@ class UserMobile extends Component
         $this->total_jam_lembur = 0;
         $this->total_keterlambatan = 0;
         $this->total_tambahan_shift_malam = 0;
+        $this->total_jam_lembur_libur = 0;
+        $this->total_jam_kerja_libur = 0;
     }
 
     public function render()
@@ -198,6 +202,7 @@ class UserMobile extends Component
         $tambahan_shift_malam = 0;
         $langsungLembur = 0;
         $total_tambahan_shift_malam = 0;
+
 
 
         $this->clear_data();
@@ -323,6 +328,8 @@ class UserMobile extends Component
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;
                 $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
+                $this->total_jam_lembur_libur = $this->total_jam_lembur_libur + $d->total_jam_lembur_libur;
+                $this->total_jam_kerja_libur = $this->total_jam_kerja_libur + $d->total_jam_kerja_libur;
             }
         }
         $lanjut = false;
