@@ -258,7 +258,7 @@
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
                     <td> {{ $d->hari_kerja + $d->hari_kerja_libur }}</td>
                     <td> {{ $d->jam_kerja }}</td>
-                    <td> {{ $d->jam_lembur }}</td>
+                    <td> {{ $d->jam_lembur + $d->jam_lembur_libur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
