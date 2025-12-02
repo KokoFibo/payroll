@@ -23,6 +23,8 @@
                             <th class="text-center">Tanggal</th>
                             <th class="text-center">Jam Kerja</th>
                             <th class="text-center">Jam Lembur</th>
+                            <th class="text-center">Jam Kerja Libur</th>
+                            <th class="text-center">Jam Lembur Libur</th>
                             <th class="text-center">Terlambat</th>
                             <th class="text-center">Shift Malam</th>
                         </tr>
@@ -34,6 +36,8 @@
                                 <td class="text-center">{{ $d['tgl'] }}</td>
                                 <td class="text-center">{{ $d['jam_kerja'] }}</td>
                                 <td class="text-center">{{ $d['jam_lembur'] }}</td>
+                                <td class="text-center">{{ $d['jam_kerja_libur'] }}</td>
+                                <td class="text-center">{{ $d['jam_lembur_libur'] }}</td>
                                 <td class="text-center">{{ $d['terlambat'] }}</td>
                                 <td class="text-center">{{ $d['tambahan_shift_malam'] }} </td>
                             </tr>
@@ -49,6 +53,8 @@
                             @endif
                             <th class="text-center fs-5">{{ $total_jam_kerja }}</th>
                             <th class="text-center fs-5">{{ $total_jam_lembur }}</th>
+                            <th class="text-center fs-5">{{ $total_jam_kerja_libur }}</th>
+                            <th class="text-center fs-5">{{ $total_jam_lembur_libur }}</th>
                             <th class="text-center fs-5">{{ $total_keterlambatan }}</th>
                             <th class="text-center fs-5">{{ $total_tambahan_shift_malam }}</th>
                         </tr>

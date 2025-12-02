@@ -322,8 +322,6 @@ class UserMobile extends Component
                 //     $this->total_hari_kerja--;
                 // }
 
-
-
                 $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
                 $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;

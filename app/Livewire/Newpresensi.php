@@ -47,6 +47,8 @@ class Newpresensi extends Component
     public $total_hari_kerja;
     public $total_jam_kerja;
     public $total_jam_lembur;
+    public $total_jam_kerja_libur;
+    public $total_jam_lembur_libur;
     public $total_keterlambatan;
     public $total_tambahan_shift_malam;
     public $month, $year, $user_id, $name;
@@ -142,15 +144,13 @@ class Newpresensi extends Component
         $total_hari_kerja = 0;
         $total_jam_kerja = 0;
         $total_jam_lembur = 0;
+        $total_jam_kerja_libur = 0;
+        $total_jam_lembur_libur = 0;
         $total_keterlambatan = 0;
         $langsungLembur = 0;
         $tambahan_shift_malam = 0;
         $total_tambahan_shift_malam = 0;
-
-
         $total_hari_kerja_libur = 0;
-
-
 
         $data = Yfrekappresensi::with('karyawan')->where('user_id', $user_id)
             ->whereMonth('date', $this->month)
@@ -168,9 +168,11 @@ class Newpresensi extends Component
                     $tgl = tgl_lengkap($d->date);
 
                     $jam_kerja = $d->total_jam_kerja;
-                    $terlambat = $d->late;
                     $jam_lembur = $d->total_jam_lembur;
+                    $jam_kerja_libur = $d->total_jam_kerja_libur;
+                    $jam_lembur_libur = $d->total_jam_lembur_libur;
                     $hari_kerja_libur = $d->total_hari_kerja_libur;
+                    $terlambat = $d->late;
 
                     //    $tambahan_shift_malam = $d->date
 
@@ -229,6 +231,8 @@ class Newpresensi extends Component
                         'jam_kerja' => $jam_kerja,
                         'terlambat' => $terlambat,
                         'jam_lembur' => $jam_lembur,
+                        'jam_kerja_libur' => $jam_kerja_libur,
+                        'jam_lembur_libur' => $jam_lembur_libur,
                         'tambahan_shift_malam' => $tambahan_shift_malam,
                         'table_warning' => $table_warning,
                         'hari_kerja_libur' => $hari_kerja_libur,
@@ -243,6 +247,8 @@ class Newpresensi extends Component
 
                     $total_jam_kerja += $jam_kerja;
                     $total_jam_lembur += $jam_lembur;
+                    $total_jam_kerja_libur += $jam_kerja_libur;
+                    $total_jam_lembur_libur += $jam_lembur_libur;
                     $total_keterlambatan += $terlambat;
                     $total_tambahan_shift_malam += $tambahan_shift_malam;
                     $total_hari_kerja_libur += $hari_kerja_libur;
@@ -251,6 +257,8 @@ class Newpresensi extends Component
             $this->total_hari_kerja = $total_hari_kerja;
             $this->total_jam_kerja = $total_jam_kerja;
             $this->total_jam_lembur = $total_jam_lembur;
+            $this->total_jam_kerja_libur = $total_jam_kerja_libur;
+            $this->total_jam_lembur_libur = $total_jam_lembur_libur;
             $this->total_keterlambatan = $total_keterlambatan;
             $this->total_tambahan_shift_malam = $total_tambahan_shift_malam;
             $this->total_hari_kerja_libur = $total_hari_kerja_libur;

@@ -99,6 +99,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Abnormal;
 use App\Livewire\Newpresensi;
 use App\Livewire\Payroll2;
 use App\Livewire\PerbulanKurangBayar;
@@ -344,8 +345,9 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/harikhusus', Harikhususwr::class);
                             Route::get('/jobgrade', Jobgradewr::class);
                             Route::get('/cekperbulan', PerbulanKurangBayar::class);
-
+                            Route::get('/abnormal', Abnormal::class);
                             // TEST
+
                             Route::get('/test', Test::class)->name('test');
                             Route::get('/testaja', [Testaja::class, 'index']);
                             Route::get('/testok', function () {
