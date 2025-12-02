@@ -80,7 +80,7 @@ function quickRebuild($month, $year)
         $late = 0;
         $tanggal = null;
         $hari_kerja_libur = 0;
-        $jam_lembur_libur = 0;
+        $total_jam_lembur_libur = 0;
         $total_jam_kerja_libur = 0;
 
 
@@ -89,14 +89,9 @@ function quickRebuild($month, $year)
             $total_jam_kerja += $d->total_jam_kerja;
             $total_jam_lembur += $d->total_jam_lembur;
             $total_jam_kerja_libur += $d->total_jam_kerja_libur;
-            $jam_lembur_libur += $d->$jam_lembur_libur;
+            $total_jam_lembur_libur += $d->total_jam_lembur_libur;
             if ($d->no_scan_history) $no_scan_history++;
             if ($d->late_history) $late_history++;
-            // $jam_lembur_libur = 0;
-            // $total_jam_kerja_libur = 0;
-
-
-
             $shift_malam +=  $d->shift_malam;
             $late += $d->late;
             $tanggal = $d->date;
@@ -104,6 +99,7 @@ function quickRebuild($month, $year)
 
         $karyawan = Karyawan::where('id_karyawan', $user_id)->first();
         //   hitung BPJS
+        // if ($karyawan->id_karyawan == 4443) dd($karyawan->id_karyawan, $total_jam_kerja, $total_jam_lembur, $total_jam_kerja_libur, $total_jam_lembur_libur);
 
         if ($karyawan->potongan_JP == 1) {
             if ($karyawan->gaji_bpjs <= 10042300) {
@@ -206,7 +202,7 @@ function quickRebuild($month, $year)
         $total_gaji_lembur_karyawan = 0;
         $gaji_karyawan_bulanan = 0;
 
-        $total_gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198)) + ($jam_lembur_libur * $karyawan->gaji_overtime);
+        $total_gaji_libur = ($total_jam_kerja_libur * ($karyawan->gaji_pokok / 198)) + ($total_jam_lembur_libur * $karyawan->gaji_overtime);
         $total_gaji_lembur_karyawan = $total_jam_lembur * $karyawan->gaji_overtime;
 
         if (trim($karyawan->metode_penggajian) == 'Perjam') {
@@ -297,6 +293,8 @@ function quickRebuild($month, $year)
         if ($karyawan->metode_penggajian == 'Perjam') {
             $hari_kerja_libur = 0;
         }
+
+
         Payroll::create([
             'jp' => $jp,
             'jht' => $jht,
@@ -331,7 +329,7 @@ function quickRebuild($month, $year)
             // 'jkm' => $karyawan->jkm,
 
             'hari_kerja_libur' => $hari_kerja_libur,
-            'jam_lembur_libur' => $jam_lembur_libur,
+            'jam_lembur_libur' => $total_jam_lembur_libur,
             'jam_kerja_libur' => $total_jam_kerja_libur,
 
 
