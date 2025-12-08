@@ -300,6 +300,8 @@ class UserMobile extends Component
                     ) {
                         $jam_kerja *= 2;
                         $jam_lembur *= 2;
+                        // $jam_kerja = 0;
+                        // $jam_lembur = 0;
                     }
                 } else {
                     if (is_sunday($d->date)) {
@@ -322,8 +324,9 @@ class UserMobile extends Component
                 //     $this->total_hari_kerja--;
                 // }
 
-                $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
-                $this->total_jam_lembur = $this->total_jam_lembur + $jam_lembur;
+                // $this->total_jam_kerja = $this->total_jam_kerja + $jam_kerja;
+                $this->total_jam_kerja = $this->total_jam_kerja + $d->total_jam_kerja;
+                $this->total_jam_lembur = $this->total_jam_lembur + $d->total_jam_lembur;
                 $this->total_keterlambatan = $this->total_keterlambatan + $terlambat;
                 $this->total_tambahan_shift_malam = $this->total_tambahan_shift_malam + $tambahan_shift_malam;
                 $this->total_jam_lembur_libur = $this->total_jam_lembur_libur + $d->total_jam_lembur_libur;

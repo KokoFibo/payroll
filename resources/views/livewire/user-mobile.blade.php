@@ -157,13 +157,14 @@
                                     <div>
                                         <p class="text-sm">{{ __('J. Kerja') }}</p>
                                         <p class="font-bold text-green-500 text-lg">
-                                            {{ $total_jam_kerja + $total_jam_kerja_libur }} </p>
+                                            {{ $total_jam_kerja + $total_jam_kerja_libur }}
+                                        </p>
                                     </div>
 
                                     <div>
                                         <p class="text-sm">{{ __('J. Lembur') }}</p>
                                         <p class="font-bold text-green-500 text-lg">
-                                            {{ $total_jam_lembur }} </p>
+                                            {{ $total_jam_lembur + $total_jam_lembur_libur }} </p>
                                     </div>
 
                                     <div>
