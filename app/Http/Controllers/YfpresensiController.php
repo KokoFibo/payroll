@@ -843,8 +843,10 @@ class YfpresensiController extends Controller
             if ($is_hari_libur_nasional || $is_sunday) {
                 $total_hari_kerja_libur = 0;
                 $total_hari_kerja = 0;
-                $jam_kerja_libur = $total_jam_kerja;
-                $total_jam_lembur_libur = $total_jam_lembur;
+                $jam_kerja_libur = $total_jam_kerja * 2;
+                $total_jam_lembur_libur = $total_jam_lembur * 2;
+                $total_jam_kerja = 0;
+                $total_jam_lembur = 0;
             }
             // dd($tgl);
             Yfrekappresensi::create([
