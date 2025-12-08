@@ -239,6 +239,17 @@
                                 @endif
                             </th>
 
+                            <th wire:click="sortBy('total_hari_kerja')" style="cursor:pointer;">
+                                Total Hari Kerja
+                                @if ($sortField === 'total_hari_kerja')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="bi bi-arrow-up"></i>
+                                    @else
+                                        <i class="bi bi-arrow-down"></i>
+                                    @endif
+                                @endif
+                            </th>
+
                             <th wire:click="sortBy('total_jam_kerja')" style="cursor:pointer;">
                                 Total Jam Kerja
                                 @if ($sortField === 'total_jam_kerja')
@@ -250,16 +261,7 @@
                                 @endif
                             </th>
 
-                            <th wire:click="sortBy('total_hari_kerja')" style="cursor:pointer;">
-                                Total Hari Kerja
-                                @if ($sortField === 'total_hari_kerja')
-                                    @if ($sortDirection === 'asc')
-                                        <i class="bi bi-arrow-up"></i>
-                                    @else
-                                        <i class="bi bi-arrow-down"></i>
-                                    @endif
-                                @endif
-                            </th>
+
 
                             <th wire:click="sortBy('total_jam_lembur')" style="cursor:pointer;">
                                 Total Jam Lembur
@@ -395,8 +397,8 @@
                                 <td>{{ $data->overtime_out ? \Carbon\Carbon::parse($data->overtime_out)->format('H:i') : '-' }}
                                 </td>
 
-                                <td>{{ $data->total_jam_kerja }}</td>
                                 <td>{{ $data->total_hari_kerja }}</td>
+                                <td>{{ $data->total_jam_kerja }}</td>
                                 <td>{{ $data->total_jam_lembur }}</td>
                                 {{-- @if (Auth::user()->role == 8) --}}
                                 <td>{{ $data->total_jam_kerja_libur }}</td>
