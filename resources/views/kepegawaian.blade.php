@@ -170,35 +170,6 @@
                                     @endif
                                 @endforeach
                             </select>
-                            {{-- <select class="form-select @error('jabatan') is-invalid @enderror"
-                                aria-label="Default select example" wire:model="jabatan">
-                                <option value=" ">{{ __('Pilih jabatan') }}</option>
-                                <option value="Admin">{{ __('') }}Admin</option>
-                                <option value="Asisten Direktur">Asisten Direktur</option>
-                                <option value="Asisten Kepala">Asisten Kepala</option>
-                                <option value="Asisten Manager">Asisten Manager</option>
-                                <option value="Asisten Pengawas">Asisten Pengawas</option>
-                                <option value="Asisten Wakil Presiden">Asisten Wakil Presiden</option>
-                                <option value="Design Grafis">Design Grafis</option>
-                                <option value="Director">Director</option>
-                                <option value="Kepala">Kepala</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Pengawas">Pengawas</option>
-                                <option value="President">President</option>
-                                <option value="Senior Staff">Senior Staff</option>
-                                <option value="Staff">Staff</option>
-                                <option value="Supervisor">Supervisor</option>
-                                <option value="Vice President">Vice President</option>
-                                <option value="Satpam">Satpam</option>
-                                <option value="Koki">Koki</option>
-                                <option value="Dapur Kantor">Dapur Kantor</option>
-                                <option value="Dapur Pabrik">Dapur Pabrik</option>
-                                <option value="QC Aging">QC Aging</option>
-                                <option value="Driver">Driver</option>
-                                <option value="Translator">Translator</option>
-                                <option value="Senior SPV">Senior SPV</option>
-
-                            </select> --}}
                             @error('jabatan_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -215,24 +186,6 @@
                                     <option value="{{ $jobgrade->id }}">{{ $jobgrade->grade }} -
                                         {{ $jobgrade->grade_name }}</option>
                                 @endforeach
-                                {{-- <option value="M1">M1</option>
-                                <option value="M2">M2</option>
-                                <option value="M3">M3</option>
-                                <option value="M4">M4</option>
-                                <option value="M5">M5</option>
-                                <option value="M6">M6</option>
-                                <option value="M7">M7</option>
-                                <option value="M8">M8</option>
-                                <option value="M9">M9</option>
-                                <option value="M10">M10</option>
-                                <option value="P1">P1</option>
-                                <option value="P2">P2</option>
-                                <option value="P3">P3</option>
-                                <option value="P4">P4</option>
-                                <option value="P5">P5</option>
-                                <option value="P6">P6</option>
-                                <option value="P7">P7</option>
-                                <option value="P8">P8</option> --}}
                             </select>
                         </div>
                     </div>
@@ -248,20 +201,6 @@
                                         <option value="{{ $nj->id }}">{{ $nj->placement_name }}</option>
                                     @endif
                                 @endforeach
-                                {{-- <option value="ASB">ASB</option>
-                                <option value="DPA">DPA</option>
-                                <option value="YCME">YCME</option>
-                                <option value="YIG">YIG</option>
-                                <option value="YSM">YSM</option>
-                                <option value="YAM">YAM</option>
-                                <option value="GAMA">GAMA</option>
-                                <option value="WAS">WAS</option>
-                                <option value="YEV">YEV</option>
-                                <option value="YEV SMOOT">YEV SMOOT</option>
-                                <option value="YEV OFFERO">YEV OFFERO</option>
-                                <option value="YEV SUNRA">YEV SUNRA</option>
-                                <option value="YEV AIMA">YEV AIMA</option> --}}
-
                             </select>
                             @error('placement_id')
                                 <div class="invalid-feedback">
@@ -295,8 +234,14 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Nomor Rekening') }}</label>
-                            <input wire:model="nomor_rekening" type="number" class="form-control">
+                            <input wire:model="nomor_rekening" type="number"
+                                class="form-control @error('nomor_rekening') is-invalid @enderror">
                         </div>
+                        @error('nomor_rekening')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
             </div>
