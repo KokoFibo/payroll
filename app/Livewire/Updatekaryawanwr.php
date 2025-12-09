@@ -14,15 +14,19 @@ use Livewire\Attributes\On;
 use App\Rules\FileSizeLimit;
 use Livewire\Attributes\Url;
 use App\Models\Applicantfile;
+// use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use App\Livewire\Karyawanindexwr;
 use App\Rules\AllowedFileExtension;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
+// use Illuminate\Validation\Rules\RequiredIf;
 use Illuminate\Validation\Rules\RequiredIf;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Intervention\Image\ImageManagerStatic as Image;
+// use Illuminate\Validation\Rule;
+
 
 class Updatekaryawanwr extends Component
 {
@@ -358,6 +362,7 @@ class Updatekaryawanwr extends Component
             'level_jabatan' => 'nullable',
             'nama_bank' => 'nullable',
             'nomor_rekening' => 'nullable',
+
             // PAYROLL
             'metode_penggajian' => 'required',
             'gaji_pokok' => 'numeric|required',
@@ -742,9 +747,36 @@ class Updatekaryawanwr extends Component
         }
     }
 
+    public function cek_nomor_rekening()
+    {
+        $data = Karyawan::where('nomor_rekening', trim($this->nomor_rekening))
+            ->where('id_karyawan', '!=', $this->id_karyawan)
+            ->first();
+        if ($data) {
+            // $this->dispatch(
+            //     'message',
+            //     type: 'error',
+            //     title: 'Nomor rekening sudah terdaftar pada karyawan lain.',
+            //     position: 'center'
+            // );
+            // $this->nomor_rekening = '';
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function update1()
     {
+        if ($this->cek_nomor_rekening()) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Nomor rekening sudah terdaftar pada karyawan lain.',
+                position: 'center'
+            );
+            return;
+        }
         $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
