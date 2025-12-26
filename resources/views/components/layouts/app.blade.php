@@ -120,7 +120,7 @@
         </script>
 
     </div>
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GA_ID') }}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8KWREPG05Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
