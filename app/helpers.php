@@ -126,22 +126,31 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         }
 
 
-        // 23 translator
-        if ($jabatan_id != 23) {
-            if (
-                $is_libur_nasional && !$is_sunday
-                && $jabatan_id != 23
+        // if ($jabatan_id != 23) {
+        //     if (
+        //         $is_libur_nasional && !$is_sunday
+        //         && $jabatan_id != 23
 
-            ) {
-                $jam_kerja *= 2;
-                $jam_lembur *= 2;
-            }
-        } else {
+        //     ) {
+
+        //         $jam_kerja *= 2;
+        //         $jam_lembur *= 2;
+        //     }
+        // } else {
+        //     if ($is_sunday) {
+        //         $jam_kerja /= 2;
+        //         $jam_lembur /= 2;
+        //     }
+        // }
+
+        // 23 translator
+        if ($jabatan_id == 23) {
             if ($is_sunday) {
                 $jam_kerja /= 2;
                 $jam_lembur /= 2;
             }
         }
+
 
         // $this->dataArr->push([
         // 'tgl' => $tgl,
