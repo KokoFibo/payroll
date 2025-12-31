@@ -748,6 +748,7 @@ class YfpresensiController extends Controller
             // lanjutkan
             $hasil = saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $dataKaryawan->jabatan_id, $no_scan, $dataKaryawan->placement_id, $overtime_in, $overtime_out);
             // dd($hasil['jam_kerja']);
+
             $total_hari_kerja = 0;
             $total_jam_kerja = 0;
             $total_jam_lembur = 0;
@@ -813,32 +814,7 @@ class YfpresensiController extends Controller
                 }
             }
 
-            // if ($is_hari_libur_nasional) {
-            //     // Jika libur nasional, cek hari spesifik
-            //     if ($is_saturday) {
-            //         $jam_kerja_libur = 12;
-            //     } elseif ($is_friday) {
-            //         $jam_kerja_libur = 15;
-            //     } else {
-            //         $jam_kerja_libur = 16; // Libur nasional selain Jumat/Sabtu
-            //     }
-            // } elseif ($is_sunday) {
-            //     // Kalau bukan libur nasional tapi Minggu
-            //     $jam_kerja_libur = 16;
-            // }
-            // $jam_kerja_libur = 16;
-
-            // if ($late > 0) $tambahan_shift_malam = 0;
-
-            // if ($is_sunday || $is_hari_libur_nasional) {
-            //     $total_hari_kerja_libur = 1;
-            //     $total_jam_lembur_libur = $total_jam_lembur;
-            // }
-            // if ($dataKaryawan->metode_penggajian == "Perbulan") {
-            //     if (($jam_kerja_libur > 0) || ($total_jam_kerja > 0)) {
-            //         $total_hari_kerja = 1;
-            //     }
-            // }
+            // if ($user_id == 6208) dd($total_jam_kerja);
 
             if ($is_hari_libur_nasional || $is_sunday) {
                 $total_hari_kerja_libur = 0;
