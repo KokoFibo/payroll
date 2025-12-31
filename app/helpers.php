@@ -125,7 +125,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             }
         }
 
-        // if ($user_id == 6208) dd($jam_kerja);
 
         // if ($jabatan_id != 23) {
         //     if (
@@ -133,7 +132,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         //         && $jabatan_id != 23
 
         //     ) {
-        //         if ($user_id == 6208) dd($jam_kerja);
 
         //         $jam_kerja *= 2;
         //         $jam_lembur *= 2;
@@ -153,7 +151,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             }
         }
 
-        // if ($user_id == 6208) dd($jam_kerja);
 
         // $this->dataArr->push([
         // 'tgl' => $tgl,

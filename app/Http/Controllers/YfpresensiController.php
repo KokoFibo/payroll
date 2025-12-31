@@ -814,7 +814,6 @@ class YfpresensiController extends Controller
                 }
             }
 
-            // if ($user_id == 6208) dd($total_jam_kerja);
 
             if ($is_hari_libur_nasional || $is_sunday) {
                 $total_hari_kerja_libur = 0;
