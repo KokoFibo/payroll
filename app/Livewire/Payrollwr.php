@@ -304,13 +304,6 @@ class Payrollwr extends Component
         // Panggil fungsi bulan untuk memperbarui daftar bulan
     }
 
-
-
-
-
-
-
-
     public function mount()
     {
 
