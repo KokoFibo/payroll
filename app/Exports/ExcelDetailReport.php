@@ -5,8 +5,9 @@ namespace App\Exports;
 
 use DateTime;
 
-use App\Models\Payroll;
+use Carbon\Carbon;
 
+use App\Models\Payroll;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Http;
@@ -119,54 +120,16 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
 
         // Ambil data dari Januari hingga bulan ini
         $laporan_bulanan = collect();
+
+        // $tahun++;
         // foreach (range(1, now()->month) as $bulan) {
-        //     $laporan = DB::table('payrolls')
-        //         ->selectRaw('placement_id, SUM(total) as total_gaji, COUNT(DISTINCT id_karyawan) as jumlah_karyawan, 
-        //         SUM(tambahan_shift_malam) as tambahan_shift_malam,
-        //         SUM(jam_kerja) as jam_kerja,  
-        //         SUM(jam_lembur) as jam_lembur, 
-        //         SUM(bonus1x) as bonus1x, 
-        //         SUM(potongan1x) + sum(denda_lupa_absen) + sum(denda_resigned)+ sum(iuran_air) as potongan1x,
-        //         SUM(gaji_pokok/198*jam_kerja) as total_gaji_pokok,
-        //         SUM(gaji_lembur*jam_lembur) as total_lemburan
-        //         ')
-        //         ->where('metode_penggajian', 'Perjam')
-        //         ->whereYear('date', $tahun)
-        //         ->whereMonth('date', $bulan)
-        //         ->groupBy('placement_id')
-        //         ->get()
-        //         ->map(function ($row) use ($bulan) {
-        //             return (object)[
-        //                 'bulan' => $bulan,
-        //                 'placement_id' => $row->placement_id,
-        //                 'total_gaji' => $row->total_gaji,
-        //                 'jumlah_karyawan' => $row->jumlah_karyawan,
-        //                 'tambahan_shift_malam' => $row->tambahan_shift_malam,
-        //                 'jam_kerja' => $row->jam_kerja,
-        //                 'jam_lembur' => $row->jam_lembur,
-        //                 'bonus1x' => $row->bonus1x,
-        //                 'potongan1x' => $row->potongan1x,
-        //                 'total_gaji_pokok' => $row->total_gaji_pokok,
-        //                 'total_lemburan' => $row->total_lemburan,
-        //                 // 'rata_rata_gaji' => $row->total_gaji_pokok / $row->total_gaji,
-        //                 'rata_rata_gaji' => $row->jumlah_karyawan > 0
-        //                     ? $row->total_gaji_pokok / $row->jumlah_karyawan
-        //                     : 0,
+        // nanti januari 2026 rubah lagi ya, hanya butuh data 3 bulan terakhir
+        $baseDate = Carbon::create($this->year, $this->month, 1);
+        for ($i = 0; $i < 3; $i++) {
+            $date = $baseDate->copy()->subMonths($i);
 
-        //                 'rata_rata_gaji_perjam' => $row->jam_kerja > 0
-        //                     ? $row->total_gaji_pokok / $row->jam_kerja
-        //                     : 0,
-
-        //                 'rata_rata_lembur_perjam' => $row->jam_lembur > 0
-        //                     ? ($row->total_lemburan ?? 0) / $row->jam_lembur
-        //                     : 0,
-        //             ];
-        //         });
-
-        //     $laporan_bulanan = $laporan_bulanan->merge($laporan);
-        // }
-
-        foreach (range(1, now()->month) as $bulan) {
+            $bulan = $date->month;
+            $tahun = $date->year;
             $laporan = DB::table('payrolls')
                 ->join('placements', 'payrolls.placement_id', '=', 'placements.id')
                 ->selectRaw('placements.placement_name as placement_name, placement_id, 
