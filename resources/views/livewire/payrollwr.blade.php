@@ -137,6 +137,7 @@
                     <div class="d-flex gap-2">
                         <div>
                             <select class="form-select" wire:model.live="year">
+                                {{-- <option value="2024">2024</option> --}}
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
                                 @endforeach
@@ -146,11 +147,13 @@
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option>  --}}
 
-                                <option value="9">sep</option>
+                                {{-- <option value="9">sep</option> --}}
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
-                                <option value="11">November 2025</option>
+                                {{-- <option value="11">November 2025</option>
+                                <option value="12">Desember 2025</option> --}}
+                                {{-- <option value="1">Januari 2026</option> --}}
                             </select>
 
                         </div>
