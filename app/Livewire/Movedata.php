@@ -135,8 +135,8 @@ class Movedata extends Component
             $this->create_data();
 
             // 2️⃣ DELETE DATA DI API LAMA
-            $apiDeleteKaryawan = "https://payroll.yifang.co.id/api/delete_karyawan_yf_aja/{$this->id_karyawan}";
-            $apiDeleteUser     = "https://payroll.yifang.co.id/api/delete_user_yf_aja/{$this->id_karyawan}";
+            $apiDeleteKaryawan = "https://salary.yifang.co.id/api/delete_karyawan_yf_aja/{$this->id_karyawan}";
+            $apiDeleteUser     = "https://salary.yifang.co.id/api/delete_user_yf_aja/{$this->id_karyawan}";
 
             $deleteKaryawan = $this->deleteDataKaryawanApi($apiDeleteKaryawan);
             $deleteUser     = $this->deleteDataUserApi($apiDeleteUser);
