@@ -58,6 +58,8 @@ class Test extends Component
   public function render()
   {
 
+    // $data = Karyawan::where('etnis', 'China')->whereIn('status_karyawan', ['PKWT', 'PKWTT'])->get();
+    // dd($data);
     dd('aman');
     $year = 2025;
     $month = 11;
