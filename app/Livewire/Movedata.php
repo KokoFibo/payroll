@@ -20,7 +20,6 @@ class Movedata extends Component
 
         $this->data_karyawan = getDataApi($apiUrlKaryawan);
         $this->data_user = getDataApi($apiUrlUser);
-        // dd($data);
 
         if (isset($this->data_karyawan['status']) && $this->data_karyawan['status'] === 'error') {
             // Display the error message
@@ -166,7 +165,7 @@ class Movedata extends Component
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Gagal memindahkan data',
+                title: $e->getMessage(),
                 position: 'center'
             );
         }
