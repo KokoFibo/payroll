@@ -58,57 +58,6 @@ class Test extends Component
   public function render()
   {
 
-    // $data = Karyawan::where('etnis', 'China')->whereIn('status_karyawan', ['PKWT', 'PKWTT'])->get();
-    // dd($data);
-    dd('aman');
-    $year = 2025;
-    $month = 11;
-    // $user_id = 3084;
-    // $user_id = 3251;
-    $data = Yfrekappresensi::where('date', '2025-11-09')
-      ->get();
-    // Lihat hasilnya
-    foreach ($data as $d) {
-      $d->total_jam_kerja = $d->total_jam_kerja / 2;
-      $d->total_jam_kerja_libur = $d->total_jam_kerja;
-      $d->total_jam_lembur = $d->total_jam_lembur / 2;
-      $d->total_jam_lembur_libur = $d->total_jam_lembur;
-      $d->total_hari_kerja_libur = 0;
-      $d->total_hari_kerja = 0;
-      if ($d->total_jam_kerja < 0) {
-        $d->total_jam_kerja = 0;
-        $d->total_jam_kerja_libur = 0;
-      }
-      if ($d->total_jam_lembur < 0) {
-        $d->total_jam_lembur = 0;
-        $d->total_jam_lembur_libur = 0;
-      }
-      $d->save();
-    }
-
-    dd('done');
-
-
-
-
-    // ambil list tanggal libur nasional
-    $libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
-      ->whereYear('tanggal_mulai_hari_libur', $year)
-      ->pluck('tanggal_mulai_hari_libur')
-      ->toArray();
-
-    // $data = Yfrekappresensi::where('user_id', $user_id)
-    $data = Yfrekappresensi::whereMonth('date', $month)
-      ->whereYear('date', $year)
-      ->where(function ($q) use ($libur_nasional) {
-        $q->whereRaw('DAYOFWEEK(DATE(date)) = 1')  // hari minggu
-          ->orWhereIn(DB::raw('DATE(date)'), $libur_nasional); // libur nasional
-      })
-      ->get();
-
-    dd($data);
-
-    // dd($libur_nasional);
 
     return view('livewire.test');
   }

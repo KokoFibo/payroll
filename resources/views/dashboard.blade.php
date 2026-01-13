@@ -129,6 +129,7 @@
 
     <livewire:placementreport />
     <livewire:agamadetail />
+    <livewire:turnover />
 
 
 
