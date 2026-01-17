@@ -7,257 +7,304 @@ use App\Models\Yfrekappresensi;
 use App\Models\Karyawan;
 use App\Models\Liburnasional;
 
-function quickRebuildOptimized($month, $year)
+
+
+function quickRebuildOptimized(int $month, int $year)
 {
-    // -- PREP: ambil data libur dan total hari kerja bulan ini --
-    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
-        ->whereYear('tanggal_mulai_hari_libur', $year)
-        ->orderBy('tanggal_mulai_hari_libur', 'asc')
-        ->get('tanggal_mulai_hari_libur');
+    DB::transaction(function () use ($month, $year) {
 
-    $total_n_hari_kerja = getTotalWorkingDays($year, $month); // pastikan helper ada
-    $startOfMonth = Carbon::parse("$year-$month-01");
-    $endOfMonth = $startOfMonth->copy()->endOfMonth();
+        $payrollDate = Carbon::create($year, $month, 1)->format('Y-m-d');
 
-    // kalau mau langsung eksekusi set $pass = true; (tidak digunakan lebih lanjut)
-    $pass = true;
+        /**
+         * =================================================
+         * 1. HAPUS PAYROLL BULAN & TAHUN TERKAIT
+         * =================================================
+         */
+        DB::table('payrolls')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->delete();
 
-    // Hapus payroll bulan tsb dulu (sebelumnya)
-    Payroll::whereMonth('date', $month)->whereYear('date', $year)->delete();
-    delete_failed_jobs(); // pastikan helper ada
+        /**
+         * =================================================
+         * 2. DATA PENUNJANG
+         * =================================================
+         */
+        $total_n_hari_kerja     = getTotalWorkingDays($year, $month);
+        $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
-    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year); // optional helper
+        /**
+         * =================================================
+         * 3. AGREGASI PRESENSI (+ NOSCAN + LATE + SHIFT MALAM)
+         * =================================================
+         */
+        $presensi = DB::table('yfrekappresensis as y')
+            ->selectRaw("
+                y.user_id,
+                SUM(y.total_jam_kerja)        AS total_jam_kerja,
+                SUM(y.total_hari_kerja)       AS total_hari_kerja,
+                SUM(y.total_jam_lembur)       AS total_jam_lembur,
+                SUM(y.total_jam_kerja_libur)  AS total_jam_kerja_libur,
+                SUM(y.total_hari_kerja_libur) AS total_hari_kerja_libur,
+                SUM(y.total_jam_lembur_libur) AS total_jam_lembur_libur,
+                SUM(
+                    CASE
+                        WHEN y.no_scan_history = 'No Scan' THEN 1
+                        ELSE 0
+                    END
+                ) AS total_noscan,
+                SUM(y.late)        AS jumlah_jam_terlambat,
+                SUM(y.shift_malam) AS tambahan_jam_shift_malam
+            ")
+            ->whereMonth('y.date', $month)
+            ->whereYear('y.date', $year)
+            ->groupBy('y.user_id');
 
-    // ambil semua user_id yang punya presensi di bulan ini (kecuali karyawan Blacklist)
-    $datas = Yfrekappresensi::whereBetween('date', [$startOfMonth, $endOfMonth])
-        ->whereHas('karyawan', function ($q) {
-            $q->where('status_karyawan', '!=', 'Blacklist');
-        })
-        ->pluck('user_id')
-        ->unique()
-        ->toArray();
+        /**
+         * =================================================
+         * 4. JOIN + HITUNG SUBTOTAL (TIDAK DIUBAH)
+         * =================================================
+         */
+        $rows = DB::table('karyawans as k')
+            ->joinSub($presensi, 'p', fn($j) => $j->on('p.user_id', '=', 'k.id_karyawan'))
+            ->leftJoin('liburnasionals as l', function ($join) use ($month, $year) {
+                $join->whereMonth('l.tanggal_mulai_hari_libur', $month)
+                    ->whereYear('l.tanggal_mulai_hari_libur', $year);
+            })
+            ->where('k.status_karyawan', '!=', 'Blacklist')
+            ->groupBy('k.id_karyawan')
+            ->selectRaw("
+        k.*,
 
-    if (empty($datas)) {
-        return 0;
-    }
+        p.total_jam_kerja,
+        p.total_hari_kerja,
+        p.total_jam_lembur,
+        p.total_jam_kerja_libur,
+        p.total_hari_kerja_libur,
+        p.total_jam_lembur_libur,
+        p.total_noscan,
+        p.jumlah_jam_terlambat,
+        p.tambahan_jam_shift_malam,
 
-    // mulai transaksi untuk safety (opsional)
-    DB::beginTransaction();
-    try {
-        foreach ($datas as $user_id) {
+        -- HITUNG JUMLAH LIBUR NASIONAL VALID PER KARYAWAN
+        COALESCE(SUM(
+            CASE
+                WHEN k.metode_penggajian != 'Perbulan' THEN 0
+                WHEN k.tanggal_bergabung > l.tanggal_mulai_hari_libur THEN 0
+                ELSE l.jumlah_hari_libur
+            END
+        ), 0) AS jumlah_libur_nasional_valid,
 
-            // ambil semua presensi untuk user di bulan tsb
-            $rows = Yfrekappresensi::where('user_id', $user_id)
-                ->whereBetween('date', [$startOfMonth, $endOfMonth])
-                ->get();
+        CASE
+            WHEN k.etnis = 'China' THEN k.gaji_pokok
 
-            if ($rows->isEmpty()) {
-                // tidak ada presensi yang valid, lewati
-                continue;
+            WHEN k.metode_penggajian = 'Perjam' THEN
+                (p.total_jam_kerja * (k.gaji_pokok / 198))
+                + (p.total_jam_lembur * k.gaji_overtime)
+                + (p.total_jam_lembur_libur * k.gaji_overtime)
+                + (p.total_jam_kerja_libur * (k.gaji_pokok / 198))
+
+            ELSE
+                (k.gaji_pokok / ?)
+                * (p.total_hari_kerja + 
+                    COALESCE(SUM(
+                        CASE
+                            WHEN k.tanggal_bergabung > l.tanggal_mulai_hari_libur THEN 0
+                            ELSE l.jumlah_hari_libur
+                        END
+                    ), 0)
+                )
+                + (p.total_jam_lembur * k.gaji_overtime)
+                + (p.total_jam_lembur_libur * k.gaji_overtime)
+                + (p.total_jam_kerja_libur * (k.gaji_pokok / 198))
+        END AS subtotal
+    ", [$total_n_hari_kerja])
+            ->get();
+
+
+        /**
+         * =================================================
+         * 5. BUILD PAYROLL (HANYA TAMBAH FIELD BARU)
+         * =================================================
+         */
+        $insert = [];
+
+        foreach ($rows as $k) {
+
+            $tambahan_shift_malam =
+                $k->tambahan_jam_shift_malam * $k->gaji_overtime;
+
+            if ((int) $k->jabatan_id === 17) {
+                $tambahan_shift_malam =
+                    $k->tambahan_jam_shift_malam * $k->gaji_shift_malam_satpam;
             }
 
-            // ambil data karyawan sekali saja (data statis)
-            $kar = Karyawan::where('id_karyawan', $user_id)->first();
-            if (!$kar) {
-                // kalau tidak ada karyawan, skip
-                continue;
-            }
 
-            // inisialisasi accumulator
-            $total_hari_kerja = 0;
-            $total_jam_kerja = 0;
-            $total_jam_lembur = 0;
-            $total_jam_kerja_libur = 0;
-            $jam_lembur_libur = 0;
-            $no_scan_history = 0;
-            $late_history = 0;
-            $shift_malam = 0;
-            $late = 0;
-            $hari_kerja_libur = 0;
-            $tanggal_terakhir = null; // untuk tanggal entry payroll
+            $insert[] = [
+                'jamkerjaid_id' => 0,
+                'id_karyawan'   => $k->id_karyawan,
+                'nama'          => $k->nama,
 
-            // akumulasi dari semua row presensi
-            foreach ($rows as $r) {
-                $total_hari_kerja += (float) ($r->total_hari_kerja ?? 0);
-                $total_jam_kerja += (float) ($r->total_jam_kerja ?? 0);
-                $total_jam_lembur += (float) ($r->total_jam_lembur ?? 0);
-                $total_jam_kerja_libur += (float) ($r->total_jam_kerja_libur ?? 0);
-                $jam_lembur_libur += (float) ($r->jam_lembur_libur ?? 0); // pastikan kolom benar
-                if (!empty($r->no_scan_history)) $no_scan_history++;
-                if (!empty($r->late_history)) $late_history++;
-                $shift_malam += (float) ($r->shift_malam ?? 0);
-                $late += (float) ($r->late ?? 0);
-                $hari_kerja_libur += (float) ($r->hari_kerja_libur ?? 0); // pastikan kolom ada
-                $tanggal_terakhir = $r->date; // last overwritten = terakhir
-            }
+                'company_id'    => $k->company_id,
+                'placement_id'  => $k->placement_id,
+                'department_id' => $k->department_id,
+                'jabatan_id'    => $k->jabatan_id,
 
-            // --- HITUNG BPJS / POTONGAN berdasarkan data karyawan (kar) ---
-            // Asumsikan field di Karyawan sesuai:
-            // potongan_JP, potongan_JHT, potongan_kesehatan, gaji_bpjs, tanggungan
-            // Jika field berbeda, sesuaikan.
-            $jp = 0;
-            if (isset($kar->potongan_JP) && intval($kar->potongan_JP) === 1) {
-                // batas atas JP: gunakan nilai aturan lokal — ubah konstanta jika perlu
-                $jp_upah_limit = 10042300; // <-- sesuaikan bila perlu
-                $jp_base = $kar->gaji_bpjs ?? 0;
-                $jp = ($jp_base <= $jp_upah_limit) ? ($jp_base * 0.01) : ($jp_upah_limit * 0.01);
-            }
+                'nama_bank'      => $k->nama_bank,
+                'nomor_rekening' => $k->nomor_rekening,
+                'metode_penggajian' => $k->metode_penggajian,
 
-            $jht = 0;
-            if (isset($kar->potongan_JHT) && intval($kar->potongan_JHT) === 1) {
-                $jht = ($kar->gaji_bpjs ?? 0) * 0.02;
-            }
+                'hari_kerja'    => (float) $k->total_hari_kerja,
+                'jam_kerja'     => (float) $k->total_jam_kerja,
+                'jam_lembur'    => (float) $k->total_jam_lembur,
 
-            $kesehatan = 0;
-            if (isset($kar->potongan_kesehatan) && intval($kar->potongan_kesehatan) === 1) {
-                $data_gaji_bpjs = $kar->gaji_bpjs ?? 0;
-                $bpjs_kesehatan_limit = 12000000; // ubah jika aturan berubah
-                $data_gaji_bpjs = ($data_gaji_bpjs >= $bpjs_kesehatan_limit) ? $bpjs_kesehatan_limit : $data_gaji_bpjs;
-                $kesehatan = $data_gaji_bpjs * 0.01;
-            }
+                'hari_kerja_libur' => (float) $k->total_hari_kerja_libur,
+                'jam_kerja_libur'  => (float) $k->total_jam_kerja_libur,
+                'jam_lembur_libur' => (float) $k->total_jam_lembur_libur,
 
-            // tanggungan (jika kolom tanggungan menyimpan angka tanggungan)
-            $tanggungan = 0;
-            if (!empty($kar->tanggungan) && $kar->tanggungan >= 1) {
-                $tanggungan = $kar->tanggungan * ($kar->gaji_bpjs ?? 0) * 0.01;
-            }
+                'libur_nasional' => $jumlah_libur_nasional,
 
-            // potongan JKK / JKM (jika ada flag)
-            $jkk = (isset($kar->potongan_JKK) && intval($kar->potongan_JKK) === 1) ? 1 : 0;
-            $jkm = (isset($kar->potongan_JKM) && intval($kar->potongan_JKM) === 1) ? 1 : 0;
+                'jumlah_jam_terlambat'      => (float) ($k->jumlah_jam_terlambat ?? 0),
+                'tambahan_jam_shift_malam' => (float) ($k->tambahan_jam_shift_malam ?? 0),
+                'tambahan_shift_malam'     => round($tambahan_shift_malam, 0),
 
-            // --- DENDA LUPA ABSEN / NOSCAN ---
-            $denda_lupa_absen = 0;
-            if ($no_scan_history > 3 && trim($kar->metode_penggajian ?? '') == 'Perjam') {
-                $denda_lupa_absen = ($no_scan_history - 3) * (($kar->gaji_pokok ?? 0) / 198);
-            } else {
-                if ($no_scan_history > 3) {
-                    $denda_lupa_absen = ($no_scan_history - 3) * (($kar->gaji_pokok ?? 0) / 198);
-                } else {
-                    $denda_lupa_absen = 0;
-                }
-            }
+                'iuran_air' => (int) $k->iuran_air,
+                'iuran_locker' => (int) $k->iuran_locker,
 
-            // --- PERHITUNGAN GAJI LIBUR & LEMBUR ---
-            // total_gaji_libur: jam kerja libur * (gaji_pokok / 198) + jam_lembur_libur * gaji_overtime
-            $gaji_pokok = $kar->gaji_pokok ?? 0;
-            $gaji_overtime = $kar->gaji_overtime ?? 0;
+                'gaji_pokok' => (int) $k->gaji_pokok,
+                'gaji_lembur' => (int) $k->gaji_overtime,
+                'gaji_libur'  => round($k->total_jam_kerja_libur * ($k->gaji_pokok / 198), 1),
 
-            $total_gaji_libur = ($total_jam_kerja_libur * ($gaji_pokok / 198)) + ($jam_lembur_libur * $gaji_overtime);
-            $total_gaji_lembur_karyawan = $total_jam_lembur * $gaji_overtime;
+                'subtotal' => round($k->subtotal, 1),
+                'total'    => round($k->subtotal + $tambahan_shift_malam - $k->iuran_air - $k->iuran_locker, 1),
 
-            // subtotal tergantung metode penggajian
-            if (trim($kar->metode_penggajian ?? '') == 'Perjam') {
-                $subtotal = $total_jam_kerja * ($gaji_pokok / 198) + $total_gaji_lembur_karyawan + $total_gaji_libur;
-                $gaji_karyawan_bulanan = 0;
-            } else {
-                $manfaat_libur = 0;
-                // perhitungan manfaat_libur: jika karyawan baru atau resigned, panggil helper
-                $beginning_date = buat_tanggal($month, $year); // pastikan helper ini ada
-                if ($kar->metode_penggajian == 'Perbulan' && ($kar->tanggal_bergabung >= $beginning_date || $kar->status_karyawan == 'Resigned')) {
-                    $manfaat_libur = manfaat_libur($month, $year, $libur, $user_id, $kar->tanggal_bergabung);
-                } else {
-                    $manfaat_libur = $libur->count();
-                }
+                'total_noscan' => (int) ($k->total_noscan ?? 0),
 
-                $gaji_karyawan_bulanan = ($gaji_pokok / max(1, $total_n_hari_kerja)) * ($total_hari_kerja + $manfaat_libur) + $total_gaji_libur + $total_gaji_lembur_karyawan;
-                $subtotal = $gaji_karyawan_bulanan;
-            }
+                'status_karyawan' => $k->status_karyawan,
+                'tanggungan' => $k->tanggungan ?? 0,
+                'ptkp'       => $k->ptkp ?? null,
 
-            // tambahan shift malam: default dari data karyawan (kolom gaji_shift_malam_satpam optional)
-            $tambahan_shift_malam = $shift_malam * $gaji_overtime;
-            if (isset($kar->jabatan_id) && intval($kar->jabatan_id) === 17 && isset($kar->gaji_shift_malam_satpam)) {
-                $tambahan_shift_malam = $shift_malam * $kar->gaji_shift_malam_satpam;
-            }
+                'pph21'      => 0,
+                'total_bpjs' => 0,
+                'pajak'      => 0,
 
-            // libur_nasional default 0 atau dari perhitungan lain jika ada
-            $libur_nasional_val = 0; // sesuaikan bila perlu
+                'denda_lupa_absen' => 0,
+                'denda_resigned'   => 0,
 
-            // total bonus & potongan statis dari karyawan
-            $total_bonus_dari_karyawan = ($kar->bonus ?? 0) + ($kar->tunjangan_jabatan ?? 0) + ($kar->tunjangan_bahasa ?? 0) + ($kar->tunjangan_skill ?? 0) + ($kar->tunjangan_lembur_sabtu ?? 0) + ($kar->tunjangan_lama_kerja ?? 0);
-            $total_potongan_dari_karyawan = ($kar->iuran_air ?? 0) + ($kar->iuran_locker ?? 0);
-
-            // pph21 placeholder (kalau mau dihitung, tambahkan logic)
-            $pph21 = 0;
-
-            // tanggal payroll (gunakan tanggal terakhir presensi jika ada)
-            $payroll_date = $tanggal_terakhir ? buatTanggal($tanggal_terakhir) : buatTanggal($startOfMonth);
-
-            // total akhir
-            $total_final = $subtotal
-                + $total_bonus_dari_karyawan
-                + $libur_nasional_val
-                + $tambahan_shift_malam
-                - $total_potongan_dari_karyawan
-                - 0 // pajak (jika ada)
-                - $jp
-                - $jht
-                - $kesehatan
-                - $tanggungan
-                - $denda_lupa_absen
-                - $pph21;
-
-            // create payroll
-            Payroll::create([
-                'jp' => $jp,
-                'jht' => $jht,
-                'kesehatan' => $kesehatan,
-                'tanggungan' => $tanggungan,
-                'jkk' => $jkk,
-                'jkm' => $jkm,
-                'denda_lupa_absen' => $denda_lupa_absen,
-                'gaji_libur' => $total_gaji_libur, // perhitungan di atas
-                'nama' => $kar->nama ?? null,
-                'id_karyawan' => $kar->id_karyawan,
-                'jabatan_id' => $kar->jabatan_id ?? null,
-                'company_id' => $kar->company_id ?? null,
-                'placement_id' => $kar->placement_id ?? null,
-                'department_id' => $kar->department_id ?? null,
-                'status_karyawan' => $kar->status_karyawan ?? null,
-                'metode_penggajian' => $kar->metode_penggajian ?? null,
-                'nomor_rekening' => $kar->nomor_rekening ?? null,
-                'nama_bank' => $kar->nama_bank ?? null,
-                'gaji_pokok' => $gaji_pokok,
-                'gaji_lembur' => $gaji_overtime,
-                'gaji_bpjs' => $kar->gaji_bpjs ?? 0,
-                'ptkp' => $kar->ptkp ?? 0,
-                'libur_nasional' => $libur_nasional_val,
-                'hari_kerja_libur' => $hari_kerja_libur,
-                'jam_lembur_libur' => $jam_lembur_libur,
-                'jam_kerja_libur' => $total_jam_kerja_libur,
-                'hari_kerja' => $total_hari_kerja,
-                'jam_kerja' => $total_jam_kerja,
-                'jam_lembur' => $total_jam_lembur,
-                'jumlah_jam_terlambat' => $late,
-                'total_noscan' => $no_scan_history,
-                'thr' => $kar->bonus ?? 0,
-                'tunjangan_jabatan' => $kar->tunjangan_jabatan ?? 0,
-                'tunjangan_bahasa' => $kar->tunjangan_bahasa ?? 0,
-                'tunjangan_skill' => $kar->tunjangan_skill ?? 0,
-                'tunjangan_lama_kerja' => $kar->tunjangan_lama_kerja ?? 0,
-                'tunjangan_lembur_sabtu' => $kar->tunjangan_lembur_sabtu ?? 0,
-                'iuran_air' => $kar->iuran_air ?? 0,
-                'iuran_locker' => $kar->iuran_locker ?? 0,
-                'tambahan_jam_shift_malam' => $shift_malam,
-                'tambahan_shift_malam' => $tambahan_shift_malam,
-                'subtotal' => $subtotal,
-                'date' => $payroll_date,
-                'pph21' => $pph21,
-                'total' => $total_final,
-                'total_bpjs' => $kar->total_bpjs ?? null,
-            ]);
+                'date' => $payrollDate,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
 
-        DB::commit();
-        return 1; // sukses
-    } catch (\Throwable $e) {
-        DB::rollBack();
-        // log error supaya gampang debug
-        \Log::error('quickRebuildOptimized error: ' . $e->getMessage(), [
-            'month' => $month,
-            'year' => $year,
-            'trace' => $e->getTraceAsString()
+        /**
+         * =================================================
+         * 6. INSERT PAYROLL
+         * =================================================
+         */
+        collect($insert)
+            ->chunk(300)
+            ->each(fn($c) => DB::table('payrolls')->insert($c->toArray()));
+
+        /**
+         * =================================================
+         * 7. HITUNG DENDA NOSCAN & RESIGNED (TIDAK DIUBAH)
+         * =================================================
+         */
+        DB::update("
+            UPDATE payrolls p
+            JOIN karyawans k ON k.id_karyawan = p.id_karyawan
+            SET
+                p.denda_lupa_absen =
+                    CASE
+                        WHEN k.etnis = 'China' THEN 0
+                        WHEN p.total_noscan <= 3 THEN 0
+                        ELSE (p.total_noscan - 3) * (p.gaji_pokok / 198)
+                    END,
+
+                p.denda_resigned =
+                    CASE
+                        WHEN k.tanggal_resigned IS NULL THEN 0
+                        WHEN DATEDIFF(k.tanggal_resigned, k.tanggal_bergabung) > 90 THEN 0
+                        WHEN TRIM(p.metode_penggajian) = 'Perbulan'
+                            THEN 3 * (p.gaji_pokok / ?)
+                        ELSE
+                            24 * (p.gaji_pokok / 198)
+                    END,
+
+                p.total =
+                    p.total
+                    - (
+                        CASE
+                            WHEN k.etnis = 'China' THEN 0
+                            WHEN p.total_noscan <= 3 THEN 0
+                            ELSE (p.total_noscan - 3) * (p.gaji_pokok / 198)
+                        END
+                        +
+                        CASE
+                            WHEN k.tanggal_resigned IS NULL THEN 0
+                            WHEN DATEDIFF(k.tanggal_resigned, k.tanggal_bergabung) > 90 THEN 0
+                            WHEN TRIM(p.metode_penggajian) = 'Perbulan'
+                                THEN 3 * (p.gaji_pokok / ?)
+                            ELSE
+                                24 * (p.gaji_pokok / 198)
+                        END
+                    )
+            WHERE
+                MONTH(p.date) = ?
+            AND YEAR(p.date)  = ?
+        ", [
+            $total_n_hari_kerja,
+            $total_n_hari_kerja,
+            $month,
+            $year
         ]);
-        throw $e; // atau return false tergantung preferensi
-    }
+
+        /**
+         * =================================================
+         * 8. BONUS & POTONGAN 1X (BONUSPOTONGANS)
+         * =================================================
+         */
+        DB::statement("
+            UPDATE payrolls p
+            JOIN bonuspotongans b ON b.user_id = p.id_karyawan
+            SET
+                p.bonus1x =
+                    IFNULL(b.uang_makan, 0)
+                  + IFNULL(b.bonus_lain, 0),
+
+                p.potongan1x =
+                    IFNULL(b.baju_esd, 0)
+                  + IFNULL(b.gelas, 0)
+                  + IFNULL(b.sandal, 0)
+                  + IFNULL(b.seragam, 0)
+                  + IFNULL(b.sport_bra, 0)
+                  + IFNULL(b.hijab_instan, 0)
+                  + IFNULL(b.id_card_hilang, 0)
+                  + IFNULL(b.masker_hijau, 0)
+                  + IFNULL(b.potongan_lain, 0),
+
+                p.total =
+                    p.total
+                  + IFNULL(b.uang_makan, 0)
+                  + IFNULL(b.bonus_lain, 0)
+                  - (
+                        IFNULL(b.baju_esd, 0)
+                      + IFNULL(b.gelas, 0)
+                      + IFNULL(b.sandal, 0)
+                      + IFNULL(b.seragam, 0)
+                      + IFNULL(b.sport_bra, 0)
+                      + IFNULL(b.hijab_instan, 0)
+                      + IFNULL(b.id_card_hilang, 0)
+                      + IFNULL(b.masker_hijau, 0)
+                      + IFNULL(b.potongan_lain, 0)
+                    )
+                   
+            WHERE
+                MONTH(p.date) = ?
+            AND YEAR(p.date)  = ?
+            AND MONTH(b.tanggal) = ?
+            AND YEAR(b.tanggal)  = ?
+        ", [$month, $year, $month, $year]);
+    });
 }

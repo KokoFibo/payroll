@@ -34,6 +34,7 @@ function quickRebuild($month, $year)
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
     $endOfMonth = $startOfMonth->copy()->endOfMonth();
+    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
     $cx = 0;
     // isi ini dengan false jika mau langsung
     $pass = true;
@@ -44,7 +45,6 @@ function quickRebuild($month, $year)
     delete_failed_jobs();
 
 
-    $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
 
     $datas = Yfrekappresensi::with('karyawan')
