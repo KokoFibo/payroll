@@ -208,6 +208,91 @@ function quickRebuildOptimized(int $month, int $year)
 
         /**
          * =================================================
+         * 6A. INSERT CHINA TANPA PRESENSI
+         * =================================================
+         */
+        $chinaTanpaPresensi = DB::table('karyawans as k')
+            ->where('k.etnis', 'China')
+            ->where('k.status_karyawan', '!=', 'Blacklist')
+            ->whereNotIn('k.id_karyawan', function ($q) use ($month, $year) {
+                $q->select('user_id')
+                    ->from('yfrekappresensis')
+                    ->whereMonth('date', $month)
+                    ->whereYear('date', $year);
+            })
+            ->get();
+
+        $insertChina = [];
+
+        foreach ($chinaTanpaPresensi as $k) {
+            $insertChina[] = [
+                'jamkerjaid_id' => 0,
+                'id_karyawan' => $k->id_karyawan,
+                'nama' => $k->nama,
+
+                'company_id' => $k->company_id,
+                'placement_id' => $k->placement_id,
+                'department_id' => $k->department_id,
+                'jabatan_id' => $k->jabatan_id,
+
+                'nama_bank' => $k->nama_bank,
+                'nomor_rekening' => $k->nomor_rekening,
+                'metode_penggajian' => $k->metode_penggajian,
+
+                'hari_kerja' => (float) $total_n_hari_kerja - $jumlah_libur_nasional,
+                'jam_kerja' => 0,
+                'jam_lembur' => 0,
+
+                'hari_kerja_libur' => 0,
+                'jam_kerja_libur' => 0,
+                'jam_lembur_libur' => 0,
+
+                'libur_nasional' => $jumlah_libur_nasional,
+
+                'jumlah_jam_terlambat' => 0,
+                'tambahan_jam_shift_malam' => 0,
+                'tambahan_shift_malam' => 0,
+
+                'iuran_air' => (int) $k->iuran_air,
+                'iuran_locker' => (int) $k->iuran_locker,
+
+                'gaji_pokok' => (int) $k->gaji_pokok,
+                'gaji_lembur' => (int) $k->gaji_overtime,
+                'gaji_libur' => 0,
+
+                'subtotal' => (int) $k->gaji_pokok,
+                'total' => (int) ($k->gaji_pokok - $k->iuran_air - $k->iuran_locker),
+
+                'total_noscan' => 0,
+
+                'status_karyawan' => $k->status_karyawan,
+                'tanggungan' => $k->tanggungan ?? 0,
+                'ptkp' => $k->ptkp ?? null,
+
+                'pph21' => 0,
+                'total_bpjs' => 0,
+                'pajak' => 0,
+
+                'denda_lupa_absen' => 0,
+                'denda_resigned' => 0,
+
+                'date' => $payrollDate,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        collect($insertChina)
+            ->chunk(300)
+            ->each(fn($c) => DB::table('payrolls')->insert($c->toArray()));
+
+
+
+
+
+
+        /**
+         * =================================================
          * 7. HITUNG DENDA NOSCAN & RESIGNED (TIDAK DIUBAH)
          * =================================================
          */
