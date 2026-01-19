@@ -9,9 +9,11 @@ use App\Livewire\Laporan;
 use App\Livewire\Profile;
 use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
+use App\Livewire\Abnormal;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
 use App\Livewire\Movedata;
+use App\Livewire\Payroll2;
 use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
@@ -36,6 +38,7 @@ use App\Livewire\AddTambahan;
 use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
+use App\Livewire\Newpresensi;
 use App\Livewire\Requesterwr;
 use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
@@ -54,6 +57,7 @@ use App\Livewire\Editpresensiwr;
 use App\Livewire\UpdateTambahan;
 use App\Livewire\UserRegulation;
 use App\Http\Controllers\Testaja;
+use App\Livewire\Cekkenaikangaji;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
@@ -77,6 +81,7 @@ use App\Livewire\Timeoutrequsterwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Checkabsensitanpaid;
+use App\Livewire\PerbulanKurangBayar;
 use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerControler;
@@ -99,10 +104,6 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Abnormal;
-use App\Livewire\Newpresensi;
-use App\Livewire\Payroll2;
-use App\Livewire\PerbulanKurangBayar;
 
 // Middleware
 Auth::routes([
@@ -281,6 +282,9 @@ Route::middleware(['auth'])->group(function () {
                             return view('karyawan_excel_form_view', ['karyawans' => $karyawans, 'header_text' => 'ini header text nya']);
                         });
                         Route::get('/test-export', [ExcelController::class, 'testExport']);
+
+                        Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
+
 
 
 
