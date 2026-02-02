@@ -1,11 +1,12 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Models\Lock;
 use App\Models\Payroll;
-use App\Models\Yfrekappresensi;
 use App\Models\Karyawan;
 use App\Models\Liburnasional;
+use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -392,4 +393,8 @@ function quickRebuildOptimized(int $month, int $year)
             AND YEAR(b.tanggal)  = ?
         ", [$month, $year, $month, $year]);
     });
+    $lock = Lock::find(1);
+    $lock->rebuild_done = 1;
+    $lock->save();
+    return;
 }

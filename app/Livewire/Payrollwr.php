@@ -59,6 +59,7 @@ class Payrollwr extends Component
     public function rebuildOptimized()
     {
         quickRebuildOptimized($this->month, $this->year);
+        $this->dispatch('$refresh');
         $this->dispatch(
             'message',
             type: 'success',
