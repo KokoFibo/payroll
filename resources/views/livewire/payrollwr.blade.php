@@ -154,7 +154,7 @@
                                 {{-- <option value="11">November 2025</option>
                                 {{-- <option value="12">Desember 2025</option> --}}
                                 {{-- <option value="1">Januari 2026</option> --}}
-                                <option value="12">Desember 2025</option>
+                                <option value="1">Januari 2026</option>
                             </select>
 
                         </div>
@@ -208,7 +208,9 @@
                             {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                             class="btn btn-primary nightowl-daylight">{{ __('old Rebuild') }}</button>
                     @endif
-                    <button wire:click="newRebuild" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                    {{-- <button wire:click="newRebuild" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button> --}}
+                    <button wire:click="rebuildOptimized" {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                         class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
                 </div>
             </div>
