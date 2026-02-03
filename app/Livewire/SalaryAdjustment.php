@@ -369,9 +369,6 @@ class SalaryAdjustment extends Component
 
     public function render()
     {
-
-
-
         $bulan3 = Carbon::now()->startOfMonth()->subMonths(4);
         $bulan4 = Carbon::now()->startOfMonth()->subMonths(5);
         $bulan5 = Carbon::now()->startOfMonth()->subMonths(6);

@@ -319,23 +319,27 @@ function quickRebuildOptimized(int $month, int $year)
                     END,
 
                 p.total =
-                    p.total
-                    - (
-                        CASE
-                            WHEN k.etnis = 'China' THEN 0
-                            WHEN p.total_noscan <= 3 THEN 0
-                            ELSE (p.total_noscan - 3) * (p.gaji_pokok / 198)
-                        END
-                        +
-                        CASE
-                            WHEN k.tanggal_resigned IS NULL THEN 0
-                            WHEN DATEDIFF(k.tanggal_resigned, k.tanggal_bergabung) > 90 THEN 0
-                            WHEN TRIM(p.metode_penggajian) = 'Perbulan'
-                                THEN 3 * (p.gaji_pokok / ?)
-                            ELSE
-                                24 * (p.gaji_pokok / 198)
-                        END
-                    )
+    GREATEST(
+        p.total
+        - (
+            CASE
+                WHEN k.etnis = 'China' THEN 0
+                WHEN p.total_noscan <= 3 THEN 0
+                ELSE (p.total_noscan - 3) * (p.gaji_pokok / 198)
+            END
+            +
+            CASE
+                WHEN k.tanggal_resigned IS NULL THEN 0
+                WHEN DATEDIFF(k.tanggal_resigned, k.tanggal_bergabung) > 90 THEN 0
+                WHEN TRIM(p.metode_penggajian) = 'Perbulan'
+                    THEN 3 * (p.gaji_pokok / ?)
+                ELSE
+                    24 * (p.gaji_pokok / 198)
+            END
+        ),
+        0
+    )
+
             WHERE
                 MONTH(p.date) = ?
             AND YEAR(p.date)  = ?
@@ -371,21 +375,23 @@ function quickRebuildOptimized(int $month, int $year)
                   + IFNULL(b.potongan_lain, 0),
 
                 p.total =
-                    p.total
-                  + IFNULL(b.uang_makan, 0)
-                  + IFNULL(b.bonus_lain, 0)
-                  - (
-                        IFNULL(b.baju_esd, 0)
-                      + IFNULL(b.gelas, 0)
-                      + IFNULL(b.sandal, 0)
-                      + IFNULL(b.seragam, 0)
-                      + IFNULL(b.sport_bra, 0)
-                      + IFNULL(b.hijab_instan, 0)
-                      + IFNULL(b.id_card_hilang, 0)
-                      + IFNULL(b.masker_hijau, 0)
-                      + IFNULL(b.potongan_lain, 0)
-                    )
-                   
+            GREATEST(
+                p.total
+              + IFNULL(b.uang_makan, 0)
+              + IFNULL(b.bonus_lain, 0)
+              - (
+                    IFNULL(b.baju_esd, 0)
+                  + IFNULL(b.gelas, 0)
+                  + IFNULL(b.sandal, 0)
+                  + IFNULL(b.seragam, 0)
+                  + IFNULL(b.sport_bra, 0)
+                  + IFNULL(b.hijab_instan, 0)
+                  + IFNULL(b.id_card_hilang, 0)
+                  + IFNULL(b.masker_hijau, 0)
+                  + IFNULL(b.potongan_lain, 0)
+                ),
+                0
+                   )
             WHERE
                 MONTH(p.date) = ?
             AND YEAR(p.date)  = ?
