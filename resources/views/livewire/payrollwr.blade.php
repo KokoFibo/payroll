@@ -328,12 +328,12 @@
                                     {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('total_noscan')">{{ __('total_noscan') }} <i
+                                {{-- <th wire:click="sortColumnName('total_noscan')">{{ __('total_noscan') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('denda_lupa_absen')">{{ __('denda_lupa_absen') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('denda_resigned')">{{ __('denda_resigned') }} <i
-                                        class="fa-solid fa-sort"></i></th>
+                                        class="fa-solid fa-sort"></i></th> --}}
                                 <th wire:click="sortColumnName('date')">{{ __('Date') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
@@ -458,9 +458,9 @@
                                             {{-- <td>{{ format_tgl($p->date) }}</td> --}}
                                             <td>{{ month_year($p->date) }}</td>
                                             <td>{{ $p->nama }}</td>
-                                            <td>{{ $p->total_noscan }}</td>
+                                            {{-- <td>{{ $p->total_noscan }}</td>
                                             <td>{{ $p->denda_lupa_absen }}</td>
-                                            <td>{{ $p->denda_resigned }}</td>
+                                            <td>{{ $p->denda_resigned }}</td> --}}
                                             <td>{{ $p->date }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
                                             <td>{{ nama_jabatan($p->jabatan_id) }}</td>
