@@ -67,6 +67,8 @@
             <div class="bg-white shadow rounded-xl p-4">
                 <h3 class="text-lg font-semibold mb-4">Bulan:
                     {{ \Carbon\Carbon::create()->month($bulan)->locale('id')->translatedFormat('F') }}
+                    {{-- {{ \Carbon\Carbon::create()->month($tahun)->locale('id')->translatedFormat('Y') }} --}}
+                    {{ $laporan->first()->tahun }}
 
                 </h3>
                 <div class="overflow-x-auto">
