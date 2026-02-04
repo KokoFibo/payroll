@@ -66,7 +66,9 @@
         @foreach ($laporan_bulanan->groupBy('bulan') as $bulan => $laporan)
             <div class="bg-white shadow rounded-xl p-4">
                 <h3 class="text-lg font-semibold mb-4">Bulan:
-                    {{ \Carbon\Carbon::create()->month($bulan)->locale('id')->translatedFormat('F') }}</h3>
+                    {{ \Carbon\Carbon::create()->month($bulan)->locale('id')->translatedFormat('F') }}
+
+                </h3>
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm text-left border">
                         <thead class="bg-gray-100">
