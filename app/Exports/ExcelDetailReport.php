@@ -181,7 +181,7 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
         // $laporan_bulanan = $laporan_bulanan->sortBy('placement_name')->values();
 
         $laporan_bulanan = $laporan_bulanan->sortBy([
-            ['bulan', 'desc'],
+            ['bulan', 'asc'],
             ['placement_name', 'asc'],
         ])->values();
 
