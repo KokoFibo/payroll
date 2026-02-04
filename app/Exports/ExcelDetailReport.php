@@ -148,9 +148,10 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
                 ->whereMonth('date', $bulan)
                 ->groupBy('placement_id', 'placements.placement_name')
                 ->get()
-                ->map(function ($row) use ($bulan) {
+                ->map(function ($row) use ($bulan, $tahun) {
                     return (object)[
                         'bulan' => $bulan,
+                        'tahun' => $tahun,
                         'placement_id' => $row->placement_id,
                         'placement_name' => $row->placement_name,
                         'total_gaji' => $row->total_gaji,
@@ -181,7 +182,8 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
         // $laporan_bulanan = $laporan_bulanan->sortBy('placement_name')->values();
 
         $laporan_bulanan = $laporan_bulanan->sortBy([
-            ['bulan', 'asc'],
+            ['tahun', 'desc'],
+            // ['bulan', 'asc'],
             ['placement_name', 'asc'],
         ])->values();
 
