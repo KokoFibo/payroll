@@ -27,17 +27,17 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-function getGrade($id)
+function selisihBulanBulat($tgl, $tanggal_akhir)
 {
-    $data = Jobgrade::where('id', $id)->first();
-    if ($data != null) return $data->grade;
-    else return '';
+    $nilai = selisihHari($tgl, $tanggal_akhir) / 365 * 12;
+    // return round($nilai, 0, PHP_ROUND_HALF_UP);
+    // return round($nilai + 1e-9, 0, PHP_ROUND_HALF_UP);
+    return  round($nilai);
 }
-
 function selisihBulan($tgl, $tanggal_akhir)
 {
-    // return Carbon::parse($tgl)->diffInMonths(Carbon::now());
-    return Carbon::parse($tgl)->diffInMonths(Carbon::parse($tanggal_akhir));
+    $nilai = selisihHari($tgl, $tanggal_akhir) / 365 * 12;
+    return $nilai;
 }
 function selisihHari($tgl, $tanggal_akhir)
 {
@@ -46,18 +46,56 @@ function selisihHari($tgl, $tanggal_akhir)
 
 function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
 {
-
     $thr = 0;
-    $selisih_hari = selisihHari($tgl, $tanggal_akhir);
-    if ($selisih_hari > 365) {
-        $thr = $gaji;
+
+    $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
+    if ($lama_kerja < 12) {
+        return $gaji / 12 * $lama_kerja;
     } else {
-        $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
-        $thr =  $selisih_hari / 365 * $gaji;
+        return $gaji;
     }
-    return $thr;
+    // $selisih_hari = selisihHari($tgl, $tanggal_akhir);
+    // if ($selisih_hari > 365) {
+    //     $thr = $gaji;
+    // } else {
+    //     $karyawan = Karyawan::where('id_karyawan', $id)->first();
+    //     // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+    //     $thr =  $selisih_hari / 365 * $gaji;
+    // }
+    // return $thr;
 }
+
+function getGrade($id)
+{
+    $data = Jobgrade::where('id', $id)->first();
+    if ($data != null) return $data->grade;
+    else return '';
+}
+
+// function selisihBulan($tgl, $tanggal_akhir)
+// {
+//     // return Carbon::parse($tgl)->diffInMonths(Carbon::now());
+//     return Carbon::parse($tgl)->diffInMonths(Carbon::parse($tanggal_akhir));
+// }
+// function selisihHari($tgl, $tanggal_akhir)
+// {
+//     return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+// }
+
+// function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
+// {
+
+//     $thr = 0;
+//     $selisih_hari = selisihHari($tgl, $tanggal_akhir);
+//     if ($selisih_hari > 365) {
+//         $thr = $gaji;
+//     } else {
+//         $karyawan = Karyawan::where('id_karyawan', $id)->first();
+//         // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+//         $thr =  $selisih_hari / 365 * $gaji;
+//     }
+//     return $thr;
+// }
 
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {

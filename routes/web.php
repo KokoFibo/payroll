@@ -68,6 +68,7 @@ use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deletepresensiwr;
+use App\Livewire\Hitungthrlebaran;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\MovePresensiData;
 use App\Livewire\Removepresensiwr;
@@ -258,6 +259,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/headcount', Headcount::class);
                     // Route::get('/movedata', Movedata::class);
                     Route::get('hitungthr', Hitungthr::class);
+                    Route::get('hitungthrlebaran', Hitungthrlebaran::class);
                     Route::get('/data-log', DataLog::class)->name('datalog');
                     Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
 
