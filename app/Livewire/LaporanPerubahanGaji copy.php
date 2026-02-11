@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanGajiPeriodeExport;
 
+
 class LaporanPerubahanGaji extends Component
 {
     public $bulan_awal;
@@ -28,7 +29,7 @@ class LaporanPerubahanGaji extends Component
 
     public function mount()
     {
-        $this->bulan_awal = 3;
+        $this->bulan_awal = 2;
         $this->tahun_awal = 2025;
         $this->bulan_akhir = now()->month;
         $this->tahun_akhir = now()->year;
@@ -48,21 +49,19 @@ class LaporanPerubahanGaji extends Component
             $period->addMonth();
         }
 
-        // Ambil data payroll + filter status karyawan
+        // Ambil data payroll
         $payrolls = DB::table('payrolls')
-            ->join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
             ->select(
-                'payrolls.id_karyawan',
-                'karyawans.nama as nama',
-                DB::raw('DATE_FORMAT(payrolls.date, "%Y-%m") as periode'),
-                'payrolls.gaji_pokok'
+                'id_karyawan',
+                'nama',
+                DB::raw('DATE_FORMAT(date, "%Y-%m") as periode'),
+                'gaji_pokok'
             )
-            ->whereBetween('payrolls.date', [
-                $start->copy()->startOfMonth(),
-                $end->copy()->endOfMonth()
+            ->whereBetween('date', [
+                $start->startOfMonth(),
+                $end->endOfMonth()
             ])
-            ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT'])
-            ->orderBy('payrolls.id_karyawan')
+            ->orderBy('id_karyawan')
             ->get();
 
         // Pivot manual
@@ -72,7 +71,7 @@ class LaporanPerubahanGaji extends Component
 
             if (!isset($result[$row->id_karyawan])) {
                 $result[$row->id_karyawan] = [
-                    'id'   => $row->id_karyawan,
+                    'id' => $row->id_karyawan,
                     'nama' => $row->nama,
                 ];
 
