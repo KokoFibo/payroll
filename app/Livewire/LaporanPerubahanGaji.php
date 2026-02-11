@@ -23,7 +23,7 @@ class LaporanPerubahanGaji extends Component
     {
         return Excel::download(
             new LaporanGajiPeriodeExport($this->data, $this->months, 'Tabel Perubahan Gaji Karyawan OS '),
-            'laporan-gaji-periode.xlsx'
+            'laporan-perubahan-gaji-OS-periode.xlsx'
         );
     }
 
