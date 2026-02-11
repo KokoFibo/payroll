@@ -1,6 +1,6 @@
 <div class="card shadow-sm">
     <div class="card-header fw-bold">
-        Laporan Gaji Pokok Per Periode
+        Laporan Kenaikan Gaji Pokok Per Periode
     </div>
 
     <div class="card-body">
