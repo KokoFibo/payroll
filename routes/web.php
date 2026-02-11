@@ -262,6 +262,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('hitungthrlebaran', Hitungthrlebaran::class);
                     Route::get('/data-log', DataLog::class)->name('datalog');
                     Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
+                    Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
 
 
 
@@ -285,7 +286,6 @@ Route::middleware(['auth'])->group(function () {
                         });
                         Route::get('/test-export', [ExcelController::class, 'testExport']);
 
-                        Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
 
 
 
