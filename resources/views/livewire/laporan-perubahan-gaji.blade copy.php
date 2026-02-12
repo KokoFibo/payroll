@@ -69,8 +69,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama</th>
-                            <th>Company</th>
-                            <th>Directorate</th>
                             @foreach ($months as $m)
                                 <th>{{ \Carbon\Carbon::createFromFormat('Y-m', $m)->translatedFormat('M Y') }}</th>
                             @endforeach
@@ -81,8 +79,7 @@
                             <tr>
                                 <td>{{ $row['id'] }}</td>
                                 <td class="text-start">{{ $row['nama'] }}</td>
-                                <td>{{ $row['company'] ?? '-' }}</td>
-                                <td>{{ $row['placement'] ?? '-' }}</td>
+
                                 @foreach ($months as $m)
                                     <td>
                                         @if ($row[$m])
