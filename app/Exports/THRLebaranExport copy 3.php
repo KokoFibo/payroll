@@ -12,12 +12,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class THRLebaranExport implements
-    FromCollection,
-    WithHeadings,
-    WithMapping,
-    WithEvents,
-    ShouldAutoSize
+class THRLebaranExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
 {
     protected $cutOffDate;
 
@@ -26,11 +21,6 @@ class THRLebaranExport implements
         $this->cutOffDate = $cutOffDate;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Collection
-    |--------------------------------------------------------------------------
-    */
     public function collection()
     {
         return Karyawan::with(['placement', 'company', 'department', 'jabatan'])
@@ -42,7 +32,68 @@ class THRLebaranExport implements
 
     /*
     |--------------------------------------------------------------------------
-    | Headings
+    | Styling Excel
+    |--------------------------------------------------------------------------
+    */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+
+                // Tambahkan 1 baris di paling atas
+                $event->sheet->insertNewRowBefore(1, 1);
+
+                // Judul laporan
+                $event->sheet->setCellValue('A1', 'Perincian THR Lebaran untuk OS');
+                $event->sheet->mergeCells('A1:P1'); // 16 kolom (A–P)
+
+                // Styling judul
+                $event->sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
+                $event->sheet->getStyle('A1')
+                    ->getAlignment()
+                    ->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                // Bold header tabel
+                $event->sheet->getStyle('A2:P2')->getFont()->setBold(true);
+
+                // Freeze header
+                $event->sheet->freezePane('A3');
+
+                // Rata kanan kolom Gaji Pokok (M)
+                $event->sheet->getStyle('M:M')
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                // Rata kanan kolom THR (N)
+                $event->sheet->getStyle('N:N')
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                // Rata kanan kolom Penyesuaian (P)
+                $event->sheet->getStyle('P:P')
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+
+                // Format angka dengan comma separator
+                $event->sheet->getStyle('M3:M1000')
+                    ->getNumberFormat()
+                    ->setFormatCode('#,##0');
+
+                $event->sheet->getStyle('N3:N1000')
+                    ->getNumberFormat()
+                    ->setFormatCode('#,##0');
+
+                // Format angka dengan comma separator (bisa di SUM)
+                $event->sheet->getStyle('M3:P1000')
+                    ->getNumberFormat()
+                    ->setFormatCode('#,##0');
+            },
+        ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Header Kolom
     |--------------------------------------------------------------------------
     */
     public function headings(): array
@@ -69,7 +120,7 @@ class THRLebaranExport implements
 
     /*
     |--------------------------------------------------------------------------
-    | Mapping
+    | Mapping Data
     |--------------------------------------------------------------------------
     */
     public function map($k): array
@@ -80,15 +131,15 @@ class THRLebaranExport implements
         $masaBulan = $tanggalMasuk->diffInMonths($cutoff);
         $masaHari  = $tanggalMasuk->diffInDays($cutoff);
 
-        $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok);
+        $thr = $this->hitungTHR($masaBulan, $k->gaji_pokok);
 
-        // Tentukan Item berdasarkan tabel
+        // ===== ITEM LOGIC =====
         if ($masaBulan >= 12) {
-            $item = '-';
-        } elseif ($masaBulan >= 6 && $masaBulan <= 11) {
-            $item = '1 Unit HP';
+            $item = 'THR 1 Bulan Gaji';
+        } elseif ($masaBulan > 0) {
+            $item = 'THR Reward Masa Kerja';
         } else {
-            $item = '-';
+            $item = 'Tidak Mendapat THR';
         }
 
         $penyesuaian = 0;
@@ -115,14 +166,11 @@ class THRLebaranExport implements
 
     /*
     |--------------------------------------------------------------------------
-    | Perhitungan THR sesuai tabel
+    | Perhitungan THR
     |--------------------------------------------------------------------------
     */
-    private function hitungTHR($tanggal_bergabung, $gaji_pokok)
+    private function hitungTHR($masaKerja, $gaji_pokok)
     {
-        $masaKerja = Carbon::parse($tanggal_bergabung)
-            ->diffInMonths(Carbon::parse($this->cutOffDate));
-
         $thrTable = [
             1  => 100000,
             2  => 200000,
@@ -138,52 +186,9 @@ class THRLebaranExport implements
         ];
 
         if ($masaKerja >= 12) {
-            return $gaji_pokok; // 1 bulan gaji tahun lalu
+            return $gaji_pokok;
         }
 
         return $thrTable[$masaKerja] ?? 0;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Styling Excel
-    |--------------------------------------------------------------------------
-    */
-    public function registerEvents(): array
-    {
-        return [
-            AfterSheet::class => function (AfterSheet $event) {
-
-                // Tambah header di atas
-                $event->sheet->insertNewRowBefore(1, 1);
-                $event->sheet->setCellValue('A1', 'Perincian THR Lebaran untuk OS');
-                $event->sheet->mergeCells('A1:P1');
-
-                $event->sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
-                $event->sheet->getStyle('A1')
-                    ->getAlignment()
-                    ->setHorizontal(Alignment::HORIZONTAL_CENTER);
-
-                // Bold heading
-                $event->sheet->getStyle('A2:P2')->getFont()->setBold(true);
-
-                // Freeze header
-                $event->sheet->freezePane('A3');
-
-                // Rata kanan kolom angka
-                foreach (['M', 'N', 'P'] as $col) {
-                    $event->sheet->getStyle($col . ':' . $col)
-                        ->getAlignment()
-                        ->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-                }
-
-                // Format angka ribuan (bisa di SUM)
-                foreach (['M', 'N', 'P'] as $col) {
-                    $event->sheet->getStyle($col . '3:' . $col . '1000')
-                        ->getNumberFormat()
-                        ->setFormatCode('#,##0');
-                }
-            },
-        ];
     }
 }
