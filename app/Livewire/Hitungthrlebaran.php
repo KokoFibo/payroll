@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Exports\THRLebaranExport;
+use App\Models\Karyawan;
+use App\Models\Payroll;
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\Karyawan;
 use Livewire\WithPagination;
-use App\Exports\THRLebaranExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Hitungthrlebaran extends Component
@@ -34,7 +35,7 @@ class Hitungthrlebaran extends Component
     /**
      * Hitung THR berdasarkan tabel reward
      */
-    public function hitungTHR($tanggal_bergabung, $gaji_pokok)
+    public function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan)
     {
         $masaKerja = Carbon::parse($tanggal_bergabung)
             ->diffInMonths(Carbon::parse($this->cutOffDate));
@@ -54,7 +55,8 @@ class Hitungthrlebaran extends Component
         ];
 
         if ($masaKerja >= 12) {
-            return $gaji_pokok; // 1 bulan gaji penuh
+            $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
+            return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
         }
 
         return $thrTable[$masaKerja] ?? 0;
@@ -67,11 +69,13 @@ class Hitungthrlebaran extends Component
             ->where('tanggal_bergabung', '<', $this->cutoffMinus30);
 
         $data = $query->get();
+        // dd($data->count());
 
         $total = $data->sum(function ($d) {
             return $this->hitungTHR(
                 $d->tanggal_bergabung,
-                $d->gaji_pokok
+                $d->gaji_pokok,
+                $d->id_karyawan
             );
         });
 

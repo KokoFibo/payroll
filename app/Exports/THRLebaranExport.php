@@ -2,14 +2,15 @@
 
 namespace App\Exports;
 
-use Carbon\Carbon;
 use App\Models\Karyawan;
+use App\Models\Payroll;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class THRLebaranExport implements
@@ -80,7 +81,7 @@ class THRLebaranExport implements
         $masaBulan = $tanggalMasuk->diffInMonths($cutoff);
         $masaHari  = $tanggalMasuk->diffInDays($cutoff);
 
-        $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok);
+        $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan);
 
         // Tentukan Item berdasarkan tabel
         if ($masaBulan >= 12) {
@@ -118,7 +119,7 @@ class THRLebaranExport implements
     | Perhitungan THR sesuai tabel
     |--------------------------------------------------------------------------
     */
-    private function hitungTHR($tanggal_bergabung, $gaji_pokok)
+    private function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan)
     {
         $masaKerja = Carbon::parse($tanggal_bergabung)
             ->diffInMonths(Carbon::parse($this->cutOffDate));
@@ -138,7 +139,8 @@ class THRLebaranExport implements
         ];
 
         if ($masaKerja >= 12) {
-            return $gaji_pokok; // 1 bulan gaji tahun lalu
+            $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
+            return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
         }
 
         return $thrTable[$masaKerja] ?? 0;

@@ -36,7 +36,7 @@
                         <ul class="mb-0 small">
                             <li>Masa kerja 1–11 bulan: Mengikuti tabel reward berdasarkan genap bulan.</li>
                             <li>Masa kerja 6–11 bulan: Mendapatkan Cash + 1 Unit HP.</li>
-                            <li>Masa kerja ≥ 12 bulan: Mendapatkan 1 bulan gaji penuh.</li>
+                            <li>Masa kerja ≥ 12 bulan: Mendapatkan 1 bulan gaji penuh. (Gaji per Maret 2025)</li>
                         </ul>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                                 $masaKerja = $tanggalMasuk->diffInMonths($cutoff);
                                 $totalHariKerja = $tanggalMasuk->diffInDays($cutoff);
 
-                                $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok);
+                                $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan);
                             @endphp
 
                             <tr>
