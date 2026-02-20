@@ -58,6 +58,17 @@ class Newpresensi extends Component
 
     public $placements, $jabatans, $bulan_terakhir;
 
+    public function delete_no_scan()
+    {
+        // Yfrekappresensi::whereNot('no_scan_history', null)->delete();
+        $data = Yfrekappresensi::WhereMonth('date', $this->month)->WhereYear('date', $this->year)->whereNot('no_scan_history', null)->delete();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'No Scan History sudah di delete',
+        );
+    }
+
     public function delete_no_scan1()
     {
         $data = Yfrekappresensi::find($this->delete_id);

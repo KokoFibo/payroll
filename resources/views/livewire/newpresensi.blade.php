@@ -28,12 +28,14 @@
             @if ($absensiKosong > 0)
                 <button wire:click="filterKosong" class="btn btn-sm btn-danger" type="button">{{ __('Kosong : ') }}
                     {{ $absensiKosong }}</button>
+
                 <button wire:click="delete_presensi_kosong" wire:confirm="Yakin mau di delete semua?"
                     class="btn btn-sm btn-danger" type="button">{{ __('Delete Semua Presensi Kosong') }}</button>
             @endif
             @if ($totalNoScan > 0)
                 <button wire:click="filterNoScan" class="btn btn-sm btn-warning"
                     type="button">{{ __('Total No Scan :') }} {{ $totalNoScan }}</button>
+                <button class="btn btn-sm btn-danger" wire:click="delete_no_scan">Delete No Scan</button>
             @else
             @endif
         </div>
