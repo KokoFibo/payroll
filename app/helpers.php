@@ -1809,7 +1809,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             return $diff;
         }
     }
-    if (is_puasa($tgl)) {
+    if (is_puasa($tgl) && $jabatan != 17 && $jabatan != 18 && $jabatan != 19 && $jabatan != 20) {
         if ($second_out != null) {
             $lembur = 0;
             $t2 = strtotime($second_out);
@@ -2065,6 +2065,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     $is_friday = is_friday($tgl);
 
     if (is_puasa($tgl)) {
+
         if ($late == null) {
             if ($shift == 'Pagi') {
                 if ($is_saturday) {
@@ -2087,6 +2088,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
+            if ($jabatan != 17 || $jabatan != 18 || $jabatan != 19 || $jabatan != 20) $total_late = 0;
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
                 $jam_kerja = 0;
             } elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
