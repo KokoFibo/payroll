@@ -749,6 +749,8 @@ class YfpresensiController extends Controller
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);
             $dataKaryawan = Karyawan::where('id_karyawan', $user_id)->first();
+            if ($dataKaryawan->jabatan_id == 17 || $dataKaryawan->jabatan_id == 18 || $dataKaryawan->jabatan_id == 19 || $dataKaryawan->jabatan_id == 20) $late = 0;
+
             if ($dataKaryawan == null) {
                 $id_karyawan = 'kosong';
             } else {
