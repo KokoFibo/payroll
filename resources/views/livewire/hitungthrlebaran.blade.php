@@ -34,8 +34,8 @@
                             <i class="bi bi-info-circle-fill me-2"></i>Ketentuan Perhitungan:
                         </h6>
                         <ul class="mb-0 small">
-                            <li>Masa kerja 1–11 bulan: Mengikuti tabel reward berdasarkan genap bulan.</li>
-                            <li>Masa kerja 6–11 bulan: Mendapatkan Cash + 1 Unit HP.</li>
+                            <li>Masa kerja 1-11 bulan: Mengikuti tabel reward berdasarkan genap bulan.</li>
+                            <li>Masa kerja 6-11 bulan: Mendapatkan Cash + 1 Unit HP.</li>
                             <li>Masa kerja ≥ 12 bulan: Mendapatkan 1 bulan gaji penuh. (Gaji per Maret 2025)</li>
                         </ul>
                     </div>
