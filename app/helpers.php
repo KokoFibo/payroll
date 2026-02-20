@@ -111,28 +111,20 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
 
         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
-        // if ($is_sunday) {
-        // $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 * 2
-        // + $langsungLembur * 2;
-        // } else {
-        // $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
-        // }
+
         $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
 
         if ($shift == 'Malam') {
             if ($is_saturday) {
                 if ($jam_kerja >= 6) {
-                    // $jam_lembur = $jam_lembur + 1;
                     $tambahan_shift_malam = 1;
                 }
             } else if ($is_sunday) {
                 if ($jam_kerja >= 16) {
-                    // $jam_lembur = $jam_lembur + 2;
                     $tambahan_shift_malam = 1;
                 }
             } else {
                 if ($jam_kerja >= 8) {
-                    // $jam_lembur = $jam_lembur + 1;
                     $tambahan_shift_malam = 1;
                 }
             }
@@ -142,8 +134,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         if (($jam_lembur >= 9) && ($is_sunday == false) && ($jabatan_id != 22)) {
             $jam_lembur = 0;
         }
-        // yig = 12, ysm = 13
-        // if ($placement_id == 12 || $placement_id == 13 || $jabatan_id == 17) {
         if ($jabatan_id == 17 && $shift == 'Pagi') {
             if ($is_friday) {
                 $jam_kerja = 7.5;
