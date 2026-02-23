@@ -470,7 +470,7 @@ class YfpresensiController extends Controller
                                 if ($first_in == '') $first_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
                                 if ($first_out == '') $first_out = $tp->time;
-                                // else $second_in = $tp->time;
+                                else $second_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 if ($second_in == '') $second_in = $tp->time;
                                 // perubahan second_out dan overtime_in yg tidak terdeteksi, untuk jam kerja sabtu
@@ -479,9 +479,10 @@ class YfpresensiController extends Controller
 
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59')  && $second_out != null  && $tp->time != $second_out) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59')  && $second_out != null) {
                                 $overtime_in = $tp->time;
-                            } elseif ($overtime_in != null  && $tp->time != $overtime_in) {
+                                if ($overtime_in ==  $second_out) $overtime_in = '';
+                            } else {
                                 $overtime_out = $tp->time;
                             }
                         }
@@ -540,9 +541,10 @@ class YfpresensiController extends Controller
                                 $second_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '18:59') && $second_out == null) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '19:59') && $second_out != null  && $tp->time != $second_out) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '19:59') && $second_out != null) {
                                 $overtime_in = $tp->time;
-                            } elseif ($overtime_in != null  && $tp->time != $overtime_in) {
+                                if ($overtime_in ==  $second_out) $overtime_in = '';
+                            } else {
                                 $overtime_out = $tp->time;
                             }
                         }
