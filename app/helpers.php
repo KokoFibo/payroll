@@ -105,11 +105,13 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
     $is_friday = is_friday($date);
 
     $tambahan_shift_malam = 0;
+    // if ($user_id == 2719) dd($user_id);
+    // dd($user_id);
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
         $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
         $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
-
+        // if ($user_id == 2216) dd($user_id, $terlambat,  $jam_kerja);
         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
 
         $jam_lembur = hitungLembur($overtime_in, $overtime_out) / 60 + $langsungLembur;
@@ -1781,8 +1783,6 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 
     $is_saturday = is_saturday($tgl);
 
-
-
     $data = cek_hari_khusus($tgl);
     if ($data) {
         $tgl_khusus = $data->date;
@@ -2078,7 +2078,8 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
-            if ($jabatan != 17 || $jabatan != 18 || $jabatan != 19 || $jabatan != 20) $total_late = 0;
+            // if ($jabatan != 17 || $jabatan != 18 || $jabatan != 19 || $jabatan != 20) $total_late = 0;
+            if ($jabatan == 17 || $jabatan == 18 || $jabatan == 19 || $jabatan == 20) $total_late = 0;
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
                 $jam_kerja = 0;
             } elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
@@ -3065,9 +3066,9 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
     $is_saturday = is_saturday($tgl);
 
     if (is_puasa($tgl)) {
-        $jam_secondOut_pagi = '16:29';
-        $strtime_secondOut_pagi = '16:30:00';
-        $jam_secondOut_pagi_sabtu = '14:29';
+        $jam_secondOut_pagi = '16:59';
+        $strtime_secondOut_pagi = '17:00:00';
+        $jam_secondOut_pagi_sabtu = '14:59';
         $strtime_secondOut_pagi_sabtu = '15:00:00';
 
         $jam_secondOut_sore = '05:29';
