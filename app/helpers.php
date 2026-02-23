@@ -1895,9 +1895,10 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         $t2 = strtotime($second_out);
                         $t20_00 = strtotime('20:00:00');
                         $t23_29 = strtotime('23:29:00');
+                        $t23_59 = strtotime('23:59:00');
 
                         // Jika $t2 berada di antara 22:00:00 dan 23:29:00, lembur = 0
-                        if ($t2 >= $t20_00 && $t2 <= $t23_29) {
+                        if ($t2 >= $t20_00 && $t2 <= $t23_59) {
                             return $lembur = 0;
                         }
 
@@ -1906,7 +1907,8 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                         //     $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
                         // }
                         if ($t2 >= strtotime('00:00:00') && $t2 <= $t05_00) {
-                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
+                            // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes($t23_00) / 60;
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->addDay()->diffInMinutes(Carbon::parse('23:30:00')) / 60;
                         }
                         if ($t2 >= strtotime('23:30:00')) {
                             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes($t23_00) / 60;
