@@ -73,6 +73,10 @@
                                     <label class="form-label">{{ __('Bonus Lain') }}</label>
                                     <input wire:model="bonus_lain" type="number" class="form-control">
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('THR') }}</label>
+                                    <input wire:model="thr" type="number" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,6 +234,7 @@
                                         <th wire:click="sortColumnName('tanggal')">{{ __('Tanggal') }}</th>
                                         <th wire:click="sortColumnName('uang_makan')">{{ __('Uang Makan') }}</th>
                                         <th wire:click="sortColumnName('bonus_lain')">{{ __('Bonus Lain') }}</th>
+                                        <th wire:click="sortColumnName('bonus_lain')">{{ __('THR') }}</th>
                                         <th wire:click="sortColumnName('baju_esd')">{{ __('Baju ESD') }}</th>
                                         <th wire:click="sortColumnName('gelas')">{{ __('Gelas') }}</th>
                                         <th wire:click="sortColumnName('sandal')">{{ __('Sandal') }}</th>
@@ -272,6 +277,7 @@
                                             <td>{{ format_tgl($d->tanggal) }}</td>
                                             <td class="text-end">{{ number_format($d->uang_makan) }}</td>
                                             <td class="text-end">{{ number_format($d->bonus_lain) }}</td>
+                                            <td class="text-end">{{ number_format($d->thr) }}</td>
                                             <td class="text-end">{{ number_format($d->baju_esd) }}</td>
                                             <td class="text-end">{{ number_format($d->gelas) }}</td>
                                             <td class="text-end">{{ number_format($d->sandal) }}</td>
