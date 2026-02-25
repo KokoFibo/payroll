@@ -362,8 +362,8 @@ function quickRebuildOptimized(int $month, int $year)
                 p.bonus1x =
                     IFNULL(b.uang_makan, 0)
                   + IFNULL(b.bonus_lain, 0),
-                  + IFNULL(b.thr, 0),
-
+                  
+                p.thr = IFNULL(b.thr, 0),
                 p.potongan1x =
                     IFNULL(b.baju_esd, 0)
                   + IFNULL(b.gelas, 0)

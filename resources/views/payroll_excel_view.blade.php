@@ -219,6 +219,7 @@
                         $d->gaji_lembur * $d->jam_lembur +
                         $d->gaji_libur +
                         $d->bonus1x +
+                        $d->thr +
                         $d->tambahan_shift_malam;
 
                     $ter = '';
@@ -274,7 +275,7 @@
                     {{-- <td style="text-align: right"> {{ $d->subtotal }}</td> --}}
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
-                    <td style="text-align: right"> {{ $d->THR }}</td>
+                    <td style="text-align: right"> {{ $d->thr }}</td>
                     <td style="text-align: right">1300000</td>
                     <td style="text-align: right"> {{ $d->potongan1x }}</td>
                     <td> {{ $d->total_noscan }}</td>
