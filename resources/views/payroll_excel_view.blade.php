@@ -90,6 +90,9 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -128,6 +131,7 @@
                 {{-- <th style="text-align: center;">Subtotal1</th> --}}
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
+                <th style="text-align: center;">THR</th>
                 <th style="text-align: center;">Tunjangan Makan</th>
                 <th style="text-align: center;">Potongan 1X</th>
                 <th style="text-align: center;">Total NoScan</th>
@@ -270,6 +274,7 @@
                     {{-- <td style="text-align: right"> {{ $d->subtotal }}</td> --}}
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
+                    <td style="text-align: right"> {{ $d->THR }}</td>
                     <td style="text-align: right">1300000</td>
                     <td style="text-align: right"> {{ $d->potongan1x }}</td>
                     <td> {{ $d->total_noscan }}</td>
