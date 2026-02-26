@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Exports\THRLebaranExport;
+use App\Models\Bonuspotongan;
 use App\Models\Karyawan;
 use App\Models\Payroll;
 use Carbon\Carbon;
@@ -18,6 +19,55 @@ class Hitungthrlebaran extends Component
 
     public $cutOffDate;
     public $cutoffMinus30;
+
+
+    // $this->dispatch(
+    //             'message',
+    //             type: 'success',
+    //             title: 'Placement added',
+    //         );
+
+
+    public function pindahKeBonusPotongan()
+    {
+        $karyawans = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+            ->where('tanggal_bergabung', '<', $this->cutoffMinus30)
+            ->get();
+        foreach ($karyawans as $karyawan) {
+
+            $thr = $this->hitungTHR(
+                $karyawan->tanggal_bergabung,
+                $karyawan->gaji_pokok,
+                $karyawan->id_karyawan
+            );
+
+            $record = Bonuspotongan::where('user_id', $karyawan->id_karyawan)
+                ->whereYear('tanggal', 2026)
+                ->whereMonth('tanggal', 2)
+                ->first();
+            if ($record) {
+                // dd($record);
+                $record->update([
+                    'thr' => $thr
+                ]);
+            } else {
+                Bonuspotongan::create([
+                    'karyawan_id' => $karyawan->id,
+                    'user_id'     => $karyawan->id_karyawan,
+                    'tanggal'     => Carbon::create(2026, 2, 26),
+                    'thr'         => $thr
+                ]);
+            }
+        }
+
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'THR berhasil dipindahkan ke Bonus & Potongan',
+        );
+    }
+
 
     public function mount()
     {
