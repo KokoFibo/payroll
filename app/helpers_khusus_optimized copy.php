@@ -292,59 +292,6 @@ function quickRebuildOptimized(int $month, int $year)
 
 
 
-
-        /**
-         * =================================================
-         * 8. BONUS & POTONGAN 1X (BONUSPOTONGANS)
-         * =================================================
-         */
-        DB::statement("
-            UPDATE payrolls p
-            JOIN bonuspotongans b ON b.user_id = p.id_karyawan
-            SET
-                p.bonus1x =
-                    IFNULL(b.uang_makan, 0)
-                  + IFNULL(b.bonus_lain, 0),
-                  
-                p.thr = IFNULL(b.thr, 0),
-                p.potongan1x =
-                    IFNULL(b.baju_esd, 0)
-                  + IFNULL(b.gelas, 0)
-                  + IFNULL(b.sandal, 0)
-                  + IFNULL(b.seragam, 0)
-                  + IFNULL(b.sport_bra, 0)
-                  + IFNULL(b.hijab_instan, 0)
-                  + IFNULL(b.id_card_hilang, 0)
-                  + IFNULL(b.masker_hijau, 0)
-                  + IFNULL(b.potongan_lain, 0),
-
-                p.total =
-            GREATEST(
-                p.total
-              + IFNULL(b.uang_makan, 0)
-              + IFNULL(b.bonus_lain, 0)
-              + IFNULL(b.thr, 0)
-              - (
-                    IFNULL(b.baju_esd, 0)
-                  + IFNULL(b.gelas, 0)
-                  + IFNULL(b.sandal, 0)
-                  + IFNULL(b.seragam, 0)
-                  + IFNULL(b.sport_bra, 0)
-                  + IFNULL(b.hijab_instan, 0)
-                  + IFNULL(b.id_card_hilang, 0)
-                  + IFNULL(b.masker_hijau, 0)
-                  + IFNULL(b.potongan_lain, 0)
-                ),
-                0
-                   )
-            WHERE
-                MONTH(p.date) = ?
-            AND YEAR(p.date)  = ?
-            AND MONTH(b.tanggal) = ?
-            AND YEAR(b.tanggal)  = ?
-        ", [$month, $year, $month, $year]);
-
-
         /**
          * =================================================
          * 7. HITUNG DENDA NOSCAN & RESIGNED (TIDAK DIUBAH)
@@ -402,8 +349,58 @@ function quickRebuildOptimized(int $month, int $year)
             $month,
             $year
         ]);
-    });
 
+        /**
+         * =================================================
+         * 8. BONUS & POTONGAN 1X (BONUSPOTONGANS)
+         * =================================================
+         */
+        DB::statement("
+            UPDATE payrolls p
+            JOIN bonuspotongans b ON b.user_id = p.id_karyawan
+            SET
+                p.bonus1x =
+                    IFNULL(b.uang_makan, 0)
+                  + IFNULL(b.bonus_lain, 0),
+                  
+                p.thr = IFNULL(b.thr, 0),
+                p.potongan1x =
+                    IFNULL(b.baju_esd, 0)
+                  + IFNULL(b.gelas, 0)
+                  + IFNULL(b.sandal, 0)
+                  + IFNULL(b.seragam, 0)
+                  + IFNULL(b.sport_bra, 0)
+                  + IFNULL(b.hijab_instan, 0)
+                  + IFNULL(b.id_card_hilang, 0)
+                  + IFNULL(b.masker_hijau, 0)
+                  + IFNULL(b.potongan_lain, 0),
+
+                p.total =
+            GREATEST(
+                p.total
+              + IFNULL(b.uang_makan, 0)
+              + IFNULL(b.bonus_lain, 0)
+              + IFNULL(b.thr, 0)
+              - (
+                    IFNULL(b.baju_esd, 0)
+                  + IFNULL(b.gelas, 0)
+                  + IFNULL(b.sandal, 0)
+                  + IFNULL(b.seragam, 0)
+                  + IFNULL(b.sport_bra, 0)
+                  + IFNULL(b.hijab_instan, 0)
+                  + IFNULL(b.id_card_hilang, 0)
+                  + IFNULL(b.masker_hijau, 0)
+                  + IFNULL(b.potongan_lain, 0)
+                ),
+                0
+                   )
+            WHERE
+                MONTH(p.date) = ?
+            AND YEAR(p.date)  = ?
+            AND MONTH(b.tanggal) = ?
+            AND YEAR(b.tanggal)  = ?
+        ", [$month, $year, $month, $year]);
+    });
     $lock = Lock::find(1);
     $lock->rebuild_done = 1;
     $lock->save();
