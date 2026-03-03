@@ -61,29 +61,29 @@ class UpdateTambahan extends Component
         $this->masker_hijau = convert_numeric($this->masker_hijau);
         $this->potongan_lain = convert_numeric($this->potongan_lain);
 
-        if (
-            $this->uang_makan == null &&
-            // $this->bonus == null &&
-            $this->bonus_lain == null &&
-            $this->thr == null &&
-            $this->baju_esd == null &&
-            $this->gelas == null &&
-            $this->sandal == null &&
-            $this->seragam == null &&
-            $this->sport_bra == null &&
-            $this->hijab_instan == null &&
-            $this->id_card_hilang == null &&
-            $this->masker_hijau == null &&
-            $this->potongan_lain == null
-        ) {
-            // $this->dispatch('error', message: 'Data tidak disimpan');
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Data tidak disimpan',
-            );
-            return;
-        }
+        // if (
+        //     $this->uang_makan == null &&
+        //     // $this->bonus == null &&
+        //     $this->bonus_lain == null &&
+        //     $this->thr == null &&
+        //     $this->baju_esd == null &&
+        //     $this->gelas == null &&
+        //     $this->sandal == null &&
+        //     $this->seragam == null &&
+        //     $this->sport_bra == null &&
+        //     $this->hijab_instan == null &&
+        //     $this->id_card_hilang == null &&
+        //     $this->masker_hijau == null &&
+        //     $this->potongan_lain == null
+        // ) {
+        //     // $this->dispatch('error', message: 'Data tidak disimpan');
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'error',
+        //         title: 'Data tidak disimpan',
+        //     );
+        //     return;
+        // }
 
         $data = Bonuspotongan::find($this->id);
         $data->uang_makan = $this->uang_makan;
