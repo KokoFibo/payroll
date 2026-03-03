@@ -44,25 +44,31 @@ function selisihHari($tgl, $tanggal_akhir)
     return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
 }
 
-function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
+function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan, $cutOffDate)
 {
-    $thr = 0;
+    $masaKerja = Carbon::parse($tanggal_bergabung)
+        ->diffInMonths(Carbon::parse($cutOffDate));
 
-    $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
-    if ($lama_kerja < 12) {
-        return $gaji / 12 * $lama_kerja;
-    } else {
-        return $gaji;
+    $thrTable = [
+        1  => 100000,
+        2  => 200000,
+        3  => 300000,
+        4  => 400000,
+        5  => 550000,
+        6  => 100000,
+        7  => 250000,
+        8  => 400000,
+        9  => 600000,
+        10 => 800000,
+        11 => 1000000,
+    ];
+
+    if ($masaKerja >= 12) {
+        $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
+        return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
     }
-    // $selisih_hari = selisihHari($tgl, $tanggal_akhir);
-    // if ($selisih_hari > 365) {
-    //     $thr = $gaji;
-    // } else {
-    //     $karyawan = Karyawan::where('id_karyawan', $id)->first();
-    //     // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
-    //     $thr =  $selisih_hari / 365 * $gaji;
-    // }
-    // return $thr;
+
+    return $thrTable[$masaKerja] ?? 0;
 }
 
 function getGrade($id)
