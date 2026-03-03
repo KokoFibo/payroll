@@ -38,6 +38,7 @@ class THRLebaranExport implements
             ->whereNotIn('etnis', ['China', 'Tionghoa'])
             ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
             ->where('tanggal_bergabung', '<', Carbon::parse($this->cutOffDate)->subDays(30))
+            ->orderBy('id_karyawan', 'asc')
             ->get();
     }
 
@@ -81,7 +82,7 @@ class THRLebaranExport implements
         $masaBulan = $tanggalMasuk->diffInMonths($cutoff);
         $masaHari  = $tanggalMasuk->diffInDays($cutoff);
 
-        $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan);
+        $thr = hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan, $this->cutOffDate);
 
         // Tentukan Item berdasarkan tabel
         if ($masaBulan >= 12) {
@@ -119,32 +120,32 @@ class THRLebaranExport implements
     | Perhitungan THR sesuai tabel
     |--------------------------------------------------------------------------
     */
-    private function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan)
-    {
-        $masaKerja = Carbon::parse($tanggal_bergabung)
-            ->diffInMonths(Carbon::parse($this->cutOffDate));
+    // private function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan)
+    // {
+    //     $masaKerja = Carbon::parse($tanggal_bergabung)
+    //         ->diffInMonths(Carbon::parse($this->cutOffDate));
 
-        $thrTable = [
-            1  => 100000,
-            2  => 200000,
-            3  => 300000,
-            4  => 400000,
-            5  => 550000,
-            6  => 100000,
-            7  => 250000,
-            8  => 400000,
-            9  => 600000,
-            10 => 800000,
-            11 => 1000000,
-        ];
+    //     $thrTable = [
+    //         1  => 100000,
+    //         2  => 200000,
+    //         3  => 300000,
+    //         4  => 400000,
+    //         5  => 550000,
+    //         6  => 100000,
+    //         7  => 250000,
+    //         8  => 400000,
+    //         9  => 600000,
+    //         10 => 800000,
+    //         11 => 1000000,
+    //     ];
 
-        if ($masaKerja >= 12) {
-            $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
-            return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
-        }
+    //     if ($masaKerja >= 12) {
+    //         $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
+    //         return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
+    //     }
 
-        return $thrTable[$masaKerja] ?? 0;
-    }
+    //     return $thrTable[$masaKerja] ?? 0;
+    // }
 
     /*
     |--------------------------------------------------------------------------

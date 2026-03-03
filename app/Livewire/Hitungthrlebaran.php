@@ -33,13 +33,15 @@ class Hitungthrlebaran extends Component
         $karyawans = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
             ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
             ->where('tanggal_bergabung', '<', $this->cutoffMinus30)
+            ->orderBy('id_karyawan', 'asc')
             ->get();
         foreach ($karyawans as $karyawan) {
 
-            $thr = $this->hitungTHR(
+            $thr = hitungTHR(
                 $karyawan->tanggal_bergabung,
                 $karyawan->gaji_pokok,
-                $karyawan->id_karyawan
+                $karyawan->id_karyawan,
+                $this->cutOffDate
             );
 
             $record = Bonuspotongan::where('user_id', $karyawan->id_karyawan)
@@ -85,47 +87,24 @@ class Hitungthrlebaran extends Component
     /**
      * Hitung THR berdasarkan tabel reward
      */
-    public function hitungTHR($tanggal_bergabung, $gaji_pokok, $id_karyawan)
-    {
-        $masaKerja = Carbon::parse($tanggal_bergabung)
-            ->diffInMonths(Carbon::parse($this->cutOffDate));
 
-        $thrTable = [
-            1  => 100000,
-            2  => 200000,
-            3  => 300000,
-            4  => 400000,
-            5  => 550000,
-            6  => 100000,
-            7  => 250000,
-            8  => 400000,
-            9  => 600000,
-            10 => 800000,
-            11 => 1000000,
-        ];
-
-        if ($masaKerja >= 12) {
-            $data = Payroll::whereMonth('date', 3)->whereYear('date', 2025)->where('id_karyawan', $id_karyawan)->first();
-            return $data->gaji_pokok ?? 0; // 1 bulan gaji penuh tahun lalu
-        }
-
-        return $thrTable[$masaKerja] ?? 0;
-    }
 
     public function render()
     {
         $query = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
             ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+            ->orderBy('id_karyawan', 'asc')
             ->where('tanggal_bergabung', '<', $this->cutoffMinus30);
 
         $data = $query->get();
         // dd($data->count());
 
         $total = $data->sum(function ($d) {
-            return $this->hitungTHR(
+            return hitungTHR(
                 $d->tanggal_bergabung,
                 $d->gaji_pokok,
-                $d->id_karyawan
+                $d->id_karyawan,
+                $this->cutOffDate
             );
         });
 

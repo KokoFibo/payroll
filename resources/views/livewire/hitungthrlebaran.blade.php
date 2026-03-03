@@ -88,7 +88,7 @@
                                 $masaKerja = $tanggalMasuk->diffInMonths($cutoff);
                                 $totalHariKerja = $tanggalMasuk->diffInDays($cutoff);
 
-                                $thr = $this->hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan);
+                                $thr = hitungTHR($k->tanggal_bergabung, $k->gaji_pokok, $k->id_karyawan, $cutOffDate);
                             @endphp
 
                             <tr>
