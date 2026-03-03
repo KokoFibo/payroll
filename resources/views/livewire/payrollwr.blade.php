@@ -154,7 +154,7 @@
                                 {{-- <option value="11">November 2025</option>
                                 {{-- <option value="12">Desember 2025</option> --}}
                                 {{-- <option value="1">Januari 2026</option> --}}
-                                <option value="2">February 2026</option>
+                                {{-- <option value="2">February 2026</option> --}}
                             </select>
 
                         </div>
