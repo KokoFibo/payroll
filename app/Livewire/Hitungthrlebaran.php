@@ -91,8 +91,7 @@ class Hitungthrlebaran extends Component
 
     public function render()
     {
-        $query = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
-            ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+        $query = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT'])
             ->orderBy('id_karyawan', 'asc')
             ->where('tanggal_bergabung', '<', $this->cutoffMinus30);
 

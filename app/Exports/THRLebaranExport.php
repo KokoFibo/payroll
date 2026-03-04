@@ -35,7 +35,6 @@ class THRLebaranExport implements
     public function collection()
     {
         return Karyawan::with(['placement', 'company', 'department', 'jabatan'])
-            ->whereNotIn('etnis', ['China', 'Tionghoa'])
             ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
             ->where('tanggal_bergabung', '<', Carbon::parse($this->cutOffDate)->subDays(30))
             ->orderBy('id_karyawan', 'asc')
