@@ -3299,6 +3299,7 @@ function is_sunday($tgl)
     // if ($tgl === '2025-04-13') {
     //     return false;
     // }
+
     if ($tgl) {
         return Carbon::parse($tgl)->isSunday();
     }
