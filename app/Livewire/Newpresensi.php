@@ -217,10 +217,22 @@ class Newpresensi extends Component
                                     $tambahan_shift_malam = 1;
                                 }
                             } else if (is_sunday($d->date)) {
-                                if ($jam_kerja >= 16) {
-                                    // $jam_lembur = $jam_lembur + 2;
-                                    $tambahan_shift_malam = 1;
+
+
+                                if ($d->date === "2026-03-15") {
+                                    if ($jam_kerja >= 8) {
+                                        // $jam_lembur = $jam_lembur + 2;
+                                        $tambahan_shift_malam = 1;
+                                    }
+                                } else {
+
+                                    if ($jam_kerja_libur >= 16) {
+                                        // $jam_lembur = $jam_lembur + 2;
+                                        $tambahan_shift_malam = 1;
+                                    }
                                 }
+
+                                // dd($d->date, $tambahan_shift_malam, $jam_kerja);
                             } else {
                                 if ($jam_kerja >= 8) {
                                     // $jam_lembur = $jam_lembur + 1;
