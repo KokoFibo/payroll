@@ -32,12 +32,18 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
     {
 
         if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
-            $statuses = ['Blacklist', 'Resigned'];
+            $statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 3) {
+            $statuses = ['Blacklist'];
+        } elseif ($this->selectStatus == 4) {
+            $statuses = ['Dirumahkan'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
+
+
         $data = Karyawan::whereIn('status_karyawan', $statuses);
 
         if ($this->selected_placement) {
