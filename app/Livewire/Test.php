@@ -57,9 +57,11 @@ class Test extends Component
 
   public function render()
   {
-
-    $data = Karyawan::where('etnis', 'Tionghoa')->get();
     dd('aman');
+
+    // $data = Karyawan::where('placement_id', 103)->delete();
+    // $data = Karyawan::where('placement_id', 109)->delete();
+    // dd($data);
     return view('livewire.test');
   }
 }
