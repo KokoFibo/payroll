@@ -32,6 +32,15 @@ class SalaryAdjustment extends Component
     public $columnName = 'id_karyawan';
     public $direction = 'desc';
 
+    public function sesuaikan_ke_gaji_minimal($gaji_minimal)
+    {
+        Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+            ->where('gaji_pokok', '<', $gaji_minimal)
+            ->update([
+                'gaji_pokok' => $gaji_minimal
+            ]);
+    }
+
     public function excel()
     {
         $nama_file = 'Penyesuaian_Gaji_' . $this->pilihLamaKerja . '_Bulan_Kerja.xlsx';
@@ -585,50 +594,10 @@ class SalaryAdjustment extends Component
                     ->when($this->search_department, function ($query) {
                         $query->where('department_id', $this->search_department);
                     })
-                    // ->orderBy('tanggal_bergabung', 'desc')
                     ->orderBy($this->columnName, $this->direction)
                     ->paginate(10);
                 $this->gaji_rekomendasi = 2500000;
                 break;
-
-                // case "8":
-                // $data2 = Karyawan::where('tanggal_bergabung', '<=', Carbon::now()->subMonths(8))
-                //     ->where('gaji_pokok', '<', 2500000)
-                // ->where('metode_penggajian','Perjam')   
-                // ->whereNot('gaji_pokok', 0)
-                //     ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
-                //     ->whereNotIn('department_id', [3, 5])->get();
-
-                // $data = Karyawan::where('tanggal_bergabung', '<=', Carbon::now()->subMonths(8))
-                //     ->where('gaji_pokok', '<', 2500000)
-                // ->where('metode_penggajian','Perjam')    
-                // ->whereNot('gaji_pokok', 0)
-                //     ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
-                //     ->whereNotIn('department_id', [3, 5])
-                //     ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
-                //     ->when($this->search_id_karyawan, function ($query) {
-                //         $query->where('id_karyawan', trim($this->search_id_karyawan));
-                //     })
-
-                //     ->when($this->search_company, function ($query) {
-                //         $query->where('company_id', $this->search_company);
-                //     })
-                //     ->when($this->search_placement, function ($query) {
-                //         $query->where('placement_id', $this->search_placement);
-                //     })
-
-
-                //     ->when($this->search_jabatan, function ($query) {
-                //         $query->where('jabatan_id', $this->search_jabatan);
-                //     })
-                //     ->when($this->search_department, function ($query) {
-                //         $query->where('department_id', $this->search_department);
-                //     })
-                //     // ->orderBy('tanggal_bergabung', 'desc')
-                //     ->orderBy($this->columnName, $this->direction)
-                //     ->paginate(10);
-                // $this->gaji_rekomendasi = 2500000;
-                // break;
         }
 
         $jabatans = array();
