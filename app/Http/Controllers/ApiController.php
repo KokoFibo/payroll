@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+
+    public function getPayroll($id_karyawan, $month, $year)
+    {
+        $payroll = Payroll::where('id_karyawan', $id_karyawan)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->first();
+        return response()->json($payroll);
+    }
 
     public function store($id)
     {
