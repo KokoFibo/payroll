@@ -54,15 +54,16 @@ class Test extends Component
 
 
 
-
   public function render()
   {
-    // dd('aman');`
-    // Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
 
-    // $data = Karyawan::where('placement_id', 103)->delete();
-    // $data = Karyawan::where('placement_id', 109)->delete();
-    // dd($data);
-    return view('livewire.test');
+
+    $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+      ->where('gaji_pokok', '<', 2200000)
+      ->paginate(10);
+
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }
