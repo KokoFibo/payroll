@@ -36,6 +36,7 @@ class SalaryAdjustment extends Component
     {
         Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
             ->where('gaji_pokok', '<', $gaji_minimal)
+            ->where('gaji_pokok', '!=', 0)
             ->update([
                 'gaji_pokok' => $gaji_minimal
             ]);
