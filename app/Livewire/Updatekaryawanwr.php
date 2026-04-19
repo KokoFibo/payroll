@@ -61,6 +61,7 @@ class Updatekaryawanwr extends Component
     public $jobgrades;
     public $status_karyawan_awal;
     public $email_awal;
+    public $id_unik_karyawan;
 
 
 
@@ -251,6 +252,7 @@ class Updatekaryawanwr extends Component
         // tambahan baru
         $this->status_karyawan_awal = $this->status_karyawan;
         $this->email_awal = $this->email;
+        $this->id_unik_karyawan = $data->id;
 
         // data Applicant files
         // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
@@ -878,12 +880,14 @@ class Updatekaryawanwr extends Component
                     title: 'Gagal mengupdate email di table users.',
                     position: 'center'
                 );
+            } else {
+                $this->email_awal = $this->email;
             }
         }
 
         // Delete user yang resigned atau blacklist di table users
         if ($this->status_karyawan == 'Resigned' || $this->status_karyawan == 'Blacklist') {
-            $result = deleteUserByKaryawanAPI($data->id_karyawan);
+            $result = deleteUserByid_unik_karyawan($this->id_unik_karyawan);
             if ($result['status'] != 1) {
                 $this->dispatch(
                     'message',
