@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Str;
 
 class Test extends Component
 {
@@ -54,17 +55,69 @@ class Test extends Component
 
 
 
+  public $search = '';
+
+  public function cleanEmail()
+  {
+    $data = Karyawan::where(function ($q) {
+      $q->where('email', 'like', '%resigned_%')
+        ->orWhere('email', 'like', '%blacklist_%');
+    })->get();
+
+    foreach ($data as $item) {
+
+      // 🔥 hapus semua "resigned_" & "blacklist_" di mana saja
+      $newEmail = preg_replace('/(resigned_|blacklist_)/', '', $item->email);
+
+      // bersihkan spasi (kalau ada)
+      $newEmail = trim($newEmail);
+
+      // 🔴 kalau kosong → generate email dummy unik
+      if (empty($newEmail)) {
+        do {
+          $random = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+          $newEmail = "email_kosong_{$random}@email.com";
+        } while (Karyawan::where('email', $newEmail)->exists());
+      }
+
+      // 🔐 cek duplicate (hindari update kalau sudah ada)
+      if (Karyawan::where('email', $newEmail)->exists()) {
+        continue;
+      }
+
+      // ✅ update
+      $item->update([
+        'email' => $newEmail
+      ]);
+    }
+
+    return "Selesai bersihkan email";
+  }
+
+
+
 
   public function render()
   {
+
+    dd('aman');
     // $result = deleteUserByKaryawanAPI(13553);
     // if ($result['status']) {
     //   dd('berhasil');
     // } else {
     //   dd('gagal');
     // }
-
-    dd('aman');
+    // $this->cleanEmail();
+    $data = Karyawan::where(function ($q) {
+      $q->where('email', 'like', '%resigned_%')
+        ->orWhere('email', 'like', '%email_kosong_%')
+        ->orWhere('email', 'like', '%blacklist_%');
+    })
+      ->when($this->search, function ($q) {
+        $q->where('email', 'like', '%' . $this->search . '%')
+          ->orWhere('nama', 'like', '%' . $this->search . '%');
+      })
+      ->paginate(10);
 
 
     return view('livewire.test', [

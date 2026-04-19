@@ -33,6 +33,7 @@ use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Checkabsensitanpaid;
+use App\Livewire\Cleanemail;
 use App\Livewire\CreateUser;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
@@ -355,7 +356,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/cekperbulan', PerbulanKurangBayar::class);
                             Route::get('/abnormal', Abnormal::class);
                             // TEST
-
+                            Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');
                             Route::get('/testaja', [Testaja::class, 'index']);
                             Route::get('/testok', function () {
