@@ -54,13 +54,18 @@ class Test extends Component
 
 
 
+
   public function render()
   {
+    // $result = deleteUserByKaryawanAPI(13553);
+    // if ($result['status']) {
+    //   dd('berhasil');
+    // } else {
+    //   dd('gagal');
+    // }
 
+    dd('aman');
 
-    $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
-      ->where('gaji_pokok', '<', 2200000)
-      ->paginate(10);
 
     return view('livewire.test', [
       'data' => $data
