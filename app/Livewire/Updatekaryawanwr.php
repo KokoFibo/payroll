@@ -262,7 +262,6 @@ class Updatekaryawanwr extends Component
         $this->nama_awal = $this->nama;
         $this->outsource = $data->outsource;
         $this->outsource_awal = $this->outsource;
-        $this->db_code = $data->db_code;
 
 
         // data Applicant files
