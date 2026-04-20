@@ -78,10 +78,7 @@ class KaryawanReinstate extends Component
         $data_baru->id_karyawan = $new_id;
         $data_baru->save();
 
-        $user = User::where('username', $data_lama->id_karyawan)->first();
-        $user->password = Hash::make(generatePassword($data_lama->tanggal_lahir));
-        $user->username = $new_id;
-        $user->save();
+        // buat user baru di presensidb
         createUser($new_id);
 
         $this->dispatch(
