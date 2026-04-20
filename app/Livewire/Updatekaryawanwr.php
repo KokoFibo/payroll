@@ -62,6 +62,7 @@ class Updatekaryawanwr extends Component
     public $status_karyawan_awal;
     public $email_awal;
     public $id_unik_karyawan;
+    public $company_id_awal;
 
 
 
@@ -253,6 +254,7 @@ class Updatekaryawanwr extends Component
         $this->status_karyawan_awal = $this->status_karyawan;
         $this->email_awal = $this->email;
         $this->id_unik_karyawan = $data->id;
+        $this->company_id_awal = $this->company_id;
 
         // data Applicant files
         // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
@@ -884,6 +886,16 @@ class Updatekaryawanwr extends Component
                 $this->email_awal = $this->email;
             }
         }
+
+        if ($this->company_id != $this->company_id_awal) {
+            // dd($this->id_unik_karyawan, nama_company($this->company_id));
+            $result = callUpdateCompanyNameApi(
+                $this->id_unik_karyawan,
+                nama_company($this->company_id)
+            );
+        }
+
+
 
         // Delete user yang resigned atau blacklist di table users
         if ($this->status_karyawan == 'Resigned' || $this->status_karyawan == 'Blacklist') {
