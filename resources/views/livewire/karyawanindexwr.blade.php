@@ -364,6 +364,7 @@
                                             @endif
                                         </div>
                                     </td>
+
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td>{{ getGrade($data->level_jabatan) }}</td>

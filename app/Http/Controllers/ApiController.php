@@ -6,9 +6,33 @@ use App\Models\Karyawan;
 use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ApiController extends Controller
 {
+
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'id' => ['required'],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('karyawans', 'email')->ignore($request->id),
+            ],
+        ]);
+
+        $karyawan = Karyawan::findOrFail($request->id);
+
+        $karyawan->email = $request->email;
+        $karyawan->save();
+
+        return response()->json([
+            'message' => 'Email berhasil diupdate',
+            'data' => $karyawan
+        ]);
+    }
 
     public function getPayroll($id_karyawan, $month, $year)
     {
