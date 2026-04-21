@@ -46,3 +46,5 @@ Route::get('/attendance/{user_id}/{month}/{year}', [AttendanceController::class,
 Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLatestMonthYearByUser']);
 Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
 Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
+
+Route::get('/payroll/summary', [ApiController::class, 'summary']);
