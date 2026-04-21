@@ -119,6 +119,8 @@ class Profile extends Component
         $user->email = $this->email;
         $data_karyawan = Karyawan::where('id_karyawan', $user->username)->first();
         $karyawan = Karyawan::find($data_karyawan->id);
+        $oldEmail = $karyawan->email;
+        $newEmail = $this->email;
         $karyawan->email = $this->email;
         $user->save();
         $karyawan->save();
