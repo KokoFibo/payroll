@@ -22,4 +22,3 @@ jobs:
             git reset --hard origin/quick
             
             php artisan optimize
-	    php artisan optimize
