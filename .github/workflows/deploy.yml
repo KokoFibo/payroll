@@ -18,8 +18,13 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/payroll
-            git config --global --add safe.directory /var/www/payroll
+
             git fetch origin
             git reset --hard origin/quick
+
             php artisan optimize:clear
+
+            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
+
             php artisan optimize
