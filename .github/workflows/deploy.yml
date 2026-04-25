@@ -18,7 +18,8 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/payroll
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/quick
             
             php artisan optimize
 	    php artisan optimize
