@@ -10,7 +10,7 @@
             <div class="col-xl-6 ">
                 <div class="card">
                     <div class="card-header text-light text-center" style="background-color: #EF4444; ">
-                        <h5>{{ __('Login4') }}</h5>
+                        <h5>{{ __('Login5') }}</h5>
                     </div>
                     {{-- <div class="card-body pt-4" style="background-color: #E5E7EB;">
                         <form method="POST" action="{{ route('login') }}"> --}}
