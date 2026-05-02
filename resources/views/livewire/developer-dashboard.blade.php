@@ -30,6 +30,8 @@
         <a href="/harikhusus"><button class="btn btn-primary">Hari/tanggal khusus</button></a>
         <a href="/cekperbulan"><button class="btn btn-primary">Cek Perbulan yang < 8jam</button></a>
         <a href="/clean-email"><button class="btn btn-primary">Clean Email resigned_</button></a>
+        <a href="/reset-noscan-by-tanggal"><button class="btn btn-primary">Reset No Scan by Tanggal</button></a>
+        <a href="/reset-late-by-tanggal"><button class="btn btn-primary">Reset Late by Tanggal</button></a>
 
     </div>
     <div class="d-flex mt-5 justify-content-evenly">

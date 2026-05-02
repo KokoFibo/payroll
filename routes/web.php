@@ -82,6 +82,8 @@ use App\Livewire\Profile;
 use App\Livewire\Removepresensiduplikatwr;
 use App\Livewire\Removepresensiwr;
 use App\Livewire\Requesterwr;
+use App\Livewire\ResetLateByTanggal;
+use App\Livewire\ResetNoscanByTanggal;
 use App\Livewire\Rubahid;
 use App\Livewire\Rubahidwr;
 use App\Livewire\SalaryAdjustment;
@@ -355,6 +357,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/jobgrade', Jobgradewr::class);
                             Route::get('/cekperbulan', PerbulanKurangBayar::class);
                             Route::get('/abnormal', Abnormal::class);
+                            Route::get('/reset-noscan-by-tanggal', ResetNoscanByTanggal::class);
+                            Route::get('/reset-late-by-tanggal', ResetLateByTanggal::class);
                             // TEST
                             Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');
