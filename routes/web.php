@@ -77,6 +77,7 @@ use App\Livewire\Payrollwr;
 use App\Livewire\PerbulanKurangBayar;
 use App\Livewire\PermohonanPersonnel;
 use App\Livewire\Placementreport;
+use App\Livewire\PresensiAddTime;
 use App\Livewire\Prindexwr;
 use App\Livewire\Profile;
 use App\Livewire\Removepresensiduplikatwr;
@@ -359,6 +360,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/abnormal', Abnormal::class);
                             Route::get('/reset-noscan-by-tanggal', ResetNoscanByTanggal::class);
                             Route::get('/reset-late-by-tanggal', ResetLateByTanggal::class);
+                            Route::get('presensi-add-time', PresensiAddTime::class);
                             // TEST
                             Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');
