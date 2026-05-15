@@ -780,7 +780,6 @@ class Updatekaryawanwr extends Component
 
     public function update1()
     {
-
         $this->gaji_pokok = convert_numeric($this->gaji_pokok);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
@@ -934,33 +933,31 @@ class Updatekaryawanwr extends Component
             $result =  createUser($this->id_karyawan);
         }
 
-        $dataUser = User::where('username', $data->id_karyawan)->first();
-        // if ( $dataUser->id != null ) {
-        if ($dataUser->id) {
-            $user = User::find($dataUser->id);
-            $user->name = titleCase($this->nama);
-            $user->email = trim($this->email, ' ');
-            $user->save();
-            $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
-            $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            // $this->dispatch('success', message: 'Data Karyawan Sudah di Update');
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Data Karyawan Sudah di Update',
-                position: 'center'
-            );
-        } else {
-            $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
-            $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-            // $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Data Karyawan Sudah di Update, User tidak terupdate',
-                position: 'center'
-            );
-        }
+        // $dataUser = User::where('username', $data->id_karyawan)->first();
+        // if ($dataUser->id) {
+        //     $user = User::find($dataUser->id);
+        //     $user->name = titleCase($this->nama);
+        //     $user->email = trim($this->email, ' ');
+        //     $user->save();
+        //     $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+        //     $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'success',
+        //         title: 'Data Karyawan Sudah di Update',
+        //         position: 'center'
+        //     );
+        // } else {
+        //     $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
+        //     $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
+        //     // $this->dispatch('info', message: 'Data Karyawan Sudah di Update, User tidak terupdate');
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'success',
+        //         title: 'Data Karyawan Sudah di Update, User tidak terupdate',
+        //         position: 'center'
+        //     );
+        // }
 
 
         // upload dokumen
