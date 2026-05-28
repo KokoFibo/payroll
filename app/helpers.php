@@ -262,6 +262,8 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
         $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
+        // dd($jam_kerja, $tgl);
+
         $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
         // if ($user_id == 2216) dd($user_id, $terlambat,  $jam_kerja);
         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
@@ -297,9 +299,11 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
                 $jam_kerja = 8;
             }
         }
-        if ($jabatan_id == 17 && $is_sunday) {
+        // if ($jabatan_id == 17 && $is_sunday) {
+        if ($jabatan_id == 17 && ($is_sunday || $is_libur_nasional)) {
             $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
         }
+        // dd($jam_kerja);
         if ($jabatan_id == 17 && $is_friday && $shift == 'Malam') {
             if ($jam_kerja >= 8) {
                 $jam_kerja = 8;
@@ -2207,6 +2211,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     $is_saturday = is_saturday($tgl);
     $is_sunday = is_sunday($tgl);
     $is_friday = is_friday($tgl);
+    $is_libur_nasional = is_libur_nasional($tgl);
 
     if (is_puasa($tgl)) {
 
@@ -2286,10 +2291,12 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
                 }
             }
         } else {
+
             // check late kkk
             $total_late = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $tgl, $jabatan, $placement_id);
             //    dd($first_in, $first_out, $second_in, $second_out);
             //jok
+            // dd($total_late);
             if ($second_in === null && $second_out === null && ($first_in === null && $first_out === null)) {
                 $jam_kerja = 0;
             } elseif (($second_in === null && $second_out === null) || ($first_in === null && $first_out === null)) {
@@ -2332,11 +2339,22 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
 
     //     $jam_kerja *= 2;
     // }
+    // dd('oke', $jam_kerja, $tgl, $is_libur_nasional);
 
-    if ($jabatan == 17 && $is_sunday == false) {
+    if ($jabatan == 17 && $is_sunday == false && $is_libur_nasional == false) {
         $jam_kerja = 12;
         // $jam_kerja = $jam_kerja - $total_late;
     }
+
+    // dd('oke', $jam_kerja, $tgl, $is_libur_nasional, $second_in, $total_late);
+    // if ($jabatan == 17) {
+    //     if ($is_sunday == false && $is_libur_nasional == false) {
+    //         $jam_kerja = 12;
+    //     } else {
+    //         $jam_kerja = $jam_kerja - $total_late;
+    //     }
+    // }
+
     return $jam_kerja;
 }
 
@@ -2592,7 +2610,6 @@ function late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_ou
     // } else {
     //     return $late1 + $late2 + $late3 + $late4;
     // }
-
     return $late1 + $late2 + $late3 + $late4;
 }
 
@@ -3019,6 +3036,7 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
             }
         }
     } else {
+
         if (is_jabatan_khusus($jabatan) == 1) {
             $late = null;
         } else {
@@ -3026,8 +3044,10 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
             // $groupIstirahat;
 
             if ($second_in != null) {
+
                 if ($shift == 'Pagi') {
                     if ($firstOut != null) {
+
                         if (Carbon::parse($firstOut)->betweenIncluded('08:00', '11:59')) {
                             $groupIstirahat = 1;
                         } elseif (Carbon::parse($firstOut)->betweenIncluded('12:00', '12:59')) {
@@ -3035,7 +3055,9 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
                         } else {
                             $groupIstirahat = 0;
                         }
-
+                        // if ($firstOut == null) {
+                        //     $groupIstirahat = 2;
+                        // }
                         // Shift Pagi ggg
                         if (is_friday($tgl)) {
                             if (Carbon::parse($second_in)->betweenIncluded('11:30', '13:03')) {

@@ -478,7 +478,7 @@ class Newpresensi extends Component
         $data->total_hari_kerja_libur = 0;
         $data->total_jam_kerja_libur = 0;
         $data->total_jam_lembur_libur = 0;
-
+        // dd($hasil['jam_kerja']);
         if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] >= 1) {
             $data->total_hari_kerja = 1;
         }

@@ -104,7 +104,17 @@ class Test extends Component
   {
 
 
-
+    // $data = Yfrekappresensi::where('date', '2026-05-24')
+    //   ->whereNotNull('second_in')
+    //   ->whereNull('second_out')
+    //   // })
+    //   ->get();
+    // foreach ($data as $item) {
+    //   //  move second_in to second_out
+    //   $item->second_out = $item->second_in;
+    //   $item->second_in = null;
+    //   $item->save();
+    // }
 
 
     dd('aman');
