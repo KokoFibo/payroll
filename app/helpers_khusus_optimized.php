@@ -92,6 +92,8 @@ function quickRebuildOptimized(int $month, int $year)
             CASE
                 WHEN k.metode_penggajian != 'Perbulan' THEN 0
                 WHEN k.tanggal_bergabung > l.tanggal_mulai_hari_libur THEN 0
+                WHEN k.tanggal_resigned IS NOT NULL
+                    AND k.tanggal_resigned < l.tanggal_mulai_hari_libur THEN 0
                 ELSE l.jumlah_hari_libur
             END
         ), 0) AS jumlah_libur_nasional_valid,
@@ -111,6 +113,8 @@ function quickRebuildOptimized(int $month, int $year)
                     COALESCE(SUM(
                         CASE
                             WHEN k.tanggal_bergabung > l.tanggal_mulai_hari_libur THEN 0
+                            WHEN k.tanggal_resigned IS NOT NULL
+                                AND k.tanggal_resigned < l.tanggal_mulai_hari_libur THEN 0
                             ELSE l.jumlah_hari_libur
                         END
                     ), 0)
