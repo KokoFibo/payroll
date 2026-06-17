@@ -41,6 +41,7 @@ use App\Livewire\DataLog;
 use App\Livewire\DataResigned;
 use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deleteduplicatepresensi;
+use App\Livewire\DeleteMonthlyPresensi;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Departmentwr;
@@ -361,6 +362,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/reset-noscan-by-tanggal', ResetNoscanByTanggal::class);
                             Route::get('/reset-late-by-tanggal', ResetLateByTanggal::class);
                             Route::get('presensi-add-time', PresensiAddTime::class);
+                            Route::get('/delete-monthly-presensi', DeleteMonthlyPresensi::class);
                             // TEST
                             Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');

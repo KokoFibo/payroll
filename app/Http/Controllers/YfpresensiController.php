@@ -456,7 +456,6 @@ class YfpresensiController extends Controller
 
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
             //plk
-            // if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
             $gagal_scan = 0;
             if (is_puasa($kh->date)) {
                 if (get_placement($user_id) == 102 && $is_sunday && $kh->date === "2026-03-15") { // 1st Factory
