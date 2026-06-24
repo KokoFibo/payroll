@@ -255,16 +255,32 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
     $is_libur_nasional = is_libur_nasional($date);
     $is_saturday =  is_saturday($date);
     $is_friday = is_friday($date);
+    $placement_id = get_placement($user_id);
+
+    // 106	5th Factory
+    // 8	7th Factory
+
+    if ($placement_id == 106 && $date === '2026-06-13') {
+        $is_saturday = true;
+    }
+    if ($placement_id == 8) {
+        if ($date === '2026-06-13') {
+            $is_saturday = true;
+        }
+        if ($date === '2026-06-14') {
+            $is_sunday = true;
+        }
+    }
 
     $tambahan_shift_malam = 0;
     // if ($user_id == 2719) dd($user_id);
     // dd($user_id);
     if ($no_scan === null) {
         $tgl = tgl_doang($date);
-        $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, get_placement($user_id));
+        $jam_kerja = hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $placement_id);
         // dd($jam_kerja, $tgl);
 
-        $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, get_placement($user_id));
+        $terlambat = late_check_jam_kerja_only($first_in, $first_out, $second_in, $second_out, $shift, $date, $jabatan_id, $placement_id);
         // if ($user_id == 2216) dd($user_id, $terlambat,  $jam_kerja);
         $langsungLembur = langsungLembur($second_out, $date, $shift, $jabatan_id, $placement_id);
 
@@ -1946,6 +1962,24 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
         $tgl_khusus = null;
     }
 
+    // 106	5th Factory
+    // 8	7th Factory
+
+    if ($placement_id == 106 && $tgl === '2026-06-13') {
+        $is_saturday = true;
+        $tgl_khusus = null;
+    }
+    if ($placement_id == 8) {
+        if ($tgl === '2026-06-13') {
+            $is_saturday = true;
+            $tgl_khusus = null;
+        }
+        if ($tgl === '2026-06-14') {
+            $is_sunday = true;
+            $tgl_khusus = null;
+        }
+    }
+
     // betulin
     if ($second_out != null) {
         $t2 = strtotime($second_out);
@@ -2213,6 +2247,18 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     $is_friday = is_friday($tgl);
     $is_libur_nasional = is_libur_nasional($tgl);
 
+    if ($placement_id == 106 && $tgl === '2026-06-13') {
+        $is_saturday = true;
+    }
+    if ($placement_id == 8) {
+        if ($tgl === '2026-06-13') {
+            $is_saturday = true;
+        }
+        if ($tgl === '2026-06-14') {
+            $is_sunday = true;
+        }
+    }
+
     if (is_puasa($tgl)) {
 
         if ($late == null) {
@@ -2273,7 +2319,9 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         }
     } else {
-        if ($late == null) {
+        // if ($late == null) {
+        if ($late == null && !(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null))) {
+
             if ($shift == 'Pagi') {
                 if ($is_saturday) {
                     $jam_kerja = 6;
@@ -3257,6 +3305,22 @@ function checkSecondInLate($second_in, $shift, $firstOut, $tgl, $jabatan, $place
 function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
 {
     $is_saturday = is_saturday($tgl);
+
+    // 106	5th Factory
+    // 8	7th Factory
+
+    if ($placement_id == 106 && $tgl === '2026-06-13') {
+        $is_saturday = true;
+    }
+    if ($placement_id == 8) {
+        if ($tgl === '2026-06-13') {
+            $is_saturday = true;
+        }
+        // if ($tgl === '2026-06-14') {
+        //     $is_sunday = true;
+        // }
+    }
+
 
     if (is_puasa($tgl)) {
         $jam_secondOut_pagi = '16:59';

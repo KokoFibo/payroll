@@ -424,7 +424,24 @@ class YfpresensiController extends Controller
         $is_saturday = is_saturday($tgl);
         $is_friday = is_friday($tgl);
         $is_hari_libur_nasional = is_libur_nasional($tgl);
+
+
         foreach ($karyawanHadir as $kh) {
+            // 106	5th Factory
+            // 8	7th Factory
+
+            if (get_placement($user_id) == 106 && $kh->date === '2026-06-13') {
+                $is_saturday = true;
+            }
+            if (get_placement($user_id) == 8) {
+                if ($kh->date === '2026-06-13') {
+                    $is_saturday = true;
+                }
+                if ($kh->date === '2026-06-14') {
+                    $is_sunday = true;
+                }
+            }
+
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
             // $name = $kh->name;
@@ -458,9 +475,9 @@ class YfpresensiController extends Controller
             //plk
             $gagal_scan = 0;
             if (is_puasa($kh->date)) {
-                if (get_placement($user_id) == 102 && $is_sunday && $kh->date === "2026-03-15") { // 1st Factory
-                    $is_sunday = false;
-                }
+                // if (get_placement($user_id) == 102 && $is_sunday && $kh->date === "2026-03-15") { // 1st Factory
+                //     $is_sunday = false;
+                // }
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
                     // if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
