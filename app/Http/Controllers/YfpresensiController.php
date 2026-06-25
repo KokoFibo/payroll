@@ -240,6 +240,7 @@ class YfpresensiController extends Controller
 
     public function check_store(Request $request)
     {
+        dd('inikah');
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
@@ -258,6 +259,7 @@ class YfpresensiController extends Controller
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $hari_khusus = Harikhusus::where('date', $tgl)->first();
+
         if ($hari_khusus) {
             $this->khusus_store($request);
         } else {
@@ -427,18 +429,27 @@ class YfpresensiController extends Controller
 
 
         foreach ($karyawanHadir as $kh) {
+            $placement_id = get_placement($kh->user_id);
             // 106	5th Factory
             // 8	7th Factory
-
-            if (get_placement($user_id) == 106 && $kh->date === '2026-06-13') {
+            $hari_khusus = cek_hari_khusus($tgl);
+            if ($kh->date === '2026-06-14') {
+                $is_sunday = false;
                 $is_saturday = true;
             }
-            if (get_placement($user_id) == 8) {
+
+            if ($placement_id == 106 && $kh->date === '2026-06-13') {
+                $is_saturday = true;
+            }
+            if ($placement_id == 8) {
                 if ($kh->date === '2026-06-13') {
                     $is_saturday = true;
+                    $hari_khusus = false;
                 }
                 if ($kh->date === '2026-06-14') {
+                    $is_saturday = false;
                     $is_sunday = true;
+                    // $hari_khusus = false;
                 }
             }
 
@@ -461,14 +472,13 @@ class YfpresensiController extends Controller
             $late = null;
             $no_scan = null;
             $shift = '';
-            $hari_khusus = cek_hari_khusus($tgl);
 
 
             // ini mulai masukin data perID
             $tablePresensi = DB::table('yfpresensis')
                 ->where('user_id', $kh->user_id)
                 ->get();
-            $is_saturday = is_saturday($kh->date);
+            // $is_saturday = is_saturday($kh->date);
             // Batasanm Puasa
 
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
@@ -880,7 +890,7 @@ class YfpresensiController extends Controller
                 $total_jam_lembur = 0;
             }
 
-            // if ($user_id == 2216) dd($user_id, $late, $hasil['jam_kerja']);
+            // if ($user_id == 3110) dd($user_id, $late, $hasil['jam_kerja'], $hasil['jam_lembur']);
 
             // dd($tgl);
             Yfrekappresensi::create([
