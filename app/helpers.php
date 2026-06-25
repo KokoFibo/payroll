@@ -26,6 +26,7 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use SebastianBergmann\Type\FalseType;
 
 function resetPasswordApi($email, $tanggalLahir)
 {
@@ -259,7 +260,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
 
     // 106	5th Factory
     // 8	7th Factory
-
     if ($placement_id == 106 && $date === '2026-06-13') {
         $is_saturday = true;
     }
@@ -268,9 +268,11 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             $is_saturday = true;
         }
         if ($date === '2026-06-14') {
+            $is_saturday = false;
             $is_sunday = true;
         }
     }
+
 
     $tambahan_shift_malam = 0;
     // if ($user_id == 2719) dd($user_id);
@@ -328,22 +330,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         }
 
 
-        // if ($jabatan_id != 23) {
-        //     if (
-        //         $is_libur_nasional && !$is_sunday
-        //         && $jabatan_id != 23
-
-        //     ) {
-
-        //         $jam_kerja *= 2;
-        //         $jam_lembur *= 2;
-        //     }
-        // } else {
-        //     if ($is_sunday) {
-        //         $jam_kerja /= 2;
-        //         $jam_lembur /= 2;
-        //     }
-        // }
 
         // 23 translator
         if ($jabatan_id == 23) {
@@ -354,14 +340,11 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         }
 
 
-        // $this->dataArr->push([
-        // 'tgl' => $tgl,
-        // 'jam_kerja' => $jam_kerja,
-        // 'terlambat' => $terlambat,
-        // 'jam_lembur' => $jam_lembur,
-        // 'tambahan_shift_malam' => $tambahan_shift_malam,
-        // ]);
+
         if ($terlambat > 0) $tambahan_shift_malam = 0;
+        // if ($user_id == 11415) {
+        //     dd($jam_kerja, $is_saturday, $is_sunday, $placement_id);
+        // }
         return [
             'tgl' => $tgl,
             'jam_kerja' => $jam_kerja,
@@ -1961,6 +1944,11 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
     } else {
         $tgl_khusus = null;
     }
+    // if ($placement_id == 8 && $tgl === '2026-06-14') {
+
+    //     $tgl_khusus = null;
+    //     $is_saturday = false;
+    // }
 
     // 106	5th Factory
     // 8	7th Factory
@@ -1975,6 +1963,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             $tgl_khusus = null;
         }
         if ($tgl === '2026-06-14') {
+            $is_saturday = false;
             $is_sunday = true;
             $tgl_khusus = null;
         }
@@ -2186,10 +2175,10 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             // rubah disini jika ada perubahan jam lembur
                             // ini perhitungan utk hari 08:00 - 15:30
                             // di hitung hari 6 jam, untuk lembur mulai 15:30
-                            if ($t2 < strtotime('16:00:00')) {
+                            if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
                             }
-                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                         } else {
                             if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
@@ -2255,6 +2244,8 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             $is_saturday = true;
         }
         if ($tgl === '2026-06-14') {
+            $is_saturday = false;
+
             $is_sunday = true;
         }
     }
