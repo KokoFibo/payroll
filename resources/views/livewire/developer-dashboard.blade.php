@@ -33,6 +33,7 @@
         <a href="/reset-noscan-by-tanggal"><button class="btn btn-primary">Reset No Scan by Tanggal</button></a>
         <a href="/reset-late-by-tanggal"><button class="btn btn-primary">Reset Late by Tanggal</button></a>
         <a href="/presensi-add-time"><button class="btn btn-primary">Tambah waktu presensi</button></a>
+        <a href="/direct-inject-presensi"><button class="btn btn-primary">Direct Inject Presensi</button></a>
 
     </div>
     <div class="d-flex mt-5 justify-content-evenly">

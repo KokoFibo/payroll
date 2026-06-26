@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\LarkController;
-use App\Http\Controllers\UserSyncController;
+use App\Http\Controllers\ApiPresensiController;
+use App\Http\Controllers\ApplicantFileController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LaporanApiController;
-use App\Http\Controllers\ApiPresensiController;
+use App\Http\Controllers\LarkController;
+use App\Http\Controllers\UserSyncController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +49,4 @@ Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, '
 Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
 
 Route::get('/payroll/summary', [ApiController::class, 'summary']);
+Route::get('/applicant-files/{id_karyawan}', [ApplicantFileController::class, 'index']);
