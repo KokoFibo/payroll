@@ -102,8 +102,12 @@ class Test extends Component
 
   public function render()
   {
-
-
+    $data = Yfrekappresensi::join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
+      ->select('yfrekappresensis.*',  'karyawans.placement_id')
+      ->where('yfrekappresensis.date', '2026-6-19')
+      ->where('karyawans.placement_id', 102)
+      ->first();
+    dd($data);
     // $data = Yfrekappresensi::where('date', '2026-05-24')
     //   ->whereNotNull('second_in')
     //   ->whereNull('second_out')

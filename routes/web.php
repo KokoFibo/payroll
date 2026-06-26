@@ -47,6 +47,7 @@ use App\Livewire\Deletepresensiwr;
 use App\Livewire\Departmentwr;
 use App\Livewire\Developer;
 use App\Livewire\DeveloperDashboard;
+use App\Livewire\Directinject;
 use App\Livewire\Editpresensiwr;
 use App\Livewire\Excelpresensi;
 use App\Livewire\Gajibpjs;
@@ -363,6 +364,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/reset-late-by-tanggal', ResetLateByTanggal::class);
                             Route::get('presensi-add-time', PresensiAddTime::class);
                             Route::get('/delete-monthly-presensi', DeleteMonthlyPresensi::class);
+                            Route::get('/direct-inject-presensi', Directinject::class);
                             // TEST
                             Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');
