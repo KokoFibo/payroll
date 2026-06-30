@@ -429,6 +429,13 @@ class YfpresensiController extends Controller
 
 
         foreach ($karyawanHadir as $kh) {
+            $is_sunday = is_sunday($tgl);
+            $is_saturday = is_saturday($tgl);
+            $is_friday = is_friday($tgl);
+            $is_hari_libur_nasional = is_libur_nasional($tgl);
+
+
+
             $placement_id = get_placement($kh->user_id);
             // 106	5th Factory
             // 8	7th Factory
