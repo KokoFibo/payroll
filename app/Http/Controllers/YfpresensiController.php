@@ -460,6 +460,9 @@ class YfpresensiController extends Controller
                     $is_sunday = true;
                 }
             }
+            if ($placement_id == 106 && $kh->date === '2026-06-28') {
+                $is_sunday = false;
+            }
 
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
