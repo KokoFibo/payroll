@@ -423,9 +423,7 @@ class Newpresensi extends Component
                 $is_sunday = true;
             }
         }
-        if ($dataKaryawan->placement_id == 106 && $data->date === '2026-06-28') {
-            $is_sunday = false;
-        }
+
 
 
 
