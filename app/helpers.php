@@ -279,9 +279,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             $is_sunday = true;
         }
     }
-    if ($date === '2026-06-28' && $placement_id == 106) {
-        $is_sunday = false;
-    }
+   
 
 
     $tambahan_shift_malam = 0;
@@ -1987,9 +1985,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
         }
     }
 
-    if ($placement_id == 106 && $tgl === '2026-06-28') {
-        $is_sunday = false;
-    }
+   
 
     // betulin
     if ($second_out != null) {
@@ -2280,9 +2276,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         }
     }
 
-    if ($placement_id == 106 && $tgl === '2026-06-28') {
-        $is_sunday = false;
-    }
+    
 
     if (is_puasa($tgl)) {
 
