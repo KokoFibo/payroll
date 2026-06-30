@@ -422,10 +422,10 @@ class YfpresensiController extends Controller
             ->distinct()
             ->get();
 
-        $is_sunday = is_sunday($tgl);
-        $is_saturday = is_saturday($tgl);
-        $is_friday = is_friday($tgl);
-        $is_hari_libur_nasional = is_libur_nasional($tgl);
+        // $is_sunday = is_sunday($tgl);
+        // $is_saturday = is_saturday($tgl);
+        // $is_friday = is_friday($tgl);
+        // $is_hari_libur_nasional = is_libur_nasional($tgl);
 
 
         foreach ($karyawanHadir as $kh) {
