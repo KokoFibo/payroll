@@ -1978,12 +1978,17 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             $tgl_khusus = null;
         }
     }
+
     if ($tgl === '2026-06-15') {
         if ($placement_id == 8 || $placement_id == 106) {
             $is_sunday = false;
         } else {
             $is_sunday = true;
         }
+    }
+
+    if ($placement_id == 106 && $tgl === '2026-06-28') {
+        $is_sunday = false;
     }
 
     // betulin
@@ -2273,6 +2278,10 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         } else {
             $is_sunday = true;
         }
+    }
+
+    if ($placement_id == 106 && $tgl === '2026-06-28') {
+        $is_sunday = false;
     }
 
     if (is_puasa($tgl)) {
@@ -3342,6 +3351,10 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
         } else {
             $is_sunday = true;
         }
+    }
+
+    if ($placement_id == 106 && $tgl === '2026-06-13') {
+        $is_sunday = false;
     }
 
 
