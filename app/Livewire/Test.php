@@ -95,6 +95,77 @@ class Test extends Component
   }
 
 
+  public function generate()
+  {
+
+
+    $tgl = '2026-06-27';
+
+    $karyawanTidakHadir = Karyawan::where('placement_id', 8)
+      ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+      ->where(function ($q) use ($tgl) {
+        $q->whereNull('tanggal_resigned')
+          ->orWhereDate('tanggal_resigned', '>=', $tgl);
+      })
+      ->where(function ($q) use ($tgl) {
+        $q->whereNull('tanggal_blacklist')
+          ->orWhereDate('tanggal_blacklist', '>=', $tgl);
+      })
+      ->whereNotExists(function ($q) use ($tgl) {
+        $q->selectRaw(1)
+          ->from('yfrekappresensis')
+          ->whereColumn('yfrekappresensis.user_id', 'karyawans.id_karyawan')
+          ->whereDate('yfrekappresensis.date', $tgl);
+      })
+      ->get();
+
+    foreach ($karyawanTidakHadir as $kh) {
+
+      $placement_id = $kh->placement_id;
+
+      $first_in = '08:00';
+      $first_out = null;
+      $second_in = null;
+      $second_out = '17:00';
+      $overtime_in = null;
+      $overtime_out = null;
+      $late = null;
+      $no_scan = null;
+      $shift = '';
+
+
+      $gagal_scan = 0;
+
+
+      Yfrekappresensi::create([
+        'shift_malam' => $tambahan_shift_malam ?? 0,
+        'user_id' => $kh->id_karyawan,
+        'karyawan_id' => $kh->id,
+        // 'name' => $name,
+        'date' => $tgl,
+        'first_in' => $first_in,
+        'first_out' => $first_out,
+        'second_in' => $second_in,
+        'second_out' => $second_out,
+        'overtime_in' => $overtime_in,
+        'overtime_out' => $overtime_out,
+        'total_jam_kerja' => 8,
+        'total_hari_kerja' => 1,
+        'total_jam_lembur' => null,
+        'total_jam_kerja_libur' => null,
+
+        'total_hari_kerja_libur' => null,
+        'total_jam_lembur_libur' => null,
+
+        'shift' => 'Pagi',
+        'late' => null,
+        'no_scan' => null,
+        'no_scan_history' => null,
+        'late_history' => null,
+      ]);
+    }
+  }
+
 
 
 
@@ -102,47 +173,10 @@ class Test extends Component
 
   public function render()
   {
-    $data = Yfrekappresensi::join('karyawans', 'yfrekappresensis.karyawan_id', '=', 'karyawans.id')
-      ->select('yfrekappresensis.*',  'karyawans.placement_id')
-      ->where('yfrekappresensis.date', '2026-6-19')
-      ->where('karyawans.placement_id', 102)
-      ->first();
-    dd($data);
-    // $data = Yfrekappresensi::where('date', '2026-05-24')
-    //   ->whereNotNull('second_in')
-    //   ->whereNull('second_out')
-    //   // })
-    //   ->get();
-    // foreach ($data as $item) {
-    //   //  move second_in to second_out
-    //   $item->second_out = $item->second_in;
-    //   $item->second_in = null;
-    //   $item->save();
-    // }
+    $this->generate();
+    dd('done');
 
 
-    dd('aman');
-    // $result = deleteUserByKaryawanAPI(13553);
-    // if ($result['status']) {
-    //   dd('berhasil');
-    // } else {
-    //   dd('gagal');
-    // }
-    // $this->cleanEmail();
-    $data = Karyawan::where(function ($q) {
-      $q->where('email', 'like', '%resigned_%')
-        ->orWhere('email', 'like', '%email_kosong_%')
-        ->orWhere('email', 'like', '%blacklist_%');
-    })
-      ->when($this->search, function ($q) {
-        $q->where('email', 'like', '%' . $this->search . '%')
-          ->orWhere('nama', 'like', '%' . $this->search . '%');
-      })
-      ->paginate(10);
-
-
-    return view('livewire.test', [
-      'data' => $data
-    ]);
+    return view('livewire.test');
   }
 }
