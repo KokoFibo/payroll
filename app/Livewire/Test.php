@@ -173,8 +173,8 @@ class Test extends Component
 
   public function render()
   {
-    $this->generate();
-    dd('done');
+    // $this->generate();
+    dd('aman');
 
 
     return view('livewire.test');
