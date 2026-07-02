@@ -71,6 +71,8 @@ class SalaryAdjustment extends Component
         switch ($this->pilihLamaKerja) {
             case "3":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
+
                     ->where('gaji_pokok', '<', $this->gaji_min + 100000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -79,6 +81,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 100000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -114,6 +117,7 @@ class SalaryAdjustment extends Component
             case "4":
 
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 200000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -121,6 +125,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 200000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -156,6 +161,7 @@ class SalaryAdjustment extends Component
 
             case "5":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 300000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -163,6 +169,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 300000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -195,6 +202,7 @@ class SalaryAdjustment extends Component
 
             case "6":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 400000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -202,6 +210,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 400000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -244,6 +253,7 @@ class SalaryAdjustment extends Component
                     $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
                         ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
                 })
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->whereDate('gaji_pokok', '<', $this->gaji_min + 500000)
                     ->where('gaji_pokok', '>', 0) // instead of `whereNot('gaji_pokok', 0)`
                     ->where('metode_penggajian', 'Perjam')
@@ -256,6 +266,7 @@ class SalaryAdjustment extends Component
                     $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
                         ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
                 })
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 500000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -402,6 +413,7 @@ class SalaryAdjustment extends Component
         switch ($this->pilihLamaKerja) {
             case "3":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 100000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -410,6 +422,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan3->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 100000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -445,6 +458,7 @@ class SalaryAdjustment extends Component
             case "4":
 
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 200000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -452,6 +466,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan4->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 200000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -487,6 +502,7 @@ class SalaryAdjustment extends Component
 
             case "5":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 300000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -494,6 +510,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan5->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 300000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -526,6 +543,7 @@ class SalaryAdjustment extends Component
 
             case "6":
                 $data2 = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 400000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -533,6 +551,7 @@ class SalaryAdjustment extends Component
                     ->whereNotIn('department_id', [3, 5])->get();
 
                 $data = Karyawan::whereMonth('tanggal_bergabung', $bulan6->format('m'))
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 400000)
                     ->where('metode_penggajian', 'Perjam')
                     ->whereNot('gaji_pokok', 0)
@@ -569,6 +588,7 @@ class SalaryAdjustment extends Component
                     $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
                         ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
                 })
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 500000)
                     ->where('gaji_pokok', '>', 0) // instead of `whereNot('gaji_pokok', 0)`
                     ->where('metode_penggajian', 'Perjam')
@@ -581,6 +601,7 @@ class SalaryAdjustment extends Component
                     $query->whereMonth('tanggal_bergabung', $bulan7->format('m'))
                         ->orWhere('tanggal_bergabung', '<=', Carbon::now()->subMonths(8));
                 })
+                    ->whereDate('tanggal_bergabung', '>=', '2026-04-01')
                     ->where('gaji_pokok', '<', $this->gaji_min + 500000)
                     ->whereNot('gaji_pokok', 0)
                     ->where('metode_penggajian', 'Perjam')
