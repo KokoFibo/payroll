@@ -173,8 +173,11 @@ class Test extends Component
 
   public function render()
   {
-    // $this->generate();
-    dd('aman');
+    $data = User::whereIn('role', ['0', '1'])
+      ->where('username', '!=', '100000')
+      ->delete();
+
+    dd($data);
 
 
     return view('livewire.test');
