@@ -260,26 +260,30 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
 
     // 106	5th Factory
     // 8	7th Factory
-    if ($placement_id == 106 && $date === '2026-06-13') {
-        $is_saturday = true;
+    // if ($placement_id == 106 && $date === '2026-06-13') {
+    //     $is_saturday = true;
+    // }
+    // if ($placement_id == 8) {
+    //     if ($date === '2026-06-13') {
+    //         $is_saturday = true;
+    //     }
+    //     if ($date === '2026-06-14') {
+    //         $is_saturday = false;
+    //         $is_sunday = true;
+    //     }
+    // }
+    // if ($date === '2026-06-15') {
+    //     if ($placement_id == 8 || $placement_id == 106) {
+    //         $is_sunday = false;
+    //     } else {
+    //         $is_sunday = true;
+    //     }
+    // }
+
+    if ($placement_id == 8 && $date === '2026-07-05') {
+        $is_sunday = true;
     }
-    if ($placement_id == 8) {
-        if ($date === '2026-06-13') {
-            $is_saturday = true;
-        }
-        if ($date === '2026-06-14') {
-            $is_saturday = false;
-            $is_sunday = true;
-        }
-    }
-    if ($date === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
-            $is_sunday = false;
-        } else {
-            $is_sunday = true;
-        }
-    }
-   
+
 
 
     $tambahan_shift_malam = 0;
@@ -1961,31 +1965,35 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
     // 106	5th Factory
     // 8	7th Factory
 
-    if ($placement_id == 106 && $tgl === '2026-06-13') {
-        $is_saturday = true;
-        $tgl_khusus = null;
-    }
-    if ($placement_id == 8) {
-        if ($tgl === '2026-06-13') {
-            $is_saturday = true;
-            $tgl_khusus = null;
-        }
-        if ($tgl === '2026-06-14') {
-            $is_saturday = false;
-            $is_sunday = true;
-            $tgl_khusus = null;
-        }
+    // if ($placement_id == 106 && $tgl === '2026-06-13') {
+    //     $is_saturday = true;
+    //     $tgl_khusus = null;
+    // }
+    // if ($placement_id == 8) {
+    //     if ($tgl === '2026-06-13') {
+    //         $is_saturday = true;
+    //         $tgl_khusus = null;
+    //     }
+    //     if ($tgl === '2026-06-14') {
+    //         $is_saturday = false;
+    //         $is_sunday = true;
+    //         $tgl_khusus = null;
+    //     }
+    // }
+
+    // if ($tgl === '2026-06-15') {
+    //     if ($placement_id == 8 || $placement_id == 106) {
+    //         $is_sunday = false;
+    //     } else {
+    //         $is_sunday = true;
+    //     }
+    // }
+
+    if ($placement_id == 8 && $tgl === '2026-07-05') {
+        $is_sunday = true;
     }
 
-    if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
-            $is_sunday = false;
-        } else {
-            $is_sunday = true;
-        }
-    }
 
-   
 
     // betulin
     if ($second_out != null) {
@@ -2254,29 +2262,33 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     $is_friday = is_friday($tgl);
     $is_libur_nasional = is_libur_nasional($tgl);
 
-    if ($placement_id == 106 && $tgl === '2026-06-13') {
-        $is_saturday = true;
-    }
-    if ($placement_id == 8) {
-        if ($tgl === '2026-06-13') {
-            $is_saturday = true;
-        }
-        if ($tgl === '2026-06-14') {
-            $is_saturday = false;
+    // if ($placement_id == 106 && $tgl === '2026-06-13') {
+    //     $is_saturday = true;
+    // }
+    // if ($placement_id == 8) {
+    //     if ($tgl === '2026-06-13') {
+    //         $is_saturday = true;
+    //     }
+    //     if ($tgl === '2026-06-14') {
+    //         $is_saturday = false;
 
-            $is_sunday = true;
-        }
+    //         $is_sunday = true;
+    //     }
+    // }
+
+    // if ($tgl === '2026-06-15') {
+    //     if ($placement_id == 8 || $placement_id == 106) {
+    //         $is_sunday = false;
+    //     } else {
+    //         $is_sunday = true;
+    //     }
+    // }
+
+    if ($placement_id == 8 && $tgl === '2026-07-05') {
+        $is_sunday = true;
     }
 
-    if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
-            $is_sunday = false;
-        } else {
-            $is_sunday = true;
-        }
-    }
 
-    
 
     if (is_puasa($tgl)) {
 
@@ -3328,27 +3340,27 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
     // 106	5th Factory
     // 8	7th Factory
 
-    if ($placement_id == 106 && $tgl === '2026-06-13') {
-        $is_saturday = true;
-    }
-    if ($placement_id == 8) {
-        if ($tgl === '2026-06-13') {
-            $is_saturday = true;
-        }
-        // if ($tgl === '2026-06-14') {
-        //     $is_sunday = true;
-        // }
-    }
-    if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
-            $is_sunday = false;
-        } else {
-            $is_sunday = true;
-        }
-    }
+    // if ($placement_id == 106 && $tgl === '2026-06-13') {
+    //     $is_saturday = true;
+    // }
+    // if ($placement_id == 8) {
+    //     if ($tgl === '2026-06-13') {
+    //         $is_saturday = true;
+    //     }
+    //     // if ($tgl === '2026-06-14') {
+    //     //     $is_sunday = true;
+    //     // }
+    // }
+    // if ($tgl === '2026-06-15') {
+    //     if ($placement_id == 8 || $placement_id == 106) {
+    //         $is_sunday = false;
+    //     } else {
+    //         $is_sunday = true;
+    //     }
+    // }
 
-    if ($placement_id == 106 && $tgl === '2026-06-13') {
-        $is_sunday = false;
+    if ($placement_id == 8 && $tgl === '2026-07-05') {
+        $is_sunday = true;
     }
 
 
