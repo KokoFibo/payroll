@@ -8,18 +8,35 @@ use App\Models\Karyawan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
+
 
 class Movedata extends Component
 {
-    public $id_karyawan, $data_karyawan, $data_user;
+    public $id_karyawan, $data_karyawan, $data_user, $database;
     public function search()
     {
         // $apiUrl =  "https://payroll.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
-        $apiUrlKaryawan =  "https://salary.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
-        $apiUrlUser =  "https://salary.yifang.co.id/api/getuser/" . $this->id_karyawan;
+        // $apiUrlKaryawan =  "https://salary.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
+        // $apiUrlUser =  "https://salary.yifang.co.id/api/getuser/" . $this->id_karyawan;
+        switch ($this->database) {
+            case 'nonos':
+                $apiUrlKaryawan =  "https://salary.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
+                break;
+            case 'sti':
+                $apiUrlKaryawan =  "https://sti.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
+                break;
+            case 'bai':
+                $apiUrlKaryawan =  "https://bai.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
+                break;
+        }
+
+        // $apiUrlKaryawan =  "http://127.0.0.1:8080/api/getkaryawan/" . $this->id_karyawan;
+
+        // $apiUrlUser =  "http://127.0.0.1:8080/api/getuser/" . $this->id_karyawan;
 
         $this->data_karyawan = getDataApi($apiUrlKaryawan);
-        $this->data_user = getDataApi($apiUrlUser);
+        // $this->data_user = getDataApi($apiUrlUser);
 
         if (isset($this->data_karyawan['status']) && $this->data_karyawan['status'] === 'error') {
             // Display the error message
@@ -32,17 +49,17 @@ class Movedata extends Component
             $this->data_karyawan = '';
             return;
         }
-        if (isset($this->data_user['status']) && $this->data_user['status'] === 'error') {
-            // Display the error message
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Data user tidak ditemukan',
-                position: 'center'
-            );
-            $this->data_user = '';
-            return;
-        }
+        // if (isset($this->data_user['status']) && $this->data_user['status'] === 'error') {
+        //     // Display the error message
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'error',
+        //         title: 'Data user tidak ditemukan',
+        //         position: 'center'
+        //     );
+        //     $this->data_user = '';
+        //     return;
+        // }
     }
     public function deleteDataUserApi($apiUrl)
     {
@@ -111,17 +128,24 @@ class Movedata extends Component
     {
         DB::transaction(function () {
 
-            // COPY DATA KARYAWAN APA ADANYA
-            Karyawan::updateOrCreate(
-                ['id_karyawan' => $this->data_karyawan['id_karyawan']],
-                $this->data_karyawan
+            // ID karyawan baru
+            $this->data_karyawan['id_karyawan'] =
+                (Karyawan::max('id_karyawan') ?? 0) + 1;
+
+            // Ambil daftar kolom tabel (hanya sekali)
+            static $columns = null;
+
+            if ($columns === null) {
+                $columns = Schema::getColumnListing((new Karyawan)->getTable());
+            }
+
+            // Sisakan hanya field yang memang ada pada tabel
+            $data = array_intersect_key(
+                $this->data_karyawan,
+                array_flip($columns)
             );
 
-            // COPY DATA USER APA ADANYA (PASSWORD TIDAK DIUBAH)
-            User::updateOrCreate(
-                ['username' => $this->data_user['username']],
-                $this->data_user
-            );
+            Karyawan::create($data);
         });
     }
 
@@ -135,18 +159,18 @@ class Movedata extends Component
             $this->create_data();
 
             // 2️⃣ DELETE DATA DI API LAMA
-            $apiDeleteKaryawan = "https://salary.yifang.co.id/api/delete_karyawan_yf_aja/{$this->id_karyawan}";
-            $apiDeleteUser     = "https://salary.yifang.co.id/api/delete_user_yf_aja/{$this->id_karyawan}";
+            // $apiDeleteKaryawan = "https://salary.yifang.co.id/api/delete_karyawan_yf_aja/{$this->id_karyawan}";
+            // $apiDeleteUser     = "https://salary.yifang.co.id/api/delete_user_yf_aja/{$this->id_karyawan}";
 
-            $deleteKaryawan = $this->deleteDataKaryawanApi($apiDeleteKaryawan);
-            $deleteUser     = $this->deleteDataUserApi($apiDeleteUser);
+            // $deleteKaryawan = $this->deleteDataKaryawanApi($apiDeleteKaryawan);
+            // $deleteUser     = $this->deleteDataUserApi($apiDeleteUser);
 
-            if (
-                (isset($deleteKaryawan['status']) && $deleteKaryawan['status'] === 'error') ||
-                (isset($deleteUser['status']) && $deleteUser['status'] === 'error')
-            ) {
-                throw new \Exception('Gagal menghapus data di sistem lama');
-            }
+            // if (
+            //     (isset($deleteKaryawan['status']) && $deleteKaryawan['status'] === 'error') ||
+            //     (isset($deleteUser['status']) && $deleteUser['status'] === 'error')
+            // ) {
+            //     throw new \Exception('Gagal menghapus data di sistem lama');
+            // }
 
             // 3️⃣ SEMUA SUKSES → COMMIT
             DB::commit();
