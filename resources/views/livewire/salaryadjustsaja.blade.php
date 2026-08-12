@@ -61,6 +61,7 @@
                             <th>Nama</th>
 
                             <th width="120">ID Karyawan</th>
+                            <th width="120">Metode Penggajian</th>
 
                             <th width="140">Tanggal Bergabung</th>
 
@@ -97,6 +98,11 @@
                                     <span class="badge bg-secondary">
                                         {{ $item->id_karyawan }}
                                     </span>
+                                </td>
+                                <td class="text-center">
+
+                                    {{ $item->metode_penggajian }}
+
                                 </td>
 
                                 <td>
