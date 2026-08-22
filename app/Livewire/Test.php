@@ -173,11 +173,96 @@ class Test extends Component
 
   public function render()
   {
+    $month = 8;
+    $year = 2026;
 
+    // Ambil karyawan yang memiliki tanggal_update pada bulan/tahun yang ditentukan
+    $data = Karyawan::whereNotNull('tanggal_update')
+      ->whereMonth('tanggal_update', $month)
+      ->whereYear('tanggal_update', $year)
+      ->get();
 
-    dd('aman');
+    // Payroll bulan sebelumnya
+    $previousMonth = $month - 1;
+    $previousYear = $year;
 
+    // Jika bulan = Januari, payroll sebelumnya adalah Desember tahun sebelumnya
+    if ($previousMonth == 0) {
+      $previousMonth = 12;
+      $previousYear = $year - 1;
+    }
 
-    return view('livewire.test');
+    $payroll = Payroll::whereMonth('date', $previousMonth)
+      ->whereYear('date', $previousYear)
+      ->get()
+      ->keyBy('id_karyawan');
+
+    $changes = collect();
+
+    foreach ($data as $karyawan) {
+
+      // Cari payroll karyawan berdasarkan id_karyawan
+      $previousPayroll = $payroll->get($karyawan->id_karyawan);
+
+      // Kalau tidak ada payroll bulan sebelumnya, skip
+      if (!$previousPayroll) {
+        continue;
+      }
+
+      // Nilai sekarang dari tabel karyawan
+      $gajiSekarang = (float) ($karyawan->gaji_tetap ?? 0);
+      $lemburSekarang = (float) ($karyawan->gaji_overtime ?? 0);
+      $bonusSekarang = (float) ($karyawan->bonus ?? 0);
+
+      // Nilai payroll bulan sebelumnya
+      $gajiSebelumnya = (float) ($previousPayroll->gaji_pokok ?? 0);
+      $lemburSebelumnya = (float) ($previousPayroll->gaji_lembur ?? 0);
+      $bonusSebelumnya = (float) ($previousPayroll->bonus1x ?? 0);
+
+      // Cek perubahan
+      $gajiChanged = $gajiSekarang != $gajiSebelumnya;
+      $lemburChanged = $lemburSekarang != $lemburSebelumnya;
+      $bonusChanged = $bonusSekarang != $bonusSebelumnya;
+
+      // Hanya tampilkan jika ada perubahan
+      if ($gajiChanged || $lemburChanged || $bonusChanged) {
+
+        $changes->push([
+          'karyawan' => $karyawan,
+          'payroll' => $previousPayroll,
+
+          'gaji_sekarang' => $gajiSekarang,
+          'gaji_sebelumnya' => $gajiSebelumnya,
+
+          'lembur_sekarang' => $lemburSekarang,
+          'lembur_sebelumnya' => $lemburSebelumnya,
+
+          'bonus_sekarang' => $bonusSekarang,
+          'bonus_sebelumnya' => $bonusSebelumnya,
+
+          'gaji_changed' => $gajiChanged,
+          'lembur_changed' => $lemburChanged,
+          'bonus_changed' => $bonusChanged,
+
+          'total_sekarang' =>
+          $gajiSekarang +
+            $lemburSekarang +
+            $bonusSekarang,
+
+          'total_sebelumnya' =>
+          $gajiSebelumnya +
+            $lemburSebelumnya +
+            $bonusSebelumnya,
+        ]);
+      }
+    }
+
+    return view('livewire.test', [
+      'data' => $changes,
+      'month' => $month,
+      'year' => $year,
+      'previousMonth' => $previousMonth,
+      'previousYear' => $previousYear,
+    ]);
   }
 }
