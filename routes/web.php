@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\SalaryAdjustmentExport;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
@@ -90,6 +91,7 @@ use App\Livewire\ResetNoscanByTanggal;
 use App\Livewire\Rubahid;
 use App\Livewire\Rubahidwr;
 use App\Livewire\SalaryAdjustment;
+use App\Livewire\SalaryAdjustmentReport;
 use App\Livewire\Salaryadjustsaja;
 use App\Livewire\Tambahanwr;
 use App\Livewire\TanpaEmergencyContact;
@@ -112,7 +114,9 @@ use App\Models\Department;
 use App\Models\Lock;
 use App\Models\Payroll;
 use Google\Service\Forms\Info;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 // Middleware
@@ -273,6 +277,17 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/data-log', DataLog::class)->name('datalog');
                     Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
                     Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
+                    Route::get('/salary-adjustment', SalaryAdjustmentReport::class);
+                    // ->name('salary-adjustment.index');
+
+                    Route::get('/laporan/salary-adjustment/export', function (Request $request) {
+                        $month = (int) $request->query('month', now()->month);
+                        $year  = (int) $request->query('year', now()->year);
+
+                        $filename = "Salary_Adjustment_{$year}_{$month}.xlsx";
+
+                        return Excel::download(new SalaryAdjustmentExport($month, $year), $filename);
+                    })->name('salary-adjustment.export');
 
 
 

@@ -10,6 +10,7 @@ class Bonuspotongan extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $table = 'bonuspotongans';
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class);

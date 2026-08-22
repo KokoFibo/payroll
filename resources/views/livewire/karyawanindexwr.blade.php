@@ -210,6 +210,11 @@
                                                 <button
                                                     class="btn btn-primary nightowl-daylight">{{ __('Bulk Update Salary Adjust') }}</button></a>
                                         </th>
+                                        <th>
+                                            <a href="/salary-adjustment">
+                                                <button
+                                                    class="btn btn-primary nightowl-daylight">{{ __('Salary Adjust Report') }}</button></a>
+                                        </th>
                                     @endif
 
                                     @if (auth()->user()->role == 8)
