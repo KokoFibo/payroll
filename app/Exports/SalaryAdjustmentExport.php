@@ -2,200 +2,292 @@
 
 namespace App\Exports;
 
-use App\Models\Bonuspotongan;
 use App\Models\Karyawan;
-use App\Models\Payroll;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class SalaryAdjustmentExport implements WithMultipleSheets
+class SalaryAdjustmentExport implements
+    FromView,
+    ShouldAutoSize,
+    WithColumnFormatting,
+    WithStyles
 {
-    public function __construct(protected int $month, protected int $year)
+    use Exportable;
+
+    protected $pilihLamaKerja;
+    protected $search_placement;
+
+    public function __construct($pilihLamaKerja, $search_placement = null)
     {
+        $this->pilihLamaKerja = $pilihLamaKerja;
+        $this->search_placement = $search_placement;
     }
 
-    public function sheets(): array
+    /**
+     * Mendapatkan data karyawan
+     */
+    private function getData()
     {
-        [$summary, $details] = $this->buildData();
+        $now = Carbon::now();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tentukan bulan berdasarkan lama bekerja
+        |--------------------------------------------------------------------------
+        */
+
+        switch ((string) $this->pilihLamaKerja) {
+
+            case '3':
+                $bulan = $now->copy()->startOfMonth()->subMonths(4);
+                $tambahanGaji = 100000;
+                break;
+
+            case '4':
+                $bulan = $now->copy()->startOfMonth()->subMonths(5);
+                $tambahanGaji = 200000;
+                break;
+
+            case '5':
+                $bulan = $now->copy()->startOfMonth()->subMonths(6);
+                $tambahanGaji = 300000;
+                break;
+
+            case '6':
+                $bulan = $now->copy()->startOfMonth()->subMonths(7);
+                $tambahanGaji = 400000;
+                break;
+
+            case '7':
+                $bulan = $now->copy()->startOfMonth()->subMonths(8);
+                $tambahanGaji = 500000;
+                break;
+
+            default:
+                $bulan = $now->copy()->startOfMonth()->subMonths(4);
+                $tambahanGaji = 100000;
+                break;
+        }
+
+        $gajiMinimal = 2200000;
+        $gajiRekomendasi = $gajiMinimal + $tambahanGaji;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Query dasar
+        |--------------------------------------------------------------------------
+        */
+
+        $query = Karyawan::query()
+            ->with([
+                'placement',
+                'company',
+                'department',
+                'jabatan',
+            ])
+
+            /*
+            |--------------------------------------------------------------------------
+            | Filter lama bekerja
+            |--------------------------------------------------------------------------
+            */
+
+            ->where(function ($query) use ($bulan) {
+
+                if ((string) $this->pilihLamaKerja == '7') {
+
+                    $query->whereMonth(
+                        'tanggal_bergabung',
+                        $bulan->format('m')
+                    )
+                        ->orWhere(
+                            'tanggal_bergabung',
+                            '<=',
+                            Carbon::now()->subMonths(8)
+                        );
+                } else {
+
+                    $query->whereMonth(
+                        'tanggal_bergabung',
+                        $bulan->format('m')
+                    );
+                }
+            })
+
+            /*
+            |--------------------------------------------------------------------------
+            | Hanya data mulai April 2026
+            |--------------------------------------------------------------------------
+            */
+
+            ->whereDate(
+                'tanggal_bergabung',
+                '>=',
+                '2026-04-01'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Gaji
+            |--------------------------------------------------------------------------
+            */
+
+            ->where(
+                'gaji_pokok',
+                '<',
+                $gajiRekomendasi
+            )
+
+            ->where(
+                'gaji_pokok',
+                '>',
+                0
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Metode penggajian
+            |--------------------------------------------------------------------------
+            */
+
+            ->where(
+                'metode_penggajian',
+                'Perjam'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Status
+            |--------------------------------------------------------------------------
+            */
+
+            ->whereIn(
+                'status_karyawan',
+                [
+                    'PKWT',
+                    'PKWTT',
+                ]
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Exclude department
+            |--------------------------------------------------------------------------
+            */
+
+            ->whereNotIn(
+                'department_id',
+                [3, 5]
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER PLACEMENT
+        |
+        | Ini bagian penting.
+        |
+        | Kalau search_placement kosong/null:
+        | jangan tambahkan where placement.
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $this->search_placement !== null &&
+            $this->search_placement !== ''
+        ) {
+
+            $query->where(
+                'placement_id',
+                $this->search_placement
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ambil data
+        |--------------------------------------------------------------------------
+        */
 
         return [
-            'Summary' => new AdjustmentCategorySheetExport($summary, 'Summary'),
-            'Detail'  => new AdjustmentDetailSheetExport($details),
-            'Lembur'  => new LemburPlaceholderSheetExport(),
+            'data' => $query
+                ->orderBy('id_karyawan', 'desc')
+                ->get(),
+
+            'gaji_rekomendasi' => $gajiRekomendasi,
+
+            'header_text' =>
+            'Penyesuaian gaji karyawan yang telah bekerja diatas '
+                . $this->pilihLamaKerja
+                . ' Bulan',
+
+            'pilihLamaKerja' => $this->pilihLamaKerja,
+
+            'search_placement' => $this->search_placement,
+
+            'today' => Carbon::now(),
         ];
     }
 
     /**
-     * Logika sama persis dengan App\Livewire\SalaryAdjustmentReport::loadReport(),
-     * supaya angka di layar & di file Excel selalu konsisten.
-     *
-     * @return array{0: Collection, 1: Collection} [$summary, $details]
+     * View Excel
      */
-    protected function buildData(): array
+    public function view(): View
     {
-        $period     = Carbon::createFromDate($this->year, $this->month, 1);
-        $prevPeriod = $period->copy()->subMonthNoOverflow();
+        $result = $this->getData();
 
-        // key: id_karyawan (int) => baris gabungan gaji pokok / gaji lembur / bonus
-        $merged = [];
-
-        $this->collectGajiPokokDanLembur($merged, $prevPeriod);
-        $this->collectBonus($merged);
-
-        $details = array_values(array_filter($merged, function ($row) {
-            return $row['gaji_pokok_diff'] > 0
-                || $row['gaji_lembur_diff'] > 0
-                || $row['bonus'] > 0;
-        }));
-
-        $grouped = [];
-        foreach ($details as $row) {
-            if ($row['gaji_pokok_diff'] > 0) {
-                $this->accumulate($grouped, $row['directorate'], $row['departemen'], 'Gaji Pokok', $row['gaji_pokok_diff']);
-            }
-            if ($row['gaji_lembur_diff'] > 0) {
-                $this->accumulate($grouped, $row['directorate'], $row['departemen'], 'Gaji Lembur', $row['gaji_lembur_diff']);
-            }
-            if ($row['bonus'] > 0) {
-                $this->accumulate($grouped, $row['directorate'], $row['departemen'], 'Bonus', $row['bonus']);
-            }
-        }
-
-        // Urutkan summary: directorate -> departemen -> adjustment_type
-        usort($grouped, function ($a, $b) {
-            return [$a['directorate'], $a['departemen'], $a['adjustment_type']]
-                <=> [$b['directorate'], $b['departemen'], $b['adjustment_type']];
-        });
-
-        // Urutkan detail: directorate -> departemen -> nama
-        usort($details, function ($a, $b) {
-            return [$a['directorate'], $a['departemen'], $a['nama']]
-                <=> [$b['directorate'], $b['departemen'], $b['nama']];
-        });
-
-        foreach ($grouped as &$row) {
-            // Status & Remark sengaja dikosongkan, diisi manual di Excel
-            // seperti pada file contoh (tidak disimpan ke database).
-            $row['status'] = '';
-            $row['remark'] = '';
-        }
-        unset($row);
-
-        return [collect($grouped), collect($details)];
-    }
-
-    protected function collectGajiPokokDanLembur(array &$merged, Carbon $prevPeriod): void
-    {
-        $karyawans = Karyawan::query()
-            ->where('outsource', 1)
-            ->whereYear('tanggal_update', $this->year)
-            ->whereMonth('tanggal_update', $this->month)
-            ->with(['placement', 'department'])
-            ->get();
-
-        if ($karyawans->isEmpty()) {
-            return;
-        }
-
-        $idKaryawanList = $karyawans->pluck('id_karyawan')->filter()->unique()->values();
-
-        $prevPayrolls = Payroll::query()
-            ->whereIn('id_karyawan', $idKaryawanList)
-            ->whereYear('date', $prevPeriod->year)
-            ->whereMonth('date', $prevPeriod->month)
-            ->get()
-            ->groupBy('id_karyawan')
-            ->map(fn ($group) => $group->sortByDesc('date')->first());
-
-        foreach ($karyawans as $k) {
-            $prevPayroll = $prevPayrolls->get($k->id_karyawan);
-            if (!$prevPayroll) {
-                continue;
-            }
-
-            $gajiPokokLama  = (int) ($prevPayroll->gaji_pokok ?? 0);
-            $gajiPokokBaru  = (int) ($k->gaji_pokok ?? 0);
-            $gajiLemburLama = (int) ($prevPayroll->gaji_lembur ?? 0);
-            $gajiLemburBaru = (int) ($k->gaji_overtime ?? 0);
-
-            $row = $this->emptyRow($k);
-            $row['gaji_pokok_lama']  = $gajiPokokLama;
-            $row['gaji_pokok_baru']  = $gajiPokokBaru;
-            $row['gaji_pokok_diff']  = $gajiPokokBaru - $gajiPokokLama;
-            $row['gaji_lembur_lama'] = $gajiLemburLama;
-            $row['gaji_lembur_baru'] = $gajiLemburBaru;
-            $row['gaji_lembur_diff'] = $gajiLemburBaru - $gajiLemburLama;
-
-            $merged[$k->id_karyawan] = array_merge($merged[$k->id_karyawan] ?? [], $row);
-        }
+        return view(
+            'salary_adjustment_export',
+            $result
+        );
     }
 
     /**
-     * Bonus: langsung diambil dari bonuspotongans.bonus_lain pada periode terpilih,
-     * TIDAK dibandingkan dengan payroll. Dimasukkan begitu saja kalau ada (> 0).
+     * Format kolom Excel
      */
-    protected function collectBonus(array &$merged): void
-    {
-        $bonusRows = Bonuspotongan::query()
-            ->whereYear('tanggal', $this->year)
-            ->whereMonth('tanggal', $this->month)
-            ->whereNotNull('bonus_lain')
-            ->where('bonus_lain', '>', 0)
-            ->whereHas('karyawan', fn ($q) => $q->where('outsource', 1))
-            ->with(['karyawan.placement', 'karyawan.department'])
-            ->get();
-
-        foreach ($bonusRows as $bp) {
-            $k = $bp->karyawan;
-            if (!$k) {
-                continue;
-            }
-
-            $existing = $merged[$k->id_karyawan] ?? $this->emptyRow($k);
-            $existing['bonus'] = (int) $bp->bonus_lain;
-
-            $merged[$k->id_karyawan] = $existing;
-        }
-    }
-
-    protected function emptyRow(Karyawan $k): array
+    public function columnFormats(): array
     {
         return [
-            'id_karyawan'      => $k->id_karyawan,
-            'nama'             => $k->nama,
-            'directorate'      => optional($k->placement)->placement_name ?? '-',
-            'departemen'       => optional($k->department)->nama_department ?? '-',
-            'gaji_pokok_lama'  => 0,
-            'gaji_pokok_baru'  => 0,
-            'gaji_pokok_diff'  => 0,
-            'gaji_lembur_lama' => 0,
-            'gaji_lembur_baru' => 0,
-            'gaji_lembur_diff' => 0,
-            'bonus'            => 0,
+
+            // Gaji Pokok
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+
+            // Gaji Rekomendasi
+            'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+
         ];
     }
 
-    protected function accumulate(
-        array &$grouped,
-        string $directorate,
-        string $departemen,
-        string $type,
-        int $amount
-    ): void {
-        $key = "{$directorate}|{$departemen}|{$type}";
+    /**
+     * Style Excel
+     */
+    public function styles(Worksheet $sheet)
+    {
+        return [
 
-        if (!isset($grouped[$key])) {
-            $grouped[$key] = [
-                'directorate'      => $directorate,
-                'departemen'       => $departemen,
-                'adjustment_type'  => $type,
-                'jumlah_karyawan'  => 0,
-                'total_adjustment' => 0,
-            ];
-        }
+            // Header utama
+            1 => [
+                'font' => [
+                    'bold' => true,
+                    'size' => 14,
+                ],
+            ],
 
-        $grouped[$key]['jumlah_karyawan']  += 1;
-        $grouped[$key]['total_adjustment'] += $amount;
+            // Header tabel
+            3 => [
+                'font' => [
+                    'bold' => true,
+                    'size' => 11,
+                ],
+            ],
+
+        ];
     }
 }
