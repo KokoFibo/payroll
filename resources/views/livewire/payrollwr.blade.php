@@ -462,7 +462,7 @@
                     <div class="flex-fill">
                         <select wire:model.live="selected_departemen" class="form-select"
                             aria-label="Default select example">
-                            <option value="0" selected>{{ __('All Department') }}</option>
+                            <option value="0" selected>{{ __('All Departments') }}</option>
                             {{-- @foreach ($departments as $department)
                             <option value="{{ nama_department($department) }}">{{ nama_department($department) }}
                             </option>
