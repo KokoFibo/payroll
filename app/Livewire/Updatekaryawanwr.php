@@ -66,6 +66,7 @@ class Updatekaryawanwr extends Component
     public $nama_awal;
     public $outsource_awal;
     public $outsource;
+    public $pendidikan, $jurusan, $nama_kampus;
 
 
 
@@ -252,6 +253,9 @@ class Updatekaryawanwr extends Component
         $this->tanggungan = $data->tanggungan;
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
+        $this->pendidikan = $data->pendidikan;
+        $this->jurusan = $data->jurusan;
+        $this->nama_kampus = $data->nama_kampus;
         $this->id_file_karyawan = $data->id_file_karyawan;
 
         // tambahan baru
@@ -362,6 +366,9 @@ class Updatekaryawanwr extends Component
             'hp2' => 'nullable',
             'hubungan1' => 'nullable',
             'hubungan2' => 'nullable',
+            'pendidikan' => 'required',
+            'jurusan' => 'nullable',
+            'nama_kampus' => 'nullable',
 
 
             // IDENTITAS
@@ -816,6 +823,9 @@ class Updatekaryawanwr extends Component
         $data->hp2 = $this->hp2;
         $data->hubungan1 = $this->hubungan1;
         $data->hubungan2 = $this->hubungan2;
+        $data->pendidikan = $this->pendidikan;
+        $data->jurusan = $this->jurusan;
+        $data->nama_kampus = $this->nama_kampus;
 
 
         // Identitas
