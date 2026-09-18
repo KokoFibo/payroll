@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiPresensiController;
 use App\Http\Controllers\ApplicantFileController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanApiController;
 use App\Http\Controllers\LarkController;
 use App\Http\Controllers\UserSyncController;
@@ -50,3 +51,7 @@ Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
 
 Route::get('/payroll/summary', [ApiController::class, 'summary']);
 Route::get('/applicant-files/{id_karyawan}', [ApplicantFileController::class, 'index']);
+Route::get(
+    '/karyawan/{id_karyawan}/pendidikan',
+    [KaryawanController::class, 'checkPendidikan']
+);
