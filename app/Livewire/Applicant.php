@@ -34,6 +34,7 @@ class Applicant extends Component
     public $id;
     public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
+    public $pendidikan, $jurusan, $nama_kampus;
 
 
     public function toggleEyePassword()
@@ -116,7 +117,9 @@ class Applicant extends Component
             $this->no_identitas = $data->no_identitas;
             $this->alamat_identitas = $data->alamat_identitas;
             $this->alamat_tinggal_sekarang = $data->alamat_tinggal_sekarang;
-
+            $this->pendidikan = $data->pendidikan;
+            $this->jurusan = $data->jurusan;
+            $this->nama_kampus = $data->nama_kampus;
             //    ==============================
             $this->showSubmit = false;
         } else {
@@ -162,6 +165,7 @@ class Applicant extends Component
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
+            'pendidikan.required' => 'Pendidikan wajib diisi.',
             'files.*.max' => 'Max file size 1Mb',
             'ktp.*.required' => 'File KTP wajib diunggah.',
             'ktp.*.image' => 'File KTP harus berupa gambar.',
@@ -244,6 +248,7 @@ class Applicant extends Component
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
             'alamat_tinggal_sekarang' => 'required',
+            'pendidikan' => 'required',
             // 'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
             // 'files.*' =>  ['nullable',  new AllowedFileExtension]
             'files.*' => ['nullable', 'image', new AllowedFileExtension],
@@ -575,6 +580,9 @@ class Applicant extends Component
             'no_identitas' => $this->no_identitas,
             'alamat_identitas' => titleCase($this->alamat_identitas),
             'alamat_tinggal_sekarang' => titleCase($this->alamat_tinggal_sekarang),
+            'pendidikan' => $this->pendidikan,
+            'jurusan' => titleCase($this->jurusan),
+            'nama_kampus' => titleCase($this->nama_kampus),
             'status' => 1
         ]);
 
@@ -631,12 +639,15 @@ class Applicant extends Component
             'jenis_identitas',
             'no_identitas',
             'alamat_identitas',
-            'alamat_tinggal_sekarang'
+            'alamat_tinggal_sekarang',
+            'pendidikan',
+            'jurusan',
+            'nama_kampus',
         ];
 
         // Gunakan array_reduce untuk membangun array data dengan key-value yang benar
         $data = array_reduce($dataFields, function ($carry, $field) {
-            $carry[$field] = in_array($field, ['nama', 'tempat_lahir', 'nama_contact_darurat', 'alamat_identitas', 'alamat_tinggal_sekarang'])
+            $carry[$field] = in_array($field, ['nama', 'tempat_lahir', 'nama_contact_darurat', 'alamat_identitas', 'alamat_tinggal_sekarang', 'jurusan', 'nama_kampus'])
                 ? titleCase($this->$field)
                 : $this->$field;
             return $carry;

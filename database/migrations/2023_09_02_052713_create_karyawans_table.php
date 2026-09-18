@@ -78,6 +78,9 @@ return new class extends Migration
             $table->integer('tanggungan')->nullable();
             $table->integer('id_file_karyawan')->nullable();
             $table->date('tanggal_update')->nullable();
+            $table->string('pendidikan')->nullable();
+            $table->string('jurusan')->nullable();
+            $table->string('nama_kampus')->nullable();
 
 
 
