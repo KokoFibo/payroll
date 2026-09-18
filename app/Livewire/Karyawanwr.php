@@ -37,6 +37,7 @@ class Karyawanwr extends Component
     public $pilih_department;
     public $pilih_placement;
     public $jobgrades;
+    public $pendidikan, $jurusan, $nama_kampus;
 
     public function mount()
     {
@@ -118,6 +119,9 @@ class Karyawanwr extends Component
         'tanggungan' => 'nullable',
         'no_npwp' => 'nullable',
         'ptkp' => 'nullable',
+        'pendidikan' => 'required',
+        'jurusan' => 'nullable',
+        'nama_kampus' => 'nullable',
 
     ];
 
@@ -212,6 +216,9 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
 
 
@@ -337,6 +344,9 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
 
             $data->save();
