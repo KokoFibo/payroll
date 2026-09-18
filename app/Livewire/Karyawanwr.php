@@ -79,6 +79,9 @@ class Karyawanwr extends Component
         'kontak_darurat2' => 'nullable',
         'hubungan1' => 'nullable',
         'hubungan2' => 'nullable',
+        'pendidikan' => 'required',
+        'jurusan' => 'nullable',
+        'nama_kampus' => 'nullable',
 
 
         // IDENTITAS
@@ -119,9 +122,7 @@ class Karyawanwr extends Component
         'tanggungan' => 'nullable',
         'no_npwp' => 'nullable',
         'ptkp' => 'nullable',
-        'pendidikan' => 'required',
-        'jurusan' => 'nullable',
-        'nama_kampus' => 'nullable',
+       
 
     ];
 
@@ -177,6 +178,9 @@ class Karyawanwr extends Component
             $data->hubungan1 = $this->hubungan1;
             $data->hubungan2 = $this->hubungan2;
             $data->denda = $this->denda;
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
@@ -216,9 +220,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
-            $data->pendidikan = $this->pendidikan;
-            $data->jurusan = $this->jurusan;
-            $data->nama_kampus = $this->nama_kampus;
+         
 
 
 
@@ -303,7 +305,9 @@ class Karyawanwr extends Component
             $data->hubungan1 = $this->hubungan1;
             $data->hubungan2 = $this->hubungan2;
             $data->denda = $this->denda;
-
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
 
             // Identitas
@@ -344,9 +348,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
-            $data->pendidikan = $this->pendidikan;
-            $data->jurusan = $this->jurusan;
-            $data->nama_kampus = $this->nama_kampus;
+            
 
 
             $data->save();

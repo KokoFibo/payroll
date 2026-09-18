@@ -193,6 +193,9 @@ class Updatekaryawanwr extends Component
         $this->hp2 = trim($data->hp2);
         $this->hubungan1 = trim($data->hubungan1);
         $this->hubungan2 = trim($data->hubungan2);
+        $this->pendidikan = $data->pendidikan;
+        $this->jurusan = trim($data->jurusan);
+        $this->nama_kampus = trim($data->nama_kampus);
 
 
         // Identitas
