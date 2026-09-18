@@ -365,6 +365,65 @@
                         @enderror
                     </div>
                 </div>
+                {{-- Pendidikan --}}
+                <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <label for="pendidikan" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan<span
+                                class="text-red-500 ml-1">*</span></label>
+                        <select name="pendidikan" class="form-control" required wire:model.live='pendidikan'
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="">
+                                -- Pilih Pendidikan --
+                            </option>
+
+                            <option value="Tidak Bersekolah">Tidak Bersekolah</option>
+                            <option value="SD">SD</option>
+                            <option value="SMP">SMP</option>
+                            <option value="SMA/SMK">SMA/SMK</option>
+                            <option value="D1">D1</option>
+                            <option value="D2">D2</option>
+                            <option value="D3">D3</option>
+                            <option value="D4">D4</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
+                            <option value="S3">S3</option>
+                        </select>
+                        @error('pendidikan')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    @if (!in_array($pendidikan, ['Tidak Bersekolah', 'SD', 'SMP', '']))
+                        <div>
+                            <label for="jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan<span
+                                    class="text-red-500 ml-1">*</span></label>
+                            <input wire:model='jurusan' type="text" id="jurusan"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            @error('jurusan')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="nama_kampus" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                                Sekolah/Kampus<span class="text-red-500 ml-1">*</span></label>
+                            <input wire:model='nama_kampus' type="text" id="nama_kampus"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            @error('nama_kampus')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    @endif
+
+
+
+
+
+                </div>
                 {{-- kontak --}}
                 <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">
                     <div>

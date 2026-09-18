@@ -27,6 +27,9 @@
                 <th style="text-align: center;">Level Jabatan</th>
                 <th style="text-align: center;">Agama</th>
                 <th style="text-align: center;">Etnis</th>
+                <th style="text-align: center;">Pendidikan</th>
+                <th style="text-align: center;">Jurusan</th>
+                <th style="text-align: center;">Nama Sekolah/Kampus</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
                 <th style="text-align: center;">Status Karyawan</th>
                 @if ($status_karyawan == 2)
@@ -56,6 +59,9 @@
                     <td style="text-align: center"> {{ getGrade($d->level_jabatan) }}</td>
                     <td style="text-align: center"> {{ $d->agama }}</td>
                     <td style="text-align: center"> {{ $d->etnis }}</td>
+                    <td style="text-align: center"> {{ $d->pendidikan }}</td>
+                    <td style="text-align: center"> {{ $d->jurusan }}</td>
+                    <td style="text-align: center"> {{ $d->nama_kampus }}</td>
                     <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     @if ($status_karyawan == 2)
