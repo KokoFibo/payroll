@@ -1,6 +1,5 @@
 <div class="container py-4">
 
-    ```
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-7 col-lg-5">
 
@@ -61,8 +60,7 @@
                                 <i class="bi bi-calendar3 text-danger"></i>
                             </span>
 
-                            <input id="tanggal" wire:model="tanggal" type="date"
-                                class="form-control bg-light border-start-0">
+                            <input id="tanggal" wire:model="tanggal" class="form-control bg-light border-start-0">
 
                         </div>
 
@@ -76,8 +74,8 @@
                     <div class="d-grid gap-2">
 
                         <button type="button" class="btn btn-danger btn-lg rounded-3 fw-semibold"
-                            wire:confirm="Yakin data nya akan dihapus ?" wire:click="delete">
-
+                            wire:confirm.prompt="Yakin data nya akan dihapus?\n\nType DELETE to confirm|DELETE"
+                            wire:click="delete">
                             <i class="bi bi-trash3 me-2"></i>
                             Delete Presensi
 
@@ -109,6 +107,5 @@
     </div>
 
     @include('toastr')
-    ```
 
 </div>
