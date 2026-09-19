@@ -69,7 +69,7 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     {{-- @livewireStyles --}}
-
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> --}}
 </head>
 <style>
     body {
@@ -97,6 +97,7 @@
         {{-- nyalakan ini jika mau pakai background texture --}}
         {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
         <div class="content-wrapper">
+
 
             {{ $slot }}
 
