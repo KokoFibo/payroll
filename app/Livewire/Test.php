@@ -257,12 +257,6 @@ class Test extends Component
       }
     }
 
-    return view('livewire.test', [
-      'data' => $changes,
-      'month' => $month,
-      'year' => $year,
-      'previousMonth' => $previousMonth,
-      'previousYear' => $previousYear,
-    ]);
+    return view('livewire.test');
   }
 }
