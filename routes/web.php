@@ -211,6 +211,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/kview', [KviewController::class, 'index']);
                 Route::get('/infokaryawan', Infokaryawan::class);
                 Route::get('/datatidaklengkap', Datatidaklengkap::class);
+                Route::get('/addpresensi', AddPresensi::class);
+                Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
+
+
 
 
 
@@ -228,7 +232,6 @@ Route::middleware(['auth'])->group(function () {
                 // route bawah ini untuk percabangan
                 // Route::post('/yfstore', [YfpresensiController::class, 'check_store']);
                 Route::post('/yfstore', [YfpresensiController::class, 'store']);
-                Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
                 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
                 Route::get('/newpresensi', Newpresensi::class);
 
@@ -296,7 +299,6 @@ Route::middleware(['auth'])->group(function () {
 
                     // KHUSUS Super Admin
                     Route::middleware(['SuperAdmin'])->group(function () {
-                        Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
                         Route::get('/changeuserrolewr', Changeuserrolewr::class);
                         // PAYROLL
                         Route::get('/reportindex', [ReportController::class, 'index']);
@@ -346,7 +348,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/UpdatedPresensi', UpdatedPresensi::class);
                             Route::get('/absensikosong', AbsensiKosong::class);
                             Route::get('/dataresigned', DataResigned::class);
-                            Route::get('/addpresensi', AddPresensi::class);
+
                             Route::get('/usernotfound', UserNotFound::class);
                             Route::get('/movepresensidata', MovePresensiData::class);
                             Route::get('/moveback', Moveback::class);
@@ -382,6 +384,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('presensi-add-time', PresensiAddTime::class);
                             Route::get('/delete-monthly-presensi', DeleteMonthlyPresensi::class);
                             Route::get('/direct-inject-presensi', Directinject::class);
+                            Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
+
                             // TEST
                             Route::get('clean-email', Cleanemail::class);
                             Route::get('/test', Test::class)->name('test');
