@@ -63,6 +63,7 @@ return [
         'karyawans.id adalah UUID. yfrekappresensis.karyawan_id mengacu ke karyawans.id.',
         'Istilah "Directorate" (atau "placement") merujuk ke tabel placements, kolom placement_name. Company = companies.company_name, Jabatan = jabatans.nama_jabatan, Department = departments.nama_department.',
         'Dalam penjelasan, gunakan istilah Company, Directorate, Jabatan, dan Department.',
+        'Untuk kolom hasil perhitungan uang (SUM/AVG/MAX gaji dll.), beri alias yang mengandung kata gaji, tunjangan, atau bonus, mis. total_gaji, rata_rata_gaji.',
         'Jika diminta "data karyawan" tanpa rincian, tampilkan kolom ringkas: id_karyawan, nama, status_karyawan, tanggal_bergabung, Company, Directorate, Department, dan Jabatan (ambil namanya lewat JOIN).',
     ],
 
@@ -76,6 +77,12 @@ return [
     ],
     // Singkatan yang ditulis kapital semua (id_karyawan -> ID Karyawan)
     'label_acronyms' => ['id', 'hp', 'hp1', 'hp2', 'npwp', 'ptkp', 'bpjs', 'jht', 'jp', 'jkk', 'jkm'],
+
+    // Kolom nominal uang: angka ditampilkan dengan pemisah ribuan koma, tanpa desimal (5,000,000).
+    // Sebuah kolom dianggap uang jika salah satu kata pada namanya (dipisah underscore) ada di money_keywords,
+    // atau namanya ada persis di money_columns. Contoh: gaji_pokok, tunjangan_jabatan, total_gaji.
+    'money_keywords' => ['gaji', 'tunjangan', 'bonus', 'iuran', 'denda', 'upah', 'thr', 'insentif', 'biaya', 'nominal', 'salary', 'pendapatan'],
+    'money_columns'  => [],
 
     // null = tanpa batas, tampilkan semua baris sesuai isi database.
     // PERHATIAN: hasil sangat besar (puluhan ribu baris, mis. absensi) memakai banyak memori PHP.

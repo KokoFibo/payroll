@@ -149,14 +149,30 @@ class AiQueryTable extends Component
         $this->resultKey = null;
     }
 
+    /** @return array<string,int> nama kolom nominal uang (sebagai key) */
+    private function moneyColumns(): array
+    {
+        return array_flip(array_filter($this->columns, fn ($c) => GeminiSqlService::isMoney($c)));
+    }
+
     private function filtered(array $rows): array
     {
         if ($this->search !== '') {
-            $q    = mb_strtolower($this->search);
-            $rows = array_filter($rows, fn ($r) => str_contains(
-                mb_strtolower(implode(' ', array_map(fn ($v) => (string) $v, $r))),
-                $q
-            ));
+            $q     = mb_strtolower($this->search);
+            $money = $this->moneyColumns();
+
+            // Pencarian juga cocok dengan angka uang yang tampil (mis. "5,000,000")
+            $rows = array_filter($rows, function ($r) use ($q, $money) {
+                $parts = [];
+                foreach ($r as $key => $value) {
+                    $parts[] = (string) $value;
+                    if (isset($money[$key]) && is_numeric($value)) {
+                        $parts[] = number_format((float) $value, 0, '.', ',');
+                    }
+                }
+
+                return str_contains(mb_strtolower(implode(' ', $parts)), $q);
+            });
         }
 
         if ($this->sortBy) {
@@ -197,6 +213,7 @@ class AiQueryTable extends Component
         return view('livewire.ai-query-table', [
             'items'    => array_slice($all, ($this->page - 1) * $this->perPage, $this->perPage),
             'hasRows'  => $this->totalRows > 0,
+            'money'    => $this->moneyColumns(),
             'labels'   => collect($this->columns)->mapWithKeys(fn ($c) => [$c => GeminiSqlService::label($c)])->all(),
             'total'    => $total,
             'pages'    => $pages,

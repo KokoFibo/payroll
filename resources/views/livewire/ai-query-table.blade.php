@@ -82,7 +82,7 @@
                         <tr>
                             <th class="text-center" style="width:60px">#</th>
                             @foreach ($columns as $col)
-                                <th role="button" class="text-nowrap user-select-none" wire:click="sort({{ \Illuminate\Support\Js::from($col) }})">
+                                <th role="button" class="text-nowrap user-select-none {{ isset($money[$col]) ? 'text-end' : '' }}" wire:click="sort({{ \Illuminate\Support\Js::from($col) }})">
                                     {{ $labels[$col] ?? $col }}
                                     @if ($sortBy === $col)
                                         <small>{{ $sortDir === 'asc' ? '▲' : '▼' }}</small>
@@ -96,7 +96,12 @@
                             <tr wire:key="row-{{ $page }}-{{ $n }}">
                                 <td class="text-center text-muted">{{ $from + $n }}</td>
                                 @foreach ($columns as $col)
-                                    <td class="text-nowrap">{{ $row[$col] ?? '' }}</td>
+                                    @php($v = $row[$col] ?? null)
+                                @if (isset($money[$col]) && is_numeric($v))
+                                    <td class="text-nowrap text-end">{{ number_format((float) $v, 0, '.', ',') }}</td>
+                                @else
+                                    <td class="text-nowrap">{{ $v }}</td>
+                                @endif
                                 @endforeach
                             </tr>
                         @empty

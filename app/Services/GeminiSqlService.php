@@ -371,6 +371,25 @@ TXT;
         return in_array((string) $value, array_map('strval', $roles), true);
     }
 
+    /** Apakah kolom ini nominal uang (ditampilkan dengan pemisah ribuan)? Berdasarkan nama kolom. */
+    public static function isMoney(string $column): bool
+    {
+        $lower = strtolower($column);
+
+        if (in_array($lower, array_map('strtolower', (array) config('ai-query.money_columns', [])), true)) {
+            return true;
+        }
+
+        $keywords = array_map('strtolower', (array) config('ai-query.money_keywords', []));
+        foreach (preg_split('/[_\s]+/', $lower, -1, PREG_SPLIT_NO_EMPTY) as $word) {
+            if (in_array($word, $keywords, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** Judul kolom yang rapi: company_name -> Company, total_jam_kerja -> Total Jam Kerja. */
     public static function label(string $column): string
     {
