@@ -1,5 +1,5 @@
 <div>
 
-    <livewire:pendidikan-stats-chart />
+    <livewire:ai-query-table />
 
 </div>

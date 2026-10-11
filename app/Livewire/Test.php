@@ -173,8 +173,8 @@ class Test extends Component
 
   public function render()
   {
-    $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT'])->whereNotNull('tanggal_resigned')->get();
-    dd($data);
+    // $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT'])->whereNotNull('tanggal_resigned')->get();
+    // dd($data);
     return view('livewire.test');
   }
 }
