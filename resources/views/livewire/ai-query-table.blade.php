@@ -73,13 +73,13 @@
     @endif
 
     {{-- Tabel hasil --}}
-    @if (count($rows))
+    @if ($hasRows)
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
                 <div class="row g-2 align-items-center">
                     <div class="col-md-5">
                         <span class="fw-semibold">Hasil</span>
-                        <span class="badge bg-primary ms-1">{{ $total }} baris</span>
+                        <span class="badge bg-primary ms-1">{{ number_format($total, 0, ',', '.') }} baris</span>
                     </div>
                     <div class="col-md-5">
                         <input type="search" wire:model.live.debounce.300ms="search"
@@ -103,7 +103,7 @@
                             <th class="text-center" style="width:60px">#</th>
                             @foreach ($columns as $col)
                                 <th role="button" class="text-nowrap user-select-none" wire:click="sort({{ \Illuminate\Support\Js::from($col) }})">
-                                    {{ $col }}
+                                    {{ $labels[$col] ?? $col }}
                                     @if ($sortBy === $col)
                                         <small>{{ $sortDir === 'asc' ? '▲' : '▼' }}</small>
                                     @endif
@@ -132,7 +132,7 @@
 
             <div class="card-footer bg-white">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                    <small class="text-muted">Menampilkan {{ $from }}–{{ $to }} dari {{ $total }} baris</small>
+                    <small class="text-muted">Menampilkan {{ $from }}–{{ $to }} dari {{ number_format($total, 0, ',', '.') }} baris</small>
 
                     @if ($pages > 1)
                         <nav aria-label="Pagination">

@@ -20,7 +20,7 @@ class GeminiSqlService
     public function schema(): string
     {
         $tables = config('ai-query.allowed_tables');
-        $hidden = config('ai-query.hidden_columns');
+        $hidden = array_map('strtolower', config('ai-query.hidden_columns', []));
         $in     = implode(',', array_fill(0, count($tables), '?'));
 
         $rows = $this->db()->select(
@@ -124,12 +124,12 @@ class GeminiSqlService
                     continue;
                 }
 
-                $base = null;
+                $base     = null;
                 $byPrefix = false;
                 if (preg_match('/^(.+)_id$/i', $col, $m)) {
                     $base = strtolower($m[1]);
                 } elseif (preg_match('/^id_(.+)$/i', $col, $m)) {
-                    $base = strtolower($m[1]);
+                    $base     = strtolower($m[1]);
                     $byPrefix = true;
                 }
                 if (! $base) {
@@ -154,14 +154,31 @@ class GeminiSqlService
 
     private function hints(): string
     {
-        $hints = array_filter((array) config('ai-query.hints', []));
+        $lines = array_values(array_filter((array) config('ai-query.hints', [])));
 
-        return $hints ? "\nPetunjuk tambahan:\n- " . implode("\n- ", $hints) : '';
+        $default  = array_values(array_filter((array) config('ai-query.default_statuses', [])));
+        $excluded = array_values(array_filter((array) config('ai-query.excluded_statuses', [])));
+        $quote    = fn (array $v) => implode(', ', array_map(fn ($s) => "'" . str_replace("'", '', $s) . "'", $v));
+
+        if ($default) {
+            $line = 'Secara default, setiap query tentang karyawan HARUS memfilter karyawans.status_karyawan IN (' . $quote($default) . ').';
+            if ($excluded) {
+                $line .= ' Status ' . $quote($excluded) . ' TIDAK boleh ditampilkan kecuali pengguna secara eksplisit memintanya (menyebut status itu atau meminta semua status).'
+                    . ' Jika pengguna meminta status tertentu, filter sesuai permintaan itu menggantikan filter default.';
+            }
+            array_unshift($lines, $line);
+        }
+
+        return $lines ? "\nPetunjuk tambahan:\n- " . implode("\n- ", $lines) : '';
     }
 
     /** @return array{sql:string, explanation:string, missing:array} */
     public function generate(string $question): array
     {
+        if (! config('ai-query.api_key') || ! config('ai-query.model')) {
+            throw new RuntimeException('GEMINI_API_KEY atau GEMINI_MODEL belum diisi di file .env.');
+        }
+
         $system = <<<TXT
 Kamu adalah penerjemah bahasa alami ke SQL MySQL 8.
 Aturan:
@@ -169,8 +186,8 @@ Aturan:
 - Hanya gunakan tabel dan kolom pada skema di bawah. Jangan mengarang kolom.
 - Jangan menyertakan kolom primary key bernama persis `id` di SELECT. Kolom lain seperti `id_karyawan` BOLEH ditampilkan. Kolom `id` tetap boleh dipakai untuk JOIN, WHERE, dan ORDER BY.
 - Hindari SELECT *; sebutkan kolom yang relevan saja.
-- Jika pengguna menyebut nama perusahaan/departemen/jabatan/penempatan (mis. "company das"), cocokkan dengan data contoh tabel referensi, lalu filter lewat JOIN pada kolom nama/kode tabel referensi itu dengan LIKE (mis. companies.nama LIKE '%das%'). Jangan memfilter kolom *_id dengan teks.
 - Gunakan bagian "Relasi antar tabel" untuk JOIN. Untuk kolom foreign key (company_id, department_id, jabatan_id, placement_id, dst.), tampilkan NAMA dari tabel referensinya lewat JOIN, bukan angka id-nya.
+- Jika pengguna menyebut nama perusahaan/departemen/jabatan/penempatan (mis. "company das"), cocokkan dengan data contoh tabel referensi, lalu filter lewat JOIN pada kolom nama/kode tabel referensi itu dengan LIKE (mis. companies.company_name LIKE '%das%'). Jangan memfilter kolom *_id dengan teks.
 - Tanpa komentar SQL, tanpa titik koma.
 - Jika pertanyaan tidak bisa dijawab dengan skema ini, kembalikan sql kosong dan jelaskan di explanation.
 - Balas HANYA JSON: {"sql": "...", "explanation": "penjelasan singkat dalam Bahasa Indonesia"}
@@ -208,7 +225,8 @@ TXT;
     /** Validasi ketat: hanya SELECT, tabel whitelist, tanpa kolom/keyword berbahaya. */
     public function validate(string $sql): string
     {
-        $sql = rtrim(trim($sql), ";\s");
+        // Hapus spasi dan titik koma di AKHIR saja (jangan pakai rtrim dengan daftar karakter: huruf "s" ikut terpotong)
+        $sql = preg_replace('/[\s;]+$/', '', trim($sql));
 
         if ($sql === '') {
             throw new RuntimeException('Tidak ada query yang dihasilkan.');
@@ -228,6 +246,7 @@ TXT;
         if (preg_match_all('/\b([a-z0-9_]+)\s+as\s*\(/i', $sql, $m)) {
             $ctes = array_map('strtolower', $m[1]);
         }
+
         // EXTRACT(... FROM kolom) / TRIM(... FROM ...) bukan nama tabel (kecuali berisi subquery)
         $forTables = preg_replace_callback(
             '/\b(?:extract|trim|substring)\s*\((?:[^()]|\([^()]*\))*\)/i',
@@ -235,6 +254,7 @@ TXT;
             $sql
         );
         preg_match_all('/\b(?:from|join)\s+`?([a-z0-9_]+)`?/i', $forTables, $m);
+
         $allowed = array_map('strtolower', config('ai-query.allowed_tables'));
         foreach ($m[1] as $table) {
             $t = strtolower($table);
@@ -243,7 +263,7 @@ TXT;
             }
         }
 
-        foreach (config('ai-query.hidden_columns') as $col) {
+        foreach (config('ai-query.hidden_columns', []) as $col) {
             if (preg_match('/\b' . preg_quote($col, '/') . '\b/i', $sql)) {
                 throw new RuntimeException("Kolom '$col' tidak diizinkan.");
             }
@@ -255,11 +275,15 @@ TXT;
     /** @return array{columns:array, rows:array} */
     public function run(string $sql): array
     {
-        $sql = $this->validate($sql);
-        $max = (int) config('ai-query.max_rows');
+        $sql = $this->applySalaryCap($this->validate($sql));
 
-        // Batas waktu eksekusi 15 detik (MySQL 5.7.8+/8; diabaikan MariaDB)
-        $sql = preg_replace('/^\s*select\b/i', 'SELECT /*+ MAX_EXECUTION_TIME(15000) */', $sql, 1);
+        $max = config('ai-query.max_rows');
+        $max = is_numeric($max) && (int) $max > 0 ? (int) $max : null;
+
+        $timeout = (int) config('ai-query.query_timeout_ms', 0);
+        if ($timeout > 0) {
+            $sql = preg_replace('/^\s*select\b/i', "SELECT /*+ MAX_EXECUTION_TIME($timeout) */", $sql, 1);
+        }
 
         // Kolom yang tidak boleh tampil, termasuk kolom sensitif (aman walau AI memakai SELECT *)
         $hide = array_map('strtolower', array_merge(
@@ -275,11 +299,92 @@ TXT;
                 ARRAY_FILTER_USE_KEY
             );
 
-            if (count($rows) >= $max) {
+            if ($max !== null && count($rows) >= $max) {
                 break;
             }
         }
 
         return ['columns' => $rows ? array_keys($rows[0]) : [], 'rows' => $rows];
+    }
+
+    /**
+     * Untuk role yang dibatasi, setiap rujukan ke tabel karyawans diganti dengan
+     * (SELECT * FROM karyawans WHERE gaji_pokok <= batas), jadi baris di atas batas tidak pernah terbaca
+     * oleh query apa pun (JOIN, COUNT, subquery, dll.).
+     */
+    private function applySalaryCap(string $sql): string
+    {
+        $cap = (array) config('ai-query.salary_cap', []);
+
+        if (empty($cap['enabled']) || ! $this->isCapped((array) ($cap['roles'] ?? []))) {
+            return $sql;
+        }
+
+        $table  = preg_replace('/[^a-z0-9_]/i', '', (string) ($cap['table'] ?? 'karyawans'));
+        $column = preg_replace('/[^a-z0-9_]/i', '', (string) ($cap['column'] ?? 'gaji_pokok'));
+        $max    = (int) ($cap['max'] ?? 0);
+        $inner  = "SELECT * FROM `$table` WHERE `$column` <= $max";
+
+        $keywords = ['where', 'join', 'left', 'right', 'inner', 'outer', 'cross', 'natural', 'straight_join',
+            'group', 'order', 'having', 'limit', 'union', 'intersect', 'except', 'on', 'using', 'for',
+            'force', 'use', 'ignore', 'window', 'partition'];
+
+        // Semua rujukan ke tabel (bukan "tabel.kolom") yang HARUS dibatasi
+        $found = preg_match_all('/(?<![\w.`])`?' . $table . '`?(?![\w`.])/i', $sql);
+        $done  = 0;
+
+        $new = preg_replace_callback(
+            '/(\b(?:from|join)\s+|,\s*)(`?)' . $table . '\2(?![\w`.])(\s+(?:as\s+)?(`?)([a-z_]\w*)\4)?/i',
+            function ($m) use ($inner, $table, $keywords, &$done) {
+                $done++;
+                $tail     = $m[3] ?? '';
+                $alias    = $m[5] ?? '';
+                $hasAlias = $alias !== '' && ! in_array(strtolower($alias), $keywords, true);
+
+                return $m[1] . "($inner)" . ($hasAlias ? '' : " AS `$table`") . $tail;
+            },
+            $sql
+        );
+
+        if ($found !== $done) {
+            throw new RuntimeException('Query tidak dapat dibatasi sesuai hak akses Anda. Coba ubah susunan pertanyaan.');
+        }
+
+        return $new;
+    }
+
+    /** User dengan nilai kolom role (mis. role = 5) termasuk dalam daftar role yang dibatasi. Tanpa login = dibatasi. */
+    private function isCapped(array $roles): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return true;
+        }
+
+        $attr  = (string) config('ai-query.salary_cap.role_attribute', 'role');
+        $value = method_exists($user, 'getRawOriginal') ? $user->getRawOriginal($attr) : ($user->{$attr} ?? null);
+
+        if (! is_scalar($value)) {
+            return false;
+        }
+
+        return in_array((string) $value, array_map('strval', $roles), true);
+    }
+
+    /** Judul kolom yang rapi: company_name -> Company, total_jam_kerja -> Total Jam Kerja. */
+    public static function label(string $column): string
+    {
+        $map = array_change_key_case((array) config('ai-query.column_labels', []), CASE_LOWER);
+        if (isset($map[strtolower($column)])) {
+            return $map[strtolower($column)];
+        }
+
+        $acronyms = array_map('strtolower', (array) config('ai-query.label_acronyms', []));
+        $words    = preg_split('/[_\s]+/', trim($column), -1, PREG_SPLIT_NO_EMPTY);
+
+        return implode(' ', array_map(
+            fn ($w) => in_array(strtolower($w), $acronyms, true) ? strtoupper($w) : mb_convert_case($w, MB_CASE_TITLE, 'UTF-8'),
+            $words
+        ));
     }
 }

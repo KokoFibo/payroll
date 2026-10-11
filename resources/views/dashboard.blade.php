@@ -21,7 +21,7 @@
         </div>
 
         <div id="root">
-
+            <livewire:ai-query-table />
             @if (auth()->user()->role == 8)
                 <div class="dash-chip-row">
                     <div class="dash-chip dash-chip--info">

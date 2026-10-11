@@ -3,7 +3,10 @@
 namespace App\Livewire;
 
 use App\Services\GeminiSqlService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Throwable;
 
@@ -19,12 +22,17 @@ class AiQueryTable extends Component
     public string $sql = '';
     public string $explanation = '';
     public array $columns = [];
-    public array $rows = [];
     public ?string $error = null;
     public ?string $warning = null;
     public bool $asked = false;
 
-    // Tabel: pagination, pencarian, sorting (di sisi server atas hasil query)
+    // Hasil query disimpan di cache server (bukan di state Livewire), supaya data besar
+    // tidak ikut dikirim bolak-balik ke browser pada setiap interaksi.
+    #[Locked]
+    public ?string $resultKey = null;
+    public int $totalRows = 0;
+
+    // Tabel: pagination, pencarian, sorting
     public int $perPage = 10;
     public int $page = 1;
     public string $search = '';
@@ -61,8 +69,10 @@ class AiQueryTable extends Component
     /** Jalankan ulang SQL yang diedit manual (tetap divalidasi). */
     public function rerun(GeminiSqlService $ai): void
     {
-        $this->reset('columns', 'rows', 'error', 'search', 'sortBy', 'page');
-        $this->sortDir = 'asc';
+        $this->forgetResult();
+        $this->reset('columns', 'error', 'search', 'sortBy', 'page');
+        $this->sortDir   = 'asc';
+        $this->totalRows = 0;
 
         try {
             $this->execute($ai);
@@ -100,21 +110,47 @@ class AiQueryTable extends Component
 
     private function resetResult(): void
     {
-        $this->reset('sql', 'explanation', 'columns', 'rows', 'error', 'warning', 'search', 'sortBy', 'page', 'asked');
-        $this->sortDir = 'asc';
+        $this->forgetResult();
+        $this->reset('sql', 'explanation', 'columns', 'error', 'warning', 'search', 'sortBy', 'page', 'asked');
+        $this->sortDir   = 'asc';
+        $this->totalRows = 0;
     }
 
     private function execute(GeminiSqlService $ai): void
     {
-        $data          = $ai->run($this->sql);
-        $this->columns = $data['columns'];
-        $this->rows    = $data['rows'];
+        $data = $ai->run($this->sql);
+
+        $this->resultKey = $this->keyPrefix() . Str::uuid();
+        Cache::put($this->resultKey, $data['rows'], now()->addMinutes(30));
+
+        $this->columns   = $data['columns'];
+        $this->totalRows = count($data['rows']);
     }
 
-    private function filtered(): array
+    private function keyPrefix(): string
     {
-        $rows = $this->rows;
+        return 'ai-query:' . (auth()->id() ?? 'guest') . ':';
+    }
 
+    private function loadRows(): array
+    {
+        if (! $this->resultKey || ! str_starts_with($this->resultKey, $this->keyPrefix())) {
+            return [];
+        }
+
+        return Cache::get($this->resultKey, []);
+    }
+
+    private function forgetResult(): void
+    {
+        if ($this->resultKey && str_starts_with($this->resultKey, $this->keyPrefix())) {
+            Cache::forget($this->resultKey);
+        }
+        $this->resultKey = null;
+    }
+
+    private function filtered(array $rows): array
+    {
         if ($this->search !== '') {
             $q    = mb_strtolower($this->search);
             $rows = array_filter($rows, fn ($r) => str_contains(
@@ -142,7 +178,17 @@ class AiQueryTable extends Component
 
     public function render()
     {
-        $all   = $this->filtered();
+        $rows = $this->loadRows();
+
+        // Cache sudah kedaluwarsa (30 menit)
+        if ($this->resultKey && $this->totalRows > 0 && $rows === []) {
+            $this->resultKey = null;
+            $this->totalRows = 0;
+            $this->columns   = [];
+            $this->error     = 'Hasil query sudah kedaluwarsa. Silakan jalankan ulang.';
+        }
+
+        $all   = $this->filtered($rows);
         $total = count($all);
         $pages = max(1, (int) ceil($total / $this->perPage));
 
@@ -150,6 +196,8 @@ class AiQueryTable extends Component
 
         return view('livewire.ai-query-table', [
             'items'    => array_slice($all, ($this->page - 1) * $this->perPage, $this->perPage),
+            'hasRows'  => $this->totalRows > 0,
+            'labels'   => collect($this->columns)->mapWithKeys(fn ($c) => [$c => GeminiSqlService::label($c)])->all(),
             'total'    => $total,
             'pages'    => $pages,
             'from'     => $total ? ($this->page - 1) * $this->perPage + 1 : 0,
