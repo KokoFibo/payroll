@@ -52,34 +52,14 @@
         </div>
     @endif
 
-    {{-- SQL hasil terjemahan AI --}}
-    @if ($sql !== '' || $explanation !== '')
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold">Hasil terjemahan AI</div>
-            <div class="card-body">
-                @if ($explanation)
-                    <p class="mb-3">{{ $explanation }}</p>
-                @endif
-                <label class="form-label small text-muted">Query SQL (bisa diedit lalu dijalankan ulang)</label>
-                <textarea wire:model="sql" rows="4" spellcheck="false"
-                          class="form-control font-monospace small bg-light"></textarea>
-                <button type="button" class="btn btn-dark btn-sm mt-2" wire:click="rerun"
-                        wire:loading.attr="disabled" wire:target="rerun">
-                    <span wire:loading wire:target="rerun" class="spinner-border spinner-border-sm me-1"></span>
-                    Jalankan ulang
-                </button>
-            </div>
-        </div>
-    @endif
-
     {{-- Tabel hasil --}}
-    @if (count($rows))
+    @if ($hasRows)
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
                 <div class="row g-2 align-items-center">
                     <div class="col-md-5">
                         <span class="fw-semibold">Hasil</span>
-                        <span class="badge bg-primary ms-1">{{ $total }} baris</span>
+                        <span class="badge bg-primary ms-1">{{ number_format($total, 0, ',', '.') }} baris</span>
                     </div>
                     <div class="col-md-5">
                         <input type="search" wire:model.live.debounce.300ms="search"
@@ -102,8 +82,8 @@
                         <tr>
                             <th class="text-center" style="width:60px">#</th>
                             @foreach ($columns as $col)
-                                <th role="button" class="text-nowrap user-select-none" wire:click="sort({{ \Illuminate\Support\Js::from($col) }})">
-                                    {{ $col }}
+                                <th role="button" class="text-nowrap user-select-none {{ isset($money[$col]) ? 'text-end' : '' }}" wire:click="sort({{ \Illuminate\Support\Js::from($col) }})">
+                                    {{ $labels[$col] ?? $col }}
                                     @if ($sortBy === $col)
                                         <small>{{ $sortDir === 'asc' ? '▲' : '▼' }}</small>
                                     @endif
@@ -116,7 +96,12 @@
                             <tr wire:key="row-{{ $page }}-{{ $n }}">
                                 <td class="text-center text-muted">{{ $from + $n }}</td>
                                 @foreach ($columns as $col)
-                                    <td class="text-nowrap">{{ $row[$col] ?? '' }}</td>
+                                    @php($v = $row[$col] ?? null)
+                                @if (isset($money[$col]) && is_numeric($v))
+                                    <td class="text-nowrap text-end">{{ number_format((float) $v, 0, '.', ',') }}</td>
+                                @else
+                                    <td class="text-nowrap">{{ $v }}</td>
+                                @endif
                                 @endforeach
                             </tr>
                         @empty
@@ -132,7 +117,7 @@
 
             <div class="card-footer bg-white">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                    <small class="text-muted">Menampilkan {{ $from }}–{{ $to }} dari {{ $total }} baris</small>
+                    <small class="text-muted">Menampilkan {{ $from }}–{{ $to }} dari {{ number_format($total, 0, ',', '.') }} baris</small>
 
                     @if ($pages > 1)
                         <nav aria-label="Pagination">
