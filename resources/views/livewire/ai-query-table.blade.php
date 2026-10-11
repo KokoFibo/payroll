@@ -52,26 +52,6 @@
         </div>
     @endif
 
-    {{-- SQL hasil terjemahan AI --}}
-    @if ($sql !== '' || $explanation !== '')
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold">Hasil terjemahan AI</div>
-            <div class="card-body">
-                @if ($explanation)
-                    <p class="mb-3">{{ $explanation }}</p>
-                @endif
-                <label class="form-label small text-muted">Query SQL (bisa diedit lalu dijalankan ulang)</label>
-                <textarea wire:model="sql" rows="4" spellcheck="false"
-                          class="form-control font-monospace small bg-light"></textarea>
-                <button type="button" class="btn btn-dark btn-sm mt-2" wire:click="rerun"
-                        wire:loading.attr="disabled" wire:target="rerun">
-                    <span wire:loading wire:target="rerun" class="spinner-border spinner-border-sm me-1"></span>
-                    Jalankan ulang
-                </button>
-            </div>
-        </div>
-    @endif
-
     {{-- Tabel hasil --}}
     @if ($hasRows)
         <div class="card border-0 shadow-sm">
