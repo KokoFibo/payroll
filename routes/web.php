@@ -117,6 +117,8 @@ use Google\Service\Forms\Info;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\AiQueryExportController;
+
 
 
 // Middleware
@@ -261,6 +263,7 @@ Route::middleware(['auth'])->group(function () {
                     ]);
                 });
 
+                Route::get('/ai-query/export', AiQueryExportController::class)->name('ai-query.export');
 
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
