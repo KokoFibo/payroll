@@ -173,18 +173,7 @@ class Test extends Component
 
   public function render()
   {
-    // $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT'])->whereNotNull('tanggal_resigned')->get();
-    // dd($data);
-    $startOfMonth = Carbon::create(2026, 8, 1)->startOfMonth()->toDateString(); // "2026-08-01"
-    $endOfMonth   = Carbon::create(2026, 8, 1)->endOfMonth()->toDateString();   // "2026-08-31"
 
-    // 1. Total Resign Saja
-    $totalResigned = Karyawan::whereBetween('tanggal_resigned', [$startOfMonth, $endOfMonth])
-      ->count();
-
-    // 2. Total Blacklist Saja
-    $totalBlacklist = Karyawan::whereBetween('tanggal_blacklist', [$startOfMonth, $endOfMonth])
-      ->count();
 
 
 
