@@ -1,5 +1,3 @@
 <div>
-
-    <livewire:ai-query-table />
-
+    Aman
 </div>
