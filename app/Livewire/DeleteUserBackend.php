@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,48 +12,52 @@ class DeleteUserBackend extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    /**
-     * HALAMAN INI KHUSUS UNTUK MENGHAPUS DATA USER
-     * YANG DIGUNAKAN UNTUK LOGIN KE BACKEND.
-     *
-     * Filter:
-     * - Role di bawah 5.
-     * - Mengecualikan username tertentu.
-     * - Jika hasil filter kosong, tampilkan semua user.
-     *
-     * PERINGATAN:
-     * Delete All dapat menghapus semua user jika fallback aktif.
-     */
+    public $deleteAll = false;
+    public $sortColumn = 'name';
+    public $sortDirection = 'asc';
 
-    private function employeeQuery()
+    private function filteredQuery()
     {
-        $query = User::where('role', '<', 5)
-            ->whereNotIn('username', [
-                '10000',
-                '20000',
-                '30000',
-                '40000',
-                '50000',
-                '60000',
-                '70000',
-                '80000',
-                '100000',
-            ]);
+        // Ubah daftar username terproteksi ke format String secara eksplisit
+        $protectedUsernames = [
+            '10000',
+            '20000',
+            '30000',
+            '40000',
+            '50000',
+            '60000',
+            '70000',
+            '80000',
+            '100000',
+        ];
 
-        if (!$query->exists()) {
-            return User::query();
-        }
-
-        return $query;
+        return User::query()
+            ->where('role', '<', 5)
+            ->whereNotIn('username', $protectedUsernames);
     }
 
-    /**
-     * Hapus satu user berdasarkan ID.
-     */
+    public function sortByColumn($column)
+    {
+        $allowedColumns = ['id', 'name', 'email', 'username', 'role', 'language', 'device'];
+
+        if (!in_array($column, $allowedColumns, true)) {
+            return;
+        }
+
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
+
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
-        $user = $this->employeeQuery()->findOrFail($id);
-
+        // Cari user spesifik berdasarkan ID
+        $user = User::findOrFail($id);
         $user->delete();
 
         $this->resetPage();
@@ -62,48 +65,54 @@ class DeleteUserBackend extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'Data Karyawan Sudah di Delete',
+            title: 'Data Karyawan Berhasil Dihapus'
         );
     }
 
-    /**
-     * Hapus semua user sesuai hasil query.
-     */
-    public function deleteAll()
+    public function Deletesemua()
     {
-        $deleted = $this->employeeQuery()->delete();
+        // Ambil array ID secara eksplisit
+        $userIds = $this->filteredQuery()->pluck('id')->toArray();
+        // dd($userIds);
+        if (empty($userIds)) {
+            $this->dispatch(
+                'message',
+                type: 'warning',
+                title: 'Tidak ada data kriteria khusus yang dapat dihapus'
+            );
+            return;
+        }
+
+        // Gunakan Model::destroy() untuk menghapus berdasarkan Primary Key
+        $deleted = User::destroy($userIds);
 
         $this->resetPage();
 
         $this->dispatch(
             'message',
             type: 'success',
-            title: $deleted . ' Data Karyawan Berhasil di Delete',
+            title: $deleted . ' Data Karyawan Berhasil Dihapus'
         );
     }
 
-    /**
-     * Tampilkan daftar user dengan pagination.
-     */
     public function render()
     {
+        // Menggunakan count() atau exists() pada kueri
+        $hasFilteredUsers = $this->filteredQuery()->exists();
 
-        // $data =  User::query()
-        //     ->select('role')
-        //     ->distinct()
-        //     ->orderBy('role')
-        //     ->pluck('role');
-        // // ->get();
+        $this->deleteAll = $hasFilteredUsers;
 
-        // dd($data);
+        // Jika data terfilter ada -> pakai filteredQuery(), jika kosong -> tampilkan seluruh data
+        $query = $hasFilteredUsers
+            ? $this->filteredQuery()
+            : User::query();
 
-        $data = $this->employeeQuery()
-            ->orderBy('name')
+        $data = $query
+            ->orderBy($this->sortColumn, $this->sortDirection)
             ->paginate(10);
-
         return view('livewire.delete-user-backend', [
-
             'data' => $data,
+            'isFiltered' => $hasFilteredUsers,
         ]);
     }
 }
