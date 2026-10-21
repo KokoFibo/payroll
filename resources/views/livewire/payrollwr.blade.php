@@ -437,6 +437,7 @@
                         </div>
                     </div>
                     {{-- placement --}}
+                    <p>{{ $selected_placement }}</p>
                     <div class="flex-fill">
                         <select wire:model.live="selected_placement" class="form-select"
                             aria-label="Default select example">
