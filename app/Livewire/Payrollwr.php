@@ -298,27 +298,15 @@ class Payrollwr extends Component
         }
     }
 
-    public function updatedYear()
-    {
-        $this->month = null; // reset dulu
-        $this->loadSelectMonthYear();
 
-        // $this->bulan();
-        // Panggil fungsi bulan untuk memperbarui daftar bulan
-    }
 
     public function mount()
     {
+        // $this->placements = Placement::orderBy('placement_name', 'ASC')->get();
+        // $this->companies = Company::orderBy('company_name', 'ASC')->get();
+        // $this->departments = Department::orderBy('nama_department', 'ASC')->get();
 
-        $this->placements = Placement::orderBy('placement_name', 'ASC')->get();
-        $this->companies = Company::orderBy('company_name', 'ASC')->get();
-        $this->departments = Department::orderBy('nama_department', 'ASC')->get();
-        // $this->departments = Karyawan::select('department_id')
-        //     ->distinct()
-        //     ->pluck('department_id')
-        //     ->toArray();
-        // $this->bulan(); 
-        // Panggil fungsi bulan untuk memperbarui daftar bulan
+
 
         $data = Payroll::first();
         if (now()->day < 5) {
@@ -342,6 +330,12 @@ class Payrollwr extends Component
                 ->first();
             $this->data_karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
         }
+
+        $this->selected_placement = 0;
+        $this->selected_company = 0;
+        $this->selected_departemen = 0;
+
+        $this->refreshFilterOptions();
 
         $lock = Lock::find(1);
         $this->lock_presensi = $lock->presensi;
@@ -483,116 +477,187 @@ class Payrollwr extends Component
         );
     }
 
-    public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null, $department_id = null)
+
+    private function refreshFilterOptions(): void
     {
-        return Payroll::query()
-
-            ->whereIn('status_karyawan', $statuses)
-            ->when($search, function ($query) use ($search) {
-                $query
-                    // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
-                    ->where('id_karyawan',  trim($search))
-                    ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('jabatan_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('company_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('department_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
-            })
-            ->when($placement_id, function ($query) use ($placement_id) {
-                $query->where('placement_id', $placement_id);
-            })
-            ->when($company_id, function ($query) use ($company_id) {
-                $query->where('company_id', $company_id);
-            })
-            ->when($department_id, function ($query) use ($department_id) {
-                $query->where('department_id', $department_id);
-            })
-
-            ->orderBy($this->columnName, $this->direction);
-    }
-
-    public function updatedSelectedCompany()
-    {
-        $department_ids = Payroll::where('company_id', $this->selected_company)
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->distinct()
-            ->pluck('department_id');
-
-        $this->departments = Department::whereIn('id', $department_ids)
-            ->orderBy('nama_department', 'ASC')
+        // Directorate berdasarkan periode payroll
+        $this->placements = Placement::query()
+            ->whereIn(
+                'id',
+                Payroll::query()
+                    ->select('placement_id')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->whereNotNull('placement_id')
+                    ->distinct()
+            )
+            ->orderBy('placement_name', 'ASC')
             ->get();
-    }
-    public function updatedSelectedPlacement()
-    {
-        $this->placements = Placement::orderBy('placement_name', 'ASC')->get();
 
-
-        $company_ids = Payroll::where('placement_id', $this->selected_placement)
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->distinct()
-            ->pluck('company_id');
-
-        $this->companies = Company::whereIn('id', $company_ids)
+        // Company mengikuti Directorate yang dipilih
+        $this->companies = Company::query()
+            ->whereIn(
+                'id',
+                Payroll::query()
+                    ->select('company_id')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->when(
+                        (int) $this->selected_placement !== 0,
+                        fn($q) => $q->where(
+                            'placement_id',
+                            $this->selected_placement
+                        )
+                    )
+                    ->whereNotNull('company_id')
+                    ->distinct()
+            )
             ->orderBy('company_name', 'ASC')
             ->get();
 
-        $department_ids = Payroll::where('placement_id', $this->selected_placement)
-            ->whereMonth('date', $this->month)
-            ->whereYear('date', $this->year)
-            ->distinct()
-            ->pluck('department_id');
-
-        $this->departments = Department::whereIn('id', $department_ids)
+        // Department mengikuti Directorate dan Company
+        $this->departments = Department::query()
+            ->whereIn(
+                'id',
+                Payroll::query()
+                    ->select('department_id')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->when(
+                        (int) $this->selected_placement !== 0,
+                        fn($q) => $q->where(
+                            'placement_id',
+                            $this->selected_placement
+                        )
+                    )
+                    ->when(
+                        (int) $this->selected_company !== 0,
+                        fn($q) => $q->where(
+                            'company_id',
+                            $this->selected_company
+                        )
+                    )
+                    ->whereNotNull('department_id')
+                    ->distinct()
+            )
             ->orderBy('nama_department', 'ASC')
             ->get();
-
-
-
-        // $this->departments = Department::orderBy('nama_department', 'ASC')->get();
     }
-    // public function updatedSelectedDepartemen()
-    // {
-    //     $this->selected_company = 0;
-    //     $this->selected_placement = 0;
-    // }
+
+
+    /**
+     * Saat Directorate berubah, reset Company dan Department.
+     */
+    public function updatedSelectedPlacement(): void
+    {
+        $this->selected_company = 0;
+        $this->selected_departemen = 0;
+
+        $this->resetPage();
+        $this->refreshFilterOptions();
+    }
+
+
+    /**
+     * Saat Company berubah, reset Department.
+     */
+    public function updatedSelectedCompany(): void
+    {
+        $this->selected_departemen = 0;
+
+        $this->resetPage();
+        $this->refreshFilterOptions();
+    }
+
+
+    /**
+     * Saat Department berubah, kembali ke halaman pertama.
+     */
+    public function updatedSelectedDepartemen(): void
+    {
+        $this->resetPage();
+    }
+
+
+    /**
+     * Saat bulan berubah, reset seluruh filter organisasi.
+     */
+    public function updatedMonth(): void
+    {
+        $this->selected_placement = 0;
+        $this->selected_company = 0;
+        $this->selected_departemen = 0;
+
+        $this->resetPage();
+        $this->refreshFilterOptions();
+    }
+
+
+    /**
+     * Saat tahun berubah, perbarui daftar bulan dan filter.
+     */
+    public function updatedYear(): void
+    {
+        $this->month = null;
+
+        $this->loadSelectMonthYear();
+
+        $this->selected_placement = 0;
+        $this->selected_company = 0;
+        $this->selected_departemen = 0;
+
+        $this->resetPage();
+        $this->refreshFilterOptions();
+    }
+
+
+    /**
+     * Query payroll dengan pencarian yang tetap menghormati filter.
+     */
+    public function getPayrollQuery(
+        $statuses,
+        $search = null,
+        $placement_id = null,
+        $company_id = null,
+        $department_id = null
+    ) {
+        return Payroll::query()
+            ->whereIn('status_karyawan', $statuses)
+
+            ->when(filled($search), function ($query) use ($search) {
+                $keyword = trim($search);
+
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('id_karyawan', $keyword)
+                        ->orWhere('nama', 'LIKE', "%{$keyword}%")
+                        ->orWhere('jabatan_id', 'LIKE', "%{$keyword}%")
+                        ->orWhere('company_id', 'LIKE', "%{$keyword}%")
+                        ->orWhere('department_id', 'LIKE', "%{$keyword}%")
+                        ->orWhere('metode_penggajian', 'LIKE', "%{$keyword}%")
+                        ->orWhere('status_karyawan', 'LIKE', "%{$keyword}%");
+                });
+            })
+
+            ->when(
+                $placement_id !== null && (int) $placement_id !== 0,
+                fn($q) => $q->where('placement_id', $placement_id)
+            )
+            ->when(
+                $company_id !== null && (int) $company_id !== 0,
+                fn($q) => $q->where('company_id', $company_id)
+            )
+            ->when(
+                $department_id !== null && (int) $department_id !== 0,
+                fn($q) => $q->where('department_id', $department_id)
+            )
+            ->orderBy($this->columnName, $this->direction);
+    }
 
 
 
-    // public function bulan()
-    // {
-    //     $this->year ??= now()->year;
 
-    //     $payrollTerakhir = Payroll::latest('date')->first();
 
-    //     $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
-    //         ->whereYear('date', $this->year)
-    //         ->distinct()
-    //         ->pluck('month')
-    //         ->filter() // Filter null jika ada
-    //         ->toArray();
 
-    //     // Jika null tetap aman
-    //     $this->select_month = $this->select_month ?? [];
-
-    //     if ($payrollTerakhir &&  $this->year == now()->year) {
-
-    //         $tanggalTerakhir = Carbon::parse($payrollTerakhir->date);
-    //         $tanggalSekarang = Carbon::now();
-
-    //         $selisihBulan = $tanggalSekarang->diffInMonths($tanggalTerakhir);
-    //         if ($selisihBulan == 2) {
-    //             $bulanSetelah = $tanggalTerakhir->copy()->addMonth();
-    //             $bulanTambahan = (int) $bulanSetelah->format('m');
-
-    //             if (!in_array($bulanTambahan, $this->select_month)) {
-    //                 $this->select_month[] = $bulanTambahan;
-    //             }
-    //         }
-    //     }
-    // }
 
     private function applyCommonFilters($query)
     {
@@ -609,12 +674,6 @@ class Payrollwr extends Component
 
         $this->cx++;
 
-        // $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
-        //     ->distinct()
-        //     ->pluck('year')
-        //     ->toArray();
-        // ooo
-
         $months = Payroll::select(DB::raw('MONTH(date) as month'))
             ->whereYear('date', $this->year)
             ->distinct()
@@ -622,12 +681,7 @@ class Payrollwr extends Component
             ->pluck('month')
             ->toArray();
 
-        // $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
-        //     ->whereMonth('date', now()->month)->count();
 
-        // if ($data_bulan_ini > 0) {
-        //     $months[] = $this->month;
-        // }
 
 
         if ($this->status == 1) {
@@ -639,130 +693,14 @@ class Payrollwr extends Component
         }
 
         $total = $this->applyCommonFilters(
-            Payroll::whereIn('status_karyawan', $statuses)
+            Payroll::query()->whereIn('status_karyawan', $statuses)
         )->sum('total');
 
         $payroll = $this->applyCommonFilters(
             $this->getPayrollQuery($statuses, $this->search)
-        )->orderBy($this->columnName, $this->direction)
-            ->paginate($this->perpage);
-
-        // $this->payroll_data = $payroll;
-        // $this->total_data = $total;
-
-        // $total = Payroll::whereIn('status_karyawan', $statuses)
-        //     ->when($this->selected_company != 0, fn($q) => $q->where('company_id', $this->selected_company))
-        //     ->when($this->selected_placement != 0, fn($q) => $q->where('placement_id', $this->selected_placement))
-        //     ->when($this->selected_departemen != 0, fn($q) => $q->where('department_id', $this->selected_departemen))
-        //     ->whereMonth('date', $this->month)
-        //     ->whereYear('date', $this->year)
-        //     ->sum('total');
-
-        // $payroll = $this->getPayrollQuery($statuses, $this->search)
-        //     ->when($this->selected_company != 0, fn($q) => $q->where('company_id', $this->selected_company))
-        //     ->when($this->selected_placement != 0, fn($q) => $q->where('placement_id', $this->selected_placement))
-        //     ->when($this->selected_departemen != 0, fn($q) => $q->where('department_id', $this->selected_departemen))
-        //     ->whereMonth('date', $this->month)
-        //     ->whereYear('date', $this->year)
-        //     ->orderBy($this->columnName, $this->direction)
-        //     ->paginate($this->perpage);
-
-        // $total = Payroll::whereIn('status_karyawan', $statuses)
-        //     ->where('company_id', $this->selected_company)
-        //     ->where('placement_id', $this->selected_placement)
-        //     ->where('department_id', $this->selected_departemen)
-        //     ->whereMonth('date', $this->month)
-        //     ->whereYear('date', $this->year)
-        //     ->sum('total');
-
-        // $payroll = $this->getPayrollQuery($statuses, $this->search)
-        //     ->where('company_id', $this->selected_company)
-        //     ->where('placement_id', $this->selected_placement)
-        //     ->where('department_id', $this->selected_departemen)
-        //     ->whereMonth('date', $this->month)
-        //     ->whereYear('date', $this->year)
-        //     ->orderBy($this->columnName, $this->direction)
-        //     ->paginate($this->perpage);
-
-        // if ($this->selected_placement == 0 && $this->selected_departemen == 0) {
-        //     if ($this->selected_company == 0) {
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->sum('total');
-
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     } else {
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->where('company_id', $this->selected_company)
-        //             ->sum('total');
-
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search, '', $this->selected_company)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     }
-        // } elseif ($this->selected_company == 0 && $this->selected_departemen == 0) {
-        //     if ($this->selected_placement == 0) {
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->sum('total');
-
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     } else {
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->where('placement_id', $this->selected_placement)
-        //             ->sum('total');
-
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search, $this->selected_placement, '', '')
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     }
-        // } else {
-        //     if ($this->selected_departemen == 0) {
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->sum('total');
-
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     } else {
+        )->paginate($this->perpage);
 
 
-        //         $total = Payroll::whereIn('status_karyawan', $statuses)
-        //             ->where('department_id', $this->selected_departemen)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->sum('total');
-        //         $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', $this->selected_departemen)
-
-        //             ->where('department_id', $this->selected_departemen)
-        //             ->whereMonth('date', $this->month)
-        //             ->whereYear('date', $this->year)
-        //             ->orderBy($this->columnName, $this->direction)
-        //             ->paginate($this->perpage);
-        //     }
-        // }
 
         $tgl = Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)

@@ -52,6 +52,7 @@ use App\Livewire\Developer;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Directinject;
 use App\Livewire\Editpresensiwr;
+use App\Livewire\ExcelKhusus;
 use App\Livewire\Excelpresensi;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Gantipassworddeveloper;
@@ -265,6 +266,7 @@ Route::middleware(['auth'])->group(function () {
                 });
 
                 Route::get('/ai-query/export', AiQueryExportController::class)->name('ai-query.export');
+                Route::get('/excelkhusus', ExcelKhusus::class);
 
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
