@@ -272,6 +272,15 @@
                                                 Iuran Locker</button></a>
                                     </th>
                                 @endif
+                                @if (auth()->user()->role >= 5)
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/excelkhusus">
+                                            <button type="button" class="btn btn-success col-12">
+                                                Excel Khusus
+                                            </button>
+                                        </a>
+                                    </th>
+                                @endif
 
 
 
