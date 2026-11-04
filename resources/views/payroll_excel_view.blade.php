@@ -20,7 +20,7 @@
                     <h3>{{ $header_text }}</h3>
                 </th>
             </tr>
-            @if ($search != null)
+            {{-- @if ($search != null)
                 <tr>
                     <th>
                         <h3>Search by : </h3>
@@ -59,7 +59,7 @@
                         <h3>{{ $nama_departement }}</h3>
                     </th>
                 </tr>
-            @endif
+            @endif --}}
             {{-- TR baris atas utk colspan --}}
             <tr>
                 <th></th>
