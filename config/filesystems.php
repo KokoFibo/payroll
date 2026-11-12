@@ -57,6 +57,17 @@ return [
             'throw' => false,
             'visibility' => 'public',
         ],
+
+        's3_applicant' => [
+            'driver' => 's3',
+            'key'    => env('AWS_APPLICANT_ACCESS_KEY_ID', env('AWS_ACCESS_KEY_ID')),
+            'secret' => env('AWS_APPLICANT_SECRET_ACCESS_KEY', env('AWS_SECRET_ACCESS_KEY')),
+            'region' => env('AWS_APPLICANT_DEFAULT_REGION', env('AWS_DEFAULT_REGION')),
+            'bucket' => env('AWS_APPLICANT_BUCKET'),
+            'throw'  => true,
+            // jangan isi 'url' atau 'visibility': bucket portal private, file dibuka lewat presigned URL
+        ],
+
         'google' => [
             'driver' => 'google',
             'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),

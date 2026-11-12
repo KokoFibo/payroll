@@ -36,6 +36,15 @@ with font-awesome or any other icon font library -->
                     </p>
                 </a>
             </li>
+            <li class="nav-item {{ 'newapplicantdata' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/newapplicantdata" class="nav-link">
+                    <i class="nav-icon fa-solid fa-person-walking"></i>
+
+                    <p>
+                        {{ __('New Applicant Data') }}
+                    </p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->role > 5 || Auth::user()->role == 2)
             @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
