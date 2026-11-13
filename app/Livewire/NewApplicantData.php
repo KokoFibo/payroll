@@ -18,6 +18,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,16 +27,15 @@ use Livewire\WithPagination;
  * Daftar dan detail pelamar (pengganti DataApplicant).
  *
  * Sumber data: DATABASE APPLICANT (koneksi "applicant", model App\Models\Portal\*), bukan database payroll.
- * Hanya pelamar yang sudah submit (status >= 1) yang ditampilkan. Data lama di database payroll tidak dipakai.
+ * Hanya pelamar yang sudah submit (status >= 1) dari perusahaan di config applicant_admin.company_codes yang ditampilkan. Data lama di database payroll tidak dipakai.
  * Database payroll hanya dipakai untuk Karyawan, User, dan catatan undo (ApplicantAcceptance).
  *
  * Catatan: otorisasi tombol (role, username) masih di Blade, sesuai keputusan sebelumnya.
  */
+#[Title('Data Pelamar')]
 class NewApplicantData extends Component
 {
     use WithPagination;
-
-    protected $paginationTheme = 'bootstrap';
 
     private const PER_PAGE = 10;
 
@@ -336,6 +336,19 @@ class NewApplicantData extends Component
             ->all();
     }
 
+    /** ID perusahaan yang diizinkan, dari kode di config. null = semua perusahaan. */
+    #[Computed]
+    public function allowedCompanyIds(): ?array
+    {
+        $codes = config('applicant_admin.company_codes', []);
+
+        if (! $codes) {
+            return null;
+        }
+
+        return Company::whereIn('code', $codes)->pluck('id')->all();
+    }
+
     /** Perusahaan yang punya pelamar: [company_id => nama]. */
     #[Computed]
     public function companies(): array
@@ -401,17 +414,28 @@ class NewApplicantData extends Component
 
         return view('livewire.new-applicant-data', [
             'applicants' => $applicants,
-        ]);
+        ])->layout('components/layouts.app-tailwind');
     }
 
     // ------------------------------------------------------------------
     // Helper
     // ------------------------------------------------------------------
 
-    /** Satu-satunya pintu ke data pelamar (database applicant): hanya yang sudah submit. */
+    /**
+     * Satu-satunya pintu ke data pelamar (database applicant): hanya yang sudah submit
+     * dan hanya milik perusahaan yang diizinkan (config applicant_admin.company_codes).
+     */
     private function baseQuery()
     {
-        return Applicant::query()->where('status', '>=', 1);   // 0 = baru register, belum submit
+        $query = Applicant::query()->where('status', '>=', 1);   // 0 = baru register, belum submit
+
+        $ids = $this->allowedCompanyIds;
+
+        if ($ids !== null) {
+            $query->whereIn('company_id', $ids);   // daftar kosong = tidak ada hasil (aman jika kode salah)
+        }
+
+        return $query;
     }
 
     private function findApplicant(?int $id): ?Applicant
@@ -464,6 +488,7 @@ class NewApplicantData extends Component
 
     private function notify(string $type, string $title): void
     {
-        $this->dispatch('message', type: $type, title: $title);
+        // Event milik komponen ini (ditangani view), tidak bergantung pada handler 'message' di layout.
+        $this->dispatch('applicant-toast', type: $type, title: $title);
     }
 }

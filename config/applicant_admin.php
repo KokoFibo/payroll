@@ -1,6 +1,10 @@
 <?php
 
 return [
+    // Perusahaan yang pelamarnya ditampilkan di aplikasi ini: kode di kolom companies.code (database applicant),
+    // pisahkan dengan koma. Kosong = semua perusahaan. Perusahaan lain tidak tampil dan tidak bisa disentuh.
+    'company_codes' => array_values(array_filter(array_map('trim', explode(',', (string) env('APPLICANT_COMPANY_CODES', 'payroll'))))),
+
     // Disk (config/filesystems.php) tempat file portal pelamar berada. Isi sesuai bucket PORTAL,
     // yang bisa berbeda dengan disk "s3" milik aplikasi payroll.
     'applicant_disk' => env('APPLICANT_FILES_DISK', 's3'),

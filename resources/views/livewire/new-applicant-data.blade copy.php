@@ -4,12 +4,32 @@
     {{-- Otorisasi tombol masih di Blade (sesuai keputusan sebelumnya) --}}
     @php $canManage = auth()->user()->username != '8217'; @endphp
     @php $showEtnis = auth()->user()->role == 8; @endphp
+    @php $showCompany = count($this->companies) > 1; @endphp
 
     <style>
         .applicant-table td,
         .applicant-table th { white-space: nowrap; vertical-align: middle; }
         .doc-thumb { height: 180px; background: #f8f9fa; }
         .doc-thumb img { max-height: 100%; object-fit: contain; }
+
+        [x-cloak] { display: none !important; }
+
+        /* Lightbox dokumen: menempel ke layar (fixed di <body>), gambar selalu muat utuh. */
+        .applicant-lightbox { position: fixed; inset: 0; z-index: 3000; display: flex; flex-direction: column;
+            background: rgba(0, 0, 0, .9); }
+        .applicant-lightbox__bar { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; }
+        .applicant-lightbox__stage { flex: 1; min-height: 0; display: flex; align-items: center;
+            justify-content: center; padding: 0 3.5rem 1rem; }
+        .applicant-lightbox__img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .applicant-lightbox__nav { position: absolute; top: 50%; transform: translateY(-50%); width: 2.75rem;
+            height: 2.75rem; border: 0; border-radius: 50%; font-size: 2rem; line-height: 1;
+            background: rgba(255, 255, 255, .85); color: #000; }
+        .applicant-lightbox__nav--prev { left: .75rem; }
+        .applicant-lightbox__nav--next { right: .75rem; }
+        @media (max-width: 575.98px) {
+            .applicant-lightbox__stage { padding: 0 .5rem 1rem; }
+            .applicant-lightbox__nav { top: auto; bottom: 1rem; transform: none; }
+        }
     </style>
 
     <div class="p-3">
@@ -86,7 +106,9 @@
                             <thead>
                                 <tr>
                                     <th>Nama</th>
-                                    <th>Perusahaan</th>
+                                    @if ($showCompany)
+                                        <th>Perusahaan</th>
+                                    @endif
                                     <th>Gender</th>
                                     @if ($showEtnis)
                                         <th>Etnis</th>
@@ -109,7 +131,9 @@
                                             <small class="text-muted">{{ $d->email }}</small><br>
                                             <small class="text-muted">{{ $d->hp }}</small>
                                         </td>
-                                        <td>{{ $this->companies[$d->company_id] ?? '-' }}</td>
+                                        @if ($showCompany)
+                                            <td>{{ $this->companies[$d->company_id] ?? '-' }}</td>
+                                        @endif
                                         <td>{{ $d->gender }}</td>
                                         @if ($showEtnis)
                                             <td>{{ $d->etnis }}</td>
@@ -167,7 +191,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ $showEtnis ? 10 : 9 }}" class="text-center text-muted py-4">
+                                        <td colspan="{{ 8 + ($showEtnis ? 1 : 0) + ($showCompany ? 1 : 0) }}" class="text-center text-muted py-4">
                                             @if (filled($search) || $statusFilter !== '' || $companyFilter !== '')
                                                 Tidak ada pelamar yang cocok. Ubah kata kunci atau pilih filter lain.
                                             @else
@@ -262,7 +286,29 @@
                         <p class="text-muted">Pelamar ini belum mengunggah dokumen.</p>
                     @endif
 
-                    <div x-data="{ src: '', title: '' }">
+                    {{-- Galeri dokumen. Lightbox dipindahkan ke <body> (x-teleport) supaya selalu pas di layar,
+                         berapa pun posisi scroll, dan tidak terpengaruh transform/overflow elemen induk tema admin. --}}
+                    <div wire:key="gallery-{{ $p->id }}"
+                        x-data="{
+                            open: false,
+                            i: 0,
+                            items: [],
+                            show(el) {
+                                // Baca daftar dari DOM saat dibuka: URL selalu yang terbaru.
+                                this.items = [...this.$root.querySelectorAll('[data-viewable]')]
+                                    .map(b => ({ url: b.dataset.url, label: b.dataset.label }));
+                                this.i = Math.max(0, this.items.findIndex(x => x.url === el.dataset.url));
+                                this.open = true;
+                            },
+                            next() { this.i = (this.i + 1) % this.items.length },
+                            prev() { this.i = (this.i - 1 + this.items.length) % this.items.length },
+                            close() { this.open = false },
+                        }"
+                        x-init="$watch('open', v => document.body.classList.toggle('overflow-hidden', v))"
+                        @keydown.escape.window="open && close()"
+                        @keydown.arrow-right.window="open && next()"
+                        @keydown.arrow-left.window="open && prev()">
+
                         <div class="row g-4">
                             @foreach ($this->files as $f)
                                 <div class="col-12 col-sm-6 col-lg-3" wire:key="file-{{ $loop->index }}">
@@ -270,8 +316,8 @@
                                         @if ($f['url'])
                                             <button type="button"
                                                 class="btn p-3 doc-thumb d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="modal" data-bs-target="#applicantImageModal"
-                                                @click="src = @js($f['url']); title = @js($f['label'])"
+                                                data-viewable data-url="{{ $f['url'] }}" data-label="{{ $f['label'] }}"
+                                                @click="show($el)"
                                                 aria-label="Perbesar {{ $f['label'] }}">
                                                 <img src="{{ $f['url'] }}" class="img-fluid" loading="lazy"
                                                     alt="{{ $f['label'] }}">
@@ -292,23 +338,33 @@
                             @endforeach
                         </div>
 
-                        {{-- Satu modal untuk semua gambar --}}
-                        <div class="modal fade" id="applicantImageModal" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" x-text="title"></h5>
-                                        <a :href="src" target="_blank" rel="noopener"
-                                            class="btn btn-sm btn-outline-secondary ms-auto me-2">Buka di tab baru</a>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Tutup"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img :src="src" class="img-fluid" alt="" style="max-height: 80vh;">
-                                    </div>
+                        <template x-teleport="body">
+                            <div x-show="open" x-cloak x-transition.opacity.duration.150ms
+                                class="applicant-lightbox" role="dialog" aria-modal="true">
+                                <div class="applicant-lightbox__bar">
+                                    <span class="text-white fw-semibold"
+                                        x-text="items.length ? items[i].label + ' (' + (i + 1) + '/' + items.length + ')' : ''"></span>
+                                    <span class="ms-auto d-flex gap-2">
+                                        <a :href="items[i]?.url" target="_blank" rel="noopener"
+                                            class="btn btn-sm btn-light">Buka di tab baru</a>
+                                        <button type="button" class="btn btn-sm btn-light" @click="close()">Tutup</button>
+                                    </span>
                                 </div>
+
+                                <div class="applicant-lightbox__stage" @click.self="close()">
+                                    <img :src="items[i]?.url" :alt="items[i]?.label" class="applicant-lightbox__img">
+                                </div>
+
+                                <template x-if="items.length > 1">
+                                    <div>
+                                        <button type="button" class="applicant-lightbox__nav applicant-lightbox__nav--prev"
+                                            @click="prev()" aria-label="Dokumen sebelumnya">&lsaquo;</button>
+                                        <button type="button" class="applicant-lightbox__nav applicant-lightbox__nav--next"
+                                            @click="next()" aria-label="Dokumen berikutnya">&rsaquo;</button>
+                                    </div>
+                                </template>
                             </div>
-                        </div>
+                        </template>
                     </div>
 
                     <div class="d-flex justify-content-center mt-4">
