@@ -5,7 +5,6 @@ namespace App\Actions;
 use App\Models\ApplicantAcceptance;
 use App\Models\Karyawan;
 use App\Models\Portal\Applicant;
-use App\Models\User;
 use App\Services\ApplicantFileMover;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -47,9 +46,7 @@ class UndoAcceptance
                 $attrs = json_decode(Crypt::decryptString($acc->snapshot), true);
 
                 // Payroll dulu: semua yang bisa gagal ada di sini dan ikut rollback.
-                if ($acc->user_id) {
-                    User::whereKey($acc->user_id)->delete();
-                }
+                // Akun presensi (API server lain) TIDAK ikut dihapus di sini; lihat pesan di komponen.
                 // Jika model Karyawan memakai SoftDeletes, ganti dengan forceDelete().
                 $karyawan?->delete();
 

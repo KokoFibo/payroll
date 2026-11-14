@@ -99,10 +99,20 @@ function createUser($id_karyawan)
         ];
     }
 
+    // 🔑 token API presensi dari .env (PRESENSI_API_TOKEN)
+    $token = config('services.presensi.token');
+
+    if (blank($token)) {
+        return [
+            'status' => false,
+            'message' => 'Token API presensi belum diisi (PRESENSI_API_TOKEN di .env)'
+        ];
+    }
+
     // 🔐 password dari tanggal lahir
     $password = Carbon::parse($data->tanggal_lahir)->format('dmy');
 
-    $response = Http::withToken('yifang18april2026')
+    $response = Http::withToken($token)
         ->post('https://presensidb.yifang.co.id/api/create-user', [
             // ->post('http://127.0.0.1:8000/api/create-user', [
             'name' => $data->nama,                 // sesuaikan kolom
@@ -131,6 +141,7 @@ function createUser($id_karyawan)
         'error' => $response->json()
     ];
 }
+
 
 function deleteUserByid_unik_karyawan($id_unik_karyawan)
 {

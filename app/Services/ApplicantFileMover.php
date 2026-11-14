@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\ApplicantConfigException;
 use App\Models\Portal\ApplicantFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -11,12 +12,27 @@ class ApplicantFileMover
 {
     private function fromDisk(): string   // bucket pelamar (bucket portal)
     {
-        return (string) config('applicant_admin.applicant_disk');
+        return $this->diskName('applicant_disk', 'APPLICANT_FILES_DISK');
     }
 
     private function toDisk(): string     // bucket karyawan
     {
-        return (string) config('applicant_admin.karyawan_disk');
+        return $this->diskName('karyawan_disk', 'KARYAWAN_FILES_DISK');
+    }
+
+    /**
+     * Nama disk wajib diisi dan wajib ada di config/filesystems.php. Storage::disk('') akan jatuh ke disk BAWAAN
+     * aplikasi (mis. local), jadi nilai kosong ditolak, bukan dibiarkan lewat.
+     */
+    private function diskName(string $key, string $env): string
+    {
+        $name = (string) config("applicant_admin.{$key}");
+
+        if ($name === '' || config("filesystems.disks.{$name}") === null) {
+            throw new ApplicantConfigException("Disk {$env} belum diatur di .env atau tidak ada di config/filesystems.php.");
+        }
+
+        return $name;
     }
 
     /** Baris dokumen pelamar dari DATABASE APPLICANT. */
@@ -48,6 +64,22 @@ class ApplicantFileMover
      */
     public function copyAll(array $keys): array
     {
+        // Pengaman: jika bucket asal dan tujuan SAMA dan key tidak berubah, "menyalin" hanya menimpa dirinya sendiri,
+        // lalu finalisasi akan menghapus satu-satunya salinan. Tolak sebelum ada yang berubah.
+        $srcBucket = config('filesystems.disks.' . $this->fromDisk() . '.bucket');
+        $dstBucket = config('filesystems.disks.' . $this->toDisk() . '.bucket');
+
+        if ($keys && filled($srcBucket) && $srcBucket === $dstBucket) {
+            foreach ($keys as $key) {
+                if ($this->targetKey($key) === $key) {
+                    throw new \RuntimeException(
+                        "Bucket asal dan tujuan sama ({$srcBucket}) dengan key yang sama. "
+                        . 'Periksa APPLICANT_FILES_DISK dan KARYAWAN_FILES_DISK, atau ubah targetKey().'
+                    );
+                }
+            }
+        }
+
         $src = Storage::disk($this->fromDisk());
         $dst = Storage::disk($this->toDisk());
         $copied = [];
@@ -89,15 +121,23 @@ class ApplicantFileMover
         return $copied;
     }
 
-    /** Hapus salinan di bucket karyawan (undo atau pembersihan). Tidak melempar error. */
+    /** Hapus salinan di bucket karyawan (pembersihan saat penerimaan gagal). Tidak melempar error. */
     public function deleteFromTarget(array $keys): bool
     {
+        if (! $keys) {
+            return true;
+        }
+
         return $this->deleteFrom($this->toDisk(), array_map([$this, 'targetKey'], $keys));
     }
 
-    /** Hapus file asli di bucket pelamar (finalisasi). */
+    /** Hapus file asli di bucket pelamar (setelah penerimaan berhasil). */
     public function deleteFromSource(array $keys): bool
     {
+        if (! $keys) {
+            return true;
+        }
+
         return $this->deleteFrom($this->fromDisk(), $keys);
     }
 

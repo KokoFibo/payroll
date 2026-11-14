@@ -3,29 +3,47 @@
         toasts: [], tid: 0, dialog: null,
         labels: {
             delete: { title: 'Hapus data pelamar?', body: 'dan semua dokumennya akan dihapus permanen.', yes: 'Ya, hapus', btn: 'bg-rose-600 hover:bg-rose-700', tone: 'bg-rose-100 text-rose-600' },
-            terima: { title: 'Terima pelamar ini?', body: 'akan dipindahkan ke data karyawan. Masih bisa dibatalkan selama sekitar {{ \App\Actions\AcceptApplicant::UNDO_MINUTES }} menit.', yes: 'Ya, terima', btn: 'bg-indigo-600 hover:bg-indigo-700', tone: 'bg-indigo-100 text-indigo-600' },
-            undo: { title: 'Batalkan penerimaan?', body: 'Data karyawan dan akun login akan dihapus, lalu pelamar dikembalikan ke daftar.', yes: 'Ya, batalkan', btn: 'bg-amber-600 hover:bg-amber-700', tone: 'bg-amber-100 text-amber-600' },
+            terima: { title: 'Terima pelamar ini?', body: 'akan dipindahkan ke data karyawan dan akun presensinya dibuat. Tindakan ini TIDAK dapat dibatalkan.', yes: 'Ya, terima', btn: 'bg-indigo-600 hover:bg-indigo-700', tone: 'bg-indigo-100 text-indigo-600' },
         },
         get info() { return this.dialog ? this.labels[this.dialog.kind] : null },
-        toast(d) {
-            const id = ++this.tid;
-            this.toasts.push({ id: id, type: d.type || 'info', title: d.title || '' });
-            setTimeout(() => this.dismiss(id), d.type === 'error' ? 7000 : 4500);
+        ask(kind, name) {
+            this.dialog = { kind: kind, name: name };
+            const d = this.$refs.confirm;
+            if (d && !d.open) d.showModal();
         },
-        dismiss(id) { this.toasts = this.toasts.filter(t => t.id !== id) },
+        cancel() {
+            const d = this.$refs.confirm;
+            if (d && d.open) d.close();
+            this.dialog = null;
+        },
         yes() {
             if (!this.dialog) return;
             const d = this.dialog;
-            this.dialog = null;
+            this.cancel();
             if (d.kind === 'delete') this.$wire.dispatch('applicant-delete-confirmed');
             else if (d.kind === 'terima') this.$wire.dispatch('applicant-terima-confirmed');
-            else if (d.kind === 'undo') this.$wire.undoAcceptance(d.id);
+        },
+        toast(d) {
+            const id = ++this.tid;
+            this.toasts.push({ id: id, type: d.type || 'info', title: d.title || '' });
+            this.$nextTick(() => this.showToasts());
+            setTimeout(() => this.dismiss(id), (d.type === 'error' || d.type === 'warning') ? 9000 : 4500);
+        },
+        showToasts() {
+            const p = this.$refs.toasts;
+            try { if (p && p.showPopover && !p.matches(':popover-open')) p.showPopover(); } catch (e) {}
+        },
+        dismiss(id) {
+            this.toasts = this.toasts.filter(t => t.id !== id);
+            if (!this.toasts.length) {
+                const p = this.$refs.toasts;
+                try { if (p && p.hidePopover && p.matches(':popover-open')) p.hidePopover(); } catch (e) {}
+            }
         },
     }"
     @applicant-toast.window="toast($event.detail)"
-    @applicant-confirm-delete.window="dialog = { kind: 'delete', name: $event.detail.text }"
-    @applicant-confirm-terima.window="dialog = { kind: 'terima', name: $event.detail.text }"
-    @keydown.escape.window="dialog = null"
+    @applicant-confirm-delete.window="ask('delete', $event.detail.text)"
+    @applicant-confirm-terima.window="ask('terima', $event.detail.text)"
     class="text-slate-800">
 
     <style>
@@ -36,8 +54,19 @@
 
     {{-- Otorisasi tombol masih di Blade (sesuai keputusan sebelumnya) --}}
     @php
-        $canManage = auth()->user()->username != '8217';
-        $showEtnis = auth()->user()->role == 8;
+        // Aturan tampilan dari config (bukan pengaman server; lihat README): role yang boleh melihat etnis di tabel.
+        $user = auth()->user();
+        $showEtnis = in_array((string) ($user?->role ?? ''), config('applicant_admin.etnis_roles', []), true);
+
+        // Helper format tanggal milik aplikasi payroll dipakai jika ada; jika tidak, format bawaan.
+        $fmtDate = fn ($v) => blank($v) ? '' : (function_exists('format_tgl') ? format_tgl($v) : \Carbon\Carbon::parse($v)->format('d/m/Y'));
+        $fmtDateTime = fn ($v) => blank($v) ? '' : (function_exists('dateTimeFormat') ? dateTimeFormat($v) : \Carbon\Carbon::parse($v)->format('d/m/Y H:i'));
+
+        // "Diterima" hanya ditawarkan jika fitur penerimaan aktif.
+        $statusOptions = array_values(array_filter(
+            \App\Enums\ApplicantStatus::cases(),
+            fn ($st) => $this->acceptEnabled || $st !== \App\Enums\ApplicantStatus::Diterima
+        ));
         $showCompany = count($this->companies) > 1;
 
         // Ikon (gaya Feather, MIT). Dipakai lewat {{ $svg('nama', 'kelas') }}
@@ -65,6 +94,7 @@
             'book' => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
             'shield' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
             'file' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+            'home' => '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
             'warn' => '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
         ];
         $svg = fn (string $name, string $cls = 'h-4 w-4') => new \Illuminate\Support\HtmlString(
@@ -115,9 +145,26 @@
             @endphp
 
             <div class="mb-6">
+                <a href="/"
+                    class="mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition hover:text-slate-900">
+                    {{ $svg('home') }} Beranda
+                </a>
                 <h1 class="text-2xl font-bold tracking-tight text-slate-900">Data Pelamar</h1>
                 <p class="mt-1 text-sm text-slate-500">Pantau dan kelola pelamar yang sudah mengirim data lamaran.</p>
             </div>
+
+            @if (count($this->configWarnings))
+                <div class="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                    <div class="mb-1 flex items-center gap-2 font-semibold">
+                        {{ $svg('warn', 'h-4 w-4') }} Konfigurasi belum lengkap
+                    </div>
+                    <ul class="list-disc space-y-1 pl-5">
+                        @foreach ($this->configWarnings as $warning)
+                            <li wire:key="warn-{{ $loop->index }}">{{ $warning }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             {{-- Ringkasan --}}
             <div class="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -133,32 +180,6 @@
                     </div>
                 @endforeach
             </div>
-
-            {{-- Pelamar yang baru diterima dan masih bisa dibatalkan --}}
-            @if ($this->recentAcceptances->isNotEmpty())
-                <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4">
-                    <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-emerald-800">
-                        {{ $svg('badge', 'h-4 w-4') }}
-                        Baru diterima <span class="font-normal text-emerald-700">&middot; masih bisa dibatalkan</span>
-                    </div>
-                    <div class="divide-y divide-emerald-100">
-                        @foreach ($this->recentAcceptances as $acc)
-                            <div class="flex flex-wrap items-center justify-between gap-2 py-2" wire:key="acc-{{ $acc->id }}">
-                                <div class="text-sm text-slate-700">
-                                    <span class="font-medium">{{ $acc->nama }}</span>
-                                    <span class="text-slate-500">&rarr; ID karyawan {{ $acc->id_karyawan }}</span>
-                                    <span class="text-xs text-slate-500">(batas {{ $acc->expires_at->diffForHumans() }})</span>
-                                </div>
-                                <button type="button"
-                                    @click="dialog = { kind: 'undo', name: @js($acc->nama), id: {{ $acc->id }} }"
-                                    class="rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50">
-                                    Batalkan
-                                </button>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
 
             {{-- Cari dan filter --}}
             <div class="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -273,7 +294,7 @@
                                             <td class="whitespace-nowrap px-5 py-4">
                                                 <div class="text-slate-800">{{ $d->gender }}</div>
                                                 <div class="text-xs text-slate-500">
-                                                    {{ format_tgl($d->tgl_lahir) }}{{ $m['age'] ? ' · ' . $m['age'] . ' th' : '' }}
+                                                    {{ $fmtDate($d->tgl_lahir) ?: '-' }}{{ $m['age'] ? ' · ' . $m['age'] . ' th' : '' }}
                                                 </div>
                                                 @if ($showEtnis)
                                                     <div class="text-xs text-slate-500">Etnis: {{ $d->etnis }}</div>
@@ -283,7 +304,7 @@
                                                 @if ($editing)
                                                     <select wire:model="status" aria-label="Status penerimaan"
                                                         class="w-44 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
-                                                        @foreach (\App\Enums\ApplicantStatus::cases() as $s)
+                                                        @foreach ($statusOptions as $s)
                                                             <option value="{{ $s->value }}">{{ $s->value }}. {{ $s->label() }}</option>
                                                         @endforeach
                                                     </select>
@@ -305,7 +326,7 @@
                                             </td>
                                             <td class="whitespace-nowrap px-5 py-4">
                                                 <div class="text-slate-700">{{ $d->created_at?->diffForHumans() }}</div>
-                                                <div class="text-xs text-slate-400">{{ dateTimeFormat($d->created_at) }}</div>
+                                                <div class="text-xs text-slate-400">{{ $fmtDateTime($d->created_at) ?: '-' }}</div>
                                             </td>
                                             <td class="whitespace-nowrap px-5 py-4 text-right">
                                                 @if ($editing)
@@ -319,16 +340,14 @@
                                                             class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600">
                                                             {{ $svg('eye') }}
                                                         </button>
-                                                        @if ($canManage)
-                                                            <button type="button" title="Ubah status" aria-label="Ubah status" wire:click="edit({{ $d->id }})"
-                                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-amber-200 hover:bg-amber-50 hover:text-amber-600">
-                                                                {{ $svg('pencil') }}
-                                                            </button>
-                                                            <button type="button" title="Hapus" aria-label="Hapus" wire:click="confirmDelete({{ $d->id }})"
-                                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600">
-                                                                {{ $svg('trash') }}
-                                                            </button>
-                                                        @endif
+                                                        <button type="button" title="Ubah status" aria-label="Ubah status" wire:click="edit({{ $d->id }})"
+                                                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-amber-200 hover:bg-amber-50 hover:text-amber-600">
+                                                            {{ $svg('pencil') }}
+                                                        </button>
+                                                        <button type="button" title="Hapus" aria-label="Hapus" wire:click="confirmDelete({{ $d->id }})"
+                                                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600">
+                                                            {{ $svg('trash') }}
+                                                        </button>
                                                     </div>
                                                 @endif
                                             </td>
@@ -396,7 +415,7 @@
                                     <div class="mt-3 flex items-center gap-2">
                                         <select wire:model="status" aria-label="Status penerimaan"
                                             class="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
-                                            @foreach (\App\Enums\ApplicantStatus::cases() as $s)
+                                            @foreach ($statusOptions as $s)
                                                 <option value="{{ $s->value }}">{{ $s->value }}. {{ $s->label() }}</option>
                                             @endforeach
                                         </select>
@@ -414,16 +433,14 @@
                                             class="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-700">
                                             {{ $svg('eye') }} Lihat detail
                                         </button>
-                                        @if ($canManage)
-                                            <button type="button" title="Ubah status" aria-label="Ubah status" wire:click="edit({{ $d->id }})"
-                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-amber-50 hover:text-amber-600">
-                                                {{ $svg('pencil') }}
-                                            </button>
-                                            <button type="button" title="Hapus" aria-label="Hapus" wire:click="confirmDelete({{ $d->id }})"
-                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-rose-50 hover:text-rose-600">
-                                                {{ $svg('trash') }}
-                                            </button>
-                                        @endif
+                                        <button type="button" title="Ubah status" aria-label="Ubah status" wire:click="edit({{ $d->id }})"
+                                            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-amber-50 hover:text-amber-600">
+                                            {{ $svg('pencil') }}
+                                        </button>
+                                        <button type="button" title="Hapus" aria-label="Hapus" wire:click="confirmDelete({{ $d->id }})"
+                                            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-rose-50 hover:text-rose-600">
+                                            {{ $svg('trash') }}
+                                        </button>
                                     </div>
                                 @endif
                             </div>
@@ -464,7 +481,7 @@
                         'Alamat tinggal sekarang' => $p->alamat_tinggal_sekarang,
                     ]],
                     'Data diri' => ['icon' => 'user', 'rows' => [
-                        'Tempat / tanggal lahir' => $join([$p->tempat_lahir, format_tgl($p->tgl_lahir)], ' / '),
+                        'Tempat / tanggal lahir' => $join([$p->tempat_lahir, $fmtDate($p->tgl_lahir)], ' / '),
                         'Gender' => $p->gender,
                         'Status pernikahan' => $p->status_pernikahan,
                         'PTKP' => $p->ptkp,
@@ -502,11 +519,11 @@
                 <div class="h-24 sm:h-28"
                     style="background: linear-gradient(120deg, hsl({{ $m['hue'] }} 70% 58%), hsl({{ $hue2 }} 70% 46%));"></div>
                 <div class="px-5 pb-6 sm:px-8">
-                    <div class="-mt-10 flex flex-wrap items-end gap-4">
-                        <span class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border-4 border-white text-2xl font-bold shadow-md"
+                    <div class="flex flex-wrap items-start gap-x-5 gap-y-3 pt-4">
+                        <span class="-mt-14 flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-4 border-white text-3xl font-bold shadow-md"
                             style="background: hsl({{ $m['hue'] }} 70% 92%); color: hsl({{ $m['hue'] }} 50% 30%);">{{ $m['initials'] }}</span>
-                        <div class="min-w-0 flex-1 pb-1">
-                            <h1 class="truncate text-2xl font-bold tracking-tight text-slate-900">{{ $p->nama }}</h1>
+                        <div class="min-w-0 flex-1 basis-60">
+                            <h1 class="break-words text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-3xl">{{ $p->nama }}</h1>
                             <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-slate-500">
                                 <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset {{ $tone['badge'] }}">
                                     <span class="h-1.5 w-1.5 rounded-full {{ $tone['dot'] }}"></span>
@@ -601,20 +618,23 @@
                 </div>
             @endif
 
-            {{-- Galeri dan pratinjau. Pratinjau dipindah ke <body> (x-teleport) agar selalu pas di layar,
-                 berapa pun posisi scroll, dan tidak terpengaruh transform/overflow elemen induk layout. --}}
+            {{-- Galeri dan pratinjau dokumen. Pratinjau memakai <dialog> modal bawaan browser (top layer), jadi selalu pas
+                 di layar dan tidak terpengaruh transform/overflow elemen induk layout. --}}
             <div wire:key="gallery-{{ $p->id }}"
                 x-data="{
-                    open: false, i: 0, items: [], zoom: 1, rot: 0, natW: 0, natH: 0, stageW: 0, stageH: 0, pan: null,
+                    open: false, i: 0, items: [], zoom: 1, rot: 0, natW: 0, natH: 0, stageW: 0, stageH: 0, pan: null, ro: null, lastUrl: null,
 
                     get current() { return this.items[this.i] || null },
                     get currentUrl() { return this.current ? this.current.url : null },
                     get swapped() { return Math.round(Math.abs(this.rot) / 90) % 2 === 1 },
+                    // Ukuran area tampil. Jika belum terukur (mis. masih tersembunyi), pakai ukuran jendela: tidak pernah negatif.
+                    get viewW() { return this.stageW > 50 ? this.stageW : Math.max(window.innerWidth - 24, 100) },
+                    get viewH() { return this.stageH > 50 ? this.stageH : Math.max(window.innerHeight - 90, 100) },
                     get fit() {
                         const w = this.swapped ? this.natH : this.natW;
                         const h = this.swapped ? this.natW : this.natH;
-                        if (!w || !h || !this.stageW || !this.stageH) return 1;
-                        return Math.min(this.stageW / w, this.stageH / h);
+                        if (!w || !h) return 1;
+                        return Math.min(this.viewW / w, this.viewH / h);
                     },
                     get imgW() { return this.natW * this.fit * this.zoom },
                     get imgH() { return this.natH * this.fit * this.zoom },
@@ -623,12 +643,33 @@
 
                     init() {
                         this.$watch('open', v => document.body.classList.toggle('overflow-hidden', v));
-                        this.$watch('currentUrl', () => { this.natW = 0; this.natH = 0; });
+                        // $watch dipanggil setiap dependensinya berubah (bukan hanya saat nilai berubah),
+                        // jadi bandingkan dengan URL sebelumnya agar ukuran tidak di-reset tanpa perlu.
+                        this.$watch('currentUrl', (url) => {
+                            if (url === this.lastUrl) return;
+                            this.lastUrl = url;
+                            this.natW = 0; this.natH = 0;
+                            this.$nextTick(() => this.syncNatural());
+                        });
                     },
-                    stage() { return document.getElementById('applicant-stage') },
+                    destroy() {
+                        if (this.ro) this.ro.disconnect();
+                        document.body.classList.remove('overflow-hidden');
+                    },
+                    // Hanya mengukur saat area benar-benar tampil (ukuran > 0); jika tidak, abaikan dan tunggu ResizeObserver.
                     measure() {
-                        const s = this.stage();
-                        if (s) { this.stageW = s.clientWidth - 24; this.stageH = s.clientHeight - 24; }
+                        const s = this.$refs.stage;
+                        if (!s || !s.clientWidth || !s.clientHeight) return;
+                        this.stageW = s.clientWidth - 24;
+                        this.stageH = s.clientHeight - 24;
+                    },
+                    // Gambar yang sudah ada di cache mungkin tidak mengirim event load lagi.
+                    syncNatural() {
+                        const im = this.$refs.img;
+                        if (im && im.complete && im.naturalWidth && !this.natW) {
+                            this.natW = im.naturalWidth;
+                            this.natH = im.naturalHeight;
+                        }
                     },
                     show(el) {
                         // Daftar dibaca dari DOM saat dibuka: URL selalu yang terbaru.
@@ -636,10 +677,20 @@
                             .map(b => ({ url: b.dataset.url, label: b.dataset.label }));
                         this.i = Math.max(0, this.items.findIndex(x => x.url === el.dataset.url));
                         this.zoom = 1; this.rot = 0;
+                        const dlg = this.$refs.viewer;
+                        if (!dlg.open) dlg.showModal();
                         this.open = true;
-                        this.$nextTick(() => this.measure());
+                        if (!this.ro && window.ResizeObserver) {
+                            this.ro = new ResizeObserver(() => this.measure());
+                            this.ro.observe(this.$refs.stage);
+                        }
+                        this.$nextTick(() => { this.measure(); this.syncNatural(); });
                     },
-                    close() { this.open = false; this.pan = null },
+                    close() {
+                        const dlg = this.$refs.viewer;
+                        if (dlg && dlg.open) dlg.close();
+                        this.open = false; this.pan = null;
+                    },
                     next() { this.i = (this.i + 1) % this.items.length; this.zoom = 1; this.rot = 0 },
                     prev() { this.i = (this.i - 1 + this.items.length) % this.items.length; this.zoom = 1; this.rot = 0 },
                     onLoad(e) {
@@ -648,7 +699,7 @@
                         this.measure();
                     },
                     setZoom(z) {
-                        const s = this.stage();
+                        const s = this.$refs.stage;
                         const next = Math.min(8, Math.max(1, +z.toFixed(3)));
                         if (!s || next === this.zoom) return;
                         // Pertahankan titik tengah tampilan saat zoom
@@ -662,19 +713,19 @@
                     },
                     zoomIn() { this.setZoom(this.zoom * 1.25) },
                     zoomOut() { this.setZoom(this.zoom / 1.25) },
-                    fitScreen() { this.setZoom(1); const s = this.stage(); if (s) { s.scrollLeft = 0; s.scrollTop = 0; } },
+                    fitScreen() { this.setZoom(1); const s = this.$refs.stage; if (s) { s.scrollLeft = 0; s.scrollTop = 0; } },
                     actualSize() { this.setZoom(1 / this.fit) },
                     rotate(deg) { this.rot += deg; this.$nextTick(() => this.measure()) },
                     onWheel(e) {
                         if (e.ctrlKey || e.metaKey) { e.preventDefault(); e.deltaY < 0 ? this.zoomIn() : this.zoomOut(); }
                     },
                     startPan(e) {
-                        const s = this.stage();
+                        const s = this.$refs.stage;
                         if (this.zoom <= 1 || e.pointerType !== 'mouse' || e.button !== 0 || !s) return;
                         this.pan = { x: e.clientX, y: e.clientY, l: s.scrollLeft, t: s.scrollTop };
                     },
                     movePan(e) {
-                        const s = this.stage();
+                        const s = this.$refs.stage;
                         if (!this.pan || !s) return;
                         s.scrollLeft = this.pan.l - (e.clientX - this.pan.x);
                         s.scrollTop = this.pan.t - (e.clientY - this.pan.y);
@@ -683,7 +734,6 @@
                     onKey(e) {
                         if (!this.open) return;
                         switch (e.key) {
-                            case 'Escape': this.close(); break;
                             case 'ArrowRight': if (this.zoom === 1 && this.items.length > 1) { e.preventDefault(); this.next(); } break;
                             case 'ArrowLeft': if (this.zoom === 1 && this.items.length > 1) { e.preventDefault(); this.prev(); } break;
                             case '+': case '=': e.preventDefault(); this.zoomIn(); break;
@@ -723,10 +773,10 @@
                     @endforeach
                 </div>
 
-                <template x-teleport="body">
-                    <div x-show="open" x-cloak x-transition.opacity.duration.150ms
-                        class="fixed inset-0 z-[3000] flex flex-col bg-slate-900/95 text-white"
-                        role="dialog" aria-modal="true" aria-label="Pratinjau dokumen">
+                {{-- <dialog> modal: tampil di "top layer" browser, jadi selalu pas di layar (tidak terpengaruh transform/overflow induk). --}}
+                <dialog x-ref="viewer" @close="open = false; pan = null" aria-label="Pratinjau dokumen"
+                    class="m-0 h-full max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-white backdrop:bg-slate-900/95">
+                    <div class="relative flex h-full w-full flex-col">
 
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-white/10 bg-white/5 px-4 py-2.5">
                             <div class="font-semibold" x-text="current ? current.label : ''"></div>
@@ -754,7 +804,7 @@
                         </div>
 
                         {{-- m-auto pada kotak (bukan items-center) agar gambar tinggi bisa di-scroll sampai ujung atas --}}
-                        <div id="applicant-stage" class="flex min-h-0 flex-1 overflow-auto p-3"
+                        <div x-ref="stage" class="flex min-h-0 flex-1 overflow-auto p-3"
                             :class="{ 'cursor-grab': zoom > 1 && !pan, 'cursor-grabbing select-none': pan }"
                             style="overscroll-behavior: contain;"
                             @click.self="zoom === 1 && close()"
@@ -763,8 +813,9 @@
                             @pointerdown="startPan($event)" @pointermove="movePan($event)"
                             @pointerup="endPan()" @pointercancel="endPan()" @pointerleave="endPan()">
                             <div class="relative m-auto shrink-0" :style="{ width: boxW + 'px', height: boxH + 'px' }">
-                                <img :src="currentUrl" :alt="current ? current.label : ''" draggable="false" @load="onLoad($event)"
+                                <img x-ref="img" :src="currentUrl" :alt="current ? current.label : ''" draggable="false" @load="onLoad($event)"
                                     class="absolute left-1/2 top-1/2 max-h-none max-w-none select-none rounded bg-white shadow-2xl transition-transform duration-200"
+                                    :class="{ 'invisible': !natW }"
                                     :style="{ width: imgW + 'px', height: imgH + 'px', transform: 'translate(-50%, -50%) rotate(' + rot + 'deg)' }">
                             </div>
                         </div>
@@ -782,63 +833,62 @@
                             </div>
                         </template>
                     </div>
-                </template>
+                </dialog>
             </div>
         @endif
 
     </div>
 
-    {{-- Notifikasi dan dialog konfirmasi (mandiri, tidak bergantung SweetAlert atau handler layout) --}}
-    <template x-teleport="body">
-        <div>
-            <div class="pointer-events-none fixed right-4 top-4 z-[4000] flex w-full max-w-sm flex-col gap-2">
-                <template x-for="t in toasts" :key="t.id">
-                    <div x-transition
-                        class="pointer-events-auto flex items-start gap-3 rounded-xl border bg-white p-4 shadow-lg"
+    {{-- Notifikasi dan dialog konfirmasi. <dialog> dan popover tampil di "top layer" browser: selalu di atas
+         semuanya dan tidak terpengaruh transform/overflow elemen induk layout. --}}
+    <div x-ref="toasts" popover="manual"
+        class="pointer-events-none fixed bottom-auto left-auto right-4 top-4 m-0 w-[calc(100%-2rem)] max-w-sm overflow-visible border-0 bg-transparent p-0">
+        <div class="flex flex-col gap-2">
+            <template x-for="t in toasts" :key="t.id">
+                <div x-transition
+                    class="pointer-events-auto flex items-start gap-3 rounded-xl border bg-white p-4 shadow-lg"
+                    :class="{
+                        'border-emerald-200': t.type === 'success',
+                        'border-rose-200': t.type === 'error',
+                        'border-amber-200': t.type === 'warning',
+                        'border-sky-200': t.type === 'info'
+                    }">
+                    <span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
                         :class="{
-                            'border-emerald-200': t.type === 'success',
-                            'border-rose-200': t.type === 'error',
-                            'border-amber-200': t.type === 'warning',
-                            'border-sky-200': t.type === 'info'
-                        }">
-                        <span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
-                            :class="{
-                                'bg-emerald-500': t.type === 'success',
-                                'bg-rose-500': t.type === 'error',
-                                'bg-amber-500': t.type === 'warning',
-                                'bg-sky-500': t.type === 'info'
-                            }"></span>
-                        <p class="flex-1 text-sm text-slate-700" x-text="t.title"></p>
-                        <button type="button" @click="dismiss(t.id)" aria-label="Tutup notifikasi"
-                            class="text-slate-400 transition hover:text-slate-600">{{ $svg('x') }}</button>
-                    </div>
-                </template>
-            </div>
+                            'bg-emerald-500': t.type === 'success',
+                            'bg-rose-500': t.type === 'error',
+                            'bg-amber-500': t.type === 'warning',
+                            'bg-sky-500': t.type === 'info'
+                        }"></span>
+                    <p class="flex-1 text-sm text-slate-700" x-text="t.title"></p>
+                    <button type="button" @click="dismiss(t.id)" aria-label="Tutup notifikasi"
+                        class="text-slate-400 transition hover:text-slate-600">{{ $svg('x') }}</button>
+                </div>
+            </template>
+        </div>
+    </div>
 
-            <div x-show="dialog" x-cloak x-transition.opacity
-                class="fixed inset-0 z-[3500] flex items-center justify-center bg-slate-900/50 p-4"
-                @click.self="dialog = null" role="dialog" aria-modal="true">
-                <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" x-show="dialog" x-transition>
-                    <div class="flex items-start gap-4">
-                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
-                            :class="info ? info.tone : ''">{{ $svg('warn', 'h-5 w-5') }}</span>
-                        <div class="min-w-0">
-                            <h3 class="text-base font-semibold text-slate-900" x-text="info ? info.title : ''"></h3>
-                            <p class="mt-1.5 text-sm text-slate-600">
-                                <span class="font-semibold text-slate-800" x-text="dialog ? dialog.name : ''"></span>
-                                <span x-text="info ? info.body : ''"></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex justify-end gap-2">
-                        <button type="button" @click="dialog = null"
-                            class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Batal</button>
-                        <button type="button" @click="yes()"
-                            class="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
-                            :class="info ? info.btn : ''" x-text="info ? info.yes : 'Ya'"></button>
-                    </div>
+    <dialog x-ref="confirm" @close="dialog = null" @click.self="cancel()"
+        class="m-auto w-full max-w-md rounded-2xl border-0 bg-white p-0 text-slate-800 shadow-2xl backdrop:bg-slate-900/50">
+        <div class="p-6">
+            <div class="flex items-start gap-4">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+                    :class="info ? info.tone : ''">{{ $svg('warn', 'h-5 w-5') }}</span>
+                <div class="min-w-0">
+                    <h3 class="text-base font-semibold text-slate-900" x-text="info ? info.title : ''"></h3>
+                    <p class="mt-1.5 text-sm text-slate-600">
+                        <span class="font-semibold text-slate-800" x-text="dialog ? dialog.name : ''"></span>
+                        <span x-text="info ? info.body : ''"></span>
+                    </p>
                 </div>
             </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" @click="cancel()"
+                    class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Batal</button>
+                <button type="button" @click="yes()"
+                    class="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                    :class="info ? info.btn : ''" x-text="info ? info.yes : 'Ya'"></button>
+            </div>
         </div>
-    </template>
+    </dialog>
 </div>

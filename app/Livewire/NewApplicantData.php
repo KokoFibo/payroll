@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Actions\AcceptApplicant;
 use App\Actions\DeleteApplicant;
-use App\Actions\UndoAcceptance;
+use App\Exceptions\ApplicantConfigException;
+use App\Exceptions\PresensiUserException;
 use App\Enums\ApplicantStatus;
-use App\Models\ApplicantAcceptance;
 use App\Models\Karyawan;
 use App\Models\Portal\Applicant;
 use App\Models\Portal\ApplicantFile;
@@ -28,7 +28,7 @@ use Livewire\WithPagination;
  *
  * Sumber data: DATABASE APPLICANT (koneksi "applicant", model App\Models\Portal\*), bukan database payroll.
  * Hanya pelamar yang sudah submit (status >= 1) dari perusahaan di config applicant_admin.company_codes yang ditampilkan. Data lama di database payroll tidak dipakai.
- * Database payroll hanya dipakai untuk Karyawan, User, dan catatan undo (ApplicantAcceptance).
+ * Database payroll hanya dipakai untuk Karyawan dan User (fitur Terima karyawan).
  *
  * Catatan: otorisasi tombol (role, username) masih di Blade, sesuai keputusan sebelumnya.
  */
@@ -155,6 +155,12 @@ class NewApplicantData extends Component
 
         // Status "Diterima" tidak disimpan langsung: harus lewat konfirmasi dan proses penerimaan.
         if ($newStatus === ApplicantStatus::Diterima->value) {
+            if (! $this->acceptEnabled) {
+                $this->cancel();
+                $this->notify('error', 'Fitur penerimaan karyawan tidak aktif di aplikasi ini.');
+                return;
+            }
+
             $this->terimaId = $applicant->id;
             $this->dispatch('applicant-confirm-terima', text: $applicant->nama);
             $this->cancel();
@@ -196,7 +202,14 @@ class NewApplicantData extends Component
             return;
         }
 
-        $result = app(DeleteApplicant::class)->handle($applicant);
+        try {
+            $result = app(DeleteApplicant::class)->handle($applicant);
+        } catch (ApplicantConfigException $e) {
+            $this->deleteId = null;
+            $this->notify('error', $e->getMessage() . ' Tidak ada data yang dihapus.');
+            return;
+        }
+
         $this->deleteId = null;
 
         if ($result['s3_ok']) {
@@ -207,12 +220,17 @@ class NewApplicantData extends Component
     }
 
     // ------------------------------------------------------------------
-    // Terima pelamar (+ undo)
+    // Terima pelamar (tidak bisa dibatalkan)
     // ------------------------------------------------------------------
 
     #[On('applicant-terima-confirmed')]
     public function diterima(): void
     {
+        if (! $this->acceptEnabled) {
+            $this->notify('error', 'Fitur penerimaan karyawan tidak aktif di aplikasi ini.');
+            return;
+        }
+
         $id = $this->terimaId;
 
         if (! $id) {
@@ -236,28 +254,6 @@ class NewApplicantData extends Component
 
     private function prosesTerima(int $id): void
     {
-        // check_resigned_blacklist() dibuat untuk pelamar di database payroll. Ia menerima id pelamar, dan id itu
-        // kini berasal dari database applicant: jika helper mencari Applicant lama berdasarkan id, ia memeriksa
-        // ORANG YANG SALAH. Diblokir sampai Anda memastikan helper-nya (APPLICANT_SCREENING_VERIFIED=true).
-        if (! config('applicant_admin.screening_verified')) {
-            $this->notify('error', 'Pemeriksaan resign/blacklist belum disesuaikan untuk data baru, penerimaan ditahan.');
-            return;
-        }
-
-        [$hasil, $refId] = array_pad(check_resigned_blacklist($id), 2, null);
-
-        $pesan = match ($hasil) {
-            1 => 'Karyawan ini sudah pernah RESIGNED, ID : ' . $refId,
-            2 => 'Karyawan ini sudah pernah Blacklist, ID : ' . $refId,
-            3 => 'Karyawan ini sudah pernah terdaftar dalam database, ID : ' . $refId,
-            default => null,
-        };
-
-        if ($pesan) {
-            $this->notify('error', $pesan);
-            return;
-        }
-
         $applicant = $this->findApplicant($id);
 
         if (! $applicant) {
@@ -275,8 +271,20 @@ class NewApplicantData extends Component
             return;
         }
 
+        // Akun presensi dibuat dengan email dan password dari tanggal lahir (createPresensiAccount): keduanya wajib ada.
+        if (blank($applicant->email) || blank($applicant->tgl_lahir)) {
+            $this->notify('error', 'Email dan tanggal lahir pelamar harus terisi (password akun presensi dibuat dari tanggal lahir).');
+            return;
+        }
+
         try {
-            $karyawan = app(AcceptApplicant::class)->handle($applicant, auth()->id());
+            $result = app(AcceptApplicant::class)->handle($applicant, auth()->id());
+        } catch (ApplicantConfigException $e) {
+            $this->notify('error', $e->getMessage() . ' Tidak ada data yang berubah.');
+            return;
+        } catch (PresensiUserException $e) {
+            $this->notify('error', 'Akun presensi gagal dibuat: ' . $e->getMessage() . '. Tidak ada data yang berubah.');
+            return;
         } catch (\Throwable $e) {
             report($e);
             $this->notify('error', 'Gagal memproses penerimaan. Tidak ada data yang berubah.');
@@ -284,34 +292,13 @@ class NewApplicantData extends Component
         }
 
         $this->terimaId = null;
-        $this->notify(
-            'success',
-            'Diterima sebagai karyawan ID ' . $karyawan->id_karyawan
-            . '. Bisa dibatalkan selama ' . AcceptApplicant::UNDO_MINUTES . ' menit; setelah itu file dipindahkan permanen.'
-        );
-    }
+        $idKaryawan = $result['karyawan']->id_karyawan;
 
-    public function undoAcceptance(int $id): void
-    {
-        $acc = ApplicantAcceptance::find($id);
-
-        if (! $acc) {
-            $this->notify('error', 'Data pembatalan tidak ditemukan.');
-            return;
+        if ($result['cleanup_ok']) {
+            $this->notify('success', 'Diterima sebagai karyawan ID ' . $idKaryawan . '. Akun presensi sudah dibuat dan file dipindahkan ke bucket karyawan.');
+        } else {
+            $this->notify('warning', 'Diterima sebagai karyawan ID ' . $idKaryawan . ', tetapi file asal di bucket portal belum terhapus sepenuhnya. Lihat log untuk daftar file.');
         }
-
-        try {
-            app(UndoAcceptance::class)->handle($acc);
-        } catch (\DomainException $e) {
-            $this->notify('error', $e->getMessage());
-            return;
-        } catch (\Throwable $e) {
-            report($e);
-            $this->notify('error', 'Pembatalan gagal (mungkin email sudah dipakai pendaftaran baru). Tidak ada data yang berubah.');
-            return;
-        }
-
-        $this->notify('success', 'Penerimaan dibatalkan. Pelamar kembali ke daftar.');
     }
 
     // ------------------------------------------------------------------
@@ -319,9 +306,33 @@ class NewApplicantData extends Component
     // ------------------------------------------------------------------
 
     #[Computed]
-    public function recentAcceptances()
+    public function acceptEnabled(): bool
     {
-        return ApplicantAcceptance::undoable()->latest()->get();
+        return (bool) config('applicant_admin.accept_enabled');
+    }
+
+    /** Peringatan konfigurasi untuk admin (tampil di atas daftar). */
+    #[Computed]
+    public function configWarnings(): array
+    {
+        $warn = [];
+        $codes = config('applicant_admin.company_codes', []);
+
+        if (! $codes) {
+            $warn[] = 'APPLICANT_COMPANY_CODES belum diisi di .env, jadi tidak ada pelamar yang ditampilkan. Isi dengan kode perusahaan (kolom companies.code), pisahkan koma, atau * untuk semua perusahaan.';
+        } elseif ($this->allowedCompanyIds === []) {
+            $warn[] = 'Tidak ada perusahaan dengan kode ' . implode(', ', $codes) . ' di database applicant, jadi tidak ada pelamar yang ditampilkan.';
+        }
+
+        if (! $this->diskReady(config('applicant_admin.applicant_disk'))) {
+            $warn[] = 'APPLICANT_FILES_DISK belum diatur atau tidak ada di config/filesystems.php: dokumen tidak bisa ditampilkan dan pelamar yang punya dokumen tidak bisa dihapus.';
+        }
+
+        if ($this->acceptEnabled && ! $this->diskReady(config('applicant_admin.karyawan_disk'))) {
+            $warn[] = 'KARYAWAN_FILES_DISK belum diatur atau tidak ada di config/filesystems.php: penerimaan karyawan akan gagal.';
+        }
+
+        return $warn;
     }
 
     /** Jumlah pelamar per status (untuk chip filter). */
@@ -342,8 +353,12 @@ class NewApplicantData extends Component
     {
         $codes = config('applicant_admin.company_codes', []);
 
+        if (in_array('*', $codes, true)) {
+            return null;        // semua perusahaan (harus ditulis sengaja)
+        }
+
         if (! $codes) {
-            return null;
+            return [];          // belum dikonfigurasi: tidak menampilkan apa pun
         }
 
         return Company::whereIn('code', $codes)->pluck('id')->all();
@@ -395,7 +410,7 @@ class NewApplicantData extends Component
             ->values()
             ->map(fn ($f) => [
                 'label' => self::DOC_LABELS[$f->type] ?? (filled($f->type) ? ucfirst($f->type) : 'Dokumen'),
-                'name'  => get_filename($f->filename),
+                'name'  => function_exists('get_filename') ? get_filename($f->filename) : basename((string) $f->filename),
                 'url'   => $this->fileUrl($f->filename),
             ])
             ->all();
@@ -414,7 +429,7 @@ class NewApplicantData extends Component
 
         return view('livewire.new-applicant-data', [
             'applicants' => $applicants,
-        ])->layout('components/layouts.app-tailwind');
+        ])->layout(config('applicant_admin.layout', 'components/layouts.app-tailwind'));
     }
 
     // ------------------------------------------------------------------
@@ -473,17 +488,25 @@ class NewApplicantData extends Component
      */
     private function fileUrl(?string $key): ?string
     {
-        if (blank($key)) {
+        $disk = config('applicant_admin.applicant_disk');
+
+        if (blank($key) || ! $this->diskReady($disk)) {
             return null;
         }
 
-        return Cache::remember('applicant-file-url:' . md5($key), now()->addMinutes(8), function () use ($key) {
+        return Cache::remember('applicant-file-url:' . $disk . ':' . md5($key), now()->addMinutes(8), function () use ($key, $disk) {
             try {
-                return Storage::disk(config('applicant_admin.applicant_disk'))->temporaryUrl($key, now()->addMinutes(10));
+                return Storage::disk($disk)->temporaryUrl($key, now()->addMinutes(10));
             } catch (\Throwable $e) {
-                return getUrl($key);   // helper lama sebagai cadangan
+                // cadangan: helper getUrl() milik aplikasi lama, jika ada
+                return function_exists('getUrl') ? getUrl($key) : null;
             }
         });
+    }
+
+    private function diskReady(?string $name): bool
+    {
+        return filled($name) && config("filesystems.disks.{$name}") !== null;
     }
 
     private function notify(string $type, string $title): void
