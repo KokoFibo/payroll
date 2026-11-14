@@ -39,6 +39,7 @@ use App\Livewire\Cleanemail;
 use App\Livewire\CreateUser;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
+use App\Livewire\NewApplicantData;
 use App\Livewire\DataLog;
 use App\Livewire\DataResigned;
 use App\Livewire\Datatidaklengkap;
@@ -180,6 +181,7 @@ Route::middleware(['auth'])->group(function () {
         // Junior Admin
         Route::middleware(['JuniorAdmin'])->group(function () {
             Route::get('/dataapplicant', DataApplicant::class);
+            Route::get('/newapplicantdata', NewApplicantData::class);
 
 
             Route::middleware(['Admin'])->group(function () {

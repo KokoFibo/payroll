@@ -97,8 +97,6 @@
         {{-- nyalakan ini jika mau pakai background texture --}}
         {{-- <div class="content-wrapper" style="background-image: url({{ asset('images/texture.png') }});"> --}}
         <div class="content-wrapper">
-
-
             {{ $slot }}
 
         </div>
