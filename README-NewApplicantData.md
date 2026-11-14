@@ -132,5 +132,3 @@ Tanpa baris-baris itu halaman payroll akan kosong dengan peringatan konfigurasi 
 5. (Payroll) Terima satu pelamar uji dengan akun presensi uji; pastikan file asli hilang dari bucket portal dan ada di
    bucket karyawan, lalu hapus akun presensi ujinya secara manual.
 6. Coba akses halaman dengan akun yang **tidak** berhak: harus ditolak oleh middleware.
-
-<!-- ok -->
