@@ -7,9 +7,9 @@ data / menolak aksi) dan menampilkan peringatan di atas daftar.
 
 ## Dua mode
 
-| Mode | Fitur | Aktif lewat |
-|---|---|---|
-| **Kelola** (bawaan) | daftar, cari, filter, detail, pratinjau dokumen, ubah status, hapus (data + file S3) | selalu |
+| Mode                                 | Fitur                                                                                    | Aktif lewat                     |
+| ------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------- |
+| **Kelola** (bawaan)                  | daftar, cari, filter, detail, pratinjau dokumen, ubah status, hapus (data + file S3)     | selalu                          |
 | **Terima karyawan** (khusus payroll) | tombol Diterima: buat Karyawan, akun presensi, pindahkan file. **Tidak bisa dibatalkan** | `APPLICANT_ACCEPT_ENABLED=true` |
 
 ## File yang disalin
@@ -54,15 +54,15 @@ Tidak ada tabel, migrasi, atau jadwal (scheduler) tambahan.
 
 ## Variabel `.env`
 
-| Variabel | Wajib | Arti |
-|---|---|---|
-| `APPLICANT_COMPANY_CODES` | ya | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan |
-| `APPLICANT_FILES_DISK` | ya | nama disk bucket portal. Kosong = dokumen tidak tampil dan pelamar ber-dokumen **tidak bisa dihapus** |
-| `APPLICANT_DB_DATABASE` (+host, user, password) | ya | koneksi `applicant` |
-| `APPLICANT_ADMIN_LAYOUT` | tidak | layout Livewire |
-| `APPLICANT_ETNIS_ROLES` | tidak | role (nilai kolom `role` pada user) yang melihat data etnis **di tabel daftar**. Kosong = tidak ada |
-| `APPLICANT_ACCEPT_ENABLED` | tidak | `true` untuk fitur Terima karyawan (bawaan mati) |
-| `KARYAWAN_FILES_DISK` | jika Terima aktif | nama disk bucket karyawan; **harus bucket berbeda** dari bucket portal |
+| Variabel                                        | Wajib             | Arti                                                                                                          |
+| ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| `APPLICANT_COMPANY_CODES`                       | ya                | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan |
+| `APPLICANT_FILES_DISK`                          | ya                | nama disk bucket portal. Kosong = dokumen tidak tampil dan pelamar ber-dokumen **tidak bisa dihapus**         |
+| `APPLICANT_DB_DATABASE` (+host, user, password) | ya                | koneksi `applicant`                                                                                           |
+| `APPLICANT_ADMIN_LAYOUT`                        | tidak             | layout Livewire                                                                                               |
+| `APPLICANT_ETNIS_ROLES`                         | tidak             | role (nilai kolom `role` pada user) yang melihat data etnis **di tabel daftar**. Kosong = tidak ada           |
+| `APPLICANT_ACCEPT_ENABLED`                      | tidak             | `true` untuk fitur Terima karyawan (bawaan mati)                                                              |
+| `KARYAWAN_FILES_DISK`                           | jika Terima aktif | nama disk bucket karyawan; **harus bucket berbeda** dari bucket portal                                        |
 
 Setelah mengubah `.env`: `php artisan config:clear`.
 
