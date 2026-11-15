@@ -80,6 +80,10 @@ class NewApplicantData extends Component
     #[Locked]
     public ?int $terimaId = null;
 
+    /** Pesan error/peringatan terakhir. Dirender server di halaman, jadi tetap terlihat walau toast/JavaScript bermasalah. */
+    #[Locked]
+    public ?array $notice = null;
+
     // ------------------------------------------------------------------
     // Pencarian dan filter
     // ------------------------------------------------------------------
@@ -237,18 +241,40 @@ class NewApplicantData extends Component
             return;
         }
 
-        // Cegah klik ganda atau dua admin menerima pelamar yang sama bersamaan.
-        $lock = Cache::lock("accept-applicant:{$id}", 60);
+        $this->withAcceptLock($id, fn () => $this->prosesTerima($id));
+    }
 
-        if (! $lock->get()) {
-            $this->notify('info', 'Penerimaan sedang diproses. Tunggu sebentar.');
-            return;
+    /**
+     * Cegah klik ganda atau dua admin menerima pelamar yang sama bersamaan. Jika cache store aplikasi tidak mendukung
+     * lock (mis. driver database tanpa tabel cache_locks), JANGAN gagal: lanjut tanpa kunci. Pelamar yang sudah diterima
+     * tidak ditemukan lagi, jadi klik ganda tetap aman.
+     */
+    private function withAcceptLock(int $id, callable $work): void
+    {
+        $lock = null;
+
+        try {
+            $lock = Cache::lock("accept-applicant:{$id}", 60);
+
+            if (! $lock->get()) {
+                $this->notify('info', 'Penerimaan sedang diproses. Tunggu sebentar.');
+                return;
+            }
+        } catch (\Throwable $e) {
+            report($e);
+            $lock = null;
         }
 
         try {
-            $this->prosesTerima($id);
+            $work();
         } finally {
-            $lock->release();
+            if ($lock) {
+                try {
+                    $lock->release();
+                } catch (\Throwable $e) {
+                    report($e);
+                }
+            }
         }
     }
 
@@ -330,6 +356,18 @@ class NewApplicantData extends Component
 
         if ($this->acceptEnabled && ! $this->diskReady(config('applicant_admin.karyawan_disk'))) {
             $warn[] = 'KARYAWAN_FILES_DISK belum diatur atau tidak ada di config/filesystems.php: penerimaan karyawan akan gagal.';
+        }
+
+        if ($this->acceptEnabled) {
+            foreach (['getNextIdKaryawan', 'createPresensiAccount'] as $fn) {
+                if (! function_exists($fn)) {
+                    $warn[] = "Fungsi {$fn}() belum ada di aplikasi ini: penerimaan karyawan akan gagal. Tambahkan ke file helper (lihat folder snippets).";
+                }
+            }
+
+            if (blank(config('services.presensi.url')) || blank(config('services.presensi.token'))) {
+                $warn[] = 'PRESENSI_API_URL atau PRESENSI_API_TOKEN belum diisi (config/services.php entri presensi + .env): akun presensi tidak bisa dibuat, jadi penerimaan akan gagal.';
+            }
         }
 
         return $warn;
@@ -513,5 +551,13 @@ class NewApplicantData extends Component
     {
         // Event milik komponen ini (ditangani view), tidak bergantung pada handler 'message' di layout.
         $this->dispatch('applicant-toast', type: $type, title: $title);
+
+        // Error dan peringatan juga ditampilkan di halaman (render server) sampai ditutup.
+        $this->notice = in_array($type, ['error', 'warning'], true) ? ['type' => $type, 'title' => $title] : null;
+    }
+
+    public function dismissNotice(): void
+    {
+        $this->notice = null;
     }
 }

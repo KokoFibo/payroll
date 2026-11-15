@@ -7,9 +7,9 @@ data / menolak aksi) dan menampilkan peringatan di atas daftar.
 
 ## Dua mode
 
-| Mode                                 | Fitur                                                                                    | Aktif lewat                     |
-| ------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------- |
-| **Kelola** (bawaan)                  | daftar, cari, filter, detail, pratinjau dokumen, ubah status, hapus (data + file S3)     | selalu                          |
+| Mode | Fitur | Aktif lewat |
+|---|---|---|
+| **Kelola** (bawaan) | daftar, cari, filter, detail, pratinjau dokumen, ubah status, hapus (data + file S3) | selalu |
 | **Terima karyawan** (khusus payroll) | tombol Diterima: buat Karyawan, akun presensi, pindahkan file. **Tidak bisa dibatalkan** | `APPLICANT_ACCEPT_ENABLED=true` |
 
 ## File yang disalin
@@ -54,15 +54,15 @@ Tidak ada tabel, migrasi, atau jadwal (scheduler) tambahan.
 
 ## Variabel `.env`
 
-| Variabel                                        | Wajib             | Arti                                                                                                          |
-| ----------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| `APPLICANT_COMPANY_CODES`                       | ya                | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan |
-| `APPLICANT_FILES_DISK`                          | ya                | nama disk bucket portal. Kosong = dokumen tidak tampil dan pelamar ber-dokumen **tidak bisa dihapus**         |
-| `APPLICANT_DB_DATABASE` (+host, user, password) | ya                | koneksi `applicant`                                                                                           |
-| `APPLICANT_ADMIN_LAYOUT`                        | tidak             | layout Livewire                                                                                               |
-| `APPLICANT_ETNIS_ROLES`                         | tidak             | role (nilai kolom `role` pada user) yang melihat data etnis **di tabel daftar**. Kosong = tidak ada           |
-| `APPLICANT_ACCEPT_ENABLED`                      | tidak             | `true` untuk fitur Terima karyawan (bawaan mati)                                                              |
-| `KARYAWAN_FILES_DISK`                           | jika Terima aktif | nama disk bucket karyawan; **harus bucket berbeda** dari bucket portal                                        |
+| Variabel | Wajib | Arti |
+|---|---|---|
+| `APPLICANT_COMPANY_CODES` | ya | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan |
+| `APPLICANT_FILES_DISK` | ya | nama disk bucket portal. Kosong = dokumen tidak tampil dan pelamar ber-dokumen **tidak bisa dihapus** |
+| `APPLICANT_DB_DATABASE` (+host, user, password) | ya | koneksi `applicant` |
+| `APPLICANT_ADMIN_LAYOUT` | tidak | layout Livewire |
+| `APPLICANT_ETNIS_ROLES` | tidak | role (nilai kolom `role` pada user) yang melihat data etnis **di tabel daftar**. Kosong = tidak ada |
+| `APPLICANT_ACCEPT_ENABLED` | tidak | `true` untuk fitur Terima karyawan (bawaan mati) |
+| `KARYAWAN_FILES_DISK` | jika Terima aktif | nama disk bucket karyawan; **harus bucket berbeda** dari bucket portal |
 
 Setelah mengubah `.env`: `php artisan config:clear`.
 
@@ -122,6 +122,34 @@ PRESENSI_API_TOKEN=...
 ```
 
 Tanpa baris-baris itu halaman payroll akan kosong dengan peringatan konfigurasi (aman, bukan rusak).
+
+## Pemecahan masalah: "klik tombol tidak terjadi apa-apa"
+
+Aksi di halaman ini sengaja **berhenti dan membatalkan semuanya** bila ada prasyarat yang kurang (berbeda dengan
+aplikasi lama yang diam-diam melanjutkan). Penyebabnya selalu salah satu prasyarat di atas. Cara menemukannya:
+
+1. **Jalankan pemeriksaan otomatis** (tidak mengubah data):
+
+   ```bash
+   php artisan applicant:check          # tambah --ping untuk menguji server presensi
+   ```
+
+   Ia memeriksa koneksi dan hak akses database applicant, izin bucket (baca/hapus/tulis), fungsi helper payroll,
+   `PRESENSI_API_*`, `db_code` yang akan dipakai, dan cache lock. Baris `[GAGAL]` menunjukkan apa yang harus diperbaiki.
+2. **Lihat halamannya:** kotak kuning "Konfigurasi belum lengkap" di atas daftar memuat prasyarat yang kurang, dan kotak
+   merah/kuning di paling atas memuat pesan dari aksi terakhir (tetap tampil sampai ditutup, walau toast tidak terlihat).
+3. **Lihat log:** `tail -n 80 storage/logs/laravel.log` tepat setelah mengklik. Error yang tidak tertangkap dicatat di sini.
+4. **Lihat console browser** (F12): error JavaScript/Alpine tampil di sana. Aksi hapus dan terima membutuhkan Alpine
+   dari Livewire 3 (dialog konfirmasi).
+
+Penyebab yang paling sering:
+
+| Gejala | Penyebab |
+|---|---|
+| Hapus: tidak ada yang terhapus | `APPLICANT_FILES_DISK` kosong/salah (pelamar ber-dokumen ditolak), atau user MySQL tanpa hak `DELETE` |
+| Ubah status gagal | user MySQL tanpa hak `UPDATE` |
+| Terima: tidak ada karyawan baru | `KARYAWAN_FILES_DISK` kosong, `PRESENSI_API_URL`/`TOKEN` kosong, fungsi `createPresensiAccount()` / `getNextIdKaryawan()` belum ditambahkan, atau API presensi menolak (email sudah terdaftar, `db_code` tidak dikenal) |
+| Terima: "bucket sama" | disk portal dan disk karyawan menunjuk bucket yang sama |
 
 ## Uji setelah dipasang
 

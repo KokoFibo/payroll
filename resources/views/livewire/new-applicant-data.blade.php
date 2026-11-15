@@ -132,6 +132,17 @@
 
     <div class="px-4 py-6 sm:px-6 lg:px-8">
 
+        {{-- Pesan error/peringatan terakhir, dirender server: tetap terlihat walau toast atau JavaScript bermasalah --}}
+        @if ($notice)
+            <div role="alert"
+                class="mb-6 flex items-start gap-3 rounded-2xl border p-4 text-sm {{ $notice['type'] === 'error' ? 'border-rose-200 bg-rose-50 text-rose-900' : 'border-amber-200 bg-amber-50 text-amber-900' }}">
+                <span class="mt-0.5 shrink-0">{{ $svg('warn', 'h-4 w-4') }}</span>
+                <p class="flex-1">{{ $notice['title'] }}</p>
+                <button type="button" wire:click="dismissNotice" aria-label="Tutup pesan"
+                    class="shrink-0 opacity-60 transition hover:opacity-100">{{ $svg('x') }}</button>
+            </div>
+        @endif
+
         {{-- ============================ DAFTAR ============================ --}}
         @if (! $this->detailId)
             @php
