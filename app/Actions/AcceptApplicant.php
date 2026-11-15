@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Exceptions\ApplicantConfigException;
 use App\Exceptions\PresensiUserException;
 use App\Models\Karyawan;
 use App\Models\Portal\Applicant;
@@ -42,6 +43,14 @@ class AcceptApplicant
      */
     public function handle(Applicant $a, ?int $by = null): array
     {
+        // Fungsi helper milik aplikasi payroll harus ada. Dicek paling awal agar jika kurang belum ada yang berubah,
+        // dan pesannya jelas (bukan error "undefined function" di tengah transaksi).
+        foreach (['getNextIdKaryawan', 'createPresensiAccount'] as $fn) {
+            if (! function_exists($fn)) {
+                throw new ApplicantConfigException("Fungsi {$fn}() belum ada di aplikasi ini. Tambahkan ke file helper (lihat folder snippets).");
+            }
+        }
+
         // db_code untuk akun presensi = kolom `name` perusahaan pelamar (database applicant). Ditentukan paling awal
         // agar jika gagal belum ada yang disalin atau diubah.
         $dbCode = $this->presensiDbCode($a);
