@@ -79,3 +79,5 @@ GRANT SELECT ON payroll.departments TO 'ai_readonly'@'localhost';
 -- ulangi GRANT untuk tiap tabel di allowed_tables
 
 FLUSH PRIVILEGES;
+
+<!-- ok -->
