@@ -10,7 +10,7 @@ data / menolak aksi) dan menampilkan peringatan di atas daftar.
 | Mode | Fitur | Aktif lewat |
 |---|---|---|
 | **Kelola** (bawaan) | daftar, cari, filter, detail, pratinjau dokumen, ubah status, hapus (data + file S3) | selalu |
-| **Terima karyawan** (khusus payroll) | tombol Diterima: buat Karyawan, akun presensi, pindahkan file. **Tidak bisa dibatalkan** | `APPLICANT_ACCEPT_ENABLED=true` |
+| **Terima karyawan** (khusus payroll) | tombol Diterima: **salin** data ke Karyawan, **salin** dokumen ke bucket karyawan, buat akun presensi. Data pelamar tetap ada. Tidak bisa dibatalkan dari halaman ini | `APPLICANT_ACCEPT_ENABLED=true` |
 
 ## File yang disalin
 
@@ -56,7 +56,7 @@ Tidak ada tabel, migrasi, atau jadwal (scheduler) tambahan.
 
 | Variabel | Wajib | Arti |
 |---|---|---|
-| `APPLICANT_COMPANY_CODES` | ya | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan |
+| `APPLICANT_COMPANY_CODES` | ya | kode `companies.code` yang ditampilkan, pisahkan koma. Kosong = tidak ada yang tampil. `*` = semua perusahaan. Juga menjadi `db_code` presensi untuk `createUser()`: di sana harus berisi **tepat satu** kode |
 | `APPLICANT_FILES_DISK` | ya | nama disk bucket portal. Kosong = dokumen tidak tampil dan pelamar ber-dokumen **tidak bisa dihapus** |
 | `APPLICANT_DB_DATABASE` (+host, user, password) | ya | koneksi `applicant` |
 | `APPLICANT_ADMIN_LAYOUT` | tidak | layout Livewire |
@@ -83,27 +83,35 @@ Route::get('/data-applicant', \App\Livewire\NewApplicantData::class)
   pelamar, termasuk data pribadinya (KTP, alamat, dst.).
 - Jika butuh pemisahan per peran di dalam halaman, pemeriksaan harus ditambahkan di setiap method aksi.
 
-## Terima karyawan: cara kerja (tidak bisa dibatalkan)
+## Terima karyawan: cara kerja (salin, bukan pindah)
+
+Penerimaan **menyalin**. Data pelamar di database applicant dan file di bucket portal **tidak dihapus**; keduanya tetap
+ada sampai Anda menghapusnya sendiri lewat tombol Hapus.
 
 1. Cek awal: belum pernah diterima, email belum ada di `users`, email dan tanggal lahir terisi.
-2. `db_code` diambil dari kolom `name` perusahaan pelamar (database applicant); ditolak jika kosong.
-3. File disalin ke bucket karyawan dan diverifikasi (ukuran sama).
-4. Transaksi payroll: buat `Karyawan`, salin baris dokumen ke `applicantfiles` payroll, **buat akun presensi**
-   (`createPresensiAccount`), hapus pelamar dari database applicant, commit.
-5. **Setelah commit:** file asli di bucket portal dan baris dokumennya di database applicant dihapus.
-6. Jika langkah 3-4 gagal, semuanya dibatalkan bersih (pelamar dan file asli tidak berubah). Jika langkah 5 gagal,
-   penerimaan tetap sah dan muncul peringatan; daftar file yang tertinggal ada di log.
+2. `db_code` akun presensi = kolom `code` perusahaan pelamar (database applicant, mis. `payroll`); ditolak jika kosong.
+3. File disalin ke bucket karyawan (`yifang-payroll`) dan diverifikasi (ukuran sama).
+4. Transaksi payroll: buat `Karyawan` dari data pelamar, salin baris dokumen ke `applicantfiles` payroll, **buat akun
+   presensi** (`createPresensiAccount`), commit.
+5. Setelah commit, status pelamar diubah menjadi **Diterima** (8) di database applicant.
 
-Tidak ada tombol batal. Akun presensi tidak bisa ditarik otomatis; menghapusnya harus manual di sistem presensi.
-Siapa yang menerima dicatat di log (`by_user_id`), bukan di database.
+- Gagal di langkah 3-4: semuanya dibatalkan bersih (salinan file dibuang, Karyawan tidak jadi); data dan status pelamar
+  tidak berubah.
+- Gagal hanya di langkah 5: penerimaan tetap sah, muncul peringatan, dan status diubah manual. Penerimaan ganda tetap
+  dicegah oleh pengecekan `Karyawan.id_file_karyawan`.
+- Tidak ada tombol batal. Karyawan yang terlanjur dibuat dan akun presensinya dihapus manual (akun presensi tidak bisa
+  ditarik otomatis). Siapa yang menerima dicatat di log (`by_user_id`), bukan di database.
+- Menghapus pelamar yang sudah diterima (tombol Hapus) hanya menghapus data dan file di sisi applicant. Data Karyawan
+  dan salinan dokumen di bucket karyawan tidak terpengaruh karena bucketnya berbeda.
 
 ## Migrasi dari versi yang masih punya fitur undo
 
 Hanya untuk database payroll yang pernah menjalankan migrasi `applicant_acceptances`:
 
-1. **Sebelum** mengganti kode: jika tabel itu berisi baris, jalankan versi LAMA
-   `php artisan applicants:finalize-acceptances` (setelah masa 60 menit lewat) sampai tabel kosong. Ini yang menghapus
-   file asli pelamar yang sudah diterima dari bucket portal.
+1. **Sebelum** mengganti kode: jika tabel itu berisi baris (penerimaan dari versi lama yang belum selesai dibersihkan),
+   jalankan versi LAMA `php artisan applicants:finalize-acceptances` (setelah masa 60 menit lewat) sampai tabel kosong.
+   Perintah itu menghapus file asli pelamar tersebut dari bucket portal, sesuai perilaku versi lama. Jika Anda lebih suka
+   **mempertahankan** file itu, kosongkan tabelnya secara manual; file di bucket tidak ikut terhapus.
 2. Ganti kode dengan versi ini, **hapus** baris `Schedule::command('applicants:finalize-acceptances')...` dari
    `routes/console.php`.
 3. Jalankan `php artisan migrate`: migrasi `2026_11_14_000001_drop_applicant_acceptances_table` menghapus tabel
@@ -157,6 +165,7 @@ Penyebab yang paling sering:
 2. Daftar hanya berisi pelamar perusahaan yang diizinkan (cek dengan akun uji).
 3. Buka detail, klik dokumen portrait, zoom dan geser.
 4. Hapus satu pelamar uji ber-dokumen; pastikan `Storage::disk('<APPLICANT_FILES_DISK>')->exists($key)` menjadi `false`.
-5. (Payroll) Terima satu pelamar uji dengan akun presensi uji; pastikan file asli hilang dari bucket portal dan ada di
-   bucket karyawan, lalu hapus akun presensi ujinya secara manual.
+5. (Payroll) Terima satu pelamar uji dengan email uji. Pastikan: karyawan baru ada, dokumennya ada di bucket karyawan,
+   pelamar **tetap ada** di daftar dengan status Diterima, dan file di bucket portal **masih ada**. Lalu hapus
+   karyawan dan akun presensi ujinya secara manual.
 6. Coba akses halaman dengan akun yang **tidak** berhak: harus ditolak oleh middleware.

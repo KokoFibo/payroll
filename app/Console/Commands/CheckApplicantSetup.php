@@ -133,7 +133,23 @@ class CheckApplicantSetup extends Command
             return;
         }
 
-        $this->check(true, "Disk '{$disk}'", 'driver ' . ($cfg['driver'] ?? '?') . (isset($cfg['bucket']) ? ", bucket {$cfg['bucket']}" : ''));
+        $this->check(true, "Disk '{$disk}'", 'driver ' . ($cfg['driver'] ?? '?') . (isset($cfg['bucket']) ? ", bucket {$cfg['bucket']}" : '') . (isset($cfg['region']) ? ", region {$cfg['region']}" : ''));
+
+        if (($cfg['driver'] ?? null) === 's3') {
+            $this->line('        Kunci AWS yang dipakai: ' . $this->maskKey($cfg['key'] ?? null));
+
+            if ($same = $this->disksSharingKey($disk, $cfg['key'] ?? null)) {
+                $this->warn("Kunci yang sama dipakai disk '" . implode("', '", $same) . "'. Jika AWS_APPLICANT_ACCESS_KEY_ID belum diisi di .env, disk ini memakai kunci cadangan (AWS_ACCESS_KEY_ID) yang mungkin tidak punya izin ke bucket ini.");
+            }
+        }
+
+        // Baca: HEAD pada key yang tidak ada. Tanpa izin ListBucket, S3 menjawab 403 (bukan 404) sehingga terdeteksi di sini.
+        try {
+            Storage::disk($disk)->exists('__applicant_check__/none');
+            $this->check(true, 'Izin baca (s3:GetObject + s3:ListBucket)');
+        } catch (\Throwable $e) {
+            $this->check(false, 'Izin baca (s3:GetObject + s3:ListBucket)', $this->firstLine($e));
+        }
 
         // Menghapus key yang tidak ada tetap mensyaratkan izin DeleteObject.
         try {
@@ -197,18 +213,14 @@ class CheckApplicantSetup extends Command
         $this->check(filled($url), 'PRESENSI_API_URL', filled($url) ? $url : 'KOSONG (config/services.php entri presensi + .env)');
         $this->check(filled($token), 'PRESENSI_API_TOKEN', filled($token) ? 'terisi' : 'KOSONG');
 
-        // db_code akun presensi = kolom `name` perusahaan pelamar.
-        try {
-            $names = Company::whereIn('code', array_values(array_diff($codes, ['*'])))->pluck('name', 'code')->all();
-            foreach ($names as $code => $name) {
-                $this->line("        db_code untuk perusahaan '{$code}' = '{$name}'  (harus sama dengan db_code yang dikenal presensi)");
+        // db_code akun presensi: penerimaan pelamar memakai companies.code perusahaan pelamar; createUser() memakai
+        // APPLICANT_COMPANY_CODES dan hanya bila berisi TEPAT SATU kode.
+        $codes = array_values($codes);
 
-                if (preg_match('/\s|[A-Z]/', (string) $name)) {
-                    $this->warn("db_code '{$name}' mengandung spasi/huruf besar, seperti nama tampilan. Pastikan presensi memang mengenal nilai persis itu (kode seperti 'payroll' lebih lazim).");
-                }
-            }
-        } catch (\Throwable $e) {
-            // sudah dilaporkan di pemeriksaan database
+        if (count($codes) === 1 && $codes[0] !== '*') {
+            $this->line("        db_code yang dikirim ke presensi = '{$codes[0]}'  (harus sama dengan db_code yang dikenal presensi)");
+        } else {
+            $this->warn('APPLICANT_COMPANY_CODES tidak berisi tepat satu kode perusahaan. Penerimaan pelamar tetap memakai kode perusahaan tiap pelamar, tetapi createUser() (pemanggil lain) akan GAGAL karena db_code tidak bisa ditentukan.');
         }
 
         if ($this->option('ping') && blank($url)) {
@@ -245,6 +257,46 @@ class CheckApplicantSetup extends Command
 
     // ------------------------------------------------------------------
 
+    /** Kode error AWS (mis. AccessDenied, InvalidAccessKeyId, SignatureDoesNotMatch) dari rantai exception, jika ada. */
+    private function awsErrorCode(\Throwable $e): ?string
+    {
+        for ($x = $e; $x; $x = $x->getPrevious()) {
+            if (method_exists($x, 'getAwsErrorCode') && ($code = $x->getAwsErrorCode())) {
+                $msg = method_exists($x, 'getAwsErrorMessage') ? trim((string) strtok((string) $x->getAwsErrorMessage(), "\n")) : '';
+
+                return $code . ($msg !== '' ? " ({$msg})" : '');
+            }
+        }
+
+        return null;
+    }
+
+    /** ID kunci AWS disamarkan (4 awal + 4 akhir) agar bisa dicocokkan di konsol IAM tanpa membuka kunci penuh. */
+    private function maskKey(mixed $key): string
+    {
+        $key = (string) $key;
+
+        if ($key === '') {
+            return '(kosong)';
+        }
+
+        return strlen($key) > 8 ? substr($key, 0, 4) . '...' . substr($key, -4) : '****';
+    }
+
+    /** Disk S3 lain yang memakai kunci AWS yang sama (mis. disk payroll), untuk mendeteksi kunci yang "jatuh" ke cadangan. */
+    private function disksSharingKey(string $disk, mixed $key): array
+    {
+        $same = [];
+
+        foreach ((array) config('filesystems.disks', []) as $name => $other) {
+            if ($name !== $disk && is_array($other) && ($other['driver'] ?? null) === 's3' && filled($key) && ($other['key'] ?? null) === $key) {
+                $same[] = $name;
+            }
+        }
+
+        return $same;
+    }
+
     private function check(bool $ok, string $label, string $detail = ''): void
     {
         if (! $ok) {
@@ -275,6 +327,10 @@ class CheckApplicantSetup extends Command
             }
         }
 
-        return mb_strlen($msg) > 320 ? mb_substr($msg, 0, 320) . '...' : $msg;
+        if ($code = $this->awsErrorCode($e)) {
+            $msg .= ' | kode AWS: ' . $code;
+        }
+
+        return mb_strlen($msg) > 700 ? mb_substr($msg, 0, 700) . '...' : $msg;
     }
 }

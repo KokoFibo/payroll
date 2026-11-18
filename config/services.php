@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'presensi' => [
+        'url'     => env('PRESENSI_API_URL'),
+        'token'   => env('PRESENSI_API_TOKEN'),
+        'db_code' => env('PRESENSI_DB_CODE'),
+        'timeout' => (int) env('PRESENSI_API_TIMEOUT', 15),
+    ],
+
 ];

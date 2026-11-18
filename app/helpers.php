@@ -28,6 +28,90 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use SebastianBergmann\Type\FalseType;
 
+if (! function_exists('createPresensiAccount')) {
+    function createPresensiAccount($id_karyawan, $dbCode = null)
+    {
+        $data = \App\Models\Karyawan::where('id_karyawan', $id_karyawan)->first();
+
+        if (! $data) {
+            return [
+                'status'  => false,
+                'message' => 'Data karyawan tidak ditemukan',
+            ];
+        }
+
+        $cfg = config('services.presensi');
+
+        if (blank($cfg['url'] ?? null) || blank($cfg['token'] ?? null)) {
+            return [
+                'status'  => false,
+                'message' => 'Konfigurasi API presensi belum diisi (PRESENSI_API_URL dan PRESENSI_API_TOKEN di .env)',
+            ];
+        }
+
+        if (blank($data->tanggal_lahir)) {
+            return [
+                'status'  => false,
+                'message' => 'Tanggal lahir karyawan kosong (password akun presensi dibuat dari tanggal lahir)',
+            ];
+        }
+
+        // db_code = kode database/tenant tujuan di sistem presensi. Tanpa nilai bawaan.
+        if (blank($dbCode)) {
+            $codes  = array_values((array) config('applicant_admin.company_codes', []));
+            $dbCode = (count($codes) === 1 && $codes[0] !== '*') ? $codes[0] : null;
+        }
+
+        if (blank($dbCode)) {
+            return [
+                'status'  => false,
+                'message' => 'db_code tidak dapat ditentukan (kirim sebagai parameter ke-2, atau isi APPLICANT_COMPANY_CODES di .env dengan tepat satu kode perusahaan)',
+            ];
+        }
+
+        // password awal dari tanggal lahir (ddmmyy)
+        $password = \Carbon\Carbon::parse($data->tanggal_lahir)->format('dmy');
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::withToken($cfg['token'])
+                ->timeout((int) ($cfg['timeout'] ?? 15))
+                ->acceptJson()
+                ->post(rtrim($cfg['url'], '/') . '/api/create-user', [
+                    'name'             => $data->nama,
+                    'email'            => $data->email,
+                    'password'         => $password,
+                    'db_code'          => $dbCode,
+                    'id_karyawan'      => $data->id_karyawan,
+                    'id_unik_karyawan' => $data->id,
+                    'role'             => 1,
+                    'language'         => 'Id',
+                    'outsource'        => $data->outsource,
+                    'company_name'     => nama_company($data->company_id) ?? null,
+                ]);
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            return [
+                'status'  => false,
+                'message' => 'Server presensi tidak dapat dihubungi',
+                'error'   => $e->getMessage(),
+            ];
+        }
+
+        if ($response->successful()) {
+            return [
+                'status'  => true,
+                'message' => 'User berhasil dibuat',
+                'data'    => $response->json(),
+            ];
+        }
+
+        return [
+            'status'  => false,
+            'message' => 'Gagal create user',
+            'error'   => $response->json(),
+        ];
+    }
+}
+
 function resetPasswordApi($email, $tanggalLahir)
 {
 
@@ -109,6 +193,18 @@ function createUser($id_karyawan)
         ];
     }
 
+    // 🏢 db_code dari APPLICANT_COMPANY_CODES (.env). Harus tepat satu kode; '*' atau lebih dari satu = ambigu.
+    $codes = array_values((array) config('applicant_admin.company_codes', []));
+
+    if (count($codes) !== 1 || $codes[0] === '*') {
+        return [
+            'status' => false,
+            'message' => 'db_code tidak dapat ditentukan: APPLICANT_COMPANY_CODES di .env harus berisi tepat satu kode perusahaan (mis. payroll)'
+        ];
+    }
+
+    $dbCode = $codes[0];
+
     // 🔐 password dari tanggal lahir
     $password = Carbon::parse($data->tanggal_lahir)->format('dmy');
 
@@ -118,7 +214,7 @@ function createUser($id_karyawan)
             'name' => $data->nama,                 // sesuaikan kolom
             'email' => $data->email,
             'password' => $password,
-            'db_code' => 'payroll',                // ✅ FIX sesuai request kamu
+            'db_code' => $dbCode,                  // ✅ dari APPLICANT_COMPANY_CODES (.env)
             'id_karyawan' => $data->id_karyawan,
             'id_unik_karyawan' => $data->id,
             'role' => 1,                           // default (ubah kalau perlu)

@@ -131,16 +131,6 @@ class ApplicantFileMover
         return $this->deleteFrom($this->toDisk(), array_map([$this, 'targetKey'], $keys));
     }
 
-    /** Hapus file asli di bucket pelamar (setelah penerimaan berhasil). */
-    public function deleteFromSource(array $keys): bool
-    {
-        if (! $keys) {
-            return true;
-        }
-
-        return $this->deleteFrom($this->fromDisk(), $keys);
-    }
-
     private function deleteFrom(string $disk, array $keys): bool
     {
         if (! $keys) {
