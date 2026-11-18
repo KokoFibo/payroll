@@ -3,7 +3,7 @@
         toasts: [], tid: 0, dialog: null,
         labels: {
             delete: { title: 'Hapus data pelamar?', body: 'dan semua dokumennya akan dihapus permanen.', yes: 'Ya, hapus', btn: 'bg-rose-600 hover:bg-rose-700', tone: 'bg-rose-100 text-rose-600' },
-            terima: { title: 'Terima pelamar ini?', body: 'akan dipindahkan ke data karyawan dan akun presensinya dibuat. Tindakan ini TIDAK dapat dibatalkan.', yes: 'Ya, terima', btn: 'bg-indigo-600 hover:bg-indigo-700', tone: 'bg-indigo-100 text-indigo-600' },
+            terima: { title: 'Terima pelamar ini?', body: 'akan disalin ke data karyawan beserta dokumennya, dan akun presensinya dibuat. Data pelamar tetap ada sampai Anda menghapusnya. Penerimaan TIDAK dapat dibatalkan dari halaman ini.', yes: 'Ya, terima', btn: 'bg-indigo-600 hover:bg-indigo-700', tone: 'bg-indigo-100 text-indigo-600' },
         },
         get info() { return this.dialog ? this.labels[this.dialog.kind] : null },
         ask(kind, name) {

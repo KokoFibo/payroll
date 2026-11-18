@@ -320,10 +320,10 @@ class NewApplicantData extends Component
         $this->terimaId = null;
         $idKaryawan = $result['karyawan']->id_karyawan;
 
-        if ($result['cleanup_ok']) {
-            $this->notify('success', 'Diterima sebagai karyawan ID ' . $idKaryawan . '. Akun presensi sudah dibuat dan file dipindahkan ke bucket karyawan.');
+        if ($result['status_marked']) {
+            $this->notify('success', 'Diterima sebagai karyawan ID ' . $idKaryawan . '. Data dan dokumen sudah disalin; data pelamar tetap ada di database applicant sampai Anda menghapusnya.');
         } else {
-            $this->notify('warning', 'Diterima sebagai karyawan ID ' . $idKaryawan . ', tetapi file asal di bucket portal belum terhapus sepenuhnya. Lihat log untuk daftar file.');
+            $this->notify('warning', 'Diterima sebagai karyawan ID ' . $idKaryawan . ', tetapi status pelamar gagal diubah menjadi Diterima (lihat log). Ubah manual.');
         }
     }
 

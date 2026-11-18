@@ -3,14 +3,17 @@
 /**
  * createUser() DENGAN TOKEN DARI .env. Ganti function createUser() lama di file helper Anda dengan ini.
  *
- * Satu-satunya perubahan dari versi lama:
+ * Perubahan dari versi lama:
  *   1. Token tidak lagi tertulis di kode: dibaca dari config('services.presensi.token') <- PRESENSI_API_TOKEN di .env.
  *   2. Jika token belum diisi, mengembalikan ['status' => false, ...] (bentuk hasil yang sama seperti kegagalan lain),
  *      bukan mengirim permintaan tanpa token.
- * URL, db_code, payload, dan perilaku lainnya SAMA PERSIS dengan versi lama.
+ *   3. db_code tidak lagi tertulis 'payroll': diambil dari APPLICANT_COMPANY_CODES di .env (config applicant_admin.company_codes).
+ *      Harus berisi TEPAT SATU kode perusahaan. Kosong, '*', atau lebih dari satu = ambigu, jadi ditolak (status false).
+ * URL, payload, dan perilaku lainnya SAMA PERSIS dengan versi lama.
  *
- * Prasyarat: entri 'presensi' di config/services.php (lihat config_services_presensi.php) dan .env:
+ * Prasyarat: entri 'presensi' di config/services.php (lihat config_services_presensi.php), config/applicant_admin.php, dan .env:
  *     PRESENSI_API_TOKEN=<token baru dari server presensi>
+ *     APPLICANT_COMPANY_CODES=payroll
  * Gunakan config(), bukan env(), di sini: env() mengembalikan null di luar file config saat `php artisan config:cache`.
  *
  * Fungsi ini memakai `Karyawan`, `Carbon`, dan `Http` dari `use` di file helper Anda (seperti versi lama):
@@ -39,6 +42,18 @@ function createUser($id_karyawan)
         ];
     }
 
+    // 🏢 db_code dari APPLICANT_COMPANY_CODES (.env). Harus tepat satu kode; '*' atau lebih dari satu = ambigu.
+    $codes = array_values((array) config('applicant_admin.company_codes', []));
+
+    if (count($codes) !== 1 || $codes[0] === '*') {
+        return [
+            'status' => false,
+            'message' => 'db_code tidak dapat ditentukan: APPLICANT_COMPANY_CODES di .env harus berisi tepat satu kode perusahaan (mis. payroll)'
+        ];
+    }
+
+    $dbCode = $codes[0];
+
     // 🔐 password dari tanggal lahir
     $password = Carbon::parse($data->tanggal_lahir)->format('dmy');
 
@@ -48,7 +63,7 @@ function createUser($id_karyawan)
             'name' => $data->nama,                 // sesuaikan kolom
             'email' => $data->email,
             'password' => $password,
-            'db_code' => 'payroll',                // ✅ FIX sesuai request kamu
+            'db_code' => $dbCode,                  // ✅ dari APPLICANT_COMPANY_CODES (.env)
             'id_karyawan' => $data->id_karyawan,
             'id_unik_karyawan' => $data->id,
             'role' => 1,                           // default (ubah kalau perlu)

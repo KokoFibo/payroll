@@ -8,8 +8,9 @@
  *
  * Perbedaan dari createUser() lama:
  *  - URL, token, dan batas waktu dari config('services.presensi') (isi lewat .env), tidak tertulis di kode.
- *  - db_code: parameter ke-2 > config('services.presensi.db_code'). TIDAK ada nilai bawaan: jika keduanya kosong,
- *    ditolak (status false) supaya akun tidak terbuat di database presensi yang salah.
+ *  - db_code: parameter ke-2 (kode perusahaan pelamar); jika tidak diberikan, diambil dari APPLICANT_COMPANY_CODES
+ *    (.env) dan hanya bila berisi TEPAT SATU kode. Kosong, '*', atau lebih dari satu = ambigu, jadi ditolak
+ *    (status false) supaya akun tidak terbuat di database presensi yang salah. Tidak ada nilai bawaan.
  *  - Payload ke API presensi sama dengan createUser() lama (db_code kini bisa diganti lewat parameter).
  *  - Selalu mengembalikan array (status true/false); gangguan jaringan tidak melempar exception.
  *  - Tanggal lahir kosong ditolak (di versi lama Carbon::parse(null) diam-diam memakai tanggal hari ini).
@@ -43,12 +44,15 @@ if (! function_exists('createPresensiAccount')) {
         }
 
         // db_code = kode database/tenant tujuan di sistem presensi. Tanpa nilai bawaan.
-        $dbCode = filled($dbCode) ? $dbCode : ($cfg['db_code'] ?? null);
+        if (blank($dbCode)) {
+            $codes  = array_values((array) config('applicant_admin.company_codes', []));
+            $dbCode = (count($codes) === 1 && $codes[0] !== '*') ? $codes[0] : null;
+        }
 
         if (blank($dbCode)) {
             return [
                 'status'  => false,
-                'message' => 'db_code belum ditentukan (isi parameter ke-2 atau PRESENSI_DB_CODE di .env)',
+                'message' => 'db_code tidak dapat ditentukan (kirim sebagai parameter ke-2, atau isi APPLICANT_COMPANY_CODES di .env dengan tepat satu kode perusahaan)',
             ];
         }
 
