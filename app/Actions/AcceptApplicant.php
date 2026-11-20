@@ -35,9 +35,7 @@ class AcceptApplicant
 {
     public const PLACEHOLDER_ID = 100;   // company/jabatan/department/placement sementara
 
-    public function __construct(private ApplicantFileMover $files)
-    {
-    }
+    public function __construct(private ApplicantFileMover $files) {}
 
     /**
      * @return array{karyawan: Karyawan, status_marked: bool}  status_marked=false: karyawan sudah jadi, tetapi status
@@ -45,7 +43,7 @@ class AcceptApplicant
      * @throws ApplicantConfigException bila prasyarat aplikasi kurang (tidak ada data yang berubah)
      * @throws PresensiUserException    bila akun presensi gagal dibuat (tidak ada data yang berubah)
      */
-    public function handle(Applicant $a, ?int $by = null): array
+    public function handle(Applicant $a, string|int|null $by = null): array
     {
         // Fungsi helper milik aplikasi payroll harus ada. Dicek paling awal agar jika kurang belum ada yang berubah,
         // dan pesannya jelas (bukan error "undefined function" di tengah transaksi).
@@ -166,7 +164,7 @@ class AcceptApplicant
         }
     }
 
-    /**
+    /** 
      * db_code = kolom `code` pada tabel companies di database applicant, sesuai company_id pelamar (mis. 'payroll').
      * Kode ini sama dengan nilai di APPLICANT_COMPANY_CODES, dan tidak berubah saat nama tampilan perusahaan diganti.
      * Ditolak (bukan diam-diam memakai nilai bawaan) bila perusahaan tidak ditemukan atau kodenya kosong,
@@ -208,7 +206,7 @@ class AcceptApplicant
 
     private function copyFileRowsToPayroll($fileRows, array $copied): void
     {
-        $rows = $fileRows->filter(fn ($r) => in_array($r->filename, $copied, true));
+        $rows = $fileRows->filter(fn($r) => in_array($r->filename, $copied, true));
 
         if ($rows->isEmpty()) {
             return;

@@ -260,7 +260,7 @@ class NewApplicantData extends Component
         $id = (int) $this->confirm['id'];
         $this->confirm = null;
 
-        $this->withAcceptLock($id, fn () => $this->prosesTerima($id));
+        $this->withAcceptLock($id, fn() => $this->prosesTerima($id));
     }
 
     /**
@@ -396,7 +396,7 @@ class NewApplicantData extends Component
     public function statusCounts(): array
     {
         return $this->baseQuery()
-            ->when($this->companyFilter !== '', fn ($q) => $q->where('company_id', (int) $this->companyFilter))
+            ->when($this->companyFilter !== '', fn($q) => $q->where('company_id', (int) $this->companyFilter))
             ->selectRaw('status, count(*) as total')
             ->groupBy('status')
             ->pluck('total', 'status')
@@ -462,9 +462,9 @@ class NewApplicantData extends Component
 
         return ApplicantFile::where('id_karyawan', $person->applicant_id)
             ->get()
-            ->sortBy(fn ($f) => $order[$f->type] ?? 99)
+            ->sortBy(fn($f) => $order[$f->type] ?? 99)
             ->values()
-            ->map(fn ($f) => [
+            ->map(fn($f) => [
                 'label' => self::DOC_LABELS[$f->type] ?? (filled($f->type) ? ucfirst($f->type) : 'Dokumen'),
                 'name'  => function_exists('get_filename') ? get_filename($f->filename) : basename((string) $f->filename),
                 'url'   => $this->fileUrl($f->filename),
@@ -531,10 +531,10 @@ class NewApplicantData extends Component
             )
             ->when($term !== '', function ($q) use ($term) {
                 $like = '%' . addcslashes($term, '\\%_') . '%';
-                $q->where(fn ($w) => $w->where('nama', 'LIKE', $like)->orWhere('email', 'LIKE', $like));
+                $q->where(fn($w) => $w->where('nama', 'LIKE', $like)->orWhere('email', 'LIKE', $like));
             })
-            ->when($this->statusFilter !== '' && $stat, fn ($q) => $q->where('status', $stat->value))
-            ->when($this->companyFilter !== '', fn ($q) => $q->where('company_id', (int) $this->companyFilter))
+            ->when($this->statusFilter !== '' && $stat, fn($q) => $q->where('status', $stat->value))
+            ->when($this->companyFilter !== '', fn($q) => $q->where('company_id', (int) $this->companyFilter))
             ->orderByDesc('created_at');   // terbaru di atas; ganti orderBy('created_at') untuk yang terlama dulu
     }
 
