@@ -53,11 +53,14 @@ class ApplicantFileMover
     }
 
     /** Lokasi file di bucket karyawan. Ubah di sini jika strukturnya berbeda. */
+    // public function targetKey(string $key): string
+    // {
+    //     return $key;
+    // }
     public function targetKey(string $key): string
     {
-        return $key;
+        return preg_replace('#^Applicants/[^/]+/(?=[^/]+/)#', 'Applicants/', ltrim($key, '/'));
     }
-
     /**
      * Salin semua file ke bucket karyawan. Jika satu gagal, salinan yang sudah
      * dibuat dihapus lagi lalu exception dilempar. Mengembalikan key yang tersalin.
@@ -74,7 +77,7 @@ class ApplicantFileMover
                 if ($this->targetKey($key) === $key) {
                     throw new \RuntimeException(
                         "Bucket asal dan tujuan sama ({$srcBucket}) dengan key yang sama. "
-                        . 'Periksa APPLICANT_FILES_DISK dan KARYAWAN_FILES_DISK, atau ubah targetKey().'
+                            . 'Periksa APPLICANT_FILES_DISK dan KARYAWAN_FILES_DISK, atau ubah targetKey().'
                     );
                 }
             }
