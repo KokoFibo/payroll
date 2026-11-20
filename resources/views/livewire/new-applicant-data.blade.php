@@ -1,50 +1,7 @@
-<div
-    x-data="{
-        toasts: [], tid: 0, dialog: null,
-        labels: {
-            delete: { title: 'Hapus data pelamar?', body: 'dan semua dokumennya akan dihapus permanen.', yes: 'Ya, hapus', btn: 'bg-rose-600 hover:bg-rose-700', tone: 'bg-rose-100 text-rose-600' },
-            terima: { title: 'Terima pelamar ini?', body: 'akan disalin ke data karyawan beserta dokumennya, dan akun presensinya dibuat. Data pelamar tetap ada sampai Anda menghapusnya. Penerimaan TIDAK dapat dibatalkan dari halaman ini.', yes: 'Ya, terima', btn: 'bg-indigo-600 hover:bg-indigo-700', tone: 'bg-indigo-100 text-indigo-600' },
-        },
-        get info() { return this.dialog ? this.labels[this.dialog.kind] : null },
-        ask(kind, name) {
-            this.dialog = { kind: kind, name: name };
-            const d = this.$refs.confirm;
-            if (d && !d.open) d.showModal();
-        },
-        cancel() {
-            const d = this.$refs.confirm;
-            if (d && d.open) d.close();
-            this.dialog = null;
-        },
-        yes() {
-            if (!this.dialog) return;
-            const d = this.dialog;
-            this.cancel();
-            if (d.kind === 'delete') this.$wire.dispatch('applicant-delete-confirmed');
-            else if (d.kind === 'terima') this.$wire.dispatch('applicant-terima-confirmed');
-        },
-        toast(d) {
-            const id = ++this.tid;
-            this.toasts.push({ id: id, type: d.type || 'info', title: d.title || '' });
-            this.$nextTick(() => this.showToasts());
-            setTimeout(() => this.dismiss(id), (d.type === 'error' || d.type === 'warning') ? 9000 : 4500);
-        },
-        showToasts() {
-            const p = this.$refs.toasts;
-            try { if (p && p.showPopover && !p.matches(':popover-open')) p.showPopover(); } catch (e) {}
-        },
-        dismiss(id) {
-            this.toasts = this.toasts.filter(t => t.id !== id);
-            if (!this.toasts.length) {
-                const p = this.$refs.toasts;
-                try { if (p && p.hidePopover && p.matches(':popover-open')) p.hidePopover(); } catch (e) {}
-            }
-        },
-    }"
-    @applicant-toast.window="toast($event.detail)"
-    @applicant-confirm-delete.window="ask('delete', $event.detail.text)"
-    @applicant-confirm-terima.window="ask('terima', $event.detail.text)"
-    class="text-slate-800">
+<div class="text-slate-800">
+
+    {{-- Indikator loading global: tampil selama ada permintaan Livewire (simpan, hapus, terima, ganti halaman) --}}
+    <div wire:loading class="fixed inset-x-0 top-0 z-[5000] h-1 animate-pulse bg-indigo-500"></div>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -132,10 +89,21 @@
 
     <div class="px-4 py-6 sm:px-6 lg:px-8">
 
-        {{-- Pesan error/peringatan terakhir, dirender server: tetap terlihat walau toast atau JavaScript bermasalah --}}
+        {{-- Hasil aksi terakhir. Dirender server (tidak bergantung pada JavaScript), melayang agar terlihat di posisi scroll mana pun --}}
         @if ($notice)
-            <div role="alert"
-                class="mb-6 flex items-start gap-3 rounded-2xl border p-4 text-sm {{ $notice['type'] === 'error' ? 'border-rose-200 bg-rose-50 text-rose-900' : 'border-amber-200 bg-amber-50 text-amber-900' }}">
+            @php
+                $noticeTone = [
+                    'error' => 'border-rose-200 bg-rose-50 text-rose-900',
+                    'warning' => 'border-amber-200 bg-amber-50 text-amber-900',
+                    'success' => 'border-emerald-200 bg-emerald-50 text-emerald-900',
+                    'info' => 'border-sky-200 bg-sky-50 text-sky-900',
+                ][$notice['type']] ?? 'border-slate-200 bg-white text-slate-800';
+                $autoClose = in_array($notice['type'], ['success', 'info'], true);
+            @endphp
+            {{-- x-data/x-init hanya penyempurna: menutup otomatis pesan sukses. Tanpa Alpine, pesan tetap tampil sampai ditutup. --}}
+            <div wire:key="notice-{{ md5($notice['title']) }}" role="alert"
+                x-data="{ auto: {{ $autoClose ? 'true' : 'false' }} }" x-init="if (auto) setTimeout(() => $wire.dismissNotice(), 8000)"
+                class="fixed left-1/2 top-4 z-[4000] flex w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 items-start gap-3 rounded-2xl border p-4 text-sm shadow-lg {{ $noticeTone }}">
                 <span class="mt-0.5 shrink-0">{{ $svg('warn', 'h-4 w-4') }}</span>
                 <p class="flex-1">{{ $notice['title'] }}</p>
                 <button type="button" wire:click="dismissNotice" aria-label="Tutup pesan"
@@ -342,7 +310,7 @@
                                             <td class="whitespace-nowrap px-5 py-4 text-right">
                                                 @if ($editing)
                                                     <button type="button" wire:click="save" wire:loading.attr="disabled"
-                                                        class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60">Simpan</button>
+                                                        class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Menyimpan...</span></button>
                                                     <button type="button" wire:click="cancel"
                                                         class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50">Batal</button>
                                                 @else
@@ -431,7 +399,7 @@
                                             @endforeach
                                         </select>
                                         <button type="button" wire:click="save" wire:loading.attr="disabled"
-                                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-60">Simpan</button>
+                                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"><span wire:loading.remove wire:target="save">Simpan</span><span wire:loading wire:target="save">Menyimpan...</span></button>
                                         <button type="button" wire:click="cancel"
                                             class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">Batal</button>
                                     </div>
@@ -850,56 +818,44 @@
 
     </div>
 
-    {{-- Notifikasi dan dialog konfirmasi. <dialog> dan popover tampil di "top layer" browser: selalu di atas
-         semuanya dan tidak terpengaruh transform/overflow elemen induk layout. --}}
-    <div x-ref="toasts" popover="manual"
-        class="pointer-events-none fixed bottom-auto left-auto right-4 top-4 m-0 w-[calc(100%-2rem)] max-w-sm overflow-visible border-0 bg-transparent p-0">
-        <div class="flex flex-col gap-2">
-            <template x-for="t in toasts" :key="t.id">
-                <div x-transition
-                    class="pointer-events-auto flex items-start gap-3 rounded-xl border bg-white p-4 shadow-lg"
-                    :class="{
-                        'border-emerald-200': t.type === 'success',
-                        'border-rose-200': t.type === 'error',
-                        'border-amber-200': t.type === 'warning',
-                        'border-sky-200': t.type === 'info'
-                    }">
-                    <span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
-                        :class="{
-                            'bg-emerald-500': t.type === 'success',
-                            'bg-rose-500': t.type === 'error',
-                            'bg-amber-500': t.type === 'warning',
-                            'bg-sky-500': t.type === 'info'
-                        }"></span>
-                    <p class="flex-1 text-sm text-slate-700" x-text="t.title"></p>
-                    <button type="button" @click="dismiss(t.id)" aria-label="Tutup notifikasi"
-                        class="text-slate-400 transition hover:text-slate-600">{{ $svg('x') }}</button>
+    {{-- Konfirmasi hapus/terima. Dirender server dari state $confirm: tidak bergantung pada event atau JavaScript.
+         Aksi hanya berjalan bila konfirmasi sesuai sedang menunggu (lihat NewApplicantData::delete/diterima). --}}
+    @if ($confirm)
+        @php $isDelete = $confirm['kind'] === 'delete'; @endphp
+        <div wire:key="confirm-modal" wire:keydown.escape.window="cancelConfirm"
+            class="fixed inset-0 z-[3500] flex items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true">
+            <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                <div class="flex items-start gap-4">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full {{ $isDelete ? 'bg-rose-100 text-rose-600' : 'bg-indigo-100 text-indigo-600' }}">
+                        {{ $svg('warn', 'h-5 w-5') }}
+                    </span>
+                    <div class="min-w-0">
+                        <h3 class="text-base font-semibold text-slate-900">{{ $isDelete ? 'Hapus data pelamar?' : 'Terima pelamar ini?' }}</h3>
+                        <p class="mt-1.5 text-sm text-slate-600">
+                            <span class="font-semibold text-slate-800">{{ $confirm['name'] }}</span>
+                            @if ($isDelete)
+                                dan semua dokumennya di bucket portal akan dihapus permanen.
+                            @else
+                                akan disalin ke data karyawan beserta dokumennya, dan akun presensinya dibuat. Data pelamar tetap ada sampai Anda menghapusnya. Penerimaan TIDAK dapat dibatalkan dari halaman ini.
+                            @endif
+                        </p>
+                    </div>
                 </div>
-            </template>
-        </div>
-    </div>
 
-    <dialog x-ref="confirm" @close="dialog = null" @click.self="cancel()"
-        class="m-auto w-full max-w-md rounded-2xl border-0 bg-white p-0 text-slate-800 shadow-2xl backdrop:bg-slate-900/50">
-        <div class="p-6">
-            <div class="flex items-start gap-4">
-                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
-                    :class="info ? info.tone : ''">{{ $svg('warn', 'h-5 w-5') }}</span>
-                <div class="min-w-0">
-                    <h3 class="text-base font-semibold text-slate-900" x-text="info ? info.title : ''"></h3>
-                    <p class="mt-1.5 text-sm text-slate-600">
-                        <span class="font-semibold text-slate-800" x-text="dialog ? dialog.name : ''"></span>
-                        <span x-text="info ? info.body : ''"></span>
-                    </p>
+                <p wire:loading wire:target="diterima" class="mt-4 rounded-lg bg-indigo-50 px-3 py-2 text-xs text-indigo-800">
+                    Menyalin dokumen dan membuat akun presensi. Ini bisa memakan beberapa detik; jangan menutup halaman.
+                </p>
+
+                <div class="mt-6 flex justify-end gap-2">
+                    <button type="button" wire:click="cancelConfirm" wire:loading.attr="disabled"
+                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-60">Batal</button>
+                    <button type="button" wire:click="{{ $isDelete ? 'delete' : 'diterima' }}" wire:loading.attr="disabled"
+                        class="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white transition disabled:opacity-60 {{ $isDelete ? 'bg-rose-600 hover:bg-rose-700' : 'bg-indigo-600 hover:bg-indigo-700' }}">
+                        <span wire:loading.remove wire:target="delete,diterima">{{ $isDelete ? 'Ya, hapus' : 'Ya, terima' }}</span>
+                        <span wire:loading wire:target="delete,diterima">{{ $isDelete ? 'Menghapus...' : 'Memproses...' }}</span>
+                    </button>
                 </div>
             </div>
-            <div class="mt-6 flex justify-end gap-2">
-                <button type="button" @click="cancel()"
-                    class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Batal</button>
-                <button type="button" @click="yes()"
-                    class="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
-                    :class="info ? info.btn : ''" x-text="info ? info.yes : 'Ya'"></button>
-            </div>
         </div>
-    </dialog>
+    @endif
 </div>
