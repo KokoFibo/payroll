@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -74,13 +73,15 @@ class NewApplicantData extends Component
 
     public $status = null;
 
+    /**
+     * Konfirmasi yang menunggu jawaban: ['kind' => 'delete'|'terima', 'id' => int, 'name' => string].
+     * Dirender server sebagai modal (tidak bergantung pada JavaScript/Alpine). Aksi hapus dan terima HANYA berjalan
+     * bila konfirmasi dengan jenis yang sesuai sedang menunggu, jadi tidak bisa dipanggil langsung dari browser.
+     */
     #[Locked]
-    public ?int $deleteId = null;
+    public ?array $confirm = null;
 
-    #[Locked]
-    public ?int $terimaId = null;
-
-    /** Pesan error/peringatan terakhir. Dirender server di halaman, jadi tetap terlihat walau toast/JavaScript bermasalah. */
+    /** Pesan hasil aksi terakhir (sukses, info, peringatan, error). Dirender server sebagai banner sampai ditutup. */
     #[Locked]
     public ?array $notice = null;
 
@@ -165,14 +166,20 @@ class NewApplicantData extends Component
                 return;
             }
 
-            $this->terimaId = $applicant->id;
-            $this->dispatch('applicant-confirm-terima', text: $applicant->nama);
+            $this->confirm = ['kind' => 'terima', 'id' => (int) $applicant->id, 'name' => (string) $applicant->nama];
             $this->cancel();
             return;
         }
 
-        $applicant->status = $newStatus;
-        $applicant->save();
+        try {
+            $applicant->status = $newStatus;
+            $applicant->save();
+        } catch (\Throwable $e) {
+            report($e);
+            $this->cancel();
+            $this->notify('error', 'Status gagal disimpan (lihat log). Periksa hak UPDATE untuk user database applicant.');
+            return;
+        }
 
         $this->cancel();
         $this->notify('success', 'Status sudah berhasil diubah.');
@@ -191,17 +198,27 @@ class NewApplicantData extends Component
             return;
         }
 
-        $this->deleteId = $id;
-        $this->dispatch('applicant-confirm-delete', text: $applicant->nama);
+        $this->confirm = ['kind' => 'delete', 'id' => (int) $applicant->id, 'name' => (string) $applicant->nama];
     }
 
-    #[On('applicant-delete-confirmed')]
+    public function cancelConfirm(): void
+    {
+        $this->confirm = null;
+    }
+
+    /** Dipanggil dari tombol "Ya, hapus" pada modal. Tanpa konfirmasi hapus yang menunggu, tidak melakukan apa pun. */
     public function delete(): void
     {
-        $applicant = $this->findApplicant($this->deleteId);
+        if (($this->confirm['kind'] ?? null) !== 'delete') {
+            return;
+        }
+
+        $id = (int) $this->confirm['id'];
+        $this->confirm = null;
+
+        $applicant = $this->findApplicant($id);
 
         if (! $applicant) {
-            $this->deleteId = null;
             $this->notify('error', 'Data tidak ditemukan (mungkin sudah dihapus).');
             return;
         }
@@ -209,12 +226,13 @@ class NewApplicantData extends Component
         try {
             $result = app(DeleteApplicant::class)->handle($applicant);
         } catch (ApplicantConfigException $e) {
-            $this->deleteId = null;
             $this->notify('error', $e->getMessage() . ' Tidak ada data yang dihapus.');
             return;
+        } catch (\Throwable $e) {
+            report($e);
+            $this->notify('error', 'Gagal menghapus pelamar (lihat log). Periksa hak DELETE untuk user database applicant.');
+            return;
         }
-
-        $this->deleteId = null;
 
         if ($result['s3_ok']) {
             $this->notify('success', 'Data dan file pelamar sudah dihapus.');
@@ -227,7 +245,7 @@ class NewApplicantData extends Component
     // Terima pelamar (tidak bisa dibatalkan)
     // ------------------------------------------------------------------
 
-    #[On('applicant-terima-confirmed')]
+    /** Dipanggil dari tombol "Ya, terima" pada modal. Tanpa konfirmasi terima yang menunggu, tidak melakukan apa pun. */
     public function diterima(): void
     {
         if (! $this->acceptEnabled) {
@@ -235,11 +253,12 @@ class NewApplicantData extends Component
             return;
         }
 
-        $id = $this->terimaId;
-
-        if (! $id) {
+        if (($this->confirm['kind'] ?? null) !== 'terima') {
             return;
         }
+
+        $id = (int) $this->confirm['id'];
+        $this->confirm = null;
 
         $this->withAcceptLock($id, fn () => $this->prosesTerima($id));
     }
@@ -317,7 +336,6 @@ class NewApplicantData extends Component
             return;
         }
 
-        $this->terimaId = null;
         $idKaryawan = $result['karyawan']->id_karyawan;
 
         if ($result['status_marked']) {
@@ -549,11 +567,8 @@ class NewApplicantData extends Component
 
     private function notify(string $type, string $title): void
     {
-        // Event milik komponen ini (ditangani view), tidak bergantung pada handler 'message' di layout.
-        $this->dispatch('applicant-toast', type: $type, title: $title);
-
-        // Error dan peringatan juga ditampilkan di halaman (render server) sampai ditutup.
-        $this->notice = in_array($type, ['error', 'warning'], true) ? ['type' => $type, 'title' => $title] : null;
+        // Banner dirender server di halaman: tidak bergantung pada JavaScript/Alpine.
+        $this->notice = ['type' => $type, 'title' => $title];
     }
 
     public function dismissNotice(): void

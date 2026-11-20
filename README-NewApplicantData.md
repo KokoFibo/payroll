@@ -83,6 +83,12 @@ Route::get('/data-applicant', \App\Livewire\NewApplicantData::class)
   pelamar, termasuk data pribadinya (KTP, alamat, dst.).
 - Jika butuh pemisahan per peran di dalam halaman, pemeriksaan harus ditambahkan di setiap method aksi.
 
+## Hapus dan terima: dua langkah
+
+Tombol Hapus dan Simpan-dengan-status-Diterima membuka **modal konfirmasi yang dirender server** (state `$confirm`).
+Aksinya (`delete()` / `diterima()`) hanya berjalan bila konfirmasi dengan jenis yang sesuai sedang menunggu, sehingga tidak
+bisa dipanggil langsung dari browser tanpa melewati konfirmasi.
+
 ## Terima karyawan: cara kerja (salin, bukan pindah)
 
 Penerimaan **menyalin**. Data pelamar di database applicant dan file di bucket portal **tidak dihapus**; keduanya tetap
@@ -144,11 +150,14 @@ aplikasi lama yang diam-diam melanjutkan). Penyebabnya selalu salah satu prasyar
 
    Ia memeriksa koneksi dan hak akses database applicant, izin bucket (baca/hapus/tulis), fungsi helper payroll,
    `PRESENSI_API_*`, `db_code` yang akan dipakai, dan cache lock. Baris `[GAGAL]` menunjukkan apa yang harus diperbaiki.
-2. **Lihat halamannya:** kotak kuning "Konfigurasi belum lengkap" di atas daftar memuat prasyarat yang kurang, dan kotak
-   merah/kuning di paling atas memuat pesan dari aksi terakhir (tetap tampil sampai ditutup, walau toast tidak terlihat).
+2. **Lihat halamannya:** kotak kuning "Konfigurasi belum lengkap" di atas daftar memuat prasyarat yang kurang. Setiap aksi
+   (simpan, hapus, terima) menampilkan hasilnya di banner yang melayang di bagian atas layar (merah = gagal, kuning =
+   peringatan, hijau = sukses). Banner dan modal konfirmasi dirender **server**, jadi tampil walau JavaScript bermasalah.
+   Selama permintaan berjalan ada garis biru di tepi atas layar dan tombol berubah menjadi "Menyimpan..."/"Memproses...".
 3. **Lihat log:** `tail -n 80 storage/logs/laravel.log` tepat setelah mengklik. Error yang tidak tertangkap dicatat di sini.
-4. **Lihat console browser** (F12): error JavaScript/Alpine tampil di sana. Aksi hapus dan terima membutuhkan Alpine
-   dari Livewire 3 (dialog konfirmasi).
+4. **Lihat console browser dan tab Network** (F12). Setelah mengklik, harus ada permintaan `livewire/update`. Jika tidak
+   ada, Livewire sendiri tidak aktif di halaman (periksa `@livewireScripts` di layout). Konfirmasi hapus/terima TIDAK
+   membutuhkan Alpine; Alpine hanya dipakai untuk pratinjau dokumen dan menutup otomatis banner sukses.
 
 Penyebab yang paling sering:
 
